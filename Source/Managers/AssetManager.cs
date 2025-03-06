@@ -1,0 +1,47 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using AssetsLib;
+
+namespace TheOceanRange.Managers;
+
+public static class AssetManager
+{
+    private static Assembly Core { get; } = typeof(Main).Assembly;
+    private static Dictionary<string, string> UnloadedAssets { get; } = [];
+    private static Dictionary<string, Texture2D> LoadedTextures { get; } = [];
+    private static Dictionary<string, Sprite> LoadedSprites { get; } = [];
+
+    public static void FetchAssetNames()
+    {
+        foreach (var resourceName in Core.GetManifestResourceNames())
+            UnloadedAssets[resourceName.Replace("Slime.Resources.", "")] = resourceName;
+    }
+
+    public static Sprite GetSprite(string fileName, FilterMode mode = FilterMode.Bilinear, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+    {
+        if (LoadedSprites.TryGetValue(fileName, out var sprite))
+            return sprite;
+
+        return LoadedSprites[fileName] = LoadImage(fileName, mode, wrapMode).CreateSprite();
+    }
+
+    public static Texture2D LoadImage(string fileName, FilterMode mode = FilterMode.Bilinear, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+    {
+        if (LoadedTextures.TryGetValue(fileName, out var texture))
+            return texture;
+
+        if (!UnloadedAssets.TryGetValue(fileName, out var path))
+            throw new MissingResourceException(fileName);
+
+        var manifestResourceStream = Core.GetManifestResourceStream(path) ?? throw new MissingResourceException(fileName);
+        var array = new byte[manifestResourceStream.Length];
+        manifestResourceStream.Read(array, 0, array.Length);
+        var texture2D = new Texture2D(1, 1);
+        texture2D.LoadImage(array);
+        texture2D.filterMode = mode;
+        texture2D.wrapMode = wrapMode;
+        texture2D.name = Path.GetFileNameWithoutExtension(fileName);
+        return LoadedTextures[fileName] = texture2D;
+    }
+}
