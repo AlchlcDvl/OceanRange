@@ -1,4 +1,5 @@
 using AssetsLib;
+using SimpleSRmodLibrary.Creation;
 using SRML.Utils;
 
 namespace TheOceanRange.Slimes;
@@ -7,6 +8,7 @@ public static class Slimes
 {
     public static void CreateRosaSlime()
     {
+        SlimeCreation;
         var slimeByIdentifiableId = GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME);
 
         var val = slimeByIdentifiableId.DeepCopy();
@@ -17,7 +19,7 @@ public static class Slimes
             FoodGroup.FRUIT,
             FoodGroup.VEGGIES
         ];
-        val.Diet.AdditionalFoods = [];
+        val.Diet.AdditionalFoods = [ IdentifiableId.SPICY_TOFU ];
         val.Diet.Favorites = [];
         val.Diet.EatMap?.Clear();
         val.CanLargofy = false;

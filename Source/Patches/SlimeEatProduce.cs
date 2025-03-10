@@ -1,3 +1,5 @@
+using TheOceanRange.Slimes;
+
 namespace TheOceanRange.Patches;
 
 [HarmonyPatch(typeof(SlimeEat), "Produce")]
@@ -15,7 +17,7 @@ public static class SlimeEatProduce
         foreach (var allCorral in CorralRegion.)
         {
             bounds = ((Component)allCorral).GetComponent<Collider>().bounds;
-            if (((Bounds)(ref bounds)).Contains(((Component)__instance).transform.position))
+            if (((Bounds)(ref bounds)).Contains(__instance.transform.position))
             {
                 val = ((Component)allCorral).GetComponent<Collider>();
                 flag = true;
@@ -29,11 +31,12 @@ public static class SlimeEatProduce
             return;
         }
 
-        int num = 0;
-        foreach (RosaBehaviour item in RosaBehaviour.All)
+        var num = 0;
+
+        foreach (var item in RosaBehaviour.All)
         {
             bounds = val.bounds;
-            if (((Bounds)(ref bounds)).Contains(((Component)item).transform.position))
+            if (((Bounds)(ref bounds)).Contains(item.transform.position))
             {
                 num++;
             }
