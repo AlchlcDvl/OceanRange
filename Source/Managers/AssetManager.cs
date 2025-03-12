@@ -33,7 +33,7 @@ public static class AssetManager
         if (!UnloadedAssets.TryGetValue(fileName, out var path))
             throw new MissingResourceException(fileName);
 
-        var manifestResourceStream = Core.GetManifestResourceStream(path) ?? throw new MissingResourceException(fileName);
+        using var manifestResourceStream = Core.GetManifestResourceStream(path) ?? throw new MissingResourceException(fileName);
         var array = new byte[manifestResourceStream.Length];
         manifestResourceStream.Read(array, 0, array.Length);
         var texture2D = new Texture2D(1, 1);
@@ -41,6 +41,7 @@ public static class AssetManager
         texture2D.filterMode = mode;
         texture2D.wrapMode = wrapMode;
         texture2D.name = Path.GetFileNameWithoutExtension(fileName);
+        UnloadedAssets.Remove(fileName);
         return LoadedTextures[fileName] = texture2D;
     }
 
