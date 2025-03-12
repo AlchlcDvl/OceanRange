@@ -1,5 +1,4 @@
 using AssetsLib;
-using SimpleSRmodLibrary.Creation;
 using SRML.Utils;
 
 namespace TheOceanRange.Slimes;
@@ -8,7 +7,6 @@ public static class Slimes
 {
     public static void CreateRosaSlime()
     {
-        SlimeCreation;
         var slimeByIdentifiableId = GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME);
 
         var val = slimeByIdentifiableId.DeepCopy();
@@ -157,6 +155,5 @@ public static class Slimes
         DroneRegistry.RegisterBasicTarget(Ids.ROSA_PLORT);
         AmmoRegistry.RegisterRefineryResource(Ids.ROSA_PLORT);
         val2.AddComponent<RosaBehaviour>();
-        Spawners.CreateRosaSpawner();
     }
 }

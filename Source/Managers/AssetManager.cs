@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using AssetsLib;
 
 namespace TheOceanRange.Managers;
 
@@ -44,4 +43,13 @@ public static class AssetManager
         texture2D.name = Path.GetFileNameWithoutExtension(fileName);
         return LoadedTextures[fileName] = texture2D;
     }
+
+    public static Sprite CreateSprite(this Texture2D texture)
+    {
+        var sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new(0.5f, 0.5f), 1f);
+        sprite.name = texture.name;
+        return sprite;
+    }
+
+    public static T CreatePrefab<T>(this T obj) where T : UObject => UObject.Instantiate(obj, Main.Prefab, false);
 }

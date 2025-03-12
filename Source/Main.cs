@@ -8,6 +8,7 @@ public class Main : ModEntryPoint
 {
     public static AssetBundle AssetsBundle = AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("TheOceanRange.Assets.bundle"));
     public static Main Instance { get; private set; }
+    public static Transform Prefab;
 
     public override void PreLoad()
     {
@@ -33,5 +34,13 @@ public class Main : ModEntryPoint
                 "anti-aging solution.");
     }
 
-    public override void Load() => Slimes.Slimes.CreateRosaSlime();
+    public override void Load()
+    {
+        Slimes.Slimes.CreateRosaSlime();
+
+        var gameObject = new GameObject("PrefabParent");
+        gameObject.SetActive(value: false);
+        UObject.DontDestroyOnLoad(gameObject);
+        Prefab = gameObject.transform;
+    }
 }
