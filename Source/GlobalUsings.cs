@@ -10,3 +10,6 @@ global using SRML.SR;
 global using UnityEngine;
 
 global using HarmonyLib;
+
+global using TheOceanRange.Managers;
+global using TheOceanRange.Slimes;
