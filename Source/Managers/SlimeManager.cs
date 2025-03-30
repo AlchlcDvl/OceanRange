@@ -4,5 +4,5 @@
 public static class SlimeManager
 {
     public static Dictionary<IdentifiableId, CustomSlimeData> SlimesMap { get; } = [];
-    public static Dictionary<IdentifiableId, CustomSlimeData> BaitToGordoMap { get; } = [];
+    public static Dictionary<IdentifiableId, IdentifiableId> BaitToGordoMap { get; } = [];
 }

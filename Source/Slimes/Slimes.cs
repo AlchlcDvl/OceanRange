@@ -1,10 +1,56 @@
-using AssetsLib;
 using SRML.Utils;
 
 namespace TheOceanRange.Slimes;
 
 public static class Slimes
 {
+    private static readonly int EyeRed = Shader.PropertyToID("_EyeRed");
+    private static readonly int EyeGreen = Shader.PropertyToID("_EyeGreen");
+    private static readonly int EyeBlue = Shader.PropertyToID("_EyeBlue");
+    private static readonly int MouthTop = Shader.PropertyToID("_MouthTop");
+    private static readonly int MouthMid = Shader.PropertyToID("_MouthMid");
+    private static readonly int MouthBot = Shader.PropertyToID("_MouthBot");
+    private static readonly int TopColor = Shader.PropertyToID("_TopColor");
+    private static readonly int BottomColor = Shader.PropertyToID("_BottomColor");
+    private static readonly int MiddleColor = Shader.PropertyToID("_MiddleColor");
+    private static readonly int SpecColor = Shader.PropertyToID("_SpecColor");
+    private static readonly int Shininess = Shader.PropertyToID("_Shininess");
+    private static readonly int Gloss = Shader.PropertyToID("_Gloss");
+
+    public static void CreateBaseSlime(
+        string name,
+        IdentifiableId slimeId,
+        IdentifiableId gordoId,
+        IdentifiableId baitId,
+        IdentifiableId[] productIds,
+        FoodGroup[] dietIds,
+        IdentifiableId[] additionalFoodIds,
+        bool canLargofy)
+    {
+        var customSlimeData = new CustomSlimeData
+        {
+            Id = slimeId,
+            GordoId = gordoId,
+            BaitId = baitId,
+        };
+        SlimeManager.SlimesMap[slimeId] = customSlimeData;
+        SlimeManager.BaitToGordoMap[baitId] = gordoId;
+
+        var slimeByIdentifiableId = GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME);
+
+        var val = slimeByIdentifiableId.DeepCopy();
+        var diet = val.Diet;
+        diet.Produces = productIds;
+        diet.MajorFoodGroups = dietIds;
+        diet.AdditionalFoods = additionalFoodIds;
+
+        val.CanLargofy = canLargofy;
+
+        var pinkPrefab = GameInstance.Instance.LookupDirector.GetPrefab(IdentifiableId.PINK_SLIME);
+
+        var val2 = pinkPrefab.CreatePrefab();
+    }
+
     public static void CreateRosaSlime()
     {
         var slimeByIdentifiableId = GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME);
@@ -46,36 +92,35 @@ public static class Slimes
         ];
 
         var val4 = val3.Structures[0].DefaultMaterials[0].Clone();
-        val4.SetColor("_TopColor", new Color32(230, 199, 210, 255));
-        val4.SetColor("_MiddleColor", new Color32(230, 199, 210, 255));
-        val4.SetColor("_BottomColor", new Color32(230, 199, 210, 255));
-        val4.SetColor("_SpecColor", new Color32(230, 199, 210, 255));
-        val4.SetFloat("_Shininess", 1f);
-        val4.SetFloat("_Gloss", 1f);
+        val4.SetColor(TopColor, new Color32(230, 199, 210, 255));
+        val4.SetColor(MiddleColor, new Color32(230, 199, 210, 255));
+        val4.SetColor(BottomColor, new Color32(230, 199, 210, 255));
+        val4.SetColor(SpecColor, new Color32(230, 199, 210, 255));
+        val4.SetFloat(Shininess, 1f);
+        val4.SetFloat(Gloss, 1f);
         val3.Structures[0].DefaultMaterials = val3.Structures[1].DefaultMaterials = [ val4 ];
 
-        var val4_ = val4.Clone();
-        val4_.SetColor("_TopColor", new Color32(178, 62, 101, 255));
-        val4_.SetColor("_MiddleColor", new Color32(178, 62, 101, 255));
-        val4_.SetColor("_BottomColor", new Color32(178, 62, 101, 255));
-        val4_.SetColor("_SpecColor", new Color32(178, 62, 101, 255));
-        val3.Structures[2].DefaultMaterials = [ val4_ ];
+        var val4Clone = val4.Clone();
+        val4Clone.SetColor(TopColor, new Color32(178, 62, 101, 255));
+        val4Clone.SetColor(MiddleColor, new Color32(178, 62, 101, 255));
+        val4Clone.SetColor(BottomColor, new Color32(178, 62, 101, 255));
+        val4Clone.SetColor(SpecColor, new Color32(178, 62, 101, 255));
+        val3.Structures[2].DefaultMaterials = [ val4Clone ];
 
         foreach (var val5 in val3.Face.ExpressionFaces)
         {
             if (val5.Mouth)
             {
-                val5.Mouth.SetColor("_MouthBot", Color.black);
-                val5.Mouth.SetColor("_MouthMid", Color.black);
-                val5.Mouth.SetColor("_MouthTop", Color.black);
+                val5.Mouth.SetColor(MouthBot, Color.black);
+                val5.Mouth.SetColor(MouthMid, Color.black);
+                val5.Mouth.SetColor(MouthTop, Color.black);
             }
 
-            if (val5.Eyes)
-            {
-                val5.Eyes.SetColor("_EyeRed", Color.black);
-                val5.Eyes.SetColor("_EyeGreen", Color.black);
-                val5.Eyes.SetColor("_EyeBlue", Color.black);
-            }
+            if (!val5.Eyes)
+                continue;
+            val5.Eyes.SetColor(EyeRed, Color.black);
+            val5.Eyes.SetColor(EyeGreen, Color.black);
+            val5.Eyes.SetColor(EyeBlue, Color.black);
         }
 
         val3.Face.OnEnable();
@@ -117,7 +162,7 @@ public static class Slimes
 
         var val7 = slimeByIdentifiableId.AppearancesDefault[0].Structures[0].Element.Prefabs[0].CreatePrefab();
         val7.GetComponent<SkinnedMeshRenderer>().sharedMesh = UObject.Instantiate(val7.GetComponent<SkinnedMeshRenderer>().sharedMesh);
-        MeshUtils.GenerateBoneData(val2App, val7, 0.25f, 1f, [ prefab1, prefab2, prefab3 ]);
+        AssetsLib.MeshUtils.GenerateBoneData(val2App, val7, 0.25f, 1f, [ prefab1, prefab2, prefab3 ]);
 
         var val8 = PrefabUtils.CopyPrefab(GameInstance.Instance.LookupDirector.GetPrefab(IdentifiableId.PINK_PLORT));
         val8.name = "RosaPlort";
@@ -126,9 +171,9 @@ public static class Slimes
 
         var meshRend = val8.GetComponent<MeshRenderer>();
         meshRend.material = UObject.Instantiate(meshRend.material);
-        meshRend.material.SetColor("_TopColor", new Color32(237, 169, 96, 255));
-        meshRend.material.SetColor("_MiddleColor", new Color32(237, 169, 96, 255));
-        meshRend.material.SetColor("_BottomColor", new Color32(237, 169, 96, 255));
+        meshRend.material.SetColor(TopColor, new Color32(237, 169, 96, 255));
+        meshRend.material.SetColor(MiddleColor, new Color32(237, 169, 96, 255));
+        meshRend.material.SetColor(BottomColor, new Color32(237, 169, 96, 255));
 
         LookupRegistry.RegisterIdentifiablePrefab(val2);
         SlimeRegistry.RegisterSlimeDefinition(val);

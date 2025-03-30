@@ -13,6 +13,7 @@ public class Main : ModEntryPoint
     public override void PreLoad()
     {
         Instance = this;
+        AssetManager.FetchAssetNames();
         HarmonyInstance.PatchAll();
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, Ids.ROSA_PLORT);
         PediaRegistry.RegisterIdentifiableMapping(Ids.ROSA_SLIME_ENTRY, Ids.ROSA_SLIME);
@@ -36,11 +37,11 @@ public class Main : ModEntryPoint
 
     public override void Load()
     {
-        Slimes.Slimes.CreateRosaSlime();
-
         var gameObject = new GameObject("PrefabParent");
         gameObject.SetActive(value: false);
         UObject.DontDestroyOnLoad(gameObject);
         Prefab = gameObject.transform;
+
+        Slimes.Slimes.CreateRosaSlime();
     }
 }
