@@ -4,43 +4,147 @@ namespace TheOceanRange.Managers;
 
 public static class AssetManager
 {
-    private static Assembly Core { get; } = typeof(Main).Assembly;
-    private static Dictionary<string, string> UnloadedAssets { get; } = [];
-    private static Dictionary<string, Texture2D> LoadedTextures { get; } = [];
-    private static Dictionary<string, Sprite> LoadedSprites { get; } = [];
+    private static readonly Assembly Core = typeof(Main).Assembly;
+    public static readonly Dictionary<string, AssetBundle> Bundles = [];
+    public static readonly Dictionary<string, string> AssetToBundle = [];
+    private static readonly Dictionary<string, HashSet<UObject>> LoadedAssets = [];
+    private static readonly Dictionary<string, HashSet<string>> UnloadedAssets = [];
+    private static readonly Dictionary<Type, (string, Func<string, UObject>)> AssetTypeExtensions = new()
+    {
+        [typeof(Sprite)] = ("png", LoadSprite),
+        [typeof(AudioClip)] = ("wav", LoadAudio),
+        [typeof(JsonTextAsset)] = ("json", LoadJson),
+    };
 
     public static void FetchAssetNames()
     {
-        foreach (var resourceName in Core.GetManifestResourceNames())
-            UnloadedAssets[resourceName.Replace("Slime.Resources.", "")] = resourceName;
+        foreach (var path in Core.GetManifestResourceNames())
+        {
+            var id = path.SanitisePath();
+
+            if (path.EndsWith(".bundle"))
+            {
+                var bundle = AssetBundle.LoadFromMemory(Core.GetManifestResourceStream(path)!.ReadFully());
+                Bundles[id] = bundle;
+                bundle.GetAllAssetNames().Do(x => AssetToBundle[x.SanitisePath()] = id);
+            }
+            else
+                AddPath(id, path);
+        }
     }
 
-    public static Sprite GetSprite(string fileName, FilterMode mode = FilterMode.Bilinear, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+    private static string SanitisePath(this string path)
     {
-        if (LoadedSprites.TryGetValue(fileName, out var sprite))
-            return sprite;
-
-        return LoadedSprites[fileName] = LoadImage(fileName, mode, wrapMode).CreateSprite();
+        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", "Slime.Resources.");
+        path = path.TrueSplit('/').Last();
+        path = path.TrueSplit('\\').Last();
+        return path.TrueSplit('.').Last();
     }
 
-    public static Texture2D LoadImage(string fileName, FilterMode mode = FilterMode.Bilinear, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+    public static JsonTextAsset GetJson(string path) => Get<JsonTextAsset>(path);
+
+    public static AudioClip GetAudio(string path) => Get<AudioClip>(path);
+
+    public static Sprite GetSprite(string path) => Get<Sprite>(path);
+
+    public static Mesh GetMesh(string path) => Get<Mesh>(path);
+
+    private static T Get<T>(string name) where T : UObject
     {
-        if (LoadedTextures.TryGetValue(fileName, out var texture))
-            return texture;
+        if (LoadedAssets.TryGetValue(name, out var objList) && objList.TryFinding<UObject, T>(out var result) && result)
+            return result;
 
-        if (!UnloadedAssets.TryGetValue(fileName, out var path))
-            throw new MissingResourceException(fileName);
+        if (AssetToBundle.TryGetValue(name.ToLower(), out var bundle))
+        {
+            result = LoadAsset<T>(Bundles[bundle], name);
 
-        using var manifestResourceStream = Core.GetManifestResourceStream(path) ?? throw new MissingResourceException(fileName);
-        var array = new byte[manifestResourceStream.Length];
-        _ = manifestResourceStream.Read(array, 0, array.Length);
-        var texture2D = new Texture2D(1, 1);
-        texture2D.LoadImage(array);
-        texture2D.filterMode = mode;
-        texture2D.wrapMode = wrapMode;
-        texture2D.name = Path.GetFileNameWithoutExtension(fileName);
-        UnloadedAssets.Remove(fileName);
-        return LoadedTextures[fileName] = texture2D;
+            if (result)
+                return result;
+        }
+
+        if (!UnloadedAssets.TryGetValue(name, out var strings))
+            return null;
+
+        var tType = typeof(T);
+
+        if (AssetTypeExtensions.TryGetValue(tType, out var pair) && strings.TryFinding(x => x.EndsWith($".{pair.Item1}"), out var path))
+            result = AddAsset(name, (T)pair.Item2(path));
+        else
+            throw new NotSupportedException($"{tType.Name} is not a loadable asset type");
+
+        strings.Remove(path);
+
+        if (strings.Count == 0)
+            UnloadedAssets.Remove(name);
+
+        return result;
+    }
+
+    private static T LoadAsset<T>(AssetBundle assetBundle, string name) where T : UObject
+    {
+        var asset = assetBundle.LoadAsset<T>(name);
+        AddAsset(name, asset);
+        AssetToBundle.Remove(name);
+
+        if (Bundles.Keys.Any(AssetToBundle.Values.Contains))
+            return asset;
+
+        Bundles.Remove(assetBundle.name);
+        assetBundle.Unload(false);
+        return asset;
+    }
+
+    public static T AddAsset<T>(string name, T obj) where T : UObject => AddAsset(name, (UObject)obj) as T;
+
+    private static UObject AddAsset(string name, UObject obj)
+    {
+        if (!obj)
+            return null;
+
+        if (!LoadedAssets.TryGetValue(name, out var value))
+            LoadedAssets[name] = value = [];
+
+        value.Add(obj);
+        return obj.DontDestroy();
+    }
+
+    public static void AddPath(string name, string path)
+    {
+        if (!UnloadedAssets.TryGetValue(name, out var value))
+            UnloadedAssets[name] = value = [];
+
+        value.Add(path);
+    }
+
+    private static TextAsset LoadJson(string path)
+    {
+        using var stream = Core.GetManifestResourceStream(path);
+        using var reader = new StreamReader(stream);
+        return new(reader.ReadToEnd());
+    }
+
+    private static Texture2D EmptyTexture() => new(2, 2, TextureFormat.ARGB32, true)
+    {
+        filterMode = FilterMode.Bilinear,
+        wrapMode = TextureWrapMode.Repeat
+    };
+
+    private static Texture2D LoadResourceTexture(string path) => LoadTexture(Core.GetManifestResourceStream(path)!.ReadFully(), path.SanitisePath());
+
+    private static Texture2D LoadTexture(byte[] data, string name)
+    {
+        var texture = EmptyTexture();
+        texture.name = name;
+        return !texture.LoadImage(data, false) ? null : texture;
+    }
+
+    private static Sprite LoadSprite(string path) => LoadSprite(LoadResourceTexture(path), path.SanitisePath());
+
+    public static Sprite LoadSprite(Texture2D tex, string name, float ppu = float.NaN, SpriteMeshType meshType = SpriteMeshType.Tight)
+    {
+        var sprite = Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), float.IsNaN(ppu) ? 1f : ppu, 0, meshType);
+        sprite.name = name;
+        return sprite;
     }
 
     public static Sprite CreateSprite(this Texture2D texture)
@@ -50,7 +154,109 @@ public static class AssetManager
         return sprite;
     }
 
+    private static AudioClip LoadAudio(string path) => LoadAudio(path.SanitisePath(), Core.GetManifestResourceStream(path)!.ReadFully());
+
+    // Lord help my soul, got the code from here: https://github.com/deadlyfingers/UnityWav/blob/master/WavUtility.cs
+
+    private static AudioClip LoadAudio(string name, byte[] fileBytes)
+    {
+        var chunk = BitConverter.ToInt32(fileBytes, 16) + 24;
+        var channels = BitConverter.ToUInt16(fileBytes, 22);
+        var sampleRate = BitConverter.ToInt32(fileBytes, 24);
+        var bitDepth = BitConverter.ToUInt16(fileBytes, 34);
+        var wavSize = BitConverter.ToInt32(fileBytes, chunk);
+        var data = bitDepth switch
+        {
+            8 => Convert8BitByteArrayToAudioClipData(fileBytes, wavSize),
+            16 => Convert16BitByteArrayToAudioClipData(fileBytes, chunk, wavSize),
+            24 => Convert24BitByteArrayToAudioClipData(fileBytes, chunk, wavSize),
+            32 => Convert32BitByteArrayToAudioClipData(fileBytes, chunk, wavSize),
+            _ => throw new(bitDepth + " bit depth is not supported."),
+        };
+
+        var audioClip = AudioClip.Create(name, data.Length, channels, sampleRate, false);
+        return audioClip.SetData(data, 0) ? audioClip : null;
+    }
+
+    private static float[] Convert8BitByteArrayToAudioClipData(byte[] source, int wavSize)
+    {
+        var data = new float[wavSize];
+
+        for (var i = 0; i < wavSize; i++)
+            data[i] = (float)source[i] / sbyte.MaxValue;
+
+        return data;
+    }
+
+    private static float[] Convert16BitByteArrayToAudioClipData(byte[] source, int headerOffset, int wavSize)
+    {
+        headerOffset += sizeof(int);
+        const int x = sizeof(short);
+        var convertedSize = wavSize / x;
+        var data = new float[convertedSize];
+
+        for (var i = 0; i < convertedSize; i++)
+            data[i] = (float)BitConverter.ToInt16(source, (i * x) + headerOffset) / short.MaxValue;
+
+        return data;
+    }
+
+    private static float[] Convert24BitByteArrayToAudioClipData(byte[] source, int headerOffset, int wavSize)
+    {
+        const int intSize = sizeof(int);
+        headerOffset += intSize;
+        var convertedSize = wavSize / 3;
+        var data = new float[convertedSize];
+        var block = new byte[intSize]; // Using a 4-byte block for copying 3 bytes, then copy bytes with 1 offset
+
+        for (var i = 0; i < convertedSize; i++)
+        {
+            Buffer.BlockCopy(source, (i * 3) + headerOffset, block, 1, 3);
+            data[i] = (float)BitConverter.ToInt32(block, 0) / int.MaxValue;
+        }
+
+        return data;
+    }
+
+    private static float[] Convert32BitByteArrayToAudioClipData(byte[] source, int headerOffset, int wavSize)
+    {
+        headerOffset += sizeof(int);
+        var convertedSize = wavSize / 4;
+        var data = new float[convertedSize];
+
+        for (var i = 0; i < convertedSize; i++)
+            data[i] = (float)BitConverter.ToInt32(source, (i * 4) + headerOffset) / int.MaxValue;
+
+        return data;
+    }
+
     public static T CreatePrefab<T>(this T obj) where T : UObject => UObject.Instantiate(obj, Main.Prefab, false);
+
+    private static byte[] ReadFully(this Stream input)
+    {
+        using var ms = new MemoryStream();
+        input.CopyTo(ms);
+        return ms.ToArray();
+    }
+
+    // This is all for mainly debugging stuff when I want to dump assets from the main game
+
+    // public static void Dump(this Sprite sprite, string path) => File.WriteAllBytes(path, sprite.texture.Decompress().EncodeToPNG());
+
+    // public static Texture2D Decompress(this Texture2D source)
+    // {
+    //     var renderTex = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
+    //     Graphics.Blit(source, renderTex);
+    //     var previous = RenderTexture.active;
+    //     RenderTexture.active = renderTex;
+    //     var readableText = new Texture2D(source.width, source.height);
+    //     readableText.ReadPixels(new(0, 0, renderTex.width, renderTex.height), 0, 0);
+    //     readableText.Apply();
+    //     RenderTexture.active = previous;
+    //     RenderTexture.ReleaseTemporary(renderTex);
+    //     readableText.name = source.name;
+    //     return readableText;
+    // }
 
     // public static void GenerateBoneData(SlimeAppearanceApplicator slimePrefab, SlimeAppearance appearance, float jiggleAmount = 1f, float scale = 1f, Mesh[]
     //     additionalMesh = null, SlimeAppearanceObject[] appearanceObjects = null)

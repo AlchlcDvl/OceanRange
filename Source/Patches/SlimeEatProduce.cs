@@ -1,46 +1,54 @@
-// using TheOceanRange.Slimes;
+namespace TheOceanRange.Patches;
 
-// namespace TheOceanRange.Patches;
+[HarmonyPatch(typeof(SlimeEat), "Produce")]
+public static class SlimeEatProduce
+{
+    public static void Prefix(SlimeEat __instance, ref int count)
+    {
+        if (!__instance.GetComponent<RosaBehaviour>())
+            return;
 
-// [HarmonyPatch(typeof(SlimeEat), "Produce")]
-// public static class SlimeEatProduce
-// {
-//     public static void Prefix(SlimeEat __instance, ref int count, GameObject produces)
-//     {
-//         if (!__instance.GetComponent<RosaBehaviour>())
-//             return;
+        Collider val = null;
+        var flag = false;
 
-//         Collider val = null;
-//         var flag = false;
-//         Bounds bounds;
+        foreach (var allCorral in CorralTracker.AllCorrals)
+        {
+            var collider = allCorral.GetComponent<Collider>();
 
-//         foreach (var allCorral in CorralRegion.)
-//         {
-//             bounds = ((Component)allCorral).GetComponent<Collider>().bounds;
-//             if (((Bounds)(ref bounds)).Contains(__instance.transform.position))
-//             {
-//                 val = ((Component)allCorral).GetComponent<Collider>();
-//                 flag = true;
-//                 break;
-//             }
-//         }
+            if (!collider.bounds.Contains(__instance.transform.position))
+                continue;
 
-//         if (!flag)
-//         {
-//             count = 1;
-//             return;
-//         }
+            val = collider;
+            flag = true;
+            break;
+        }
 
-//         var num = 0;
+        if (!flag || !val)
+        {
+            count = 1;
+            return;
+        }
 
-//         foreach (var item in RosaBehaviour.All)
-//         {
-//             bounds = val.bounds;
-//             if (((Bounds)(ref bounds)).Contains(item.transform.position))
-//             {
-//                 num++;
-//             }
-//         }
-//         count = num;
-//     }
-// }
+        var num = 0;
+
+        foreach (var item in RosaBehaviour.All)
+        {
+            if (val.bounds.Contains(item.transform.position))
+                num++;
+        }
+
+        count = num;
+    }
+}
+
+[HarmonyPatch(typeof(CorralRegion))]
+public static class CorralTracker
+{
+    public static readonly List<CorralRegion> AllCorrals = [];
+
+    [HarmonyPatch(nameof(CorralRegion.Awake)), HarmonyPostfix]
+    public static void AwakePostfix(CorralRegion __instance) => AllCorrals.Add(__instance);
+
+    [HarmonyPatch(nameof(CorralRegion.OnDestroy)), HarmonyPostfix]
+    public static void OnDestroyPostfix(CorralRegion __instance) => AllCorrals.Remove(__instance);
+}

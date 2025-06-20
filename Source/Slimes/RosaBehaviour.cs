@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace TheOceanRange.Slimes;
 
 public class RosaBehaviour : SlimeSubbehaviour
