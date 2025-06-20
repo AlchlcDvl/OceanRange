@@ -24,4 +24,6 @@ public static class Ids
     // public static readonly IdentifiableId MINE_SLIME;
     // public static readonly IdentifiableId MINE_PLORT;
     // public static readonly PediaId MINE_SLIME_ENTRY;
+
+    // public static readonly Zone SWIRLPOOL;
 }

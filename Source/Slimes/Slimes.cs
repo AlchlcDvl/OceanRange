@@ -23,6 +23,10 @@ public static class Slimes
     {
         var json = JsonConvert.DeserializeObject<Dictionary<string, PediaJsonEntry>>(AssetManager.GetJson("Slimepedia"));
         BasePreLoadSlime(Ids.ROSA_SLIME, Ids.ROSA_PLORT, Ids.ROSA_SLIME_ENTRY, json["ROSA_SLIME"]);
+        // BasePreLoadSlime(Ids.COCO_SLIME, Ids.COCO_PLORT, Ids.COCO_SLIME_ENTRY, json["COCO_SLIME"]);
+        // BasePreLoadSlime(Ids.SAND_SLIME, Ids.SAND_PLORT, Ids.SAND_SLIME_ENTRY, json["SAND_SLIME"]);
+        // BasePreLoadSlime(Ids.MINE_SLIME, Ids.MINE_PLORT, Ids.MINE_SLIME_ENTRY, json["MINE_SLIME"]);
+        // BasePreLoadSlime(Ids.LANTERN_SLIME, Ids.LANTERN_PLORT, Ids.LANTERN_SLIME_ENTRY, json["LANTERN_SLIME"]);
     }
 
     private static void BasePreLoadSlime(IdentifiableId slimeId, IdentifiableId plortId, PediaId entry, PediaJsonEntry json)
@@ -43,6 +47,14 @@ public static class Slimes
     {
         BaseLoadSlime("Rosa", Ids.ROSA_SLIME, 0, 0, [], [IdentifiableId.OCTO_BUDDY_TOY], [FoodGroup.MEAT, FoodGroup.FRUIT, FoodGroup.VEGGIES], [IdentifiableId.SPICY_TOFU], false,
             IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, [Zone.REEF], 0.25f, Ids.ROSA_PLORT, InitRosaDetails);
+        // BaseLoadSlime("Coco", Ids.COCO_SLIME, 0, 0, [], [IdentifiableId.TREASURE_CHEST_TOY], [FoodGroup.MEAT], [IdentifiableId.SPICY_TOFU], false, IdentifiableId.PINK_SLIME,
+        //     IdentifiableId.PINK_PLORT, [Zone.REEF], 0.25f, Ids.COCO_PLORT, InitCocoDetails);
+        // BaseLoadSlime("Sand", Ids.SAND_SLIME, 0, 0, [], [IdentifiableId.TREASURE_CHEST_TOY], [FoodGroup.VEGGIES], [IdentifiableId.SPICY_TOFU], false, IdentifiableId.PINK_SLIME,
+        //     IdentifiableId.PINK_PLORT, [Zone.REEF], 0.25f, Ids.SAND_PLORT, IniSandDetails);
+        // BaseLoadSlime("Mine", Ids.MINE_SLIME, 0, 0, [], [IdentifiableId.BOMB_BALL_TOY], [FoodGroup.MEAT], [IdentifiableId.SPICY_TOFU], false,
+        //     IdentifiableId.BOOM_SLIME, IdentifiableId.BOOM_PLORT, [Zone.REEF], 0.25f, Ids.MINE_PLORT, InitMineDetails);
+        // BaseLoadSlime("Lantern", Ids.LANTERN_SLIME, 0, 0, [], [IdentifiableId.NIGHT_LIGHT_TOY], [FoodGroup.FRUIT], [IdentifiableId.SPICY_TOFU], false,
+        //     IdentifiableId.PHOSPHOR_SLIME, IdentifiableId.PHOSPHOR_PLORT, [Zone.REEF], 0.25f, Ids.LANTERN_PLORT, InitLanternDetails);
     }
 
     private static void BaseLoadSlime
