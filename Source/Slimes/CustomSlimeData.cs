@@ -12,4 +12,6 @@ public class CustomSlimeData
     public Zone[] Zones;
 
     public float Weight;
+
+    public GameObject Prefab;
 }

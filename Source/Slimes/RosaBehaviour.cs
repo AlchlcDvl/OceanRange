@@ -12,9 +12,9 @@ public class RosaBehaviour : SlimeSubbehaviour
 
     public override void OnDestroy() => All.Remove(this);
 
-    public override void Action() {}
-
-    public override float Relevancy(bool isGrounded) => emotions.GetCurr(SlimeEmotions.Emotion.AGITATION) >= 0.5f ? 1f : 0f;
+    public override float Relevancy(bool _) => emotions.GetCurr(SlimeEmotions.Emotion.AGITATION) >= 0.5f ? 1f : 0f;
 
     public override void Selected() {}
+
+    public override void Action() {}
 }

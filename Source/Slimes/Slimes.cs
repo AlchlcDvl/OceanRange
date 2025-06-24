@@ -1,6 +1,7 @@
 using SRML.SR.Translation;
 using SRML.Utils;
 using Newtonsoft.Json;
+using MonomiPark.SlimeRancher.Regions;
 
 namespace TheOceanRange.Slimes;
 
@@ -156,6 +157,10 @@ public static class Slimes
         Identifiable.NON_SLIMES_CLASS.Add(plortId);
 
         customSlimeData.Definition = val;
+        customSlimeData.Prefab = val2;
+
+        CreateSpawner(customSlimeData);
+
         SlimeManager.SlimesMap[slimeId] = customSlimeData;
     }
 
@@ -202,7 +207,7 @@ public static class Slimes
             Bottom = new Color32(249, 229, 240, 255)
         };
 
-        var val6 = GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).AppearancesDefault[0].Structures[0].Element.Prefabs[0];
+        var val6 = slimeByIdentifiableId.AppearancesDefault[0].Structures[0].Element.Prefabs[0];
         var elem1 = val3.Structures[0].Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
         var prefab1 = val6.gameObject.CreatePrefabCopy().GetComponent<SlimeAppearanceObject>();
         elem1.Prefabs = [ prefab1 ];
@@ -245,5 +250,25 @@ public static class Slimes
         meshRend.material.SetColor(BottomColor, new Color32(237, 169, 96, 255));
 
         val3.ColorPalette.Ammo = new Color32(80, 0, 0, 255);
+
+        val2.AddComponent<RosaBehaviour>();
+    }
+
+    private static void CreateSpawner(CustomSlimeData data)
+    {
+        SRCallbacks.PreSaveGameLoad += _ =>
+        {
+            foreach (var item in UObject.FindObjectsOfType<DirectedSlimeSpawner>().Where(x => data.Zones.Contains(x.GetComponentInParent<Region>(true).GetZoneId())))
+            {
+                foreach (var val in item.constraints)
+                {
+                    val.slimeset.members = [.. val.slimeset.members, new()
+                    {
+                        prefab = data.Prefab,
+                        weight = data.Weight
+                    }];
+                }
+            }
+        };
     }
 }

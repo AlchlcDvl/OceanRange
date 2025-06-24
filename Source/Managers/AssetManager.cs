@@ -22,16 +22,18 @@ public static class AssetManager
         {
             var id = path.SanitisePath();
 
-            if (path.EndsWith(".bundle"))
+            if (path.EndsWith($".bundle_{Platform()}"))
             {
                 var bundle = AssetBundle.LoadFromMemory(Core.GetManifestResourceStream(path)!.ReadFully());
                 Bundles[id] = bundle;
                 bundle.GetAllAssetNames().Do(x => AssetToBundle[x.SanitisePath()] = id);
             }
-            else
+            else if (!path.Contains(".bundle")) // Skip loading bundles that don't relate to the current platform
                 AddPath(id, path);
         }
     }
+
+    private static string Platform() => Environment.OSVersion.Platform is PlatformID.Unix or PlatformID.MacOSX ? "mac" : "win";
 
     private static string SanitisePath(this string path)
     {
