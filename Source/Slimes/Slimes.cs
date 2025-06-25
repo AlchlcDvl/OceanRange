@@ -2,6 +2,7 @@ using SRML.SR.Translation;
 using SRML.Utils;
 using Newtonsoft.Json;
 using MonomiPark.SlimeRancher.Regions;
+using SimpleSRmodLibrary.Creation;
 
 namespace TheOceanRange.Slimes;
 
@@ -46,16 +47,16 @@ public static class Slimes
 
     public static void LoadAllSlimes()
     {
-        BaseLoadSlime("Rosa", Ids.ROSA_SLIME, 0, 0, [], [IdentifiableId.OCTO_BUDDY_TOY], [FoodGroup.MEAT, FoodGroup.FRUIT, FoodGroup.VEGGIES], [IdentifiableId.SPICY_TOFU], false,
-            IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, [Zone.REEF], 0.25f, Ids.ROSA_PLORT, InitRosaDetails);
-        // BaseLoadSlime("Coco", Ids.COCO_SLIME, 0, 0, [], [IdentifiableId.TREASURE_CHEST_TOY], [FoodGroup.MEAT], [IdentifiableId.SPICY_TOFU], false, IdentifiableId.PINK_SLIME,
-        //     IdentifiableId.PINK_PLORT, [Zone.REEF], 0.25f, Ids.COCO_PLORT, InitCocoDetails);
-        // BaseLoadSlime("Sand", Ids.SAND_SLIME, 0, 0, [], [IdentifiableId.TREASURE_CHEST_TOY], [FoodGroup.VEGGIES], [IdentifiableId.SPICY_TOFU], false, IdentifiableId.PINK_SLIME,
-        //     IdentifiableId.PINK_PLORT, [Zone.REEF], 0.25f, Ids.SAND_PLORT, IniSandDetails);
-        // BaseLoadSlime("Mine", Ids.MINE_SLIME, 0, 0, [], [IdentifiableId.BOMB_BALL_TOY], [FoodGroup.MEAT], [IdentifiableId.SPICY_TOFU], false,
-        //     IdentifiableId.BOOM_SLIME, IdentifiableId.BOOM_PLORT, [Zone.REEF], 0.25f, Ids.MINE_PLORT, InitMineDetails);
-        // BaseLoadSlime("Lantern", Ids.LANTERN_SLIME, 0, 0, [], [IdentifiableId.NIGHT_LIGHT_TOY], [FoodGroup.FRUIT], [IdentifiableId.SPICY_TOFU], false,
-        //     IdentifiableId.PHOSPHOR_SLIME, IdentifiableId.PHOSPHOR_PLORT, [Zone.REEF], 0.25f, Ids.LANTERN_PLORT, InitLanternDetails);
+        BaseLoadSlime("Rosa", Ids.ROSA_SLIME, 0, 0, [], [IdentifiableId.OCTO_BUDDY_TOY], [FoodGroup.MEAT, FoodGroup.FRUIT, FoodGroup.VEGGIES], [], false, IdentifiableId.PINK_SLIME,
+            IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, [Zone.REEF], 0.25f, Ids.ROSA_PLORT, InitRosaDetails, true);
+        // BaseLoadSlime("Coco", Ids.COCO_SLIME, 0, 0, [], [IdentifiableId.TREASURE_CHEST_TOY], [FoodGroup.MEAT], [], false, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, [Zone.REEF],
+            // 0.25f, Ids.COCO_PLORT, InitCocoDetails);
+        // BaseLoadSlime("Sand", Ids.SAND_SLIME, 0, 0, [], [IdentifiableId.TREASURE_CHEST_TOY], [FoodGroup.VEGGIES], [], false, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, [Zone.REEF],
+            // 0.25f, Ids.SAND_PLORT, IniSandDetails);
+        // BaseLoadSlime("Mine", Ids.MINE_SLIME, 0, 0, [], [IdentifiableId.BOMB_BALL_TOY], [FoodGroup.MEAT], [], false, IdentifiableId.BOOM_SLIME, IdentifiableId.BOOM_PLORT, [Zone.REEF], 0.25f,
+            // Ids.MINE_PLORT, InitMineDetails);
+        // BaseLoadSlime("Lantern", Ids.LANTERN_SLIME, 0, 0, [], [IdentifiableId.NIGHT_LIGHT_TOY], [FoodGroup.FRUIT], [], false, IdentifiableId.PHOSPHOR_SLIME, IdentifiableId.PHOSPHOR_PLORT,
+            // [Zone.REEF], 0.25f, Ids.LANTERN_PLORT, InitLanternDetails);
     }
 
     private static void BaseLoadSlime
@@ -69,12 +70,14 @@ public static class Slimes
         FoodGroup[] dietIds,
         IdentifiableId[] additionalFoodIds,
         bool canLargofy,
-        IdentifiableId baseSlime,
+        IdentifiableId baseSlimeDef,
+        IdentifiableId baseSlimeObj,
         IdentifiableId baseSlimePlort,
         Zone[] zones,
         float weight,
         IdentifiableId plortId,
-        Action<GameObject, SlimeAppearanceApplicator, SlimeAppearance, SlimeDefinition> initSlimeDetailsAction
+        Action<GameObject, SlimeAppearanceApplicator, SlimeAppearance, SlimeDefinition> initSlimeDetailsAction,
+        bool canBeEatenByTarr
     )
     {
         var customSlimeData = new CustomSlimeData
@@ -86,27 +89,24 @@ public static class Slimes
             Weight = weight,
         };
 
-        var slimeByIdentifiableId = GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(baseSlime);
+        var slimeByIdentifiableId = GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(baseSlimeDef);
 
         var val = slimeByIdentifiableId.DeepCopy();
 
         val.Diet.Produces = [..productIds, plortId];
         val.Diet.MajorFoodGroups = dietIds;
-        val.Diet.AdditionalFoods = additionalFoodIds;
+        val.Diet.AdditionalFoods = [..additionalFoodIds, IdentifiableId.SPICY_TOFU];
         val.Diet.Favorites = favs;
         val.Diet.EatMap?.Clear();
         val.CanLargofy = canLargofy;
         val.Name = val.name = name;
         val.IdentifiableId = slimeId;
 
-        var pinkPrefab = GameInstance.Instance.LookupDirector.GetPrefab(baseSlime);
+        var pinkPrefab = GameInstance.Instance.LookupDirector.GetPrefab(baseSlimeObj);
 
         var val2 = pinkPrefab.CreatePrefab();
         val2.name = name;
         val2.GetComponent<PlayWithToys>().slimeDefinition = val;
-
-        var val2App = val2.GetComponent<SlimeAppearanceApplicator>();
-        val2App.SlimeDefinition = val;
         val2.GetComponent<SlimeEat>().slimeDefinition = val;
         val2.GetComponent<Identifiable>().id = slimeId;
         val2.GetComponent<Vacuumable>().size = 0;
@@ -123,6 +123,8 @@ public static class Slimes
             new(val3.Structures[0])
         ];
 
+        var val2App = val2.GetComponent<SlimeAppearanceApplicator>();
+        val2App.SlimeDefinition = val;
         val2App.Appearance = val3;
 
         var val8 = PrefabUtils.CopyPrefab(GameInstance.Instance.LookupDirector.GetPrefab(baseSlimePlort));
@@ -132,6 +134,43 @@ public static class Slimes
 
         var val9 = AssetManager.GetSprite($"{name}Icon");
         val3.Icon = val9;
+
+        var defBase = GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(baseSlimeObj);
+
+        if (defBase.AppearancesDefault[0].ExplosionAppearance)
+            val3.ExplosionAppearance = defBase.AppearancesDefault[0].ExplosionAppearance;
+
+        if (defBase.AppearancesDefault[0].TornadoAppearance)
+            val3.TornadoAppearance = defBase.AppearancesDefault[0].TornadoAppearance;
+
+        if (defBase.AppearancesDefault[0].CrystalAppearance)
+            val3.CrystalAppearance = defBase.AppearancesDefault[0].CrystalAppearance;
+
+        if (defBase.AppearancesDefault[0].VineAppearance)
+            val3.VineAppearance = defBase.AppearancesDefault[0].VineAppearance;
+
+        if (defBase.AppearancesDefault[0].DeathAppearance)
+            val3.DeathAppearance = defBase.AppearancesDefault[0].DeathAppearance;
+
+        if (defBase.AppearancesDefault[0].GlintAppearance)
+            val3.GlintAppearance = defBase.AppearancesDefault[0].GlintAppearance;
+
+        if (defBase.AppearancesDefault[0].QubitAppearance)
+            val3.QubitAppearance = defBase.AppearancesDefault[0].QubitAppearance;
+
+        if (defBase.AppearancesDefault[0].ShockedAppearance)
+            val3.ShockedAppearance = defBase.AppearancesDefault[0].ShockedAppearance;
+
+        if (canBeEatenByTarr)
+        {
+            GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.TARR_SLIME).Diet.EatMap.Add(new()
+            {
+                eats = slimeId,
+                becomesId = IdentifiableId.TARR_SLIME,
+                driver = SlimeEmotions.Emotion.NONE,
+                extraDrive = 999999f
+            });
+        }
 
         initSlimeDetailsAction(val2, val2App, val3, slimeByIdentifiableId);
 
@@ -258,7 +297,11 @@ public static class Slimes
     {
         SRCallbacks.PreSaveGameLoad += _ =>
         {
-            foreach (var item in UObject.FindObjectsOfType<DirectedSlimeSpawner>().Where(x => data.Zones.Contains(x.GetComponentInParent<Region>(true).GetZoneId())))
+            foreach (var item in UObject.FindObjectsOfType<DirectedSlimeSpawner>().Where(x =>
+            {
+                var zoneId = x.GetComponentInParent<Region>(true).GetZoneId();
+                return zoneId == Zone.NONE || data.Zones.Contains(zoneId);
+            }))
             {
                 foreach (var val in item.constraints)
                 {
