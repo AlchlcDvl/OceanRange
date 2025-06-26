@@ -6,12 +6,4 @@ public class CustomSlimeData
     public IdentifiableId GordoId;
 
     public IdentifiableId BaitId;
-
-    public SlimeDefinition Definition;
-
-    public Zone[] Zones;
-
-    public float Weight;
-
-    public GameObject Prefab;
 }

@@ -13,7 +13,7 @@ public static class Misc
         return val;
     }
 
-    public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj);
+    public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
     // public static UObject DeepCopy<T>(this T obj) where T : UObject => PrefabUtils.DeepCopyObject(obj);
 

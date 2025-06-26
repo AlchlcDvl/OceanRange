@@ -37,7 +37,7 @@ public static class AssetManager
 
     private static string SanitisePath(this string path)
     {
-        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", "Slime.Resources.");
+        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", ".fbx", ".obj", "Slime.Resources.");
         path = path.TrueSplit('/').Last();
         path = path.TrueSplit('\\').Last();
         return path.TrueSplit('.').Last();
@@ -72,12 +72,15 @@ public static class AssetManager
         if (AssetTypeExtensions.TryGetValue(tType, out var pair) && strings.TryFinding(x => x.EndsWith($".{pair.Item1}"), out var path))
             result = AddAsset(name, (T)pair.Item2(path));
         else
-            throw new NotSupportedException($"{tType.Name} is not a loadable asset type");
+            throw new NotSupportedException($"{tType.Name} is not a loadable asset type for {name}");
 
         strings.Remove(path);
 
         if (strings.Count == 0)
             UnloadedAssets.Remove(name);
+
+        if (!result)
+            Main.Instance.ConsoleInstance.LogError($"Could not find {name} of type {tType.Name}");
 
         return result;
     }
@@ -118,7 +121,7 @@ public static class AssetManager
         value.Add(path);
     }
 
-    private static TextAsset LoadJson(string path)
+    private static JsonTextAsset LoadJson(string path)
     {
         using var stream = Core.GetManifestResourceStream(path);
         using var reader = new StreamReader(stream);
