@@ -46,9 +46,9 @@ public static class CorralTracker
 {
     public static readonly List<CorralRegion> AllCorrals = [];
 
-    [HarmonyPatch(nameof(CorralRegion.Awake)), HarmonyPostfix]
-    public static void AwakePostfix(CorralRegion __instance) => AllCorrals.Add(__instance);
+    [HarmonyPatch(nameof(CorralRegion.Awake))]
+    public static void Postfix(CorralRegion __instance) => AllCorrals.Add(__instance);
 
-    [HarmonyPatch(nameof(CorralRegion.OnDestroy)), HarmonyPostfix]
-    public static void OnDestroyPostfix(CorralRegion __instance) => AllCorrals.Remove(__instance);
+    [HarmonyPatch(nameof(CorralRegion.OnDestroy))]
+    public static void Prefix(CorralRegion __instance) => AllCorrals.Remove(__instance);
 }

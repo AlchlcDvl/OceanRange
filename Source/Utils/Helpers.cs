@@ -64,4 +64,14 @@ public static class Helpers
     }
 
     public static string[] TrueSplit(this string @string, char separator) => [.. @string.Split(separator).Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))];
+
+    public static IEnumerable<(int, T)> Indexed<T>(this IEnumerable<T> source)
+    {
+        var i = 0;
+
+        foreach (var item in source)
+            yield return (i++, item);
+    }
+
+    public static Color32 HexToColor(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
 }
