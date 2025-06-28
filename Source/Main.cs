@@ -1,4 +1,5 @@
-﻿using SRML;
+﻿using System.Reflection;
+using SRML;
 
 namespace TheOceanRange;
 
@@ -10,18 +11,21 @@ public class Main : ModEntryPoint
     public override void PreLoad()
     {
         Instance = this;
+
         AssetManager.FetchAssetNames();
         HarmonyInstance.PatchAll();
+
+        Prefab = AccessTools.Field(AccessTools.GetTypesFromAssembly(Assembly.GetCallingAssembly()).First(x => x.Namespace == "SRML" && x.Name == "Main"), "prefabParent").GetValue(null) as Transform;
+
         Slimes.Slimes.PreLoadAllSlimes();
+        Foods.PreLoadFoods();
     }
 
     public override void Load()
     {
-        var gameObject = new GameObject("PrefabParent");
-        gameObject.SetActive(value: false);
-        UObject.DontDestroyOnLoad(gameObject);
-        Prefab = gameObject.transform;
+        // Prefab = AccessTools.Field(Type.GetType("SRML.Main"), "prefabParent").GetValue(null) as Transform;
 
         Slimes.Slimes.LoadAllSlimes();
+        Foods.LoadFoods();
     }
 }

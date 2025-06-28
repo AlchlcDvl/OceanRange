@@ -14,16 +14,38 @@ public static class Slimes
     private static void BasePreLoadSlime(IdentifiableId slimeId, IdentifiableId plortId, float spawnAmount, Zone[] zones, string slimeName)
     {
         PlortCreation.PlortPreLoad(plortId, $"{slimeName} Plort", false);
-        zones.Do(x => SpawnCreation.CreateSingleZoneSpawner(slimeId, x, spawnAmount));
+
+        SRCallbacks.PreSaveGameLoad += delegate
+        {
+            foreach (var item in UObject.FindObjectsOfType<DirectedSlimeSpawner>().Where(spawner =>
+            {
+                var zoneId = spawner.GetComponentInParent<Region>(includeInactive: true).GetZoneId();
+                return zoneId == Zone.NONE || zones.Contains(zoneId);
+            }))
+            {
+                foreach (var constraint in item.constraints)
+                {
+                    constraint.slimeset.members =
+                    [
+                        .. constraint.slimeset.members,
+                        new()
+                        {
+                            prefab = GameInstance.Instance.LookupDirector.GetPrefab(slimeId),
+                            weight = spawnAmount
+                        }
+                    ];
+                }
+            }
+        };
     }
 
     public static void LoadAllSlimes()
     {
-        var json = JsonConvert.DeserializeObject<Dictionary<string, PediaJsonEntry>>(AssetManager.GetJson("Slimepedia"));
+        var json = JsonConvert.DeserializeObject<Dictionary<string, SlimePediaEntry>>(AssetManager.GetJson("Slimepedia"));
         BaseLoadSlime("Rosa", "rosa_slime", Ids.ROSA_SLIME, 0, 0, 0, IdentifiableId.OCTO_BUDDY_TOY, Ids.ROSA_PLORT, [FoodGroup.MEAT, FoodGroup.FRUIT, FoodGroup.VEGGIES], false,
             IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, InitRosaDetails, true, 1f, 1f, "#E6C7D2",
-            "#E6C7D2", "#E6C7D2", "#E6C7D2", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#E35BA6", "#E6C7D2", "#F9E5F0", 10f, 7f,
-            "#F9E5F0", Ids.ROSA_SLIME_ENTRY, json["ROSA_SLIME"]);
+            "#E6C7D2", "#E6C7D2", "#E6C7D2", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F46CB7", "#E6C7D2", "#F9E5F0", 10f, 7f,
+            "#F9E5F0", Ids.ROSA_SLIME_ENTRY, json["ROSA_SLIME"], InitRosaPlort);
     }
 
     private static void BaseLoadSlime
@@ -43,7 +65,7 @@ public static class Slimes
         IdentifiableId baseSlimeVis,
         IdentifiableId baseSlimeVis2,
         IdentifiableId baseSlimePlort,
-        Action<GameObject, SlimeDefinition, SlimeDefinition> initSlimeDetailsAction,
+        Action<GameObject, SlimeDefinition> initSlimeDetails,
         bool canBeEatenByTarr,
         float shininess,
         float glossiness,
@@ -68,19 +90,23 @@ public static class Slimes
         float plortPriceVariance,
         string plortFill,
         PediaId entry,
-        PediaJsonEntry json
+        SlimePediaEntry json,
+        Action<GameObject> initPlortDetails
     )
     {
         var customSlimeData = new CustomSlimeData
         {
-            Id = slimeId,
             GordoId = gordoId,
             BaitId = baitId
         };
 
+        var plort = PlortCreation.CreatePlort($"{name} Plort", plortId, 0, middlePlortColor.HexToColor(), topPlortColor.HexToColor(), bottomPlortColor.HexToColor(), baseSlimePlort);
+
+        initPlortDetails?.Invoke(plort);
+
+        PlortCreation.PlortLoad(plortId, basePlortPrice, plortPriceVariance, plort, AssetManager.GetSprite($"{name}Plort"), plortFill.HexToColor(), true, true, false);
+
         var icon = AssetManager.GetSprite($"{name}Slime");
-        var gameObject = PlortCreation.CreatePlort($"{name} Plort", plortId, 0, middlePlortColor.HexToColor(), topPlortColor.HexToColor(), bottomPlortColor.HexToColor(), baseSlimePlort);
-        PlortCreation.PlortLoad(plortId, basePlortPrice, plortPriceVariance, gameObject, AssetManager.GetSprite($"{name}Plort"), plortFill.HexToColor(), true, true, false);
 
         var tuple = SlimeCreation.SlimeBaseCreate(slimeId, id, $"{name} Slime", $"slime{name}", $"{name} Slime", baseSlimeDef, baseSlimeObj, baseSlimeVis, baseSlimeVis2, 0, favFood,
             IdentifiableId.SPICY_TOFU, favToy, plortId, canLargofy, icon, Vacuumable.Size.NORMAL, canBeEatenByTarr, shininess, glossiness, topColorBase.HexToColor(), middleColorBase.HexToColor(),
@@ -90,9 +116,7 @@ public static class Slimes
         var (definition, prefab) = tuple;
         definition.Diet.MajorFoodGroups = dietIds;
 
-        var defBase = GameInstance.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(baseSlimeDef);
-
-        initSlimeDetailsAction?.Invoke(prefab, definition, defBase);
+        initSlimeDetails?.Invoke(prefab, definition);
 
         SlimeCreation.LoadSlime(tuple);
 
@@ -105,7 +129,12 @@ public static class Slimes
         SlimePediaCreation.LoadSlimePediaIcon(entry, icon);
     }
 
-    private static void InitRosaDetails(GameObject prefab, SlimeDefinition definition, SlimeDefinition defBase)
+    private static void InitRosaPlort(GameObject prefab)
+    {
+        // prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh("pearl");
+    }
+
+    private static void InitRosaDetails(GameObject prefab, SlimeDefinition definition)
     {
         var appearance = definition.AppearancesDefault[0];
         var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
@@ -117,7 +146,7 @@ public static class Slimes
             new(appearance.Structures[0])
         ];
 
-        var elemPrefab = defBase.AppearancesDefault[0].Structures[0].Element.Prefabs[0];
+        var elemPrefab = appearance.Structures[0].Element.Prefabs[0];
         var meshes = new[] { "lantern_body", "frills_stalk", "frills_actual" };
         var prefabs = new SlimeAppearanceObject[3];
 
@@ -127,6 +156,7 @@ public static class Slimes
             var prefab2 = prefabs[i] = elemPrefab.CreatePrefab();
             elem.Prefabs = [prefab2];
             prefab2.GetComponent<SkinnedMeshRenderer>().sharedMesh = AssetManager.GetMesh(meshes[i]);
+            prefab2.IgnoreLODIndex = true;
             structure.SupportsFaces = i == 0;
         }
 
@@ -138,8 +168,8 @@ public static class Slimes
         prefab.AddComponent<RosaBehaviour>();
     }
 
-    private static void InitCocoDetails(GameObject prefab, SlimeDefinition definition, SlimeDefinition defBase)
-    {
-        prefab.AddComponent<CocoBehaviour>();
-    }
+    // private static void InitCocoDetails(GameObject prefab, SlimeDefinition definition, SlimeDefinition defBase)
+    // {
+    //     prefab.AddComponent<CocoBehaviour>();
+    // }
 }

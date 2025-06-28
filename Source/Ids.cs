@@ -27,12 +27,9 @@ public static class Ids
 
     // public static readonly Zone SWIRLPOOL;
 
-	// public static readonly IdentifiableId SANDY_ROOSTER;
-	// public static readonly PediaId SANDY_ROOSTER_ENTRY;
+	public static readonly IdentifiableId SANDY_CHICKEN;
+	public static readonly PediaId SANDY_CHICKEN_ENTRY;
 
-	// public static readonly IdentifiableId SANDY_CHICKEN;
-	// public static readonly PediaId SANDY_CHICKEN_ENTRY;
-
-	// public static readonly IdentifiableId SANDY_CHICK;
-	// public static readonly PediaId SANDY_CHICK_ENTRY;
+	public static readonly IdentifiableId SANDY_CHICK;
+	public static readonly PediaId SANDY_CHICK_ENTRY;
 }

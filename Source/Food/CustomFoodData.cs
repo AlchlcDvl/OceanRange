@@ -4,8 +4,6 @@ public sealed class CustomFoodData
 {
     public IdentifiableId Id;
 
-    public Zone[] Zones;
-
     public FoodGroup Group;
 
     public int FavouriteModifier;

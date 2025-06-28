@@ -17,3 +17,5 @@ global using TheOceanRange.Modules;
 global using TheOceanRange.Slimes;
 global using TheOceanRange.Utils;
 global using TheOceanRange.Food;
+
+global using MonomiPark.SlimeRancher.Regions;

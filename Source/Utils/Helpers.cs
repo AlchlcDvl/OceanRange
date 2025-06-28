@@ -1,3 +1,5 @@
+using SRML.Utils;
+
 namespace TheOceanRange.Utils;
 
 public static class Helpers
@@ -41,11 +43,11 @@ public static class Helpers
         return obj.DontDestroyOnLoad();
     }
 
-    public static T DontUnload<T>(this T obj) where T : UObject
-    {
-        obj.hideFlags |= HideFlags.DontUnloadUnusedAsset;
-        return obj;
-    }
+    // public static T DontUnload<T>(this T obj) where T : UObject
+    // {
+    //     obj.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+    //     return obj;
+    // }
 
     public static T DontDestroyOnLoad<T>(this T obj) where T : UObject
     {
@@ -53,9 +55,9 @@ public static class Helpers
         return obj;
     }
 
-    public static void Destroy(this UObject obj) => UObject.Destroy(obj);
+    // public static void Destroy(this UObject obj) => UObject.Destroy(obj);
 
-    public static void DestroyImmediate(this UObject obj) => UObject.DestroyImmediate(obj);
+    // public static void DestroyImmediate(this UObject obj) => UObject.DestroyImmediate(obj);
 
     public static string ReplaceAll(this string @string, string newValue, params string[] valuesToReplace)
     {
@@ -74,4 +76,10 @@ public static class Helpers
     }
 
     public static Color32 HexToColor(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
+
+    // public static T Parse<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value);
+
+    // public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
+
+    public static T CreatePrefab<T>(this T obj) where T : UObject => UObject.Instantiate(obj, Main.Prefab, false).DontDestroy();
 }
