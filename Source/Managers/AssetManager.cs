@@ -13,21 +13,22 @@ public static class AssetManager
     {
         [typeof(Sprite)] = ("png", LoadSprite),
         [typeof(Texture2D)] = ("png", LoadTexture),
-        // [typeof(AudioClip)] = ("wav", LoadAudio),
         [typeof(JsonTextAsset)] = ("json", LoadJson),
     };
 
     public static void FetchAssetNames()
     {
+        var bundlePath = $".bundle_{Platform()}";
+
         foreach (var path in Core.GetManifestResourceNames())
         {
             var id = path.SanitisePath();
 
-            if (path.EndsWith($".bundle_{Platform()}"))
+            if (path.EndsWith(bundlePath))
             {
                 var bundle = AssetBundle.LoadFromMemory(Core.GetManifestResourceStream(path)!.ReadFully());
                 Bundles[id] = bundle;
-                bundle.GetAllAssetNames().Do(x => AssetToBundle[x.SanitisePath()] = id);
+                bundle.GetAllAssetNames().Do(x => AssetToBundle[x.SanitisePath(bundlePath)] = id);
             }
             else if (!path.Contains(".bundle")) // Skip loading bundles that don't relate to the current platform
                 AddPath(id, path);
@@ -36,9 +37,13 @@ public static class AssetManager
 
     private static string Platform() => Environment.OSVersion.Platform is PlatformID.Unix or PlatformID.MacOSX ? "mac" : "win";
 
-    private static string SanitisePath(this string path)
+    private static string SanitisePath(this string path, string bundlePath = null)
     {
-        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", ".fbx", ".obj", "Slime.Resources.");
+        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", ".fbx", ".obj", ".asset", "Slime.Resources.");
+
+        if (bundlePath != null)
+            path = path.Replace(bundlePath, "");
+
         path = path.TrueSplit('/').Last();
         path = path.TrueSplit('\\').Last();
         return path.TrueSplit('.').Last();
@@ -154,89 +159,6 @@ public static class AssetManager
         sprite.name = name;
         return sprite;
     }
-
-    // public static Sprite CreateSprite(this Texture2D texture)
-    // {
-    //     var sprite = Sprite.Create(texture, new(0f, 0f, texture.width, texture.height), new(0.5f, 0.5f), 1f);
-    //     sprite.name = texture.name;
-    //     return sprite;
-    // }
-
-    // private static AudioClip LoadAudio(string path) => LoadAudio(path.SanitisePath(), Core.GetManifestResourceStream(path)!.ReadFully());
-
-    // Lord help my soul, got the code from here: https://github.com/deadlyfingers/UnityWav/blob/master/WavUtility.cs
-
-    // private static AudioClip LoadAudio(string name, byte[] fileBytes)
-    // {
-    //     var chunk = BitConverter.ToInt32(fileBytes, 16) + 24;
-    //     var channels = BitConverter.ToUInt16(fileBytes, 22);
-    //     var sampleRate = BitConverter.ToInt32(fileBytes, 24);
-    //     var bitDepth = BitConverter.ToUInt16(fileBytes, 34);
-    //     var wavSize = BitConverter.ToInt32(fileBytes, chunk);
-    //     var data = bitDepth switch
-    //     {
-    //         8 => Convert8BitByteArrayToAudioClipData(fileBytes, wavSize),
-    //         16 => Convert16BitByteArrayToAudioClipData(fileBytes, chunk, wavSize),
-    //         24 => Convert24BitByteArrayToAudioClipData(fileBytes, chunk, wavSize),
-    //         32 => Convert32BitByteArrayToAudioClipData(fileBytes, chunk, wavSize),
-    //         _ => throw new(bitDepth + " bit depth is not supported."),
-    //     };
-
-    //     var audioClip = AudioClip.Create(name, data.Length, channels, sampleRate, false);
-    //     return audioClip.SetData(data, 0) ? audioClip : null;
-    // }
-
-    // private static float[] Convert8BitByteArrayToAudioClipData(byte[] source, int wavSize)
-    // {
-    //     var data = new float[wavSize];
-
-    //     for (var i = 0; i < wavSize; i++)
-    //         data[i] = (float)source[i] / sbyte.MaxValue;
-
-    //     return data;
-    // }
-
-    // private static float[] Convert16BitByteArrayToAudioClipData(byte[] source, int headerOffset, int wavSize)
-    // {
-    //     headerOffset += sizeof(int);
-    //     const int x = sizeof(short);
-    //     var convertedSize = wavSize / x;
-    //     var data = new float[convertedSize];
-
-    //     for (var i = 0; i < convertedSize; i++)
-    //         data[i] = (float)BitConverter.ToInt16(source, (i * x) + headerOffset) / short.MaxValue;
-
-    //     return data;
-    // }
-
-    // private static float[] Convert24BitByteArrayToAudioClipData(byte[] source, int headerOffset, int wavSize)
-    // {
-    //     const int intSize = sizeof(int);
-    //     headerOffset += intSize;
-    //     var convertedSize = wavSize / 3;
-    //     var data = new float[convertedSize];
-    //     var block = new byte[intSize]; // Using a 4-byte block for copying 3 bytes, then copy bytes with 1 offset
-
-    //     for (var i = 0; i < convertedSize; i++)
-    //     {
-    //         Buffer.BlockCopy(source, (i * 3) + headerOffset, block, 1, 3);
-    //         data[i] = (float)BitConverter.ToInt32(block, 0) / int.MaxValue;
-    //     }
-
-    //     return data;
-    // }
-
-    // private static float[] Convert32BitByteArrayToAudioClipData(byte[] source, int headerOffset, int wavSize)
-    // {
-    //     headerOffset += sizeof(int);
-    //     var convertedSize = wavSize / 4;
-    //     var data = new float[convertedSize];
-
-    //     for (var i = 0; i < convertedSize; i++)
-    //         data[i] = (float)BitConverter.ToInt32(source, (i * 4) + headerOffset) / int.MaxValue;
-
-    //     return data;
-    // }
 
     private static byte[] ReadFully(this Stream input)
     {

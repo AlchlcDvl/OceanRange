@@ -13,17 +13,18 @@ public class Main : ModEntryPoint
         Instance = this;
 
         AssetManager.FetchAssetNames();
-        HarmonyInstance.PatchAll();
 
         Prefab = AccessTools.Field(AccessTools.GetTypesFromAssembly(Assembly.GetCallingAssembly()).First(x => x.Namespace == "SRML" && x.Name == "Main"), "prefabParent").GetValue(null) as Transform;
 
-        Slimes.Slimes.PreLoadAllSlimes();
-        Foods.PreLoadFoods();
+        SlimeManager.PreLoadAllSlimes();
+        FoodManager.PreLoadFoods();
+
+        HarmonyInstance.PatchAll();
     }
 
     public override void Load()
     {
-        Slimes.Slimes.LoadAllSlimes();
-        Foods.LoadFoods();
+        SlimeManager.LoadAllSlimes();
+        FoodManager.LoadFoods();
     }
 }
