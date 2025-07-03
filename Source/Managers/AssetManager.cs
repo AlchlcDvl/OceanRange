@@ -9,7 +9,7 @@ public static class AssetManager
     public static readonly Dictionary<string, string> AssetToBundle = [];
     private static readonly Dictionary<string, HashSet<UObject>> LoadedAssets = [];
     private static readonly Dictionary<string, HashSet<string>> UnloadedAssets = [];
-    private static readonly Dictionary<Type, (string, Func<string, UObject>)> AssetTypeExtensions = new()
+    private static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         [typeof(Sprite)] = ("png", LoadSprite),
         [typeof(Texture2D)] = ("png", LoadTexture),
@@ -68,12 +68,12 @@ public static class AssetManager
         }
 
         if (!UnloadedAssets.TryGetValue(name, out var strings))
-            return null;
+            throw new FileNotFoundException($"{name} could not be found");
 
         var tType = typeof(T);
 
-        if (AssetTypeExtensions.TryGetValue(tType, out var pair) && strings.TryFinding(x => x.EndsWith($".{pair.Item1}"), out var path))
-            result = AddAsset(name, (T)pair.Item2(path));
+        if (AssetTypeExtensions.TryGetValue(tType, out var pair) && strings.TryFinding(x => x.EndsWith($".{pair.Extension}"), out var path))
+            result = (T)AddAsset(name, pair.LoadAsset(path));
         else
             throw new NotSupportedException($"{tType.Name} is not a loadable asset type for {name}");
 
@@ -83,7 +83,7 @@ public static class AssetManager
             UnloadedAssets.Remove(name);
 
         if (!result)
-            Main.Instance.ConsoleInstance.LogError($"Could not find {name} of type {tType.Name}");
+            throw new InvalidOperationException($"Initialising {name} of type {tType.Name} failed");
 
         return result;
     }
@@ -155,12 +155,12 @@ public static class AssetManager
         return sprite;
     }
 
-    public static Sprite CreateSprite(this Texture2D texture)
-    {
-        var sprite = Sprite.Create(texture, new(0f, 0f, texture.width, texture.height), new(0.5f, 0.5f), 1f);
-        sprite.name = texture.name;
-        return sprite;
-    }
+    // public static Sprite CreateSprite(this Texture2D texture)
+    // {
+    //     var sprite = Sprite.Create(texture, new(0f, 0f, texture.width, texture.height), new(0.5f, 0.5f), 1f);
+    //     sprite.name = texture.name;
+    //     return sprite;
+    // }
 
     // private static AudioClip LoadAudio(string path) => LoadAudio(path.SanitisePath(), Core.GetManifestResourceStream(path)!.ReadFully());
 

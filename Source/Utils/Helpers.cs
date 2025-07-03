@@ -1,5 +1,3 @@
-using SRML.Utils;
-
 namespace TheOceanRange.Utils;
 
 public static class Helpers
@@ -81,5 +79,5 @@ public static class Helpers
 
     // public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
-    public static T CreatePrefab<T>(this T obj) where T : UObject => UObject.Instantiate(obj, Main.Prefab, false).DontDestroy();
+    public static T CreatePrefab<T>(this T obj, Transform parent = null) where T : UObject => UObject.Instantiate(obj, parent ?? Main.Prefab, false);
 }

@@ -2,8 +2,6 @@ namespace TheOceanRange.Food;
 
 public sealed class CustomFoodData
 {
-    public IdentifiableId Id;
-
     public FoodGroup Group;
 
     public int FavouriteModifier;

@@ -9,9 +9,9 @@ public static class Ids
     public static readonly IdentifiableId ROSA_PLORT;
     public static readonly PediaId ROSA_SLIME_ENTRY;
 
-    // public static readonly IdentifiableId COCO_SLIME;
-    // public static readonly IdentifiableId COCO_PLORT;
-    // public static readonly PediaId COCO_SLIME_ENTRY;
+    public static readonly IdentifiableId COCO_SLIME;
+    public static readonly IdentifiableId COCO_PLORT;
+    public static readonly PediaId COCO_SLIME_ENTRY;
 
     // public static readonly IdentifiableId LANTERN_SLIME;
     // public static readonly IdentifiableId LANTERN_PLORT;

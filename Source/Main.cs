@@ -23,8 +23,6 @@ public class Main : ModEntryPoint
 
     public override void Load()
     {
-        // Prefab = AccessTools.Field(Type.GetType("SRML.Main"), "prefabParent").GetValue(null) as Transform;
-
         Slimes.Slimes.LoadAllSlimes();
         Foods.LoadFoods();
     }

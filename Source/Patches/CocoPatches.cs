@@ -8,7 +8,7 @@ public static class CocoDamagePlayer
         if (!__instance.GetComponent<CocoBehaviour>())
             return true;
 
-        return __instance.transform.position.y > gameObj.transform.position.y;
+        return __instance.transform.position.y > gameObj.transform.position.y + 1;
     }
 }
 
@@ -20,6 +20,6 @@ public static class CocoDamagePlayerTrigger
         if (!__instance.GetComponent<CocoBehaviour>())
             return true;
 
-        return __instance.transform.position.y > __instance.GetPrivateField<GameObject>("damageGameObject").transform.position.y;
+        return __instance.transform.position.y > __instance.GetPrivateField<GameObject>("damageGameObject").transform.position.y + 1;
     }
 }

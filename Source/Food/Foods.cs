@@ -140,7 +140,6 @@ public static class Foods
 
         FoodManager.FoodsMap[henId] = new()
         {
-            Id = henId,
             FavouredBy = favouredBy,
             Group = FoodGroup.MEAT
         };

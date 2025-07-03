@@ -8,7 +8,7 @@ public static class Slimes
     public static void PreLoadAllSlimes()
     {
         BasePreLoadSlime(Ids.ROSA_SLIME, Ids.ROSA_PLORT, 0.25f, [Zone.REEF], "Rosa");
-        // BasePreLoadSlime(Ids.COCO_SLIME, Ids.COCO_PLORT, 0.25f, [Zone.REEF], "Coco");
+        BasePreLoadSlime(Ids.COCO_SLIME, Ids.COCO_PLORT, 0.25f, [Zone.REEF], "Coco");
     }
 
     private static void BasePreLoadSlime(IdentifiableId slimeId, IdentifiableId plortId, float spawnAmount, Zone[] zones, string slimeName)
@@ -17,6 +17,8 @@ public static class Slimes
 
         SRCallbacks.PreSaveGameLoad += delegate
         {
+            var prefab = GameInstance.Instance.LookupDirector.GetPrefab(slimeId);
+
             foreach (var item in UObject.FindObjectsOfType<DirectedSlimeSpawner>().Where(spawner =>
             {
                 var zoneId = spawner.GetComponentInParent<Region>(includeInactive: true).GetZoneId();
@@ -30,7 +32,7 @@ public static class Slimes
                         .. constraint.slimeset.members,
                         new()
                         {
-                            prefab = GameInstance.Instance.LookupDirector.GetPrefab(slimeId),
+                            prefab = prefab,
                             weight = spawnAmount
                         }
                     ];
@@ -46,6 +48,10 @@ public static class Slimes
             IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, InitRosaDetails, true, 1f, 1f, "#E6C7D2",
             "#E6C7D2", "#E6C7D2", "#E6C7D2", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F46CB7", "#E6C7D2", "#F9E5F0", 10f, 7f,
             "#F9E5F0", Ids.ROSA_SLIME_ENTRY, json["ROSA_SLIME"], InitRosaPlort);
+        BaseLoadSlime("Coco", "coco_slime", Ids.COCO_SLIME, 0, Ids.SANDY_CHICKEN, Ids.SANDY_CHICKEN, IdentifiableId.BEACH_BALL_TOY, Ids.COCO_PLORT, [FoodGroup.MEAT], false,
+            IdentifiableId.ROCK_SLIME, IdentifiableId.ROCK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.ROCK_SLIME, IdentifiableId.PINK_PLORT, InitCocoDetails, true, 0.1f, 0.11f, "#FEFCFF",
+            "#A1662F", "#966F33", "#FEFCFF", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#A1662F", "#966F33", "#966F33", "#FEFCFF", "#DCDADD", "#FEFCFF", 20, 9f,
+            "#FEFCFF", Ids.COCO_SLIME_ENTRY, json["COCO_SLIME"], null);
     }
 
     private static void BaseLoadSlime
@@ -109,7 +115,7 @@ public static class Slimes
         var icon = AssetManager.GetSprite($"{name}Slime");
 
         var tuple = SlimeCreation.SlimeBaseCreate(slimeId, id, $"{name} Slime", $"slime{name}", $"{name} Slime", baseSlimeDef, baseSlimeObj, baseSlimeVis, baseSlimeVis2, 0, favFood,
-            IdentifiableId.SPICY_TOFU, favToy, plortId, canLargofy, icon, Vacuumable.Size.NORMAL, canBeEatenByTarr, shininess, glossiness, topColorBase.HexToColor(), middleColorBase.HexToColor(),
+            IdentifiableId.SPICY_TOFU, favToy, plortId, canLargofy, icon, 0, canBeEatenByTarr, shininess, glossiness, topColorBase.HexToColor(), middleColorBase.HexToColor(),
             bottomColorBase.HexToColor(), specialColorBase.HexToColor(), topColorMouth.HexToColor(), middleColorMouth.HexToColor(), bottomColorMouth.HexToColor(), redEyeColor.HexToColor(),
             greenEyeColor.HexToColor(), blueEyeColor.HexToColor(), topPaletteColor.HexToColor(), middlePaletteColor.HexToColor(), bottomPaletteColor.HexToColor(), ammoColor.HexToColor());
 
@@ -160,16 +166,36 @@ public static class Slimes
             structure.SupportsFaces = i == 0;
         }
 
-        var val7 = elemPrefab.CreatePrefab();
-        var skin = val7.GetComponent<SkinnedMeshRenderer>();
+        var slimeBase = elemPrefab.CreatePrefab();
+        var skin = slimeBase.GetComponent<SkinnedMeshRenderer>();
         skin.sharedMesh = UObject.Instantiate(skin.sharedMesh);
-        AssetsLib.MeshUtils.GenerateBoneData(applicator, val7, 0.25f, 1f, prefabs);
+
+        AssetsLib.MeshUtils.GenerateBoneData(applicator, slimeBase, 0.25f, 1f, prefabs);
 
         prefab.AddComponent<RosaBehaviour>();
     }
 
-    // private static void InitCocoDetails(GameObject prefab, SlimeDefinition definition, SlimeDefinition defBase)
-    // {
-    //     prefab.AddComponent<CocoBehaviour>();
-    // }
+    private static void InitCocoDetails(GameObject prefab, SlimeDefinition definition)
+    {
+        // var appearance = definition.AppearancesDefault[0];
+        // var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
+
+        // var structure = appearance.Structures[0];
+
+        // var elemPrefab = structure.Element.Prefabs[0];
+
+        // var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
+        // var prefab2 = elemPrefab.CreatePrefab();
+        // elem.Prefabs = [prefab2];
+        // prefab2.GetComponent<SkinnedMeshRenderer>().sharedMesh = AssetManager.GetMesh("CoconutSlime");
+        // prefab2.IgnoreLODIndex = true;
+        // structure.SupportsFaces = true;
+
+        // var slimeBase = elemPrefab.CreatePrefab();
+        // var skin = slimeBase.GetComponent<SkinnedMeshRenderer>();
+        // skin.sharedMesh = UObject.Instantiate(skin.sharedMesh);
+        // AssetsLib.MeshUtils.GenerateBoneData(applicator, slimeBase, 0.25f, 1f, prefab2);
+
+        prefab.AddComponent<CocoBehaviour>();
+    }
 }
