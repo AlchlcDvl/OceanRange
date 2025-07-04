@@ -12,11 +12,21 @@
     "COCO_SLIME":
     {
         "title": "Coco Slime",
-        "intro": "The concussion nut, wear helmets!",
+        "intro": "The concussion slime, wear helmets!",
         "diet": "Meat",
         "fav": "Sandy Hens",
         "slimeology": "Coco slimes are commonly found hanging from the palm trees of the island. Being natives to SwirlPool Island, the coco slimes have natural adapted a higher jump in order to climb trees and escape predators. Due to them being grown from palm trees, they have plant like attributes which causes them to require constant sunlight and also tend to avoid eating fruits and vegetables as it would be cannibalism.",
         "risks": "Be cautious while walking under palm trees as coco slimes are very territorial and if they sense you underneath, they will harden their soft, squishy bodies to a hard coconut-like shell and crash down onto their targets. Tourists in the past who got hit in the head by a coco slime have reported blurred vision and dizziness afterwards with some even being knocked out cold. This is also how they hunt in the wild. Despite their hard skin and agility, they are quite easy to ranch as long as they are well feed and have enough exposure to sunlight.",
         "plortonomics": "Coco Plorts, unlike their producer, are very soft and silky as well as being an excellent source of calcium when condensed to liquid. Despite being very similar to earth’s milk in properties, they can still be consumed by people who are lactose intolerance making them extremely popular for creating lactose intolerance options for dairy products. And due to their incredibly soft and silky texture, they are also very good for skin care and used often in spas as substitutes to milk baths."
+    },
+    "MINE_SLIME":
+    {
+        "title": "Mine Slime",
+        "intro": "The touch-me-not of slimes!",
+        "diet": "Veggie",
+        "fav": "Blowtato",
+        "slimeology": "A cousin of the boom slime, mine slimes explode a lot! However unlike their boom cousins, mine slimes only explode upon contact with another slime or rancher. As a way to tell others to stay away from them, mine slimes evolved spikes on their bodies to keep others away from contact and subsequent explosions. Unlike their boom cousins however, mine slimes prefer going the peaceful route of eating vegetables. To support their explosive qualities, their favourite is the blowtato, which contains enough reactive chemicals to fuel both bodily functions and explosive qualities of the mine slime. However, if the explosion keeps building up for too long, the mine slime risks damaging itself. During this phase the mine slime would seek water or other boom or mine slimes to explode with them and regain comfort.",
+        "risks": "A good rancher knows when to not to touch mine slimes. The only slimes that are immune to the explosions are other mine slimes, so it is preferred that they stick together to routinely explode in each other's contact and company.",
+        "plortonomics": "Obtaining a unique pearl-like shape due to high pressures within the mine slimes, the mine plort inherits the mine slime's particular behaviour of explosion on touch. However, due to the nature of the source of the plorts, the contact needs to be much harder in order for the plorts to explode. Due to this peculiar property, mine plorts are often just ground to fine power to use for fireworks."
     }
 }

@@ -3,5 +3,6 @@
     "name": "The Ocean Range",
     "version": "0.0.1",
     "author": "TheRanchExchange",
-    "description": "Explore the slime sea!"
+    "description": "Explore the slime sea!",
+    "load_after": ["slimesandmarket"]
 }

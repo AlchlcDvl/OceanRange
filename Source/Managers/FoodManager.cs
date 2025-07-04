@@ -64,7 +64,7 @@ public static class FoodManager
 
     private static void CreateChimkens(Dictionary<string, FoodPediaEntry> json)
     {
-        BaseCreateChimken("Sandy", Ids.SANDY_CHICKEN, Ids.SANDY_CHICKEN_ENTRY, json["SANDY_HEN"], Ids.SANDY_CHICK, Ids.SANDY_CHICK_ENTRY, "#C2B280", json["SANDY_CHICK"], [Ids.COCO_SLIME]);
+        BaseCreateChimken("Sandy", Ids.SANDY_CHICKEN, Ids.SANDY_CHICKEN_ENTRY, json["SANDY_HEN"], Ids.SANDY_CHICK, Ids.SANDY_CHICK_ENTRY, json["SANDY_CHICK"], [Ids.COCO_SLIME], "#C2B280");
     }
 
     private static void BaseCreateChimken
@@ -75,9 +75,9 @@ public static class FoodManager
         FoodPediaEntry henJson,
         IdentifiableId chickId,
         PediaId chickEntry,
-        string ammoColor,
         FoodPediaEntry chickJson,
-        IdentifiableId[] favouredBy
+        IdentifiableId[] favouredBy,
+        string ammoColor
     )
     {
         var skin = AssetManager.GetTexture2D($"{name}SkinRamp");
@@ -99,8 +99,8 @@ public static class FoodManager
         var chickIcon = AssetManager.GetSprite($"{name}Chick");
         VacItemCreation.NewVacItem(0, chickPrefab, chickId, $"{name} Chick", chickIcon, ammo);
         SlimePediaCreation.PreLoadSlimePediaConnection(chickEntry, chickId, PediaCategory.RESOURCES);
-        SlimePediaCreation.CreateSlimePediaForItemWithName(chickEntry, chickId, chickJson.Title, chickJson.Intro, "Future Meat", "None", chickJson?.About ??
-            CommonChickAboutPedia.Replace("%type%", name), chickJson.Ranch ?? CommonChickRanchPedia.Replace("%type%", name));
+        SlimePediaCreation.CreateSlimePediaForItemWithName(chickEntry, chickId, chickJson.Title, chickJson.Intro, "Future Meat", "None", chickJson.About ?? CommonChickAboutPedia.Replace("%type%",
+            name), chickJson.Ranch ?? CommonChickRanchPedia.Replace("%type%", name));
         SlimePediaCreation.LoadSlimePediaIcon(chickEntry, chickIcon);
 
         var henPrefab = GameInstance.Instance.LookupDirector.GetPrefab(IdentifiableId.HEN).CreatePrefab();
@@ -151,6 +151,24 @@ public static class FoodManager
 
     private static void CreatePlants(Dictionary<string, FoodPediaEntry> json)
     {
+        // BaseCreatePlant("Blowtato", Ids.BLOWTATO_VEGGIE, Ids.BLOWTATO_VEGGIE_ENTRY, json["BLOWTATO_VEGGIE"], [Ids.MINE_SLIME], "#FFFFFF", "crop");
+    }
 
+    private static void BaseCreatePlant
+    (
+        string name,
+        IdentifiableId plantId,
+        PediaId plantEntry,
+        FoodPediaEntry plantJson,
+        IdentifiableId[] favouredBy,
+        string ammoColor,
+        string type
+    )
+    {
+        // VacItemCreation.NewVacItem(0, chickPrefab, plantId, name, null, ammoColor.HexToColor());
+        SlimePediaCreation.PreLoadSlimePediaConnection(plantEntry, plantId, PediaCategory.RESOURCES);
+        SlimePediaCreation.CreateSlimePediaForItemWithName(plantEntry, plantId, plantJson.Title, plantJson.Intro, "Future Meat", "None", plantJson.About, plantJson?.Ranch ??
+            CommonPlantPedia.Replace("%type%", name).Replace("%food%", type));
+        SlimePediaCreation.LoadSlimePediaIcon(plantEntry, null);
     }
 }
