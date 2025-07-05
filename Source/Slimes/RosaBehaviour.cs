@@ -1,8 +1,8 @@
 namespace TheOceanRange.Slimes;
 
-public class RosaBehaviour : SlimeSubbehaviour
+public class RosiBehaviour : SlimeSubbehaviour
 {
-    public static List<RosaBehaviour> All = [];
+    public static List<RosiBehaviour> All = [];
 
     public override void Awake()
     {

@@ -5,7 +5,7 @@ public static class SlimeEatProduce
 {
     public static void Prefix(SlimeEat __instance, ref int count)
     {
-        if (!__instance.GetComponent<RosaBehaviour>())
+        if (!__instance.GetComponent<RosiBehaviour>())
             return;
 
         Collider val = null;
@@ -31,7 +31,7 @@ public static class SlimeEatProduce
 
         var num = 0;
 
-        foreach (var item in RosaBehaviour.All)
+        foreach (var item in RosiBehaviour.All)
         {
             if (val.bounds.Contains(item.transform.position))
                 num++;

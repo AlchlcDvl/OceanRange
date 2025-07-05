@@ -12,7 +12,7 @@ public static class SlimeManager
 
     public static void PreLoadAllSlimes()
     {
-        BasePreLoadSlime(Ids.ROSA_SLIME, Ids.ROSA_PLORT, 0.25f, [Zone.REEF], "Rosa");
+        BasePreLoadSlime(Ids.ROSI_SLIME, Ids.ROSI_PLORT, 0.25f, [Zone.REEF], "Rosi");
         BasePreLoadSlime(Ids.COCO_SLIME, Ids.COCO_PLORT, 0.25f, [Zone.REEF], "Coco");
         // BasePreLoadSlime(Ids.MINE_SLIME, Ids.MINE_PLORT, 0.25f, [Zone.QUARRY], "Mine");
     }
@@ -51,13 +51,13 @@ public static class SlimeManager
     {
         SAMExists = SRModLoader.IsModPresent("slimesandmarket");
         var json = JsonConvert.DeserializeObject<Dictionary<string, SlimePediaEntry>>(AssetManager.GetJson("Slimepedia"));
-        BaseLoadSlime("Rosa", Ids.ROSA_SLIME, 0, 0, 0, IdentifiableId.OCTO_BUDDY_TOY, Ids.ROSA_PLORT, FoodGroup.PLORTS, false, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME,
-            IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, InitRosaDetails, true, 1f, 1f, "#E6C7D2", "#E6C7D2", "#E6C7D2", "#E6C7D2", "#000000", "#000000",
-            "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F46CB7", "#E6C7D2", "#F9E5F0", 10f, "#F9E5F0", Ids.ROSA_SLIME_ENTRY, json["ROSA_SLIME"],
+        BaseLoadSlime("Rosi", Ids.ROSI_SLIME, 0, 0, 0, IdentifiableId.OCTO_BUDDY_TOY, Ids.ROSI_PLORT, FoodGroup.PLORTS, false, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME,
+            IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, InitRosiDetails, true, 1f, 1f, "#E6C7D2", "#E6C7D2", "#E6C7D2", "#E6C7D2", "#000000", "#000000",
+            "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F46CB7", "#E6C7D2", "#F9E5F0", 10f, 100f, "#F9E5F0", Ids.ROSI_SLIME_ENTRY, json["ROSI_SLIME"],
             InitPearlPlort);
-        BaseLoadSlime("Coco", Ids.COCO_SLIME, 0, Ids.SANDY_CHICKEN, Ids.SANDY_CHICKEN, IdentifiableId.BEACH_BALL_TOY, Ids.COCO_PLORT, FoodGroup.MEAT, false, IdentifiableId.ROCK_SLIME,
-            IdentifiableId.ROCK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.ROCK_SLIME, IdentifiableId.PUDDLE_PLORT, InitCocoDetails, true, 0.1f, 0.11f, "#FEFCFF", "#A1662F", "#966F33",
-            "#FEFCFF", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#A1662F", "#966F33", "#966F33", "#FEFCFF", "#DCDADD", "#FEFCFF", 20f, "#FEFCFF",
+        BaseLoadSlime("Coco", Ids.COCO_SLIME, 0, Ids.SANDY_CHICKEN, Ids.SANDY_CHICKEN, IdentifiableId.BEACH_BALL_TOY, Ids.COCO_PLORT, FoodGroup.MEAT, false, IdentifiableId.PINK_SLIME,
+            IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_SLIME, IdentifiableId.PUDDLE_PLORT, InitCocoDetails, true, 0.1f, 0.11f, "#FEFCFF", "#A1662F", "#966F33",
+            "#FEFCFF", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#A1662F", "#966F33", "#966F33", "#FEFCFF", "#DCDADD", "#FEFCFF", 20f, 100f, "#FEFCFF",
             Ids.COCO_SLIME_ENTRY, json["COCO_SLIME"], null);
     }
 
@@ -99,6 +99,7 @@ public static class SlimeManager
         string middlePlortColor,
         string bottomPlortColor,
         float basePlortPrice,
+        float saturation,
         string plortFill,
         PediaId entry,
         SlimePediaEntry json,
@@ -116,7 +117,7 @@ public static class SlimeManager
 
         initPlortDetails?.Invoke(plort);
 
-        PlortCreation.PlortLoad(plortId, basePlortPrice, basePlortPrice * 2f, plort, AssetManager.GetSprite($"{name}Plort"), plortFill.HexToColor(), true, true, false);
+        PlortCreation.PlortLoad(plortId, basePlortPrice, saturation, plort, AssetManager.GetSprite($"{name}Plort"), plortFill.HexToColor(), true, true, false);
 
         var icon = AssetManager.GetSprite($"{name}Slime");
 
@@ -134,16 +135,6 @@ public static class SlimeManager
         Identifiable.SLIME_CLASS.Add(slimeId);
 
         SlimesMap[slimeId] = customSlimeData;
-        FoodManager.FoodsMap[slimeId] = new()
-        {
-            Group = FoodGroup.NONTARRGOLD_SLIMES,
-            FavouredBy = []
-        };
-        FoodManager.FoodsMap[plortId] = new()
-        {
-            Group = FoodGroup.PLORTS,
-            FavouredBy = []
-        };
 
         SlimePediaCreation.PreLoadSlimePediaConnection(entry, slimeId, PediaCategory.SLIMES);
         SlimePediaCreation.CreateSlimePediaForSlimeWithName(entry, slimeId, json.Title, json.Intro, json.Diet, json.Fav, json.Slimeology, json.Risks, json.Plortonomics);
@@ -157,7 +148,7 @@ public static class SlimeManager
     {
         try
         {
-            SlimesAndMarket.ExtraSlimes.RegisterSlime(slimeId, plortId);
+            SlimesAndMarket.ExtraSlimes.RegisterSlime(slimeId, plortId); // Since it's a soft dependency but still requires the code from the mod to work, this method was made
         }
         catch (Exception e)
         {
@@ -170,9 +161,9 @@ public static class SlimeManager
         // prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh("pearl");
     }
 
-    private static void InitRosaDetails(GameObject prefab, SlimeDefinition definition)
+    private static void InitRosiDetails(GameObject prefab, SlimeDefinition definition)
     {
-        definition.Diet.MajorFoodGroups = [FoodGroup.MEAT, FoodGroup.VEGGIES, FoodGroup.FRUIT];
+        definition.Diet.MajorFoodGroups = [FoodGroup.MEAT, FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.GINGER];
 
         var appearance = definition.AppearancesDefault[0];
         var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
@@ -185,7 +176,7 @@ public static class SlimeManager
         ];
 
         var elemPrefab = appearance.Structures[0].Element.Prefabs[0];
-        var meshes = new[] { "rosabody", "frills_stalk", "frills_actual" };
+        var meshes = new[] { "rosi_body", "rosi_stalk", "rosi_frills" };
         var prefabs = new SlimeAppearanceObject[3];
 
         foreach (var (i, structure) in appearance.Structures.Indexed())
@@ -204,7 +195,7 @@ public static class SlimeManager
 
         AssetsLib.MeshUtils.GenerateBoneData(applicator, slimeBase, 0.25f, 1f, prefabs);
 
-        prefab.AddComponent<RosaBehaviour>();
+        prefab.AddComponent<RosiBehaviour>();
     }
 
     private static void InitCocoDetails(GameObject prefab, SlimeDefinition definition)

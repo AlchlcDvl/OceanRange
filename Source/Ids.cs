@@ -5,9 +5,9 @@ namespace TheOceanRange;
 [EnumHolder]
 public static class Ids
 {
-    public static readonly IdentifiableId ROSA_SLIME;
-    public static readonly IdentifiableId ROSA_PLORT;
-    public static readonly PediaId ROSA_SLIME_ENTRY;
+    public static readonly IdentifiableId ROSI_SLIME;
+    public static readonly IdentifiableId ROSI_PLORT;
+    public static readonly PediaId ROSI_SLIME_ENTRY;
 
     public static readonly IdentifiableId COCO_SLIME;
     public static readonly IdentifiableId COCO_PLORT;
