@@ -1,6 +1,6 @@
 namespace TheOceanRange.Slimes;
 
-public class RosiBehaviour : SlimeSubbehaviour
+public sealed class RosiBehaviour : SlimeSubbehaviour
 {
     public static List<RosiBehaviour> All = [];
 

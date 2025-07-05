@@ -1,6 +1,6 @@
-﻿namespace TheOceanRange.Slimes;
+﻿namespace TheOceanRange.Modules;
 
-public class CustomSlimeData
+public sealed class CustomSlimeData
 {
     public IdentifiableId GordoId;
     public IdentifiableId BaitId;

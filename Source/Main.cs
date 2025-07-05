@@ -3,7 +3,7 @@ using SRML;
 
 namespace TheOceanRange;
 
-public class Main : ModEntryPoint
+public sealed class Main : ModEntryPoint
 {
     public static Main Instance { get; private set; }
     public static Transform Prefab;
