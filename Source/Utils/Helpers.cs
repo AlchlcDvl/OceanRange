@@ -82,4 +82,11 @@ public static class Helpers
     // public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
     public static T CreatePrefab<T>(this T obj, Transform parent = null) where T : UObject => UObject.Instantiate(obj, parent ?? Main.Prefab, false);
+
+    public static Material Clone(this Material material)
+    {
+        var material2 = new Material(material);
+        material2.CopyPropertiesFromMaterial(material);
+        return material2;
+    }
 }

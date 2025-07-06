@@ -19,17 +19,9 @@ public sealed class CocoBehaviour : SRBehaviour, ControllerCollisionListener
             TryToDamage(gameObj);
     }
 
-    public void OnCollisionEnter(Collision col)
-    {
-        if (Time.time >= NextTime && col.gameObject == SRSingleton<SceneContext>.Instance.Player)
-            TryToDamage(col.gameObject);
-    }
-
-    public void SetBlocked(bool blocked) => Blocked = blocked;
-
     private void TryToDamage(GameObject gameObj)
     {
-        if (!Blocked && transform.position.y > gameObj.transform.position.y + 1.5f && gameObj.GetInterfaceComponent<Damageable>().Damage(DamagePerTouch, gameObject))
+        if (!Blocked && transform.position.y > gameObj.transform.position.y + 1.25f && gameObj.GetInterfaceComponent<Damageable>().Damage(DamagePerTouch, gameObject))
             DeathHandler.Kill(gameObj, DeathHandler.Source.SLIME_DAMAGE_PLAYER_ON_TOUCH, gameObject, "CocoBehaviour.TryToDamage");
 
         NextTime = Time.time + RepeatTime;

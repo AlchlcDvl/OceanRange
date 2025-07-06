@@ -3,12 +3,7 @@ guid: 4e96e7699dfd657da8cbf79729f8d8b5
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Rosa_text
-    second: {fileID: 2100000, guid: 9f4c23d855f41e0989443b84bb289ec1, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 1
     materialName: 0
