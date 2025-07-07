@@ -97,7 +97,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         PhysicsUtil.Explode(gameObject, ExplodeRadius, ExplodePower, MinPlayerDamage, MaxPlayerDamage);
 
         if (gameObject.layer == LayerMask.NameToLayer("Launched"))
-            SRSingleton<SceneContext>.Instance.AchievementsDirector.AddToStat(AchievementsDirector.IntStat.LAUNCHED_BOOM_EXPLODE, 1);
+            SceneContext.Instance.AchievementsDirector.AddToStat(AchievementsDirector.IntStat.LAUNCHED_BOOM_EXPLODE, 1);
     }
 
     public override void OnDisable()
@@ -108,5 +108,5 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
 
     public override bool CanRethink() => State == ExplodeState.IDLE;
 
-    public void OnControllerCollision(GameObject gameObj) => Contact = Time.fixedTime > NextPossibleExplode && gameObj == SRSingleton<SceneContext>.Instance.Player;
+    public void OnControllerCollision(GameObject gameObj) => Contact = Time.fixedTime > NextPossibleExplode && gameObj == SceneContext.Instance.Player;
 }

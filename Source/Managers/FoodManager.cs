@@ -37,12 +37,12 @@ public static class FoodManager
                         .. constraint.slimeset.members,
                         new()
                         {
-                            prefab = GameInstance.Instance.LookupDirector.GetPrefab(henId),
+                            prefab = GameContext.Instance.LookupDirector.GetPrefab(henId),
                             weight = spawnWeight / 2
                         },
                         new()
                         {
-                            prefab = GameInstance.Instance.LookupDirector.GetPrefab(chickId),
+                            prefab = GameContext.Instance.LookupDirector.GetPrefab(chickId),
                             weight = spawnWeight / 2
                         }
                     ];
@@ -84,7 +84,7 @@ public static class FoodManager
         var dark = AssetManager.GetTexture2D($"{name}SkinRampDarker");
         var ammo = ammoColor.HexToColor();
 
-        var chickPrefab = GameInstance.Instance.LookupDirector.GetPrefab(IdentifiableId.CHICK).CreatePrefab();
+        var chickPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.CHICK).CreatePrefab();
         chickPrefab.name = $"{name} Chick";
         var component = chickPrefab.transform.Find("Chickadoo/mesh_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
         var material = UObject.Instantiate(component.sharedMaterial);
@@ -103,7 +103,7 @@ public static class FoodManager
             name), chickJson.Ranch ?? CommonChickRanchPedia.Replace("%type%", name));
         SlimePediaCreation.LoadSlimePediaIcon(chickEntry, chickIcon);
 
-        var henPrefab = GameInstance.Instance.LookupDirector.GetPrefab(IdentifiableId.HEN).CreatePrefab();
+        var henPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.HEN).CreatePrefab();
         henPrefab.name = $"{name} Chicken";
         var component2 = henPrefab.transform.Find("Hen Hen/mesh_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
         var material2 = UObject.Instantiate(component2.sharedMaterial);
@@ -115,7 +115,7 @@ public static class FoodManager
         henPrefab.GetComponent<Identifiable>().id = henId;
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
         var transformChance = henPrefab.GetComponent<TransformChanceOnReproduce>();
-        transformChance.targetPrefab = GameInstance.Instance.LookupDirector.GetPrefab(IdentifiableId.ELDER_HEN);
+        transformChance.targetPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.ELDER_HEN);
         transformChance.transformChance = 2.5f;
         LookupRegistry.RegisterIdentifiablePrefab(henPrefab);
         CropCreation.LoadCrop(henId, henPrefab, false, false, false, true);
@@ -135,7 +135,7 @@ public static class FoodManager
             },
             new()
             {
-                targetPrefab = GameInstance.Instance.LookupDirector.GetPrefab(IdentifiableId.ROOSTER),
+                targetPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.ROOSTER),
                 weight = 3.5f
             }
         ];

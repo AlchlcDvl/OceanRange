@@ -33,4 +33,6 @@
     <Target Name="Copy" AfterTargets="Build" >
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" />
     </Target>
+
+    <Import Project="../SlimeRancher.props"/>
 </Project>

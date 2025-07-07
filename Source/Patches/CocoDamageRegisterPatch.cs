@@ -1,3 +1,4 @@
+using System.Reflection;
 using SimpleSRmodLibrary;
 
 namespace TheOceanRange.Patches;
@@ -5,6 +6,8 @@ namespace TheOceanRange.Patches;
 [HarmonyPatch(typeof(WeaponVacuum), "ExpelHeld")]
 public static class CocoDamageRegisterPatch
 {
+    private static MethodInfo EnsureNotShootingIntoRock = AccessTools.Method(typeof(WeaponVacuum), "EnsureNotShootingIntoRock");
+
     public static bool Prefix(WeaponVacuum __instance)
     {
         var componentInParent = __instance.GetComponentInParent<vp_FPController>();
@@ -12,7 +15,7 @@ public static class CocoDamageRegisterPatch
         var origin = ray.origin;
         var vel = (ray.direction * __instance.ejectSpeed) + componentInParent.Velocity;
         var array = new object[] {origin, ray, __instance.GetPrivateField<float>("heldRad"), vel};
-        origin = (Vector3)__instance.InvokePrivateMethod("EnsureNotShootingIntoRock", array);
+        origin = (Vector3)EnsureNotShootingIntoRock.Invoke(__instance, array);
         vel = (Vector3)array[3];
         var held = __instance.GetPrivateField<GameObject>("held");
         held.transform.position = origin;
@@ -21,10 +24,10 @@ public static class CocoDamageRegisterPatch
         if (held.TryGetComponent<Vacuumable>(out var component))
         {
             component.release();
-            component.Launch(Vacuumable.LaunchSource.PLAYER);
+            component.Launch(0);
 
             if (held.TryGetComponent<SlimeEat>(out var component2))
-                component2.CancelChomp(SRSingleton<SceneContext>.Instance.Player);
+                component2.CancelChomp(SceneContext.Instance.Player);
         }
 
         if (held.TryGetComponent<DamagePlayerOnTouch>(out var component3))

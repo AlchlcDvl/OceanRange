@@ -4,5 +4,5 @@
     "version": "0.0.1",
     "author": "TheRanchExchange",
     "description": "Explore the slime sea!",
-    "load_after": ["slimesandmarket", "assetslib", "shortcutlibog", "SimpleSRmodLibrary"]
+    "load_after": ["slimesandmarket", "assetslib", "SimpleSRmodLibrary"]
 }
