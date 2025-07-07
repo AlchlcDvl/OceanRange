@@ -29,15 +29,7 @@ public static class SlimeEatProduce
             return;
         }
 
-        var num = 0;
-
-        foreach (var item in RosiBehaviour.All)
-        {
-            if (val.bounds.Contains(item.transform.position))
-                num++;
-        }
-
-        count = num;
+        count = RosiBehaviour.All.Count(item => val.bounds.Contains(item.transform.position));
     }
 }
 

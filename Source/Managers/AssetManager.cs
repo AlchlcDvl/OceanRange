@@ -5,8 +5,8 @@ namespace TheOceanRange.Managers;
 public static class AssetManager
 {
     private static readonly Assembly Core = typeof(Main).Assembly;
-    public static readonly Dictionary<string, AssetBundle> Bundles = [];
-    public static readonly Dictionary<string, string> AssetToBundle = [];
+    private static readonly Dictionary<string, AssetBundle> Bundles = [];
+    private static readonly Dictionary<string, string> AssetToBundle = [];
     private static readonly Dictionary<string, HashSet<UObject>> LoadedAssets = [];
     private static readonly Dictionary<string, HashSet<string>> UnloadedAssets = [];
     private static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
@@ -107,7 +107,7 @@ public static class AssetManager
         return asset;
     }
 
-    public static T AddAsset<T>(string name, T obj) where T : UObject => AddAsset(name, (UObject)obj) as T;
+    private static void AddAsset<T>(string name, T obj) where T : UObject => AddAsset(name, (UObject)obj);
 
     private static UObject AddAsset(string name, UObject obj)
     {
@@ -121,7 +121,7 @@ public static class AssetManager
         return obj.DontDestroy();
     }
 
-    public static void AddPath(string name, string path)
+    private static void AddPath(string name, string path)
     {
         if (!UnloadedAssets.TryGetValue(name, out var value))
             UnloadedAssets[name] = value = [];
@@ -131,7 +131,7 @@ public static class AssetManager
 
     private static JsonTextAsset LoadJson(string path)
     {
-        using var stream = Core.GetManifestResourceStream(path);
+        using var stream = Core.GetManifestResourceStream(path)!;
         using var reader = new StreamReader(stream);
         return new(reader.ReadToEnd());
     }
@@ -148,12 +148,12 @@ public static class AssetManager
     {
         var texture = EmptyTexture();
         texture.name = name;
-        return !texture.LoadImage(data, false) ? null : texture;
+        return !texture.LoadImage(data, true) ? null : texture;
     }
 
     private static Sprite LoadSprite(string path) => LoadSprite(LoadTexture(path), path.SanitisePath());
 
-    public static Sprite LoadSprite(Texture2D tex, string name, float ppu = float.NaN, SpriteMeshType meshType = SpriteMeshType.Tight)
+    private static Sprite LoadSprite(Texture2D tex, string name, float ppu = float.NaN, SpriteMeshType meshType = SpriteMeshType.Tight)
     {
         var sprite = Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), float.IsNaN(ppu) ? 1f : ppu, 0, meshType);
         sprite.name = name;

@@ -18,7 +18,7 @@ public static class Helpers
         return result;
     }
 
-    public static bool TryFindingAll<T>(this IEnumerable<T> source, Func<T, bool> predicate, out IEnumerable<T> value)
+    private static bool TryFindingAll<T>(this IEnumerable<T> source, Func<T, bool> predicate, out IEnumerable<T> value)
     {
         value = source.Where(predicate);
         return value.Any();
@@ -49,7 +49,7 @@ public static class Helpers
     //     return obj;
     // }
 
-    public static T DontDestroyOnLoad<T>(this T obj) where T : UObject
+    private static T DontDestroyOnLoad<T>(this T obj) where T : UObject
     {
         UObject.DontDestroyOnLoad(obj);
         return obj;
@@ -75,7 +75,9 @@ public static class Helpers
             yield return (i++, item);
     }
 
-    public static Color32 HexToColor(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
+    public static Color32 HexToColor32(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
+
+    public static Color HexToColor(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
 
     // public static T Parse<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value);
 

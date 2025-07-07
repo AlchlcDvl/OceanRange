@@ -21,7 +21,7 @@ public static class CreateExchanges
                     value = 16f
                 }
             }),
-            .. FoodManager.FoodsMap.Select(x => new ExchangeDirector.ValueEntry()
+            .. FoodManager.FoodsMap.Select(x => new ExchangeDirector.ValueEntry
             {
                 id = x.Key,
                 value = 20f

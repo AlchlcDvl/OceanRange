@@ -6,6 +6,10 @@ namespace TheOceanRange.Managers;
 public static class FoodManager
 {
     public static readonly Dictionary<IdentifiableId, CustomFoodData> FoodsMap = [];
+    private static readonly int RampRed = Shader.PropertyToID("_RampRed");
+    private static readonly int RampGreen = Shader.PropertyToID("_RampGreen");
+    private static readonly int RampBlue = Shader.PropertyToID("_RampBlue");
+    private static readonly int RampBlack = Shader.PropertyToID("_RampBlack");
 
     public static void PreLoadFoods()
     {
@@ -88,10 +92,10 @@ public static class FoodManager
         chickPrefab.name = $"{name} Chick";
         var component = chickPrefab.transform.Find("Chickadoo/mesh_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
         var material = UObject.Instantiate(component.sharedMaterial);
-        material.SetTexture("_RampRed", dark);
-        material.SetTexture("_RampGreen", skin);
-        material.SetTexture("_RampBlue", skin);
-        material.SetTexture("_RampBlack", skin);
+        material.SetTexture(RampRed, dark);
+        material.SetTexture(RampGreen, skin);
+        material.SetTexture(RampBlue, skin);
+        material.SetTexture(RampBlack, skin);
         component.sharedMaterial = material;
         chickPrefab.GetComponent<Identifiable>().id = chickId;
         LookupRegistry.RegisterIdentifiablePrefab(chickPrefab);
@@ -107,10 +111,10 @@ public static class FoodManager
         henPrefab.name = $"{name} Chicken";
         var component2 = henPrefab.transform.Find("Hen Hen/mesh_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
         var material2 = UObject.Instantiate(component2.sharedMaterial);
-        material2.SetTexture("_RampRed", dark);
-        material2.SetTexture("_RampGreen", skin);
-        material2.SetTexture("_RampBlue", skin);
-        material2.SetTexture("_RampBlack", skin);
+        material2.SetTexture(RampRed, dark);
+        material2.SetTexture(RampGreen, skin);
+        material2.SetTexture(RampBlue, skin);
+        material2.SetTexture(RampBlack, skin);
         component2.sharedMaterial = material2;
         henPrefab.GetComponent<Identifiable>().id = henId;
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;

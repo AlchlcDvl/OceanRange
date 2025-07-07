@@ -1,6 +1,6 @@
 namespace TheOceanRange.Slimes;
 
-// Had to recreate DamagePlyerOnTouch because using Rock slimes as a base just no longer allowed Coco slimes to move
+// Had to recreate DamagePlayerOnTouch because using Rock slimes as a base just no longer allowed Coco slimes to move
 public sealed class CocoBehaviour : SRBehaviour, ControllerCollisionListener
 {
     private const int DamagePerTouch = 10;
