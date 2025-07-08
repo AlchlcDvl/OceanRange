@@ -66,7 +66,7 @@ public static class Helpers
     //         yield return (i++, item);
     // }
 
-    public static Color32 HexToColor32(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
+    // public static Color32 HexToColor32(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
 
     public static Color HexToColor(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
 
@@ -74,7 +74,7 @@ public static class Helpers
 
     public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
-    public static T CreatePrefab<T>(this T obj, Transform parent = null) where T : UObject => UObject.Instantiate(obj, parent ?? Main.Prefab, false);
+    public static T CreatePrefab<T>(this T obj, Transform parent = null) where T : UObject => obj.DontDestroy().Instantiate(parent ?? Main.Prefab, false);
 
     public static Material Clone(this Material material)
     {

@@ -1,14 +1,12 @@
-{
-    "SANDY_HEN":
+[
     {
-        "title": "Sandy Hen",
-        "intro": "The beach side camouflage master!",
-        "favouredBy": "Cocoa Slimes",
+        "name": "Sandy",
+        "henIntro": "The beach side camouflage master!",
+        "chickIntro": "A budding camouflager!",
+        "pediaFavouredBy": "Cocoa Slimes",
+        "ammoColor": "#C2B280",
+        "favouredBy": ["COCOA_SLIME"],
+        "zones": ["REEF", "RUINS", "MOSS"],
         "about": "A distant cousin of the Stony Hen, Sandy Hens have evolved their feathers to mimic the appearance of beach sands to escape from predators. They camouflage quite well, however they still can't escape the watchful eyes of cocoa slimes, who are almost always perched upon their palm tree homes. Cocoa slimes prefer the dry taste of Sandy chickens to counter act their overflowing amounts of liquid that they contain within. For humans, Sandy chickens taste similar to regular chickens, the only difference being that they are extremely dry to the tongue."
-    },
-    "SANDY_CHICK":
-    {
-        "title": "Sandy Chickadoo",
-        "intro": "A budding camouflager!"
     }
-}
+]

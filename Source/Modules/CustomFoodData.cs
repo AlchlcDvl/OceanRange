@@ -1,30 +1,105 @@
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace TheOceanRange.Modules;
 
-public sealed class CustomFoodData
+public abstract class CustomFoodData
 {
-    [JsonProperty("type")]
+    [JsonProperty("name")]
+    public string Name;
+
+    [JsonIgnore]
+    public IdentifiableId FoodId;
+
+    [JsonProperty("group")]
+    public string GroupJson;
+
+    [JsonIgnore]
     public FoodGroup Group;
 
-    [JsonProperty("type")]
+    [JsonProperty("favouriteModifier")]
     public int FavouriteModifier;
 
     [JsonProperty("minDrive")]
     public float MinDrive = 1f;
 
     [JsonProperty("favouredBy")]
+    public string[] FavouredByJson;
+
+    [JsonIgnore]
     public IdentifiableId[] FavouredBy;
 
-    // [JsonProperty("type")]
-    // public string Type;
+    [JsonProperty("pediaFavouredBy")]
+    public string PediaFavouredBy;
 
-    // [JsonProperty("pediaFavouredBy")]
-    // public string PediaFavouredBy;
+    [JsonProperty("about")]
+    public string About;
 
-    // [JsonProperty("about")]
-    // public string About;
-
-    // [JsonProperty("ranch")]
-    // public string Ranch;
+    [JsonProperty("ammoColor")]
+    public string AmmoColor;
 }
+
+public sealed class CustomChimkenData : CustomFoodData
+{
+    [JsonIgnore]
+    public IdentifiableId HenId;
+
+    [JsonIgnore]
+    public IdentifiableId ChickId;
+
+    [JsonProperty("zones")]
+    public Zone[] Zones;
+
+    [JsonProperty("spawnAmount")]
+    public float SpawnAmount = 1f;
+
+    [JsonIgnore]
+    public PediaId HenEntry;
+
+    [JsonIgnore]
+    public PediaId ChickEntry;
+
+    [JsonProperty("henIntro")]
+    public string HenIntro;
+
+    [JsonProperty("chickIntro")]
+    public string ChickIntro;
+
+    [OnDeserialized]
+    public void PopulateRemainingValues(StreamingContext _)
+    {
+        FavouredBy = [.. FavouredByJson.Select(Helpers.ParseEnum<IdentifiableId>)];
+        var upper = Name.ToUpper();
+        HenId = Helpers.ParseEnum<IdentifiableId>(upper + "_HEN");
+        ChickId = Helpers.ParseEnum<IdentifiableId>(upper + "_CHICK");
+        HenEntry = Helpers.ParseEnum<PediaId>(upper + "_HEN_ENTRY");
+        ChickEntry = Helpers.ParseEnum<PediaId>(upper + "_CHICK_ENTRY");
+        Group = FoodGroup.MEAT;
+        FoodId = HenId;
+    }
+}
+
+// public sealed class CustomPlantData : CustomFoodData
+// {
+//     [JsonIgnore]
+//     public IdentifiableId PlantId;
+
+//     [JsonProperty("type")]
+//     public string Type;
+
+//     [JsonProperty("intro")]
+//     public string Intro;
+
+//     [JsonProperty("garden")]
+//     public string Garden;
+
+//     [OnDeserialized]
+//     public void PopulateRemainingValues(StreamingContext _)
+//     {
+//         FavouredBy = [.. FavouredByJson.Select(Helpers.ParseEnum<IdentifiableId>)];
+//         var upper = Name.ToUpper();
+//         PlantId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + Type.ToUpper());
+//         Group = Helpers.ParseEnum<FoodGroup>(GroupJson);
+//         FoodId = PlantId;
+//     }
+// }

@@ -89,10 +89,9 @@ public static class SlimeManager
         material.SetColor(MiddleColor, slimeData.MiddlePlortColor.HexToColor());
         material.SetColor(BottomColor, slimeData.BottomPlortColor.HexToColor());
         material.SetColor(SpecColor, slimeData.SpecialPlortColor.HexToColor());
-        var lower = slimeData.PlortType.ToLower();
 
-        if (lower != "crystal") // Crystal is the original shape of a plort, so skip if the plort type is that
-            prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(lower);
+        if (slimeData.PlortType != "Crystal") // Crystal is the original shape of a plort, so skip if the plort type is that
+            prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(slimeData.PlortType);
 
         // Registering the prefab and its id along with any other additional stuff
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
@@ -111,8 +110,9 @@ public static class SlimeManager
 
     private static void CreateSlime(CustomSlimeData slimeData)
     {
-        var baseDefinition = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(slimeData.BaseSlime);
+        var baseDefinition = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(slimeData.BaseSlime); // Finding the base slime definition to go off of
 
+        // Create a copy for our slimes and populate with info
         var definition = baseDefinition.DeepCopy();
         definition.Diet.Produces = [slimeData.PlortId];
         definition.Diet.MajorFoodGroups = [slimeData.Diet];
@@ -124,29 +124,33 @@ public static class SlimeManager
         definition.Name = slimeData.Name + " Slime";
         definition.IdentifiableId = slimeData.SlimeId;
 
+        // Finding the base prefab, copying it and setting our own component values
         var prefab = GameContext.Instance.LookupDirector.GetPrefab(slimeData.BaseSlime).CreatePrefab();
         prefab.name = "slime" + slimeData.Name;
         prefab.GetComponent<PlayWithToys>().slimeDefinition = definition;
         prefab.GetComponent<SlimeEat>().slimeDefinition = definition;
         prefab.GetComponent<Identifiable>().id = slimeData.SlimeId;
+        prefab.GetComponent<Vacuumable>().size = 0;
 
+        // Fetching applicator
         var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
         applicator.SlimeDefinition = definition;
 
+        // Try to remove pink slime food tracker, skip there's no such component
         if (prefab.TryGetComponent<PinkSlimeFoodTypeTracker>(out var tracker))
             tracker.Destroy();
 
-        prefab.GetComponent<Vacuumable>().size = 0;
-        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.SlimeId);
+        var baseAppearance = baseDefinition.AppearancesDefault[0]; // Getting the base appearance
 
-        var baseAppearance = baseDefinition.AppearancesDefault[0];
+        var appearance = baseAppearance.DeepCopy(); // Cloning our own appearance
 
-        var appearance = baseAppearance.DeepCopy();
+        // Caching colors to avoid excessive implicit conversions and creations
         var topMatColor = slimeData.TopSlimeColor.HexToColor();
         var middleMatColor = slimeData.MiddleSlimeColor.HexToColor();
         var bottomMatColor = slimeData.BottomSlimeColor.HexToColor();
         var specialMatColor = slimeData.SpecialSlimeColor.HexToColor();
 
+        // Creating a material for each structure
         foreach (var structure in appearance.Structures)
         {
             if (structure.DefaultMaterials?.Length is null or 0)
@@ -161,6 +165,7 @@ public static class SlimeManager
             material.SetFloat(Gloss, slimeData.Glossiness);
         }
 
+        // Caching colors again for the same reason
         var topMouth = slimeData.TopMouthColor.HexToColor();
         var middleMouth = slimeData.MiddleMouthColor.HexToColor();
         var bottomMouth = slimeData.BottomMouthColor.HexToColor();
@@ -168,6 +173,7 @@ public static class SlimeManager
         var greenEye = slimeData.GreenEyeColor.HexToColor();
         var blueEye = slimeData.BlueEyeColor.HexToColor();
 
+        // Faces stuff
         foreach (var face in appearance.Face.ExpressionFaces)
         {
             if (face.Mouth)
@@ -194,14 +200,14 @@ public static class SlimeManager
         };
 
         appearance.Icon = AssetManager.GetSprite($"{slimeData.Name}Slime");
-        var ammo = slimeData.SlimeAmmoColor.HexToColor();
-        appearance.ColorPalette.Ammo = ammo;
+        appearance.ColorPalette.Ammo = slimeData.SlimeAmmoColor.HexToColor();
         applicator.Appearance = appearance;
 
-        slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance, applicator]);
+        slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance, applicator]); // Slime specific details being put here
 
         definition.AppearancesDefault = [appearance];
 
+        // Tarrs should love these guys
         var tarr = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.TARR_SLIME);
         tarr.Diet.EatMap.Add(new()
         {
@@ -211,11 +217,13 @@ public static class SlimeManager
             extraDrive = 999999f
         });
 
-        var slimeIdName = slimeData.SlimeId.ToString().ToLower();
+        // Register everything
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterSlimeDefinition(definition);
-        LookupRegistry.RegisterVacEntry(slimeData.SlimeId, ammo, appearance.Icon);
+        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.SlimeId);
+        LookupRegistry.RegisterVacEntry(slimeData.SlimeId, appearance.ColorPalette.Ammo, appearance.Icon);
         var title = slimeData.Name + " Slime";
+        var slimeIdName = slimeData.SlimeId.ToString().ToLower();
         TranslationPatcher.AddPediaTranslation("t." + slimeIdName, title);
         TranslationPatcher.AddActorTranslation("l." + slimeIdName, title);
 

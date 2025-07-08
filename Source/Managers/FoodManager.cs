@@ -2,38 +2,49 @@ namespace TheOceanRange.Managers;
 
 public static class FoodManager
 {
-    public static readonly Dictionary<IdentifiableId, CustomFoodData> FoodsMap = [];
+    public static readonly List<CustomFoodData> FoodsMap = [];
+    private static readonly List<CustomChimkenData> Chimkens = [];
+    // private static readonly List<CustomPlantData> Plants = [];
 
     private static readonly int RampRed = Shader.PropertyToID("_RampRed");
     private static readonly int RampGreen = Shader.PropertyToID("_RampGreen");
     private static readonly int RampBlue = Shader.PropertyToID("_RampBlue");
     private static readonly int RampBlack = Shader.PropertyToID("_RampBlack");
+    private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+
+    public static void PreLoadFoodData()
+    {
+        Chimkens.AddRange(AssetManager.GetJson<CustomChimkenData[]>("Chimkenpedia"));
+        // Plants.AddRange(AssetManager.GetJson<CustomPlantData[]>("Plantpedia"));
+        FoodsMap.AddRange(Chimkens);
+        // FoodsMap.AddRange(Plants);
+    }
 
     public static void PreLoadFoods()
     {
-        PreLoadChimkens();
-        PreLoadPlants();
+        Chimkens.ForEach(BasePreLoadChimken);
+        // Plants.ForEach(BasePreloadPlant);
     }
 
-    private static void PreLoadChimkens()
+    private static void BasePreLoadChimken(CustomChimkenData chimkenData)
     {
-        BasePreLoadChimken(Ids.SANDY_HEN, Ids.SANDY_CHICK, [Zone.REEF, Zone.RUINS, Zone.MOSS], 1f);
-    }
+        Identifiable.NON_SLIMES_CLASS.Add(chimkenData.ChickId);
+        Identifiable.NON_SLIMES_CLASS.Add(chimkenData.HenId);
 
-    private static void BasePreLoadChimken(IdentifiableId henId, IdentifiableId chickId, Zone[] spawnZones, float spawnWeight)
-    {
-        Identifiable.NON_SLIMES_CLASS.Add(chickId);
-        Identifiable.NON_SLIMES_CLASS.Add(henId);
+        Identifiable.CHICK_CLASS.Add(chimkenData.ChickId);
+        Identifiable.FOOD_CLASS.Add(chimkenData.HenId);
 
-        Identifiable.CHICK_CLASS.Add(chickId);
-        Identifiable.FOOD_CLASS.Add(henId);
+        var amount = chimkenData.SpawnAmount / 2;
 
         SRCallbacks.PreSaveGameLoad += _ =>
         {
+            var henPrefab = GameContext.Instance.LookupDirector.GetPrefab(chimkenData.HenId);
+            var chickPrefab = GameContext.Instance.LookupDirector.GetPrefab(chimkenData.ChickId);
+
             foreach (var directedAnimalSpawner2 in UObject.FindObjectsOfType<DirectedAnimalSpawner>().Where(spawner =>
             {
                 var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
-                return zoneId == Zone.NONE || spawnZones.Contains(zoneId);
+                return zoneId == Zone.NONE || chimkenData.Zones.Contains(zoneId);
             }))
             {
                 foreach (var constraint in directedAnimalSpawner2.constraints)
@@ -43,13 +54,13 @@ public static class FoodManager
                         .. constraint.slimeset.members,
                         new()
                         {
-                            prefab = GameContext.Instance.LookupDirector.GetPrefab(henId),
-                            weight = spawnWeight / 2
+                            prefab = henPrefab,
+                            weight = amount
                         },
                         new()
                         {
-                            prefab = GameContext.Instance.LookupDirector.GetPrefab(chickId),
-                            weight = spawnWeight / 2
+                            prefab = chickPrefab,
+                            weight = amount
                         }
                     ];
                 }
@@ -57,97 +68,80 @@ public static class FoodManager
         };
     }
 
-    private static void PreLoadPlants()
-    {
-        // BasePreloadPlant(Ids.BLOWTATO_VEGGIE, FoodGroup.VEGGIES);
-    }
-
-    // private static void BasePreloadPlant(IdentifiableId plantId, FoodGroup group)
+    // private static void BasePreloadPlant(CustomPlantData plantData)
     // {
-    //     Identifiable.NON_SLIMES_CLASS.Add(plantId);
-    //     Identifiable.FOOD_CLASS.Add(plantId);
+    //     Identifiable.NON_SLIMES_CLASS.Add(plantData.PlantId);
+    //     Identifiable.FOOD_CLASS.Add(plantData.PlantId);
 
-    //     if (group == FoodGroup.FRUIT)
-    //         Identifiable.FRUIT_CLASS.Add(plantId);
-    //     else if (group == FoodGroup.VEGGIES)
-    //         Identifiable.VEGGIE_CLASS.Add(plantId);
+    //     if (plantData.Group == FoodGroup.FRUIT)
+    //         Identifiable.FRUIT_CLASS.Add(plantData.PlantId);
+    //     else if (plantData.Group == FoodGroup.VEGGIES)
+    //         Identifiable.VEGGIE_CLASS.Add(plantData.PlantId);
     // }
 
     public static void LoadFoods()
     {
-        CreateChimkens(AssetManager.GetJson<Dictionary<string, FoodPediaEntry>>("Chimkenpedia"));
-        CreatePlants(AssetManager.GetJson<Dictionary<string, FoodPediaEntry>>("Plantpedia"));
+        Chimkens.ForEach(BaseCreateChimken);
+        // Plants.ForEach(BaseCreatePlant);
     }
 
     private const string CommonHenRanchPedia = "%type% hens in close proximity to roostros will periodically lay eggs that produce %type% chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.";
     private const string CommonChickAboutPedia = "%type% chickadoos are baby chickens that will eventually grow into a %type% hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.";
     private const string CommonChickRanchPedia = "Keep %type% Chickadoos in a safe place and they'll eventually grow into a %type% Hen or Roostro.";
 
-    private static void CreateChimkens(Dictionary<string, FoodPediaEntry> json)
+    private static void BaseCreateChimken(CustomChimkenData chimkenData)
     {
-        BaseCreateChimken("Sandy", Ids.SANDY_HEN, Ids.SANDY_HEN_ENTRY, json["SANDY_HEN"], Ids.SANDY_CHICK, Ids.SANDY_CHICK_ENTRY, json["SANDY_CHICK"], [Ids.COCOA_SLIME], "#C2B280");
-    }
-
-    private static void BaseCreateChimken
-    (
-        string name,
-        IdentifiableId henId,
-        PediaId henEntry,
-        FoodPediaEntry henJson,
-        IdentifiableId chickId,
-        PediaId chickEntry,
-        FoodPediaEntry chickJson,
-        IdentifiableId[] favouredBy,
-        string ammoColor
-    )
-    {
-        var skin = AssetManager.GetTexture2D($"{name}SkinRamp");
-        var dark = AssetManager.GetTexture2D($"{name}SkinRampDarker");
-        var ammo = ammoColor.HexToColor();
+        var skin = AssetManager.GetTexture2D($"{chimkenData.Name}SkinRamp");
+        var dark = AssetManager.GetTexture2D($"{chimkenData.Name}SkinRampDarker");
+        var ammo = chimkenData.AmmoColor.HexToColor();
 
         var chickPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.CHICK).CreatePrefab();
-        chickPrefab.name = $"{name} Chick";
+        chickPrefab.name = $"birdChick{chimkenData.Name}";
         var component = chickPrefab.transform.Find("Chickadoo/mesh_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
-        var material = UObject.Instantiate(component.sharedMaterial);
+        var material = component.sharedMaterial.Clone();
         material.SetTexture(RampRed, dark);
         material.SetTexture(RampGreen, skin);
         material.SetTexture(RampBlue, skin);
         material.SetTexture(RampBlack, skin);
+        material.SetTexture(MainTex, skin);
         component.sharedMaterial = material;
-        chickPrefab.GetComponent<Identifiable>().id = chickId;
+        chickPrefab.GetComponent<Identifiable>().id = chimkenData.ChickId;
         chickPrefab.GetComponent<Vacuumable>().size = 0;
+
         LookupRegistry.RegisterIdentifiablePrefab(chickPrefab);
-        var chickIcon = AssetManager.GetSprite($"{name}Chick");
-        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, chickId);
-        LookupRegistry.RegisterVacEntry(chickId, ammo, chickIcon);
-        SlimePediaCreation.PreLoadSlimePediaConnection(chickEntry, chickId, PediaCategory.RESOURCES);
-        SlimePediaCreation.CreateSlimePediaForItemWithName(chickEntry, chickJson.Title, chickJson.Intro, "Future Meat", "None", chickJson.About ?? CommonChickAboutPedia.Replace("%type%",
-            name), chickJson.Ranch ?? CommonChickRanchPedia.Replace("%type%", name));
-        PediaRegistry.RegisterIdEntry(chickEntry, chickIcon);
+        var chickIcon = AssetManager.GetSprite($"{chimkenData.Name}Chick");
+        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, chimkenData.ChickId);
+        LookupRegistry.RegisterVacEntry(chimkenData.ChickId, ammo, chickIcon);
+        SlimePediaCreation.PreLoadSlimePediaConnection(chimkenData.ChickEntry, chimkenData.ChickId, PediaCategory.RESOURCES);
+        SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "None",
+            CommonChickAboutPedia.Replace("%type%",  chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
+        PediaRegistry.RegisterIdEntry(chimkenData.ChickEntry, chickIcon);
 
         var henPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.HEN).CreatePrefab();
-        henPrefab.name = $"{name} Chicken";
+        henPrefab.name = $"birdHen{chimkenData.Name}";
         var component2 = henPrefab.transform.Find("Hen Hen/mesh_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
-        var material2 = UObject.Instantiate(component2.sharedMaterial);
+        var material2 = component2.sharedMaterial.Clone();
         material2.SetTexture(RampRed, dark);
         material2.SetTexture(RampGreen, skin);
         material2.SetTexture(RampBlue, skin);
         material2.SetTexture(RampBlack, skin);
+        material.SetTexture(MainTex, skin);
         component2.sharedMaterial = material2;
-        henPrefab.GetComponent<Identifiable>().id = henId;
+        henPrefab.GetComponent<Identifiable>().id = chimkenData.HenId;
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
         henPrefab.GetComponent<Vacuumable>().size = 0;
         var transformChance = henPrefab.GetComponent<TransformChanceOnReproduce>();
         transformChance.targetPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.ELDER_HEN);
         transformChance.transformChance = 2.5f;
+
         LookupRegistry.RegisterIdentifiablePrefab(henPrefab);
-        var henIcon = AssetManager.GetSprite($"{name}Hen");
-        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, henId);
-        LookupRegistry.RegisterVacEntry(henId, ammo, henIcon);
-        SlimePediaCreation.PreLoadSlimePediaConnection(henEntry, henId, PediaCategory.RESOURCES);
-        SlimePediaCreation.CreateSlimePediaForItemWithName(henEntry, henJson.Title, henJson.Intro, "Meat", henJson.FavouredBy, henJson.About, henJson.Ranch ??
-            CommonHenRanchPedia.Replace("%type%", name));
-        PediaRegistry.RegisterIdEntry(henEntry, henIcon);
+        var henIcon = AssetManager.GetSprite($"{chimkenData.Name}Hen");
+        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, chimkenData.HenId);
+        LookupRegistry.RegisterVacEntry(chimkenData.HenId, ammo, henIcon);
+        SlimePediaCreation.PreLoadSlimePediaConnection(chimkenData.HenEntry, chimkenData.HenId, PediaCategory.RESOURCES);
+        SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.HenEntry, chimkenData.Name + " Hen", chimkenData.HenIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
+            CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
+        PediaRegistry.RegisterIdEntry(chimkenData.HenEntry, henIcon);
 
         chickPrefab.GetComponent<TransformAfterTime>().options =
         [
@@ -162,20 +156,14 @@ public static class FoodManager
                 weight = 3.5f
             }
         ];
-
-        FoodsMap[henId] = new()
-        {
-            FavouredBy = favouredBy,
-            Group = FoodGroup.MEAT
-        };
     }
 
     // private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
 
-    private static void CreatePlants(Dictionary<string, FoodPediaEntry> json)
-    {
-        // BaseCreatePlant("Blowtato", Ids.BLOWTATO_VEGGIE, Ids.BLOWTATO_VEGGIE_ENTRY, json["BLOWTATO_VEGGIE"], [Ids.MINE_SLIME], "#FFFFFF", "crop");
-    }
+    // private static void CreatePlants(Dictionary<string, FoodPediaEntry> json)
+    // {
+    //     BaseCreatePlant("Blowtato", Ids.BLOWTATO_VEGGIE, Ids.BLOWTATO_VEGGIE_ENTRY, json["BLOWTATO_VEGGIE"], [Ids.MINE_SLIME], "#FFFFFF", "crop");
+    // }
 
     // private static void BaseCreatePlant
     // (
@@ -190,7 +178,7 @@ public static class FoodManager
     // )
     // {
     //     SlimePediaCreation.PreLoadSlimePediaConnection(plantEntry, plantId, PediaCategory.RESOURCES);
-    //     SlimePediaCreation.CreateSlimePediaForItemWithName(plantEntry, plantJson.Title, plantJson.Intro, type, plantJson.FavouredBy, plantJson.About, plantJson?.Ranch ??
+    //     SlimePediaCreation.CreateSlimePediaForItemWithName(plantEntry, plantJson.Title, plantJson.Intro, type, plantJson.FavouredBy, plantJson.About,
     //         CommonPlantPedia.Replace("%type%", name).Replace("%food%", type));
     //     PediaRegistry.RegisterIdEntry(plantEntry, null);
 

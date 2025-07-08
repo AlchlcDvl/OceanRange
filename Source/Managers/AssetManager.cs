@@ -15,6 +15,7 @@ public static class AssetManager
         [typeof(Sprite)] = ("png", LoadSprite),
         [typeof(TextAsset)] = ("json", LoadText),
         [typeof(Texture2D)] = ("png", LoadTexture),
+        // AudioClip is not currently in use, so implementation for it comes later
     };
 
     public static void FetchAssetNames()
@@ -33,8 +34,6 @@ public static class AssetManager
             }
             else if (!path.Contains(".bundle")) // Skip loading bundles that don't relate to the current platform
                 AddPath(id, path);
-
-            Main.Instance.ConsoleInstance.Log(id);
         }
     }
 
@@ -42,7 +41,7 @@ public static class AssetManager
 
     private static string SanitisePath(this string path, string bundlePath = null)
     {
-        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", ".fbx", ".obj", ".asset", "Slime.Resources.");
+        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", ".fbx", ".obj", ".asset");
 
         if (bundlePath != null)
             path = path.Replace(bundlePath, "");
@@ -75,10 +74,10 @@ public static class AssetManager
                 return result;
         }
 
-        var tType = typeof(T);
-
         if (!UnloadedAssets.TryGetValue(name, out var strings))
-            throw new FileNotFoundException($"{name} of type {tType.Name}");
+            throw new FileNotFoundException(name);
+
+        var tType = typeof(T);
 
         if (AssetTypeExtensions.TryGetValue(tType, out var pair) && strings.TryFinding(x => x.EndsWith($".{pair.Extension}"), out var path))
             result = (T)AddAsset(name, pair.LoadAsset(path));

@@ -1,7 +1,6 @@
-using RichPresence;
-
 namespace TheOceanRange.Utils;
 
+// Obtained this code from SimpleSRmodLibrary, just been optimised to avoid excessive ToString and ToLower overhead
 public static class SlimePediaCreation
 {
     public static void CreateSlimePediaForSlimeWithName(PediaId slimePediaId, string name, string intro, string diet, string favorite, string slimeology, string risks, string plortonomics)
@@ -21,7 +20,7 @@ public static class SlimePediaCreation
     {
         var id = slimePediaId.ToString().ToLower();
         TranslationPatcher.AddPediaTranslation("t." + id, name);
-        TranslationPatcher.AddActorTranslation("l." + id, name);
+        TranslationPatcher.AddActorTranslation("l." + id.Replace("_entry", ""), name);
         TranslationPatcher.AddPediaTranslation("m.intro." + id, intro);
         TranslationPatcher.AddPediaTranslation("m.resource_type." + id, type);
         TranslationPatcher.AddPediaTranslation("m.favored_by." + id, favored);
