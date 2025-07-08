@@ -1,6 +1,6 @@
 namespace TheOceanRange.Modules;
 
-public sealed class CustomFoodData
+public struct CustomFoodData()
 {
     public FoodGroup Group;
     public int FavouriteModifier;

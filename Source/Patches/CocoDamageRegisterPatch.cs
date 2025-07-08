@@ -33,7 +33,7 @@ public static class CocoDamageRegisterPatch
         if (held.TryGetComponent<DamagePlayerOnTouch>(out var component3))
             component3.ResetDamageAmnesty();
 
-        if (held.TryGetComponent<CocoBehaviour>(out var component5))
+        if (held.TryGetComponent<CocoaBehaviour>(out var component5))
             component5.ResetDamageAmnesty();
 
         __instance.lockJoint.connectedBody = null;

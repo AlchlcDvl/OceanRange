@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using SimpleSRmodLibrary.Creation;
 
 namespace TheOceanRange.Managers;
@@ -6,6 +5,7 @@ namespace TheOceanRange.Managers;
 public static class FoodManager
 {
     public static readonly Dictionary<IdentifiableId, CustomFoodData> FoodsMap = [];
+
     private static readonly int RampRed = Shader.PropertyToID("_RampRed");
     private static readonly int RampGreen = Shader.PropertyToID("_RampGreen");
     private static readonly int RampBlue = Shader.PropertyToID("_RampBlue");
@@ -18,7 +18,7 @@ public static class FoodManager
 
     private static void PreLoadChimkens()
     {
-        BasePreLoadChimkens(Ids.SANDY_CHICKEN, Ids.SANDY_CHICK, [Zone.REEF], 1f);
+        BasePreLoadChimkens(Ids.SANDY_HEN, Ids.SANDY_CHICK, [Zone.REEF, Zone.RUINS, Zone.MOSS], 1f);
     }
 
     private static void BasePreLoadChimkens(IdentifiableId henId, IdentifiableId chickId, Zone[] spawnZones, float spawnWeight)
@@ -57,7 +57,7 @@ public static class FoodManager
 
     public static void LoadFoods()
     {
-        var json = JsonConvert.DeserializeObject<Dictionary<string, FoodPediaEntry>>(AssetManager.GetJson("Foodpedia"));
+        var json = AssetManager.GetJson<Dictionary<string, FoodPediaEntry>>("Foodpedia");
         CreateChimkens(json);
         CreatePlants(json);
     }
@@ -68,7 +68,7 @@ public static class FoodManager
 
     private static void CreateChimkens(Dictionary<string, FoodPediaEntry> json)
     {
-        BaseCreateChimken("Sandy", Ids.SANDY_CHICKEN, Ids.SANDY_CHICKEN_ENTRY, json["SANDY_HEN"], Ids.SANDY_CHICK, Ids.SANDY_CHICK_ENTRY, json["SANDY_CHICK"], [Ids.COCO_SLIME], "#C2B280");
+        BaseCreateChimken("Sandy", Ids.SANDY_HEN, Ids.SANDY_HEN_ENTRY, json["SANDY_HEN"], Ids.SANDY_CHICK, Ids.SANDY_CHICK_ENTRY, json["SANDY_CHICK"], [Ids.COCOA_SLIME], "#C2B280");
     }
 
     private static void BaseCreateChimken
@@ -166,13 +166,20 @@ public static class FoodManager
         FoodPediaEntry plantJson,
         IdentifiableId[] favouredBy,
         string ammoColor,
+        FoodGroup group,
         string type
     )
     {
         // VacItemCreation.NewVacItem(0, chickPrefab, plantId, name, null, ammoColor.HexToColor());
         SlimePediaCreation.PreLoadSlimePediaConnection(plantEntry, plantId, PediaCategory.RESOURCES);
-        SlimePediaCreation.CreateSlimePediaForItemWithName(plantEntry, plantId, plantJson.Title, plantJson.Intro, "Future Meat", "None", plantJson.About, plantJson?.Ranch ??
+        SlimePediaCreation.CreateSlimePediaForItemWithName(plantEntry, plantId, plantJson.Title, plantJson.Intro, type, plantJson.FavouredBy, plantJson.About, plantJson?.Ranch ??
             CommonPlantPedia.Replace("%type%", name).Replace("%food%", type));
         SlimePediaCreation.LoadSlimePediaIcon(plantEntry, null);
+
+        FoodsMap[plantId] = new()
+        {
+            FavouredBy = favouredBy,
+            Group = group
+        };
     }
 }

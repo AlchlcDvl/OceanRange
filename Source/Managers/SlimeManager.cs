@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using SimpleSRmodLibrary.Creation;
 using SRML;
 
@@ -22,8 +21,8 @@ public static class SlimeManager
     public static void PreLoadAllSlimes()
     {
         BasePreLoadSlime(Ids.ROSI_SLIME, Ids.ROSI_PLORT, true, 0.25f, [Zone.REEF], "Rosi");
-        BasePreLoadSlime(Ids.COCO_SLIME, Ids.COCO_PLORT, false, 0.25f, [Zone.REEF, Zone.MOSS], "Coco");
         BasePreLoadSlime(Ids.MINE_SLIME, Ids.MINE_PLORT, true, 0.25f, [Zone.QUARRY, Zone.RUINS], "Mine");
+        BasePreLoadSlime(Ids.COCOA_SLIME, Ids.COCOA_PLORT, false, 0.25f, [Zone.REEF, Zone.MOSS], "Cocoa");
         BasePreLoadSlime(Ids.LANTERN_SLIME, Ids.LANTERN_PLORT, true, 0.25f, [Zone.MOSS, Zone.RUINS], "Lantern");
         // BasePreLoadSlime(Ids.SAND_SLIME, Ids.SAND_PLORT, true, 0.25f, [Zone.MOSS, Zone.REEF, Zone.QUARRY], "Sand");
     }
@@ -62,14 +61,14 @@ public static class SlimeManager
     {
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
 
-        var json = JsonConvert.DeserializeObject<Dictionary<string, SlimePediaEntry>>(AssetManager.GetJson("Slimepedia"));
+        var json = AssetManager.GetJson<Dictionary<string, SlimePediaEntry>>("Slimepedia");
 
         BaseLoadSlime("Rosi", Ids.ROSI_SLIME, 0, IdentifiableId.HEN, IdentifiableId.OCTO_BUDDY_TOY, Ids.ROSI_PLORT, 0, false, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, InitRosiDetails,
             true, 1f, 1f, "#F9E5F0", "#E6C7D2", "#F68ED9", "#E6C7D2", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F46CB7",
             "#E6C7D2", "#F9E5F0", 10f, 100f, "#F9E5F0", Ids.ROSI_SLIME_ENTRY, json["ROSI_SLIME"], true, null, []);
-        BaseLoadSlime("Coco", Ids.COCO_SLIME, 0, Ids.SANDY_CHICKEN, IdentifiableId.BEACH_BALL_TOY, Ids.COCO_PLORT, FoodGroup.MEAT, false, IdentifiableId.PINK_SLIME, IdentifiableId.PUDDLE_PLORT,
+        BaseLoadSlime("Cocoa", Ids.COCOA_SLIME, 0, Ids.SANDY_HEN, IdentifiableId.BEACH_BALL_TOY, Ids.COCOA_PLORT, FoodGroup.MEAT, false, IdentifiableId.PINK_SLIME, IdentifiableId.PUDDLE_PLORT,
             null, true, 0.1f, 0.11f, "#FEFCFF", "#A1662F", "#966F33", "#FEFCFF", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#FEFCFF", "#A1662F", "#966F33",
-            "#966F33", "#FEFCFF", "#DCDADD", "#FEFCFF", 20f, 100f, "#FEFCFF", Ids.COCO_SLIME_ENTRY, json["COCO_SLIME"], false, null, []);
+            "#966F33", "#FEFCFF", "#DCDADD", "#FEFCFF", 20f, 100f, "#FEFCFF", Ids.COCOA_SLIME_ENTRY, json["COCO_SLIME"], false, null, []);
         BaseLoadSlime("Mine", Ids.MINE_SLIME, 0, IdentifiableId.CARROT_VEGGIE, IdentifiableId.BOMB_BALL_TOY, Ids.MINE_PLORT, FoodGroup.VEGGIES, false, IdentifiableId.BOOM_SLIME,
             IdentifiableId.BOOM_PLORT, InitMineDetails, true, 1f, 1f, "#445660", "#445660", "#445660", "#445660", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#9EA16f",
             "#445660", "#212A2F", "#9EA16f", "#445660", "#445660", "#445660", 40f, 125f, "#9EA16f", Ids.MINE_SLIME_ENTRY, json["MINE_SLIME"], true, null, [ProgressType.UNLOCK_QUARRY,
@@ -194,13 +193,11 @@ public static class SlimeManager
         var firstStructure = appearance.Structures[0];
         var elemPrefab = firstStructure.Element.Prefabs[0];
 
-        var newStructures = new SlimeAppearanceStructure[meshes.Length];
-        newStructures[0] = firstStructure;
+        appearance.Structures = new SlimeAppearanceStructure[meshes.Length];
+        appearance.Structures[0] = firstStructure;
 
         for (var i = 1; i < meshes.Length; i++)
-            newStructures[i] = new(firstStructure);
-
-        appearance.Structures = newStructures;
+            appearance.Structures[i] = new(firstStructure);
 
         SlimeAppearanceObject slimeBase = null;
         var prefabsForBoneData = new SlimeAppearanceObject[meshes.Length - 1];
@@ -255,7 +252,7 @@ public static class SlimeManager
         );
     }
 
-    // Coco mesh doesn't work atm
+    // Cocoa mesh doesn't work atm
     // private static void InitCocoDetails(GameObject prefab, SlimeDefinition definition) => BasicInitSlimeAppearance
     // (
     //     prefab, definition, ["coco_body", "coco_brows"],

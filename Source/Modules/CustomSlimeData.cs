@@ -1,6 +1,6 @@
 ﻿namespace TheOceanRange.Modules;
 
-public sealed class CustomSlimeData
+public struct CustomSlimeData
 {
     public IdentifiableId GordoId;
     public IdentifiableId BaitId;

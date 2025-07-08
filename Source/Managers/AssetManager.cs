@@ -1,4 +1,5 @@
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace TheOceanRange.Managers;
 
@@ -12,8 +13,8 @@ public static class AssetManager
     private static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         [typeof(Sprite)] = ("png", LoadSprite),
+        [typeof(TextAsset)] = ("json", LoadText),
         [typeof(Texture2D)] = ("png", LoadTexture),
-        [typeof(JsonTextAsset)] = ("json", LoadJson),
     };
 
     public static void FetchAssetNames()
@@ -49,11 +50,11 @@ public static class AssetManager
         return path.TrueSplit('.').Last();
     }
 
-    public static JsonTextAsset GetJson(string path) => Get<JsonTextAsset>(path);
+    public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<TextAsset>(path).text);
 
     public static Texture2D GetTexture2D(string path) => Get<Texture2D>(path);
 
-    public static AudioClip GetAudio(string path) => Get<AudioClip>(path);
+    // public static AudioClip GetAudio(string path) => Get<AudioClip>(path);
 
     public static Sprite GetSprite(string path) => Get<Sprite>(path);
 
@@ -129,7 +130,7 @@ public static class AssetManager
         value.Add(path);
     }
 
-    private static JsonTextAsset LoadJson(string path)
+    private static TextAsset LoadText(string path)
     {
         using var stream = Core.GetManifestResourceStream(path)!;
         using var reader = new StreamReader(stream);

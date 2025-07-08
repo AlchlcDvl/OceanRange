@@ -5,7 +5,7 @@ namespace TheOceanRange.Slimes;
 // Replicated version of Boom slime's explosion behaviour
 public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListener
 {
-    private enum ExplodeState
+    private enum ExplodeState : byte
     {
         Idle,
         Preparing,
@@ -25,7 +25,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     private float NextExplodeDelayTime = MaxDelay;
     private SlimeFaceAnimator SfAnimator;
     private CalmedByWaterSpray Calmed;
-    private SlimeAppearanceApplicator SlimeAppearanceApplicator;
+    private SlimeAppearanceApplicator Applicator;
     private ExplodeIndicatorMarker Marker;
     private bool Contact;
     private ExplodeState State;
@@ -35,13 +35,21 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         base.Awake();
         SfAnimator = GetComponent<SlimeFaceAnimator>();
         Calmed = GetComponent<CalmedByWaterSpray>();
-        SlimeAppearanceApplicator = GetComponent<SlimeAppearanceApplicator>();
+        Applicator = GetComponent<SlimeAppearanceApplicator>();
         Marker = GetComponentsInChildren<ExplodeIndicatorMarker>(true)[0];
 
-        if (SlimeAppearanceApplicator.Appearance != null)
-            ExplodeFX = SlimeAppearanceApplicator.Appearance.ExplosionAppearance.explodeFx;
+        if (Applicator.Appearance != null)
+            ExplodeFX = Applicator.Appearance.ExplosionAppearance.explodeFx;
 
-        SlimeAppearanceApplicator.OnAppearanceChanged += appearance => ExplodeFX = appearance.ExplosionAppearance.explodeFx;
+        Applicator.OnAppearanceChanged += OnAppearanceChanged;
+    }
+
+    private void OnAppearanceChanged(SlimeAppearance newAppearance) => ExplodeFX = newAppearance.ExplosionAppearance.explodeFx;
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        Applicator.OnAppearanceChanged -= OnAppearanceChanged;
     }
 
     public override void OnEnable()

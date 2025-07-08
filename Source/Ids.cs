@@ -11,9 +11,9 @@ public static class Ids
     public static readonly IdentifiableId ROSI_PLORT;
     public static readonly PediaId ROSI_SLIME_ENTRY;
 
-    public static readonly IdentifiableId COCO_SLIME;
-    public static readonly IdentifiableId COCO_PLORT;
-    public static readonly PediaId COCO_SLIME_ENTRY;
+    public static readonly IdentifiableId COCOA_SLIME;
+    public static readonly IdentifiableId COCOA_PLORT;
+    public static readonly PediaId COCOA_SLIME_ENTRY;
 
     public static readonly IdentifiableId MINE_SLIME;
     public static readonly IdentifiableId MINE_PLORT;
@@ -29,8 +29,8 @@ public static class Ids
 
     // public static readonly Zone SWIRLPOOL;
 
-	public static readonly IdentifiableId SANDY_CHICKEN;
-	public static readonly PediaId SANDY_CHICKEN_ENTRY;
+	public static readonly IdentifiableId SANDY_HEN;
+	public static readonly PediaId SANDY_HEN_ENTRY;
 
 	public static readonly IdentifiableId SANDY_CHICK;
 	public static readonly PediaId SANDY_CHICK_ENTRY;
