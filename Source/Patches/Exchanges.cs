@@ -12,12 +12,12 @@ public static class CreateExchanges
             {
                 new()
                 {
-                    id = x.Key,
+                    id = x.SlimeId,
                     value = 18f
                 },
                 new()
                 {
-                    id = x.Value.PlortId,
+                    id = x.PlortId,
                     value = 16f
                 }
             }),

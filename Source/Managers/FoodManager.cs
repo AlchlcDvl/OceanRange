@@ -1,5 +1,3 @@
-using SimpleSRmodLibrary.Creation;
-
 namespace TheOceanRange.Managers;
 
 public static class FoodManager
@@ -14,17 +12,21 @@ public static class FoodManager
     public static void PreLoadFoods()
     {
         PreLoadChimkens();
+        PreLoadPlants();
     }
 
     private static void PreLoadChimkens()
     {
-        BasePreLoadChimkens(Ids.SANDY_HEN, Ids.SANDY_CHICK, [Zone.REEF, Zone.RUINS, Zone.MOSS], 1f);
+        BasePreLoadChimken(Ids.SANDY_HEN, Ids.SANDY_CHICK, [Zone.REEF, Zone.RUINS, Zone.MOSS], 1f);
     }
 
-    private static void BasePreLoadChimkens(IdentifiableId henId, IdentifiableId chickId, Zone[] spawnZones, float spawnWeight)
+    private static void BasePreLoadChimken(IdentifiableId henId, IdentifiableId chickId, Zone[] spawnZones, float spawnWeight)
     {
-        Identifiable.CHICK_CLASS.Add(chickId);
         Identifiable.NON_SLIMES_CLASS.Add(chickId);
+        Identifiable.NON_SLIMES_CLASS.Add(henId);
+
+        Identifiable.CHICK_CLASS.Add(chickId);
+        Identifiable.FOOD_CLASS.Add(henId);
 
         SRCallbacks.PreSaveGameLoad += _ =>
         {
@@ -55,11 +57,26 @@ public static class FoodManager
         };
     }
 
+    private static void PreLoadPlants()
+    {
+        // BasePreloadPlant(Ids.BLOWTATO_VEGGIE, FoodGroup.VEGGIES);
+    }
+
+    // private static void BasePreloadPlant(IdentifiableId plantId, FoodGroup group)
+    // {
+    //     Identifiable.NON_SLIMES_CLASS.Add(plantId);
+    //     Identifiable.FOOD_CLASS.Add(plantId);
+
+    //     if (group == FoodGroup.FRUIT)
+    //         Identifiable.FRUIT_CLASS.Add(plantId);
+    //     else if (group == FoodGroup.VEGGIES)
+    //         Identifiable.VEGGIE_CLASS.Add(plantId);
+    // }
+
     public static void LoadFoods()
     {
-        var json = AssetManager.GetJson<Dictionary<string, FoodPediaEntry>>("Foodpedia");
-        CreateChimkens(json);
-        CreatePlants(json);
+        CreateChimkens(AssetManager.GetJson<Dictionary<string, FoodPediaEntry>>("Chimkenpedia"));
+        CreatePlants(AssetManager.GetJson<Dictionary<string, FoodPediaEntry>>("Plantpedia"));
     }
 
     private const string CommonHenRanchPedia = "%type% hens in close proximity to roostros will periodically lay eggs that produce %type% chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.";
@@ -98,14 +115,15 @@ public static class FoodManager
         material.SetTexture(RampBlack, skin);
         component.sharedMaterial = material;
         chickPrefab.GetComponent<Identifiable>().id = chickId;
+        chickPrefab.GetComponent<Vacuumable>().size = 0;
         LookupRegistry.RegisterIdentifiablePrefab(chickPrefab);
-        CropCreation.LoadCrop(chickId, chickPrefab, true, false, false);
         var chickIcon = AssetManager.GetSprite($"{name}Chick");
-        VacItemCreation.NewVacItem(0, chickPrefab, chickId, $"{name} Chick", chickIcon, ammo);
+        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, chickId);
+        LookupRegistry.RegisterVacEntry(chickId, ammo, chickIcon);
         SlimePediaCreation.PreLoadSlimePediaConnection(chickEntry, chickId, PediaCategory.RESOURCES);
-        SlimePediaCreation.CreateSlimePediaForItemWithName(chickEntry, chickId, chickJson.Title, chickJson.Intro, "Future Meat", "None", chickJson.About ?? CommonChickAboutPedia.Replace("%type%",
+        SlimePediaCreation.CreateSlimePediaForItemWithName(chickEntry, chickJson.Title, chickJson.Intro, "Future Meat", "None", chickJson.About ?? CommonChickAboutPedia.Replace("%type%",
             name), chickJson.Ranch ?? CommonChickRanchPedia.Replace("%type%", name));
-        SlimePediaCreation.LoadSlimePediaIcon(chickEntry, chickIcon);
+        PediaRegistry.RegisterIdEntry(chickEntry, chickIcon);
 
         var henPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.HEN).CreatePrefab();
         henPrefab.name = $"{name} Chicken";
@@ -118,17 +136,18 @@ public static class FoodManager
         component2.sharedMaterial = material2;
         henPrefab.GetComponent<Identifiable>().id = henId;
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
+        henPrefab.GetComponent<Vacuumable>().size = 0;
         var transformChance = henPrefab.GetComponent<TransformChanceOnReproduce>();
         transformChance.targetPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.ELDER_HEN);
         transformChance.transformChance = 2.5f;
         LookupRegistry.RegisterIdentifiablePrefab(henPrefab);
-        CropCreation.LoadCrop(henId, henPrefab, false, false, false, true);
         var henIcon = AssetManager.GetSprite($"{name}Hen");
-        VacItemCreation.NewVacItem(0, henPrefab, henId, $"{name} Hen", henIcon, ammo);
+        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, henId);
+        LookupRegistry.RegisterVacEntry(henId, ammo, henIcon);
         SlimePediaCreation.PreLoadSlimePediaConnection(henEntry, henId, PediaCategory.RESOURCES);
-        SlimePediaCreation.CreateSlimePediaForItemWithName(henEntry, henId, henJson.Title, henJson.Intro, "Meat", henJson.FavouredBy, henJson.About, henJson.Ranch ??
+        SlimePediaCreation.CreateSlimePediaForItemWithName(henEntry, henJson.Title, henJson.Intro, "Meat", henJson.FavouredBy, henJson.About, henJson.Ranch ??
             CommonHenRanchPedia.Replace("%type%", name));
-        SlimePediaCreation.LoadSlimePediaIcon(henEntry, henIcon);
+        PediaRegistry.RegisterIdEntry(henEntry, henIcon);
 
         chickPrefab.GetComponent<TransformAfterTime>().options =
         [
@@ -151,35 +170,34 @@ public static class FoodManager
         };
     }
 
-    private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
+    // private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
 
     private static void CreatePlants(Dictionary<string, FoodPediaEntry> json)
     {
         // BaseCreatePlant("Blowtato", Ids.BLOWTATO_VEGGIE, Ids.BLOWTATO_VEGGIE_ENTRY, json["BLOWTATO_VEGGIE"], [Ids.MINE_SLIME], "#FFFFFF", "crop");
     }
 
-    private static void BaseCreatePlant
-    (
-        string name,
-        IdentifiableId plantId,
-        PediaId plantEntry,
-        FoodPediaEntry plantJson,
-        IdentifiableId[] favouredBy,
-        string ammoColor,
-        FoodGroup group,
-        string type
-    )
-    {
-        // VacItemCreation.NewVacItem(0, chickPrefab, plantId, name, null, ammoColor.HexToColor());
-        SlimePediaCreation.PreLoadSlimePediaConnection(plantEntry, plantId, PediaCategory.RESOURCES);
-        SlimePediaCreation.CreateSlimePediaForItemWithName(plantEntry, plantId, plantJson.Title, plantJson.Intro, type, plantJson.FavouredBy, plantJson.About, plantJson?.Ranch ??
-            CommonPlantPedia.Replace("%type%", name).Replace("%food%", type));
-        SlimePediaCreation.LoadSlimePediaIcon(plantEntry, null);
+    // private static void BaseCreatePlant
+    // (
+    //     string name,
+    //     IdentifiableId plantId,
+    //     PediaId plantEntry,
+    //     FoodPediaEntry plantJson,
+    //     IdentifiableId[] favouredBy,
+    //     string ammoColor,
+    //     FoodGroup group,
+    //     string type
+    // )
+    // {
+    //     SlimePediaCreation.PreLoadSlimePediaConnection(plantEntry, plantId, PediaCategory.RESOURCES);
+    //     SlimePediaCreation.CreateSlimePediaForItemWithName(plantEntry, plantJson.Title, plantJson.Intro, type, plantJson.FavouredBy, plantJson.About, plantJson?.Ranch ??
+    //         CommonPlantPedia.Replace("%type%", name).Replace("%food%", type));
+    //     PediaRegistry.RegisterIdEntry(plantEntry, null);
 
-        FoodsMap[plantId] = new()
-        {
-            FavouredBy = favouredBy,
-            Group = group
-        };
-    }
+    //     FoodsMap[plantId] = new()
+    //     {
+    //         FavouredBy = favouredBy,
+    //         Group = group
+    //     };
+    // }
 }

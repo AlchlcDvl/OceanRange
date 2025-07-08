@@ -2,44 +2,23 @@ using Newtonsoft.Json;
 
 namespace TheOceanRange.Modules;
 
-public abstract class PediaEntry
+public sealed class FoodPediaEntry
 {
     [JsonProperty("title"), JsonRequired]
-    public string Title { get; set; }
+    public string Title;
 
     [JsonProperty("intro"), JsonRequired]
-    public string Intro { get; set; }
-}
+    public string Intro;
 
-public sealed class SlimePediaEntry : PediaEntry
-{
-    [JsonProperty("diet"), JsonRequired]
-    public string Diet { get; set; }
-
-    [JsonProperty("fav"), JsonRequired]
-    public string Fav { get; set; }
-
-    [JsonProperty("slimeology"), JsonRequired]
-    public string Slimeology { get; set; }
-
-    [JsonProperty("risks"), JsonRequired]
-    public string Risks { get; set; }
-
-    [JsonProperty("plortonomics"), JsonRequired]
-    public string Plortonomics { get; set; }
-}
-
-public sealed class FoodPediaEntry : PediaEntry
-{
     [JsonProperty("type")]
-    public string Type { get; set; }
+    public string Type;
 
     [JsonProperty("favouredBy")]
-    public string FavouredBy { get; set; }
+    public string FavouredBy;
 
     [JsonProperty("about")]
-    public string About { get; set; }
+    public string About;
 
     [JsonProperty("ranch")]
-    public string Ranch { get; set; }
+    public string Ranch;
 }

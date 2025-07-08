@@ -2,7 +2,8 @@
     "id": "ocean.range",
     "name": "The Ocean Range",
     "version": "0.0.1",
-    "author": "TheRanchExchange",
+    "author": "AlchlcSystm, LoyalRancher",
     "description": "Explore the slime sea!",
-    "load_after": ["slimesandmarket", "assetslib", "SimpleSRmodLibrary"]
+    "dependencies": ["assetslib 1.2.6"],
+    "load_after": ["slimesandmarket"]
 }

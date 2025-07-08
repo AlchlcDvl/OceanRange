@@ -1,12 +1,11 @@
 using System.Reflection;
-using SimpleSRmodLibrary;
 
 namespace TheOceanRange.Patches;
 
 [HarmonyPatch(typeof(WeaponVacuum), "ExpelHeld")]
 public static class CocoDamageRegisterPatch
 {
-    private static MethodInfo EnsureNotShootingIntoRock = AccessTools.Method(typeof(WeaponVacuum), "EnsureNotShootingIntoRock");
+    private static readonly MethodInfo EnsureNotShootingIntoRock = AccessTools.Method(typeof(WeaponVacuum), "EnsureNotShootingIntoRock");
 
     public static bool Prefix(WeaponVacuum __instance)
     {
@@ -38,10 +37,9 @@ public static class CocoDamageRegisterPatch
 
         __instance.lockJoint.connectedBody = null;
         __instance.SetField("held", null);
-        __instance.InvokePrivateMethod("SetHeldRad", 0f);
-        var component4 = held.GetComponent<Identifiable>();
+        __instance.InvokeMethod("SetHeldRad", 0f);
 
-        if (component4 != null && Identifiable.IsTarr(component4.id))
+        if (held.TryGetComponent<Identifiable>(out var component4) && Identifiable.IsTarr(component4.id))
         {
             var val = (int)Math.Floor((__instance.GetPrivateField<TimeDirector>("timeDir").WorldTime() -  __instance.GetPrivateField<double>("heldStartTime")) * 0.01666666753590107);
             __instance.GetPrivateField<AchievementsDirector>("achieveDir").MaybeUpdateMaxStat(AchievementsDirector.IntStat.EXTENDED_TARR_HOLD, val);
@@ -49,7 +47,7 @@ public static class CocoDamageRegisterPatch
 
         __instance.SetField("heldStartTime", double.NaN);
         __instance.SetField("launchedHeld", true);
-        __instance.InvokePrivateMethod("ShootEffect");
+        __instance.InvokeMethod("ShootEffect");
         return false;
     }
 }

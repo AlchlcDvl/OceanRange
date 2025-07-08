@@ -20,7 +20,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="Libs\*.dll" />
+        <Reference Include="..\Libs\*.dll" />
         <Reference Include="$(MSBuildThisFileDirectory)/Test/SRML/Libs\*.dll" />
         <Reference Include="$(MSBuildThisFileDirectory)/Test/SlimeRancher_Data\Managed\*.dll" />
         <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" />

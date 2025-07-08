@@ -1,4 +1,3 @@
-using SimpleSRmodLibrary.Creation;
 using SRML;
 
 namespace TheOceanRange.Managers;
@@ -7,7 +6,7 @@ namespace TheOceanRange.Managers;
 // TODO: Create Rosi gordo at -10.6085 4.6748 17.2529
 public static class SlimeManager
 {
-    public static readonly Dictionary<IdentifiableId, CustomSlimeData> SlimesMap = [];
+    public static readonly List<CustomSlimeData> SlimesMap = [];
     private static bool SamExists;
 
     private static readonly int TopColor = Shader.PropertyToID("_TopColor");
@@ -17,28 +16,35 @@ public static class SlimeManager
     private static readonly int Shininess = Shader.PropertyToID("_Shininess");
     private static readonly int Gloss = Shader.PropertyToID("_Gloss");
     private static readonly int StripeTexture = Shader.PropertyToID("_StripeTexture");
+    private static readonly int MouthTop = Shader.PropertyToID("_MouthTop");
+    private static readonly int MouthMid = Shader.PropertyToID("_MouthMid");
+    private static readonly int MouthBot = Shader.PropertyToID("_MouthBot");
+    private static readonly int EyeRed = Shader.PropertyToID("_EyeRed");
+    private static readonly int EyeGreen = Shader.PropertyToID("_EyeGreen");
+    private static readonly int EyeBlue = Shader.PropertyToID("_EyeBlue");
 
-    public static void PreLoadAllSlimes()
+    public static void PreLoadSlimeData()
     {
-        BasePreLoadSlime(Ids.ROSI_SLIME, Ids.ROSI_PLORT, true, 0.25f, [Zone.REEF], "Rosi");
-        BasePreLoadSlime(Ids.MINE_SLIME, Ids.MINE_PLORT, true, 0.25f, [Zone.QUARRY, Zone.RUINS], "Mine");
-        BasePreLoadSlime(Ids.COCOA_SLIME, Ids.COCOA_PLORT, false, 0.25f, [Zone.REEF, Zone.MOSS], "Cocoa");
-        BasePreLoadSlime(Ids.LANTERN_SLIME, Ids.LANTERN_PLORT, true, 0.25f, [Zone.MOSS, Zone.RUINS], "Lantern");
-        // BasePreLoadSlime(Ids.SAND_SLIME, Ids.SAND_PLORT, true, 0.25f, [Zone.MOSS, Zone.REEF, Zone.QUARRY], "Sand");
+        SamExists = SRModLoader.IsModPresent("slimesandmarket");
+        SlimesMap.AddRange(AssetManager.GetJson<CustomSlimeData[]>("Slimepedia"));
     }
 
-    private static void BasePreLoadSlime(IdentifiableId slimeId, IdentifiableId plortId, bool isPearl, float spawnAmount, Zone[] zones, string slimeName)
+    public static void PreLoadAllSlimes() => SlimesMap.ForEach(BasePreLoadSlime);
+
+    private static void BasePreLoadSlime(CustomSlimeData slimeData)
     {
-        PlortCreation.PlortPreLoad(plortId, $"{slimeName} {(isPearl ? "Pearl" : "Plort")}", false);
+        Identifiable.PLORT_CLASS.Add(slimeData.PlortId);
+        Identifiable.NON_SLIMES_CLASS.Add(slimeData.PlortId);
+        Identifiable.SLIME_CLASS.Add(slimeData.SlimeId);
 
         SRCallbacks.PreSaveGameLoad += delegate
         {
-            var prefab = GameContext.Instance.LookupDirector.GetPrefab(slimeId);
+            var prefab = GameContext.Instance.LookupDirector.GetPrefab(slimeData.SlimeId);
 
             foreach (var item in UObject.FindObjectsOfType<DirectedSlimeSpawner>().Where(spawner =>
             {
                 var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
-                return zoneId == Zone.NONE || zones.Contains(zoneId);
+                return zoneId == Zone.NONE || slimeData.Zones.Contains(zoneId);
             }))
             {
                 foreach (var constraint in item.constraints)
@@ -49,7 +55,7 @@ public static class SlimeManager
                         new()
                         {
                             prefab = prefab,
-                            weight = spawnAmount
+                            weight = slimeData.SpawnAmount
                         }
                     ];
                 }
@@ -57,110 +63,166 @@ public static class SlimeManager
         };
     }
 
-    public static void LoadAllSlimes()
+    public static void LoadAllSlimes() => SlimesMap.ForEach(BaseLoadSlime);
+
+    private static void BaseLoadSlime(CustomSlimeData slimeData)
     {
-        SamExists = SRModLoader.IsModPresent("slimesandmarket");
-
-        var json = AssetManager.GetJson<Dictionary<string, SlimePediaEntry>>("Slimepedia");
-
-        BaseLoadSlime("Rosi", Ids.ROSI_SLIME, 0, IdentifiableId.HEN, IdentifiableId.OCTO_BUDDY_TOY, Ids.ROSI_PLORT, 0, false, IdentifiableId.PINK_SLIME, IdentifiableId.PINK_PLORT, InitRosiDetails,
-            true, 1f, 1f, "#F9E5F0", "#E6C7D2", "#F68ED9", "#E6C7D2", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F9E5F0", "#F46CB7",
-            "#E6C7D2", "#F9E5F0", 10f, 100f, "#F9E5F0", Ids.ROSI_SLIME_ENTRY, json["ROSI_SLIME"], true, null, []);
-        BaseLoadSlime("Cocoa", Ids.COCOA_SLIME, 0, Ids.SANDY_HEN, IdentifiableId.BEACH_BALL_TOY, Ids.COCOA_PLORT, FoodGroup.MEAT, false, IdentifiableId.PINK_SLIME, IdentifiableId.PUDDLE_PLORT,
-            null, true, 0.1f, 0.11f, "#FEFCFF", "#A1662F", "#966F33", "#FEFCFF", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#FEFCFF", "#A1662F", "#966F33",
-            "#966F33", "#FEFCFF", "#DCDADD", "#FEFCFF", 20f, 100f, "#FEFCFF", Ids.COCOA_SLIME_ENTRY, json["COCO_SLIME"], false, null, []);
-        BaseLoadSlime("Mine", Ids.MINE_SLIME, 0, IdentifiableId.CARROT_VEGGIE, IdentifiableId.BOMB_BALL_TOY, Ids.MINE_PLORT, FoodGroup.VEGGIES, false, IdentifiableId.BOOM_SLIME,
-            IdentifiableId.BOOM_PLORT, InitMineDetails, true, 1f, 1f, "#445660", "#445660", "#445660", "#445660", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#9EA16f",
-            "#445660", "#212A2F", "#9EA16f", "#445660", "#445660", "#445660", 40f, 125f, "#9EA16f", Ids.MINE_SLIME_ENTRY, json["MINE_SLIME"], true, null, [ProgressType.UNLOCK_QUARRY,
-            ProgressType.UNLOCK_RUINS]);
-        BaseLoadSlime("Lantern", Ids.LANTERN_SLIME, 0, IdentifiableId.ROOSTER, IdentifiableId.NIGHT_LIGHT_TOY, Ids.LANTERN_PLORT, FoodGroup.MEAT, false, IdentifiableId.PINK_SLIME,
-            IdentifiableId.PHOSPHOR_PLORT, InitLanternDetails, true, 1f, 1f, "#752C86", "#9445A7", "#B15EC8", "#752C86", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#752C86",
-            "#EBDB6A", "#B15EC8", "#B15EC8", "#B15EC8", "#EBDB6A", "#752C86", 35f, 125f, "#752C86", Ids.LANTERN_SLIME_ENTRY, json["LANTERN_SLIME"], true, null, [ProgressType.UNLOCK_MOSS,
-            ProgressType.UNLOCK_RUINS]);
-        // BaseLoadSlime("Sand", Ids.LANTERN_SLIME, 0, IdentifiableId.ROOSTER, IdentifiableId.NIGHT_LIGHT_TOY, Ids.LANTERN_PLORT, FoodGroup.MEAT, false, IdentifiableId.PHOSPHOR_SLIME,
-        //     IdentifiableId.PHOSPHOR_SLIME, InitLanternDetails, true, 1f, 1f, "#445660", "#445660", "#445660", "#445660", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#9EA16f",
-        //     "#445660", "#212A2F", "#9EA16f", "#445660", "#445660", "#445660", 95f, 125f, "#9EA16f", Ids.MINE_SLIME_ENTRY, json["MINE_SLIME"], true, null, [ProgressType.UNLOCK_QUARRY,
-        //     ProgressType.UNLOCK_RUINS]); // WIP
-    }
-
-    private static void BaseLoadSlime
-    (
-        string name,
-        IdentifiableId slimeId,
-        IdentifiableId gordoId,
-        IdentifiableId favFood,
-        IdentifiableId favToy,
-        IdentifiableId plortId,
-        FoodGroup diet,
-        bool canLargofy,
-        IdentifiableId baseSlime,
-        IdentifiableId basePlort,
-        Action<GameObject, SlimeDefinition> initSlimeDetails,
-        bool canBeEatenByTarr,
-        float shininess,
-        float glossiness,
-        string topColorBase,
-        string middleColorBase,
-        string bottomColorBase,
-        string specialColorBase,
-        string topColorMouth,
-        string middleColorMouth,
-        string bottomColorMouth,
-        string redEyeColor,
-        string greenEyeColor,
-        string blueEyeColor,
-        string topPaletteColor,
-        string middlePaletteColor,
-        string bottomPaletteColor,
-        string slimeAmmoColor,
-        string topPlortColor,
-        string middlePlortColor,
-        string bottomPlortColor,
-        float basePlortPrice,
-        float saturation,
-        string plortAmmoColor,
-        PediaId entry,
-        SlimePediaEntry json,
-        bool isPearl,
-        Action<GameObject> initPlortDetails,
-        ProgressType[] progress
-    )
-    {
-        var plort = PlortCreation.CreatePlort($"{name} {(isPearl ? "Pearl" : "Plort")}", plortId, 0, middlePlortColor.HexToColor32(), topPlortColor.HexToColor(), bottomPlortColor.HexToColor(),
-            basePlort);
-
-        if (isPearl)
-            plort.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh("pearl");
-
-        initPlortDetails?.Invoke(plort);
-        PlortCreation.PlortLoad(plortId, basePlortPrice, saturation, plort, AssetManager.GetSprite($"{name}Plort"), plortAmmoColor.HexToColor32(), true, true, progress);
-
-        var icon = AssetManager.GetSprite($"{name}Slime");
-
-        var tuple = SlimeCreation.SlimeBaseCreate(slimeId, $"{name.ToLower()}_slime", json.Title, $"slime{name}", json.Title, baseSlime, baseSlime, baseSlime, baseSlime, diet, favFood,
-            IdentifiableId.SPICY_TOFU, favToy, plortId, canLargofy, icon, 0, canBeEatenByTarr, shininess, glossiness, topColorBase.HexToColor32(), middleColorBase.HexToColor32(),
-            bottomColorBase.HexToColor32(), specialColorBase.HexToColor32(), topColorMouth.HexToColor32(), middleColorMouth.HexToColor32(), bottomColorMouth.HexToColor32(),
-            redEyeColor.HexToColor32(), greenEyeColor.HexToColor32(), blueEyeColor.HexToColor32(), topPaletteColor.HexToColor32(), middlePaletteColor.HexToColor32(),
-            bottomPaletteColor.HexToColor32(), slimeAmmoColor.HexToColor32());
-        var (definition, prefab) = tuple;
-        initSlimeDetails?.Invoke(prefab, definition);
-        SlimeCreation.LoadSlime(tuple);
-
-        Identifiable.SLIME_CLASS.Add(slimeId);
-
-        SlimesMap[slimeId] = new()
-        {
-            GordoId = gordoId,
-            BaitId = favFood,
-            PlortId = plortId,
-        };
-
-        SlimePediaCreation.PreLoadSlimePediaConnection(entry, slimeId, PediaCategory.SLIMES);
-        SlimePediaCreation.CreateSlimePediaForSlimeWithName(entry, slimeId, json.Title, json.Intro, json.Diet, json.Fav, json.Slimeology, json.Risks, json.Plortonomics);
-        SlimePediaCreation.LoadSlimePediaIcon(entry, icon);
+        CreatePlort(slimeData);
+        CreateSlime(slimeData);
 
         if (SamExists)
-            TypeLoadExceptionBypass(slimeId, plortId, progress);
+            TypeLoadExceptionBypass(slimeData.SlimeId, slimeData.PlortId, slimeData.Progress);
+    }
+
+    private static void CreatePlort(CustomSlimeData slimeData)
+    {
+        // First create a prefab and set details
+        var prefab = GameContext.Instance.LookupDirector.GetPrefab(slimeData.BasePlort).CreatePrefab();
+        prefab.name = "plort" + slimeData.Name;
+        prefab.GetComponent<Identifiable>().id = slimeData.PlortId;
+        prefab.GetComponent<Vacuumable>().size = 0;
+
+        // Next set up the mesh and material details
+        var meshRend = prefab.GetComponent<MeshRenderer>();
+        var material = meshRend.material = meshRend.material.Clone();
+        material.SetColor(TopColor, slimeData.TopPlortColor.HexToColor());
+        material.SetColor(MiddleColor, slimeData.MiddlePlortColor.HexToColor());
+        material.SetColor(BottomColor, slimeData.BottomPlortColor.HexToColor());
+        material.SetColor(SpecColor, slimeData.SpecialPlortColor.HexToColor());
+        var lower = slimeData.PlortType.ToLower();
+
+        if (lower != "crystal") // Crystal is the original shape of a plort, so skip if the plort type is that
+            prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(lower);
+
+        // Registering the prefab and its id along with any other additional stuff
+        LookupRegistry.RegisterIdentifiablePrefab(prefab);
+        PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
+        TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLower(), $"{slimeData.Name} {slimeData.PlortType}");
+        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
+        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.HexToColor(), AssetManager.GetSprite($"{slimeData.Name}Plort"));
+        AmmoRegistry.RegisterSiloAmmo(x => x is SiloStorage.StorageType.NON_SLIMES or SiloStorage.StorageType.PLORT, slimeData.PlortId);
+        PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePlortPrice, slimeData.Saturation);
+        PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
+        DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
+
+        if (slimeData.CanBeRefined)
+            AmmoRegistry.RegisterRefineryResource(slimeData.PlortId);
+    }
+
+    private static void CreateSlime(CustomSlimeData slimeData)
+    {
+        var baseDefinition = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(slimeData.BaseSlime);
+
+        var definition = baseDefinition.DeepCopy();
+        definition.Diet.Produces = [slimeData.PlortId];
+        definition.Diet.MajorFoodGroups = [slimeData.Diet];
+        definition.Diet.AdditionalFoods = [IdentifiableId.SPICY_TOFU];
+        definition.Diet.Favorites = [slimeData.FavFood];
+        definition.Diet.EatMap?.Clear();
+        definition.CanLargofy = slimeData.CanLargofy;
+        definition.FavoriteToys = [slimeData.FavToy];
+        definition.Name = slimeData.Name + " Slime";
+        definition.IdentifiableId = slimeData.SlimeId;
+
+        var prefab = GameContext.Instance.LookupDirector.GetPrefab(slimeData.BaseSlime).CreatePrefab();
+        prefab.name = "slime" + slimeData.Name;
+        prefab.GetComponent<PlayWithToys>().slimeDefinition = definition;
+        prefab.GetComponent<SlimeEat>().slimeDefinition = definition;
+        prefab.GetComponent<Identifiable>().id = slimeData.SlimeId;
+
+        var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
+        applicator.SlimeDefinition = definition;
+
+        if (prefab.TryGetComponent<PinkSlimeFoodTypeTracker>(out var tracker))
+            tracker.Destroy();
+
+        prefab.GetComponent<Vacuumable>().size = 0;
+        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.SlimeId);
+
+        var baseAppearance = baseDefinition.AppearancesDefault[0];
+
+        var appearance = baseAppearance.DeepCopy();
+        var topMatColor = slimeData.TopSlimeColor.HexToColor();
+        var middleMatColor = slimeData.MiddleSlimeColor.HexToColor();
+        var bottomMatColor = slimeData.BottomSlimeColor.HexToColor();
+        var specialMatColor = slimeData.SpecialSlimeColor.HexToColor();
+
+        foreach (var structure in appearance.Structures)
+        {
+            if (structure.DefaultMaterials?.Length is null or 0)
+                continue;
+
+            var material = structure.DefaultMaterials[0] = structure.DefaultMaterials[0].Clone();
+            material.SetColor(TopColor, topMatColor);
+            material.SetColor(MiddleColor, middleMatColor);
+            material.SetColor(BottomColor, bottomMatColor);
+            material.SetColor(SpecColor, specialMatColor);
+            material.SetFloat(Shininess, slimeData.Shininess);
+            material.SetFloat(Gloss, slimeData.Glossiness);
+        }
+
+        var topMouth = slimeData.TopMouthColor.HexToColor();
+        var middleMouth = slimeData.MiddleMouthColor.HexToColor();
+        var bottomMouth = slimeData.BottomMouthColor.HexToColor();
+        var redEye = slimeData.RedEyeColor.HexToColor();
+        var greenEye = slimeData.GreenEyeColor.HexToColor();
+        var blueEye = slimeData.BlueEyeColor.HexToColor();
+
+        foreach (var face in appearance.Face.ExpressionFaces)
+        {
+            if (face.Mouth)
+            {
+                face.Mouth.SetColor(MouthTop, topMouth);
+                face.Mouth.SetColor(MouthMid, middleMouth);
+                face.Mouth.SetColor(MouthBot, bottomMouth);
+            }
+
+            if (face.Eyes)
+            {
+                face.Eyes.SetColor(EyeRed, redEye);
+                face.Eyes.SetColor(EyeGreen, greenEye);
+                face.Eyes.SetColor(EyeBlue, blueEye);
+            }
+        }
+
+        appearance.Face.OnEnable();
+        appearance.ColorPalette = new()
+        {
+            Top = slimeData.TopPaletteColor.HexToColor(),
+            Middle = slimeData.MiddlePaletteColor.HexToColor(),
+            Bottom = slimeData.BottomPaletteColor.HexToColor()
+        };
+
+        appearance.Icon = AssetManager.GetSprite($"{slimeData.Name}Slime");
+        var ammo = slimeData.SlimeAmmoColor.HexToColor();
+        appearance.ColorPalette.Ammo = ammo;
+        applicator.Appearance = appearance;
+
+        slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance, applicator]);
+
+        definition.AppearancesDefault = [appearance];
+
+        var tarr = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.TARR_SLIME);
+        tarr.Diet.EatMap.Add(new()
+        {
+            eats = slimeData.SlimeId,
+            becomesId = IdentifiableId.TARR_SLIME,
+            driver = SlimeEmotions.Emotion.NONE,
+            extraDrive = 999999f
+        });
+
+        var slimeIdName = slimeData.SlimeId.ToString().ToLower();
+        LookupRegistry.RegisterIdentifiablePrefab(prefab);
+        SlimeRegistry.RegisterSlimeDefinition(definition);
+        LookupRegistry.RegisterVacEntry(slimeData.SlimeId, ammo, appearance.Icon);
+        var title = slimeData.Name + " Slime";
+        TranslationPatcher.AddPediaTranslation("t." + slimeIdName, title);
+        TranslationPatcher.AddActorTranslation("l." + slimeIdName, title);
+
+        SlimePediaCreation.PreLoadSlimePediaConnection(slimeData.Entry, slimeData.SlimeId, PediaCategory.SLIMES);
+        SlimePediaCreation.CreateSlimePediaForSlimeWithName(slimeData.Entry, title, slimeData.Intro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks,
+            slimeData.Plortonomics);
+        PediaRegistry.RegisterIdEntry(slimeData.Entry, appearance.Icon);
     }
 
     private static void TypeLoadExceptionBypass(IdentifiableId slimeId, IdentifiableId plortId, ProgressType[] progress)
@@ -178,7 +240,8 @@ public static class SlimeManager
     private static void BasicInitSlimeAppearance
     (
         GameObject prefab,
-        SlimeDefinition definition,
+        SlimeAppearance appearance,
+        SlimeAppearanceApplicator applicator,
         string[] meshes,
         Action<int, SlimeAppearanceStructure> materialHandler,
         Action<GameObject> behaviourAdder,
@@ -186,9 +249,6 @@ public static class SlimeManager
     )
     {
         behaviourRemover?.Invoke(prefab);
-
-        var appearance = definition.AppearancesDefault[0];
-        var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
 
         var firstStructure = appearance.Structures[0];
         var elemPrefab = firstStructure.Element.Prefabs[0];
@@ -202,8 +262,9 @@ public static class SlimeManager
         SlimeAppearanceObject slimeBase = null;
         var prefabsForBoneData = new SlimeAppearanceObject[meshes.Length - 1];
 
-        foreach (var (i, structure) in appearance.Structures.Indexed())
+        for (var i = 0; i < appearance.Structures.Length; i++)
         {
+            var structure = appearance.Structures[i];
             var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
             var prefab2 = elemPrefab.CreatePrefab();
             elem.Prefabs = [prefab2];
@@ -226,26 +287,25 @@ public static class SlimeManager
         behaviourAdder?.Invoke(prefab);
     }
 
-    private static void InitRosiDetails(GameObject prefab, SlimeDefinition definition)
+    public static void InitRosiDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
     {
         definition.Diet.MajorFoodGroups = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).Diet.MajorFoodGroups;
         definition.Diet.Favorites = [];
 
         BasicInitSlimeAppearance
         (
-            prefab, definition, ["rosi_body", "rosi_stalk", "rosi_frills"],
+            prefab, appearance, applicator, ["rosi_body", "rosi_stalk", "rosi_frills"],
             (i, structure) =>
             {
                 if (i != 2)
                     return;
 
-                var mat = structure.DefaultMaterials[0].Clone();
+                var mat = structure.DefaultMaterials[0] = structure.DefaultMaterials[0].Clone();
                 var color = "#F46CB7".HexToColor();
                 mat.SetColor(TopColor, color);
                 mat.SetColor(MiddleColor, color);
                 mat.SetColor(BottomColor, color);
                 mat.SetColor(SpecColor, color);
-                structure.DefaultMaterials[0] = mat;
             },
             p => p.AddComponent<RosiBehaviour>(),
             null
@@ -253,9 +313,9 @@ public static class SlimeManager
     }
 
     // Cocoa mesh doesn't work atm
-    // private static void InitCocoDetails(GameObject prefab, SlimeDefinition definition) => BasicInitSlimeAppearance
+    // public static void InitCocoDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator) => BasicInitSlimeAppearance
     // (
-    //     prefab, definition, ["coco_body", "coco_brows"],
+    //     prefab, appearance, applicator, ["coco_body", "coco_brows"],
     //     (i, structure) =>
     //     {
     //         if (i == 0)
@@ -275,7 +335,7 @@ public static class SlimeManager
     //     null
     // );
 
-    private static void InitMineDetails(GameObject prefab, SlimeDefinition definition)
+    public static void InitMineDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
     {
         var color = "#445660".HexToColor();
         var color2 = "#9ea16f".HexToColor();
@@ -299,7 +359,7 @@ public static class SlimeManager
 
         BasicInitSlimeAppearance
         (
-            prefab, definition, [null, "mine_spikes", "mine_ring"],
+            prefab, appearance, applicator, [null, "mine_spikes", "mine_ring"],
             (_, structure) => structure.DefaultMaterials[0] = structure.SupportsFaces ? material : material2,
             p => p.AddComponent<MineBehaviour>(),
             p =>
@@ -310,12 +370,12 @@ public static class SlimeManager
         );
     }
 
-    private static void InitLanternDetails(GameObject prefab, SlimeDefinition definition)
+    public static void InitLanternDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
     {
         var color = "#752C86".HexToColor();
         var color2 = "#B15EC8".HexToColor();
 
-        var material = definition.AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
+        var material = appearance.Structures[0].DefaultMaterials[0].Clone();
         material.SetColor(TopColor, color);
         material.SetColor(MiddleColor, "#9445A7".HexToColor());
         material.SetColor(BottomColor, color2);
@@ -333,16 +393,16 @@ public static class SlimeManager
         material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("LanternPattern"));
 
         var color3 = "#EBDB6A".HexToColor();
-        var material3 = material.Clone();
+        var material3 = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PHOSPHOR_SLIME).AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
         material3.SetColor(TopColor, color3);
         material3.SetColor(MiddleColor, color3);
         material3.SetColor(BottomColor, color3);
-        material3.SetColor(SpecColor, color3);
+        material3.SetColor(SpecColor, color);
         material3.SetFloat(Shininess, 5f);
 
         BasicInitSlimeAppearance
         (
-            prefab, definition, [null, "lantern_fins", "lantern_stalk", "lantern_lure"],
+            prefab, appearance, applicator, [null, "lantern_fins", "lantern_stalk", "lantern_lure"],
             (i, structure) => structure.DefaultMaterials[0] = i switch
             {
                 1 => material2,
@@ -350,13 +410,8 @@ public static class SlimeManager
                 _ => material
             },
             null,
+            // p => p.AddComponent<LanternBehaviour>(), // Not implemented yet
             null
-            // p => p.AddComponent<MineBehaviour>(),
-            // p =>
-            // {
-            //     p.RemoveComponent<BoomSlimeExplode>();
-            //     p.RemoveComponent<BoomMaterialAnimator>();
-            // }
         );
     }
 }

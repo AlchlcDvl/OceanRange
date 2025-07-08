@@ -1,4 +1,4 @@
-// using SRML.Utils;
+using SRML.Utils;
 
 namespace TheOceanRange.Utils;
 
@@ -40,7 +40,8 @@ public static class Helpers
     public static T DontDestroy<T>(this T obj) where T : UObject
     {
         obj.hideFlags |= HideFlags.HideAndDontSave;
-        return obj.DontDestroyOnLoad();
+        obj.DontDestroyOnLoad();
+        return obj;
     }
 
     // public static T DontUnload<T>(this T obj) where T : UObject
@@ -48,16 +49,6 @@ public static class Helpers
     //     obj.hideFlags |= HideFlags.DontUnloadUnusedAsset;
     //     return obj;
     // }
-
-    private static T DontDestroyOnLoad<T>(this T obj) where T : UObject
-    {
-        UObject.DontDestroyOnLoad(obj);
-        return obj;
-    }
-
-    // public static void Destroy(this UObject obj) => UObject.Destroy(obj);
-
-    // public static void DestroyImmediate(this UObject obj) => UObject.DestroyImmediate(obj);
 
     public static string ReplaceAll(this string @string, string newValue, params string[] valuesToReplace)
     {
@@ -67,21 +58,21 @@ public static class Helpers
 
     public static string[] TrueSplit(this string @string, char separator) => [.. @string.Split(separator).Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))];
 
-    public static IEnumerable<(int, T)> Indexed<T>(this IEnumerable<T> source)
-    {
-        var i = 0;
+    // public static IEnumerable<(int, T)> Indexed<T>(this IEnumerable<T> source)
+    // {
+    //     var i = 0;
 
-        foreach (var item in source)
-            yield return (i++, item);
-    }
+    //     foreach (var item in source)
+    //         yield return (i++, item);
+    // }
 
     public static Color32 HexToColor32(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
 
     public static Color HexToColor(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
 
-    // public static T Parse<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value);
+    public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value);
 
-    // public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
+    public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
     public static T CreatePrefab<T>(this T obj, Transform parent = null) where T : UObject => UObject.Instantiate(obj, parent ?? Main.Prefab, false);
 

@@ -33,6 +33,8 @@ public static class AssetManager
             }
             else if (!path.Contains(".bundle")) // Skip loading bundles that don't relate to the current platform
                 AddPath(id, path);
+
+            Main.Instance.ConsoleInstance.Log(id);
         }
     }
 
@@ -73,10 +75,10 @@ public static class AssetManager
                 return result;
         }
 
-        if (!UnloadedAssets.TryGetValue(name, out var strings))
-            throw new FileNotFoundException($"{name} could not be found");
-
         var tType = typeof(T);
+
+        if (!UnloadedAssets.TryGetValue(name, out var strings))
+            throw new FileNotFoundException($"{name} of type {tType.Name}");
 
         if (AssetTypeExtensions.TryGetValue(tType, out var pair) && strings.TryFinding(x => x.EndsWith($".{pair.Extension}"), out var path))
             result = (T)AddAsset(name, pair.LoadAsset(path));
