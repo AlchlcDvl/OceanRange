@@ -10,6 +10,8 @@ public static class SlimeManager
     public static SlimeExpressionFace SleepingFace;
 
     private static bool SamExists;
+    private static GameObject RocksPrefab;
+    private static Material PinkMaterial;
 
     private static readonly int TopColor = Shader.PropertyToID("_TopColor");
     private static readonly int MiddleColor = Shader.PropertyToID("_MiddleColor");
@@ -70,6 +72,9 @@ public static class SlimeManager
 
     public static void LoadAllSlimes()
     {
+        RocksPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.ROCK_PLORT).transform.Find("rocks").gameObject;
+        PinkMaterial = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).AppearancesDefault[0].Structures[0].DefaultMaterials[0];
+
         SlimesMap.ForEach(BaseLoadSlime);
 
         var blink = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).AppearancesDefault[0].Face.ExpressionFaces.First(x => x.SlimeExpression ==
@@ -108,8 +113,21 @@ public static class SlimeManager
         material.SetColor(BottomColor, slimeData.BottomPlortColor.HexToColor());
         material.SetColor(SpecColor, slimeData.SpecialPlortColor.HexToColor());
 
-        if (slimeData.PlortType != "Crystal") // Crystal is the original shape of a plort, so skip if the plort type is that
+        if (slimeData.PlortType != "Plort") // Plort (crystal) is the original shape of a plort, so skip if the plort type is that
             prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(slimeData.PlortType);
+
+        // Add any slime specific plort details (which is almost all slimes)
+        var plortDetails = $"{slimeData.Name}_{slimeData.PlortType}";
+
+        if (AssetManager.AssetExists(plortDetails))
+        {
+            var rocks = RocksPrefab.Instantiate(prefab.transform);
+            rocks.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(plortDetails);
+            rocks.GetComponent<MeshRenderer>().material = prefab.GetComponent<MeshRenderer>().material.Clone();
+            rocks.name = plortDetails;
+        }
+
+        slimeData.InitPlortDetails?.Invoke(null, [prefab]);
 
         // Registering the prefab and its id along with any other additional stuff
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
@@ -313,7 +331,7 @@ public static class SlimeManager
         behaviourAdder?.Invoke(prefab);
     }
 
-    public static void InitRosiDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
+    public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
     {
         definition.Diet.MajorFoodGroups = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).Diet.MajorFoodGroups;
         definition.Diet.Favorites = [];
@@ -339,7 +357,7 @@ public static class SlimeManager
     }
 
     // Cocoa mesh doesn't work atm
-    // public static void InitCocoDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator) => BasicInitSlimeAppearance
+    // public static void InitCocoaSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator) => BasicInitSlimeAppearance
     // (
     //     prefab, appearance, applicator, ["coco_body", "coco_brows"],
     //     (i, structure) =>
@@ -361,7 +379,7 @@ public static class SlimeManager
     //     null
     // );
 
-    public static void InitMineDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
+    public static void InitMineSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
     {
         var color = "#445660".HexToColor();
         var color2 = "#9ea16f".HexToColor();
@@ -396,7 +414,7 @@ public static class SlimeManager
         );
     }
 
-    public static void InitLanternDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
+    public static void InitLanternSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
     {
         var color = "#752C86".HexToColor();
         var color2 = "#B15EC8".HexToColor();

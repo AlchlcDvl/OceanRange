@@ -57,6 +57,9 @@ public sealed class CustomSlimeData
     [JsonIgnore]
     public MethodInfo InitSlimeDetails;
 
+    [JsonIgnore]
+    public MethodInfo InitPlortDetails;
+
     [JsonProperty("shininess")]
     public float Shininess = 1f;
 
@@ -172,7 +175,8 @@ public sealed class CustomSlimeData
         BasePlort = Helpers.ParseEnum<IdentifiableId>(BasePlortJson + "_PLORT");
         GordoId = Enum.TryParse<IdentifiableId>(upper + "_GORDO", out var id) ? id : 0; // Not all slimes have gordos
         Entry = Helpers.ParseEnum<PediaId>(upper + "_SLIME_ENTRY");
-        InitSlimeDetails = AccessTools.Method(typeof(SlimeManager), "Init" + Name + "Details");
+        InitSlimeDetails = AccessTools.Method(typeof(SlimeManager), "Init" + Name + "SlimeDetails");
+        InitPlortDetails = AccessTools.Method(typeof(SlimeManager), "Init" + Name + "PlortDetails");
         Progress ??= [];
 
         // Newton soft is stupid and keeps throwing null refs for these fields

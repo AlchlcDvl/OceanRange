@@ -74,7 +74,7 @@ public static class Helpers
 
     public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
-    public static T CreatePrefab<T>(this T obj, Transform parent = null) where T : UObject => obj.Instantiate(parent ?? Main.Prefab, false);
+    public static T CreatePrefab<T>(this T obj) where T : UObject => obj.Instantiate(Main.Prefab, false, true);
 
     public static Material Clone(this Material material)
     {

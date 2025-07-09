@@ -41,7 +41,7 @@ public static class AssetManager
 
     private static string SanitisePath(this string path, string bundlePath = null)
     {
-        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", ".fbx", ".obj", ".asset", ".prefab");
+        path = path.ReplaceAll("", ".png", ".json", ".obj");
 
         if (bundlePath != null)
             path = path.Replace(bundlePath, "");
@@ -95,6 +95,12 @@ public static class AssetManager
             throw new InvalidOperationException($"Initialising {name} of type {tType.Name} failed");
 
         return result;
+    }
+
+    public static bool AssetExists(string path)
+    {
+        var lower = path.ToLower();
+        return LoadedAssets.Keys.Any(x => x == path) || UnloadedAssets.Keys.Any(x => x == path) || AssetToBundle.Keys.Any(x => x == lower);
     }
 
     private static T LoadAsset<T>(AssetBundle assetBundle, string name) where T : UObject
