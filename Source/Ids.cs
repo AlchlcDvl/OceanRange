@@ -33,14 +33,14 @@ public static class Ids
 
     // public static readonly Zone SWIRLPOOL;
 
-	public static readonly IdentifiableId SANDY_HEN;
-	public static readonly PediaId SANDY_HEN_ENTRY;
+    public static readonly IdentifiableId SANDY_HEN;
+    public static readonly PediaId SANDY_HEN_ENTRY;
 
-	public static readonly IdentifiableId SANDY_CHICK;
-	public static readonly PediaId SANDY_CHICK_ENTRY;
+    public static readonly IdentifiableId SANDY_CHICK;
+    public static readonly PediaId SANDY_CHICK_ENTRY;
 
-	// public static readonly IdentifiableId BLOWTATO_VEGGIE;
-	// public static readonly PediaId BLOWTATO_VEGGIE_ENTRY;
+    // public static readonly IdentifiableId BLOWTATO_VEGGIE;
+    // public static readonly PediaId BLOWTATO_VEGGIE_ENTRY;
 
     public static readonly SlimeFace.SlimeExpression Sleeping;
 }

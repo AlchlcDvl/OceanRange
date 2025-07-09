@@ -40,6 +40,8 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener
             return;
 
         CanMove = Fleeing = gameObj == SceneContext.Instance.Player;
-        FleeingUntil = Time.fixedTime + 10f;
+
+        if (Fleeing)
+            FleeingUntil = Time.fixedTime + 10f;
     }
 }

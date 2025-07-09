@@ -41,7 +41,7 @@ public static class AssetManager
 
     private static string SanitisePath(this string path, string bundlePath = null)
     {
-        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", ".fbx", ".obj", ".asset");
+        path = path.ReplaceAll("", ".png", ".wav", ".txt", ".mat", ".json", ".anim", ".shader", ".bundle", ".fbx", ".obj", ".asset", ".prefab");
 
         if (bundlePath != null)
             path = path.Replace(bundlePath, "");
@@ -54,6 +54,8 @@ public static class AssetManager
     public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<TextAsset>(path).text);
 
     public static Texture2D GetTexture2D(string path) => Get<Texture2D>(path);
+
+    // public static GameObject GetPrefab(string path) => Get<GameObject>(path);
 
     // public static AudioClip GetAudio(string path) => Get<AudioClip>(path);
 

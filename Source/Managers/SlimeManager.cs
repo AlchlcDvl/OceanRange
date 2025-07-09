@@ -296,7 +296,7 @@ public static class SlimeManager
             elem.Prefabs = [prefab2];
             var meshRend = prefab2.GetComponent<SkinnedMeshRenderer>();
             var meshName = meshes[i];
-            meshRend.sharedMesh = meshName == null ? UObject.Instantiate(meshRend.sharedMesh) : AssetManager.GetMesh(meshName);
+            meshRend.sharedMesh = meshName == null ? meshRend.sharedMesh.Instantiate() : AssetManager.GetMesh(meshName);
             prefab2.IgnoreLODIndex = true;
             structure.SupportsFaces = i == 0;
 
@@ -435,7 +435,7 @@ public static class SlimeManager
                 3 => material3,
                 _ => material
             },
-            p => p.AddComponent<LanternBehaviour>(), // Not implemented yet
+            p => p.AddComponent<LanternBehaviour>(),
             null
         );
     }
