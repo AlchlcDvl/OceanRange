@@ -21,6 +21,9 @@ public sealed class CustomSlimeData
     [JsonIgnore]
     public IdentifiableId FavToy;
 
+    [JsonProperty("nightSpawn")]
+    public bool NightSpawn;
+
     [JsonProperty("favFood")]
     public string FavFoodJson;
 

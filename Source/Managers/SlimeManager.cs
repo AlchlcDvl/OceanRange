@@ -7,6 +7,8 @@ namespace TheOceanRange.Managers;
 public static class SlimeManager
 {
     public static readonly List<CustomSlimeData> SlimesMap = [];
+    public static SlimeExpressionFace SleepingFace;
+
     private static bool SamExists;
 
     private static readonly int TopColor = Shader.PropertyToID("_TopColor");
@@ -49,6 +51,9 @@ public static class SlimeManager
             {
                 foreach (var constraint in item.constraints)
                 {
+                    if (slimeData.NightSpawn && constraint.window.timeMode != DirectedActorSpawner.TimeMode.NIGHT)
+                        continue;
+
                     constraint.slimeset.members =
                     [
                         .. constraint.slimeset.members,
@@ -63,7 +68,20 @@ public static class SlimeManager
         };
     }
 
-    public static void LoadAllSlimes() => SlimesMap.ForEach(BaseLoadSlime);
+    public static void LoadAllSlimes()
+    {
+        SlimesMap.ForEach(BaseLoadSlime);
+
+        var blink = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).AppearancesDefault[0].Face.ExpressionFaces.First(x => x.SlimeExpression ==
+            SlimeFace.SlimeExpression.Blink);
+        SleepingFace = new()
+        {
+            SlimeExpression = Ids.Sleeping,
+            Eyes = blink.Eyes?.Clone(),
+            Mouth = blink.Mouth?.Clone()
+        };
+        SleepingFace.Eyes.SetTexture("_FaceAtlas", AssetManager.GetTexture2D("SleepingEyes"));
+    }
 
     private static void BaseLoadSlime(CustomSlimeData slimeData)
     {
@@ -378,7 +396,7 @@ public static class SlimeManager
         );
     }
 
-    public static void InitLanternDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
+    public static void InitLanternDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
     {
         var color = "#752C86".HexToColor();
         var color2 = "#B15EC8".HexToColor();
@@ -417,8 +435,7 @@ public static class SlimeManager
                 3 => material3,
                 _ => material
             },
-            null,
-            // p => p.AddComponent<LanternBehaviour>(), // Not implemented yet
+            p => p.AddComponent<LanternBehaviour>(), // Not implemented yet
             null
         );
     }

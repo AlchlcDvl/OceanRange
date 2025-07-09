@@ -82,7 +82,7 @@ public static class AssetManager
         if (AssetTypeExtensions.TryGetValue(tType, out var pair) && strings.TryFinding(x => x.EndsWith($".{pair.Extension}"), out var path))
             result = (T)AddAsset(name, pair.LoadAsset(path));
         else
-            throw new NotSupportedException($"{tType.Name} is not a loadable asset type for {name}");
+            throw new FileNotFoundException($"{name}, {tType.Name}");
 
         strings.Remove(path);
 
@@ -171,9 +171,11 @@ public static class AssetManager
 
     // This is all for mainly debugging stuff when I want to dump assets from the main game
 
-    // public static void Dump(this Sprite sprite, string path) => File.WriteAllBytes(path, sprite.texture.Decompress().EncodeToPNG());
+    // public static void Dump(this Texture texture, string path) => File.WriteAllBytes(path, texture.Decompress().EncodeToPNG());
 
-    // public static Texture2D Decompress(this Texture2D source)
+    // public static void Dump(this Sprite sprite, string path) => sprite.texture.Dump(path);
+
+    // public static Texture2D Decompress(this Texture source)
     // {
     //     var renderTex = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
     //     Graphics.Blit(source, renderTex);

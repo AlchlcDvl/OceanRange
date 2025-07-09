@@ -127,6 +127,7 @@
         "basePlortPrice": 35.0,
         "saturation": 125.0,
         "plortAmmoColor": "#752C86",
+        "nightSpawn": true,
         "plortType": "Pearl",
         "progress": ["UNLOCK_MOSS", "UNLOCK_RUINS"],
         "zones": ["MOSS", "RUINS"],

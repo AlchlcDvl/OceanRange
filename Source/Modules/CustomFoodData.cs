@@ -93,12 +93,17 @@ public sealed class CustomChimkenData : CustomFoodData
 //     [JsonProperty("garden")]
 //     public string Garden;
 
+//     [JsonIgnore]
+//     public PediaId Entry;
+
 //     [OnDeserialized]
 //     public void PopulateRemainingValues(StreamingContext _)
 //     {
 //         FavouredBy = [.. FavouredByJson.Select(Helpers.ParseEnum<IdentifiableId>)];
 //         var upper = Name.ToUpper();
-//         PlantId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + Type.ToUpper());
+//         var typeUpper = Type.ToUpper();
+//         PlantId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
+//         Entry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");
 //         Group = Helpers.ParseEnum<FoodGroup>(GroupJson);
 //         FoodId = PlantId;
 //     }

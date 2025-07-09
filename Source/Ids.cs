@@ -41,4 +41,6 @@ public static class Ids
 
 	// public static readonly IdentifiableId BLOWTATO_VEGGIE;
 	// public static readonly PediaId BLOWTATO_VEGGIE_ENTRY;
+
+    public static readonly SlimeFace.SlimeExpression Sleeping;
 }
