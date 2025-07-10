@@ -39,10 +39,10 @@ public static class AssetManager
         }
     }
 
-    private static string Platform() => Environment.OSVersion.Platform switch
+    private static string Platform() => Application.platform switch
     {
-        PlatformID.Unix => "lin",
-        PlatformID.MacOSX => "mac",
+        RuntimePlatform.LinuxPlayer => "lin",
+        RuntimePlatform.OSXPlayer => "mac",
         _ => "win"
     };
 
