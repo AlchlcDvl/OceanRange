@@ -21,13 +21,15 @@ public class CreateAssetBundles
         string lin = "Assets/StreamingAssets/Lin";
         PrepDirectory(lin);
 
-        BuildPipeline.BuildAssetBundles(mac, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneOSX);
-        BuildPipeline.BuildAssetBundles(win, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows);
-        BuildPipeline.BuildAssetBundles(lin, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneLinux64);
+        BuildPipeline.BuildAssetBundles(mac, BuildAssetBundleOptions.None, BuildTarget.StandaloneOSX);
+        BuildPipeline.BuildAssetBundles(win, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
+        BuildPipeline.BuildAssetBundles(lin, BuildAssetBundleOptions.None, BuildTarget.StandaloneLinux64);
 
         string bundles = "Assets/StreamingAssets/Bundles";
         PrepDirectory(bundles);
         MoveAndRenameSpecificBundle(mac, bundles, "mac");
+        MoveAndRenameSpecificBundle(lin, bundles, "lin");
+        MoveAndRenameSpecificBundle(win, bundles, "win");
     }
 
     static void PrepDirectory(string path)
@@ -63,6 +65,8 @@ public class CreateAssetBundles
             {
                 Debug.LogError($"Failed to move/rename bundle {sourceBundlePath}: {e.Message}");
             }
+
+            Directory.EnumerateFiles(sourceDir, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
         }
         else
         {
