@@ -10,7 +10,7 @@ public static class SlimeManager
     public static SlimeExpressionFace SleepingFace;
 
     private static bool SamExists;
-    private static GameObject RocksPrefab;
+    private static Transform RocksPrefab;
 
     private static readonly int TopColor = Shader.PropertyToID("_TopColor");
     private static readonly int MiddleColor = Shader.PropertyToID("_MiddleColor");
@@ -80,7 +80,7 @@ public static class SlimeManager
 
     public static void LoadAllSlimes()
     {
-        RocksPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.ROCK_PLORT).transform.Find("rocks").gameObject;
+        RocksPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.ROCK_PLORT).transform.Find("rocks");
 
         Slimes.ForEach(BaseLoadSlime);
 

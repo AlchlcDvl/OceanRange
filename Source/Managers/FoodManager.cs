@@ -39,6 +39,7 @@ public static class FoodManager
         Identifiable.NON_SLIMES_CLASS.Add(chimkenData.MainId);
 
         Identifiable.CHICK_CLASS.Add(chimkenData.ChickId);
+
         Identifiable.FOOD_CLASS.Add(chimkenData.MainId);
         Identifiable.MEAT_CLASS.Add(chimkenData.MainId);
 
@@ -100,14 +101,18 @@ public static class FoodManager
 
     private static void BaseCreateChimken(CustomChimkenData chimkenData)
     {
+        // Fetch ramps
         var skin = AssetManager.GetTexture2D($"{chimkenData.Name}SkinRamp");
         var dark = AssetManager.GetTexture2D($"{chimkenData.Name}SkinRampDarker");
+
+        // Cache values because reusing them is tedious
         var ammo = chimkenData.AmmoColor.HexToColor();
         var lookupDir = GameContext.Instance.LookupDirector;
 
+        // Find and create the prefab for chicks and set values
         var chickPrefab = lookupDir.GetPrefab(IdentifiableId.CHICK).CreatePrefab();
         chickPrefab.name = $"birdChick{chimkenData.Name}";
-        var component = chickPrefab.transform.Find("Chickadoo/mesh_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
+        var component = chickPrefab.transform.Find("Chickadoo/mesh_body1").GetComponent<SkinnedMeshRenderer>();
         var material = component.sharedMaterial = component.sharedMaterial.Clone();
         material.SetTexture(RampRed, dark);
         material.SetTexture(RampGreen, skin);
@@ -116,9 +121,10 @@ public static class FoodManager
         chickPrefab.GetComponent<Identifiable>().id = chimkenData.ChickId;
         chickPrefab.GetComponent<Vacuumable>().size = 0;
 
+        // Same for hens
         var henPrefab = lookupDir.GetPrefab(IdentifiableId.HEN).CreatePrefab();
         henPrefab.name = $"birdHen{chimkenData.Name}";
-        var component2 = henPrefab.transform.Find("Hen Hen/mesh_body1").gameObject.GetComponent<SkinnedMeshRenderer>();
+        var component2 = henPrefab.transform.Find("Hen Hen/mesh_body1").GetComponent<SkinnedMeshRenderer>();
         var material2 = component2.sharedMaterial = component2.sharedMaterial.Clone();
         material2.SetTexture(RampRed, dark);
         material2.SetTexture(RampGreen, skin);
@@ -144,6 +150,8 @@ public static class FoodManager
                 weight = 3.5f
             }
         ];
+
+        // Register both chicks and hens
 
         LookupRegistry.RegisterIdentifiablePrefab(chickPrefab);
         var chickIcon = AssetManager.GetSprite($"{chimkenData.Name}Chick");
