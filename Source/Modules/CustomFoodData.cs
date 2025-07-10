@@ -53,6 +53,18 @@ public sealed class CustomChimkenData : CustomFoodData
     [JsonProperty("chickIntro"), JsonRequired]
     public string ChickIntro;
 
+    [JsonProperty("baseHenPrice"), JsonRequired]
+    public float BaseHenPrice;
+
+    [JsonProperty("henSaturation"), JsonRequired]
+    public float HenSaturation;
+
+    [JsonProperty("baseChickPrice"), JsonRequired]
+    public float BaseChickPrice;
+
+    [JsonProperty("chickSaturation"), JsonRequired]
+    public float ChickSaturation;
+
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {

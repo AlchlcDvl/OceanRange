@@ -5,5 +5,5 @@
     "author": "AlchlcSystm, LoyalRancher",
     "description": "Explore the slime sea!",
     "dependencies": ["assetslib 1.2.6"],
-    "load_after": ["slimesandmarket"]
+    "load_after": ["slimesandmarket", "sellthingsmod"]
 }

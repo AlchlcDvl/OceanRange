@@ -32,5 +32,7 @@ public sealed class Main : ModEntryPoint
     {
         SlimeManager.LoadAllSlimes();
         FoodManager.LoadFoods();
+
+        SystemContext.IsModded = true;
     }
 }

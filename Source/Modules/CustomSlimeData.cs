@@ -147,9 +147,6 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("canBeRefined")]
     public bool CanBeRefined;
 
-    [JsonProperty("progress")]
-    public ProgressType[] Progress;
-
     [JsonProperty("zones"), JsonRequired]
     public Zone[] Zones;
 

@@ -15,4 +15,7 @@ public abstract class JsonData
 
     [JsonIgnore]
     public PediaId MainEntry;
+
+    [JsonProperty("progress")]
+    public ProgressType[] Progress;
 }

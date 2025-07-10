@@ -1,8 +1,12 @@
+using SRML;
+
 namespace TheOceanRange.Managers;
 
 public static class FoodManager
 {
     public static readonly List<CustomFoodData> Foods = [];
+
+    private static bool StmExists;
 
     private static readonly List<CustomChimkenData> Chimkens = [];
     // private static readonly List<CustomPlantData> Plants = [];
@@ -16,6 +20,8 @@ public static class FoodManager
 
     public static void PreLoadFoodData()
     {
+        StmExists = SRModLoader.IsModPresent("sellthingsmod");
+
         Chimkens.AddRange(AssetManager.GetJson<CustomChimkenData[]>("Chimkenpedia"));
         // Plants.AddRange(AssetManager.GetJson<CustomPlantData[]>("Plantpedia"));
         Foods.AddRange(Chimkens);
@@ -172,6 +178,15 @@ public static class FoodManager
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
         PediaRegistry.RegisterIdEntry(chimkenData.MainEntry, henIcon);
         AmmoRegistry.RegisterSiloAmmo(x => x is SiloStorage.StorageType.NON_SLIMES or SiloStorage.StorageType.FOOD, chimkenData.MainId);
+
+        if (!StmExists)
+            return;
+
+        PlortRegistry.AddEconomyEntry(chimkenData.ChickId, chimkenData.BaseChickPrice, chimkenData.ChickSaturation);
+        PlortRegistry.AddPlortEntry(chimkenData.ChickId, chimkenData.Progress ?? []);
+
+        PlortRegistry.AddEconomyEntry(chimkenData.MainId, chimkenData.BaseHenPrice, chimkenData.HenSaturation);
+        PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress ?? []);
     }
 
     // private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
