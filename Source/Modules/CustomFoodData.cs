@@ -3,14 +3,8 @@ using Newtonsoft.Json;
 
 namespace TheOceanRange.Modules;
 
-public abstract class CustomFoodData
+public abstract class CustomFoodData : JsonData
 {
-    [JsonProperty("name")]
-    public string Name;
-
-    [JsonIgnore]
-    public IdentifiableId FoodId;
-
     [JsonProperty("group")]
     public string GroupJson;
 
@@ -42,9 +36,6 @@ public abstract class CustomFoodData
 public sealed class CustomChimkenData : CustomFoodData
 {
     [JsonIgnore]
-    public IdentifiableId HenId;
-
-    [JsonIgnore]
     public IdentifiableId ChickId;
 
     [JsonProperty("zones")]
@@ -52,9 +43,6 @@ public sealed class CustomChimkenData : CustomFoodData
 
     [JsonProperty("spawnAmount")]
     public float SpawnAmount = 1f;
-
-    [JsonIgnore]
-    public PediaId HenEntry;
 
     [JsonIgnore]
     public PediaId ChickEntry;
@@ -70,20 +58,17 @@ public sealed class CustomChimkenData : CustomFoodData
     {
         FavouredBy = [.. FavouredByJson.Select(Helpers.ParseEnum<IdentifiableId>)];
         var upper = Name.ToUpper();
-        HenId = Helpers.ParseEnum<IdentifiableId>(upper + "_HEN");
+        MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_HEN");
         ChickId = Helpers.ParseEnum<IdentifiableId>(upper + "_CHICK");
-        HenEntry = Helpers.ParseEnum<PediaId>(upper + "_HEN_ENTRY");
+        MainEntry = Helpers.ParseEnum<PediaId>(upper + "_HEN_ENTRY");
         ChickEntry = Helpers.ParseEnum<PediaId>(upper + "_CHICK_ENTRY");
         Group = FoodGroup.MEAT;
-        FoodId = HenId;
+        Category = ExchangeDirector.Category.MEAT;
     }
 }
 
 // public sealed class CustomPlantData : CustomFoodData
 // {
-//     [JsonIgnore]
-//     public IdentifiableId PlantId;
-
 //     [JsonProperty("type")]
 //     public string Type;
 
@@ -93,18 +78,15 @@ public sealed class CustomChimkenData : CustomFoodData
 //     [JsonProperty("garden")]
 //     public string Garden;
 
-//     [JsonIgnore]
-//     public PediaId Entry;
-
 //     [OnDeserialized]
 //     public void PopulateRemainingValues(StreamingContext _)
 //     {
 //         FavouredBy = [.. FavouredByJson.Select(Helpers.ParseEnum<IdentifiableId>)];
 //         var upper = Name.ToUpper();
 //         var typeUpper = Type.ToUpper();
-//         PlantId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
-//         Entry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");
+//         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
+//         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");
 //         Group = Helpers.ParseEnum<FoodGroup>(GroupJson);
-//         FoodId = PlantId;
+//         Category = typeUpper == "VEGGIES" ? ExchangeDirector.Category.VEGGIES : ExchangeDirector.Category.FRUIT;
 //     }
 // }

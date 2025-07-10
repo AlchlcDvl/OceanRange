@@ -4,14 +4,8 @@ using Newtonsoft.Json;
 
 namespace TheOceanRange.Modules;
 
-public sealed class CustomSlimeData
+public sealed class CustomSlimeData : JsonData
 {
-    [JsonProperty("name")]
-    public string Name;
-
-    [JsonIgnore]
-    public IdentifiableId SlimeId;
-
     [JsonIgnore]
     public IdentifiableId GordoId;
 
@@ -129,9 +123,6 @@ public sealed class CustomSlimeData
     [JsonProperty("plortAmmoColor")]
     public string PlortAmmoColor;
 
-    [JsonIgnore]
-    public PediaId Entry;
-
     [JsonProperty("intro")]
     public string Intro;
 
@@ -165,23 +156,30 @@ public sealed class CustomSlimeData
     [JsonProperty("spawnAmount")]
     public float SpawnAmount = 0.25f;
 
+    [JsonProperty("specialDiet")]
+    public bool SpecialDiet;
+
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
         var upper = Name.ToUpper();
-        SlimeId = Helpers.ParseEnum<IdentifiableId>(upper + "_SLIME");
+        MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_SLIME");
         PlortId = Helpers.ParseEnum<IdentifiableId>(upper + "_PLORT");
         BaseSlime = Helpers.ParseEnum<IdentifiableId>(BaseSlimeJson + "_SLIME");
         BasePlort = Helpers.ParseEnum<IdentifiableId>(BasePlortJson + "_PLORT");
         GordoId = Enum.TryParse<IdentifiableId>(upper + "_GORDO", out var id) ? id : 0; // Not all slimes have gordos
-        Entry = Helpers.ParseEnum<PediaId>(upper + "_SLIME_ENTRY");
+        MainEntry = Helpers.ParseEnum<PediaId>(upper + "_SLIME_ENTRY");
         InitSlimeDetails = AccessTools.Method(typeof(SlimeManager), "Init" + Name + "SlimeDetails");
         InitPlortDetails = AccessTools.Method(typeof(SlimeManager), "Init" + Name + "PlortDetails");
         Progress ??= [];
 
-        // Newton soft is stupid and keeps throwing null refs for these fields
-        Diet = Helpers.ParseEnum<FoodGroup>(DietJson);
+        // Newtonsoft is stupid and keeps throwing null refs for these fields
         FavFood = Helpers.ParseEnum<IdentifiableId>(FavFoodJson);
         FavToy = Helpers.ParseEnum<IdentifiableId>(FavToyJson);
+
+        if (!SpecialDiet)
+            Diet = Helpers.ParseEnum<FoodGroup>(DietJson);
+
+        Category = ExchangeDirector.Category.SLIMES;
     }
 }

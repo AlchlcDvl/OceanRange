@@ -15,8 +15,8 @@ public static class StopMovingDuringDay
 
         if (lantern.Fleeing)
         {
-            __instance.scootSpeedFactor *= 4f;
-            __instance.verticalFactor *= 4f;
+            __instance.scootSpeedFactor *= 2f;
+            __instance.verticalFactor *= 2f;
         }
 
         return true;

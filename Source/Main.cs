@@ -16,8 +16,8 @@ public sealed class Main : ModEntryPoint
     {
         AssetManager.FetchAssetNames();
 
-        SlimeManager.PreLoadSlimeData();
         FoodManager.PreLoadFoodData();
+        SlimeManager.PreLoadSlimeData();
 
         Prefab = AccessTools.Field(AccessTools.GetTypesFromAssembly(Assembly.GetCallingAssembly()).First(x => x.Namespace == "SRML" && x.Name == "Main"), "prefabParent").GetValue(null) as Transform;
         // ZoneLookup = AccessTools.Field(typeof(Director), "RICH_PRESENCE_ZONE_LOOKUP").GetValue(null) as Dictionary<Zone, string>;

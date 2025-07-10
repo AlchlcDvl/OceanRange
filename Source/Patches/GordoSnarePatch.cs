@@ -9,7 +9,7 @@ public static class GordoSnarePatch
     {
         var bait = __instance.GetPrivateField<SnareModel>("model").baitTypeId;
 
-        if (!SlimeManager.SlimesMap.TryFinding(x => x.FavFood == bait, out var id) || Randoms.SHARED.GetInRange(0, 100) > 70)
+        if (!SlimeManager.Slimes.TryFinding(x => x.FavFood == bait, out var id) || Randoms.SHARED.GetInRange(0, 100) > 70)
             return true;
 
         __result = id.GordoId;

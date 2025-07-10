@@ -5,6 +5,8 @@ namespace TheOceanRange.Managers;
 
 public static class AssetManager
 {
+    public static readonly List<JsonData> JsonData = [];
+
     private static readonly Assembly Core = typeof(Main).Assembly;
     private static readonly Dictionary<string, AssetBundle> Bundles = [];
     private static readonly Dictionary<string, string> AssetToBundle = [];
