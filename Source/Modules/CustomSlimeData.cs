@@ -37,10 +37,10 @@ public sealed class CustomSlimeData : JsonData
     public bool CanLargofy;
 
     [JsonProperty("baseSlime")]
-    public string BaseSlimeJson;
+    public string BaseSlimeJson = "PINK";
 
     [JsonProperty("basePlort")]
-    public string BasePlortJson;
+    public string BasePlortJson = "PINK";
 
     [JsonIgnore]
     public IdentifiableId BaseSlime;
@@ -60,16 +60,16 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("glossiness")]
     public float Glossiness = 1f;
 
-    [JsonProperty("topSlimeColor")]
+    [JsonProperty("topSlimeColor"), JsonRequired]
     public string TopSlimeColor;
 
-    [JsonProperty("middleSlimeColor")]
+    [JsonProperty("middleSlimeColor"), JsonRequired]
     public string MiddleSlimeColor;
 
-    [JsonProperty("bottomSlimeColor")]
+    [JsonProperty("bottomSlimeColor"), JsonRequired]
     public string BottomSlimeColor;
 
-    [JsonProperty("specialSlimeColor")]
+    [JsonProperty("specialSlimeColor"), JsonRequired]
     public string SpecialSlimeColor;
 
     [JsonProperty("topMouthColor")]
@@ -90,59 +90,59 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("blueEyeColor")]
     public string BlueEyeColor = "#000000";
 
-    [JsonProperty("topPaletteColor")]
+    [JsonProperty("topPaletteColor"), JsonRequired]
     public string TopPaletteColor;
 
-    [JsonProperty("middlePaletteColor")]
+    [JsonProperty("middlePaletteColor"), JsonRequired]
     public string MiddlePaletteColor;
 
-    [JsonProperty("bottomPaletteColor")]
+    [JsonProperty("bottomPaletteColor"), JsonRequired]
     public string BottomPaletteColor;
 
-    [JsonProperty("slimeAmmoColor")]
+    [JsonProperty("slimeAmmoColor"), JsonRequired]
     public string SlimeAmmoColor;
 
-    [JsonProperty("topPlortColor")]
+    [JsonProperty("topPlortColor"), JsonRequired]
     public string TopPlortColor;
 
-    [JsonProperty("middlePlortColor")]
+    [JsonProperty("middlePlortColor"), JsonRequired]
     public string MiddlePlortColor;
 
-    [JsonProperty("bottomPlortColor")]
+    [JsonProperty("bottomPlortColor"), JsonRequired]
     public string BottomPlortColor;
 
-    [JsonProperty("specialPlortColor")]
+    [JsonProperty("specialPlortColor"), JsonRequired]
     public string SpecialPlortColor;
 
-    [JsonProperty("basePlortPrice")]
+    [JsonProperty("basePlortPrice"), JsonRequired]
     public float BasePlortPrice;
 
-    [JsonProperty("saturation")]
+    [JsonProperty("saturation"), JsonRequired]
     public float Saturation;
 
-    [JsonProperty("plortAmmoColor")]
+    [JsonProperty("plortAmmoColor"), JsonRequired]
     public string PlortAmmoColor;
 
-    [JsonProperty("intro")]
+    [JsonProperty("intro"), JsonRequired]
     public string Intro;
 
-    [JsonProperty("pediaDiet")]
+    [JsonProperty("pediaDiet"), JsonRequired]
     public string PediaDiet;
 
-    [JsonProperty("fav")]
+    [JsonProperty("fav"), JsonRequired]
     public string Fav;
 
-    [JsonProperty("slimeology")]
+    [JsonProperty("slimeology"), JsonRequired]
     public string Slimeology;
 
-    [JsonProperty("risks")]
+    [JsonProperty("risks"), JsonRequired]
     public string Risks;
 
-    [JsonProperty("plortonomics")]
+    [JsonProperty("plortonomics"), JsonRequired]
     public string Plortonomics;
 
     [JsonProperty("plortType")]
-    public string PlortType;
+    public string PlortType = "Pearl";
 
     [JsonProperty("canBeRefined")]
     public bool CanBeRefined;
@@ -150,7 +150,7 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("progress")]
     public ProgressType[] Progress;
 
-    [JsonProperty("zones")]
+    [JsonProperty("zones"), JsonRequired]
     public Zone[] Zones;
 
     [JsonProperty("spawnAmount")]

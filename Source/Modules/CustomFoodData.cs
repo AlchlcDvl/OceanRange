@@ -17,19 +17,19 @@ public abstract class CustomFoodData : JsonData
     [JsonProperty("minDrive")]
     public float MinDrive = 1f;
 
-    [JsonProperty("favouredBy")]
+    [JsonProperty("favouredBy"), JsonRequired]
     public string[] FavouredByJson;
 
     [JsonIgnore]
     public IdentifiableId[] FavouredBy;
 
-    [JsonProperty("pediaFavouredBy")]
+    [JsonProperty("pediaFavouredBy"), JsonRequired]
     public string PediaFavouredBy;
 
-    [JsonProperty("about")]
+    [JsonProperty("about"), JsonRequired]
     public string About;
 
-    [JsonProperty("ammoColor")]
+    [JsonProperty("ammoColor"), JsonRequired]
     public string AmmoColor;
 }
 
@@ -38,7 +38,7 @@ public sealed class CustomChimkenData : CustomFoodData
     [JsonIgnore]
     public IdentifiableId ChickId;
 
-    [JsonProperty("zones")]
+    [JsonProperty("zones"), JsonRequired]
     public Zone[] Zones;
 
     [JsonProperty("spawnAmount")]
@@ -47,10 +47,10 @@ public sealed class CustomChimkenData : CustomFoodData
     [JsonIgnore]
     public PediaId ChickEntry;
 
-    [JsonProperty("henIntro")]
+    [JsonProperty("henIntro"), JsonRequired]
     public string HenIntro;
 
-    [JsonProperty("chickIntro")]
+    [JsonProperty("chickIntro"), JsonRequired]
     public string ChickIntro;
 
     [OnDeserialized]
@@ -69,13 +69,13 @@ public sealed class CustomChimkenData : CustomFoodData
 
 // public sealed class CustomPlantData : CustomFoodData
 // {
-//     [JsonProperty("type")]
+//     [JsonProperty("type"), JsonRequired]
 //     public string Type;
 
-//     [JsonProperty("intro")]
+//     [JsonProperty("intro"), JsonRequired]
 //     public string Intro;
 
-//     [JsonProperty("garden")]
+//     [JsonProperty("garden"), JsonRequired]
 //     public string Garden;
 
 //     [OnDeserialized]
