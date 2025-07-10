@@ -18,4 +18,10 @@ public abstract class JsonData
 
     [JsonProperty("progress")]
     public ProgressType[] Progress;
+
+    [JsonProperty("basePrice"), JsonRequired]
+    public float BasePrice;
+
+    [JsonProperty("saturation"), JsonRequired]
+    public float Saturation;
 }

@@ -114,12 +114,6 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("specialPlortColor"), JsonRequired]
     public string SpecialPlortColor;
 
-    [JsonProperty("basePlortPrice"), JsonRequired]
-    public float BasePlortPrice;
-
-    [JsonProperty("saturation"), JsonRequired]
-    public float Saturation;
-
     [JsonProperty("plortAmmoColor"), JsonRequired]
     public string PlortAmmoColor;
 

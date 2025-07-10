@@ -182,10 +182,7 @@ public static class FoodManager
         if (!StmExists)
             return;
 
-        PlortRegistry.AddEconomyEntry(chimkenData.ChickId, chimkenData.BaseChickPrice, chimkenData.ChickSaturation);
-        PlortRegistry.AddPlortEntry(chimkenData.ChickId, chimkenData.Progress ?? []);
-
-        PlortRegistry.AddEconomyEntry(chimkenData.MainId, chimkenData.BaseHenPrice, chimkenData.HenSaturation);
+        PlortRegistry.AddEconomyEntry(chimkenData.MainId, chimkenData.BasePrice, chimkenData.Saturation);
         PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress ?? []);
     }
 
@@ -198,5 +195,11 @@ public static class FoodManager
     //         CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
     //     PediaRegistry.RegisterIdEntry(plantData.Entry, AssetManager.GetSprite(plantData.Name));
     //     AmmoRegistry.RegisterSiloAmmo(x => x is SiloStorage.StorageType.NON_SLIMES or SiloStorage.StorageType.FOOD, plantData.MainId);
+
+    //     if (!StmExists)
+    //         return;
+
+    //     PlortRegistry.AddEconomyEntry(plantData.MainId, plantData.BasePrice, plantData.Saturation);
+    //     PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress ?? []);
     // }
 }
