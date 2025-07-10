@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using SRML;
 
 namespace TheOceanRange.Modules;
 
@@ -150,6 +151,12 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("specialDiet")]
     public bool SpecialDiet;
 
+    [JsonProperty("plortExchangeWeight")]
+    public float PlortExchangeWeight = 16f;
+
+    [JsonIgnore]
+    public readonly HashSet<IdentifiableId> Largos = [];
+
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
@@ -170,7 +177,14 @@ public sealed class CustomSlimeData : JsonData
 
         if (!SpecialDiet)
             Diet = Helpers.ParseEnum<FoodGroup>(DietJson);
+    }
 
-        Category = ExchangeDirector.Category.SLIMES;
+    public void GenerateLargos(string[] modded)
+    {
+        var upper = Name.ToUpper();
+        var vanillaLargos = SlimeManager.VanillaSlimes.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
+        var moddedLargos = modded.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
+        Largos.UnionWith(vanillaLargos);
+        Largos.UnionWith(moddedLargos);
     }
 }

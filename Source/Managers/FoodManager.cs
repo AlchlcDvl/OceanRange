@@ -1,3 +1,4 @@
+using AssetsLib;
 using SRML;
 
 namespace TheOceanRange.Managers;
@@ -41,14 +42,6 @@ public static class FoodManager
 
     private static void BasePreLoadChimken(CustomChimkenData chimkenData)
     {
-        Identifiable.NON_SLIMES_CLASS.Add(chimkenData.ChickId);
-        Identifiable.NON_SLIMES_CLASS.Add(chimkenData.MainId);
-
-        Identifiable.CHICK_CLASS.Add(chimkenData.ChickId);
-
-        Identifiable.FOOD_CLASS.Add(chimkenData.MainId);
-        Identifiable.MEAT_CLASS.Add(chimkenData.MainId);
-
         var amount = chimkenData.SpawnAmount / 2;
 
         SRCallbacks.PreSaveGameLoad += _ =>
@@ -86,13 +79,6 @@ public static class FoodManager
 
     // private static void BasePreloadPlant(CustomPlantData plantData)
     // {
-    //     Identifiable.NON_SLIMES_CLASS.Add(plantData.PlantId);
-    //     Identifiable.FOOD_CLASS.Add(plantData.PlantId);
-
-    //     if (plantData.Group == FoodGroup.FRUIT)
-    //         Identifiable.FRUIT_CLASS.Add(plantData.PlantId);
-    //     else if (plantData.Group == FoodGroup.VEGGIES)
-    //         Identifiable.VEGGIE_CLASS.Add(plantData.PlantId);
     // }
 
     public static void LoadFoods()

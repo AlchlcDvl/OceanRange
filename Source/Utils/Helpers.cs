@@ -1,3 +1,4 @@
+using SRML;
 using SRML.Utils;
 
 namespace TheOceanRange.Utils;
@@ -74,15 +75,6 @@ public static class Helpers
 
     public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
-    public static T CreatePrefab<T>(this T obj) where T : UObject => obj.Instantiate(Main.Prefab, false, true);
-
-    public static Material Clone(this Material material)
-    {
-        var material2 = new Material(material);
-        material2.CopyPropertiesFromMaterial(material);
-        return material2;
-    }
-
     // public static string GetPath(this Transform transform)
     // {
     //     var result = "";
@@ -101,5 +93,19 @@ public static class Helpers
         var result = num >= rangeMin && num <= rangeMax;
         var part = num >= min && num <= max;
         return (inner ? result : !result) && part;
+    }
+
+    public static T AddEnumValue<T>(string name) where T : struct, Enum
+    {
+        var value = EnumPatcher.GetFirstFreeValue<T>();
+        EnumPatcher.AddEnumValueWithAlternatives<T>(value, name);
+        return value;
+    }
+
+    public static IdentifiableId CreateIdentifiableId(string name)
+    {
+        var value = AddEnumValue<IdentifiableId>(name);
+        IdentifiableRegistry.CategorizeId(value);
+        return value;
     }
 }

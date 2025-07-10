@@ -6,32 +6,67 @@ using System.Linq;
 public class CreateAssetBundles
 {
     [MenuItem("AssetBundle/Build")]
-    static void BuildAllAssetBundlesWin()
+    static void BuildBundles()
     {
         string assetBundleDirectory = "Assets/StreamingAssets";
         if (!Directory.Exists(assetBundleDirectory))
         {
             Directory.CreateDirectory(assetBundleDirectory);
         }
+
         string mac = "Assets/StreamingAssets/Mac";
-        if (!Directory.Exists(mac))
-        {
-            Directory.CreateDirectory(mac);
-        }
-        else
-        {
-            Directory.EnumerateFiles(mac, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
-        }
+        PrepDirectory(mac);
         string win = "Assets/StreamingAssets/Win";
-        if (!Directory.Exists(win))
+        PrepDirectory(win);
+        string lin = "Assets/StreamingAssets/Lin";
+        PrepDirectory(lin);
+
+        BuildPipeline.BuildAssetBundles(mac, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneOSX);
+        BuildPipeline.BuildAssetBundles(win, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows);
+        BuildPipeline.BuildAssetBundles(lin, BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneLinux64);
+
+        string bundles = "Assets/StreamingAssets/Bundles";
+        PrepDirectory(bundles);
+        MoveAndRenameSpecificBundle(mac, bundles, "mac");
+    }
+
+    static void PrepDirectory(string path)
+    {
+        if (!Directory.Exists(path))
         {
-            Directory.CreateDirectory(win);
+            Directory.CreateDirectory(path);
         }
         else
         {
-            Directory.EnumerateFiles(win, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
+            Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
         }
-        BuildPipeline.BuildAssetBundles(mac, BuildAssetBundleOptions.None, BuildTarget.StandaloneOSX);
-        BuildPipeline.BuildAssetBundles(win, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
+    }
+
+    static void MoveAndRenameSpecificBundle(string sourceDir, string targetDir, string newExtension)
+    {
+        string sourceBundlePath = Path.Combine(sourceDir, "oceanrange");
+        string destBundleFileName = "OceanRange.bundle_" + newExtension;
+        string destBundlePath = Path.Combine(targetDir, destBundleFileName);
+
+        if (File.Exists(sourceBundlePath))
+        {
+            try
+            {
+                if (File.Exists(destBundlePath))
+                {
+                    File.Delete(destBundlePath);
+                }
+                File.Move(sourceBundlePath, destBundlePath);
+                Debug.Log($"Moved and renamed bundle: {sourceBundlePath} to {destBundlePath}");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Failed to move/rename bundle {sourceBundlePath}: {e.Message}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Bundle file not found: {sourceBundlePath}");
+        }
     }
 }

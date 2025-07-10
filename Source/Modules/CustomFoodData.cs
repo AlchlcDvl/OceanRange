@@ -63,7 +63,6 @@ public sealed class CustomChimkenData : CustomFoodData
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_HEN_ENTRY");
         ChickEntry = Helpers.ParseEnum<PediaId>(upper + "_CHICK_ENTRY");
         Group = FoodGroup.MEAT;
-        Category = ExchangeDirector.Category.MEAT;
     }
 }
 

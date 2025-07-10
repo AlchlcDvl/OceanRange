@@ -15,24 +15,19 @@ public static class CreateExchanges
                 new()
                 {
                     id = x.MainId,
-                    value = 18f
+                    value = x.ExchangeWeight
                 },
                 new()
                 {
                     id = x.PlortId,
-                    value = 16f
+                    value = x.PlortExchangeWeight
                 }
             }),
             .. FoodManager.Foods.Select(x => new ValueEntry
             {
                 id = x.MainId,
-                value = 20f
+                value = x.ExchangeWeight
             })
         ];
-
-        var catDict = __instance.GetPrivateField<Dictionary<Category, IdentifiableId[]>>("catDict");
-        new Category[] { Category.VEGGIES, Category.FRUIT, Category.MEAT, Category.SLIMES }.Do(x => catDict[x] = [.. catDict[x], .. AssetManager.JsonData.Where(y => y.Category == x).Select(y =>
-            y.MainId)]);
-        catDict[Category.PLORTS] = [.. catDict[Category.PLORTS], .. SlimeManager.Slimes.Select(y => y.PlortId)];
     }
 }

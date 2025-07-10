@@ -151,7 +151,7 @@
         "specialPlortColor": "#E8C499",
         "slimeAmmoColor": "#EDA960",
         "plortAmmoColor": "#E8C499",
-        "basePrice": 100,
+        "basePrice": 15,
         "saturation": 25,
         "canLargofy": false,
         "intro": "You can find it between your toes!",
@@ -159,6 +159,7 @@
         "fav": "None",
         "zones": ["REEF"],
         "specialDiet": true,
+        "spawnWeight": 0.15,
         "slimeology": "The sand slime, a distance cousin of the puddle slime, can be found in the shallow waters of the Far, Far Range. Much like their puddle and fire cousins, they don't need to be fed for they solely eat dirt. Sand slimes process the nutrients from the dirt and produce a pearl plort of similar composition to Earth pearls.",
         "risks": "A sand slime isn't risky to manage. These slimes can be placed in any inhabited corral without worrying about any outbreaks. Even their pearls are safe because no slime wants to eat a pearl that come from a slime that eats dirt.",
         "plortonomics": "Sand pearls are tougher than their their Earth counterparts, contrary to the softer composition of the sand slime. Just like Earth pearls but much more expensive, sand pearls are used in jewelry."

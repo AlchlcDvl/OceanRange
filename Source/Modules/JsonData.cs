@@ -11,9 +11,6 @@ public abstract class JsonData
     public IdentifiableId MainId;
 
     [JsonIgnore]
-    public ExchangeDirector.Category Category;
-
-    [JsonIgnore]
     public PediaId MainEntry;
 
     [JsonProperty("progress")]
@@ -24,4 +21,7 @@ public abstract class JsonData
 
     [JsonProperty("saturation"), JsonRequired]
     public float Saturation;
+
+    [JsonProperty("exchangeWeight")]
+    public float ExchangeWeight = 20f;
 }
