@@ -43,7 +43,8 @@ public static class AssetManager
     {
         RuntimePlatform.LinuxPlayer => "lin",
         RuntimePlatform.OSXPlayer => "mac",
-        _ => "win"
+        RuntimePlatform.WindowsPlayer => "win",
+        _ => throw new PlatformNotSupportedException(Application.platform.ToString())
     };
 
     private static string SanitisePath(this string path, string bundlePath = null)
