@@ -1,7 +1,7 @@
 [
     {
         "name": "Sandy",
-        "henIntro": "The beach side camouflage master!",
+        "intro": "The beach side camouflage master!",
         "chickIntro": "A budding camouflager!",
         "pediaFavouredBy": "Cocoa Slimes",
         "ammoColor": "#C2B280",

@@ -5,13 +5,13 @@ namespace TheOceanRange;
 
 public sealed class Main : ModEntryPoint
 {
-    public static Main Instance { get; private set; }
+    public static SRML.Console.Console.ConsoleInstance Console { get; private set;}
     // public static Dictionary<Zone, string> ZoneLookup;
-
-    public Main() => Instance = this;
 
     public override void PreLoad()
     {
+        Console = ConsoleInstance;
+
         AssetManager.FetchAssetNames();
 
         FoodManager.PreLoadFoodData();

@@ -35,9 +35,6 @@ public abstract class CustomFoodData : JsonData
 
 public sealed class CustomChimkenData : CustomFoodData
 {
-    [JsonIgnore]
-    public IdentifiableId ChickId;
-
     [JsonProperty("zones"), JsonRequired]
     public Zone[] Zones;
 
@@ -45,10 +42,10 @@ public sealed class CustomChimkenData : CustomFoodData
     public float SpawnAmount = 1f;
 
     [JsonIgnore]
-    public PediaId ChickEntry;
+    public IdentifiableId ChickId;
 
-    [JsonProperty("henIntro"), JsonRequired]
-    public string HenIntro;
+    [JsonIgnore]
+    public PediaId ChickEntry;
 
     [JsonProperty("chickIntro"), JsonRequired]
     public string ChickIntro;
@@ -70,9 +67,6 @@ public sealed class CustomChimkenData : CustomFoodData
 // {
 //     [JsonProperty("type"), JsonRequired]
 //     public string Type;
-
-//     [JsonProperty("intro"), JsonRequired]
-//     public string Intro;
 
 //     [JsonProperty("garden"), JsonRequired]
 //     public string Garden;

@@ -17,8 +17,6 @@ public static class SlimeManager
     private static readonly int TopColor = Shader.PropertyToID("_TopColor");
     private static readonly int MiddleColor = Shader.PropertyToID("_MiddleColor");
     private static readonly int BottomColor = Shader.PropertyToID("_BottomColor");
-    private static readonly int SpecColor = Shader.PropertyToID("_SpecColor");
-    private static readonly int Shininess = Shader.PropertyToID("_Shininess");
     private static readonly int Gloss = Shader.PropertyToID("_Gloss");
     private static readonly int StripeTexture = Shader.PropertyToID("_StripeTexture");
     private static readonly int MouthTop = Shader.PropertyToID("_MouthTop");
@@ -27,13 +25,16 @@ public static class SlimeManager
     private static readonly int EyeRed = Shader.PropertyToID("_EyeRed");
     private static readonly int EyeGreen = Shader.PropertyToID("_EyeGreen");
     private static readonly int EyeBlue = Shader.PropertyToID("_EyeBlue");
+    private static readonly int FaceAtlas = Shader.PropertyToID("_FaceAtlas");
 
     public static void PreLoadSlimeData()
     {
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
 
-        Slimes.AddRange(AssetManager.GetJson<CustomSlimeData[]>("Slimepedia"));
-        AssetManager.JsonData.AddRange(Slimes);
+        Slimes.AddRange(AssetManager.GetJson<CustomSlimeData[]>("slimepedia"));
+        // AssetManager.JsonData.AddRange(Slimes);
+
+        AssetManager.UnloadAsset<TextAsset>("slimepedia");
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 
@@ -88,7 +89,7 @@ public static class SlimeManager
             Eyes = blink.Eyes?.Clone(),
             Mouth = blink.Mouth?.Clone()
         };
-        SleepingFace.Eyes.SetTexture("_FaceAtlas", AssetManager.GetTexture2D("SleepingEyes"));
+        SleepingFace.Eyes.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleepingeyes"));
     }
 
     private static void BaseLoadSlime(CustomSlimeData slimeData)
@@ -114,13 +115,12 @@ public static class SlimeManager
         material.SetColor(TopColor, slimeData.TopPlortColor.HexToColor());
         material.SetColor(MiddleColor, slimeData.MiddlePlortColor.HexToColor());
         material.SetColor(BottomColor, slimeData.BottomPlortColor.HexToColor());
-        material.SetColor(SpecColor, slimeData.SpecialPlortColor.HexToColor());
 
         if (slimeData.PlortType != "Plort") // Plort (crystal) is the original shape of a plort, so skip if the plort type is that
-            prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(slimeData.PlortType);
+            prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(slimeData.PlortType.ToLower());
 
         // Add any slime specific plort details (which is almost all slimes)
-        var plortDetails = $"{slimeData.Name}_{slimeData.PlortType}";
+        var plortDetails = $"{slimeData.Name}_{slimeData.PlortType}".ToLower();
 
         if (AssetManager.AssetExists(plortDetails))
         {
@@ -137,7 +137,7 @@ public static class SlimeManager
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
         TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLower(), $"{slimeData.Name} {slimeData.PlortType}");
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
-        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.HexToColor(), AssetManager.GetSprite($"{slimeData.Name}Plort"));
+        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.HexToColor(), AssetManager.GetSprite($"{slimeData.Name.ToLower()}plort"));
         AmmoRegistry.RegisterSiloAmmo(x => x is SiloStorage.StorageType.NON_SLIMES or SiloStorage.StorageType.PLORT, slimeData.PlortId);
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
@@ -187,7 +187,6 @@ public static class SlimeManager
         var topMatColor = slimeData.TopSlimeColor.HexToColor();
         var middleMatColor = slimeData.MiddleSlimeColor.HexToColor();
         var bottomMatColor = slimeData.BottomSlimeColor.HexToColor();
-        var specialMatColor = slimeData.SpecialSlimeColor.HexToColor();
 
         // Creating a material for each structure
         foreach (var structure in appearance.Structures)
@@ -199,9 +198,7 @@ public static class SlimeManager
             material.SetColor(TopColor, topMatColor);
             material.SetColor(MiddleColor, middleMatColor);
             material.SetColor(BottomColor, bottomMatColor);
-            material.SetColor(SpecColor, specialMatColor);
-            material.SetFloat(Shininess, slimeData.Shininess);
-            material.SetFloat(Gloss, slimeData.Glossiness);
+            material.SetFloat(Gloss, slimeData.Gloss);
         }
 
         // Caching colors again for the same reason
@@ -238,7 +235,7 @@ public static class SlimeManager
             Bottom = slimeData.BottomPaletteColor.HexToColor()
         };
 
-        appearance.Icon = AssetManager.GetSprite($"{slimeData.Name}Slime");
+        appearance.Icon = AssetManager.GetSprite($"{slimeData.Name.ToLower()}slime");
         appearance.ColorPalette.Ammo = slimeData.SlimeAmmoColor.HexToColor();
         applicator.Appearance = appearance;
 
@@ -267,7 +264,7 @@ public static class SlimeManager
         TranslationPatcher.AddActorTranslation("l." + slimeIdName, title);
 
         SlimePediaCreation.PreLoadSlimePediaConnection(slimeData.MainEntry, slimeData.MainId, PediaCategory.SLIMES);
-        SlimePediaCreation.CreateSlimePediaForSlimeWithName(slimeData.MainEntry, title, slimeData.Intro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks,
+        SlimePediaCreation.CreateSlimePediaForSlimeWithName(slimeData.MainEntry, title, slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks,
             slimeData.Plortonomics);
         PediaRegistry.RegisterIdEntry(slimeData.MainEntry, appearance.Icon);
     }
@@ -280,7 +277,7 @@ public static class SlimeManager
         }
         catch (Exception e)
         {
-            Main.Instance.ConsoleInstance.LogError(e);
+            Main.Console.LogError(e);
         }
     }
 
@@ -365,7 +362,6 @@ public static class SlimeManager
                 mat.SetColor(TopColor, color);
                 mat.SetColor(MiddleColor, color);
                 mat.SetColor(BottomColor, color);
-                mat.SetColor(SpecColor, color);
             },
             [typeof(RosiBehaviour)],
             null
@@ -386,12 +382,10 @@ public static class SlimeManager
 
         //     var color = "#966F33".HexToColor();
         //     var material = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
-        //     material.SetColor("_TopColor", color);
-        //     material.SetColor("_MiddleColor", color);
-        //     material.SetColor("_BottomColor", color);
-        //     material.SetColor("_SpecColor", color);
-        //     material.SetFloat("_Shininess", 1f);
-        //     material.SetFloat("_Gloss", 1f);
+        //     material.SetColor(TopColor, color);
+        //     material.SetColor(MiddleColor, color);
+        //     material.SetColor(BottomColor, color);
+        //     material.SetFloat(Gloss, 1f);
         //     structure.DefaultMaterials[0] = material;
         // },
         [typeof(CocoaBehaviour)],
@@ -408,17 +402,14 @@ public static class SlimeManager
         material.SetColor(TopColor, color2);
         material.SetColor(MiddleColor, color2);
         material.SetColor(BottomColor, color);
-        material.SetColor(SpecColor, color);
-        material.SetFloat(Shininess, 1f);
         material.SetFloat(Gloss, 1f);
 
         var material2 = material.Clone();
         material2.SetColor(TopColor, color3);
         material2.SetColor(MiddleColor, color3);
         material2.SetColor(BottomColor, color3);
-        material2.SetColor(SpecColor, color2);
 
-        material.SetTexture(StripeTexture, AssetManager.GetTexture2D("MinePattern"));
+        material.SetTexture(StripeTexture, AssetManager.GetTexture2D("minepattern"));
 
         BasicInitSlimeAppearance
         (
@@ -438,26 +429,20 @@ public static class SlimeManager
         material.SetColor(TopColor, color);
         material.SetColor(MiddleColor, "#9445A7".HexToColor());
         material.SetColor(BottomColor, color2);
-        material.SetColor(SpecColor, color);
-        material.SetFloat(Shininess, 1f);
         material.SetFloat(Gloss, 1f);
 
         var material2 = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.TABBY_SLIME).AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
         material2.SetColor(TopColor, color);
         material2.SetColor(MiddleColor, color);
         material2.SetColor(BottomColor, color2);
-        material2.SetColor(SpecColor, color);
-        material2.SetFloat(Shininess, 1f);
         material2.SetFloat(Gloss, 1f);
-        material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("LanternPattern"));
+        material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("lanternpattern"));
 
         var color3 = "#EBDB6A".HexToColor();
         var material3 = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PHOSPHOR_SLIME).AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
         material3.SetColor(TopColor, color3);
         material3.SetColor(MiddleColor, color3);
         material3.SetColor(BottomColor, color3);
-        material3.SetColor(SpecColor, color);
-        material3.SetFloat(Shininess, 5f);
 
         BasicInitSlimeAppearance
         (
@@ -487,12 +472,11 @@ public static class SlimeManager
                     return;
 
                 var color = "#F4E2CC".HexToColor();
-                var material = structure.DefaultMaterials[0] = structure.DefaultMaterials[0].Clone();
+                var material = structure.DefaultMaterials[0] = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).AppearancesDefault[0]
+                    .Structures[0].DefaultMaterials[0].Clone();
                 material.SetColor(TopColor, color);
                 material.SetColor(MiddleColor, color);
                 material.SetColor(BottomColor, color);
-                material.SetColor(SpecColor, color);
-                material.SetFloat(Shininess, 1f);
                 material.SetFloat(Gloss, 1f);
             },
             [typeof(SandBehaviour)],

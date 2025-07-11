@@ -8,22 +8,22 @@ public sealed class SandBehaviour : SRBehaviour
     public static GameObject PlortPrefab;
     public static GameObject ProduceFX;
 
-    private static readonly Vector3 LOCAL_PRODUCE_LOC = new(0f, 0.5f, 0f);
-    private static readonly Vector3 LOCAL_PRODUCE_VEL = new(0f, 1f, 0f);
+    private static readonly Vector3 LocalProduceLoc = new(0f, 0.5f, 0f);
+    private static readonly Vector3 LocalProduceVel = new(0f, 1f, 0f);
     private const float EatRate = 3f;
 
     private SlimeEmotions Emotions;
     private SlimeEat SlimeEat;
     private RegionMember RegionMember;
     private float NextChompTime;
-    private SlimeAudio slimeAudio;
+    private SlimeAudio SlimeAudio;
     private bool Eating;
 
     public void Awake()
     {
         Emotions = GetComponent<SlimeEmotions>();
         SlimeEat = GetComponent<SlimeEat>();
-        slimeAudio = GetComponent<SlimeAudio>();
+        SlimeAudio = GetComponent<SlimeAudio>();
         RegionMember = GetComponent<RegionMember>();
         ResetEatClock();
     }
@@ -47,24 +47,24 @@ public sealed class SandBehaviour : SRBehaviour
 
         for (var i = 0; i < count; i++)
         {
-            var position = transform.TransformPoint(LOCAL_PRODUCE_LOC);
-            var velocity = transform.TransformVector(LOCAL_PRODUCE_VEL);
+            var position = transform.TransformPoint(LocalProduceLoc);
+            var velocity = transform.TransformVector(LocalProduceVel);
 
-            if (ProduceFX != null)
+            if (ProduceFX)
                 SpawnAndPlayFX(ProduceFX, position, transform.rotation);
 
-            var gameObject = InstantiateActor(PlortPrefab, RegionMember.setId, position, transform.rotation);
+            var go = InstantiateActor(PlortPrefab, RegionMember.setId, position, transform.rotation);
 
-            if (gameObject.TryGetComponent<Rigidbody>(out var component))
+            if (go.TryGetComponent<Rigidbody>(out var component))
                 component.velocity = velocity;
 
-            if (gameObject.TryGetComponent<PlortInvulnerability>(out var component2))
+            if (go.TryGetComponent<PlortInvulnerability>(out var component2))
                 component2.GoInvulnerable();
 
-            gameObject.transform.DOScale(gameObject.transform.localScale, 0.5f).From(0.001f);
+            go.transform.DOScale(go.transform.localScale, 0.5f).From(0.001f);
         }
 
-        slimeAudio.Play(slimeAudio.slimeSounds.plortCue);
+        SlimeAudio.Play(SlimeAudio.slimeSounds.plortCue);
         ResetEatClock();
         Emotions.Adjust(0, 0f - SlimeEat.drivePerEat);
         Eating = false;

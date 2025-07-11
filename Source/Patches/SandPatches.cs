@@ -8,7 +8,7 @@ public static class PatchForSandSlimeDiet
         if (identId != Ids.SAND_SLIME)
             return true;
 
-        __result = __instance.GetPrivateField<MessageBundle>("uiBundle").Xlate(MessageUtil.Compose("m.hudinfo_diet", "m.foodgroup.dirt"));;
+        __result = __instance.GetPrivateField<MessageBundle>("uiBundle").Xlate(MessageUtil.Compose("m.hudinfo_diet", "m.foodgroup.dirt"));
         return false;
     }
 }

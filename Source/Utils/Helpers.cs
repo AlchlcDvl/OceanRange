@@ -1,4 +1,4 @@
-using SRML;
+// using SRML;
 using SRML.Utils;
 
 namespace TheOceanRange.Utils;
@@ -57,7 +57,9 @@ public static class Helpers
         return @string;
     }
 
-    public static string[] TrueSplit(this string @string, char separator) => [.. @string.Split(separator).Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))];
+    // public static string[] TrueSplit(this string @string, char separator) => [.. @string.Split(separator).Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))];
+
+    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators).Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))];
 
     // public static IEnumerable<(int, T)> Indexed<T>(this IEnumerable<T> source)
     // {
@@ -95,17 +97,17 @@ public static class Helpers
         return (inner ? result : !result) && part;
     }
 
-    public static T AddEnumValue<T>(string name) where T : struct, Enum
-    {
-        var value = EnumPatcher.GetFirstFreeValue<T>();
-        EnumPatcher.AddEnumValueWithAlternatives<T>(value, name);
-        return value;
-    }
+    // private static T AddEnumValue<T>(string name) where T : struct, Enum
+    // {
+    //     var value = EnumPatcher.GetFirstFreeValue<T>();
+    //     EnumPatcher.AddEnumValueWithAlternatives<T>(value, name);
+    //     return value;
+    // }
 
-    public static IdentifiableId CreateIdentifiableId(string name)
-    {
-        var value = AddEnumValue<IdentifiableId>(name);
-        IdentifiableRegistry.CategorizeId(value);
-        return value;
-    }
+    // public static IdentifiableId CreateIdentifiableId(string name)
+    // {
+    //     var value = AddEnumValue<IdentifiableId>(name);
+    //     IdentifiableRegistry.CategorizeId(value);
+    //     return value;
+    // }
 }

@@ -1,6 +1,6 @@
 namespace TheOceanRange.Utils;
 
-// Obtained this code from SimpleSRmodLibrary, just been optimised to avoid excessive ToString and ToLower overhead
+// Obtained this code from SimpleSrModLibrary, just been optimised to avoid excessive ToString and ToLower overhead
 public static class SlimePediaCreation
 {
     public static void CreateSlimePediaForSlimeWithName(PediaId slimePediaId, string name, string intro, string diet, string favorite, string slimeology, string risks, string plortonomics)

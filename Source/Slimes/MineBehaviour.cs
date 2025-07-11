@@ -38,7 +38,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         Applicator = GetComponent<SlimeAppearanceApplicator>();
         Marker = GetComponentsInChildren<ExplodeIndicatorMarker>(true)[0];
 
-        if (Applicator.Appearance != null)
+        if (Applicator.Appearance)
             ExplodeFX = Applicator.Appearance.ExplosionAppearance.explodeFx;
 
         Applicator.OnAppearanceChanged += OnAppearanceChanged;

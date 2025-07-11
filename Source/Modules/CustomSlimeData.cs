@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using SRML;
+// using SRML;
 
 namespace TheOceanRange.Modules;
 
@@ -55,11 +55,8 @@ public sealed class CustomSlimeData : JsonData
     [JsonIgnore]
     public MethodInfo InitPlortDetails;
 
-    [JsonProperty("shininess")]
-    public float Shininess = 1f;
-
-    [JsonProperty("glossiness")]
-    public float Glossiness = 1f;
+    [JsonProperty("gloss")]
+    public float Gloss = 1f;
 
     [JsonProperty("topSlimeColor"), JsonRequired]
     public string TopSlimeColor;
@@ -69,9 +66,6 @@ public sealed class CustomSlimeData : JsonData
 
     [JsonProperty("bottomSlimeColor"), JsonRequired]
     public string BottomSlimeColor;
-
-    [JsonProperty("specialSlimeColor"), JsonRequired]
-    public string SpecialSlimeColor;
 
     [JsonProperty("topMouthColor")]
     public string TopMouthColor = "#000000";
@@ -112,14 +106,8 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("bottomPlortColor"), JsonRequired]
     public string BottomPlortColor;
 
-    [JsonProperty("specialPlortColor"), JsonRequired]
-    public string SpecialPlortColor;
-
     [JsonProperty("plortAmmoColor"), JsonRequired]
     public string PlortAmmoColor;
-
-    [JsonProperty("intro"), JsonRequired]
-    public string Intro;
 
     [JsonProperty("pediaDiet"), JsonRequired]
     public string PediaDiet;
@@ -154,8 +142,8 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("plortExchangeWeight")]
     public float PlortExchangeWeight = 16f;
 
-    [JsonIgnore]
-    public readonly HashSet<IdentifiableId> Largos = [];
+    // [JsonIgnore]
+    // public readonly HashSet<IdentifiableId> Largos = [];
 
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
@@ -179,12 +167,12 @@ public sealed class CustomSlimeData : JsonData
             Diet = Helpers.ParseEnum<FoodGroup>(DietJson);
     }
 
-    public void GenerateLargos(string[] modded)
-    {
-        var upper = Name.ToUpper();
-        var vanillaLargos = SlimeManager.VanillaSlimes.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
-        var moddedLargos = modded.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
-        Largos.UnionWith(vanillaLargos);
-        Largos.UnionWith(moddedLargos);
-    }
+    // public void GenerateLargos(string[] modded)
+    // {
+    //     var upper = Name.ToUpper();
+    //     var vanillaLargos = SlimeManager.VanillaSlimes.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
+    //     var moddedLargos = modded.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
+    //     Largos.UnionWith(vanillaLargos);
+    //     Largos.UnionWith(moddedLargos);
+    // }
 }

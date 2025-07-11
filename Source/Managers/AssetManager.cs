@@ -5,13 +5,16 @@ namespace TheOceanRange.Managers;
 
 public static class AssetManager
 {
-    public static readonly List<JsonData> JsonData = [];
+    // public static readonly List<JsonData> JsonData = [];
 
     private static readonly Assembly Core = typeof(Main).Assembly;
     private static readonly Dictionary<string, AssetBundle> Bundles = [];
     private static readonly Dictionary<string, string> AssetToBundle = [];
     private static readonly Dictionary<string, HashSet<UObject>> LoadedAssets = [];
     private static readonly Dictionary<string, HashSet<string>> UnloadedAssets = [];
+    private static readonly Dictionary<UObject, string> AssetToName = [];
+    private static readonly Dictionary<UObject, string> AssetToOriginPath = [];
+    private static readonly Dictionary<UObject, string> AssetToBundleId = [];
     private static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         [typeof(Sprite)] = ("png", LoadSprite),
@@ -29,11 +32,7 @@ public static class AssetManager
             var id = path.SanitisePath(bundlePath);
 
             if (path.EndsWith(bundlePath))
-            {
-                var bundle = AssetBundle.LoadFromMemory(Core.GetManifestResourceStream(path)!.ReadFully());
-                Bundles[id] = bundle;
-                bundle.GetAllAssetNames().Do(x => AssetToBundle[x.SanitisePath()] = id);
-            }
+                LoadBundle(path, id).GetAllAssetNames().Do(x => AssetToBundle[x.SanitisePath()] = id);
             else if (!path.Contains(".bundle")) // Skip loading bundles that don't relate to the current platform
                 AddPath(id, path);
         }
@@ -54,9 +53,7 @@ public static class AssetManager
         if (bundlePath != null)
             path = path.Replace(bundlePath, "");
 
-        path = path.TrueSplit('/').Last();
-        path = path.TrueSplit('\\').Last();
-        return path.TrueSplit('.').Last();
+        return path.TrueSplit('/', '\\', '.').Last().ToLower();
     }
 
     public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<TextAsset>(path).text);
@@ -76,7 +73,7 @@ public static class AssetManager
         if (LoadedAssets.TryGetValue(name, out var objList) && objList.TryFinding<UObject, T>(out var result) && result)
             return result;
 
-        if (AssetToBundle.TryGetValue(name.ToLower(), out var bundle))
+        if (AssetToBundle.TryGetValue(name, out var bundle))
         {
             result = LoadAsset<T>(Bundles[bundle], name);
 
@@ -90,7 +87,7 @@ public static class AssetManager
         var tType = typeof(T);
 
         if (AssetTypeExtensions.TryGetValue(tType, out var pair) && strings.TryFinding(x => x.EndsWith($".{pair.Extension}"), out var path))
-            result = (T)AddAsset(name, pair.LoadAsset(path));
+            result = (T)AddAsset(name, pair.LoadAsset(path), originPath: path);
         else
             throw new FileNotFoundException($"{name}, {tType.Name}");
 
@@ -105,29 +102,17 @@ public static class AssetManager
         return result;
     }
 
-    public static bool AssetExists(string path)
-    {
-        var lower = path.ToLower();
-        return LoadedAssets.Keys.Any(x => x == path) || UnloadedAssets.Keys.Any(x => x == path) || AssetToBundle.Keys.Any(x => x == lower);
-    }
+    public static bool AssetExists(string path) => LoadedAssets.Keys.Any(x => x == path) || UnloadedAssets.Keys.Any(x => x == path) || AssetToBundle.Keys.Any(x => x == path);
 
     private static T LoadAsset<T>(AssetBundle assetBundle, string name) where T : UObject
     {
         var asset = assetBundle.LoadAsset<T>(name);
-        AddAsset(name, asset);
+        AddAsset(name, asset, bundleId: assetBundle.name);
         AssetToBundle.Remove(name);
-
-        if (Bundles.Keys.Any(AssetToBundle.Values.Contains))
-            return asset;
-
-        Bundles.Remove(assetBundle.name);
-        assetBundle.Unload(false);
         return asset;
     }
 
-    private static void AddAsset<T>(string name, T obj) where T : UObject => AddAsset(name, (UObject)obj);
-
-    private static UObject AddAsset(string name, UObject obj)
+    private static UObject AddAsset(string name, UObject obj, string originPath = null, string bundleId = null)
     {
         if (!obj)
             return null;
@@ -136,6 +121,14 @@ public static class AssetManager
             LoadedAssets[name] = value = [];
 
         value.Add(obj);
+        AssetToName[obj] = name;
+
+        if (!string.IsNullOrEmpty(originPath))
+            AssetToOriginPath[obj] = originPath;
+
+        if (!string.IsNullOrEmpty(bundleId))
+            AssetToBundleId[obj] = bundleId;
+
         return obj.DontDestroy();
     }
 
@@ -145,6 +138,57 @@ public static class AssetManager
             UnloadedAssets[name] = value = [];
 
         value.Add(path);
+    }
+
+    public static bool UnloadAsset(UObject asset)
+    {
+        if (!asset)
+            return false;
+
+        if (!AssetToName.TryGetValue(asset, out var name))
+            return false;
+
+        if (LoadedAssets.TryGetValue(name, out var assets))
+        {
+            assets.Remove(asset);
+
+            if (assets.Count == 0)
+                LoadedAssets.Remove(name);
+        }
+
+        var restored = false;
+
+        if (AssetToBundleId.TryGetValue(asset, out var bundleId))
+        {
+            if (Bundles.ContainsKey(bundleId))
+            {
+                AssetToBundle[name] = bundleId;
+                restored = true;
+            }
+        }
+        else if (AssetToOriginPath.TryGetValue(asset, out var originPath))
+        {
+            AddPath(name, originPath);
+            restored = true;
+        }
+
+        AssetToName.Remove(asset);
+        AssetToBundleId.Remove(asset);
+        AssetToOriginPath.Remove(asset);
+
+        asset.Destroy();
+        return restored;
+    }
+
+    public static bool UnloadAsset<T>(string name) where T : UObject
+    {
+        if (!LoadedAssets.TryGetValue(name, out var assets))
+            return false;
+
+        if (!assets.TryFinding<UObject, T>(out var asset))
+            return false;
+
+        return UnloadAsset(asset);
     }
 
     private static TextAsset LoadText(string path)
@@ -160,7 +204,7 @@ public static class AssetManager
         wrapMode = TextureWrapMode.Repeat
     };
 
-    private static Texture2D LoadTexture(string path) => LoadTexture(Core.GetManifestResourceStream(path)!.ReadFully(), path.SanitisePath());
+    private static Texture2D LoadTexture(string path) => LoadTexture(ReadBytes(path), path.SanitisePath());
 
     private static Texture2D LoadTexture(byte[] data, string name)
     {
@@ -169,12 +213,12 @@ public static class AssetManager
         return !texture.LoadImage(data, true) ? null : texture;
     }
 
-    private static Sprite LoadSprite(string path) => LoadSprite(LoadTexture(path), path.SanitisePath());
+    private static Sprite LoadSprite(string path) => LoadSprite(LoadTexture(path));
 
-    private static Sprite LoadSprite(Texture2D tex, string name, float ppu = float.NaN, SpriteMeshType meshType = SpriteMeshType.Tight)
+    private static Sprite LoadSprite(Texture2D tex, float ppu = float.NaN, SpriteMeshType meshType = SpriteMeshType.Tight)
     {
         var sprite = Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), float.IsNaN(ppu) ? 1f : ppu, 0, meshType);
-        sprite.name = name;
+        sprite.name = tex.name;
         return sprite;
     }
 
@@ -183,6 +227,16 @@ public static class AssetManager
         using var ms = new MemoryStream();
         input.CopyTo(ms);
         return ms.ToArray();
+    }
+
+    private static byte[] ReadBytes(string path) => Core.GetManifestResourceStream(path)!.ReadFully();
+
+    private static AssetBundle LoadBundle(string path, string name)
+    {
+        var bundle = AssetBundle.LoadFromMemory(ReadBytes(path));
+        bundle.name = name;
+        Bundles[name] = bundle;
+        return bundle;
     }
 
     // This is all for mainly debugging stuff when I want to dump assets from the main game

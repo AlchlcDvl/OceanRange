@@ -24,4 +24,7 @@ public abstract class JsonData
 
     [JsonProperty("exchangeWeight")]
     public float ExchangeWeight = 20f;
+
+    [JsonProperty("intro"), JsonRequired]
+    public string MainIntro;
 }
