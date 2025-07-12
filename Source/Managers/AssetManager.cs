@@ -85,29 +85,35 @@ public static class AssetManager
         return new(reader.ReadToEnd());
     }
 
-    private static Texture2D EmptyTexture() => new(2, 2, TextureFormat.ARGB32, true)
-    {
-        filterMode = FilterMode.Bilinear,
-        wrapMode = TextureWrapMode.Repeat
-    };
+    private static Texture2D EmptyTexture(TextureFormat format, bool mipChain) => new(2, 2, format, mipChain) { filterMode = FilterMode.Bilinear };
 
     private static Texture2D LoadTexture(string path) => LoadTexture(ReadBytes(path), path.SanitisePath());
 
     private static Texture2D LoadTexture(byte[] data, string name)
     {
-        var texture = EmptyTexture();
+        var texture = EmptyTexture(GetFormat(name), GenerateMipChains(name));
+        texture.LoadImage(data, true);
+        texture.wrapMode = GetWrapMode(name);
         texture.name = name;
-        return !texture.LoadImage(data, true) ? null : texture;
+        return texture;
     }
+
+    private static bool GenerateMipChains(string name) => name is "minepattern" or "lanternpattern" or "sleepingeyes" or "sandyskinramp" or "sandyskinrampdark";
+
+    private static TextureFormat GetFormat(string name) => name is "sandyskinramp" or "sandyskinrampdark" ? TextureFormat.DXT1 : TextureFormat.DXT5;
+
+    private static TextureWrapMode GetWrapMode(string name) => name is "sandyskinramp" or "sandyskinrampdark" ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
 
     private static Sprite LoadSprite(string path) => LoadSprite(LoadTexture(path)?.DontDestroy());
 
-    private static Sprite LoadSprite(Texture2D tex, float ppu = float.NaN, SpriteMeshType meshType = SpriteMeshType.Tight)
+    private static Sprite LoadSprite(Texture2D tex)
     {
-        var sprite = Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), float.IsNaN(ppu) ? 1f : ppu, 0, meshType);
+        var sprite = Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, GetMeshType(tex.name));
         sprite.name = tex.name;
         return sprite;
     }
+
+    private static SpriteMeshType GetMeshType(string name) => name is "minepattern" or "sandyskinramp" or "sandyskinrampdark" or "sleepingeyes" or "lanternpattern" ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
 
     private static byte[] ReadFully(this Stream input)
     {
