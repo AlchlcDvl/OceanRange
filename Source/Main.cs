@@ -17,12 +17,10 @@ public sealed class Main : ModEntryPoint
 
         FoodManager.PreLoadFoodData();
         SlimeManager.PreLoadSlimeData();
+        MailManager.PreLoadMailData();
 
         // ZoneLookup = AccessTools.Field(typeof(Director), "RICH_PRESENCE_ZONE_LOOKUP").GetValue(null) as Dictionary<Zone, string>;
         // Helpers.DoTryParseHtmlColor = AccessTools.Method(typeof(ColorUtility), "DoTryParseHtmlColor");
-
-        SlimeManager.PreLoadAllSlimes();
-        FoodManager.PreLoadFoods();
 
         HarmonyInstance.PatchAll();
     }

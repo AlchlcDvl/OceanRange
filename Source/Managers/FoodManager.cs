@@ -32,15 +32,12 @@ public static class FoodManager
         AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
         // AssetManager.UnloadAsset<JsonAsset>("plantpedia");
 
+        Chimkens.ForEach(BasePreLoadChimken);
+        // Plants.ForEach(BasePreloadPlant);
+
         FoodGroupIds = AccessTools.Field(typeof(SlimeEat), "foodGroupIds").GetValue(null) as Dictionary<FoodGroup, IdentifiableId[]>;
 
         new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => FoodGroupIds[x] = [.. FoodGroupIds[x], .. Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
-    }
-
-    public static void PreLoadFoods()
-    {
-        Chimkens.ForEach(BasePreLoadChimken);
-        // Plants.ForEach(BasePreloadPlant);
     }
 
     private static void BasePreLoadChimken(CustomChimkenData chimkenData)
@@ -130,7 +127,6 @@ public static class FoodManager
         ];
 
         // Register both chicks and hens
-
         RegisterFood(chickPrefab, AssetManager.GetSprite($"{lower}chick"), ammo, chimkenData.ChickId, chimkenData.ChickEntry, [SiloStorage.StorageType.NON_SLIMES]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "None",
             CommonChickAboutPedia.Replace("%type%",  chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
@@ -139,6 +135,7 @@ public static class FoodManager
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
 
+        // Compatibility
         if (!StmExists)
             return;
 
@@ -175,11 +172,10 @@ public static class FoodManager
 
     // private static void BaseCreatePlant(CustomPlantData plantData)
     // {
-    //     SlimePediaCreation.PreLoadSlimePediaConnection(plantData.Entry, plantData.PlantId, PediaCategory.RESOURCES);
+    //     RegisterFood(prefab, AssetManager.GetSprite(plantData.Name.ToLower()), plantData.AmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [SiloStorage.StorageType.NON_SLIMES,
+    //         SiloStorage.StorageType.FOOD]);
     //     SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.Entry, plantData.Name, plantData.Intro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
     //         CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
-    //     PediaRegistry.RegisterIdEntry(plantData.Entry, AssetManager.GetSprite(plantData.Name));
-    //     AmmoRegistry.RegisterSiloAmmo(x => x is SiloStorage.StorageType.NON_SLIMES or SiloStorage.StorageType.FOOD, plantData.MainId);
 
     //     if (!StmExists)
     //         return;

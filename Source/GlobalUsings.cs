@@ -18,3 +18,5 @@ global using TheOceanRange.Slimes;
 global using TheOceanRange.Utils;
 
 global using MonomiPark.SlimeRancher.Regions;
+
+global using Newtonsoft.Json;

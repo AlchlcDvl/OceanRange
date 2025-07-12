@@ -34,6 +34,8 @@ public static class SlimeManager
         Slimes.AddRange(AssetManager.GetJson<CustomSlimeData[]>("slimepedia"));
         // AssetManager.JsonData.AddRange(Slimes);
 
+        Slimes.ForEach(BasePreLoadSlime);
+
         AssetManager.UnloadAsset<JsonAsset>("slimepedia");
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
@@ -44,8 +46,6 @@ public static class SlimeManager
         // var modded = Slimes.Select(x => x.Name.ToUpper()).ToArray();
         // Slimes.ForEach(x => x.GenerateLargos(modded));
     }
-
-    public static void PreLoadAllSlimes() => Slimes.ForEach(BasePreLoadSlime);
 
     private static void BasePreLoadSlime(CustomSlimeData slimeData) => SRCallbacks.PreSaveGameLoad += _ =>
     {

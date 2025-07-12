@@ -1,5 +1,4 @@
 using System.Reflection;
-using Newtonsoft.Json;
 
 namespace TheOceanRange.Managers;
 
@@ -65,7 +64,7 @@ public static class AssetManager
     private static T Get<T>(string name) where T : UObject
     {
         if (!Assets.TryGetValue(name, out var handle))
-            throw new FileNotFoundException(name);
+            throw new FileNotFoundException($"{name}, {typeof(T).Name}");
 
         return handle.Load<T>();
     }
@@ -113,7 +112,8 @@ public static class AssetManager
         return sprite;
     }
 
-    private static SpriteMeshType GetMeshType(string name) => name is "minepattern" or "sandyskinramp" or "sandyskinrampdark" or "sleepingeyes" or "lanternpattern" ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
+    private static SpriteMeshType GetMeshType(string name) => name is "minepattern" or "sandyskinramp" or "sandyskinrampdark" or "sleepingeyes" or "lanternpattern"
+        ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
 
     private static byte[] ReadFully(this Stream input)
     {
@@ -174,10 +174,10 @@ public static class AssetManager
 
     private sealed class AssetHandle(string name)
     {
-        public readonly string Name = name;
+        private readonly string Name = name;
         public readonly Dictionary<string, bool> Paths = []; // Handles asset paths, the bool flag indicates if it's from the bundle or not
-        public readonly Dictionary<UObject, string> LoadedFrom = []; // Handles if assets have been loaded
-        public readonly Dictionary<Type, UObject> Assets = []; // Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there' can't be two of Plort.png anywhere)
+        private readonly Dictionary<UObject, string> LoadedFrom = []; // Handles if assets have been loaded
+        private readonly Dictionary<Type, UObject> Assets = []; // Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there' can't be two of Plort.png anywhere)
 
         public T Load<T>() where T : UObject
         {
