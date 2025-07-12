@@ -9,7 +9,7 @@ public static class SlimeManager
 {
     public static readonly List<CustomSlimeData> Slimes = [];
     public static SlimeExpressionFace SleepingFace;
-    public static string[] VanillaSlimes = ["PINK", "ROCK", "PHOSPHOR", "PUDDLE", "FIRE", "CRYSTAL", "RAD", "BOOM", "TANGLE", "DERVISH", "TABBY", "HUNTER", "SABER", "HONEY", "MOSAIC", "QUANTUM"];
+    // public static string[] VanillaSlimes = ["PINK", "ROCK", "PHOSPHOR", "PUDDLE", "FIRE", "CRYSTAL", "RAD", "BOOM", "TANGLE", "DERVISH", "TABBY", "HUNTER", "SABER", "HONEY", "MOSAIC", "QUANTUM"];
 
     private static bool SamExists;
     private static Transform RocksPrefab;
@@ -20,8 +20,8 @@ public static class SlimeManager
     private static readonly int Gloss = Shader.PropertyToID("_Gloss");
     private static readonly int StripeTexture = Shader.PropertyToID("_StripeTexture");
     private static readonly int MouthTop = Shader.PropertyToID("_MouthTop");
-    private static readonly int MouthMid = Shader.PropertyToID("_MouthMid");
-    private static readonly int MouthBot = Shader.PropertyToID("_MouthBot");
+    private static readonly int MouthMiddle = Shader.PropertyToID("_MouthMid");
+    private static readonly int MouthBottom = Shader.PropertyToID("_MouthBot");
     private static readonly int EyeRed = Shader.PropertyToID("_EyeRed");
     private static readonly int EyeGreen = Shader.PropertyToID("_EyeGreen");
     private static readonly int EyeBlue = Shader.PropertyToID("_EyeBlue");
@@ -34,7 +34,7 @@ public static class SlimeManager
         Slimes.AddRange(AssetManager.GetJson<CustomSlimeData[]>("slimepedia"));
         // AssetManager.JsonData.AddRange(Slimes);
 
-        AssetManager.UnloadAsset<TextAsset>("slimepedia");
+        AssetManager.UnloadAsset<JsonAsset>("slimepedia");
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 
@@ -90,6 +90,8 @@ public static class SlimeManager
             Mouth = blink.Mouth?.Clone()
         };
         SleepingFace.Eyes.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleepingeyes"));
+
+        AssetManager.UnloadAsset<Texture2D>("sleepingeyes");
     }
 
     private static void BaseLoadSlime(CustomSlimeData slimeData)
@@ -126,7 +128,7 @@ public static class SlimeManager
         {
             var rocks = RocksPrefab.Instantiate(prefab.transform);
             rocks.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(plortDetails);
-            rocks.GetComponent<MeshRenderer>().material = prefab.GetComponent<MeshRenderer>().material.Clone();
+            rocks.GetComponent<MeshRenderer>().material = material.Clone();
             rocks.name = plortDetails;
         }
 
@@ -215,8 +217,8 @@ public static class SlimeManager
             if (face.Mouth)
             {
                 face.Mouth.SetColor(MouthTop, topMouth);
-                face.Mouth.SetColor(MouthMid, middleMouth);
-                face.Mouth.SetColor(MouthBot, bottomMouth);
+                face.Mouth.SetColor(MouthMiddle, middleMouth);
+                face.Mouth.SetColor(MouthBottom, bottomMouth);
             }
 
             if (face.Eyes)

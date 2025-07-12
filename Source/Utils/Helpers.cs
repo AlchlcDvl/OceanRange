@@ -1,10 +1,16 @@
 // using SRML;
+// using System.Reflection;
 using SRML.Utils;
 
 namespace TheOceanRange.Utils;
 
 public static class Helpers
 {
+    // private static readonly Dictionary<string, Color32> HexToColor32s = [];
+    private static readonly Dictionary<string, Color> HexToColors = [];
+
+    // public static MethodInfo DoTryParseHtmlColor;
+
     public static bool TryFinding<T>(this IEnumerable<T> source, Func<T, bool> predicate, out T value)
     {
         var result = source.TryFindingAll(predicate, out var values);
@@ -69,9 +75,22 @@ public static class Helpers
     //         yield return (i++, item);
     // }
 
-    // public static Color32 HexToColor32(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
+    // public static Color32 HexToColor32(this string hex)
+    // {
+    //     if (HexToColor32s.TryGetValue(hex, out var color))
+    //         return color;
 
-    public static Color HexToColor(this string hex) => ColorUtility.TryParseHtmlString(hex, out var color) ? color : Color.white;
+    //     object[] args = [hex, color];
+    //     return HexToColor32s[hex] = (bool)DoTryParseHtmlColor.Invoke(null, args) ? (Color32)args[1] : Color.white;
+    // }
+
+    public static Color HexToColor(this string hex)
+    {
+        if (HexToColors.TryGetValue(hex, out var color))
+            return color;
+
+        return HexToColors[hex] = ColorUtility.TryParseHtmlString(hex, out color) ? color : Color.white;
+    }
 
     public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value);
 

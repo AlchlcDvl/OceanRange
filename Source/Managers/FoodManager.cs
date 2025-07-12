@@ -29,8 +29,8 @@ public static class FoodManager
         // FoodsMap.AddRange(Plants);
         // AssetManager.JsonData.AddRange(Foods);
 
-        AssetManager.UnloadAsset<TextAsset>("chimkenpedia");
-        // AssetManager.UnloadAsset<TextAsset>("plantpedia");
+        AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
+        // AssetManager.UnloadAsset<JsonAsset>("plantpedia");
 
         FoodGroupIds = AccessTools.Field(typeof(SlimeEat), "foodGroupIds").GetValue(null) as Dictionary<FoodGroup, IdentifiableId[]>;
 
@@ -88,6 +88,8 @@ public static class FoodManager
     {
         Chimkens.ForEach(BaseCreateChimken);
         // Plants.ForEach(BaseCreatePlant);
+
+        AssetManager.UnloadBundle();
     }
 
     private const string CommonHenRanchPedia = "%type% hens in close proximity to roostros will periodically lay eggs that produce %type% chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.";
@@ -96,40 +98,21 @@ public static class FoodManager
 
     private static void BaseCreateChimken(CustomChimkenData chimkenData)
     {
-        // Fetch ramps
+        // Fetch ramps and caching values because reusing them is tedious
         var lower = chimkenData.Name.ToLower();
         var ramp = $"{lower}skinramp";
+        var darker = $"{ramp}darker";
         var skin = AssetManager.GetTexture2D(ramp);
-        var dark = AssetManager.GetTexture2D($"{ramp}darker");
-
-        // Cache values because reusing them is tedious
+        var dark = AssetManager.GetTexture2D(darker);
         var ammo = chimkenData.AmmoColor.HexToColor();
         var lookupDir = GameContext.Instance.LookupDirector;
 
         // Find and create the prefab for chicks and set values
-        var chickPrefab = lookupDir.GetPrefab(IdentifiableId.CHICK).CreatePrefab();
-        chickPrefab.name = $"birdChick{chimkenData.Name}";
-        var component = chickPrefab.transform.Find("Chickadoo/mesh_body1").GetComponent<SkinnedMeshRenderer>();
-        var material = component.sharedMaterial = component.sharedMaterial.Clone();
-        material.SetTexture(RampRed, dark);
-        material.SetTexture(RampGreen, skin);
-        material.SetTexture(RampBlue, skin);
-        material.SetTexture(RampBlack, skin);
-        chickPrefab.GetComponent<Identifiable>().id = chimkenData.ChickId;
-        chickPrefab.GetComponent<Vacuumable>().size = 0;
+        var chickPrefab = CreateChimken(chimkenData.Name, dark, skin, lookupDir, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
+        var henPrefab = CreateChimken(chimkenData.Name, dark, skin, lookupDir, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
 
-        // Same for hens
-        var henPrefab = lookupDir.GetPrefab(IdentifiableId.HEN).CreatePrefab();
-        henPrefab.name = $"birdHen{chimkenData.Name}";
-        var component2 = henPrefab.transform.Find("Hen Hen/mesh_body1").GetComponent<SkinnedMeshRenderer>();
-        var material2 = component2.sharedMaterial = component2.sharedMaterial.Clone();
-        material2.SetTexture(RampRed, dark);
-        material2.SetTexture(RampGreen, skin);
-        material2.SetTexture(RampBlue, skin);
-        material2.SetTexture(RampBlack, skin);
-        henPrefab.GetComponent<Identifiable>().id = chimkenData.MainId;
+        // Set specific data for each prefab
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
-        henPrefab.GetComponent<Vacuumable>().size = 0;
         var transformChance = henPrefab.GetComponent<TransformChanceOnReproduce>();
         transformChance.targetPrefab = lookupDir.GetPrefab(IdentifiableId.ELDER_HEN);
         transformChance.transformChance = 2.5f;
@@ -150,31 +133,47 @@ public static class FoodManager
 
         // Register both chicks and hens
 
-        LookupRegistry.RegisterIdentifiablePrefab(chickPrefab);
-        var chickIcon = AssetManager.GetSprite($"{lower}chick");
-        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, chimkenData.ChickId);
-        LookupRegistry.RegisterVacEntry(chimkenData.ChickId, ammo, chickIcon);
-        SlimePediaCreation.PreLoadSlimePediaConnection(chimkenData.ChickEntry, chimkenData.ChickId, PediaCategory.RESOURCES);
+        RegisterFood(chickPrefab, AssetManager.GetSprite($"{lower}chick"), ammo, chimkenData.ChickId, chimkenData.ChickEntry, [SiloStorage.StorageType.NON_SLIMES]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "None",
             CommonChickAboutPedia.Replace("%type%",  chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
-        PediaRegistry.RegisterIdEntry(chimkenData.ChickEntry, chickIcon);
-        AmmoRegistry.RegisterSiloAmmo(x => x is SiloStorage.StorageType.NON_SLIMES or SiloStorage.StorageType.FOOD, chimkenData.ChickId);
 
-        LookupRegistry.RegisterIdentifiablePrefab(henPrefab);
-        var henIcon = AssetManager.GetSprite($"{lower}hen");
-        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, chimkenData.MainId);
-        LookupRegistry.RegisterVacEntry(chimkenData.MainId, ammo, henIcon);
-        SlimePediaCreation.PreLoadSlimePediaConnection(chimkenData.MainEntry, chimkenData.MainId, PediaCategory.RESOURCES);
+        RegisterFood(henPrefab, AssetManager.GetSprite($"{lower}hen"), ammo, chimkenData.MainId, chimkenData.MainEntry, [SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.FOOD]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
-        PediaRegistry.RegisterIdEntry(chimkenData.MainEntry, henIcon);
-        AmmoRegistry.RegisterSiloAmmo(x => x is SiloStorage.StorageType.NON_SLIMES or SiloStorage.StorageType.FOOD, chimkenData.MainId);
+
+        AssetManager.UnloadAsset<Texture2D>(ramp);
+        AssetManager.UnloadAsset<Texture2D>(darker);
 
         if (!StmExists)
             return;
 
         PlortRegistry.AddEconomyEntry(chimkenData.MainId, chimkenData.BasePrice, chimkenData.Saturation);
         PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress ?? []);
+    }
+
+    private static GameObject CreateChimken(string name, Texture dark, Texture skin, LookupDirector lookupDir, IdentifiableId id, IdentifiableId baseId, string modelName, string type)
+    {
+        var prefab = lookupDir.GetPrefab(baseId).CreatePrefab();
+        prefab.name = $"bird{type}{name}";
+        var component = prefab.transform.Find($"{modelName}/mesh_body1").GetComponent<SkinnedMeshRenderer>();
+        var material = component.sharedMaterial = component.sharedMaterial.Clone();
+        material.SetTexture(RampRed, dark);
+        material.SetTexture(RampGreen, skin);
+        material.SetTexture(RampBlue, skin);
+        material.SetTexture(RampBlack, skin);
+        prefab.GetComponent<Identifiable>().id = id;
+        prefab.GetComponent<Vacuumable>().size = 0;
+        return prefab;
+    }
+
+    private static void RegisterFood(GameObject prefab, Sprite icon, Color ammo, IdentifiableId id, PediaId pediaId, SiloStorage.StorageType[] siloStorage)
+    {
+        LookupRegistry.RegisterIdentifiablePrefab(prefab);
+        AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, id);
+        LookupRegistry.RegisterVacEntry(id, ammo, icon);
+        SlimePediaCreation.PreLoadSlimePediaConnection(pediaId, id, PediaCategory.RESOURCES);
+        PediaRegistry.RegisterIdEntry(pediaId, icon);
+        AmmoRegistry.RegisterSiloAmmo(siloStorage.Contains, id);
     }
 
     // private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
