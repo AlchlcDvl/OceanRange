@@ -5,8 +5,6 @@ namespace TheOceanRange.Managers;
 
 public static class AssetManager
 {
-    // public static readonly List<JsonData> JsonData = [];
-
     private static readonly Assembly Core = typeof(Main).Assembly;
     private static AssetBundle Bundle;
     private static readonly Dictionary<string, AssetHandle> Assets = [];
@@ -76,10 +74,8 @@ public static class AssetManager
 
     public static void UnloadAsset<T>(string name) where T : UObject
     {
-        if (!Assets.TryGetValue(name, out var handle))
-            return;
-
-        handle.Unload<T>();
+        if (Assets.TryGetValue(name, out var handle))
+            handle.Unload<T>();
     }
 
     private static JsonAsset LoadJson(string path)
@@ -131,8 +127,6 @@ public static class AssetManager
 
     private static void CreateAssetHandle(string name, string path, bool fromBundle)
     {
-        Main.Console.Log(name + ": " + path + ", " + fromBundle);
-
         if (!Assets.TryGetValue(name, out var handle))
             handle = Assets[name] = new(name);
 
@@ -192,7 +186,7 @@ public static class AssetManager
             if (!Paths.TryFinding(x => x.Key.EndsWith(generator.Extension), out var tuple))
                 throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}");
 
-            asset = tuple.Value ? Bundle.LoadAsset<T>(Name) : generator.LoadAsset(tuple.Key);
+            asset = tuple.Value ? Bundle.LoadAsset<T>(tuple.Key) : generator.LoadAsset(tuple.Key);
 
             if (asset)
             {
@@ -202,7 +196,7 @@ public static class AssetManager
             else
                 throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!");
 
-            return asset?.DontDestroy() as T;
+            return asset.DontDestroy() as T;
         }
 
         public void Unload<T>() where T : UObject
@@ -214,7 +208,7 @@ public static class AssetManager
 
             LoadedFrom.Remove(asset);
             Assets.Remove(tType);
-            asset?.Destroy();
+            asset.Destroy();
         }
     }
 }

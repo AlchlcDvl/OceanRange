@@ -90,8 +90,6 @@ public static class SlimeManager
             Mouth = blink.Mouth?.Clone()
         };
         SleepingFace.Eyes.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleepingeyes"));
-
-        AssetManager.UnloadAsset<Texture2D>("sleepingeyes");
     }
 
     private static void BaseLoadSlime(CustomSlimeData slimeData)

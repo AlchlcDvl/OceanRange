@@ -1,6 +1,3 @@
-# Blender 4.4.3
-# www.blender.org
-mtllib coco_body.mtl
 o coco_body
 v -0.435737 0.443365 0.191097
 v -0.436994 0.469361 0.193833

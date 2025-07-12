@@ -88,8 +88,6 @@ public static class FoodManager
     {
         Chimkens.ForEach(BaseCreateChimken);
         // Plants.ForEach(BaseCreatePlant);
-
-        AssetManager.UnloadBundle();
     }
 
     private const string CommonHenRanchPedia = "%type% hens in close proximity to roostros will periodically lay eggs that produce %type% chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.";
@@ -140,9 +138,6 @@ public static class FoodManager
         RegisterFood(henPrefab, AssetManager.GetSprite($"{lower}hen"), ammo, chimkenData.MainId, chimkenData.MainEntry, [SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.FOOD]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
-
-        AssetManager.UnloadAsset<Texture2D>(ramp);
-        AssetManager.UnloadAsset<Texture2D>(darker);
 
         if (!StmExists)
             return;

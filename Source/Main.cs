@@ -34,4 +34,6 @@ public sealed class Main : ModEntryPoint
 
         SystemContext.IsModded = true;
     }
+
+    public override void PostLoad() => AssetManager.UnloadBundle();
 }
