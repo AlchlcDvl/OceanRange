@@ -184,9 +184,9 @@ public static class SlimeManager
         var appearance = baseAppearance.DeepCopy(); // Cloning our own appearance
 
         // Caching colors to avoid excessive implicit conversions and creations
-        var topMatColor = slimeData.TopSlimeColor.HexToColor();
-        var middleMatColor = slimeData.MiddleSlimeColor.HexToColor();
-        var bottomMatColor = slimeData.BottomSlimeColor.HexToColor();
+        var topMatColor = slimeData.TopSlimeColor?.HexToColor();
+        var middleMatColor = slimeData.MiddleSlimeColor?.HexToColor();
+        var bottomMatColor = slimeData.BottomSlimeColor?.HexToColor();
 
         // Creating a material for each structure
         foreach (var structure in appearance.Structures)
@@ -195,9 +195,16 @@ public static class SlimeManager
                 continue;
 
             var material = structure.DefaultMaterials[0] = structure.DefaultMaterials[0].Clone();
-            material.SetColor(TopColor, topMatColor);
-            material.SetColor(MiddleColor, middleMatColor);
-            material.SetColor(BottomColor, bottomMatColor);
+
+            if (topMatColor.HasValue)
+                material.SetColor(TopColor, topMatColor.Value);
+
+            if (middleMatColor.HasValue)
+                material.SetColor(MiddleColor, middleMatColor.Value);
+
+            if (bottomMatColor.HasValue)
+                material.SetColor(BottomColor, bottomMatColor.Value);
+
             material.SetFloat(Gloss, slimeData.Gloss);
         }
 
@@ -232,11 +239,11 @@ public static class SlimeManager
         {
             Top = slimeData.TopPaletteColor.HexToColor(),
             Middle = slimeData.MiddlePaletteColor.HexToColor(),
-            Bottom = slimeData.BottomPaletteColor.HexToColor()
+            Bottom = slimeData.BottomPaletteColor.HexToColor(),
+            Ammo = slimeData.SlimeAmmoColor.HexToColor()
         };
 
         appearance.Icon = AssetManager.GetSprite($"{slimeData.Name.ToLower()}slime");
-        appearance.ColorPalette.Ammo = slimeData.SlimeAmmoColor.HexToColor();
         applicator.Appearance = appearance;
 
         slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance, applicator]); // Slime specific details being put here

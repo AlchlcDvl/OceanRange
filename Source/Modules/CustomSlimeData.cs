@@ -57,13 +57,13 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("gloss")]
     public float Gloss = 1f;
 
-    [JsonProperty("topSlimeColor"), JsonRequired]
+    [JsonProperty("topSlimeColor")]
     public string TopSlimeColor;
 
-    [JsonProperty("middleSlimeColor"), JsonRequired]
+    [JsonProperty("middleSlimeColor")]
     public string MiddleSlimeColor;
 
-    [JsonProperty("bottomSlimeColor"), JsonRequired]
+    [JsonProperty("bottomSlimeColor")]
     public string BottomSlimeColor;
 
     [JsonProperty("topMouthColor")]
@@ -84,28 +84,28 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("blueEyeColor")]
     public string BlueEyeColor = "#000000";
 
-    [JsonProperty("topPaletteColor"), JsonRequired]
+    [JsonProperty("topPaletteColor")]
     public string TopPaletteColor;
 
-    [JsonProperty("middlePaletteColor"), JsonRequired]
+    [JsonProperty("middlePaletteColor")]
     public string MiddlePaletteColor;
 
-    [JsonProperty("bottomPaletteColor"), JsonRequired]
+    [JsonProperty("bottomPaletteColor")]
     public string BottomPaletteColor;
 
     [JsonProperty("slimeAmmoColor"), JsonRequired]
     public string SlimeAmmoColor;
 
-    [JsonProperty("topPlortColor"), JsonRequired]
+    [JsonProperty("topPlortColor")]
     public string TopPlortColor;
 
-    [JsonProperty("middlePlortColor"), JsonRequired]
+    [JsonProperty("middlePlortColor")]
     public string MiddlePlortColor;
 
-    [JsonProperty("bottomPlortColor"), JsonRequired]
+    [JsonProperty("bottomPlortColor")]
     public string BottomPlortColor;
 
-    [JsonProperty("plortAmmoColor"), JsonRequired]
+    [JsonProperty("plortAmmoColor")]
     public string PlortAmmoColor;
 
     [JsonProperty("pediaDiet"), JsonRequired]
@@ -164,6 +164,16 @@ public sealed class CustomSlimeData : JsonData
 
         if (!SpecialDiet)
             Diet = Helpers.ParseEnum<FoodGroup>(DietJson);
+
+        TopPaletteColor ??= TopSlimeColor;
+        MiddlePaletteColor ??= MiddleSlimeColor;
+        BottomPaletteColor ??= BottomSlimeColor;
+
+        TopPlortColor ??= TopSlimeColor;
+        MiddlePlortColor ??= MiddleSlimeColor;
+        BottomPlortColor ??= BottomSlimeColor;
+
+        PlortAmmoColor ??= SlimeAmmoColor;
     }
 
     // public void GenerateLargos(string[] modded)

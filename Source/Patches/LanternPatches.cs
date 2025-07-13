@@ -24,3 +24,16 @@ public static class StopMovingDuringDay
 
     public static void Postfix(SlimeRandomMove __instance, ref (float, float) __state) => (__instance.scootSpeedFactor, __instance.verticalFactor) = __state;
 }
+
+[HarmonyPatch(typeof(GotoConsumable), nameof(GotoConsumable))]
+public static class StopMovingTowardsFood
+{
+    public static bool Prefix(GotoConsumable __instance, ref float __result)
+    {
+        if (!__instance.TryGetComponent<LanternBehaviour>(out var lantern) || (lantern.CanMove && !lantern.Fleeing))
+            return true;
+
+        __result = 0f;
+        return false;
+    }
+}
