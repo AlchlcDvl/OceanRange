@@ -39,6 +39,12 @@ public static class Ids
     public static readonly IdentifiableId SANDY_CHICK;
     public static readonly PediaId SANDY_CHICK_ENTRY;
 
+    // public static readonly IdentifiableId RADIANT_HEN;
+    // public static readonly PediaId RADIANT_HEN_ENTRY;
+
+    // public static readonly IdentifiableId RADIANT_CHICK;
+    // public static readonly PediaId RADIANT_CHICK_ENTRY;
+
     // public static readonly IdentifiableId BLOWTATO_VEGGIE;
     // public static readonly PediaId BLOWTATO_VEGGIE_ENTRY;
 

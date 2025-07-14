@@ -96,15 +96,20 @@ public static class FoodManager
         // Fetch ramps and caching values because reusing them is tedious
         var lower = chimkenData.Name.ToLower();
         var ramp = $"{lower}skinramp";
-        var darker = $"{ramp}darker";
         var skin = AssetManager.GetTexture2D(ramp);
-        var dark = AssetManager.GetTexture2D(darker);
+        var dark = AssetManager.GetTexture2D($"{ramp}darker");
+        // var red = AssetManager.GetTexture2D($"{ramp}red");
+        // var green = AssetManager.GetTexture2D($"{ramp}green");
+        // var blue = AssetManager.GetTexture2D($"{ramp}blue");
+        // var black = AssetManager.GetTexture2D($"{ramp}black");
         var ammo = chimkenData.AmmoColor.HexToColor();
         var lookupDir = GameContext.Instance.LookupDirector;
 
         // Find and create the prefab for chicks and set values
         var chickPrefab = CreateChimken(chimkenData.Name, dark, skin, lookupDir, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
         var henPrefab = CreateChimken(chimkenData.Name, dark, skin, lookupDir, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
+        // var chickPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, lookupDir, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
+        // var henPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, lookupDir, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
 
         // Set specific data for each prefab
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
@@ -143,6 +148,8 @@ public static class FoodManager
         PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress ?? []);
     }
 
+    // private static GameObject CreateChimken(string name, Texture red, Texture green, Texture blue, Texture black, LookupDirector lookupDir, IdentifiableId id, IdentifiableId baseId, string
+    //     modelName, string type)
     private static GameObject CreateChimken(string name, Texture dark, Texture skin, LookupDirector lookupDir, IdentifiableId id, IdentifiableId baseId, string modelName, string type)
     {
         var prefab = lookupDir.GetPrefab(baseId).CreatePrefab();
@@ -153,6 +160,10 @@ public static class FoodManager
         material.SetTexture(RampGreen, skin);
         material.SetTexture(RampBlue, skin);
         material.SetTexture(RampBlack, skin);
+        // material.SetTexture(RampRed, red);
+        // material.SetTexture(RampGreen, green);
+        // material.SetTexture(RampBlue, blue);
+        // material.SetTexture(RampBlack, black);
         prefab.GetComponent<Identifiable>().id = id;
         prefab.GetComponent<Vacuumable>().size = 0;
         return prefab;

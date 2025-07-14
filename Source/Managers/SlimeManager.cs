@@ -33,9 +33,9 @@ public static class SlimeManager
 
         Slimes.AddRange(AssetManager.GetJson<CustomSlimeData[]>("slimepedia"));
 
-        Slimes.ForEach(BasePreLoadSlime);
-
         AssetManager.UnloadAsset<JsonAsset>("slimepedia");
+
+        Slimes.ForEach(BasePreLoadSlime);
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 

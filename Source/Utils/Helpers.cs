@@ -51,19 +51,11 @@ public static class Helpers
         return obj;
     }
 
-    // public static T DontUnload<T>(this T obj) where T : UObject
-    // {
-    //     obj.hideFlags |= HideFlags.DontUnloadUnusedAsset;
-    //     return obj;
-    // }
-
     public static string ReplaceAll(this string @string, string newValue, params string[] valuesToReplace)
     {
         valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
         return @string;
     }
-
-    // public static string[] TrueSplit(this string @string, char separator) => [.. @string.Split(separator).Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))];
 
     public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators).Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))];
 

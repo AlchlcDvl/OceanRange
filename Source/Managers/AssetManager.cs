@@ -26,6 +26,8 @@ public static class AssetManager
 
             if (path.EndsWith(bundlePath))
                 LoadBundle(path, id).GetAllAssetNames().Do(x => CreateAssetHandle(x.SanitisePath(), x, true));
+            // else if (path.EndsWith(".dll")) // Used to have a library dll in use, but later it was no longer needed, keeping this code in case another dll is needed in resources
+            //     Assembly.Load(path.ReadBytes());
             else if (!path.Contains(".bundle")) // Skip loading bundles that don't relate to the current platform
                 CreateAssetHandle(id, path, false);
         }
@@ -41,7 +43,7 @@ public static class AssetManager
 
     private static string SanitisePath(this string path, string bundlePath = null)
     {
-        path = path.ReplaceAll("", ".png", ".json", ".obj");
+        path = path.ReplaceAll("", ".png", ".json", ".obj", ".shader");
 
         if (bundlePath != null)
             path = path.Replace(bundlePath, "");
@@ -52,10 +54,6 @@ public static class AssetManager
     public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<JsonAsset>(path).text);
 
     public static Texture2D GetTexture2D(string path) => Get<Texture2D>(path);
-
-    // public static GameObject GetPrefab(string path) => Get<GameObject>(path);
-
-    // public static AudioClip GetAudio(string path) => Get<AudioClip>(path);
 
     public static Sprite GetSprite(string path) => Get<Sprite>(path);
 
@@ -97,11 +95,11 @@ public static class AssetManager
         return texture;
     }
 
-    private static bool GenerateMipChains(string name) => name is "minepattern" or "lanternpattern" or "sleepingeyes" or "sandyskinramp" or "sandyskinrampdark";
+    private static bool GenerateMipChains(string name) => name is "minepattern" or "lanternpattern" or "sleepingeyes" || name.Contains("ramp");
 
-    private static TextureFormat GetFormat(string name) => name is "sandyskinramp" or "sandyskinrampdark" ? TextureFormat.DXT1 : TextureFormat.DXT5;
+    private static TextureFormat GetFormat(string name) => name.Contains("ramp") ? TextureFormat.DXT1 : TextureFormat.DXT5;
 
-    private static TextureWrapMode GetWrapMode(string name) => name is "sandyskinramp" or "sandyskinrampdark" ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
+    private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
 
     private static Sprite LoadSprite(string path) => LoadSprite(LoadTexture(path)?.DontDestroy());
 
@@ -112,8 +110,7 @@ public static class AssetManager
         return sprite;
     }
 
-    private static SpriteMeshType GetMeshType(string name) => name is "minepattern" or "sandyskinramp" or "sandyskinrampdark" or "sleepingeyes" or "lanternpattern"
-        ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
+    private static SpriteMeshType GetMeshType(string name) => name is "minepattern" or "sleepingeyes" or "lanternpattern" || name.Contains("ramp") ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
 
     private static byte[] ReadFully(this Stream input)
     {
@@ -151,7 +148,7 @@ public static class AssetManager
         Bundle = null;
     }
 
-    // This is all for mainly debugging stuff when I want to dump assets from the main game
+    // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use but keep commented for releases
 
     // public static void Dump(this Texture texture, string path) => File.WriteAllBytes(path, texture.Decompress().EncodeToPNG());
 
