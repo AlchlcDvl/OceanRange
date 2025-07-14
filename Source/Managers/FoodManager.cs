@@ -25,9 +25,9 @@ public static class FoodManager
 
         Chimkens.AddRange(AssetManager.GetJson<CustomChimkenData[]>("chimkenpedia"));
         // Plants.AddRange(AssetManager.GetJson<CustomPlantData[]>("plantpedia"));
+
         Foods.AddRange(Chimkens);
         // FoodsMap.AddRange(Plants);
-        // AssetManager.JsonData.AddRange(Foods);
 
         AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
         // AssetManager.UnloadAsset<JsonAsset>("plantpedia");
@@ -174,7 +174,7 @@ public static class FoodManager
     // {
     //     RegisterFood(prefab, AssetManager.GetSprite(plantData.Name.ToLower()), plantData.AmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [SiloStorage.StorageType.NON_SLIMES,
     //         SiloStorage.StorageType.FOOD]);
-    //     SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.Entry, plantData.Name, plantData.Intro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
+    //     SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
     //         CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
     //     if (!StmExists)

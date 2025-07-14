@@ -178,6 +178,9 @@ public sealed class CustomSlimeData : JsonData
 
     // public void GenerateLargos(string[] modded)
     // {
+    //     if (!CanLargofy)
+    //         return;
+
     //     var upper = Name.ToUpper();
     //     var vanillaLargos = SlimeManager.VanillaSlimes.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
     //     var moddedLargos = modded.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));

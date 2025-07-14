@@ -32,7 +32,6 @@ public static class SlimeManager
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
 
         Slimes.AddRange(AssetManager.GetJson<CustomSlimeData[]>("slimepedia"));
-        // AssetManager.JsonData.AddRange(Slimes);
 
         Slimes.ForEach(BasePreLoadSlime);
 
@@ -116,11 +115,14 @@ public static class SlimeManager
         material.SetColor(MiddleColor, slimeData.MiddlePlortColor.HexToColor());
         material.SetColor(BottomColor, slimeData.BottomPlortColor.HexToColor());
 
-        if (slimeData.PlortType != "Plort") // Plort (crystal) is the original shape of a plort, so skip if the plort type is that
-            prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(slimeData.PlortType.ToLower());
+        var nameLower = slimeData.Name.ToLower();
+        var plortLower = slimeData.PlortType.ToLower();
+
+        if (plortLower != "plort") // Plort (crystal) is the original shape of a plort, so skip if the plort type is that
+            prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(plortLower);
 
         // Add any slime specific plort details (which is almost all slimes)
-        var plortDetails = $"{slimeData.Name}_{slimeData.PlortType}".ToLower();
+        var plortDetails = $"{nameLower}_{plortLower}";
 
         if (AssetManager.AssetExists(plortDetails))
         {
@@ -137,11 +139,16 @@ public static class SlimeManager
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
         TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLower(), $"{slimeData.Name} {slimeData.PlortType}");
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
-        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.HexToColor(), AssetManager.GetSprite($"{slimeData.Name.ToLower()}plort"));
-        AmmoRegistry.RegisterSiloAmmo(x => x is SiloStorage.StorageType.NON_SLIMES or SiloStorage.StorageType.PLORT, slimeData.PlortId);
+        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.HexToColor(), AssetManager.GetSprite($"{nameLower}plort"));
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
-        PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
+        PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress ?? []);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
+        var silo = new[] { SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.PLORT };
+
+        if (slimeData.CanBeRefined)
+            silo = [..silo, SiloStorage.StorageType.CRAFTING];
+
+        AmmoRegistry.RegisterSiloAmmo(silo.Contains, slimeData.PlortId);
 
         if (slimeData.CanBeRefined)
             AmmoRegistry.RegisterRefineryResource(slimeData.PlortId);

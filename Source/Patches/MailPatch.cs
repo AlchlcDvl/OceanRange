@@ -5,9 +5,11 @@ public static class FixAndProperlyShowMailPatch
 {
     public static void Postfix(TimeDirector __instance)
     {
+        var time = __instance.WorldTime();
+
         foreach (var mail in MailManager.Mail)
         {
-            if (__instance.WorldTime() <= mail.UnlockAfter)
+            if (mail.UnlockAfter <= time)
                 SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
         }
     }
