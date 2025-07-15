@@ -189,7 +189,7 @@ public static class AssetManager
             if (!Paths.TryFinding(x => x.Key.EndsWith(generator.Extension), out var tuple))
                 throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}");
 
-            asset = tuple.Value ? Bundle.LoadAsset<T>(tuple.Key) : generator.LoadAsset(tuple.Key);
+            asset = (tuple.Value ? Bundle.LoadAsset<T> : generator.LoadAsset)(tuple.Key);
 
             if (asset)
             {

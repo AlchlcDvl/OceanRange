@@ -48,7 +48,7 @@ public static class SlimeManager
 
     private static void BasePreLoadSlime(CustomSlimeData slimeData) => SRCallbacks.PreSaveGameLoad += _ =>
     {
-        var prefab = GameContext.Instance.LookupDirector.GetPrefab(slimeData.MainId);
+        var prefab = slimeData.MainId.GetPrefab();
 
         foreach (var item in UObject.FindObjectsOfType<DirectedSlimeSpawner>().Where(spawner =>
         {
@@ -76,12 +76,11 @@ public static class SlimeManager
 
     public static void LoadAllSlimes()
     {
-        RocksPrefab = GameContext.Instance.LookupDirector.GetPrefab(IdentifiableId.ROCK_PLORT).transform.Find("rocks");
+        RocksPrefab = IdentifiableId.ROCK_PLORT.GetPrefab().transform.Find("rocks");
 
         Slimes.ForEach(BaseLoadSlime);
 
-        var blink = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).AppearancesDefault[0].Face.ExpressionFaces.First(x => x.SlimeExpression ==
-            SlimeFace.SlimeExpression.Blink);
+        var blink = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Face.ExpressionFaces.First(x => x.SlimeExpression == SlimeFace.SlimeExpression.Blink);
         SleepingFace = new()
         {
             SlimeExpression = Ids.Sleeping,
@@ -103,7 +102,7 @@ public static class SlimeManager
     private static void CreatePlort(CustomSlimeData slimeData)
     {
         // First create a prefab and set details
-        var prefab = GameContext.Instance.LookupDirector.GetPrefab(slimeData.BasePlort).CreatePrefab();
+        var prefab = slimeData.BasePlort.GetPrefab().CreatePrefab();
         prefab.name = "plort" + slimeData.Name;
         prefab.GetComponent<Identifiable>().id = slimeData.PlortId;
         prefab.GetComponent<Vacuumable>().size = 0;
@@ -156,7 +155,7 @@ public static class SlimeManager
 
     private static void CreateSlime(CustomSlimeData slimeData)
     {
-        var baseDefinition = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(slimeData.BaseSlime); // Finding the base slime definition to go off of
+        var baseDefinition = slimeData.BaseSlime.GetSlimeDefinition(); // Finding the base slime definition to go off of
 
         // Create a copy for our slimes and populate with info
         var definition = baseDefinition.DeepCopy();
@@ -171,7 +170,7 @@ public static class SlimeManager
         definition.IdentifiableId = slimeData.MainId;
 
         // Finding the base prefab, copying it and setting our own component values
-        var prefab = GameContext.Instance.LookupDirector.GetPrefab(slimeData.BaseSlime).CreatePrefab();
+        var prefab = slimeData.BaseSlime.GetPrefab().CreatePrefab();
         prefab.name = "slime" + slimeData.Name;
         prefab.GetComponent<PlayWithToys>().slimeDefinition = definition;
         prefab.GetComponent<SlimeEat>().slimeDefinition = definition;
@@ -258,8 +257,7 @@ public static class SlimeManager
         definition.AppearancesDefault = [appearance];
 
         // Tarrs should love these guys
-        var tarr = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.TARR_SLIME);
-        tarr.Diet.EatMap.Add(new()
+        IdentifiableId.TARR_SLIME.GetSlimeDefinition().Diet.EatMap.Add(new()
         {
             eats = slimeData.MainId,
             becomesId = IdentifiableId.TARR_SLIME,
@@ -310,7 +308,7 @@ public static class SlimeManager
         toAdd?.Do(x => prefab.AddComponent(x));
         toRemove?.Do(prefab.RemoveComponent);
 
-        if (meshes == null || meshes.Length == 0 || (meshes.Length == 1 && meshes[0] == null && skipNull))
+        if (meshes?.Length is null or 0 || (meshes.Length == 1 && meshes[0] == null && skipNull))
             return;
 
         var firstStructure = appearance.Structures[0];
@@ -360,7 +358,7 @@ public static class SlimeManager
 
     public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
     {
-        definition.Diet.MajorFoodGroups = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).Diet.MajorFoodGroups;
+        definition.Diet.MajorFoodGroups = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet.MajorFoodGroups;
         definition.Diet.Favorites = [];
 
         BasicInitSlimeAppearance
@@ -394,8 +392,8 @@ public static class SlimeManager
         //     if (i == 0)
         //         return;
 
-        //     var color = "#966F33".HexToColor();
-        //     var material = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
+        //     var color = "#633C00".HexToColor();
+        //     var material = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
         //     material.SetColor(TopColor, color);
         //     material.SetColor(MiddleColor, color);
         //     material.SetColor(BottomColor, color);
@@ -412,7 +410,7 @@ public static class SlimeManager
         var color2 = "#9ea16f".HexToColor();
         var color3 = "#212A2F".HexToColor();
 
-        var material = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.TABBY_SLIME).AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
+        var material = IdentifiableId.TABBY_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
         material.SetColor(TopColor, color2);
         material.SetColor(MiddleColor, color2);
         material.SetColor(BottomColor, color);
@@ -445,7 +443,7 @@ public static class SlimeManager
         material.SetColor(BottomColor, color2);
         material.SetFloat(Gloss, 1f);
 
-        var material2 = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.TABBY_SLIME).AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
+        var material2 = IdentifiableId.TABBY_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
         material2.SetColor(TopColor, color);
         material2.SetColor(MiddleColor, color);
         material2.SetColor(BottomColor, color2);
@@ -453,7 +451,7 @@ public static class SlimeManager
         material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("lanternpattern"));
 
         var color3 = "#EBDB6A".HexToColor();
-        var material3 = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PHOSPHOR_SLIME).AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
+        var material3 = IdentifiableId.PHOSPHOR_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
         material3.SetColor(TopColor, color3);
         material3.SetColor(MiddleColor, color3);
         material3.SetColor(BottomColor, color3);
@@ -474,7 +472,6 @@ public static class SlimeManager
 
     public static void InitSandSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
     {
-        SandBehaviour.PlortPrefab = GameContext.Instance.LookupDirector.GetPrefab(Ids.SAND_PLORT);
         SandBehaviour.ProduceFX = prefab.GetComponent<SlimeEatWater>().produceFX;
 
         BasicInitSlimeAppearance
@@ -486,8 +483,7 @@ public static class SlimeManager
                     return;
 
                 var color = "#F4E2CC".HexToColor();
-                var material = structure.DefaultMaterials[0] = GameContext.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(IdentifiableId.PINK_SLIME).AppearancesDefault[0]
-                    .Structures[0].DefaultMaterials[0].Clone();
+                var material = structure.DefaultMaterials[0] = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
                 material.SetColor(TopColor, color);
                 material.SetColor(MiddleColor, color);
                 material.SetColor(BottomColor, color);
@@ -498,4 +494,6 @@ public static class SlimeManager
             true
         );
     }
+
+    public static void InitSandPlortDetails(GameObject prefab) => SandBehaviour.PlortPrefab = prefab;
 }

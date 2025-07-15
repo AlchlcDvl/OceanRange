@@ -6,12 +6,13 @@ namespace TheOceanRange;
 
 public sealed class Main : ModEntryPoint
 {
-    public static ConsoleInstance Console { get; private set;}
+    public static ConsoleInstance Console;
     // public static Dictionary<Zone, string> ZoneLookup;
 
     public override void PreLoad()
     {
         Console = ConsoleInstance;
+        Console.Log("Loading Ocean Range!");
 
         AssetManager.FetchAssetNames();
 
@@ -33,5 +34,9 @@ public sealed class Main : ModEntryPoint
         SystemContext.IsModded = true;
     }
 
-    public override void PostLoad() => AssetManager.UnloadBundle();
+    public override void PostLoad()
+    {
+        AssetManager.UnloadBundle();
+        Console.Log("Loaded Ocean Range!");
+    }
 }

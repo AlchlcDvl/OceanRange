@@ -46,9 +46,8 @@ public static class FoodManager
 
         SRCallbacks.PreSaveGameLoad += _ =>
         {
-            var lookupDir = GameContext.Instance.LookupDirector;
-            var henPrefab = lookupDir.GetPrefab(chimkenData.MainId);
-            var chickPrefab = lookupDir.GetPrefab(chimkenData.ChickId);
+            var henPrefab = chimkenData.MainId.GetPrefab();
+            var chickPrefab = chimkenData.ChickId.GetPrefab();
 
             foreach (var directedAnimalSpawner2 in UObject.FindObjectsOfType<DirectedAnimalSpawner>().Where(spawner =>
             {
@@ -96,25 +95,20 @@ public static class FoodManager
         // Fetch ramps and caching values because reusing them is tedious
         var lower = chimkenData.Name.ToLower();
         var ramp = $"{lower}skinramp";
-        var skin = AssetManager.GetTexture2D(ramp);
-        var dark = AssetManager.GetTexture2D($"{ramp}darker");
-        // var red = AssetManager.GetTexture2D($"{ramp}red");
-        // var green = AssetManager.GetTexture2D($"{ramp}green");
-        // var blue = AssetManager.GetTexture2D($"{ramp}blue");
-        // var black = AssetManager.GetTexture2D($"{ramp}black");
+        var red = AssetManager.GetTexture2D($"{ramp}red");
+        var green = AssetManager.GetTexture2D($"{ramp}green");
+        var blue = AssetManager.GetTexture2D($"{ramp}blue");
+        var black = AssetManager.GetTexture2D($"{ramp}black");
         var ammo = chimkenData.AmmoColor.HexToColor();
-        var lookupDir = GameContext.Instance.LookupDirector;
 
         // Find and create the prefab for chicks and set values
-        var chickPrefab = CreateChimken(chimkenData.Name, dark, skin, lookupDir, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
-        var henPrefab = CreateChimken(chimkenData.Name, dark, skin, lookupDir, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
-        // var chickPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, lookupDir, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
-        // var henPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, lookupDir, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
+        var chickPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
+        var henPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
 
         // Set specific data for each prefab
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
         var transformChance = henPrefab.GetComponent<TransformChanceOnReproduce>();
-        transformChance.targetPrefab = lookupDir.GetPrefab(IdentifiableId.ELDER_HEN);
+        transformChance.targetPrefab = IdentifiableId.ELDER_HEN.GetPrefab();
         transformChance.transformChance = 2.5f;
 
         chickPrefab.GetComponent<TransformAfterTime>().options =
@@ -126,7 +120,7 @@ public static class FoodManager
             },
             new()
             {
-                targetPrefab = lookupDir.GetPrefab(IdentifiableId.ROOSTER),
+                targetPrefab = IdentifiableId.ROOSTER.GetPrefab(),
                 weight = 3.5f
             }
         ];
@@ -148,22 +142,16 @@ public static class FoodManager
         PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress ?? []);
     }
 
-    // private static GameObject CreateChimken(string name, Texture red, Texture green, Texture blue, Texture black, LookupDirector lookupDir, IdentifiableId id, IdentifiableId baseId, string
-    //     modelName, string type)
-    private static GameObject CreateChimken(string name, Texture dark, Texture skin, LookupDirector lookupDir, IdentifiableId id, IdentifiableId baseId, string modelName, string type)
+    private static GameObject CreateChimken(string name, Texture red, Texture green, Texture blue, Texture black, IdentifiableId id, IdentifiableId baseId, string modelName, string type)
     {
-        var prefab = lookupDir.GetPrefab(baseId).CreatePrefab();
+        var prefab = baseId.GetPrefab().CreatePrefab();
         prefab.name = $"bird{type}{name}";
         var component = prefab.transform.Find($"{modelName}/mesh_body1").GetComponent<SkinnedMeshRenderer>();
         var material = component.sharedMaterial = component.sharedMaterial.Clone();
-        material.SetTexture(RampRed, dark);
-        material.SetTexture(RampGreen, skin);
-        material.SetTexture(RampBlue, skin);
-        material.SetTexture(RampBlack, skin);
-        // material.SetTexture(RampRed, red);
-        // material.SetTexture(RampGreen, green);
-        // material.SetTexture(RampBlue, blue);
-        // material.SetTexture(RampBlack, black);
+        material.SetTexture(RampRed, red);
+        material.SetTexture(RampGreen, green);
+        material.SetTexture(RampBlue, blue);
+        material.SetTexture(RampBlack, black);
         prefab.GetComponent<Identifiable>().id = id;
         prefab.GetComponent<Vacuumable>().size = 0;
         return prefab;
