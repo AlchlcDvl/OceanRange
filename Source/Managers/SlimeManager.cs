@@ -296,12 +296,10 @@ public static class SlimeManager
     private static void BasicInitSlimeAppearance
     (
         GameObject prefab,
-        SlimeAppearance appearance,
-        SlimeAppearanceApplicator applicator,
+        SlimeAppearance appearance, SlimeAppearanceApplicator applicator,
         string[] meshes,
         Action<int, SlimeAppearanceStructure> materialHandler,
-        Type[] toAdd,
-        Type[] toRemove,
+        Type[] toAdd, Type[] toRemove,
         bool skipNull = false
     )
     {

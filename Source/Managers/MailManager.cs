@@ -15,5 +15,8 @@ public static class MailManager
     private static void PreLoadMail(CustomMailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id)
         .SetSubjectTranslation(mailData.Title)
         .SetFromTranslation(mailData.From)
-        .SetBodyTranslation(mailData.Body));
+        .SetBodyTranslation(mailData.Body)
+        .SetReadCallback(Blank));
+
+    private static void Blank(MailDirector _, MailDirector.Mail __) {}
 }
