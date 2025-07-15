@@ -2,7 +2,6 @@
     {
         "name": "Rosi",
         "zones": ["REEF"],
-        "diet": "GINGER",
         "canLargofy": false,
         "favFood": "HEN",
         "favToy": "OCTO_BUDDY_TOY",
@@ -55,8 +54,8 @@
         "favToy": "BOMB_BALL_TOY",
         "diet": "VEGGIES",
         "canLargofy": false,
-        "baseSlime": "BOOM",
-        "basePlort": "BOOM",
+        "baseSlime": "BOOM_SLIME",
+        "basePlort": "BOOM_PLORT",
         "topSlimeColor": "#445660",
         "middleSlimeColor": "#445660",
         "bottomSlimeColor": "#445660",
@@ -90,7 +89,7 @@
         "favToy": "NIGHT_LIGHT_TOY",
         "diet": "MEAT",
         "canLargofy": false,
-        "basePlort": "PHOSPHOR",
+        "basePlort": "PHOSPHOR_PLORT",
         "topSlimeColor": "#752C86",
         "middleSlimeColor": "#9445A7",
         "bottomSlimeColor": "#B15EC8",
@@ -116,9 +115,8 @@
     },
     {
         "name": "Sand",
-        "favFood": "ELDER_HEN",
         "favToy": "BEACH_BALL_TOY",
-        "baseSlime": "PUDDLE",
+        "baseSlime": "PUDDLE_SLIME",
         "topSlimeColor": "#E2DFD2",
         "middleSlimeColor": "#E8C499",
         "bottomSlimeColor": "#EDA960",
@@ -139,7 +137,8 @@
         "zones": ["REEF"],
         "specialDiet": true,
         "spawnWeight": 0.15,
-        "slimeology": "The sand slime, a distance cousin of the puddle slime, can be found in the shallow waters of the Far, Far Range. Much like their puddle and fire cousins, they don't need to be fed for they solely eat dirt. Sand slimes process the nutrients from the dirt and produce a pearl plort of similar composition to Earth pearls.",
+        "hasGordo": false,
+        "slimeology": "The sand slime, a distant cousin of the puddle slime, can be found in the shallow waters of the Far, Far Range. Much like their puddle and fire cousins, they don't need to be fed for they solely eat dirt. Sand slimes process the nutrients from the dirt and produce a pearl plort of similar composition to Earth pearls.",
         "risks": "A sand slime isn't risky to manage. These slimes can be placed in any inhabited corral without worrying about any outbreaks. Even their pearls are safe because no slime wants to eat a pearl that come from a slime that eats dirt.",
         "plortonomics": "Sand pearls are tougher than their their Earth counterparts, contrary to the softer composition of the sand slime. Just like Earth pearls but much more expensive, sand pearls are used in jewelry."
     }

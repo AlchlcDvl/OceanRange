@@ -10,43 +10,28 @@ public sealed class CustomSlimeData : JsonData
     public IdentifiableId GordoId;
 
     [JsonIgnore]
+    public IdentifiableId PlortId;
+
+    [JsonProperty("favFood")]
     public IdentifiableId FavFood;
 
-    [JsonIgnore]
+    [JsonProperty("favToy")]
     public IdentifiableId FavToy;
 
     [JsonProperty("nightSpawn")]
     public bool NightSpawn;
 
-    [JsonProperty("favFood")]
-    public string FavFoodJson;
-
-    [JsonProperty("favToy")]
-    public string FavToyJson;
-
-    [JsonIgnore]
-    public IdentifiableId PlortId;
-
-    [JsonIgnore]
-    public FoodGroup Diet;
-
     [JsonProperty("diet")]
-    public string DietJson;
+    public FoodGroup Diet;
 
     [JsonProperty("canLargofy")]
     public bool CanLargofy;
 
     [JsonProperty("baseSlime")]
-    public string BaseSlimeJson = "PINK";
+    public IdentifiableId BaseSlime = IdentifiableId.PINK_SLIME;
 
     [JsonProperty("basePlort")]
-    public string BasePlortJson = "PINK";
-
-    [JsonIgnore]
-    public IdentifiableId BaseSlime;
-
-    [JsonIgnore]
-    public IdentifiableId BasePlort;
+    public IdentifiableId BasePlort = IdentifiableId.PINK_PLORT;
 
     [JsonIgnore]
     public MethodInfo InitSlimeDetails;
@@ -138,6 +123,9 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("specialDiet")]
     public bool SpecialDiet;
 
+    [JsonProperty("hasGordo")]
+    public bool HasGordo = true;
+
     [JsonProperty("plortExchangeWeight")]
     public float PlortExchangeWeight = 16f;
 
@@ -150,20 +138,12 @@ public sealed class CustomSlimeData : JsonData
         var upper = Name.ToUpper();
         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_SLIME");
         PlortId = Helpers.ParseEnum<IdentifiableId>(upper + "_PLORT");
-        BaseSlime = Helpers.ParseEnum<IdentifiableId>(BaseSlimeJson + "_SLIME");
-        BasePlort = Helpers.ParseEnum<IdentifiableId>(BasePlortJson + "_PLORT");
-        GordoId = Enum.TryParse<IdentifiableId>(upper + "_GORDO", out var id) ? id : 0; // Not all slimes have gordos
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_SLIME_ENTRY");
         InitSlimeDetails = AccessTools.Method(typeof(SlimeManager), "Init" + Name + "SlimeDetails");
         InitPlortDetails = AccessTools.Method(typeof(SlimeManager), "Init" + Name + "PlortDetails");
-        Progress ??= [];
 
-        // Newtonsoft is stupid and keeps throwing null refs for these fields
-        FavFood = Helpers.ParseEnum<IdentifiableId>(FavFoodJson);
-        FavToy = Helpers.ParseEnum<IdentifiableId>(FavToyJson);
-
-        if (!SpecialDiet)
-            Diet = Helpers.ParseEnum<FoodGroup>(DietJson);
+        if (HasGordo)
+            GordoId = Helpers.ParseEnum<IdentifiableId>(upper + "_GORDO");
 
         TopPaletteColor ??= TopSlimeColor;
         MiddlePaletteColor ??= MiddleSlimeColor;
@@ -176,7 +156,7 @@ public sealed class CustomSlimeData : JsonData
         PlortAmmoColor ??= SlimeAmmoColor;
     }
 
-    // public void GenerateLargos(string[] modded)
+    // public void GenerateLargos(string[] modded) // WIP
     // {
     //     if (!CanLargofy)
     //         return;

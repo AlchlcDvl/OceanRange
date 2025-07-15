@@ -15,6 +15,7 @@ public static class AssetManager
         [typeof(Texture2D)] = ("png", LoadTexture),
         // AudioClip is not currently in use, so implementation for it comes later
     };
+    private static readonly JsonSerializerSettings JsonSettings = new();
 
     public static void FetchAssetNames()
     {
@@ -31,6 +32,13 @@ public static class AssetManager
             else if (!path.Contains(".bundle")) // Skip loading bundles that don't relate to the current platform
                 CreateAssetHandle(id, path, false);
         }
+
+        JsonSettings.Converters.Add(new ZoneConverter());
+        JsonSettings.Converters.Add(new PediaIdConverter());
+        JsonSettings.Converters.Add(new Vector3Converter());
+        JsonSettings.Converters.Add(new FoodGroupConverter());
+        JsonSettings.Converters.Add(new ProgressTypeConverter());
+        JsonSettings.Converters.Add(new IdentifiableIdConverter());
     }
 
     private static string Platform() => Application.platform switch
@@ -51,7 +59,7 @@ public static class AssetManager
         return path.TrueSplit('/', '\\', '.').Last().ToLower();
     }
 
-    public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<JsonAsset>(path).text);
+    public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<JsonAsset>(path).text, JsonSettings);
 
     public static Texture2D GetTexture2D(string path) => Get<Texture2D>(path);
 

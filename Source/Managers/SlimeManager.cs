@@ -110,9 +110,19 @@ public static class SlimeManager
         // Next set up the mesh and material details
         var meshRend = prefab.GetComponent<MeshRenderer>();
         var material = meshRend.material = meshRend.material.Clone();
-        material.SetColor(TopColor, slimeData.TopPlortColor.HexToColor());
-        material.SetColor(MiddleColor, slimeData.MiddlePlortColor.HexToColor());
-        material.SetColor(BottomColor, slimeData.BottomPlortColor.HexToColor());
+
+        var topMatColor = slimeData.TopPlortColor?.HexToColor();
+        var middleMatColor = slimeData.MiddlePlortColor?.HexToColor();
+        var bottomMatColor = slimeData.BottomPlortColor?.HexToColor();
+
+        if (topMatColor.HasValue)
+            material.SetColor(TopColor, topMatColor.Value);
+
+        if (middleMatColor.HasValue)
+            material.SetColor(MiddleColor, middleMatColor.Value);
+
+        if (bottomMatColor.HasValue)
+            material.SetColor(BottomColor, bottomMatColor.Value);
 
         var nameLower = slimeData.Name.ToLower();
         var plortLower = slimeData.PlortType.ToLower();
