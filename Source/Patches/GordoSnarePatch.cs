@@ -1,13 +1,11 @@
-﻿using MonomiPark.SlimeRancher.DataModel;
+﻿namespace TheOceanRange.Patches;
 
-namespace TheOceanRange.Patches;
-
-[HarmonyPatch(typeof(GordoSnare), "GetGordoIdForBait"), HarmonyPriority(Priority.First)]
+[HarmonyPatch(typeof(GordoSnare), nameof(GordoSnare.GetGordoIdForBait)), HarmonyPriority(Priority.First)]
 public static class GordoSnarePatch
 {
     public static bool Prefix(GordoSnare __instance, ref IdentifiableId __result)
     {
-        var bait = __instance.GetPrivateField<SnareModel>("model").baitTypeId;
+        var bait = __instance.model.baitTypeId;
 
         if (!SlimeManager.Slimes.TryFinding(x => x.FavFood == bait, out var id) || Randoms.SHARED.GetInRange(0, 100) > 70)
             return true;

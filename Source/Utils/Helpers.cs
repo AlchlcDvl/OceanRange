@@ -1,5 +1,4 @@
 // using SRML;
-// using System.Reflection;
 using AssetsLib;
 using SRML.SR.SaveSystem;
 using SRML.SR.Utils;
@@ -11,8 +10,6 @@ public static class Helpers
 {
     // private static readonly Dictionary<string, Color32> HexToColor32s = [];
     private static readonly Dictionary<string, Color> HexToColors = [];
-
-    // public static MethodInfo DoTryParseHtmlColor;
 
     public static bool TryFinding<T>(this IEnumerable<T> source, Func<T, bool> predicate, out T value)
     {
@@ -75,8 +72,7 @@ public static class Helpers
     //     if (HexToColor32s.TryGetValue(hex, out var color))
     //         return color;
 
-    //     object[] args = [hex, color];
-    //     return HexToColor32s[hex] = (bool)DoTryParseHtmlColor.Invoke(null, args) ? (Color32)args[1] : Color.white;
+    //     return HexToColor32s[hex] = ColorUtility.DoTryParseHtmlColor(hex, out color) ? color : Color.white;
     // }
 
     public static Color HexToColor(this string hex)
@@ -127,23 +123,15 @@ public static class Helpers
     //     return value;
     // }
 
-    public static void BuildGordo(this GameObject main, CustomSlimeData slimeData, GameObject sectorCategory, string handId)
+    public static void BuildGordo(this GameObject main, CustomSlimeData slimeData, GameObject sectorCategory)
     {
-        var gordo = slimeData.GordoId.GetPrefab().CreateInactive();
+        var gordo = slimeData.GordoId.GetPrefab().CreatePrefab();
         gordo.transform.position = main.transform.position;
         gordo.transform.rotation = main.transform.rotation;
         gordo.transform.SetParent(main.transform);
-
-        var component = gordo.GetComponent<GordoEat>();
-        component.SetField("director", IdHandlerUtils.GlobalIdDirector);
-        component.GetField<GordoRewardsBase>("rewards").SetField("activeRewards", gordo.GetComponent<GordoRewards>().rewardPrefabs.ToList());
-
-        var text = ModdedStringRegistry.ClaimID("gordo", handId);
-        IdHandlerUtils.GlobalIdDirector.GetPrivateField<Dictionary<IdHandler, string>>("persistenceDict").Add(component, text);
-
+        gordo.name = gordo.name.Replace("(Clone)", "").Trim();
+        gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs];
         gordo.transform.SetParent(sectorCategory.transform);
-        gordo.SetActive(true);
-
         main.Destroy();
     }
 

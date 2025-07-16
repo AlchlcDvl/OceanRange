@@ -1,22 +1,15 @@
-using System.Reflection;
-
 namespace TheOceanRange.Patches;
 
-[HarmonyPatch(typeof(WeaponVacuum), "ExpelHeld")]
+[HarmonyPatch(typeof(WeaponVacuum), nameof(WeaponVacuum.ExpelHeld))]
 public static class CocoDamageRegisterPatch
 {
-    private static readonly MethodInfo EnsureNotShootingIntoRock = AccessTools.Method(typeof(WeaponVacuum), "EnsureNotShootingIntoRock");
-
     public static bool Prefix(WeaponVacuum __instance)
     {
-        var componentInParent = __instance.GetComponentInParent<vp_FPController>();
         var ray = new Ray(__instance.vacOrigin.transform.position, __instance.vacOrigin.transform.up);
         var origin = ray.origin;
-        var vel = (ray.direction * __instance.ejectSpeed) + componentInParent.Velocity;
-        var array = new object[] {origin, ray, __instance.GetPrivateField<float>("heldRad"), vel};
-        origin = (Vector3)EnsureNotShootingIntoRock.Invoke(__instance, array);
-        vel = (Vector3)array[3];
-        var held = __instance.GetPrivateField<GameObject>("held");
+        var vel = (ray.direction * __instance.ejectSpeed) + __instance.GetComponentInParent<vp_FPController>().Velocity;
+        origin = __instance.EnsureNotShootingIntoRock(origin, ray, __instance.heldRad, ref vel);
+        var held = __instance.held;
         held.transform.position = origin;
         held.GetComponent<Rigidbody>().velocity = vel;
 
@@ -36,18 +29,18 @@ public static class CocoDamageRegisterPatch
             component5.ResetDamageAmnesty();
 
         __instance.lockJoint.connectedBody = null;
-        __instance.SetField("held", null);
-        __instance.InvokeMethod("SetHeldRad", 0f);
+        __instance.held = null;
+        __instance.SetHeldRad(0f);
 
         if (held.TryGetComponent<Identifiable>(out var component4) && Identifiable.IsTarr(component4.id))
         {
-            var val = (int)Math.Floor((__instance.GetPrivateField<TimeDirector>("timeDir").WorldTime() -  __instance.GetPrivateField<double>("heldStartTime")) * 0.01666666753590107);
-            __instance.GetPrivateField<AchievementsDirector>("achieveDir").MaybeUpdateMaxStat(AchievementsDirector.IntStat.EXTENDED_TARR_HOLD, val);
+            var val = (int)Math.Floor((__instance.timeDir.WorldTime() -  __instance.heldStartTime) * 0.01666666753590107);
+            __instance.achieveDir.MaybeUpdateMaxStat(AchievementsDirector.IntStat.EXTENDED_TARR_HOLD, val);
         }
 
-        __instance.SetField("heldStartTime", double.NaN);
-        __instance.SetField("launchedHeld", true);
-        __instance.InvokeMethod("ShootEffect");
+        __instance.heldStartTime = double.NaN;
+        __instance.launchedHeld = true;
+        __instance.ShootEffect();
         return false;
     }
 }

@@ -1,3 +1,5 @@
+// using RichPresence;
+
 namespace TheOceanRange.Utils;
 
 // Obtained this code from SimpleSrModLibrary, just been optimised to avoid excessive ToString and ToLower overhead
@@ -31,7 +33,7 @@ public static class SlimePediaCreation
     // public static void CreateZoneSlimePedia(PediaId slimePediaId, Zone lNameId, string name, string presence, string fullName, string intro, string description)
     // {
     //     var id = slimePediaId.ToString().ToLower();
-    //     Main.ZoneLookup.Add(lNameId, name);
+    //     Director.RICH_PRESENCE_ZONE_LOOKUP.Add(lNameId, name);
     //     TranslationPatcher.AddTranslationKey("global", "l.presence." + lNameId.ToString().ToLower(), presence);
     //     TranslationPatcher.AddPediaTranslation("t." + id, fullName);
     //     TranslationPatcher.AddPediaTranslation("m.intro." + id, intro);

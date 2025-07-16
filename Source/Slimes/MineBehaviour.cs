@@ -20,7 +20,8 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     private const float MaxDelay = 15f;
     private const float MinDelay = 5f;
 
-    private GameObject ExplodeFX;
+    public GameObject ExplodeFX;
+
     private float NextPossibleExplode;
     private float NextExplodeDelayTime = MaxDelay;
     private SlimeFaceAnimator SfAnimator;
@@ -40,16 +41,6 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
 
         if (Applicator.Appearance)
             ExplodeFX = Applicator.Appearance.ExplosionAppearance.explodeFx;
-
-        Applicator.OnAppearanceChanged += OnAppearanceChanged;
-    }
-
-    private void OnAppearanceChanged(SlimeAppearance newAppearance) => ExplodeFX = newAppearance.ExplosionAppearance.explodeFx;
-
-    public override void OnDestroy()
-    {
-        base.OnDestroy();
-        Applicator.OnAppearanceChanged -= OnAppearanceChanged;
     }
 
     public override void OnEnable()

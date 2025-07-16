@@ -1,6 +1,6 @@
 namespace TheOceanRange.Patches;
 
-[HarmonyPatch(typeof(SlimeEat), "Produce")]
+[HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.Produce))]
 public static class SlimeEatProduce
 {
     public static void Prefix(SlimeEat __instance, ref int count)
@@ -11,7 +11,7 @@ public static class SlimeEatProduce
         Collider val = null;
         var flag = false;
 
-        foreach (var allCorral in CorralTracker.AllCorrals)
+        foreach (var allCorral in CorralRegion.allCorrals)
         {
             var collider = allCorral.GetComponent<Collider>();
 
@@ -31,16 +31,4 @@ public static class SlimeEatProduce
 
         count = RosiBehaviour.All.Count(item => val.bounds.Contains(item.transform.position));
     }
-}
-
-[HarmonyPatch(typeof(CorralRegion))]
-public static class CorralTracker
-{
-    public static readonly List<CorralRegion> AllCorrals = [];
-
-    [HarmonyPatch(nameof(CorralRegion.Awake))]
-    public static void Postfix(CorralRegion __instance) => AllCorrals.Add(__instance);
-
-    [HarmonyPatch(nameof(CorralRegion.OnDestroy))]
-    public static void Prefix(CorralRegion __instance) => AllCorrals.Remove(__instance);
 }

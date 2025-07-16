@@ -141,6 +141,9 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("gordoPos")]
     public Vector3 GordoPos;
 
+    [JsonProperty("gordoRot")]
+    public Vector3 GordoRotation;
+
     [JsonProperty("plortExchangeWeight")]
     public float PlortExchangeWeight = 16f;
 
@@ -157,13 +160,14 @@ public sealed class CustomSlimeData : JsonData
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_SLIME_ENTRY");
 
         var type = typeof(SlimeManager);
-        InitSlimeDetails = AccessTools.Method(type, "Init" + Name + "SlimeDetails");
-        InitPlortDetails = AccessTools.Method(type, "Init" + Name + "PlortDetails");
+        var init = "Init" + Name;
+        InitSlimeDetails = AccessTools.Method(type, init + "SlimeDetails");
+        InitPlortDetails = AccessTools.Method(type, init + "PlortDetails");
 
         if (HasGordo)
         {
             GordoId = Helpers.ParseEnum<IdentifiableId>(upper + "_GORDO");
-            InitGordoDetails = AccessTools.Method(type, "Init" + Name + "GordoDetails");
+            InitGordoDetails = AccessTools.Method(type, init + "GordoDetails");
         }
 
         TopPaletteColor ??= TopSlimeColor;

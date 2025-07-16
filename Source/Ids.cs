@@ -14,17 +14,17 @@ public static class Ids
 
     public static readonly IdentifiableId COCOA_SLIME;
     public static readonly IdentifiableId COCOA_PLORT;
-    public static readonly IdentifiableId COCOA_GORDO;
+    // public static readonly IdentifiableId COCOA_GORDO;
     public static readonly PediaId COCOA_SLIME_ENTRY;
 
     public static readonly IdentifiableId MINE_SLIME;
     public static readonly IdentifiableId MINE_PLORT;
-    public static readonly IdentifiableId MINE_GORDO;
+    // public static readonly IdentifiableId MINE_GORDO;
     public static readonly PediaId MINE_SLIME_ENTRY;
 
     public static readonly IdentifiableId LANTERN_SLIME;
     public static readonly IdentifiableId LANTERN_PLORT;
-    public static readonly IdentifiableId LANTERN_GORDO;
+    // public static readonly IdentifiableId LANTERN_GORDO;
     public static readonly PediaId LANTERN_SLIME_ENTRY;
 
     public static readonly IdentifiableId SAND_SLIME;

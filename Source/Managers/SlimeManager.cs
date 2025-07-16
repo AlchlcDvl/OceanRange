@@ -1,10 +1,12 @@
 using AssetsLib;
 using SRML;
+using SRML.SR.SaveSystem;
 using UnityEngine.UI;
 
 namespace TheOceanRange.Managers;
 
 // Manager class to handle the commonality of a bunch of slime handling code
+// TODO: Finish largo setup; relegated to next update most likely
 public static class SlimeManager
 {
     public static readonly List<CustomSlimeData> Slimes = [];
@@ -81,11 +83,10 @@ public static class SlimeManager
             transform =
             {
                 localPosition = slimeData.GordoPos,
-                localEulerAngles = Vector3.zero,
+                localEulerAngles = slimeData.GordoRotation,
                 localScale = Vector3.one
             }
-        }.BuildGordo(slimeData, Helpers.GetObjectFromName<GameObject>("cellReef_Intro").FindChild("Sector").FindChild("Slimes"), slimeData.Name + "G1" +
-            slimeData.GordoZone.ToString().ToTitleCase());
+        }.BuildGordo(slimeData, Helpers.GetObjectFromName<GameObject>("cellReef_Intro").FindChild("Sector").FindChild("Slimes"));
     };
 
     public static void LoadAllSlimes()
@@ -133,9 +134,9 @@ public static class SlimeManager
         markerPrefab.GetComponent<Image>().sprite = AssetManager.GetSprite($"{lower}gordo");
         gordoDisplay.markerPrefab = markerPrefab;
 
-        var component4 = prefab.GetComponent<GordoIdentifiable>();
-        component4.id = slimeData.GordoId;
-        component4.nativeZones = [slimeData.GordoZone];
+        var identifiable = prefab.GetComponent<GordoIdentifiable>();
+        identifiable.id = slimeData.GordoId;
+        identifiable.nativeZones = [slimeData.GordoZone];
 
         var gordoEat = prefab.GetComponent<GordoEat>();
         var gordoDefinition = gordoEat.slimeDefinition.DeepCopy();
@@ -152,14 +153,17 @@ public static class SlimeManager
         rewards.slimePrefab = slimeData.MainId.GetPrefab();
         rewards.rewardOverrides = [];
 
-        var gameObject4 = prefab.transform.Find("Vibrating/slime_gordo").gameObject;
-        var component7 = gameObject4.GetComponent<SkinnedMeshRenderer>();
-        component7.sharedMaterial = material;
-        component7.sharedMaterials[0] = material;
-        component7.material = material;
-        component7.materials[0] = material;
+        var gordoObj = prefab.transform.Find("Vibrating/slime_gordo");
 
-        slimeData.InitGordoDetails?.Invoke(null, [prefab]);
+        var meshRend = gordoObj.GetComponent<SkinnedMeshRenderer>();
+        meshRend.sharedMaterial = material;
+        meshRend.sharedMaterials[0] = material;
+        meshRend.material = material;
+        meshRend.materials[0] = material;
+
+        prefab.AddComponent<CustomGordo>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
+
+        slimeData.InitGordoDetails?.Invoke(null, [prefab, definition, gordoObj]);
 
         TranslationPatcher.AddPediaTranslation("t." + definition.name, name);
         TranslationPatcher.AddActorTranslation("l." + slimeData.GordoId.ToString().ToLower(), name);
@@ -367,7 +371,7 @@ public static class SlimeManager
     {
         try
         {
-            SlimesAndMarket.ExtraSlimes.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress ?? []); // Since it's a soft dependency but still requires the code from the mod to work, this method was made
+            SlimesAndMarket.ExtraSlimes.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress); // Since it's a soft dependency but still requires the code from the mod to work, this method was made
         }
         catch (Exception e)
         {
@@ -458,6 +462,27 @@ public static class SlimeManager
             [typeof(RosiBehaviour)],
             null
         );
+    }
+
+    public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)
+    {
+        var structs = definition.AppearancesDefault[0].Structures;
+
+        var material2 = structs[1].DefaultMaterials[0];
+        var material3 = structs[2].DefaultMaterials[0];
+
+        var stalk = new GameObject("stalk");
+        stalk.AddComponent<MeshFilter>().mesh = AssetManager.GetMesh("rosi_stalk");
+        stalk.AddComponent<MeshRenderer>().material = material2;
+        stalk.transform.position = Vector3.zero;
+
+        var frills = new GameObject("frills");
+        frills.AddComponent<MeshFilter>().mesh = AssetManager.GetMesh("rosi_frills");
+        frills.AddComponent<MeshRenderer>().material = material3;
+        frills.transform.position = Vector3.zero;
+
+        frills.transform.SetParent(gordoObj.parent, false);
+        stalk.transform.SetParent(gordoObj.parent, false);
     }
 
     public static void InitCocoaSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator) => BasicInitSlimeAppearance
