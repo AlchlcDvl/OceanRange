@@ -14,6 +14,10 @@
         "bottomPlortColor": "#F9E5F0",
         "basePrice": 10,
         "saturation": 100,
+        "hasGordo": true,
+        "gordoPos": "-10.6085,4.6748,17.2529",
+        "gordoRewards": ["KEY", "ROSI_SLIME", "ROSI_SLIME"],
+        "gordoZone": "REEF",
         "intro": "The pink pearl of the sea. Believed to be the cousin of the pink slime.",
         "pediaDiet": "Everything",
         "fav": "No favorite food. The Rosi slime loves everything equally.",
@@ -137,7 +141,6 @@
         "zones": ["REEF"],
         "specialDiet": true,
         "spawnWeight": 0.15,
-        "hasGordo": false,
         "slimeology": "The sand slime, a distant cousin of the puddle slime, can be found in the shallow waters of the Far, Far Range. Much like their puddle and fire cousins, they don't need to be fed for they solely eat dirt. Sand slimes process the nutrients from the dirt and produce a pearl plort of similar composition to Earth pearls.",
         "risks": "A sand slime isn't risky to manage. These slimes can be placed in any inhabited corral without worrying about any outbreaks. Even their pearls are safe because no slime wants to eat a pearl that come from a slime that eats dirt.",
         "plortonomics": "Sand pearls are tougher than their their Earth counterparts, contrary to the softer composition of the sand slime. Just like Earth pearls but much more expensive, sand pearls are used in jewelry."

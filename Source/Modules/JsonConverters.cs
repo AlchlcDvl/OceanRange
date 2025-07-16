@@ -14,7 +14,7 @@ public sealed class Vector3Converter : JsonConverter<Vector3>
         if (reader.TokenType != JsonToken.String)
             throw new JsonSerializationException($"Cannot convert value '{reader.Value}' to Vector3. Expected format 'x,y,z' or 'x,y'.");
 
-        var components = reader.Value.ToString().TrueSplit(',');
+        var components = reader.Value.ToString().TrueSplit(',', ' ');
 
         if (components.Length < 2)
             throw new JsonSerializationException($"'{reader.Value}' has too less values!");

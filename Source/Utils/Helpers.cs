@@ -1,5 +1,8 @@
 // using SRML;
 // using System.Reflection;
+using AssetsLib;
+using SRML.SR.SaveSystem;
+using SRML.SR.Utils;
 using SRML.Utils;
 
 namespace TheOceanRange.Utils;
@@ -123,4 +126,35 @@ public static class Helpers
     //     IdentifiableRegistry.CategorizeId(value);
     //     return value;
     // }
+
+    public static void BuildGordo(this GameObject main, CustomSlimeData slimeData, GameObject sectorCategory, string handId)
+    {
+        var gordo = slimeData.GordoId.GetPrefab().CreateInactive();
+        gordo.transform.position = main.transform.position;
+        gordo.transform.rotation = main.transform.rotation;
+        gordo.transform.SetParent(main.transform);
+
+        var component = gordo.GetComponent<GordoEat>();
+        component.SetField("director", IdHandlerUtils.GlobalIdDirector);
+        component.GetField<GordoRewardsBase>("rewards").SetField("activeRewards", gordo.GetComponent<GordoRewards>().rewardPrefabs.ToList());
+
+        var text = ModdedStringRegistry.ClaimID("gordo", handId);
+        IdHandlerUtils.GlobalIdDirector.GetPrivateField<Dictionary<IdHandler, string>>("persistenceDict").Add(component, text);
+
+        gordo.transform.SetParent(sectorCategory.transform);
+        gordo.SetActive(true);
+
+        main.Destroy();
+    }
+
+    public static T GetObjectFromName<T>(string name) where T : UObject
+    {
+        foreach (var t in Resources.FindObjectsOfTypeAll<T>())
+        {
+            if (t.name == name)
+                return t;
+        }
+
+        return null;
+    }
 }

@@ -15,7 +15,7 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("favFood")]
     public IdentifiableId FavFood;
 
-    [JsonProperty("favToy")]
+    [JsonProperty("favToy"), JsonRequired]
     public IdentifiableId FavToy;
 
     [JsonProperty("nightSpawn")]
@@ -33,11 +33,17 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("basePlort")]
     public IdentifiableId BasePlort = IdentifiableId.PINK_PLORT;
 
+    [JsonProperty("baseGordo")]
+    public IdentifiableId BaseGordo = IdentifiableId.PINK_GORDO;
+
     [JsonIgnore]
     public MethodInfo InitSlimeDetails;
 
     [JsonIgnore]
     public MethodInfo InitPlortDetails;
+
+    [JsonIgnore]
+    public MethodInfo InitGordoDetails;
 
     [JsonProperty("gloss")]
     public float Gloss = 1f;
@@ -117,6 +123,9 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("zones"), JsonRequired]
     public Zone[] Zones;
 
+    [JsonProperty("gordoZone")]
+    public Zone GordoZone;
+
     [JsonProperty("spawnAmount")]
     public float SpawnAmount = 0.25f;
 
@@ -124,7 +133,13 @@ public sealed class CustomSlimeData : JsonData
     public bool SpecialDiet;
 
     [JsonProperty("hasGordo")]
-    public bool HasGordo = true;
+    public bool HasGordo;
+
+    [JsonProperty("gordoRewards")]
+    public IdentifiableId[] GordoRewards;
+
+    [JsonProperty("gordoPos")]
+    public Vector3 GordoPos;
 
     [JsonProperty("plortExchangeWeight")]
     public float PlortExchangeWeight = 16f;
@@ -136,14 +151,20 @@ public sealed class CustomSlimeData : JsonData
     public void PopulateRemainingValues(StreamingContext _)
     {
         var upper = Name.ToUpper();
+
         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_SLIME");
         PlortId = Helpers.ParseEnum<IdentifiableId>(upper + "_PLORT");
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_SLIME_ENTRY");
-        InitSlimeDetails = AccessTools.Method(typeof(SlimeManager), "Init" + Name + "SlimeDetails");
-        InitPlortDetails = AccessTools.Method(typeof(SlimeManager), "Init" + Name + "PlortDetails");
+
+        var type = typeof(SlimeManager);
+        InitSlimeDetails = AccessTools.Method(type, "Init" + Name + "SlimeDetails");
+        InitPlortDetails = AccessTools.Method(type, "Init" + Name + "PlortDetails");
 
         if (HasGordo)
+        {
             GordoId = Helpers.ParseEnum<IdentifiableId>(upper + "_GORDO");
+            InitGordoDetails = AccessTools.Method(type, "Init" + Name + "GordoDetails");
+        }
 
         TopPaletteColor ??= TopSlimeColor;
         MiddlePaletteColor ??= MiddleSlimeColor;

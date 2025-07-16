@@ -1,10 +1,10 @@
 using AssetsLib;
 using SRML;
+using UnityEngine.UI;
 
 namespace TheOceanRange.Managers;
 
 // Manager class to handle the commonality of a bunch of slime handling code
-// TODO: Create Rosi gordo at -10.6085 4.6748 17.2529
 public static class SlimeManager
 {
     public static readonly List<CustomSlimeData> Slimes = [];
@@ -72,6 +72,20 @@ public static class SlimeManager
                 ];
             }
         }
+
+        if (!slimeData.HasGordo)
+            return;
+
+        new GameObject("replacer")
+        {
+            transform =
+            {
+                localPosition = slimeData.GordoPos,
+                localEulerAngles = Vector3.zero,
+                localScale = Vector3.one
+            }
+        }.BuildGordo(slimeData, Helpers.GetObjectFromName<GameObject>("cellReef_Intro").FindChild("Sector").FindChild("Slimes"), slimeData.Name + "G1" +
+            slimeData.GordoZone.ToString().ToTitleCase());
     };
 
     public static void LoadAllSlimes()
@@ -95,8 +109,63 @@ public static class SlimeManager
         CreatePlort(slimeData);
         CreateSlime(slimeData);
 
+        if (slimeData.HasGordo)
+            CreateGordo(slimeData);
+
         if (SamExists)
-            TypeLoadExceptionBypass(slimeData.MainId, slimeData.PlortId, slimeData.Progress);
+            TypeLoadExceptionBypass(slimeData);
+    }
+
+    private static void CreateGordo(CustomSlimeData slimeData)
+    {
+        var prefab = slimeData.BaseGordo.GetPrefab().CreatePrefab();
+        prefab.name = "gordo" + slimeData.Name;
+
+        var definition = slimeData.MainId.GetSlimeDefinition().DeepCopy();
+        var material = definition.AppearancesDefault[0].Structures[0].DefaultMaterials[0];
+
+        var lower = slimeData.Name.ToLower();
+        var name = slimeData.Name + " Gordo";
+
+        var gordoDisplay = prefab.GetComponent<GordoDisplayOnMap>();
+        var markerPrefab = gordoDisplay.markerPrefab.CreatePrefab();
+        markerPrefab.name = "Gordo" + slimeData.Name + "Marker";
+        markerPrefab.GetComponent<Image>().sprite = AssetManager.GetSprite($"{lower}gordo");
+        gordoDisplay.markerPrefab = markerPrefab;
+
+        var component4 = prefab.GetComponent<GordoIdentifiable>();
+        component4.id = slimeData.GordoId;
+        component4.nativeZones = [slimeData.GordoZone];
+
+        var gordoEat = prefab.GetComponent<GordoEat>();
+        var gordoDefinition = gordoEat.slimeDefinition.DeepCopy();
+        gordoDefinition.AppearancesDefault = definition.AppearancesDefault;
+        gordoDefinition.Diet = definition.Diet;
+        gordoDefinition.IdentifiableId = slimeData.GordoId;
+        gordoDefinition.Name = name;
+        gordoDefinition.name = lower + "_gordo";
+        gordoEat.slimeDefinition = gordoDefinition;
+        gordoEat.targetCount = 50;
+
+        var rewards = prefab.GetComponent<GordoRewards>();
+        rewards.rewardPrefabs = [..slimeData.GordoRewards.Select(x => x.GetPrefab())];
+        rewards.slimePrefab = slimeData.MainId.GetPrefab();
+        rewards.rewardOverrides = [];
+
+        var gameObject4 = prefab.transform.Find("Vibrating/slime_gordo").gameObject;
+        var component7 = gameObject4.GetComponent<SkinnedMeshRenderer>();
+        component7.sharedMaterial = material;
+        component7.sharedMaterials[0] = material;
+        component7.material = material;
+        component7.materials[0] = material;
+
+        slimeData.InitGordoDetails?.Invoke(null, [prefab]);
+
+        TranslationPatcher.AddPediaTranslation("t." + definition.name, name);
+        TranslationPatcher.AddActorTranslation("l." + slimeData.GordoId.ToString().ToLower(), name);
+        LookupRegistry.RegisterGordo(prefab);
+        LookupRegistry.RegisterIdentifiablePrefab(prefab);
+        SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);
     }
 
     private static void CreatePlort(CustomSlimeData slimeData)
@@ -166,6 +235,7 @@ public static class SlimeManager
     private static void CreateSlime(CustomSlimeData slimeData)
     {
         var baseDefinition = slimeData.BaseSlime.GetSlimeDefinition(); // Finding the base slime definition to go off of
+        var lower = slimeData.Name.ToLower();
 
         // Create a copy for our slimes and populate with info
         var definition = baseDefinition.DeepCopy();
@@ -178,6 +248,7 @@ public static class SlimeManager
         definition.FavoriteToys = [slimeData.FavToy];
         definition.Name = slimeData.Name + " Slime";
         definition.IdentifiableId = slimeData.MainId;
+        definition.name = lower + "_slime";
 
         // Finding the base prefab, copying it and setting our own component values
         var prefab = slimeData.BaseSlime.GetPrefab().CreatePrefab();
@@ -259,7 +330,7 @@ public static class SlimeManager
             Ammo = slimeData.SlimeAmmoColor.HexToColor()
         };
 
-        appearance.Icon = AssetManager.GetSprite($"{slimeData.Name.ToLower()}slime");
+        appearance.Icon = AssetManager.GetSprite($"{lower}slime");
         applicator.Appearance = appearance;
 
         slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance, applicator]); // Slime specific details being put here
@@ -272,7 +343,8 @@ public static class SlimeManager
             eats = slimeData.MainId,
             becomesId = IdentifiableId.TARR_SLIME,
             driver = SlimeEmotions.Emotion.NONE,
-            extraDrive = 999999f
+            extraDrive = 999999f,
+            producesId = IdentifiableId.TARR_SLIME
         });
 
         // Register everything
@@ -291,11 +363,11 @@ public static class SlimeManager
         PediaRegistry.RegisterIdEntry(slimeData.MainEntry, appearance.Icon);
     }
 
-    private static void TypeLoadExceptionBypass(IdentifiableId slimeId, IdentifiableId plortId, ProgressType[] progress)
+    private static void TypeLoadExceptionBypass(CustomSlimeData slimeData)
     {
         try
         {
-            SlimesAndMarket.ExtraSlimes.RegisterSlime(slimeId, plortId, progress: progress); // Since it's a soft dependency but still requires the code from the mod to work, this method was made
+            SlimesAndMarket.ExtraSlimes.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress ?? []); // Since it's a soft dependency but still requires the code from the mod to work, this method was made
         }
         catch (Exception e)
         {
