@@ -1,6 +1,3 @@
-# Blender 4.4.3
-# www.blender.org
-mtllib mesmer_tail.mtl
 o mesmer_tail
 v 0.005228 0.274917 -0.703085
 v 0.003183 0.234432 -0.640939

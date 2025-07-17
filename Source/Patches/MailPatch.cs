@@ -9,8 +9,11 @@ public static class FixAndProperlyShowMailPatch
 
         foreach (var mail in MailManager.Mail)
         {
-            if (mail.UnlockAfter <= time)
-                SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
+            if (mail.Sent || mail.UnlockAfter > time)
+                continue;
+
+            SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
+            mail.Sent = true;
         }
     }
 }

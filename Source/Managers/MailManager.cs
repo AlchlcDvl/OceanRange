@@ -16,7 +16,5 @@ public static class MailManager
         .SetSubjectTranslation(mailData.Title)
         .SetFromTranslation(mailData.From)
         .SetBodyTranslation(mailData.Body)
-        .SetReadCallback(Blank));
-
-    private static void Blank(MailDirector _, MailDirector.Mail __) {}
+        .SetReadCallback((_, _) => mailData.Read = true));
 }

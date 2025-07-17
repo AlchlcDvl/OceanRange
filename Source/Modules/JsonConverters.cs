@@ -6,7 +6,7 @@ public sealed class Vector3Converter : JsonConverter<Vector3>
 {
     private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
-    public override Vector3 ReadJson(JsonReader reader, Type objectType, Vector3 existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override Vector3 ReadJson(JsonReader reader, Type _, Vector3 __, bool ___, JsonSerializer ____)
     {
         if (reader.TokenType == JsonToken.Null)
             return default;
@@ -38,15 +38,16 @@ public sealed class Vector3Converter : JsonConverter<Vector3>
         return new(x, y, z);
     }
 
-    public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer serializer) =>
+    public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer _) =>
         writer.WriteValue($"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}");
 }
 
+// Made because srml's enum patching is causing errors with patched enums being read by newtonsoft, will be removed if and when a fix is administered
 public abstract class EnumConverter<T> : JsonConverter<T> where T : struct, Enum
 {
-    public override void WriteJson(JsonWriter writer, T value, JsonSerializer serializer) => writer.WriteValue(value.ToString());
+    public override void WriteJson(JsonWriter writer, T value, JsonSerializer _) => writer.WriteValue(value.ToString());
 
-    public override T ReadJson(JsonReader reader, Type objectType, T existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override T ReadJson(JsonReader reader, Type _, T __, bool ___, JsonSerializer ____)
     {
         var enumString = reader.Value?.ToString() ?? "null";
         return reader.TokenType switch

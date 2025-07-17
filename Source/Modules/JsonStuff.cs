@@ -26,3 +26,5 @@ public abstract class JsonData
     [JsonProperty("intro"), JsonRequired]
     public string MainIntro;
 }
+
+public sealed class JsonAsset(string text) : TextAsset(text);

@@ -12,7 +12,7 @@ public sealed class Main : ModEntryPoint
         Console = ConsoleInstance;
         Console.Log("Loading Ocean Range!");
 
-        AssetManager.FetchAssetNames();
+        AssetManager.InitialiseAssets();
 
         FoodManager.PreLoadFoodData();
         SlimeManager.PreLoadSlimeData();
