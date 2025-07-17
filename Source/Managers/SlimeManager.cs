@@ -337,7 +337,7 @@ public static class SlimeManager
         appearance.Icon = AssetManager.GetSprite($"{lower}slime");
         applicator.Appearance = appearance;
 
-        slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance, applicator]); // Slime specific details being put here
+        slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance, applicator, slimeData.JiggleAmount]); // Slime specific details being put here
 
         definition.AppearancesDefault = [appearance];
 
@@ -386,6 +386,7 @@ public static class SlimeManager
         string[] meshes,
         Action<int, SlimeAppearanceStructure> materialHandler,
         Type[] toAdd, Type[] toRemove,
+        float jiggleAmount,
         bool skipNull = false
     )
     {
@@ -437,10 +438,10 @@ public static class SlimeManager
                 prefabsForBoneData[i - 1] = prefab2;
         }
 
-        MeshUtils.GenerateBoneData(applicator, slimeBase, 1f, 1f, prefabsForBoneData);
+        MeshUtils.GenerateBoneData(applicator, slimeBase, jiggleAmount, 1f, prefabsForBoneData);
     }
 
-    public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
+    public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
     {
         definition.Diet.MajorFoodGroups = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet.MajorFoodGroups;
         definition.Diet.Favorites = [];
@@ -460,7 +461,8 @@ public static class SlimeManager
                 mat.SetColor(BottomColor, color);
             },
             [typeof(RosiBehaviour)],
-            null
+            null,
+            jiggleAmount
         );
     }
 
@@ -484,7 +486,7 @@ public static class SlimeManager
         frills.transform.SetParent(gordoObj.parent, false);
     }
 
-    public static void InitCocoaSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator) => BasicInitSlimeAppearance
+    public static void InitCocoaSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount) => BasicInitSlimeAppearance
     (
         prefab, appearance, applicator,
         null,
@@ -505,10 +507,11 @@ public static class SlimeManager
         //     structure.DefaultMaterials[0] = material;
         // },
         [typeof(CocoaBehaviour)],
-        null
+        null,
+        jiggleAmount
     );
 
-    public static void InitMineSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
+    public static void InitMineSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
     {
         var color = "#445660".HexToColor();
         var color2 = "#9ea16f".HexToColor();
@@ -532,11 +535,12 @@ public static class SlimeManager
             prefab, appearance, applicator, [null, "mine_spikes", "mine_ring"],
             (_, structure) => structure.DefaultMaterials[0] = structure.SupportsFaces ? material : material2,
             [typeof(MineBehaviour)],
-            [typeof(BoomSlimeExplode), typeof(BoomMaterialAnimator)]
+            [typeof(BoomSlimeExplode), typeof(BoomMaterialAnimator)],
+            jiggleAmount
         );
     }
 
-    public static void InitLanternSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
+    public static void InitLanternSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
     {
         var color = "#752C86".HexToColor();
         var color2 = "#B15EC8".HexToColor();
@@ -570,11 +574,12 @@ public static class SlimeManager
                 _ => material
             },
             [typeof(LanternBehaviour)],
-            null
+            null,
+            jiggleAmount
         );
     }
 
-    public static void InitSandSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
+    public static void InitSandSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
     {
         SandBehaviour.ProduceFX = prefab.GetComponent<SlimeEatWater>().produceFX;
 
@@ -595,6 +600,7 @@ public static class SlimeManager
             },
             [typeof(SandBehaviour)],
             [typeof(GotoWater), typeof(GotoConsumable), typeof(DestroyOnTouching), typeof(SlimeEatWater)],
+            jiggleAmount,
             true
         );
     }

@@ -147,6 +147,9 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("plortExchangeWeight")]
     public float PlortExchangeWeight = 16f;
 
+    [JsonProperty("jiggle")]
+    public float JiggleAmount = 1f;
+
     // [JsonIgnore]
     // public readonly HashSet<IdentifiableId> Largos = [];
 
