@@ -437,7 +437,7 @@ public static class SlimeManager
                 prefabsForBoneData[i - 1] = prefab2;
         }
 
-        MeshUtils.GenerateBoneData(applicator, slimeBase, 0.25f, 1f, prefabsForBoneData);
+        MeshUtils.GenerateBoneData(applicator, slimeBase, 1f, 1f, prefabsForBoneData);
     }
 
     public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator)
@@ -475,14 +475,13 @@ public static class SlimeManager
         stalk.AddComponent<MeshFilter>().mesh = AssetManager.GetMesh("rosi_stalk");
         stalk.AddComponent<MeshRenderer>().material = material2;
         stalk.transform.position = Vector3.zero;
+        stalk.transform.SetParent(gordoObj.parent, false);
 
         var frills = new GameObject("frills");
         frills.AddComponent<MeshFilter>().mesh = AssetManager.GetMesh("rosi_frills");
         frills.AddComponent<MeshRenderer>().material = material3;
         frills.transform.position = Vector3.zero;
-
         frills.transform.SetParent(gordoObj.parent, false);
-        stalk.transform.SetParent(gordoObj.parent, false);
     }
 
     public static void InitCocoaSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator) => BasicInitSlimeAppearance

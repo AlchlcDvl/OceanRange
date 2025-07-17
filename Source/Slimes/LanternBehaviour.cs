@@ -20,12 +20,8 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener
         if (Fleeing)
         {
             Fleeing = Time.fixedTime < FleeingUntil;
-
-            if (Fleeing)
-            {
-                Applicator.SetExpression(SlimeFace.SlimeExpression.Alarm);
-                return;
-            }
+            Applicator.SetExpression(SlimeFace.SlimeExpression.Alarm);
+            return;
         }
 
         CanMove = TimeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);

@@ -13,8 +13,8 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         Recovering
     }
 
-    private const float ExplodePower = 600f;
-    private const float ExplodeRadius = 7f;
+    private const float ExplodePower = 900f;
+    private const float ExplodeRadius = 10f;
     private const float MinPlayerDamage = 15f;
     private const float MaxPlayerDamage = 45f;
     private const float MaxDelay = 15f;
@@ -30,6 +30,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     private ExplodeIndicatorMarker Marker;
     private bool Contact;
     private ExplodeState State;
+    private bool Exploding;
 
     public override void Awake()
     {
@@ -59,7 +60,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         Marker.SetActive(false);
     }
 
-    public override float Relevancy(bool _) => Calmed.IsCalmed() || !Contact ? 0f : 1f;
+    public override float Relevancy(bool _) => Calmed.IsCalmed() || !Contact || Exploding ? 0f : 1f;
 
     public override void Action() {}
 
@@ -76,6 +77,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     private IEnumerator DelayedExplosion()
     {
         Contact = false;
+        Exploding = true;
         State = ExplodeState.Preparing;
         Marker.SetActive(true);
         SfAnimator.SetTrigger("triggerGrimace");
@@ -90,6 +92,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         SfAnimator.SetTrigger("triggerFried");
         yield return new WaitForSeconds(BoomSlimeExplode.EXPLOSION_RECOVERY_TIME);
         State = ExplodeState.Idle;
+        Exploding = false;
     }
 
     private void Explode()
