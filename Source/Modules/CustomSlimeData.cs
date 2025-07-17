@@ -144,6 +144,9 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("gordoRot")]
     public Vector3 GordoRotation;
 
+    [JsonProperty("gordoLoc")]
+    public string GordoLocation;
+
     [JsonProperty("plortExchangeWeight")]
     public float PlortExchangeWeight = 16f;
 

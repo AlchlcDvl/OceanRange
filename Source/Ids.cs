@@ -7,6 +7,8 @@ namespace TheOceanRange;
 [EnumHolder]
 public static class Ids
 {
+    public static readonly SlimeFace.SlimeExpression Sleeping;
+
     public static readonly IdentifiableId ROSI_SLIME;
     public static readonly IdentifiableId ROSI_PLORT;
     public static readonly IdentifiableId ROSI_GORDO;
@@ -31,24 +33,22 @@ public static class Ids
     public static readonly IdentifiableId SAND_PLORT;
     public static readonly PediaId SAND_SLIME_ENTRY;
 
-    // public static readonly Zone SWIRLPOOL;
-
     public static readonly IdentifiableId SANDY_HEN;
     public static readonly PediaId SANDY_HEN_ENTRY;
 
     public static readonly IdentifiableId SANDY_CHICK;
     public static readonly PediaId SANDY_CHICK_ENTRY;
 
-    // public static readonly IdentifiableId RADIANT_HEN;
-    // public static readonly PediaId RADIANT_HEN_ENTRY;
+    public static readonly IdentifiableId RADIANT_HEN;
+    public static readonly PediaId RADIANT_HEN_ENTRY;
 
-    // public static readonly IdentifiableId RADIANT_CHICK;
-    // public static readonly PediaId RADIANT_CHICK_ENTRY;
+    public static readonly IdentifiableId RADIANT_CHICK;
+    public static readonly PediaId RADIANT_CHICK_ENTRY;
 
     // public static readonly IdentifiableId BLOWTATO_VEGGIE;
     // public static readonly PediaId BLOWTATO_VEGGIE_ENTRY;
 
-    public static readonly SlimeFace.SlimeExpression Sleeping;
-
     // public static readonly RancherChatMetadata.Entry.RancherName LISA;
+
+    // public static readonly Zone SWIRLPOOL;
 }

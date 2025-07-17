@@ -11,7 +11,7 @@ public static class SlimeManager
 {
     public static readonly List<CustomSlimeData> Slimes = [];
     public static SlimeExpressionFace SleepingFace;
-    // public static string[] VanillaSlimes = ["PINK", "ROCK", "PHOSPHOR", "PUDDLE", "FIRE", "CRYSTAL", "RAD", "BOOM", "TANGLE", "DERVISH", "TABBY", "HUNTER", "SABER", "HONEY", "MOSAIC", "QUANTUM"];
+    // public static readonly string[] VanillaSlimes = ["PINK", "ROCK", "PHOSPHOR", "PUDDLE", "FIRE", "CRYSTAL", "RAD", "BOOM", "TANGLE", "DERVISH", "TABBY", "HUNTER", "SABER", "HONEY", "MOSAIC", "QUANTUM"];
 
     private static bool SamExists;
     private static Transform RocksPrefab;
@@ -86,7 +86,7 @@ public static class SlimeManager
                 localEulerAngles = slimeData.GordoRotation,
                 localScale = Vector3.one
             }
-        }.BuildGordo(slimeData, Helpers.GetObjectFromName<GameObject>("cellReef_Intro").FindChild("Sector").FindChild("Slimes"));
+        }.BuildGordo(slimeData, Helpers.GetObjectFromName<GameObject>(slimeData.GordoLocation).FindChild("Sector/Slimes"));
     };
 
     public static void LoadAllSlimes()
@@ -109,9 +109,7 @@ public static class SlimeManager
     {
         CreatePlort(slimeData);
         CreateSlime(slimeData);
-
-        if (slimeData.HasGordo)
-            CreateGordo(slimeData);
+        CreateGordo(slimeData);
 
         if (SamExists)
             TypeLoadExceptionBypass(slimeData);
@@ -119,6 +117,9 @@ public static class SlimeManager
 
     private static void CreateGordo(CustomSlimeData slimeData)
     {
+        if (!slimeData.HasGordo)
+            return;
+
         var prefab = slimeData.BaseGordo.GetPrefab().CreatePrefab();
         prefab.name = "gordo" + slimeData.Name;
 
@@ -170,6 +171,11 @@ public static class SlimeManager
         LookupRegistry.RegisterGordo(prefab);
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);
+    }
+
+    private static void GenerateBones(this GameObject gordo, float scale, float jiggleAmount, params string[] meshNames)
+    {
+
     }
 
     private static void CreatePlort(CustomSlimeData slimeData)
@@ -362,8 +368,7 @@ public static class SlimeManager
         TranslationPatcher.AddActorTranslation("l." + slimeIdName, title);
 
         SlimePediaCreation.PreLoadSlimePediaConnection(slimeData.MainEntry, slimeData.MainId, PediaCategory.SLIMES);
-        SlimePediaCreation.CreateSlimePediaForSlimeWithName(slimeData.MainEntry, title, slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks,
-            slimeData.Plortonomics);
+        SlimePediaCreation.CreateSlimePediaForSlimeWithName(slimeData.MainEntry, title, slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks, slimeData.Plortonomics);
         PediaRegistry.RegisterIdEntry(slimeData.MainEntry, appearance.Icon);
     }
 
@@ -426,7 +431,7 @@ public static class SlimeManager
             var prefab2 = elemPrefab.CreatePrefab();
             elem.Prefabs = [prefab2];
             var meshRend = prefab2.GetComponent<SkinnedMeshRenderer>();
-            meshRend.sharedMesh = isNull ? meshRend.sharedMesh.Instantiate() : AssetManager.GetMesh(meshName);
+            meshRend.sharedMesh = isNull ? meshRend.sharedMesh.Clone() : AssetManager.GetMesh(meshName);
             prefab2.IgnoreLODIndex = true;
             structure.SupportsFaces = i == 0;
 

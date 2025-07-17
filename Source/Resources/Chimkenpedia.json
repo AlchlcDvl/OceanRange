@@ -10,5 +10,17 @@
         "basePrice": 20,
         "saturation": 10,
         "about": "A distant cousin of the Stony Hen, Sandy Hens have evolved their feathers to mimic the appearance of beach sands to escape from predators. They camouflage quite well, however they still can't escape the watchful eyes of cocoa slimes, who are almost always perched upon their palm tree homes. Cocoa slimes prefer the dry taste of Sandy chickens to counteract their overflowing amounts of liquid that they contain within. For humans, Sandy chickens taste similar to regular chickens, the only difference being that they are extremely dry to the tongue."
+    },
+    {
+        "name": "Radiant",
+        "intro": "Always out of place!",
+        "chickIntro": "Doesn't fit right in yet...",
+        "pediaFavouredBy": "Lantern Slimes",
+        "ammoColor": "#040454",
+        "favouredBy": ["LANTERN_SLIME"],
+        "zones": ["RUINS", "QUARRY", "MOSS"],
+        "basePrice": 30,
+        "saturation": 15,
+        "about": "A peculiar hen among its kind, the Radiant Hen stands out, literally. Unlike most chickens that try to blend in with their surroundings, the Radiant Hen has evolved feathers that glow with a soft, ethereal light. This makes them incredibly easy to spot, a trait that would typically be a disadvantage. However, for the nocturnal Lantern Slimes, this luminosity is irresistible. They are often found clustered around these hens, seemingly mesmerized by their unique radiance. It's believed the hens' constant, gentle light helps to regulate the Lantern Slimes' internal bioluminescence, which can sometimes become unstable. For ranchers, the Radiant Hen is a beacon, making them surprisingly easy to locate in the dark corners of the Far, Far Range. Their meat, however, tastes just like a regular chicken."
     }
 ]

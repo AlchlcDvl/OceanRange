@@ -1,7 +1,5 @@
 // using SRML;
 using AssetsLib;
-using SRML.SR.SaveSystem;
-using SRML.SR.Utils;
 using SRML.Utils;
 
 namespace TheOceanRange.Utils;
@@ -144,5 +142,40 @@ public static class Helpers
         }
 
         return null;
+    }
+
+    public static Mesh Clone(this Mesh originalMesh)
+    {
+        var mesh = new Mesh
+        {
+            vertices = originalMesh.vertices,
+            triangles = originalMesh.triangles,
+            normals = originalMesh.normals,
+            tangents = originalMesh.tangents,
+
+            colors = originalMesh.colors,
+            colors32 = originalMesh.colors32,
+
+            name = originalMesh.name + "_Clone",
+
+            uv = originalMesh.uv,
+            uv2 = originalMesh.uv2,
+            uv3 = originalMesh.uv3,
+            uv4 = originalMesh.uv4,
+            uv5 = originalMesh.uv5,
+            uv6 = originalMesh.uv6,
+            uv7 = originalMesh.uv7,
+            uv8 = originalMesh.uv8,
+
+            subMeshCount = originalMesh.subMeshCount
+        };
+
+        for (var i = 0; i < originalMesh.subMeshCount; i++)
+            mesh.SetTriangles(originalMesh.GetTriangles(i), i);
+
+        mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+        mesh.RecalculateTangents();
+        return mesh;
     }
 }

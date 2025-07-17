@@ -5,9 +5,7 @@ public static class GordoSnarePatch
 {
     public static bool Prefix(GordoSnare __instance, ref IdentifiableId __result)
     {
-        var bait = __instance.model.baitTypeId;
-
-        if (!SlimeManager.Slimes.TryFinding(x => x.FavFood == bait, out var id) || Randoms.SHARED.GetInRange(0, 100) > 70)
+        if (!SlimeManager.Slimes.TryFinding(x => x.FavFood == __instance.model.baitTypeId, out var id) || Randoms.SHARED.GetInRange(0, 100) > 70)
             return true;
 
         __result = id.GordoId;
