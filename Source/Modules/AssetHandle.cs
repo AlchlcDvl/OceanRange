@@ -30,6 +30,7 @@ public sealed class AssetHandle(string name)
         else
             throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!");
 
+        asset.name = Name;
         return asset.DontDestroy() as T;
     }
 

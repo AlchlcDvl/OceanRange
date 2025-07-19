@@ -121,16 +121,13 @@ public static class Helpers
     //     return value;
     // }
 
-    public static void BuildGordo(this GameObject main, CustomSlimeData slimeData, GameObject sectorCategory)
+    public static void BuildGordo(CustomSlimeData slimeData, GameObject sectorCategory)
     {
-        var gordo = slimeData.GordoId.GetPrefab().CreatePrefab();
-        gordo.transform.position = main.transform.position;
-        gordo.transform.rotation = main.transform.rotation;
-        gordo.transform.SetParent(main.transform);
+        var gordo = slimeData.GordoId.GetPrefab().Instantiate(sectorCategory.transform);
+        gordo.transform.position = slimeData.GordoPos;
+        gordo.transform.localEulerAngles  = slimeData.GordoRotation;
         gordo.name = gordo.name.Replace("(Clone)", "").Trim();
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs];
-        gordo.transform.SetParent(sectorCategory.transform);
-        main.Destroy();
     }
 
     public static T GetObjectFromName<T>(string name) where T : UObject
@@ -178,4 +175,23 @@ public static class Helpers
         mesh.RecalculateTangents();
         return mesh;
     }
+
+    // public static Texture2D CreateRamp(string name, Color a, Color b)
+    // {
+    //     var texture2D = new Texture2D(128, 32);
+
+    //     for (var i = 0; i < 128; i++)
+    //     {
+    //         var color = Color.Lerp(a, b, i / 127f);
+
+    //         for (var j = 0; j < 32; j++)
+    //             texture2D.SetPixel(i, j, color);
+    //     }
+
+    //     texture2D.name = name;
+    //     texture2D.Apply();
+    //     return texture2D;
+    // }
+
+    // public static Texture2D CreateRamp(string name, string hexA, string hexB) => CreateRamp(name, hexA.HexToColor(), hexB.HexToColor());
 }
