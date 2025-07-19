@@ -338,8 +338,7 @@ public static class SlimeManager
             eats = slimeData.MainId,
             becomesId = IdentifiableId.TARR_SLIME,
             driver = SlimeEmotions.Emotion.NONE,
-            extraDrive = 999999f,
-            producesId = IdentifiableId.TARR_SLIME
+            extraDrive = 999999f
         });
 
         // Register everything
@@ -623,6 +622,25 @@ public static class SlimeManager
             [typeof(BoomSlimeExplode), typeof(BoomMaterialAnimator)],
             jiggleAmount
         );
+    }
+
+    public static void InitMineGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)
+    {
+        var structs = definition.AppearancesDefault[0].Structures;
+        var material = structs[1].DefaultMaterials[0];
+        gordoObj.GenerateBones(1f, (_, meshRend) =>
+        {
+            meshRend.material = meshRend.sharedMaterial = material;
+            meshRend.materials = meshRend.sharedMaterials = [material];
+        }, "mine_ring_gordo", "mine_spikes_gordo");
+
+        var rend = gordoObj.GetComponent<SkinnedMeshRenderer>();
+        var color = "#212A2F".HexToColor();
+        var material2 = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
+        material.SetColor(TopColor, color);
+        material.SetColor(MiddleColor, color);
+        material.SetColor(BottomColor, color);
+        material.SetFloat(Gloss, 1f);
     }
 
     public static void InitLanternSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
