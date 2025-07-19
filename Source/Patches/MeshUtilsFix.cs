@@ -2,7 +2,7 @@ using AssetsLib;
 
 namespace TheOceanRange.Patches;
 
-// Aims to reduce a bit of the indexing and comparison overhead that the original code introduces + allows the meshes to recalculate bounds after their poses have been set for maximum jiggliness
+// Aims to reduce a bit of the overhead (comparison, array initialisation and indexing mainly) that the original code introduces + allows the meshes to recalculate bounds after their poses have been set for maximum effectiveness
 [HarmonyPatch(typeof(MeshUtils), nameof(MeshUtils.GenerateBoneData), typeof(SlimeAppearanceApplicator), typeof(SlimeAppearanceObject), typeof(float), typeof(float), typeof(Mesh[]), typeof(SlimeAppearanceObject[]))]
 public static class MeshUtilsImprovement
 {
@@ -14,29 +14,7 @@ public static class MeshUtilsImprovement
         if (!bodyApp)
             throw new ArgumentNullException(nameof(bodyApp));
 
-        AdditionalMesh ??= [];
-        appearanceObjects ??= [];
-
         var sharedMesh = bodyApp.GetComponent<SkinnedMeshRenderer>().sharedMesh;
-        bodyApp.AttachedBones =
-        [
-            SlimeAppearance.SlimeBone.Slime,
-            SlimeAppearance.SlimeBone.JiggleRight,
-            SlimeAppearance.SlimeBone.JiggleLeft,
-            SlimeAppearance.SlimeBone.JiggleTop,
-            SlimeAppearance.SlimeBone.JiggleBottom,
-            SlimeAppearance.SlimeBone.JiggleFront,
-            SlimeAppearance.SlimeBone.JiggleBack
-        ];
-
-        foreach (var slimeAppearanceObject in appearanceObjects)
-        {
-            if (slimeAppearanceObject)
-                slimeAppearanceObject.AttachedBones = bodyApp.AttachedBones;
-            else
-                throw new NullReferenceException("One or more of the SlimeAppearanceObjects are null");
-        }
-
         var vertices = sharedMesh.vertices;
         var zero = Vector3.zero;
 
@@ -52,15 +30,35 @@ public static class MeshUtilsImprovement
         num /= vertices.Length;
         var list = new List<Mesh> { sharedMesh };
 
-        foreach (var slimeAppearanceObject2 in appearanceObjects)
+        bodyApp.AttachedBones =
+        [
+            SlimeAppearance.SlimeBone.Slime,
+            SlimeAppearance.SlimeBone.JiggleRight,
+            SlimeAppearance.SlimeBone.JiggleLeft,
+            SlimeAppearance.SlimeBone.JiggleTop,
+            SlimeAppearance.SlimeBone.JiggleBottom,
+            SlimeAppearance.SlimeBone.JiggleFront,
+            SlimeAppearance.SlimeBone.JiggleBack
+        ];
+
+        if (appearanceObjects != null)
         {
-            if (slimeAppearanceObject2.TryGetComponent<SkinnedMeshRenderer>(out var rend))
-                list.Add(rend.sharedMesh);
-            else
-                Debug.LogWarning("One of the SlimeAppearanceObjects provided to AssetsLib.MeshUtils.GenerateBoneData does not use a SkinnedMeshRenderer");
+            foreach (var appearanceObject in appearanceObjects)
+            {
+                if (!appearanceObject)
+                    throw new NullReferenceException("One or more of the SlimeAppearanceObjects are null");
+
+                appearanceObject.AttachedBones = bodyApp.AttachedBones;
+
+                if (appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
+                    list.Add(rend.sharedMesh);
+                else
+                    Debug.LogWarning("One of the SlimeAppearanceObjects provided to AssetsLib.MeshUtils.GenerateBoneData does not use a SkinnedMeshRenderer");
+            }
         }
 
-        list.AddRange(AdditionalMesh);
+        if (AdditionalMesh != null)
+            list.AddRange(AdditionalMesh);
 
         var rootMatrix = slimePrefab.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;
 
@@ -112,7 +110,10 @@ public static class MeshUtilsImprovement
             var poses = new Matrix4x4[bodyApp.AttachedBones.Length];
 
             for (var i = 0; i < bodyApp.AttachedBones.Length; i++)
-                poses[i] = slimePrefab.Bones.First(x => x.Bone == bodyApp.AttachedBones[i]).BoneObject.transform.worldToLocalMatrix * rootMatrix;
+            {
+                var bone = bodyApp.AttachedBones[i];
+                poses[i] = slimePrefab.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
+            }
 
             item.bindposes = poses;
             item.RecalculateBounds();

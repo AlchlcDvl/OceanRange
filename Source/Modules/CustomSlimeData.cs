@@ -133,7 +133,7 @@ public sealed class CustomSlimeData : JsonData
     public bool SpecialDiet;
 
     [JsonProperty("hasGordo")]
-    public bool HasGordo;
+    public bool HasGordo = true;
 
     [JsonProperty("gordoRewards")]
     public IdentifiableId[] GordoRewards;

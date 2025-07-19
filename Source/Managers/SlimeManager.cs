@@ -464,6 +464,8 @@ public static class SlimeManager
             parentObj.FindChild("bone_skin_bac", true).transform,
         };
 
+        var rootMatrix = parent.localToWorldMatrix;
+
         for (var i = 0; i < meshNames.Length; i++)
         {
             var meshName = meshNames[i];
@@ -513,7 +515,7 @@ public static class SlimeManager
             var poses = new Matrix4x4[bones.Length];
 
             for (var k = 0; k < bones.Length; k++)
-                poses[k] = bones[k].worldToLocalMatrix * parent.localToWorldMatrix;
+                poses[k] = bones[k].worldToLocalMatrix * rootMatrix;
 
             mesh.bindposes = poses;
             mesh.RecalculateBounds();
@@ -559,13 +561,9 @@ public static class SlimeManager
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)
     {
         var structs = definition.AppearancesDefault[0].Structures;
-
-        var material2 = structs[1].DefaultMaterials[0];
-        var material3 = structs[2].DefaultMaterials[0];
-
         gordoObj.GenerateBones(1f, (i, meshRend) =>
         {
-            meshRend.material = meshRend.sharedMaterial = i == 0 ? material2 : material3;
+            meshRend.material = meshRend.sharedMaterial = structs[i + 1].DefaultMaterials[0];
             meshRend.materials = meshRend.sharedMaterials = [meshRend.material];
         }, "rosi_stalk_gordo", "rosi_frills_gordo");
     }
@@ -682,6 +680,17 @@ public static class SlimeManager
             null,
             jiggleAmount
         );
+    }
+
+    public static void InitLanternGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)
+    {
+        var structs = definition.AppearancesDefault[0].Structures;
+
+        gordoObj.GenerateBones(1f, (i, meshRend) =>
+        {
+            meshRend.material = meshRend.sharedMaterial = structs[i + 1].DefaultMaterials[0];
+            meshRend.materials = meshRend.sharedMaterials = [meshRend.material];
+        }, "lantern_fins", "lantern_stalk", "lantern_lure");
     }
 
     public static void InitSandSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
