@@ -9,7 +9,7 @@ public static class FixAndProperlyShowMailPatch
 
         foreach (var mail in MailManager.Mail)
         {
-            if (mail.Sent || mail.UnlockAfter > time)
+            if (mail.Sent || mail.Read || mail.UnlockAfter > time)
                 continue;
 
             SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
