@@ -635,12 +635,14 @@ public static class SlimeManager
         }, "mine_ring_gordo", "mine_spikes_gordo");
 
         var rend = gordoObj.GetComponent<SkinnedMeshRenderer>();
-        var color = "#212A2F".HexToColor();
+        var color = "#445660".HexToColor();
         var material2 = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
-        material.SetColor(TopColor, color);
-        material.SetColor(MiddleColor, color);
-        material.SetColor(BottomColor, color);
-        material.SetFloat(Gloss, 1f);
+        material2.SetColor(TopColor, color);
+        material2.SetColor(MiddleColor, color);
+        material2.SetColor(BottomColor, color);
+        material2.SetFloat(Gloss, 1f);
+        rend.material = rend.sharedMaterial = material2;
+        rend.materials[0] = rend.sharedMaterials[0] = material2;
     }
 
     public static void InitLanternSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
