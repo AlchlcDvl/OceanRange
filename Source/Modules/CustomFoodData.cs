@@ -5,9 +5,6 @@ namespace TheOceanRange.Modules;
 public abstract class CustomFoodData : JsonData
 {
     [JsonProperty("group")]
-    public string GroupJson;
-
-    [JsonIgnore]
     public FoodGroup Group;
 
     [JsonProperty("favouriteModifier")]
@@ -62,22 +59,34 @@ public sealed class CustomChimkenData : CustomFoodData
     }
 }
 
-// public sealed class CustomPlantData : CustomFoodData
-// {
-//     [JsonProperty("type"), JsonRequired]
-//     public string Type;
+public sealed class CustomPlantData : CustomFoodData
+{
+    [JsonProperty("type"), JsonRequired]
+    public string Type;
 
-//     [JsonProperty("garden"), JsonRequired]
-//     public string Garden;
+    [JsonProperty("garden"), JsonRequired]
+    public string Garden;
 
-//     [OnDeserialized]
-//     public void PopulateRemainingValues(StreamingContext _)
-//     {
-//         FavouredBy = [.. FavouredByJson.Select(Helpers.ParseEnum<IdentifiableId>)];
-//         var upper = Name.ToUpper();
-//         var typeUpper = Type.ToUpper();
-//         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
-//         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");
-//         Group = Helpers.ParseEnum<FoodGroup>(GroupJson);
-//     }
-// }
+    [JsonProperty("resource"), JsonRequired]
+    public string Resource;
+
+    [JsonIgnore]
+    public SpawnResource.Id ResourceId;
+
+    [JsonIgnore]
+    public SpawnResource.Id DlxResourceId;
+
+    [OnDeserialized]
+    public void PopulateRemainingValues(StreamingContext _)
+    {
+        FavouredBy = [.. FavouredByJson.Select(Helpers.ParseEnum<IdentifiableId>)];
+        var upper = Name.ToUpper();
+        var typeUpper = Type.ToUpper();
+        MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
+        MainEntry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");
+
+        var resource = upper + "_" + Resource.ToUpper();
+        ResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource);
+        DlxResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource + "_DLX");
+    }
+}

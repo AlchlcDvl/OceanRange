@@ -1,0 +1,13 @@
+[
+    {
+        "name": "Blowtato",
+        "intro": "The explosive veggie!",
+        "pediaFavouredBy": "Mine Slimes",
+        "about": "The Blowtato is a peculiar, highly reactive root vegetable, exclusively sprouting from the cracked earth of the Indigo Quarry. Much like the Mine Slimes that adore them, these spuds have a natural propensity for explosive flair due to a volatile compound within. Ranchers must handle them with extreme care, as a small puncture or \"burp\" is recommended before cooking to prevent a startling bang! For Mine Slimes, this explosive nature is pure delight, fueling their rock-shattering abilities and making the Blowtato their favorite snack. Clever miners even use them to loosen stubborn rock formations, though caution is always advised.",
+        "group": "VEGGIES",
+        "ammoColor": "#AB9E7E",
+        "garden": "crop",
+        "type": "Veggie",
+        "resource": "PATCH"
+    }
+]

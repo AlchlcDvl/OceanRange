@@ -7,7 +7,7 @@ public sealed class AssetHandle(string name)
     private readonly Dictionary<UObject, string> LoadedFrom = []; // Handles if assets have been loaded
     private readonly Dictionary<Type, UObject> Assets = []; // Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there' can't be two of Plort.png anywhere)
 
-    public T Load<T>() where T : UObject
+    public T Load<T>(bool throwError = true) where T : UObject
     {
         var tType = typeof(T);
 
@@ -15,10 +15,10 @@ public sealed class AssetHandle(string name)
             return asset as T;
 
         if (!AssetManager.AssetTypeExtensions.TryGetValue(tType, out var generator))
-            throw new NotSupportedException($"{tType.Name} is not a valid asset type to load");
+            return throwError ? throw new NotSupportedException($"{tType.Name} is not a valid asset type to load") : null;
 
         if (!Paths.TryFinding(x => x.Key.EndsWith(generator.Extension), out var tuple))
-            throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}");
+            return throwError ? throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}") : null;
 
         asset = (tuple.Value ? AssetManager.Bundle.LoadAsset<T> : generator.LoadAsset)(tuple.Key);
 
@@ -28,7 +28,7 @@ public sealed class AssetHandle(string name)
             Assets.Add(tType, asset);
         }
         else
-            throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!");
+            return throwError ? throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!") : null;
 
         asset.name = Name;
         return asset.DontDestroy() as T;

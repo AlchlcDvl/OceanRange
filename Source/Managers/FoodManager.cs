@@ -10,7 +10,7 @@ public static class FoodManager
     private static bool StmExists;
 
     private static readonly List<CustomChimkenData> Chimkens = [];
-    // private static readonly List<CustomPlantData> Plants = [];
+    private static readonly List<CustomPlantData> Plants = [];
 
     public static Dictionary<FoodGroup, IdentifiableId[]> FoodGroupIds;
 
@@ -24,13 +24,13 @@ public static class FoodManager
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
 
         Chimkens.AddRange(AssetManager.GetJson<CustomChimkenData[]>("chimkenpedia"));
-        // Plants.AddRange(AssetManager.GetJson<CustomPlantData[]>("plantpedia"));
+        Plants.AddRange(AssetManager.GetJson<CustomPlantData[]>("plantpedia"));
 
         Foods.AddRange(Chimkens);
-        // FoodsMap.AddRange(Plants);
+        Foods.AddRange(Plants);
 
         AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
-        // AssetManager.UnloadAsset<JsonAsset>("plantpedia");
+        AssetManager.UnloadAsset<JsonAsset>("plantpedia");
 
         Chimkens.ForEach(BasePreLoadChimken);
         // Plants.ForEach(BasePreloadPlant);
@@ -83,7 +83,15 @@ public static class FoodManager
     public static void LoadFoods()
     {
         Chimkens.ForEach(BaseCreateChimken);
-        // Plants.ForEach(BaseCreatePlant);
+        Plants.ForEach(BaseCreatePlant);
+
+        // var material = IdentifiableId.CARROT_VEGGIE.GetPrefab().FindChildWithPartialName("model").GetComponent<MeshRenderer>().material;
+        // var path = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SRML");
+        // material.GetTexture("_RampGreen").Dump(Path.Combine(path, "RampGreen.png"));
+        // material.GetTexture("_RampBlue").Dump(Path.Combine(path, "RampBlue.png"));
+        // material.GetTexture("_RampBlack").Dump(Path.Combine(path, "RampBlack.png"));
+        // material.GetTexture("_RampRed").Dump(Path.Combine(path, "RampRed.png"));
+        // material.GetTexture("_MainTex").Dump(Path.Combine(path, "MainTex.png"));
     }
 
     private const string CommonHenRanchPedia = "%type% hens in close proximity to roostros will periodically lay eggs that produce %type% chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.";
@@ -147,7 +155,7 @@ public static class FoodManager
         var prefab = baseId.GetPrefab().CreatePrefab();
         prefab.name = $"bird{type}{name}";
         var component = prefab.transform.Find($"{modelName}/mesh_body1").GetComponent<SkinnedMeshRenderer>();
-        var material = component.sharedMaterial = component.sharedMaterial.Clone();
+        var material = component.material = component.sharedMaterial = component.sharedMaterial.Clone();
         material.SetTexture(RampRed, red);
         material.SetTexture(RampGreen, green);
         material.SetTexture(RampBlue, blue);
@@ -167,19 +175,69 @@ public static class FoodManager
         AmmoRegistry.RegisterSiloAmmo(siloStorage.Contains, id);
     }
 
-    // private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
+    private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
 
-    // private static void BaseCreatePlant(CustomPlantData plantData)
-    // {
-    //     RegisterFood(prefab, AssetManager.GetSprite(plantData.Name.ToLower()), plantData.AmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [SiloStorage.StorageType.NON_SLIMES,
-    //         SiloStorage.StorageType.FOOD]);
-    //     SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
-    //         CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
+    private static void BaseCreatePlant(CustomPlantData plantData)
+    {
+        var prefab = (plantData.Group == FoodGroup.VEGGIES ? IdentifiableId.CARROT_VEGGIE : IdentifiableId.POGO_FRUIT).GetPrefab().CreatePrefab();
+        prefab.name = plantData.Type.ToLower() + plantData.Name;;
+        prefab.GetComponent<Identifiable>().id = plantData.MainId;
+        prefab.GetComponent<Vacuumable>().size = 0;
 
-    //     if (!StmExists)
-    //         return;
+        var meshModel = prefab.FindChildWithPartialName("model_");
+        var lower = plantData.Name.ToLower();
+        meshModel.GetComponent<MeshFilter>().sharedMesh = AssetManager.GetMesh(lower);
 
-    //     PlortRegistry.AddEconomyEntry(plantData.MainId, plantData.BasePrice, plantData.Saturation);
-    //     PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress ?? []);
-    // }
+        var meshRend = meshModel.GetComponent<MeshRenderer>();
+        var material = meshRend.material = meshRend.material.Clone();
+
+        var ramp = lower + "ramp";
+        material.SetTexture(RampRed, AssetManager.GetTexture2D($"{ramp}red"));
+        material.SetTexture(RampGreen, AssetManager.GetTexture2D($"{ramp}green"));
+        material.SetTexture(RampBlue, AssetManager.GetTexture2D($"{ramp}blue"));
+        material.SetTexture(RampBlack, AssetManager.GetTexture2D($"{ramp}black"));
+
+        RegisterFood(prefab, AssetManager.GetSprite(lower), plantData.AmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.FOOD]);
+        SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
+            CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
+
+        if (!StmExists)
+            return;
+
+        PlortRegistry.AddEconomyEntry(plantData.MainId, plantData.BasePrice, plantData.Saturation);
+        PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress ?? []);
+    }
+
+    private static GameObject CropVeggieFarmSetup(SpawnResource.Id baseVeggieFarm, string patchName, SpawnResource.Id spawnResource, GameObject mainVeggie, GameObject bonusVeggie, int maxSpawn, int minSpawn, int minTime, int maxTime, float bonusChance, int minLuckVeggies, IdentifiableId sproutId, IdentifiableId veggieId)
+    {
+        var prefab = baseVeggieFarm.GetResourcePrefab().CreatePrefab();
+        prefab.name = patchName;
+        var component = prefab.GetComponent<SpawnResource>();
+        component.id = spawnResource;
+        component.ObjectsToSpawn = [mainVeggie];
+        component.BonusObjectsToSpawn = [bonusVeggie];
+        component.MaxObjectsSpawned = maxSpawn;
+        component.MinObjectsSpawned = minSpawn;
+        component.MinNutrientObjectsSpawned = component.MaxObjectsSpawned;
+        component.MinSpawnIntervalGameHours = minTime;
+        component.MaxSpawnIntervalGameHours = maxTime;
+        component.BonusChance = bonusChance;
+        component.minBonusSelections = minLuckVeggies;
+
+        foreach (var gameObject2 in prefab.FindChildren("Sprout"))
+        {
+            var gameObject3 = sproutId.GetPrefab().FindChildWithPartialName("model_");
+            gameObject2.GetComponent<MeshFilter>().sharedMesh = gameObject3.GetComponent<MeshFilter>().sharedMesh;
+            gameObject2.GetComponent<MeshRenderer>().sharedMaterial = gameObject3.GetComponent<MeshRenderer>().sharedMaterial;
+        }
+
+        foreach (var joint in component.SpawnJoints)
+        {
+            var gameObject4 = veggieId.GetPrefab().FindChildWithPartialName("model_");
+            joint.gameObject.GetComponent<MeshFilter>().sharedMesh = gameObject4.GetComponent<MeshFilter>().sharedMesh;
+            joint.gameObject.GetComponent<MeshRenderer>().sharedMaterial = gameObject4.GetComponent<MeshRenderer>().sharedMaterial;
+        }
+
+        return prefab;
+    }
 }

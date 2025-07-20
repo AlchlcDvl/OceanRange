@@ -68,12 +68,12 @@ public static class AssetManager
 
     public static Mesh GetMesh(string path) => Get<Mesh>(path);
 
-    private static T Get<T>(string name) where T : UObject
+    private static T Get<T>(string name, bool throwError = true) where T : UObject
     {
         if (!Assets.TryGetValue(name, out var handle))
-            throw new FileNotFoundException($"{name}, {typeof(T).Name}");
+            return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : null;
 
-        return handle.Load<T>();
+        return handle.Load<T>(throwError);
     }
 
     public static bool AssetExists(string path) => Assets.ContainsKey(path);
@@ -104,11 +104,11 @@ public static class AssetManager
         return texture;
     }
 
-    private static bool GenerateMipChains(string name) => name is "minepattern" or "lanternpattern" or "sleepingeyes" || name.Contains("ramp");
+    private static bool GenerateMipChains(string name) => name == "sleepingeyes" || name.Contains("ramp") || name.Contains("pattern");
 
-    private static TextureFormat GetFormat(string name) => name.Contains("ramp") ? TextureFormat.DXT1 : TextureFormat.DXT5;
+    private static TextureFormat GetFormat(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureFormat.DXT1 : TextureFormat.DXT5;
 
-    private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
+    private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
 
     private static Sprite LoadSprite(string path) => LoadSprite(LoadTexture(path)?.DontDestroy());
 
@@ -119,7 +119,7 @@ public static class AssetManager
         return sprite;
     }
 
-    private static SpriteMeshType GetMeshType(string name) => name is "minepattern" or "sleepingeyes" or "lanternpattern" || name.Contains("ramp") ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
+    private static SpriteMeshType GetMeshType(string name) => name is "sleepingeyes" || name.Contains("pattern") || name.Contains("ramp") ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
 
     private static byte[] ReadFully(this Stream input)
     {
@@ -159,7 +159,11 @@ public static class AssetManager
 
     // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use but keep commented for releases
 
-    // public static void Dump(this Texture texture, string path) => File.WriteAllBytes(path, texture.Decompress().EncodeToPNG());
+    // public static void Dump(this Texture texture, string path)
+    // {
+    //     if (texture)
+    //         File.WriteAllBytes(path, texture.Decompress().EncodeToPNG());
+    // }
 
     // public static void Dump(this Sprite sprite, string path) => sprite.texture.Dump(path);
 
