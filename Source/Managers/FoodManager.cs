@@ -199,7 +199,7 @@ public static class FoodManager
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
         var resource = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH : SpawnResource.Id.POGO_TREE, plantData.Name + plantData.Resource, plantData.ResourceId, prefab, default, false);
-        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH_DLX : SpawnResource.Id.POGO_TREE_DLX, plantData.Name + plantData.Resource + "Dlx", plantData.ResourceId, prefab, default, true);
+        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH_DLX : SpawnResource.Id.POGO_TREE_DLX, plantData.Name + plantData.Resource + "Dlx", plantData.DlxResourceId, prefab, default, true);
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
         PlantSlotRegistry.RegisterPlantSlot(new GardenCatcher.PlantSlot

@@ -58,7 +58,7 @@
     },
     {
         "name": "Mine",
-        "favFood": "CARROT_VEGGIE",
+        "favFood": "BLOWTATO_VEGGIE",
         "favToy": "BOMB_BALL_TOY",
         "diet": "VEGGIES",
         "canLargofy": false,
@@ -92,7 +92,7 @@
         "zones": ["QUARRY", "RUINS"],
         "intro": "The touch-me-not of slimes!",
         "pediaDiet": "Veggie",
-        "fav": "Carrot (for now, Blowtato later)",
+        "fav": "Blowtato",
         "slimeology": "The Mine Slime, a distant and more... prickly cousin to the Boom Slime, has a unique take on volatility. Unlike their explosive kin, a Mine Slime's detonations are triggered only by direct contact with another slime or an unwary rancher. To deter accidental bumps, their bodies are adorned with sharp, crystalline spikes; a clear warning sign. Despite their fiery tendencies, these slimes prefer a milder diet of vegetables, with the Blowtato being their ultimate delight. This root's highly volatile compounds provide the perfect internal spark for their constant energetic needs and powerful bursts. If a Mine Slime goes too long without popping, however, their internal pressure builds to uncomfortable levels, driving them to seek relief by finding water, or joining in an explosive embrace with fellow Boom or Mine Slimes.",
         "risks": "Approach Mine Slimes with caution, for their spikes aren't just for show! Any direct contact will result in a localized eruption. While other slimes will be boomed clear of the danger zone, only fellow Mine Slimes and their Boom cousins possess a natural immunity to these contact explosions. This peculiar trait makes co-habitation an active (and often loud) affair, as they'll seek out their explosive kin for regular, relieving bursts. Keeping them together helps manage their volatile nature, preventing an otherwise grumpy slime.",
         "plortonomics": "Mine Plorts are curious, resilient gems, forged into a pearl-like shape under the immense internal pressures of the Mine Slime. These unique plorts retain a fragment of their progenitor's explosive nature, though a considerably firmer thwack is required to unleash their contained energy. Their peculiar, controlled detonations make them highly prized in industrial applications, particularly when refined into a fine powder. From powering small, controlled bursts in excavation to adding a spectacular sparkle to interstellar fireworks displays, Mine Plorts certainly make an impact on the galactic exchange."

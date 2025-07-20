@@ -159,7 +159,6 @@ public static class SlimeManager
         TranslationPatcher.AddPediaTranslation("t." + definition.name, name);
         TranslationPatcher.AddActorTranslation("l." + slimeData.GordoId.ToString().ToLower(), name);
         LookupRegistry.RegisterGordo(prefab);
-        LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);
     }
 
