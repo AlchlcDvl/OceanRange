@@ -46,10 +46,10 @@ public static class Ids
     public static readonly IdentifiableId RADIANT_CHICK;
     public static readonly PediaId RADIANT_CHICK_ENTRY;
 
-    // public static readonly IdentifiableId BLOWTATO_VEGGIE;
-    // public static readonly PediaId BLOWTATO_VEGGIE_ENTRY;
-    // public static readonly SpawnResource.Id BLOWTATO_PATCH;
-    // public static readonly SpawnResource.Id BLOWTATO_PATCH_DLX;
+    public static readonly IdentifiableId BLOWTATO_VEGGIE;
+    public static readonly PediaId BLOWTATO_VEGGIE_ENTRY;
+    public static readonly SpawnResource.Id BLOWTATO_PATCH;
+    public static readonly SpawnResource.Id BLOWTATO_PATCH_DLX;
 
     // public static readonly RancherChatMetadata.Entry.RancherName LISA;
 

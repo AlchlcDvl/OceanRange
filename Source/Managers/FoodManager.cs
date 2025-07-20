@@ -84,14 +84,6 @@ public static class FoodManager
     {
         Chimkens.ForEach(BaseCreateChimken);
         Plants.ForEach(BaseCreatePlant);
-
-        // var material = IdentifiableId.CARROT_VEGGIE.GetPrefab().FindChildWithPartialName("model").GetComponent<MeshRenderer>().material;
-        // var path = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SRML");
-        // material.GetTexture("_RampGreen").Dump(Path.Combine(path, "RampGreen.png"));
-        // material.GetTexture("_RampBlue").Dump(Path.Combine(path, "RampBlue.png"));
-        // material.GetTexture("_RampBlack").Dump(Path.Combine(path, "RampBlack.png"));
-        // material.GetTexture("_RampRed").Dump(Path.Combine(path, "RampRed.png"));
-        // material.GetTexture("_MainTex").Dump(Path.Combine(path, "MainTex.png"));
     }
 
     private const string CommonHenRanchPedia = "%type% hens in close proximity to roostros will periodically lay eggs that produce %type% chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.";
@@ -147,7 +139,7 @@ public static class FoodManager
             return;
 
         PlortRegistry.AddEconomyEntry(chimkenData.MainId, chimkenData.BasePrice, chimkenData.Saturation);
-        PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress ?? []);
+        PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress);
     }
 
     private static GameObject CreateChimken(string name, Texture red, Texture green, Texture blue, Texture black, IdentifiableId id, IdentifiableId baseId, string modelName, string type)
@@ -179,8 +171,10 @@ public static class FoodManager
 
     private static void BaseCreatePlant(CustomPlantData plantData)
     {
-        var prefab = (plantData.Group == FoodGroup.VEGGIES ? IdentifiableId.CARROT_VEGGIE : IdentifiableId.POGO_FRUIT).GetPrefab().CreatePrefab();
-        prefab.name = plantData.Type.ToLower() + plantData.Name;;
+        var isVeggie = plantData.Group == FoodGroup.VEGGIES;
+
+        var prefab = (isVeggie ? IdentifiableId.CARROT_VEGGIE : IdentifiableId.POGO_FRUIT).GetPrefab().CreatePrefab();
+        prefab.name = plantData.Type.ToLower() + plantData.Name;
         prefab.GetComponent<Identifiable>().id = plantData.MainId;
         prefab.GetComponent<Vacuumable>().size = 0;
 
@@ -197,47 +191,64 @@ public static class FoodManager
         material.SetTexture(RampBlue, AssetManager.GetTexture2D($"{ramp}blue"));
         material.SetTexture(RampBlack, AssetManager.GetTexture2D($"{ramp}black"));
 
+        var material2 = prefab.GetComponent<ResourceCycle>().rottenMat = material.Clone();
+        material2.SetColor("_Color", "#333333".HexToColor());
+
         RegisterFood(prefab, AssetManager.GetSprite(lower), plantData.AmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.FOOD]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
+
+        var resource = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH : SpawnResource.Id.POGO_TREE, plantData.Name + plantData.Resource, plantData.ResourceId, prefab, default, false);
+        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH_DLX : SpawnResource.Id.POGO_TREE_DLX, plantData.Name + plantData.Resource + "Dlx", plantData.ResourceId, prefab, default, true);
+        LookupRegistry.RegisterSpawnResource(resource);
+        LookupRegistry.RegisterSpawnResource(resourceDlx);
+        PlantSlotRegistry.RegisterPlantSlot(new GardenCatcher.PlantSlot
+        {
+            id = plantData.MainId,
+            deluxePlantedPrefab = resourceDlx,
+            plantedPrefab = resource
+        });
 
         if (!StmExists)
             return;
 
         PlortRegistry.AddEconomyEntry(plantData.MainId, plantData.BasePrice, plantData.Saturation);
-        PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress ?? []);
+        PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress);
     }
 
-    private static GameObject CropVeggieFarmSetup(SpawnResource.Id baseVeggieFarm, string patchName, SpawnResource.Id spawnResource, GameObject mainVeggie, GameObject bonusVeggie, int maxSpawn, int minSpawn, int minTime, int maxTime, float bonusChance, int minLuckVeggies, IdentifiableId sproutId, IdentifiableId veggieId)
+    private static GameObject CreateFarmSetup(SpawnResource.Id baseFarm, string patchName, SpawnResource.Id spawnResource, GameObject plant, Vector3 transformPosition, bool isDlx)
     {
-        var prefab = baseVeggieFarm.GetResourcePrefab().CreatePrefab();
+        var basePrefab = baseFarm.GetResourcePrefab();
+        var prefab = basePrefab.CreatePrefab();
+        prefab.transform.position -= transformPosition;
         prefab.name = patchName;
         var component = prefab.GetComponent<SpawnResource>();
+        var prefabComponent = basePrefab.GetComponent<SpawnResource>();
         component.id = spawnResource;
-        component.ObjectsToSpawn = [mainVeggie];
-        component.BonusObjectsToSpawn = [bonusVeggie];
-        component.MaxObjectsSpawned = maxSpawn;
-        component.MinObjectsSpawned = minSpawn;
-        component.MinNutrientObjectsSpawned = component.MaxObjectsSpawned;
-        component.MinSpawnIntervalGameHours = minTime;
-        component.MaxSpawnIntervalGameHours = maxTime;
-        component.BonusChance = bonusChance;
-        component.minBonusSelections = minLuckVeggies;
-
-        foreach (var gameObject2 in prefab.FindChildren("Sprout"))
-        {
-            var gameObject3 = sproutId.GetPrefab().FindChildWithPartialName("model_");
-            gameObject2.GetComponent<MeshFilter>().sharedMesh = gameObject3.GetComponent<MeshFilter>().sharedMesh;
-            gameObject2.GetComponent<MeshRenderer>().sharedMaterial = gameObject3.GetComponent<MeshRenderer>().sharedMaterial;
-        }
-
-        foreach (var joint in component.SpawnJoints)
-        {
-            var gameObject4 = veggieId.GetPrefab().FindChildWithPartialName("model_");
-            joint.gameObject.GetComponent<MeshFilter>().sharedMesh = gameObject4.GetComponent<MeshFilter>().sharedMesh;
-            joint.gameObject.GetComponent<MeshRenderer>().sharedMaterial = gameObject4.GetComponent<MeshRenderer>().sharedMaterial;
-        }
-
+        component.ObjectsToSpawn = [plant];
+        component.BonusObjectsToSpawn = [plant];
+        component.MaxObjectsSpawned = prefabComponent.MaxObjectsSpawned * (isDlx ? 1.5f : 1);
+        component.MinObjectsSpawned = prefabComponent.MinObjectsSpawned * (isDlx ? 1.5f : 1);
+        component.MinNutrientObjectsSpawned = prefabComponent.MinNutrientObjectsSpawned;
+        component.MinSpawnIntervalGameHours = prefabComponent.MinSpawnIntervalGameHours;
+        component.MaxSpawnIntervalGameHours = prefabComponent.MaxSpawnIntervalGameHours;
+        component.BonusChance = prefabComponent.BonusChance * (isDlx ? 2 : 1);
+        component.minBonusSelections = prefabComponent.minBonusSelections * (isDlx ? 2 : 1);
+        TranslateModel(prefab.FindChildren("Sprout"), plant);
+        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), plant);
         return prefab;
+    }
+
+    private static void TranslateModel(IEnumerable<GameObject> gameObjects, GameObject copyFrom)
+    {
+        var partial = copyFrom.FindChildWithPartialName("model_");
+        var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
+        var material = partial.GetComponent<MeshRenderer>().sharedMaterial;
+
+        foreach (var gameObj in gameObjects)
+        {
+            gameObj.GetComponent<MeshFilter>().sharedMesh = mesh;
+            gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
+        }
     }
 }

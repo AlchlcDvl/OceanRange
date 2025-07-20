@@ -185,6 +185,8 @@ public sealed class CustomSlimeData : JsonData
         BottomPlortColor ??= BottomSlimeColor;
 
         PlortAmmoColor ??= SlimeAmmoColor;
+
+        Progress ??= [];
     }
 
     // public void GenerateLargos(string[] modded) // WIP

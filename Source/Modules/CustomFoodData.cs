@@ -56,6 +56,7 @@ public sealed class CustomChimkenData : CustomFoodData
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_HEN_ENTRY");
         ChickEntry = Helpers.ParseEnum<PediaId>(upper + "_CHICK_ENTRY");
         Group = FoodGroup.MEAT;
+        Progress ??= [];
     }
 }
 
@@ -88,5 +89,7 @@ public sealed class CustomPlantData : CustomFoodData
         var resource = upper + "_" + Resource.ToUpper();
         ResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource);
         DlxResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource + "_DLX");
+
+        Progress ??= [];
     }
 }

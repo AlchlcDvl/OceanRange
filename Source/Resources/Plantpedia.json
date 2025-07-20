@@ -8,6 +8,9 @@
         "ammoColor": "#AB9E7E",
         "garden": "crop",
         "type": "Veggie",
-        "resource": "PATCH"
+        "resource": "Patch",
+        "favouredBy": ["MINE_SLIME"],
+        "basePrice": 4,
+        "saturation": 10
     }
 ]

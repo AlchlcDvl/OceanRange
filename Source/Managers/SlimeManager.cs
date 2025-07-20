@@ -192,7 +192,10 @@ public static class SlimeManager
         var plortLower = slimeData.PlortType.ToLower();
 
         if (plortLower != "plort") // Plort (crystal) is the original shape of a plort, so skip if the plort type is that
-            prefab.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(plortLower);
+        {
+            var filter = prefab.GetComponent<MeshFilter>();
+            filter.mesh = filter.sharedMesh = AssetManager.GetMesh(plortLower);
+        }
 
         // Add any slime specific plort details (which is almost all slimes)
         var plortDetails = $"{nameLower}_{plortLower}";
@@ -200,7 +203,8 @@ public static class SlimeManager
         if (AssetManager.AssetExists(plortDetails))
         {
             var rocks = RocksPrefab.Instantiate(prefab.transform);
-            rocks.GetComponent<MeshFilter>().mesh = AssetManager.GetMesh(plortDetails);
+            var filter = rocks.GetComponent<MeshFilter>();
+            filter.mesh = filter.sharedMesh = AssetManager.GetMesh(plortDetails);
             rocks.GetComponent<MeshRenderer>().material = material.Clone();
             rocks.name = plortDetails;
         }
@@ -214,7 +218,7 @@ public static class SlimeManager
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
         LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.HexToColor(), AssetManager.GetSprite($"{nameLower}plort"));
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
-        PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress ?? []);
+        PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
         var silo = new[] { SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.PLORT };
 
