@@ -2,6 +2,7 @@
 using SRML;
 using SRML.SR.SaveSystem;
 using SRML.SR.SaveSystem.Data;
+using TheOceanRange.Patches;
 using static SRML.Console.Console;
 
 namespace TheOceanRange;
@@ -35,6 +36,8 @@ internal sealed class Main : ModEntryPoint
 
         SystemContext.IsModded = true;
 
+        RegisterCommand(new EchoCommand());
+
         HarmonyInstance.PatchAll();
     }
 
@@ -66,10 +69,14 @@ internal sealed class Main : ModEntryPoint
             mail.Sent = piece.GetValue<bool>("mailSent");
             mail.Read = piece.GetValue<bool>("mailRead");
         }
+
+        FixAndProperlyShowMailPatch.IsLoaded = true;
     }
 
     public static void WriteData(CompoundDataPiece piece)
     {
+        FixAndProperlyShowMailPatch.IsLoaded = false;
+
         piece.SetValue("mailCount", MailManager.Mail.Count);
 
         foreach (var mail in MailManager.Mail)

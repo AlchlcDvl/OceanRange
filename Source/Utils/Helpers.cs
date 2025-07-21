@@ -194,4 +194,6 @@ public static class Helpers
     // }
 
     // public static Texture2D CreateRamp(string name, string hexA, string hexB) => CreateRamp(name, hexA.HexToColor(), hexB.HexToColor());
+
+    public static string ToHexRGBA(this Color32 color) => $"{color.r:X2},{color.g:X2},{color.b:X2},{color.a:X2}";
 }

@@ -12,12 +12,11 @@ public static class FoodManager
     private static readonly List<CustomChimkenData> Chimkens = [];
     private static readonly List<CustomPlantData> Plants = [];
 
-    public static Dictionary<FoodGroup, IdentifiableId[]> FoodGroupIds;
-
     private static readonly int RampRed = Shader.PropertyToID("_RampRed");
     private static readonly int RampGreen = Shader.PropertyToID("_RampGreen");
     private static readonly int RampBlue = Shader.PropertyToID("_RampBlue");
     private static readonly int RampBlack = Shader.PropertyToID("_RampBlack");
+    private static readonly int Color1 = Shader.PropertyToID("_Color");
 
     public static void PreLoadFoodData()
     {
@@ -33,11 +32,9 @@ public static class FoodManager
         AssetManager.UnloadAsset<JsonAsset>("plantpedia");
 
         Chimkens.ForEach(BasePreLoadChimken);
-        // Plants.ForEach(BasePreloadPlant);
+        Plants.ForEach(BasePreloadPlant);
 
-        FoodGroupIds = AccessTools.Field(typeof(SlimeEat), "foodGroupIds").GetValue(null) as Dictionary<FoodGroup, IdentifiableId[]>;
-
-        new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => FoodGroupIds[x] = [.. FoodGroupIds[x], .. Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
+        new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => SlimeEat.foodGroupIds[x] = [.. SlimeEat.foodGroupIds[x], .. Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
     }
 
     private static void BasePreLoadChimken(CustomChimkenData chimkenData)
@@ -76,9 +73,9 @@ public static class FoodManager
         };
     }
 
-    // private static void BasePreloadPlant(CustomPlantData plantData)
-    // {
-    // }
+    private static void BasePreloadPlant(CustomPlantData plantData)
+    {
+    }
 
     public static void LoadFoods()
     {
@@ -99,7 +96,7 @@ public static class FoodManager
         var green = AssetManager.GetTexture2D($"{ramp}green");
         var blue = AssetManager.GetTexture2D($"{ramp}blue");
         var black = AssetManager.GetTexture2D($"{ramp}black");
-        var ammo = chimkenData.AmmoColor.HexToColor();
+        var ammo = chimkenData.MainAmmoColor.HexToColor();
 
         // Find and create the prefab for chicks and set values
         var chickPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
@@ -192,9 +189,9 @@ public static class FoodManager
         material.SetTexture(RampBlack, AssetManager.GetTexture2D($"{ramp}black"));
 
         var material2 = prefab.GetComponent<ResourceCycle>().rottenMat = material.Clone();
-        material2.SetColor("_Color", "#333333".HexToColor());
+        material2.SetColor(Color1, "#333333".HexToColor());
 
-        RegisterFood(prefab, AssetManager.GetSprite(lower), plantData.AmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.FOOD]);
+        RegisterFood(prefab, AssetManager.GetSprite(lower), plantData.MainAmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.FOOD]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
@@ -202,7 +199,7 @@ public static class FoodManager
         var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH_DLX : SpawnResource.Id.POGO_TREE_DLX, plantData.Name + plantData.Resource + "Dlx", plantData.DlxResourceId, prefab, default, true);
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
-        PlantSlotRegistry.RegisterPlantSlot(new GardenCatcher.PlantSlot
+        PlantSlotRegistry.RegisterPlantSlot(new()
         {
             id = plantData.MainId,
             deluxePlantedPrefab = resourceDlx,
@@ -234,17 +231,16 @@ public static class FoodManager
         component.MaxSpawnIntervalGameHours = prefabComponent.MaxSpawnIntervalGameHours;
         component.BonusChance = prefabComponent.BonusChance * (isDlx ? 2 : 1);
         component.minBonusSelections = prefabComponent.minBonusSelections * (isDlx ? 2 : 1);
-        TranslateModel(prefab.FindChildren("Sprout"), plant);
-        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), plant);
+        var partial = plant.FindChildWithPartialName("model_");
+        var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
+        var material = partial.GetComponent<MeshRenderer>().sharedMaterial;
+        TranslateModel(prefab.FindChildren("Sprout"), mesh, material);
+        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), mesh, material);
         return prefab;
     }
 
-    private static void TranslateModel(IEnumerable<GameObject> gameObjects, GameObject copyFrom)
+    private static void TranslateModel(IEnumerable<GameObject> gameObjects, Mesh mesh, Material material)
     {
-        var partial = copyFrom.FindChildWithPartialName("model_");
-        var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
-        var material = partial.GetComponent<MeshRenderer>().sharedMaterial;
-
         foreach (var gameObj in gameObjects)
         {
             gameObj.GetComponent<MeshFilter>().sharedMesh = mesh;

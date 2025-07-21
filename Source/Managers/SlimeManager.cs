@@ -41,8 +41,8 @@ public static class SlimeManager
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 
-        FoodManager.FoodGroupIds[FoodGroup.NONTARRGOLD_SLIMES] = [.. FoodManager.FoodGroupIds[FoodGroup.NONTARRGOLD_SLIMES], .. Slimes.Select(x => x.MainId)];
-        FoodManager.FoodGroupIds[FoodGroup.PLORTS] = [.. FoodManager.FoodGroupIds[FoodGroup.PLORTS], .. Slimes.Select(x => x.PlortId)];
+        SlimeEat.foodGroupIds[FoodGroup.NONTARRGOLD_SLIMES] = [.. SlimeEat.foodGroupIds[FoodGroup.NONTARRGOLD_SLIMES], .. Slimes.Select(x => x.MainId)];
+        SlimeEat.foodGroupIds[FoodGroup.PLORTS] = [.. SlimeEat.foodGroupIds[FoodGroup.PLORTS], .. Slimes.Select(x => x.PlortId)];
 
         // var modded = Slimes.Select(x => x.Name.ToUpper()).ToArray();
         // Slimes.ForEach(x => x.GenerateLargos(modded));
@@ -325,7 +325,7 @@ public static class SlimeManager
             Top = slimeData.TopPaletteColor.HexToColor(),
             Middle = slimeData.MiddlePaletteColor.HexToColor(),
             Bottom = slimeData.BottomPaletteColor.HexToColor(),
-            Ammo = slimeData.SlimeAmmoColor.HexToColor()
+            Ammo = slimeData.MainAmmoColor.HexToColor()
         };
 
         appearance.Icon = AssetManager.GetSprite($"{lower}slime");
@@ -480,37 +480,7 @@ public static class SlimeManager
 
             for (var n = 0; n < vertices2.Length; n++)
             {
-                var diff = vertices2[n] - zero;
-                var num2 = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
-                var weight = new BoneWeight();
-
-                if (num2 == 0f)
-                    weight.weight0 = 1f;
-                else
-                {
-                    weight.weight0 = 1f - num2;
-
-                    weight.boneIndex0 = 0;
-                    weight.boneIndex1 = diff.x >= 0f ? 1 : 2;
-                    weight.boneIndex2 = diff.y >= 0f ? 3 : 4;
-                    weight.boneIndex3 = diff.z >= 0f ? 5 : 6;
-
-                    var value = diff.Multiply(diff).Abs();
-
-                    weight.weight1 = value.x * num2;
-                    weight.weight2 = value.y * num2;
-                    weight.weight3 = value.z * num2;
-
-                    var num3 = value.ToArray().Sum();
-
-                    if (num3 > 0f)
-                    {
-                        weight.weight1 /= num3;
-                        weight.weight2 /= num3;
-                        weight.weight3 /= num3;
-                    }
-                }
-
+                HandleBoneWeight(vertices2[n] - zero, num, jiggleAmount, out var weight);
                 weights[n] = weight;
             }
 
@@ -534,6 +504,38 @@ public static class SlimeManager
 
             materialHandler?.Invoke(i, meshRend);
         }
+    }
+
+    private static void HandleBoneWeight(Vector3 diff, float num, float jiggleAmount, out BoneWeight weight)
+    {
+        var num2 = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
+        weight = new BoneWeight
+        {
+            weight0 = 1f - num2,
+            boneIndex0 = 0
+        };
+
+        if (num2 <= 0f)
+            return;
+
+        weight.boneIndex1 = diff.x >= 0f ? 1 : 2;
+        weight.boneIndex2 = diff.y >= 0f ? 3 : 4;
+        weight.boneIndex3 = diff.z >= 0f ? 5 : 6;
+
+        var value = diff.Multiply(diff).Abs();
+
+        weight.weight1 = value.x * num2;
+        weight.weight2 = value.y * num2;
+        weight.weight3 = value.z * num2;
+
+        var num3 = value.ToArray().Sum();
+
+        if (num3 == 0f)
+            return;
+
+        weight.weight1 /= num3;
+        weight.weight2 /= num3;
+        weight.weight3 /= num3;
     }
 
     public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)

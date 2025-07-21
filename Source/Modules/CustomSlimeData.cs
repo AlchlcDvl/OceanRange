@@ -84,9 +84,6 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("bottomPaletteColor")]
     public string BottomPaletteColor;
 
-    [JsonProperty("slimeAmmoColor"), JsonRequired]
-    public string SlimeAmmoColor;
-
     [JsonProperty("topPlortColor")]
     public string TopPlortColor;
 
@@ -184,7 +181,7 @@ public sealed class CustomSlimeData : JsonData
         MiddlePlortColor ??= MiddleSlimeColor;
         BottomPlortColor ??= BottomSlimeColor;
 
-        PlortAmmoColor ??= SlimeAmmoColor;
+        PlortAmmoColor ??= MainAmmoColor;
 
         Progress ??= [];
     }

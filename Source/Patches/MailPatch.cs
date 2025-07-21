@@ -3,8 +3,13 @@ namespace TheOceanRange.Patches;
 [HarmonyPatch(typeof(TimeDirector), nameof(TimeDirector.LateUpdate))]
 public static class FixAndProperlyShowMailPatch
 {
+    public static bool IsLoaded;
+
     public static void Postfix(TimeDirector __instance)
     {
+        if (!IsLoaded)
+            return;
+
         var time = __instance.WorldTime();
 
         foreach (var mail in MailManager.Mail)

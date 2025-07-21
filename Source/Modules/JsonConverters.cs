@@ -2,25 +2,30 @@ using System.Globalization;
 
 namespace TheOceanRange.Modules;
 
-public sealed class Vector3Converter : JsonConverter<Vector3>
+public abstract class OceanRangeJsonConverter<T> : JsonConverter<T>
 {
-    private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
+    protected static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
+}
 
+public sealed class Vector3Converter : OceanRangeJsonConverter<Vector3>
+{
     public override Vector3 ReadJson(JsonReader reader, Type _, Vector3 __, bool ___, JsonSerializer ____)
     {
         if (reader.TokenType == JsonToken.Null)
             return default;
 
-        if (reader.TokenType != JsonToken.String)
-            throw new JsonSerializationException($"Cannot convert value '{reader.Value}' to Vector3. Expected format 'x,y,z' or 'x,y'.");
+        var valString = reader.Value?.ToString() ?? "null";
 
-        var components = reader.Value.ToString().TrueSplit(',', ' ');
+        if (reader.TokenType != JsonToken.String)
+            throw new JsonSerializationException($"Cannot convert value '{valString}' to Vector3. Expected string format 'x,y,z' or 'x,y'.");
+
+        var components = valString.TrueSplit(',', ' ');
 
         if (components.Length < 2)
-            throw new JsonSerializationException($"'{reader.Value}' has too less values!");
+            throw new JsonSerializationException($"'{valString}' has too less values!");
 
         if (components.Length > 3)
-            throw new JsonSerializationException($"'{reader.Value}' has too many values!");
+            throw new JsonSerializationException($"'{valString}' has too many values!");
 
         if (!float.TryParse(components[0], NumberStyles.Float, InvariantCulture, out var x))
             throw new JsonSerializationException($"Invalid float string '{components[0]}'!");
@@ -43,7 +48,7 @@ public sealed class Vector3Converter : JsonConverter<Vector3>
 }
 
 // Made because srml's enum patching is causing errors with patched enums being read by newtonsoft, will be removed if and when a fix is administered
-public abstract class EnumConverter<T> : JsonConverter<T> where T : struct, Enum
+public abstract class EnumConverter<T> : OceanRangeJsonConverter<T> where T : struct, Enum
 {
     public override void WriteJson(JsonWriter writer, T value, JsonSerializer _) => writer.WriteValue(value.ToString());
 
@@ -69,3 +74,104 @@ public sealed class FoodGroupConverter : EnumConverter<FoodGroup>;
 public sealed class ProgressTypeConverter : EnumConverter<ProgressType>;
 
 public sealed class IdentifiableIdConverter : EnumConverter<IdentifiableId>;
+
+// public sealed class ColorConverter : OceanRangeJsonConverter<Color>
+// {
+//     public override Color ReadJson(JsonReader reader, Type _, Color __, bool ___, JsonSerializer ____)
+//     {
+//         if (reader.TokenType == JsonToken.Null)
+//             return default;
+
+//         var valString = reader.Value?.ToString() ?? "null";
+
+//         if (reader.TokenType != JsonToken.String)
+//             throw new JsonSerializationException($"Cannot convert value '{valString}' to Color. Expected string format 'r,g,b', 'r,g,b,a' or hex code.");
+
+//         if (valString.Contains("#"))
+//         {
+//             if (ColorUtility.TryParseHtmlString(valString, out var color))
+//                 return color;
+//             else
+//                 throw new JsonSerializationException($"'{valString}' was not correctly formatted as a hex code!");
+//         }
+
+//         var components = valString.TrueSplit(',', ' ');
+
+//         if (components.Length < 3)
+//             throw new JsonSerializationException($"'{valString}' has too less values!");
+
+//         if (components.Length > 4)
+//             throw new JsonSerializationException($"'{valString}' has too many values!");
+
+//         if (!float.TryParse(components[0], NumberStyles.Float, InvariantCulture, out var r))
+//             throw new JsonSerializationException($"Invalid float string '{components[0]}'!");
+
+//         if (!float.TryParse(components[1], NumberStyles.Float, InvariantCulture, out var g))
+//             throw new JsonSerializationException($"Invalid float string '{components[1]}'!");
+
+//         if (!float.TryParse(components[2], NumberStyles.Float, InvariantCulture, out var b))
+//             throw new JsonSerializationException($"Invalid float string '{components[2]}'!");
+
+//         float a;
+
+//         if (components.Length == 3)
+//             a = 1f;
+//         else if (!float.TryParse(components[3], NumberStyles.Float, InvariantCulture, out a))
+//             throw new JsonSerializationException($"Invalid float string '{components[3]}'!");
+
+//         return new(r, g, b, a);
+//     }
+
+//     public override void WriteJson(JsonWriter writer, Color value, JsonSerializer _) =>
+//         writer.WriteValue($"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}");
+// }
+
+// public sealed class Color32Converter : OceanRangeJsonConverter<Color32>
+// {
+//     public override Color32 ReadJson(JsonReader reader, Type _, Color32 __, bool ___, JsonSerializer ____)
+//     {
+//         if (reader.TokenType == JsonToken.Null)
+//             return default;
+
+//         var valString = reader.Value?.ToString() ?? "null";
+
+//         if (reader.TokenType != JsonToken.String)
+//             throw new JsonSerializationException($"Cannot convert value '{valString}' to Color. Expected string format 'r,g,b', 'r,g,b,a' or hex code.");
+
+//         if (valString.Contains("#"))
+//         {
+//             if (ColorUtility.DoTryParseHtmlColor(valString, out var color))
+//                 return color;
+//             else
+//                 throw new JsonSerializationException($"'{valString}' was not correctly formatted as a hex code!");
+//         }
+
+//         var components = valString.TrueSplit(',', ' ');
+
+//         if (components.Length < 3)
+//             throw new JsonSerializationException($"'{valString}' has too less values!");
+
+//         if (components.Length > 4)
+//             throw new JsonSerializationException($"'{valString}' has too many values!");
+
+//         if (!byte.TryParse(components[0], NumberStyles.Integer, InvariantCulture, out var r))
+//             throw new JsonSerializationException($"Invalid byte string '{components[0]}'!");
+
+//         if (!byte.TryParse(components[1], NumberStyles.Integer, InvariantCulture, out var g))
+//             throw new JsonSerializationException($"Invalid byte string '{components[1]}'!");
+
+//         if (!byte.TryParse(components[2], NumberStyles.Integer, InvariantCulture, out var b))
+//             throw new JsonSerializationException($"Invalid byte string '{components[2]}'!");
+
+//         byte a;
+
+//         if (components.Length == 3)
+//             a = 255;
+//         else if (!byte.TryParse(components[3], NumberStyles.Integer, InvariantCulture, out a))
+//             throw new JsonSerializationException($"Invalid byte string '{components[3]}'!");
+
+//         return new(r, g, b, a);
+//     }
+
+//     public override void WriteJson(JsonWriter writer, Color32 value, JsonSerializer _) => writer.WriteValue(value.ToHexRGBA());
+// }

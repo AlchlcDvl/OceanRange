@@ -7,16 +7,13 @@ public abstract class CustomFoodData : JsonData
     [JsonProperty("group")]
     public FoodGroup Group;
 
-    [JsonProperty("favouriteModifier")]
-    public int FavouriteModifier;
+    // [JsonProperty("favouriteModifier")]
+    // public int FavouriteModifier;
 
-    [JsonProperty("minDrive")]
-    public float MinDrive = 1f;
+    // [JsonProperty("minDrive")]
+    // public float MinDrive = 1f;
 
     [JsonProperty("favouredBy"), JsonRequired]
-    public string[] FavouredByJson;
-
-    [JsonIgnore]
     public IdentifiableId[] FavouredBy;
 
     [JsonProperty("pediaFavouredBy"), JsonRequired]
@@ -24,9 +21,6 @@ public abstract class CustomFoodData : JsonData
 
     [JsonProperty("about"), JsonRequired]
     public string About;
-
-    [JsonProperty("ammoColor"), JsonRequired]
-    public string AmmoColor;
 }
 
 public sealed class CustomChimkenData : CustomFoodData
@@ -49,7 +43,6 @@ public sealed class CustomChimkenData : CustomFoodData
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
-        FavouredBy = [.. FavouredByJson.Select(Helpers.ParseEnum<IdentifiableId>)];
         var upper = Name.ToUpper();
         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_HEN");
         ChickId = Helpers.ParseEnum<IdentifiableId>(upper + "_CHICK");
@@ -77,10 +70,18 @@ public sealed class CustomPlantData : CustomFoodData
     [JsonIgnore]
     public SpawnResource.Id DlxResourceId;
 
+    // [JsonProperty("spawnCell"), JsonRequired]
+    // public string SpawnCell;
+
+    // [JsonProperty("spawnPosition"), JsonRequired]
+    // public Vector3[] SpawnPositions;
+
+    // [JsonProperty("spawnLocalPositions"), JsonRequired]
+    // public Vector3[] SpawnLocalPositions;
+
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
-        FavouredBy = [.. FavouredByJson.Select(Helpers.ParseEnum<IdentifiableId>)];
         var upper = Name.ToUpper();
         var typeUpper = Type.ToUpper();
         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
