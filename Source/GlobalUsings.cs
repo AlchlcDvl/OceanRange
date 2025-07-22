@@ -12,10 +12,10 @@ global using UnityEngine;
 
 global using HarmonyLib;
 
-global using TheOceanRange.Managers;
-global using TheOceanRange.Modules;
-global using TheOceanRange.Slimes;
-global using TheOceanRange.Utils;
+global using OceanRange.Managers;
+global using OceanRange.Modules;
+global using OceanRange.Slimes;
+global using OceanRange.Utils;
 
 global using MonomiPark.SlimeRancher.Regions;
 

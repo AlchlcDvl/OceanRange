@@ -1,4 +1,4 @@
-namespace TheOceanRange.Patches;
+namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(SlimeRandomMove), nameof(SlimeRandomMove.Action))]
 public static class StopMovingDuringDay

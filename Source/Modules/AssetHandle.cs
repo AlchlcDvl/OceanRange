@@ -1,4 +1,4 @@
-namespace TheOceanRange.Modules;
+namespace OceanRange.Modules;
 
 public sealed class AssetHandle(string name)
 {

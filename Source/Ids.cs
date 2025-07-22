@@ -2,7 +2,7 @@ using SRML.Utils.Enum;
 
 // ReSharper disable UnassignedReadonlyField
 
-namespace TheOceanRange;
+namespace OceanRange;
 
 [EnumHolder]
 public static class Ids

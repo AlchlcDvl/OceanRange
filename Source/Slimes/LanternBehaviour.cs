@@ -1,4 +1,4 @@
-namespace TheOceanRange.Slimes;
+namespace OceanRange.Slimes;
 
 public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener
 {

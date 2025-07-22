@@ -1,8 +1,7 @@
 // using SRML;
-using AssetsLib;
 using SRML.Utils;
 
-namespace TheOceanRange.Utils;
+namespace OceanRange.Utils;
 
 public static class Helpers
 {
@@ -130,16 +129,7 @@ public static class Helpers
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs];
     }
 
-    public static T GetObjectFromName<T>(string name) where T : UObject
-    {
-        foreach (var t in Resources.FindObjectsOfTypeAll<T>())
-        {
-            if (t.name == name)
-                return t;
-        }
-
-        return null;
-    }
+    public static T GetResource<T>(string name) where T : UObject => Array.Find(Resources.FindObjectsOfTypeAll<T>(), x => x.name == name);
 
     public static Mesh Clone(this Mesh originalMesh)
     {
@@ -195,5 +185,5 @@ public static class Helpers
 
     // public static Texture2D CreateRamp(string name, string hexA, string hexB) => CreateRamp(name, hexA.HexToColor(), hexB.HexToColor());
 
-    public static string ToHexRGBA(this Color32 color) => $"{color.r:X2},{color.g:X2},{color.b:X2},{color.a:X2}";
+    // public static string ToHexRGBA(this Color32 color) => $"{color.r:X2},{color.g:X2},{color.b:X2},{color.a:X2}";
 }

@@ -1,6 +1,6 @@
 using AssetsLib;
 
-namespace TheOceanRange.Patches;
+namespace OceanRange.Patches;
 
 // Aims to reduce a bit of the overhead (comparison, array initialisation and indexing mainly) that the original code introduces + allows the meshes to recalculate bounds after their poses have been set for maximum effectiveness
 [HarmonyPatch(typeof(MeshUtils), nameof(MeshUtils.GenerateBoneData), typeof(SlimeAppearanceApplicator), typeof(SlimeAppearanceObject), typeof(float), typeof(float), typeof(Mesh[]), typeof(SlimeAppearanceObject[]))]
@@ -77,15 +77,14 @@ public static class MeshUtilsImprovement
             {
                 var vector5 = vertices2[n] - zero;
                 var num2 = Mathf.Clamp01((vector5.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
-                var weight = new BoneWeight();
-
-                if (num2 == 0f)
-                    weight.weight0 = 1f;
-                else
+                var weight = new BoneWeight
                 {
-                    weight.weight0 = 1f - num2;
+                    weight0 = 1f - num2,
+                    boneIndex0 = 0
+                };
 
-                    weight.boneIndex0 = 0;
+                if (num2 > 0f)
+                {
                     weight.boneIndex1 = vector5.x >= 0f ? 1 : 2;
                     weight.boneIndex2 = vector5.y >= 0f ? 3 : 4;
                     weight.boneIndex3 = vector5.z >= 0f ? 5 : 6;
@@ -116,7 +115,9 @@ public static class MeshUtilsImprovement
             }
 
             item.bindposes = poses;
-            item.RecalculateBounds();
+
+            if (!item.name.EndsWith("_Clone"))
+                item.RecalculateBounds();
         }
 
         return false;

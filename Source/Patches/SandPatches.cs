@@ -1,4 +1,4 @@
-namespace TheOceanRange.Patches;
+namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(TargetingUI), nameof(TargetingUI.GetIdentifiableInfoText))]
 public static class PatchForSandSlimeDiet

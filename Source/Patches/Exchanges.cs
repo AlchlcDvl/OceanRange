@@ -1,6 +1,6 @@
 using static ExchangeDirector;
 
-namespace TheOceanRange.Patches;
+namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake))]
 public static class CreateExchanges

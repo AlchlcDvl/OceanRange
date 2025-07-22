@@ -1,4 +1,4 @@
-namespace TheOceanRange.Patches;
+namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.Produce))]
 public static class SlimeEatProduce

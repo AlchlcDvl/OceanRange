@@ -1,4 +1,4 @@
-namespace TheOceanRange.Managers;
+namespace OceanRange.Managers;
 
 public static class MailManager
 {

@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace TheOceanRange.Modules;
+namespace OceanRange.Modules;
 
 public abstract class OceanRangeJsonConverter<T> : JsonConverter<T>
 {

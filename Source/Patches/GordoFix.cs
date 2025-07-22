@@ -1,6 +1,6 @@
 using SRML.SR.Utils;
 
-namespace TheOceanRange.Patches;
+namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(GordoEat))]
 public static class GordoIdFix

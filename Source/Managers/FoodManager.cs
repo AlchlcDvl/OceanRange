@@ -1,7 +1,7 @@
 using AssetsLib;
 using SRML;
 
-namespace TheOceanRange.Managers;
+namespace OceanRange.Managers;
 
 public static class FoodManager
 {
@@ -73,9 +73,37 @@ public static class FoodManager
         };
     }
 
-    private static void BasePreloadPlant(CustomPlantData plantData)
+    private static SpawnResource VeggieSpawnPrefab;
+
+    private static void BasePreloadPlant(CustomPlantData plantData) => SRCallbacks.PreSaveGameLoad += _ =>
     {
-    }
+        var plant = plantData.MainId.GetPrefab();
+
+        if (!VeggieSpawnPrefab)
+        {
+            VeggieSpawnPrefab = Helpers.GetResource<SpawnResource>("patchCarrot03").CreatePrefab();
+            VeggieSpawnPrefab.ObjectsToSpawn = [];
+            VeggieSpawnPrefab.BonusObjectsToSpawn = [];
+        }
+
+        var name = plantData.Name + plantData.ResourceIdSuffix + "0";
+
+        foreach (var (cell, positions) in plantData.SpawnLocations)
+        {
+            var parent = Helpers.GetResource<GameObject>("cell" + cell).FindChild("Sector/Resources").transform;
+
+            for (var i = 0; i < positions.Length; i++)
+            {
+                var pos = positions[i];
+                var resource = VeggieSpawnPrefab.Instantiate(parent);
+                resource.transform.position = pos;
+                resource.name = name + i;
+                resource.ObjectsToSpawn = [plant];
+                resource.BonusObjectsToSpawn = [plant];
+                SceneContext.Instance.GameModel.RegisterResourceSpawner(pos, resource);
+            }
+        }
+    };
 
     public static void LoadFoods()
     {
@@ -195,8 +223,8 @@ public static class FoodManager
         SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
-        var resource = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH : SpawnResource.Id.POGO_TREE, plantData.Name + plantData.Resource, plantData.ResourceId, prefab, default, false);
-        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH_DLX : SpawnResource.Id.POGO_TREE_DLX, plantData.Name + plantData.Resource + "Dlx", plantData.DlxResourceId, prefab, default, true);
+        var resource = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH : SpawnResource.Id.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, default, false);
+        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH_DLX : SpawnResource.Id.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, default, true);
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
         PlantSlotRegistry.RegisterPlantSlot(new()

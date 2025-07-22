@@ -1,4 +1,4 @@
-namespace TheOceanRange.Patches;
+namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(SlimeFace), nameof(SlimeFace.GetExpressionFace))]
 public static class PatchNewExpression

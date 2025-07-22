@@ -1,7 +1,7 @@
 using System.Collections;
 using DG.Tweening;
 
-namespace TheOceanRange.Slimes;
+namespace OceanRange.Slimes;
 
 public sealed class SandBehaviour : SRBehaviour
 {

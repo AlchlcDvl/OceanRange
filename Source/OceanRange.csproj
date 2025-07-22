@@ -4,7 +4,7 @@
         <RootNamespace>TheOceanRange</RootNamespace>
         <TargetFramework>net4.8</TargetFramework>
         <Version>1.0.0</Version>
-        <DebugType>embedded</DebugType>
+        <DebugType>none</DebugType>
         <DebugSymbols>true</DebugSymbols>
         <LangVersion>preview</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -15,7 +15,7 @@
         <Description>Dive into the slime sea!</Description>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <Configurations>Debug;Release</Configurations>
-        <!-- <Optimize>true</Optimize>  -->
+        <!-- <Optimize>true</Optimize> -->
         <ImplicitUsings>true</ImplicitUsings>
     </PropertyGroup>
 
@@ -33,5 +33,5 @@
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" />
     </Target>
 
-    <Import Project="../SlimeRancher.props"/>
+    <Import Project="../SlimeRancher.props" />
 </Project>

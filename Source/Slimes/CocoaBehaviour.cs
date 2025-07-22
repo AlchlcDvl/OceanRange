@@ -1,4 +1,4 @@
-namespace TheOceanRange.Slimes;
+namespace OceanRange.Slimes;
 
 // Had to recreate DamagePlayerOnTouch because using Rock slimes as a base just no longer allowed Cocoa slimes to move
 public sealed class CocoaBehaviour : SRBehaviour, ControllerCollisionListener

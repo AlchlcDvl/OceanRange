@@ -2,18 +2,21 @@
 using SRML;
 using SRML.SR.SaveSystem;
 using SRML.SR.SaveSystem.Data;
-using TheOceanRange.Patches;
+using OceanRange.Patches;
 using static SRML.Console.Console;
 
-namespace TheOceanRange;
+namespace OceanRange;
 
 internal sealed class Main : ModEntryPoint
 {
     public static ConsoleInstance Console;
 
-    private Stopwatch Watch;
+#if DEBUG
+    public static readonly SavePositionCommand SavePos = new();
+    public static readonly SaveRegionCommand SaveRegion = new();
 
-    public Main() => Watch = new();
+    private static readonly Stopwatch Watch = new();
+#endif
 
     public override void PreLoad() => TimeDiagnostic(InternalPreLoad, "Preload");
 
@@ -36,7 +39,11 @@ internal sealed class Main : ModEntryPoint
 
         SystemContext.IsModded = true;
 
+#if DEBUG
+        RegisterCommand(SavePos);
+        RegisterCommand(SaveRegion);
         RegisterCommand(new EchoCommand());
+#endif
 
         HarmonyInstance.PatchAll();
     }
@@ -49,17 +56,23 @@ internal sealed class Main : ModEntryPoint
 
     private static void InternalPostLoad() => AssetManager.UnloadBundle();
 
-    private void TimeDiagnostic(Action action, string stage)
+    private static void TimeDiagnostic(Action action, string stage)
     {
+#if DEBUG
         Watch.Start();
+#endif
         action();
+#if DEBUG
         Watch.Stop();
         Console.Log($"{stage}ed in {Watch.ElapsedMilliseconds}ms!");
         Watch.Restart();
+#endif
     }
 
     public static void ReadData(CompoundDataPiece piece)
     {
+        FixAndProperlyShowMailPatch.IsLoaded = false;
+
         var mailCount = piece.GetValue<int>("mailCount");
 
         while (mailCount-- > 0)
@@ -85,5 +98,7 @@ internal sealed class Main : ModEntryPoint
             piece.SetValue("mailSent", mail.Sent);
             piece.SetValue("mailRead", mail.Read);
         }
+
+        FixAndProperlyShowMailPatch.IsLoaded = true;
     }
 }

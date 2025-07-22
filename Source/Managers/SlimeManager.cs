@@ -3,7 +3,7 @@ using SRML;
 using SRML.SR.SaveSystem;
 using UnityEngine.UI;
 
-namespace TheOceanRange.Managers;
+namespace OceanRange.Managers;
 
 // Manager class to handle the commonality of a bunch of slime handling code
 // TODO: Finish largo setup; relegated to next update most likely
@@ -76,7 +76,7 @@ public static class SlimeManager
         }
 
         if (slimeData.HasGordo)
-            Helpers.BuildGordo(slimeData, Helpers.GetObjectFromName<GameObject>(slimeData.GordoLocation).FindChild("Sector/Slimes"));
+            Helpers.BuildGordo(slimeData, Helpers.GetResource<GameObject>("cell" + slimeData.GordoLocation).FindChild("Sector/Slimes"));
     };
 
     public static void LoadAllSlimes()
@@ -92,7 +92,7 @@ public static class SlimeManager
             Eyes = blink.Eyes?.Clone(),
             Mouth = blink.Mouth?.Clone()
         };
-        SleepingFace.Eyes.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleepingeyes"));
+        SleepingFace.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleepingeyes"));
     }
 
     private static void BaseLoadSlime(CustomSlimeData slimeData)

@@ -1,14 +1,14 @@
 using System.Reflection;
 
-namespace TheOceanRange.Managers;
+namespace OceanRange.Managers;
 
 public static class AssetManager
 {
     private static readonly Assembly Core = typeof(Main).Assembly;
     private static readonly Dictionary<string, AssetHandle> Assets = [];
-    private static readonly JsonSerializerSettings JsonSettings = new();
 
     public static AssetBundle Bundle;
+    public static readonly JsonSerializerSettings JsonSettings = new();
     public static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         [typeof(Mesh)] = ("obj", null), // Null because meshes are loaded from a bundle, which have their own internal loading method
@@ -34,6 +34,7 @@ public static class AssetManager
                 CreateAssetHandle(id, path, false);
         }
 
+        JsonSettings.Formatting = Formatting.Indented;
         JsonSettings.Converters.Add(new ZoneConverter());
         JsonSettings.Converters.Add(new PediaIdConverter());
         JsonSettings.Converters.Add(new Vector3Converter());

@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace TheOceanRange.Slimes;
+namespace OceanRange.Slimes;
 
 // Replicated version of Boom slime's explosion behaviour
 public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListener

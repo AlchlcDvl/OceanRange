@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace TheOceanRange.Modules;
+namespace OceanRange.Modules;
 
 public abstract class CustomFoodData : JsonData
 {
@@ -62,7 +62,7 @@ public sealed class CustomPlantData : CustomFoodData
     public string Garden;
 
     [JsonProperty("resource"), JsonRequired]
-    public string Resource;
+    public string ResourceIdSuffix;
 
     [JsonIgnore]
     public SpawnResource.Id ResourceId;
@@ -70,14 +70,8 @@ public sealed class CustomPlantData : CustomFoodData
     [JsonIgnore]
     public SpawnResource.Id DlxResourceId;
 
-    // [JsonProperty("spawnCell"), JsonRequired]
-    // public string SpawnCell;
-
-    // [JsonProperty("spawnPosition"), JsonRequired]
-    // public Vector3[] SpawnPositions;
-
-    // [JsonProperty("spawnLocalPositions"), JsonRequired]
-    // public Vector3[] SpawnLocalPositions;
+    [JsonProperty("spawnLocations"), JsonRequired]
+    public Dictionary<string, Vector3[]> SpawnLocations;
 
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
@@ -87,7 +81,7 @@ public sealed class CustomPlantData : CustomFoodData
         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");
 
-        var resource = upper + "_" + Resource.ToUpper();
+        var resource = upper + "_" + ResourceIdSuffix.ToUpper();
         ResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource);
         DlxResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource + "_DLX");
 

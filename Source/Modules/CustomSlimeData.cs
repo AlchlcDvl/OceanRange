@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 // using SRML;
 
-namespace TheOceanRange.Modules;
+namespace OceanRange.Modules;
 
 public sealed class CustomSlimeData : JsonData
 {

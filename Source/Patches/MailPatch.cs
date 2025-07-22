@@ -1,4 +1,4 @@
-namespace TheOceanRange.Patches;
+namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(TimeDirector), nameof(TimeDirector.LateUpdate))]
 public static class FixAndProperlyShowMailPatch

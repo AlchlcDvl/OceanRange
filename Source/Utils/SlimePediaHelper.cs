@@ -1,6 +1,6 @@
 // using RichPresence;
 
-namespace TheOceanRange.Utils;
+namespace OceanRange.Utils;
 
 // Obtained this code from SimpleSrModLibrary, just been optimised to avoid excessive ToString and ToLower overhead
 public static class SlimePediaCreation

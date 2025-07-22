@@ -1,4 +1,4 @@
-﻿namespace TheOceanRange.Patches;
+﻿namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(GordoSnare), nameof(GordoSnare.GetGordoIdForBait)), HarmonyPriority(Priority.First)]
 public static class GordoSnarePatch
