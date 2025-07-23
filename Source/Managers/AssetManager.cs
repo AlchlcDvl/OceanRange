@@ -1,4 +1,5 @@
 using System.Reflection;
+using SRML.Utils;
 
 namespace OceanRange.Managers;
 
@@ -6,12 +7,12 @@ public static class AssetManager
 {
     private static readonly Assembly Core = typeof(Main).Assembly;
     private static readonly Dictionary<string, AssetHandle> Assets = [];
+    // private static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SRML");
 
-    public static AssetBundle Bundle;
     public static readonly JsonSerializerSettings JsonSettings = new();
     public static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
-        [typeof(Mesh)] = ("obj", null), // Null because meshes are loaded from a bundle, which have their own internal loading method
+        [typeof(Mesh)] = ("bin", LoadMesh),
         [typeof(Sprite)] = ("png", LoadSprite),
         [typeof(JsonAsset)] = ("json", LoadJson),
         [typeof(Texture2D)] = ("png", LoadTexture),
@@ -26,12 +27,10 @@ public static class AssetManager
         {
             var id = path.SanitisePath(bundlePath);
 
-            if (path.EndsWith(bundlePath))
-                LoadBundle(path, id).GetAllAssetNames().Do(x => CreateAssetHandle(x.SanitisePath(), x, true));
-            // else if (path.EndsWith(".dll")) // Used to have a library dll in use, but later it was no longer needed, keeping this code in case another dll is needed in resources
+            // if (path.EndsWith(".dll")) // Used to have a library dll in use, but later it was no longer needed, keeping this code in case another dll is needed in resources
             //     Assembly.Load(path.ReadBytes());
-            else if (!path.Contains(".bundle")) // Skip loading bundles that don't relate to the current platform
-                CreateAssetHandle(id, path, false);
+            // else
+                CreateAssetHandle(id, path);
         }
 
         JsonSettings.Formatting = Formatting.Indented;
@@ -53,7 +52,7 @@ public static class AssetManager
 
     private static string SanitisePath(this string path, string bundlePath = null)
     {
-        path = path.ReplaceAll("", ".png", ".json", ".obj", ".shader");
+        path = path.ReplaceAll("", ".png", ".json", ".bin");
 
         if (bundlePath != null)
             path = path.Replace(bundlePath, "");
@@ -69,6 +68,12 @@ public static class AssetManager
 
     public static Mesh GetMesh(string path) => Get<Mesh>(path);
 
+    public static T GetResource<T>(string name) where T : UObject => Array.Find(GetAllResources<T>(), x => x.name == name);
+
+    public static T[] GetAllResources<T>() where T : UObject => Resources.FindObjectsOfTypeAll<T>();
+
+    // public static IEnumerable<T> GetAll<T>() where T : UObject => Assets.Values.Select(x => x.Load<T>(false));
+
     private static T Get<T>(string name, bool throwError = true) where T : UObject
     {
         if (!Assets.TryGetValue(name, out var handle))
@@ -79,27 +84,40 @@ public static class AssetManager
 
     public static bool AssetExists(string path) => Assets.ContainsKey(path);
 
-    public static void UnloadAsset<T>(string name) where T : UObject
+    public static void UnloadAsset<T>(string name, bool throwError = true) where T : UObject
     {
         if (Assets.TryGetValue(name, out var handle))
             handle.Unload<T>();
+        else if (throwError)
+            throw new FileNotFoundException($"{name}, {typeof(T).Name}");
     }
 
     private static JsonAsset LoadJson(string path)
     {
         using var stream = Core.GetManifestResourceStream(path)!;
         using var reader = new StreamReader(stream);
-        return new(reader.ReadToEnd());
+        var json = reader.ReadToEnd();
+        reader.Close();
+        return new(json);
+    }
+
+    private static Mesh LoadMesh(string path)
+    {
+        using var stream = Core.GetManifestResourceStream(path)!;
+        using var reader = new BinaryReader(stream);
+        var mesh = new Mesh();
+        BinaryUtils.ReadMesh(reader, mesh);
+        reader.Close();
+        return mesh;
     }
 
     private static Texture2D EmptyTexture(TextureFormat format, bool mipChain) => new(2, 2, format, mipChain) { filterMode = FilterMode.Bilinear };
 
-    private static Texture2D LoadTexture(string path) => LoadTexture(ReadBytes(path), path.SanitisePath());
-
-    private static Texture2D LoadTexture(byte[] data, string name)
+    private static Texture2D LoadTexture(string path)
     {
+        var name = path.SanitisePath();
         var texture = EmptyTexture(GetFormat(name), GenerateMipChains(name));
-        texture.LoadImage(data, true);
+        texture.LoadImage(path.ReadBytes(), true);
         texture.wrapMode = GetWrapMode(name);
         texture.name = name;
         return texture;
@@ -111,13 +129,10 @@ public static class AssetManager
 
     private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
 
-    private static Sprite LoadSprite(string path) => LoadSprite(LoadTexture(path)?.DontDestroy());
-
-    private static Sprite LoadSprite(Texture2D tex)
+    private static Sprite LoadSprite(string path)
     {
-        var sprite = Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, GetMeshType(tex.name));
-        sprite.name = tex.name;
-        return sprite;
+        var tex = LoadTexture(path);
+        return Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, GetMeshType(tex.name));
     }
 
     private static SpriteMeshType GetMeshType(string name) => name is "sleepingeyes" || name.Contains("pattern") || name.Contains("ramp") ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
@@ -131,31 +146,12 @@ public static class AssetManager
 
     private static byte[] ReadBytes(this string path) => Core.GetManifestResourceStream(path)!.ReadFully();
 
-    private static AssetBundle LoadBundle(string path, string name)
-    {
-        var bundle = AssetBundle.LoadFromMemory(ReadBytes(path));
-        bundle.name = name;
-        return Bundle = bundle;
-    }
-
-    private static void CreateAssetHandle(string name, string path, bool fromBundle)
+    private static void CreateAssetHandle(string name, string path)
     {
         if (!Assets.TryGetValue(name, out var handle))
             handle = Assets[name] = new(name);
 
-        var extension = path.TrueSplit('.').Last();
-
-        if (handle.Paths.Keys.Any(x => x.EndsWith(extension)))
-            throw new InvalidOperationException($"Cannot add another {name}.{extension} asset, please correct your asset naming and typing!");
-
-        handle.Paths.Add(path, fromBundle);
-    }
-
-    public static void UnloadBundle()
-    {
-        Bundle.Unload(false);
-        Bundle?.Destroy();
-        Bundle = null;
+        handle.AddPath(path);
     }
 
     // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use but keep commented for releases

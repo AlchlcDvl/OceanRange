@@ -34,7 +34,7 @@ public static class FoodManager
         Chimkens.ForEach(BasePreLoadChimken);
         Plants.ForEach(BasePreloadPlant);
 
-        new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => SlimeEat.foodGroupIds[x] = [..SlimeEat.foodGroupIds[x].Where(x => !x.ToString().EndsWith("CHICK")), ..Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
+        new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => SlimeEat.foodGroupIds[x] = [..SlimeEat.foodGroupIds[x], ..Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
     }
 
     private static void BasePreLoadChimken(CustomChimkenData chimkenData)
@@ -78,16 +78,16 @@ public static class FoodManager
 
     private static void BasePreloadPlant(CustomPlantData plantData) => SRCallbacks.PreSaveGameLoad += context =>
     {
-        VeggieSpawnPrefab ??= Helpers.GetResource<SpawnResource>("patchCarrot02");
-        FruitSpawnPrefab ??= Helpers.GetResource<SpawnResource>("treePogo02");
+        VeggieSpawnPrefab ??= AssetManager.GetResource<SpawnResource>("patchCarrot02");
+        FruitSpawnPrefab ??= AssetManager.GetResource<SpawnResource>("treePogo02");
 
         var name = plantData.Name + plantData.ResourceIdSuffix + "0";
-        var array = new GameObject[] { plantData.MainId.GetPrefab() };
+        var array = new GameObject[1] { plantData.MainId.GetPrefab() };
         var prefab = plantData.Group == FoodGroup.VEGGIES ? VeggieSpawnPrefab : FruitSpawnPrefab;
 
         foreach (var (cell, positions) in plantData.SpawnLocations)
         {
-            var parent = Helpers.GetResource<GameObject>("cell" + cell).FindChild("Sector/Resources").transform;
+            var parent = AssetManager.GetResource<GameObject>("cell" + cell).FindChild("Sector/Resources").transform;
 
             for (var i = 0; i < positions.Length; i++)
             {

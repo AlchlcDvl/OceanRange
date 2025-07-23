@@ -40,14 +40,6 @@ internal sealed class Main : ModEntryPoint
 
         SystemContext.IsModded = true;
 
-        var type = typeof(IdentifiableId);
-
-        foreach (var id in AccessTools.GetDeclaredFields(typeof(Ids)).Where(x => x.FieldType == type).Select(x => (IdentifiableId)x.GetValue(null)))
-        {
-            id.Uncategorize();
-            IdentifiableRegistry.CategorizeId(id);
-        }
-
 #if DEBUG
         RegisterCommand(SavePos);
         RegisterCommand(new EchoCommand());
@@ -67,14 +59,6 @@ internal sealed class Main : ModEntryPoint
         FoodManager.LoadFoods();
         SlimeManager.LoadAllSlimes();
     }
-
-    public override void PostLoad()
-#if DEBUG
-        => TimeDiagnostic(InternalPostLoad, "Postload");
-
-    private static void InternalPostLoad()
-#endif
-        => AssetManager.UnloadBundle();
 
 #if DEBUG
     private static void TimeDiagnostic(Action action, string stage)

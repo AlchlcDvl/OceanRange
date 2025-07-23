@@ -76,7 +76,7 @@ public static class SlimeManager
         }
 
         if (slimeData.HasGordo)
-            Helpers.BuildGordo(slimeData, Helpers.GetResource<GameObject>("cell" + slimeData.GordoLocation).FindChild("Sector/Slimes"));
+            Helpers.BuildGordo(slimeData, AssetManager.GetResource<GameObject>("cell" + slimeData.GordoLocation).FindChild("Sector/Slimes"));
     };
 
     public static void LoadAllSlimes()

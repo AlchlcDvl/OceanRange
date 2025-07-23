@@ -133,8 +133,6 @@ public static class Helpers
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs];
     }
 
-    public static T GetResource<T>(string name) where T : UObject => Array.Find(Resources.FindObjectsOfTypeAll<T>(), x => x.name == name);
-
     public static Mesh Clone(this Mesh originalMesh)
     {
         var mesh = new Mesh
