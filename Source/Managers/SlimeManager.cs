@@ -573,12 +573,12 @@ public static class SlimeManager
         }, "rosi_stalk_gordo", "rosi_frills_gordo");
     }
 
-    public static void InitcocoSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount) => BasicInitSlimeAppearance
+    public static void InitCocoSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount) => BasicInitSlimeAppearance
     (
         prefab, appearance, applicator,
         null,
         null,
-        // coco mesh doesn't work atm
+        // Coco mesh doesn't work atm
         // ["coco_body", "coco_brows"],
         // (i, structure) =>
         // {

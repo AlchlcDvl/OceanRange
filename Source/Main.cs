@@ -40,6 +40,14 @@ internal sealed class Main : ModEntryPoint
 
         SystemContext.IsModded = true;
 
+        var type = typeof(IdentifiableId);
+
+        foreach (var id in AccessTools.GetDeclaredFields(typeof(Ids)).Where(x => x.FieldType == type).Select(x => (IdentifiableId)x.GetValue(null)))
+        {
+            id.Uncategorize();
+            IdentifiableRegistry.CategorizeId(id);
+        }
+
 #if DEBUG
         RegisterCommand(SavePos);
         RegisterCommand(new EchoCommand());

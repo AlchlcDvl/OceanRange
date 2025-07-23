@@ -8,8 +8,8 @@ public static class SlimePediaCreation
     public static void CreateSlimePediaForSlimeWithName(PediaId slimePediaId, string name, string intro, string diet, string favorite, string slimeology, string risks, string plortonomics)
     {
         var id = slimePediaId.ToString().ToLower();
-        TranslationPatcher.AddPediaTranslation("t." + id, name);
         TranslationPatcher.AddActorTranslation("l." + id, name);
+        TranslationPatcher.AddPediaTranslation("t." + id, name);
         TranslationPatcher.AddPediaTranslation("m.intro." + id, intro);
         TranslationPatcher.AddPediaTranslation("m.diet." + id, diet);
         TranslationPatcher.AddPediaTranslation("m.favorite." + id, favorite);
@@ -18,16 +18,18 @@ public static class SlimePediaCreation
         TranslationPatcher.AddPediaTranslation("m.plortonomics." + id, plortonomics);
     }
 
-    public static void CreateSlimePediaForItemWithName(PediaId slimePediaId, string name, string intro, string type, string favored, string about, string ranch)
+    public static void CreateSlimePediaForItemWithName(PediaId pediaId, string name, string intro, string type, string favored, string about, string ranch = null)
     {
-        var id = slimePediaId.ToString().ToLower();
-        TranslationPatcher.AddPediaTranslation("t." + id, name);
+        var id = pediaId.ToString().ToLower();
         TranslationPatcher.AddActorTranslation("l." + id.Replace("_entry", ""), name);
+        TranslationPatcher.AddPediaTranslation("t." + id, name);
         TranslationPatcher.AddPediaTranslation("m.intro." + id, intro);
         TranslationPatcher.AddPediaTranslation("m.resource_type." + id, type);
         TranslationPatcher.AddPediaTranslation("m.favored_by." + id, favored);
         TranslationPatcher.AddPediaTranslation("m.desc." + id, about);
-        TranslationPatcher.AddPediaTranslation("m.ranch." + id, ranch);
+
+        if (ranch != null)
+            TranslationPatcher.AddPediaTranslation("m.how_to_use." + id, ranch);
     }
 
     // public static void CreateZoneSlimePedia(PediaId slimePediaId, Zone lNameId, string name, string presence, string fullName, string intro, string description)

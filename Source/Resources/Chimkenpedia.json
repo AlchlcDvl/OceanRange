@@ -3,7 +3,7 @@
         "name": "Sandy",
         "intro": "The beach side camouflage master!",
         "chickIntro": "A budding camouflager!",
-        "pediaFavouredBy": "coco Slimes",
+        "pediaFavouredBy": "Coco Slimes",
         "ammoColor": "#C2B280",
         "favouredBy": ["COCO_SLIME"],
         "zones": ["REEF", "RUINS", "MOSS"],

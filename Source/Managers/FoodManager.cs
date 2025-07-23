@@ -34,7 +34,7 @@ public static class FoodManager
         Chimkens.ForEach(BasePreLoadChimken);
         Plants.ForEach(BasePreloadPlant);
 
-        new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => SlimeEat.foodGroupIds[x] = [.. SlimeEat.foodGroupIds[x], .. Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
+        new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => SlimeEat.foodGroupIds[x] = [..SlimeEat.foodGroupIds[x].Where(x => !x.ToString().EndsWith("CHICK")), ..Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
     }
 
     private static void BasePreLoadChimken(CustomChimkenData chimkenData)
@@ -74,19 +74,16 @@ public static class FoodManager
     }
 
     private static SpawnResource VeggieSpawnPrefab;
+    private static SpawnResource FruitSpawnPrefab;
 
-    private static void BasePreloadPlant(CustomPlantData plantData) => SRCallbacks.PreSaveGameLoad += _ =>
+    private static void BasePreloadPlant(CustomPlantData plantData) => SRCallbacks.PreSaveGameLoad += context =>
     {
-        var plant = plantData.MainId.GetPrefab();
-
-        if (!VeggieSpawnPrefab)
-        {
-            VeggieSpawnPrefab = Helpers.GetResource<SpawnResource>("patchCarrot02").CreatePrefab(); // treePogo02 for fruits
-            VeggieSpawnPrefab.ObjectsToSpawn = [];
-            VeggieSpawnPrefab.BonusObjectsToSpawn = [];
-        }
+        VeggieSpawnPrefab ??= Helpers.GetResource<SpawnResource>("patchCarrot02");
+        FruitSpawnPrefab ??= Helpers.GetResource<SpawnResource>("treePogo02");
 
         var name = plantData.Name + plantData.ResourceIdSuffix + "0";
+        var array = new GameObject[] { plantData.MainId.GetPrefab() };
+        var prefab = plantData.Group == FoodGroup.VEGGIES ? VeggieSpawnPrefab : FruitSpawnPrefab;
 
         foreach (var (cell, positions) in plantData.SpawnLocations)
         {
@@ -95,12 +92,11 @@ public static class FoodManager
             for (var i = 0; i < positions.Length; i++)
             {
                 var pos = positions[i];
-                var resource = VeggieSpawnPrefab.Instantiate(parent);
+                var resource = prefab.Instantiate(parent);
                 resource.transform.position = pos;
                 resource.name = name + i;
-                resource.ObjectsToSpawn = [plant];
-                resource.BonusObjectsToSpawn = [plant];
-                SceneContext.Instance.GameModel.RegisterResourceSpawner(pos, resource);
+                resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
+                context.GameModel.RegisterResourceSpawner(pos, resource);
             }
         }
     };
@@ -152,7 +148,7 @@ public static class FoodManager
 
         // Register both chicks and hens
         RegisterFood(chickPrefab, AssetManager.GetSprite($"{lower}chick"), ammo, chimkenData.ChickId, chimkenData.ChickEntry, [SiloStorage.StorageType.NON_SLIMES]);
-        SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "None",
+        SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
             CommonChickAboutPedia.Replace("%type%",  chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
 
         RegisterFood(henPrefab, AssetManager.GetSprite($"{lower}hen"), ammo, chimkenData.MainId, chimkenData.MainEntry, [SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.FOOD]);
