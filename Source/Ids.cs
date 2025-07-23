@@ -14,10 +14,10 @@ public static class Ids
     public static readonly IdentifiableId ROSI_GORDO;
     public static readonly PediaId ROSI_SLIME_ENTRY;
 
-    public static readonly IdentifiableId COCOA_SLIME;
-    public static readonly IdentifiableId COCOA_PLORT;
-    // public static readonly IdentifiableId COCOA_GORDO;
-    public static readonly PediaId COCOA_SLIME_ENTRY;
+    public static readonly IdentifiableId COCO_SLIME;
+    public static readonly IdentifiableId COCO_PLORT;
+    public static readonly IdentifiableId COCO_GORDO;
+    public static readonly PediaId COCO_SLIME_ENTRY;
 
     public static readonly IdentifiableId MINE_SLIME;
     public static readonly IdentifiableId MINE_PLORT;

@@ -81,7 +81,7 @@ public static class FoodManager
 
         if (!VeggieSpawnPrefab)
         {
-            VeggieSpawnPrefab = Helpers.GetResource<SpawnResource>("patchCarrot03").CreatePrefab();
+            VeggieSpawnPrefab = Helpers.GetResource<SpawnResource>("patchCarrot02").CreatePrefab(); // treePogo02 for fruits
             VeggieSpawnPrefab.ObjectsToSpawn = [];
             VeggieSpawnPrefab.BonusObjectsToSpawn = [];
         }

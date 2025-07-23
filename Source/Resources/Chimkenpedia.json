@@ -3,13 +3,13 @@
         "name": "Sandy",
         "intro": "The beach side camouflage master!",
         "chickIntro": "A budding camouflager!",
-        "pediaFavouredBy": "Cocoa Slimes",
+        "pediaFavouredBy": "coco Slimes",
         "ammoColor": "#C2B280",
-        "favouredBy": ["COCOA_SLIME"],
+        "favouredBy": ["COCO_SLIME"],
         "zones": ["REEF", "RUINS", "MOSS"],
         "basePrice": 20,
         "saturation": 10,
-        "about": "A sun-baked cousin to the familiar stony hen, Sandy Hens are masters of coastal concealment. Their feathers have evolved into a remarkable mimicry of the dry, shifting sands of the beaches they call home, making them incredibly difficult to spot. Unfortunately for the sandy hen, their superb camouflage is no match for the keen eyes of a cocoa slime. Perched high in their swaying palm trees, these predators have a particular fondness for the sandy hen's uniquely dry meat, which perfectly balances their own juicy, tropical insides. For a rancher looking for a tasty, albeit a bit parched, bite, the sandy hen offers a familiar flavor with an undeniably arid finish."
+        "about": "A sun-baked cousin to the familiar stony hen, Sandy Hens are masters of coastal concealment. Their feathers have evolved into a remarkable mimicry of the dry, shifting sands of the beaches they call home, making them incredibly difficult to spot. Unfortunately for the sandy hen, their superb camouflage is no match for the keen eyes of a coco slime. Perched high in their swaying palm trees, these predators have a particular fondness for the sandy hen's uniquely dry meat, which perfectly balances their own juicy, tropical insides. For a rancher looking for a tasty, albeit a bit parched, bite, the sandy hen offers a familiar flavor with an undeniably arid finish."
     },
     {
         "name": "Radiant",

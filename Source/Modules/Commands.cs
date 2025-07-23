@@ -18,40 +18,43 @@ public sealed class SavePositionCommand : ConsoleCommand
     public readonly Dictionary<string, List<Vector3>> SavedPositions = [];
 
     public override string ID => "savePos";
-    public override string Usage => "savePos [cell name]";
-    public override string Description => "Saves the player's position into a dictionary to later output into a json file upon quit";
+    public override string Usage => "savePos";
+    public override string Description => "Saves the player's position into a dictionary with the closest cell's name as the key to later output into a json file upon quit";
 
     public override bool Execute(string[] args)
     {
-        if (args?.Length > 1)
+        if (args?.Length is null or > 1)
             return false;
 
-        var name = Main.SaveRegion.Region + "_" + (args.Length == 1 ? args[0] : "NotSet");
+        var pos = SceneContext.Instance.Player.transform.position;
+        var name = Helpers.GetClosestCell(pos).name.Replace("cell", "");
 
         if (!SavedPositions.TryGetValue(name, out var positions))
             positions = SavedPositions[name] = [];
 
-        positions.Add(SceneContext.Instance.Player.transform.position);
-        Main.Console.Log("Saved " + name);
+        positions.Add(pos);
+        Main.Console.Log("Saved " + name + " at " + pos.ToString());
         return true;
     }
 }
 
-public sealed class SaveRegionCommand : ConsoleCommand
+public sealed class TeleportCommand : ConsoleCommand
 {
-    public string Region = "NoRegion";
-
-    public override string ID => "saveRegion";
-    public override string Usage => "saveRegion <region name>";
-    public override string Description => "Sets the current debugging region to the one passed by the command";
+    public override string ID => "tp";
+    public override string Usage => "tp";
+    public override string Description => "Teleports the player to the specified position";
 
     public override bool Execute(string[] args)
     {
-        if (args?.Length != 1)
+        if (args?.Length is not (1 or 3))
             return false;
 
-        Region = args[0];
-        Main.Console.Log("Set " + Region);
+        if (args.Length == 1)
+            args = args[0].TrueSplit(',');
+
+        var pos = new Vector3(float.Parse(args[0]), float.Parse(args[1]), float.Parse(args[2]));
+        SceneContext.Instance.Player.transform.position = pos;
+        Main.Console.Log("Teleported to " + pos.ToString());
         return true;
     }
 }

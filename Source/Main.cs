@@ -1,9 +1,12 @@
-﻿using System.Diagnostics;
-using SRML;
+﻿using SRML;
 using SRML.SR.SaveSystem;
 using SRML.SR.SaveSystem.Data;
 using OceanRange.Patches;
 using static SRML.Console.Console;
+
+#if DEBUG
+using System.Diagnostics;
+#endif
 
 namespace OceanRange;
 
@@ -13,18 +16,16 @@ internal sealed class Main : ModEntryPoint
 
 #if DEBUG
     public static readonly SavePositionCommand SavePos = new();
-    public static readonly SaveRegionCommand SaveRegion = new();
 
     private static readonly Stopwatch Watch = new();
 #endif
 
-    public override void PreLoad() => TimeDiagnostic(InternalPreLoad, "Preload");
-
-    public override void Load() => TimeDiagnostic(InternalLoad, "Load");
-
-    public override void PostLoad() => TimeDiagnostic(InternalPostLoad, "Postload");
+    public override void PreLoad()
+#if DEBUG
+        => TimeDiagnostic(InternalPreLoad, "Preload");
 
     private void InternalPreLoad()
+#endif
     {
         Console = ConsoleInstance;
 
@@ -41,33 +42,42 @@ internal sealed class Main : ModEntryPoint
 
 #if DEBUG
         RegisterCommand(SavePos);
-        RegisterCommand(SaveRegion);
         RegisterCommand(new EchoCommand());
+        RegisterCommand(new TeleportCommand());
 #endif
 
         HarmonyInstance.PatchAll();
     }
 
+    public override void Load()
+#if DEBUG
+        => TimeDiagnostic(InternalLoad, "Load");
+
     private static void InternalLoad()
+#endif
     {
         FoodManager.LoadFoods();
         SlimeManager.LoadAllSlimes();
     }
 
-    private static void InternalPostLoad() => AssetManager.UnloadBundle();
+    public override void PostLoad()
+#if DEBUG
+        => TimeDiagnostic(InternalPostLoad, "Postload");
 
+    private static void InternalPostLoad()
+#endif
+        => AssetManager.UnloadBundle();
+
+#if DEBUG
     private static void TimeDiagnostic(Action action, string stage)
     {
-#if DEBUG
         Watch.Start();
-#endif
         action();
-#if DEBUG
         Watch.Stop();
         Console.Log($"{stage}ed in {Watch.ElapsedMilliseconds}ms!");
         Watch.Restart();
-#endif
     }
+#endif
 
     public static void ReadData(CompoundDataPiece piece)
     {

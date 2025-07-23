@@ -15,7 +15,6 @@
         <Description>Dive into the slime sea!</Description>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <Configurations>Debug;Release</Configurations>
-        <!-- <Optimize>true</Optimize> -->
         <ImplicitUsings>true</ImplicitUsings>
     </PropertyGroup>
 
@@ -32,6 +31,15 @@
     <Target Name="Copy" AfterTargets="Build" >
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" />
     </Target>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+        <DefineConstants>DEBUG</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <DefineConstants>RELEASE</DefineConstants>
+        <Optimize>true</Optimize>
+    </PropertyGroup>
 
     <Import Project="../SlimeRancher.props" />
 </Project>

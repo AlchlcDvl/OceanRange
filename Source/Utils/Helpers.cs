@@ -1,6 +1,10 @@
 // using SRML;
 using SRML.Utils;
 
+#if DEBUG
+using UnityEngine.SceneManagement;
+#endif
+
 namespace OceanRange.Utils;
 
 public static class Helpers
@@ -186,4 +190,29 @@ public static class Helpers
     // public static Texture2D CreateRamp(string name, string hexA, string hexB) => CreateRamp(name, hexA.HexToColor(), hexB.HexToColor());
 
     // public static string ToHexRGBA(this Color32 color) => $"{color.r:X2},{color.g:X2},{color.b:X2},{color.a:X2}";
+
+#if DEBUG
+    public static GameObject GetClosestCell(Vector3 pos)
+    {
+        GameObject closest = null;
+        var distance = float.MaxValue;
+
+        foreach (var gameObject in SceneManager
+            .GetActiveScene()
+            .GetRootGameObjects()
+            .Where(x => x.name.StartsWith("zone"))
+            .SelectMany(x => x.FindChildrenWithPartialName("cell", true)))
+        {
+            var diff = (gameObject.transform.position - pos).sqrMagnitude;
+
+            if (diff >= distance)
+                continue;
+
+            closest = gameObject;
+            distance = diff;
+        }
+
+        return closest;
+    }
+#endif
 }
