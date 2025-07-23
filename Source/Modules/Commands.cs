@@ -23,7 +23,7 @@ public sealed class SavePositionCommand : ConsoleCommand
 
     public override bool Execute(string[] args)
     {
-        if (args?.Length is null or > 1)
+        if (args?.Length is not (null or 0))
             return false;
 
         var pos = SceneContext.Instance.Player.transform.position;
