@@ -31,7 +31,6 @@ public static class Ids
 
     public static readonly IdentifiableId SAND_SLIME;
     public static readonly IdentifiableId SAND_PLORT;
-    // public static readonly IdentifiableId SAND_GORDO;
     public static readonly PediaId SAND_SLIME_ENTRY;
 
     public static readonly IdentifiableId SANDY_HEN;
