@@ -4,28 +4,36 @@ using System.IO;
 using System.Linq;
 using System;
 
-public class CreateAssetBundles
+public class ExportMeshes
 {
-    [MenuItem("Mesh/Export As .bin")]
-    static void BuildBundles()
+    [MenuItem("Meshes/Export As .bin")]
+    static void ExportSelectedMeshes()
     {
-        if (Selection.activeObject is not Mesh selectedMesh)
-        {
-            Debug.LogError("No Mesh asset selected. Please select a Mesh asset in the Project window.");
-            return;
-        }
-
         string exportDirectory = "Assets/StreamingAssets/MeshExports";
 
         if (!Directory.Exists(exportDirectory))
             Directory.CreateDirectory(exportDirectory);
+        else
+            Directory.EnumerateFiles(exportDirectory, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
 
-        string fileName = selectedMesh.name + ".bin";
-        string filePath = Path.Combine(exportDirectory, fileName);
+        int exportedCount = 0;
+        int skippedCount = 0;
 
-        using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(filePath)));
-        WriteMesh(writer, selectedMesh);
-        Debug.Log($"Successfully exported mesh '{selectedMesh.name}' to: {filePath}");
+        foreach (UnityEngine.Object obj in Selection.objects)
+        {
+            if (obj is not Mesh mesh)
+            {
+                skippedCount++;
+                continue;
+            }
+
+            string filePath = Path.Combine(exportDirectory, mesh.name + ".bin");
+            using BinaryWriter writer = new BinaryWriter(File.OpenWrite(filePath));
+            WriteMesh(writer, mesh);
+            exportedCount++;
+        }
+
+        Debug.Log($"Export process complete. Exported {exportedCount} mesh(es). Skipped {skippedCount} non-mesh object(s).");
     }
 
     static void WriteMesh(BinaryWriter writer, Mesh mesh)

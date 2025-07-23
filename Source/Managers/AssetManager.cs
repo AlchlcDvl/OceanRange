@@ -96,9 +96,7 @@ public static class AssetManager
     {
         using var stream = Core.GetManifestResourceStream(path)!;
         using var reader = new StreamReader(stream);
-        var json = reader.ReadToEnd();
-        reader.Close();
-        return new(json);
+        return new(reader.ReadToEnd());
     }
 
     private static Mesh LoadMesh(string path)
@@ -107,7 +105,6 @@ public static class AssetManager
         using var reader = new BinaryReader(stream);
         var mesh = new Mesh();
         BinaryUtils.ReadMesh(reader, mesh);
-        reader.Close();
         return mesh;
     }
 
