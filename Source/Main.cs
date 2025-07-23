@@ -4,10 +4,6 @@ using SRML.SR.SaveSystem.Data;
 using OceanRange.Patches;
 using static SRML.Console.Console;
 
-#if DEBUG
-using System.Diagnostics;
-#endif
-
 namespace OceanRange;
 
 internal sealed class Main : ModEntryPoint
@@ -16,18 +12,17 @@ internal sealed class Main : ModEntryPoint
 
 #if DEBUG
     public static readonly SavePositionCommand SavePos = new();
-
-    private static readonly Stopwatch Watch = new();
 #endif
 
     public override void PreLoad()
-#if DEBUG
-        => TimeDiagnostic(InternalPreLoad, "Preload");
-
-    private void InternalPreLoad()
-#endif
     {
+#if DEBUG
+        var watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
+#endif
         Console = ConsoleInstance;
+
+        HarmonyInstance.PatchAll();
 
         AssetManager.InitialiseAssets();
 
@@ -44,32 +39,21 @@ internal sealed class Main : ModEntryPoint
         RegisterCommand(SavePos);
         RegisterCommand(new EchoCommand());
         RegisterCommand(new TeleportCommand());
-#endif
 
-        HarmonyInstance.PatchAll();
+        watch.Stop();
+        Console.Log($"Mod Preloaded in {watch.ElapsedMilliseconds}ms!");
+        watch.Restart();
+#endif
     }
 
-    public override void Load()
 #if DEBUG
-        => TimeDiagnostic(InternalLoad, "Load");
-
-    private static void InternalLoad()
+    [TimeDiagnostic("Mod Load")]
 #endif
+    public override void Load()
     {
         FoodManager.LoadFoods();
         SlimeManager.LoadAllSlimes();
     }
-
-#if DEBUG
-    private static void TimeDiagnostic(Action action, string stage)
-    {
-        Watch.Start();
-        action();
-        Watch.Stop();
-        Console.Log($"{stage}ed in {Watch.ElapsedMilliseconds}ms!");
-        Watch.Restart();
-    }
-#endif
 
     public static void ReadData(CompoundDataPiece piece)
     {

@@ -5,10 +5,7 @@ namespace OceanRange.Managers;
 
 public static class AssetManager
 {
-    private static readonly Assembly Core = typeof(Main).Assembly;
-    private static readonly Dictionary<string, AssetHandle> Assets = [];
-    // private static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SRML");
-
+    public static readonly Assembly Core = typeof(Main).Assembly;
     public static readonly JsonSerializerSettings JsonSettings = new();
     public static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
@@ -19,13 +16,15 @@ public static class AssetManager
         // AudioClip is not currently in use, so implementation for it comes later
     };
 
+    private static readonly Dictionary<string, AssetHandle> Assets = [];
+    // private static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SRML");
+
+    [TimeDiagnostic("Assets Initialis")]
     public static void InitialiseAssets()
     {
-        var bundlePath = $".bundle_{Platform()}";
-
         foreach (var path in Core.GetManifestResourceNames())
         {
-            var id = path.SanitisePath(bundlePath);
+            var id = path.SanitisePath();
 
             // if (path.EndsWith(".dll")) // Used to have a library dll in use, but later it was no longer needed, keeping this code in case another dll is needed in resources
             //     Assembly.Load(path.ReadBytes());
@@ -42,23 +41,7 @@ public static class AssetManager
         JsonSettings.Converters.Add(new IdentifiableIdConverter());
     }
 
-    private static string Platform() => Application.platform switch
-    {
-        RuntimePlatform.LinuxPlayer => "lin",
-        RuntimePlatform.OSXPlayer => "mac",
-        RuntimePlatform.WindowsPlayer => "win",
-        _ => throw new PlatformNotSupportedException(Application.platform.ToString())
-    };
-
-    private static string SanitisePath(this string path, string bundlePath = null)
-    {
-        path = path.ReplaceAll("", ".png", ".json", ".bin");
-
-        if (bundlePath != null)
-            path = path.Replace(bundlePath, "");
-
-        return path.TrueSplit('/', '\\', '.').Last().ToLower();
-    }
+    private static string SanitisePath(this string path) => path.ReplaceAll("", ".png", ".json", ".bin").TrueSplit('/', '\\', '.').Last().ToLower();
 
     public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<JsonAsset>(path).text, JsonSettings);
 
@@ -116,7 +99,6 @@ public static class AssetManager
         var texture = EmptyTexture(GetFormat(name), GenerateMipChains(name));
         texture.LoadImage(path.ReadBytes(), true);
         texture.wrapMode = GetWrapMode(name);
-        texture.name = name;
         return texture;
     }
 

@@ -58,7 +58,7 @@ public static class Helpers
         return @string;
     }
 
-    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators).Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x))];
+    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators).Select(x => x.Trim()).Where(x => !string.IsNullOrWhiteSpace(x) && x.Length != 0)];
 
     // public static IEnumerable<(int, T)> Indexed<T>(this IEnumerable<T> source)
     // {

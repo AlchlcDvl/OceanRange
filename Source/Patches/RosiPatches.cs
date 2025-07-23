@@ -23,12 +23,6 @@ public static class SlimeEatProduce
             break;
         }
 
-        if (!flag || !val)
-        {
-            count = 1;
-            return;
-        }
-
-        count = RosiBehaviour.All.Count(item => val.bounds.Contains(item.transform.position));
+        count = flag && val ? RosiBehaviour.All.Count(item => val.bounds.Contains(item.transform.position)) : 1;
     }
 }

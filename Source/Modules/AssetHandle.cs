@@ -5,7 +5,7 @@ public sealed class AssetHandle(string name)
     private readonly string Name = name;
     private readonly List<string> Paths = []; // Handles asset paths
     private readonly Dictionary<UObject, string> LoadedFrom = []; // Handles if assets have been loaded
-    private readonly Dictionary<Type, UObject> Assets = []; // Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there' can't be two of Plort.png anywhere)
+    private readonly Dictionary<Type, UObject> Assets = []; // Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there can't be two of Plort.png anywhere)
 
     public void AddPath(string path)
     {

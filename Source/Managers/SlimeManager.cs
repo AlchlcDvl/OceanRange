@@ -11,7 +11,7 @@ public static class SlimeManager
 {
     public static readonly List<CustomSlimeData> Slimes = [];
     public static SlimeExpressionFace SleepingFace;
-    // public static readonly string[] VanillaSlimes = ["PINK", "ROCK", "PHOSPHOR", "CRYSTAL", "RAD", "BOOM", "TANGLE", "DERVISH", "TABBY", "HUNTER", "SABER", "HONEY", "MOSAIC", "QUANTUM"];
+    // public static readonly string[] VanillaSlimes = ["PINK", "ROCK", "PHOSPHOR", "CRYSTAL", "RAD", "BOOM", "TANGLE", "DERVISH", "TABBY", "HUNTER", "SABER", "HONEY", "MOSAIC", "QUANTUM"]; // WIP
 
     private static bool SamExists;
     private static Transform RocksPrefab;
@@ -29,6 +29,9 @@ public static class SlimeManager
     private static readonly int EyeBlue = Shader.PropertyToID("_EyeBlue");
     private static readonly int FaceAtlas = Shader.PropertyToID("_FaceAtlas");
 
+#if DEBUG
+    [TimeDiagnostic("Slimes Preload")]
+#endif
     public static void PreLoadSlimeData()
     {
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
@@ -44,10 +47,13 @@ public static class SlimeManager
         SlimeEat.foodGroupIds[FoodGroup.NONTARRGOLD_SLIMES] = [.. SlimeEat.foodGroupIds[FoodGroup.NONTARRGOLD_SLIMES], .. Slimes.Select(x => x.MainId)];
         SlimeEat.foodGroupIds[FoodGroup.PLORTS] = [.. SlimeEat.foodGroupIds[FoodGroup.PLORTS], .. Slimes.Select(x => x.PlortId)];
 
-        // var modded = Slimes.Select(x => x.Name.ToUpper()).ToArray();
+        // var modded = Slimes.Select(x => x.Name.ToUpper()).ToArray(); // WIP
         // Slimes.ForEach(x => x.GenerateLargos(modded));
     }
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void BasePreLoadSlime(CustomSlimeData slimeData) => SRCallbacks.PreSaveGameLoad += _ =>
     {
         var prefab = slimeData.MainId.GetPrefab();
@@ -79,6 +85,9 @@ public static class SlimeManager
             Helpers.BuildGordo(slimeData, AssetManager.GetResource<GameObject>("cell" + slimeData.GordoLocation).FindChild("Sector/Slimes"));
     };
 
+#if DEBUG
+    [TimeDiagnostic("Slimes Load")]
+#endif
     public static void LoadAllSlimes()
     {
         RocksPrefab = IdentifiableId.ROCK_PLORT.GetPrefab().transform.Find("rocks");
@@ -95,6 +104,9 @@ public static class SlimeManager
         SleepingFace.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleepingeyes"));
     }
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void BaseLoadSlime(CustomSlimeData slimeData)
     {
         CreatePlort(slimeData);
@@ -105,6 +117,9 @@ public static class SlimeManager
             TypeLoadExceptionBypass(slimeData);
     }
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void CreateGordo(CustomSlimeData slimeData)
     {
         if (!slimeData.HasGordo)
@@ -162,6 +177,9 @@ public static class SlimeManager
         SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);
     }
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void CreatePlort(CustomSlimeData slimeData)
     {
         // First create a prefab and set details
@@ -230,6 +248,9 @@ public static class SlimeManager
             AmmoRegistry.RegisterRefineryResource(slimeData.PlortId);
     }
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void CreateSlime(CustomSlimeData slimeData)
     {
         var baseDefinition = slimeData.BaseSlime.GetSlimeDefinition(); // Finding the base slime definition to go off of
@@ -359,7 +380,15 @@ public static class SlimeManager
         PediaRegistry.RegisterIdEntry(slimeData.MainEntry, appearance.Icon);
     }
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void TypeLoadExceptionBypass(CustomSlimeData slimeData)
+#if DEBUG
+        => TypeLoadExceptionBypass2(slimeData);
+
+    private static void TypeLoadExceptionBypass2(CustomSlimeData slimeData)
+#endif
     {
         try
         {

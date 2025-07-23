@@ -4,6 +4,9 @@ public static class MailManager
 {
     public static readonly List<CustomMailData> Mail = [];
 
+#if DEBUG
+    [TimeDiagnostic("Mail Preload")]
+#endif
     public static void PreLoadMailData()
     {
         Mail.AddRange(AssetManager.GetJson<CustomMailData[]>("mailbox"));
@@ -12,6 +15,9 @@ public static class MailManager
         AssetManager.UnloadAsset<JsonAsset>("mailbox");
     }
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void PreLoadMail(CustomMailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id)
         .SetSubjectTranslation(mailData.Title)
         .SetFromTranslation(mailData.From)

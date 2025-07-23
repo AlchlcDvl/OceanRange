@@ -18,6 +18,9 @@ public static class FoodManager
     private static readonly int RampBlack = Shader.PropertyToID("_RampBlack");
     private static readonly int Color1 = Shader.PropertyToID("_Color");
 
+#if DEBUG
+    [TimeDiagnostic("Foods Preload")]
+#endif
     public static void PreLoadFoodData()
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
@@ -37,6 +40,9 @@ public static class FoodManager
         new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => SlimeEat.foodGroupIds[x] = [..SlimeEat.foodGroupIds[x], ..Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
     }
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void BasePreLoadChimken(CustomChimkenData chimkenData)
     {
         var amount = chimkenData.SpawnAmount / 2;
@@ -76,6 +82,9 @@ public static class FoodManager
     private static SpawnResource VeggieSpawnPrefab;
     private static SpawnResource FruitSpawnPrefab;
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void BasePreloadPlant(CustomPlantData plantData) => SRCallbacks.PreSaveGameLoad += context =>
     {
         VeggieSpawnPrefab ??= AssetManager.GetResource<SpawnResource>("patchCarrot02");
@@ -101,6 +110,9 @@ public static class FoodManager
         }
     };
 
+#if DEBUG
+    [TimeDiagnostic("Foods Load")]
+#endif
     public static void LoadFoods()
     {
         Chimkens.ForEach(BaseCreateChimken);
@@ -111,6 +123,9 @@ public static class FoodManager
     private const string CommonChickAboutPedia = "%type% chickadoos are baby chickens that will eventually grow into a %type% hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.";
     private const string CommonChickRanchPedia = "Keep %type% Chickadoos in a safe place and they'll eventually grow into a %type% Hen or Roostro.";
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void BaseCreateChimken(CustomChimkenData chimkenData)
     {
         // Fetch ramps and caching values because reusing them is tedious
@@ -190,6 +205,9 @@ public static class FoodManager
 
     private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void BaseCreatePlant(CustomPlantData plantData)
     {
         var isVeggie = plantData.Group == FoodGroup.VEGGIES;
