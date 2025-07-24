@@ -1,5 +1,6 @@
 using System.Reflection;
 using SRML.Utils;
+using System.IO.Compression;
 
 namespace OceanRange.Managers;
 
@@ -9,7 +10,7 @@ public static class AssetManager
     public static readonly JsonSerializerSettings JsonSettings = new();
     public static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
-        [typeof(Mesh)] = ("bin", LoadMesh),
+        [typeof(Mesh)] = ("mesh", LoadMesh),
         [typeof(Sprite)] = ("png", LoadSprite),
         [typeof(JsonAsset)] = ("json", LoadJson),
         [typeof(Texture2D)] = ("png", LoadTexture),
@@ -19,18 +20,12 @@ public static class AssetManager
     private static readonly Dictionary<string, AssetHandle> Assets = [];
     // private static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SRML");
 
+#if DEBUG
     [TimeDiagnostic("Assets Initialis")]
+#endif
     public static void InitialiseAssets()
     {
-        foreach (var path in Core.GetManifestResourceNames())
-        {
-            var id = path.SanitisePath();
-
-            // if (path.EndsWith(".dll")) // Used to have a library dll in use, but later it was no longer needed, keeping this code in case another dll is needed in resources
-            //     Assembly.Load(path.ReadBytes());
-            // else
-                CreateAssetHandle(id, path);
-        }
+        Core.GetManifestResourceNames().Do(x => CreateAssetHandle(x.SanitisePath(), x));
 
         JsonSettings.Formatting = Formatting.Indented;
         JsonSettings.Converters.Add(new ZoneConverter());
@@ -41,7 +36,7 @@ public static class AssetManager
         JsonSettings.Converters.Add(new IdentifiableIdConverter());
     }
 
-    private static string SanitisePath(this string path) => path.ReplaceAll("", ".png", ".json", ".bin").TrueSplit('/', '\\', '.').Last().ToLower();
+    private static string SanitisePath(this string path) => path.ReplaceAll("", ".png", ".json", ".mesh").TrueSplit('/', '\\', '.').Last().ToLower();
 
     public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<JsonAsset>(path).text, JsonSettings);
 
@@ -85,11 +80,24 @@ public static class AssetManager
     private static Mesh LoadMesh(string path)
     {
         using var stream = Core.GetManifestResourceStream(path)!;
-        using var reader = new BinaryReader(stream);
-        var mesh = new Mesh();
-        BinaryUtils.ReadMesh(reader, mesh);
+        using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
+        using var reader = new BinaryReader(decompressor);
+
+        var mesh = new Mesh
+        {
+            vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
+            triangles = BinaryUtils.ReadArray(reader, ReadInt),
+            normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
+            tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4)
+        };
+
+        for (var i = 0; i < 8; i++)
+            mesh.SetUVs(i, BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2));
+
         return mesh;
     }
+
+    private static int ReadInt(BinaryReader reader) => reader.ReadInt32();
 
     private static Texture2D EmptyTexture(TextureFormat format, bool mipChain) => new(2, 2, format, mipChain) { filterMode = FilterMode.Bilinear };
 
