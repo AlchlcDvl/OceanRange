@@ -11,7 +11,7 @@ class ExportMeshes
     [MenuItem("Meshes/Export As .mesh")]
     static void ExportSelectedMeshes()
     {
-        string exportDirectory = "Assets/../../MeshExports";
+        string exportDirectory = "Assets/../../Source/Resources/Models";
 
         if (!Directory.Exists(exportDirectory))
             Directory.CreateDirectory(exportDirectory);
@@ -52,7 +52,7 @@ class ExportMeshes
         for (int i = 0; i < 8; i++)
         {
             mesh.GetUVs(i, uvs);
-            WriteArray(writer, uvs.ToArray(), WriteVector2);
+            WriteList(writer, uvs, WriteVector2);
             uvs.Clear();
         }
 
@@ -86,6 +86,20 @@ class ExportMeshes
 
         for (var i = 0; i < array.Length; i++)
             writeAction(writer, array[i]);
+    }
+
+    static void WriteList<T>(BinaryWriter writer, List<T> list, Action<BinaryWriter, T> writeAction)
+    {
+        if (list == null)
+        {
+            writer.Write(0);
+            return;
+        }
+
+        writer.Write(list.Count);
+
+        for (var i = 0; i < list.Count; i++)
+            writeAction(writer, list[i]);
     }
 
     static void WriteVector4(BinaryWriter writer, Vector4 vec)
