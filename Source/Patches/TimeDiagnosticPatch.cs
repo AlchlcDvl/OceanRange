@@ -29,6 +29,7 @@ public static class TimeDiagnosticPatch
     public static void Prefix(MethodBase __originalMethod, object[] __args, ref string __state)
     {
         var (stage, watch) = Watches[__originalMethod];
+        watch.Start();
 
         if (stage == null)
         {
@@ -40,7 +41,7 @@ public static class TimeDiagnosticPatch
                 {
                     JsonData json => json.Name,
                     CustomMailData mail => mail.Id,
-                    _ => throw new Exception()
+                    _ => throw new Exception() // Move to catch block
                 };
                 __state += $" {name}";
             }
@@ -51,8 +52,6 @@ public static class TimeDiagnosticPatch
         }
         else
             __state = stage;
-
-        watch.Start();
     }
 
     public static void Postfix(MethodBase __originalMethod, ref string __state)

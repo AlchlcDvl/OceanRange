@@ -76,17 +76,11 @@ public static class FoodManager
         };
     }
 
-    private static SpawnResource VeggieSpawnPrefab;
-    private static SpawnResource FruitSpawnPrefab;
-
     private static void BasePreloadPlant(CustomPlantData plantData) => SRCallbacks.PreSaveGameLoad += context =>
     {
-        VeggieSpawnPrefab ??= AssetManager.GetResource<SpawnResource>("patchCarrot02");
-        FruitSpawnPrefab ??= AssetManager.GetResource<SpawnResource>("treePogo02");
-
-        var name = plantData.Name + plantData.ResourceIdSuffix + "0";
+        var prefab = AssetManager.GetResource<SpawnResource>((plantData.Group == FoodGroup.VEGGIES ? "patchCarrot" : "treePogo") + "02");
+        var name = plantData.ResourceIdSuffix.ToLower() + plantData.Name + "0";
         var array = new GameObject[1] { plantData.MainId.GetPrefab() };
-        var prefab = plantData.Group == FoodGroup.VEGGIES ? VeggieSpawnPrefab : FruitSpawnPrefab;
 
         foreach (var (cell, positions) in plantData.SpawnLocations)
         {

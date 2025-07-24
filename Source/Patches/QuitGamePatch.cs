@@ -1,5 +1,5 @@
 #if DEBUG
-namespace OceanRange.Modules;
+namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(MainMenuUI), nameof(MainMenuUI.Quit))]
 public static class DumpDebugStuff

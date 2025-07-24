@@ -1,11 +1,9 @@
 namespace OceanRange.Modules;
 
-public sealed class AssetHandle(string name)
+public sealed class AssetHandle(string name) : Handle(name)
 {
-    private readonly string Name = name;
     private readonly List<string> Paths = []; // Handles asset paths
     private readonly Dictionary<UObject, string> LoadedFrom = []; // Handles if assets have been loaded
-    private readonly Dictionary<Type, UObject> Assets = []; // Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there can't be two of Plort.png anywhere)
 
     public void AddPath(string path)
     {
@@ -55,4 +53,31 @@ public sealed class AssetHandle(string name)
         Assets.Remove(tType);
         asset.Destroy();
     }
+}
+
+public sealed class ResourceHandle(string name) : Handle(name)
+{
+    public T Load<T>(bool throwError = true) where T : UObject
+    {
+        var tType = typeof(T);
+
+        if (!Assets.TryGetValue(tType, out var asset))
+        {
+            asset = Array.Find(AssetManager.GetAllResources<T>(), x => x.name == Name);
+            Assets.Add(tType, asset);
+        }
+
+        if (!asset)
+            return throwError ? throw new FileNotFoundException($"{Name}, {tType.Name}") : null;
+
+        return asset as T;
+    }
+
+    public void Unload<T>() where T : UObject => Assets.Remove(typeof(T));
+}
+
+public abstract class Handle(string name)
+{
+    protected readonly string Name = name;
+    protected readonly Dictionary<Type, UObject> Assets = []; // Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there can't be two of Plort.png anywhere)
 }

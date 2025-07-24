@@ -17,7 +17,9 @@ public static class AssetManager
         // AudioClip is not currently in use, so implementation for it comes later
     };
 
-    private static readonly Dictionary<string, AssetHandle> Assets = [];
+    private static readonly Dictionary<string, AssetHandle> ModAssets = [];
+    private static readonly Dictionary<string, ResourceHandle> GameAssets = [];
+    private static readonly Dictionary<Type, UObject[]> FetchedAssets = [];
     // private static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SRML");
 
 #if DEBUG
@@ -46,25 +48,39 @@ public static class AssetManager
 
     public static Mesh GetMesh(string path) => Get<Mesh>(path);
 
-    public static T GetResource<T>(string name) where T : UObject => Array.Find(GetAllResources<T>(), x => x.name == name);
+    public static T GetResource<T>(string name, bool throwError = true) where T : UObject
+    {
+        if (!GameAssets.TryGetValue(name, out var handle))
+            handle = GameAssets[name] = new(name);
 
-    public static T[] GetAllResources<T>() where T : UObject => Resources.FindObjectsOfTypeAll<T>();
+        return handle.Load<T>(throwError);
+    }
+
+    public static T[] GetAllResources<T>() where T : UObject
+    {
+        var tType = typeof(T);
+
+        if (!FetchedAssets.TryGetValue(tType, out var assets))
+            assets = FetchedAssets[tType] = Resources.FindObjectsOfTypeAll<T>();
+
+        return assets as T[];
+    }
 
     // public static IEnumerable<T> GetAll<T>() where T : UObject => Assets.Values.Select(x => x.Load<T>(false));
 
     private static T Get<T>(string name, bool throwError = true) where T : UObject
     {
-        if (!Assets.TryGetValue(name, out var handle))
+        if (!ModAssets.TryGetValue(name, out var handle))
             return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : null;
 
         return handle.Load<T>(throwError);
     }
 
-    public static bool AssetExists(string path) => Assets.ContainsKey(path);
+    public static bool AssetExists(string path) => ModAssets.ContainsKey(path);
 
     public static void UnloadAsset<T>(string name, bool throwError = true) where T : UObject
     {
-        if (Assets.TryGetValue(name, out var handle))
+        if (ModAssets.TryGetValue(name, out var handle))
             handle.Unload<T>();
         else if (throwError)
             throw new FileNotFoundException($"{name}, {typeof(T).Name}");
@@ -135,8 +151,8 @@ public static class AssetManager
 
     private static void CreateAssetHandle(string name, string path)
     {
-        if (!Assets.TryGetValue(name, out var handle))
-            handle = Assets[name] = new(name);
+        if (!ModAssets.TryGetValue(name, out var handle))
+            handle = ModAssets[name] = new(name);
 
         handle.AddPath(path);
     }
