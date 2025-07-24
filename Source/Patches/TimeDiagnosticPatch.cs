@@ -36,7 +36,13 @@ public static class TimeDiagnosticPatch
 
             try
             {
-                __state = $"{((JsonData)__args[0]).Name} {name}";
+                __state = __args[0] switch
+                {
+                    JsonData json => json.Name,
+                    CustomMailData mail => mail.Id,
+                    _ => throw new Exception()
+                };
+                __state += $" {name}";
             }
             catch
             {

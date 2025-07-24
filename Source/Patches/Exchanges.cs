@@ -8,7 +8,7 @@ public static class CreateExchanges
     public static void Prefix(ExchangeDirector __instance) => __instance.values =
     [
         .. __instance.values,
-        .. SlimeManager.Slimes.SelectMany(x => new ValueEntry[]
+        .. SlimeManager.Slimes.SelectMany(x => new ValueEntry[2]
         {
             new()
             {

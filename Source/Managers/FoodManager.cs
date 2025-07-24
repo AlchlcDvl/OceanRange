@@ -40,9 +40,6 @@ public static class FoodManager
         new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => SlimeEat.foodGroupIds[x] = [..SlimeEat.foodGroupIds[x], ..Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
     }
 
-#if DEBUG
-    [TimeDiagnostic]
-#endif
     private static void BasePreLoadChimken(CustomChimkenData chimkenData)
     {
         var amount = chimkenData.SpawnAmount / 2;
@@ -82,9 +79,6 @@ public static class FoodManager
     private static SpawnResource VeggieSpawnPrefab;
     private static SpawnResource FruitSpawnPrefab;
 
-#if DEBUG
-    [TimeDiagnostic]
-#endif
     private static void BasePreloadPlant(CustomPlantData plantData) => SRCallbacks.PreSaveGameLoad += context =>
     {
         VeggieSpawnPrefab ??= AssetManager.GetResource<SpawnResource>("patchCarrot02");
@@ -162,11 +156,11 @@ public static class FoodManager
         ];
 
         // Register both chicks and hens
-        RegisterFood(chickPrefab, AssetManager.GetSprite($"{lower}chick"), ammo, chimkenData.ChickId, chimkenData.ChickEntry, [SiloStorage.StorageType.NON_SLIMES]);
+        RegisterFood(chickPrefab, AssetManager.GetSprite($"{lower}chick"), ammo, chimkenData.ChickId, chimkenData.ChickEntry, [StorageType.NON_SLIMES]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
             CommonChickAboutPedia.Replace("%type%",  chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
 
-        RegisterFood(henPrefab, AssetManager.GetSprite($"{lower}hen"), ammo, chimkenData.MainId, chimkenData.MainEntry, [SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.FOOD]);
+        RegisterFood(henPrefab, AssetManager.GetSprite($"{lower}hen"), ammo, chimkenData.MainId, chimkenData.MainEntry, [StorageType.NON_SLIMES, StorageType.FOOD]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
 
@@ -193,7 +187,7 @@ public static class FoodManager
         return prefab;
     }
 
-    private static void RegisterFood(GameObject prefab, Sprite icon, Color ammo, IdentifiableId id, PediaId pediaId, SiloStorage.StorageType[] siloStorage)
+    private static void RegisterFood(GameObject prefab, Sprite icon, Color ammo, IdentifiableId id, PediaId pediaId, StorageType[] siloStorage)
     {
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, id);
@@ -233,7 +227,7 @@ public static class FoodManager
         var material2 = prefab.GetComponent<ResourceCycle>().rottenMat = material.Clone();
         material2.SetColor(Color1, "#333333".HexToColor());
 
-        RegisterFood(prefab, AssetManager.GetSprite(lower), plantData.MainAmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.FOOD]);
+        RegisterFood(prefab, AssetManager.GetSprite(lower), plantData.MainAmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [StorageType.NON_SLIMES, StorageType.FOOD]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 

@@ -15,9 +15,6 @@ public static class MailManager
         AssetManager.UnloadAsset<JsonAsset>("mailbox");
     }
 
-#if DEBUG
-    [TimeDiagnostic]
-#endif
     private static void PreLoadMail(CustomMailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id)
         .SetSubjectTranslation(mailData.Title)
         .SetFromTranslation(mailData.From)

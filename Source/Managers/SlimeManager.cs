@@ -10,7 +10,6 @@ namespace OceanRange.Managers;
 public static class SlimeManager
 {
     public static readonly List<CustomSlimeData> Slimes = [];
-    public static SlimeExpressionFace SleepingFace;
     // public static readonly string[] VanillaSlimes = ["PINK", "ROCK", "PHOSPHOR", "CRYSTAL", "RAD", "BOOM", "TANGLE", "DERVISH", "TABBY", "HUNTER", "SABER", "HONEY", "MOSAIC", "QUANTUM"]; // WIP
 
     private static bool SamExists;
@@ -51,9 +50,6 @@ public static class SlimeManager
         // Slimes.ForEach(x => x.GenerateLargos(modded));
     }
 
-#if DEBUG
-    [TimeDiagnostic]
-#endif
     private static void BasePreLoadSlime(CustomSlimeData slimeData) => SRCallbacks.PreSaveGameLoad += _ =>
     {
         var prefab = slimeData.MainId.GetPrefab();
@@ -93,15 +89,6 @@ public static class SlimeManager
         RocksPrefab = IdentifiableId.ROCK_PLORT.GetPrefab().transform.Find("rocks");
 
         Slimes.ForEach(BaseLoadSlime);
-
-        var blink = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Face.ExpressionFaces.First(x => x.SlimeExpression == SlimeFace.SlimeExpression.Blink);
-        SleepingFace = new()
-        {
-            SlimeExpression = Ids.Sleeping,
-            Eyes = blink.Eyes?.Clone(),
-            Mouth = blink.Mouth?.Clone()
-        };
-        SleepingFace.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleepingeyes"));
     }
 
 #if DEBUG
@@ -111,7 +98,9 @@ public static class SlimeManager
     {
         CreatePlort(slimeData);
         CreateSlime(slimeData);
-        CreateGordo(slimeData);
+
+        if (slimeData.HasGordo)
+            CreateGordo(slimeData);
 
         if (SamExists)
             TypeLoadExceptionBypass(slimeData);
@@ -122,9 +111,6 @@ public static class SlimeManager
 #endif
     private static void CreateGordo(CustomSlimeData slimeData)
     {
-        if (!slimeData.HasGordo)
-            return;
-
         var prefab = slimeData.BaseGordo.GetPrefab().CreatePrefab();
         prefab.name = "gordo" + slimeData.Name;
 
@@ -237,10 +223,10 @@ public static class SlimeManager
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
-        var silo = new[] { SiloStorage.StorageType.NON_SLIMES, SiloStorage.StorageType.PLORT };
+        var silo = new List<StorageType> { StorageType.NON_SLIMES, StorageType.PLORT };
 
         if (slimeData.CanBeRefined)
-            silo = [..silo, SiloStorage.StorageType.CRAFTING];
+            silo.Add(StorageType.CRAFTING);
 
         AmmoRegistry.RegisterSiloAmmo(silo.Contains, slimeData.PlortId);
 
@@ -508,10 +494,7 @@ public static class SlimeManager
             var weights = new BoneWeight[vertices2.Length];
 
             for (var n = 0; n < vertices2.Length; n++)
-            {
-                HandleBoneWeight(vertices2[n] - zero, num, jiggleAmount, out var weight);
-                weights[n] = weight;
-            }
+                weights[n] = HandleBoneWeight(vertices2[n] - zero, num, jiggleAmount);
 
             mesh.boneWeights = weights;
             var poses = new Matrix4x4[bones.Length];
@@ -535,17 +518,17 @@ public static class SlimeManager
         }
     }
 
-    private static void HandleBoneWeight(Vector3 diff, float num, float jiggleAmount, out BoneWeight weight)
+    private static BoneWeight HandleBoneWeight(Vector3 diff, float num, float jiggleAmount)
     {
         var num2 = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
-        weight = new BoneWeight
+        var weight = new BoneWeight
         {
             weight0 = 1f - num2,
             boneIndex0 = 0
         };
 
         if (num2 <= 0f)
-            return;
+            return weight;
 
         weight.boneIndex1 = diff.x >= 0f ? 1 : 2;
         weight.boneIndex2 = diff.y >= 0f ? 3 : 4;
@@ -560,11 +543,13 @@ public static class SlimeManager
         var num3 = value.ToArray().Sum();
 
         if (num3 == 0f)
-            return;
+            return weight;
 
         weight.weight1 /= num3;
         weight.weight2 /= num3;
         weight.weight3 /= num3;
+
+        return weight;
     }
 
     public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
@@ -714,6 +699,17 @@ public static class SlimeManager
             null,
             jiggleAmount
         );
+
+        var blink = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Face._expressionToFaceLookup[SlimeFace.SlimeExpression.Blink];
+        var sleeping = new SlimeExpressionFace()
+        {
+            SlimeExpression = Ids.Sleeping,
+            Eyes = blink.Eyes?.Clone(),
+            Mouth = blink.Mouth?.Clone()
+        };
+        sleeping.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleepingeyes"));
+        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, sleeping];
+        appearance.Face._expressionToFaceLookup[Ids.Sleeping] = sleeping;
     }
 
     public static void InitLanternGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)

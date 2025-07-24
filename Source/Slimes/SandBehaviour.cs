@@ -10,7 +10,7 @@ public sealed class SandBehaviour : SRBehaviour
 
     private static readonly Vector3 LocalProduceLoc = new(0f, 0.5f, 0f);
     private static readonly Vector3 LocalProduceVel = new(0f, 1f, 0f);
-    private const float EatRate = 3f;
+    private const float EatRate = 10f;
 
     private SlimeEmotions Emotions;
     private SlimeEat SlimeEat;
