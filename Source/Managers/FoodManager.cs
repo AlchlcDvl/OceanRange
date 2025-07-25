@@ -76,6 +76,7 @@ public static class FoodManager
         };
     }
 
+    // FIXME: Dirt in veggie patches is invisible for some reason
     private static void BasePreloadPlant(CustomPlantData plantData) => SRCallbacks.PreSaveGameLoad += context =>
     {
         var prefab = AssetManager.GetResource<SpawnResource>((plantData.Group == FoodGroup.VEGGIES ? "patchCarrot" : "treePogo") + "02");

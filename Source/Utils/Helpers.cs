@@ -147,24 +147,21 @@ public static class Helpers
 
             name = originalMesh.name + "_Clone",
 
-            uv = originalMesh.uv,
-            uv2 = originalMesh.uv2,
-            uv3 = originalMesh.uv3,
-            uv4 = originalMesh.uv4,
-            uv5 = originalMesh.uv5,
-            uv6 = originalMesh.uv6,
-            uv7 = originalMesh.uv7,
-            uv8 = originalMesh.uv8,
-
             subMeshCount = originalMesh.subMeshCount
         };
+
+        var uvs = new List<Vector2>();
+
+        for (var i = 0; i < 8; i++)
+        {
+            originalMesh.GetUVs(i, uvs);
+            mesh.SetUVs(i, uvs);
+            uvs.Clear();
+        }
 
         for (var i = 0; i < originalMesh.subMeshCount; i++)
             mesh.SetTriangles(originalMesh.GetTriangles(i), i);
 
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
-        mesh.RecalculateTangents();
         return mesh;
     }
 

@@ -75,8 +75,8 @@ public static class MeshUtilsImprovement
 
             for (var n = 0; n < vertices2.Length; n++)
             {
-                var vector5 = vertices2[n] - zero;
-                var num2 = Mathf.Clamp01((vector5.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
+                var diff = vertices2[n] - zero;
+                var num2 = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
                 var weight = new BoneWeight
                 {
                     weight0 = 1f - num2,
@@ -85,11 +85,11 @@ public static class MeshUtilsImprovement
 
                 if (num2 > 0f)
                 {
-                    weight.boneIndex1 = vector5.x >= 0f ? 1 : 2;
-                    weight.boneIndex2 = vector5.y >= 0f ? 3 : 4;
-                    weight.boneIndex3 = vector5.z >= 0f ? 5 : 6;
+                    weight.boneIndex1 = diff.x >= 0f ? 1 : 2;
+                    weight.boneIndex2 = diff.y >= 0f ? 3 : 4;
+                    weight.boneIndex3 = diff.z >= 0f ? 5 : 6;
 
-                    var value = vector5.Multiply(vector5).Multiply(vector5).Abs();
+                    var value = diff.Multiply(diff).Multiply(diff).Abs();
                     var num3 = value.ToArray().Sum();
 
                     weight.weight1 = value.x / num3 * num2;
@@ -115,9 +115,7 @@ public static class MeshUtilsImprovement
             }
 
             item.bindposes = poses;
-
-            if (!item.name.EndsWith("_Clone"))
-                item.RecalculateBounds();
+            item.RecalculateBounds();
         }
 
         return false;

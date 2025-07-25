@@ -61,19 +61,20 @@ public sealed class ResourceHandle(string name) : Handle(name)
     {
         var tType = typeof(T);
 
-        if (!Assets.TryGetValue(tType, out var asset))
+        if (!Assets.TryGetValue(tType, out var asset) || !asset)
         {
             asset = Array.Find(AssetManager.GetAllResources<T>(), x => x.name == Name);
+
+            if (!asset)
+                return throwError ? throw new FileNotFoundException($"{Name}, {tType.Name}") : null;
+
             Assets.Add(tType, asset);
         }
-
-        if (!asset)
-            return throwError ? throw new FileNotFoundException($"{Name}, {tType.Name}") : null;
 
         return asset as T;
     }
 
-    public void Unload<T>() where T : UObject => Assets.Remove(typeof(T));
+    // public void Unload<T>() where T : UObject => Assets.Remove(typeof(T));
 }
 
 public abstract class Handle(string name)
