@@ -510,34 +510,31 @@ public static class SlimeManager
 
     private static BoneWeight HandleBoneWeight(Vector3 diff, float num, float jiggleAmount)
     {
-        var num2 = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
+        var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
         var weight = new BoneWeight
         {
-            weight0 = 1f - num2,
-            boneIndex0 = 0
+            m_Weight0 = 1f - jiggle,
+            m_BoneIndex0 = 0
         };
 
-        if (num2 <= 0f)
+        if (jiggle == 0f)
             return weight;
 
-        weight.boneIndex1 = diff.x >= 0f ? 1 : 2;
-        weight.boneIndex2 = diff.y >= 0f ? 3 : 4;
-        weight.boneIndex3 = diff.z >= 0f ? 5 : 6;
+        weight.m_BoneIndex1 = diff.x >= 0f ? 1 : 2;
+        weight.m_BoneIndex2 = diff.y >= 0f ? 3 : 4;
+        weight.m_BoneIndex3 = diff.z >= 0f ? 5 : 6;
 
-        var value = diff.Multiply(diff).Abs();
+        var value = diff.Multiply(diff);
+        var normal = value.Sum();
 
-        weight.weight1 = value.x * num2;
-        weight.weight2 = value.y * num2;
-        weight.weight3 = value.z * num2;
+        if (normal > 0f)
+            value /= normal;
 
-        var num3 = value.ToArray().Sum();
+        value *= jiggle;
 
-        if (num3 == 0f)
-            return weight;
-
-        weight.weight1 /= num3;
-        weight.weight2 /= num3;
-        weight.weight3 /= num3;
+        weight.m_Weight1 = value.x;
+        weight.m_Weight2 = value.y;
+        weight.m_Weight3 = value.z;
 
         return weight;
     }
@@ -582,7 +579,7 @@ public static class SlimeManager
         prefab, appearance, applicator,
         null,
         null,
-        // Coco mesh doesn't work atm
+        // FIXME: Coco mesh doesn't work atm
         // ["coco_body", "coco_brows"],
         // (i, structure) =>
         // {

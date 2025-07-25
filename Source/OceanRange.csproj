@@ -3,7 +3,7 @@
         <AssemblyName>OceanRange</AssemblyName>
         <RootNamespace>TheOceanRange</RootNamespace>
         <TargetFramework>net4.8</TargetFramework>
-        <Version>1.0.0</Version>
+        <Version>0.0.1</Version>
         <DebugType>none</DebugType>
         <DebugSymbols>true</DebugSymbols>
         <LangVersion>preview</LangVersion>
@@ -32,12 +32,7 @@
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" />
     </Target>
 
-    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-        <DefineConstants>DEBUG</DefineConstants>
-    </PropertyGroup>
-
     <PropertyGroup Condition="'$(Configuration)'=='Release'">
-        <DefineConstants>RELEASE</DefineConstants>
         <Optimize>true</Optimize>
     </PropertyGroup>
 

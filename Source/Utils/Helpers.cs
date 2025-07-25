@@ -186,6 +186,8 @@ public static class Helpers
 
     // public static string ToHexRGBA(this Color32 color) => $"{color.r:X2},{color.g:X2},{color.b:X2},{color.a:X2}";
 
+    public static float Sum(this Vector3 vector) => vector.x + vector.y + vector.z;
+
 #if DEBUG
     public static GameObject GetClosestCell(Vector3 pos)
     {

@@ -66,25 +66,30 @@ public static class MeshUtilsImprovement
             for (var n = 0; n < vertices2.Length; n++)
             {
                 var diff = vertices2[n] - zero;
-                var num2 = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
+                var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
                 var weight = new BoneWeight
                 {
-                    weight0 = 1f - num2,
+                    weight0 = 1f - jiggle,
                     boneIndex0 = 0
                 };
 
-                if (num2 > 0f)
+                if (jiggle > 0f)
                 {
                     weight.boneIndex1 = diff.x >= 0f ? 1 : 2;
                     weight.boneIndex2 = diff.y >= 0f ? 3 : 4;
                     weight.boneIndex3 = diff.z >= 0f ? 5 : 6;
 
                     var value = diff.Multiply(diff).Multiply(diff).Abs();
-                    var num3 = value.ToArray().Sum();
+                    var normal = value.Sum();
 
-                    weight.weight1 = value.x / num3 * num2;
-                    weight.weight2 = value.y / num3 * num2;
-                    weight.weight3 = value.z / num3 * num2;
+                    if (normal > 0f)
+                        value /= normal;
+
+                    value *= jiggle;
+
+                    weight.weight1 = value.x;
+                    weight.weight2 = value.y;
+                    weight.weight3 = value.z;
                 }
 
                 weight.weight0 *= scale;
