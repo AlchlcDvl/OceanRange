@@ -77,6 +77,7 @@ public sealed class CustomPlantData : CustomFoodData
     public void PopulateRemainingValues(StreamingContext _)
     {
         var upper = Name.ToUpper();
+
         var typeUpper = Type.ToUpper();
         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");

@@ -167,6 +167,8 @@ public sealed class CustomSlimeData : JsonData
         InitSlimeDetails = AccessTools.Method(type, init + "SlimeDetails");
         InitPlortDetails = AccessTools.Method(type, init + "PlortDetails");
 
+        HasGordo |= SlimeManager.MgExists && MainId == Ids.SAND_SLIME;
+
         if (HasGordo)
         {
             GordoId = Helpers.ParseEnum<IdentifiableId>(upper + "_GORDO");

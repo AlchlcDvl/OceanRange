@@ -11,6 +11,7 @@ public static class SlimeManager
 {
     public static readonly List<CustomSlimeData> Slimes = [];
     // public static readonly string[] VanillaSlimes = ["PINK", "ROCK", "PHOSPHOR", "CRYSTAL", "RAD", "BOOM", "TANGLE", "DERVISH", "TABBY", "HUNTER", "SABER", "HONEY", "MOSAIC", "QUANTUM"]; // WIP
+    public static bool MgExists;
 
     private static bool SamExists;
     private static Transform RocksPrefab;
@@ -27,6 +28,7 @@ public static class SlimeManager
     private static readonly int EyeGreen = Shader.PropertyToID("_EyeGreen");
     private static readonly int EyeBlue = Shader.PropertyToID("_EyeBlue");
     private static readonly int FaceAtlas = Shader.PropertyToID("_FaceAtlas");
+    private static readonly int VertexOffset = Shader.PropertyToID("_VertexOffset");
 
 #if DEBUG
     [TimeDiagnostic("Slimes Preload")]
@@ -34,6 +36,7 @@ public static class SlimeManager
     public static void PreLoadSlimeData()
     {
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
+        MgExists = SRModLoader.IsModPresent("luckygordo");
 
         Slimes.AddRange(AssetManager.GetJson<CustomSlimeData[]>("slimepedia"));
 
@@ -42,6 +45,7 @@ public static class SlimeManager
         Slimes.ForEach(BasePreLoadSlime);
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
+        TranslationPatcher.AddUITranslation("m.foodgroup.dirt_gordo", "Silky Sand");
 
         SlimeEat.foodGroupIds[FoodGroup.NONTARRGOLD_SLIMES] = [.. SlimeEat.foodGroupIds[FoodGroup.NONTARRGOLD_SLIMES], .. Slimes.Select(x => x.MainId)];
         SlimeEat.foodGroupIds[FoodGroup.PLORTS] = [.. SlimeEat.foodGroupIds[FoodGroup.PLORTS], .. Slimes.Select(x => x.PlortId)];
@@ -77,7 +81,7 @@ public static class SlimeManager
             }
         }
 
-        if (slimeData.HasGordo)
+        if (slimeData.HasGordo && slimeData.MainId != Ids.SAND_SLIME)
             Helpers.BuildGordo(slimeData, AssetManager.GetResource<GameObject>("cell" + slimeData.GordoLocation).FindChild("Sector/Slimes"));
     };
 
@@ -114,8 +118,9 @@ public static class SlimeManager
         var prefab = slimeData.BaseGordo.GetPrefab().CreatePrefab();
         prefab.name = "gordo" + slimeData.Name;
 
-        var definition = slimeData.MainId.GetSlimeDefinition().DeepCopy();
-        var material = definition.AppearancesDefault[0].Structures[0].DefaultMaterials[0];
+        var definition = slimeData.MainId.GetSlimeDefinition();
+        var appearance = definition.AppearancesDefault[0];
+        var material = appearance.Structures[0].DefaultMaterials[0].Clone();
 
         var lower = slimeData.Name.ToLower();
         var name = slimeData.Name + " Gordo";
@@ -139,6 +144,21 @@ public static class SlimeManager
         gordoDefinition.name = lower + "_gordo";
         gordoEat.slimeDefinition = gordoDefinition;
         gordoEat.targetCount = 50;
+
+        if (slimeData.SpecialDiet)
+            gordoEat.allEats = [slimeData.FavFood];
+
+        if (slimeData.MainId == Ids.SAND_SLIME)
+        {
+            material.SetFloat(VertexOffset, 0f);
+
+			var component2 = prefab.GetComponent<GordoFaceComponents>();
+			component2.blinkEyes = appearance.Face.GetExpressionFace(SlimeFace.SlimeExpression.Blink).Eyes;
+			component2.strainEyes = appearance.Face.GetExpressionFace(SlimeFace.SlimeExpression.Scared).Eyes;
+			component2.chompOpenMouth = material;
+			component2.happyMouth = material;
+			component2.strainMouth = material;
+        }
 
         var rewards = prefab.GetComponent<GordoRewards>();
         rewards.rewardPrefabs = [..slimeData.GordoRewards.Select(x => x.GetPrefab())];
@@ -246,8 +266,8 @@ public static class SlimeManager
         var definition = baseDefinition.DeepCopy();
         definition.Diet.Produces = [slimeData.PlortId];
         definition.Diet.MajorFoodGroups = slimeData.SpecialDiet ? [] : [slimeData.Diet];
-        definition.Diet.AdditionalFoods = [IdentifiableId.SPICY_TOFU];
-        definition.Diet.Favorites = [slimeData.FavFood];
+        definition.Diet.AdditionalFoods = slimeData.SpecialDiet ? [] : [IdentifiableId.SPICY_TOFU];
+        definition.Diet.Favorites = slimeData.SpecialDiet ? [] : [slimeData.FavFood];
         definition.Diet.EatMap?.Clear();
         definition.CanLargofy = slimeData.CanLargofy;
         definition.FavoriteToys = [slimeData.FavToy];
@@ -500,6 +520,7 @@ public static class SlimeManager
             meshRend.localBounds = mesh.bounds;
             meshRend.bones = bones;
             meshRend.rootBone = meshRend.bones[0];
+            meshRend.gameObject.AddComponent<MeshCollider>();
 
             if (!isNull)
                 meshRend.name = meshName;

@@ -3,7 +3,7 @@
         "name": "Rosi",
         "zones": ["REEF"],
         "canLargofy": false,
-        "favFood": "HEN",
+        "specialDiet": true,
         "favToy": "OCTO_BUDDY_TOY",
         "topSlimeColor": "#F9E5F0",
         "middleSlimeColor": "#E6C7D2",
@@ -139,6 +139,7 @@
     {
         "name": "Sand",
         "favToy": "BEACH_BALL_TOY",
+        "favFood": "SILKY_SAND_CRAFT",
         "baseSlime": "PUDDLE_SLIME",
         "topSlimeColor": "#E2DFD2",
         "middleSlimeColor": "#E8C499",
@@ -162,6 +163,8 @@
         "spawnWeight": 0.15,
         "jiggle": 0.125,
         "hasGordo": false,
+        "gordoRewards": ["SILKY_SAND_CRAFT", "SILKY_SAND_CRAFT", "SILKY_SAND_CRAFT"],
+        "gordoZone": "RANCH",
         "slimeology": "The sand slime, a curious terrestrial cousin to both the puddle and fire slimes, makes its home along the shallow, sun-drenched shores of the Far, Far Range. Much like its elemental kin, these intriguing slimes require no typical sustenance from a rancher's feeder; instead, they subsist entirely on good old dirt. After sifting through the gritty soil, sand slimes process the minerals within, producing glimmering plorts that bear a striking resemblance to Earth's precious pearls. Their calm demeanor and unique diet make them a rather low-maintenance addition to any ranch.",
         "risks": "Rest easy, ranchers! The sand slime is one of the most delightfully docile slimes you'll encounter. These mellow blobs pose virtually no risk to the ranch, thriving peacefully in any populated corral without inciting a single outbreak. However, despite their beach-dwelling nature, sand slimes are surprisingly delicate when it comes to deep water; prolonged submersion will cause them to slowly dissolve! Even their valuable pearl plorts are safe from hungry mouths; it seems no other slime has a taste for a glistening pearl that began its life as common dirt. Their laid-back nature and inability to cause a ruckus make them perfect companions for even the most timid slimes, just keep them away from the deep end!",
         "plortonomics": "Sand plorts are true marvels of natural refinement. Though the sand slime itself is soft and yielding, the pearls it produces are remarkably tougher than their Earth counterparts, defying their humble origins. These pristine, spherical treasures, born from nothing more than processed soil, fetch an exceptional price on the Plort Market. Their iridescent sheen and superior durability make them highly sought-after for crafting exquisite jewelry and other luxury adornments across the galaxy, proving that true beauty can indeed come from the ground up!"

@@ -194,18 +194,18 @@ public static class Helpers
         GameObject closest = null;
         var distance = float.MaxValue;
 
-        foreach (var gameObject in SceneManager
+        foreach (var cell in SceneManager
             .GetActiveScene()
             .GetRootGameObjects()
             .Where(x => x.name.StartsWith("zone"))
             .SelectMany(x => x.FindChildrenWithPartialName("cell", true)))
         {
-            var diff = (gameObject.transform.position - pos).sqrMagnitude;
+            var diff = (cell.transform.position - pos).sqrMagnitude;
 
             if (diff >= distance)
                 continue;
 
-            closest = gameObject;
+            closest = cell;
             distance = diff;
         }
 
