@@ -1,6 +1,7 @@
 using AssetsLib;
 using SRML;
 using SRML.SR.SaveSystem;
+using SRML.Utils;
 using UnityEngine.UI;
 
 namespace OceanRange.Managers;
@@ -131,9 +132,11 @@ public static class SlimeManager
         markerPrefab.GetComponent<Image>().sprite = AssetManager.GetSprite($"{lower}gordo");
         gordoDisplay.markerPrefab = markerPrefab;
 
+        var isSand = slimeData.MainId == Ids.SAND_SLIME;
+
         var identifiable = prefab.GetComponent<GordoIdentifiable>();
         identifiable.id = slimeData.GordoId;
-        identifiable.nativeZones = [slimeData.GordoZone];
+        identifiable.nativeZones = isSand ? EnumUtils.GetAll(Zone.RANCH) : [slimeData.GordoZone];
 
         var gordoEat = prefab.GetComponent<GordoEat>();
         var gordoDefinition = gordoEat.slimeDefinition.DeepCopy();
@@ -148,16 +151,16 @@ public static class SlimeManager
         if (slimeData.SpecialDiet)
             gordoEat.allEats = [slimeData.FavFood];
 
-        if (slimeData.MainId == Ids.SAND_SLIME)
+        if (isSand)
         {
             material.SetFloat(VertexOffset, 0f);
 
-			var component2 = prefab.GetComponent<GordoFaceComponents>();
-			component2.blinkEyes = appearance.Face.GetExpressionFace(SlimeFace.SlimeExpression.Blink).Eyes;
-			component2.strainEyes = appearance.Face.GetExpressionFace(SlimeFace.SlimeExpression.Scared).Eyes;
-			component2.chompOpenMouth = material;
-			component2.happyMouth = material;
-			component2.strainMouth = material;
+            var face = prefab.GetComponent<GordoFaceComponents>();
+            face.blinkEyes = appearance.Face.GetExpressionFace(SlimeFace.SlimeExpression.Blink).Eyes;
+            face.strainEyes = appearance.Face.GetExpressionFace(SlimeFace.SlimeExpression.Scared).Eyes;
+            face.chompOpenMouth = material;
+            face.happyMouth = material;
+            face.strainMouth = material;
         }
 
         var rewards = prefab.GetComponent<GordoRewards>();
@@ -266,7 +269,7 @@ public static class SlimeManager
         var definition = baseDefinition.DeepCopy();
         definition.Diet.Produces = [slimeData.PlortId];
         definition.Diet.MajorFoodGroups = slimeData.SpecialDiet ? [] : [slimeData.Diet];
-        definition.Diet.AdditionalFoods = slimeData.SpecialDiet ? [] : [IdentifiableId.SPICY_TOFU];
+        definition.Diet.AdditionalFoods = slimeData.MainId == Ids.SAND_SLIME ? [] : [IdentifiableId.SPICY_TOFU];
         definition.Diet.Favorites = slimeData.SpecialDiet ? [] : [slimeData.FavFood];
         definition.Diet.EatMap?.Clear();
         definition.CanLargofy = slimeData.CanLargofy;
