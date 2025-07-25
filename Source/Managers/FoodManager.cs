@@ -36,8 +36,6 @@ public static class FoodManager
 
         Chimkens.ForEach(BasePreLoadChimken);
         Plants.ForEach(BasePreloadPlant);
-
-        new[] { FoodGroup.VEGGIES, FoodGroup.FRUIT, FoodGroup.MEAT }.Do(x => SlimeEat.foodGroupIds[x] = [..SlimeEat.foodGroupIds[x], ..Foods.Where(y => y.Group == x).Select(y => y.MainId)]);
     }
 
     private static void BasePreLoadChimken(CustomChimkenData chimkenData)

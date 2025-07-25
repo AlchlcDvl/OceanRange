@@ -17,6 +17,7 @@ internal sealed class Main : ModEntryPoint
     public override void PreLoad()
     {
 #if DEBUG
+        // This method is already running, so the time diagnostic patch doesn't work for it
         var watch = new System.Diagnostics.Stopwatch();
         watch.Start();
 #endif
@@ -41,7 +42,7 @@ internal sealed class Main : ModEntryPoint
         RegisterCommand(new TeleportCommand());
 
         watch.Stop();
-        Console.Log($"Mod Preloaded in {watch.ElapsedMilliseconds}ms!");
+        ConsoleInstance.Log($"Mod Preloaded in {watch.ElapsedMilliseconds}ms!");
         watch.Restart();
 #endif
     }

@@ -7,12 +7,6 @@ public abstract class CustomFoodData : JsonData
     [JsonProperty("group")]
     public FoodGroup Group;
 
-    // [JsonProperty("favouriteModifier")]
-    // public int FavouriteModifier;
-
-    // [JsonProperty("minDrive")]
-    // public float MinDrive = 1f;
-
     [JsonProperty("favouredBy"), JsonRequired]
     public IdentifiableId[] FavouredBy;
 

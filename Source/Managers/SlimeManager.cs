@@ -48,9 +48,6 @@ public static class SlimeManager
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt_gordo", "Silky Sand");
 
-        SlimeEat.foodGroupIds[FoodGroup.NONTARRGOLD_SLIMES] = [.. SlimeEat.foodGroupIds[FoodGroup.NONTARRGOLD_SLIMES], .. Slimes.Select(x => x.MainId)];
-        SlimeEat.foodGroupIds[FoodGroup.PLORTS] = [.. SlimeEat.foodGroupIds[FoodGroup.PLORTS], .. Slimes.Select(x => x.PlortId)];
-
         // var modded = Slimes.Select(x => x.Name.ToUpper()).ToArray(); // WIP
         // Slimes.ForEach(x => x.GenerateLargos(modded));
     }
