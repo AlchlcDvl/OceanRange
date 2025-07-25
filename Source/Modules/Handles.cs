@@ -3,7 +3,6 @@ namespace OceanRange.Modules;
 public sealed class AssetHandle(string name) : Handle(name)
 {
     private readonly List<string> Paths = []; // Handles asset paths
-    private readonly Dictionary<UObject, string> LoadedFrom = []; // Handles if assets have been loaded
 
     public void AddPath(string path)
     {
@@ -31,10 +30,7 @@ public sealed class AssetHandle(string name) : Handle(name)
         asset = generator.LoadAsset(path);
 
         if (asset)
-        {
-            LoadedFrom.Add(asset, path);
             Assets.Add(tType, asset);
-        }
         else
             return throwError ? throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!") : null;
 
@@ -46,12 +42,8 @@ public sealed class AssetHandle(string name) : Handle(name)
     {
         var tType = typeof(T);
 
-        if (!Assets.TryGetValue(tType, out var asset))
-            return;
-
-        LoadedFrom.Remove(asset);
-        Assets.Remove(tType);
-        asset.Destroy();
+        if (Assets.Remove(tType, out var asset))
+            asset.Destroy();
     }
 }
 
@@ -61,17 +53,16 @@ public sealed class ResourceHandle(string name) : Handle(name)
     {
         var tType = typeof(T);
 
-        if (!Assets.TryGetValue(tType, out var asset) || !asset)
-        {
-            asset = Array.Find(AssetManager.GetAllResources<T>(), x => x.name == Name);
+        if (Assets.TryGetValue(tType, out var asset))
+            return asset as T;
 
-            if (!asset)
-                return throwError ? throw new FileNotFoundException($"{Name}, {tType.Name}") : null;
+        asset = Array.Find(AssetManager.GetAllResources<T>(), x => x.name == Name);
 
-            Assets.Add(tType, asset);
-        }
+        if (!asset)
+            return throwError ? throw new FileNotFoundException($"{Name}, {tType.Name}") : null;
 
-        return asset as T;
+        Assets.Add(tType, asset);
+        return (T)asset;
     }
 
     // public void Unload<T>() where T : UObject => Assets.Remove(typeof(T));

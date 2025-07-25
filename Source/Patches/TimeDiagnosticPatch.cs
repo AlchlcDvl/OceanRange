@@ -41,7 +41,7 @@ public static class TimeDiagnosticPatch
                 {
                     JsonData json => json.Name,
                     CustomMailData mail => mail.Id,
-                    _ => throw new Exception() // Move to catch block
+                    _ => throw new() // Move to catch block
                 };
                 __state += $" {name}";
             }

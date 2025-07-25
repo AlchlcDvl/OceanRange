@@ -20,9 +20,10 @@ public static class AssetManager
     private static readonly Dictionary<string, AssetHandle> ModAssets = [];
     private static readonly Dictionary<string, ResourceHandle> GameAssets = [];
     private static readonly Dictionary<Type, UObject[]> FetchedAssets = [];
-    // private static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath), "SRML");
 
 #if DEBUG
+    public static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath)!, "SRML");
+
     [TimeDiagnostic("Assets Initialis")]
 #endif
     public static void InitialiseAssets()

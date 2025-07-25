@@ -16,18 +16,8 @@ public static class MeshUtilsImprovement
 
         var sharedMesh = bodyApp.GetComponent<SkinnedMeshRenderer>().sharedMesh;
         var vertices = sharedMesh.vertices;
-        var zero = Vector3.zero;
-
-        foreach (var vector in vertices)
-            zero += vector;
-
-        zero /= vertices.Length;
-        var num = 0f;
-
-        foreach (var vector in vertices)
-            num += (vector - zero).magnitude;
-
-        num /= vertices.Length;
+        var zero = vertices.Aggregate(Vector3.zero, (current, vector) => current + vector) / vertices.Length;
+        var num = vertices.Sum(vector => (vector - zero).magnitude) / vertices.Length;
         var list = new List<Mesh> { sharedMesh };
 
         bodyApp.AttachedBones =

@@ -81,7 +81,7 @@ public static class FoodManager
     {
         var prefab = AssetManager.GetResource<SpawnResource>((plantData.Group == FoodGroup.VEGGIES ? "patchCarrot" : "treePogo") + "02");
         var name = plantData.ResourceIdSuffix.ToLower() + plantData.Name + "0";
-        var array = new GameObject[1] { plantData.MainId.GetPrefab() };
+        var array = new[] { plantData.MainId.GetPrefab() };
 
         foreach (var (cell, positions) in plantData.SpawnLocations)
         {

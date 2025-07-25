@@ -55,7 +55,7 @@ internal sealed class Main : ModEntryPoint
         SlimeManager.LoadAllSlimes();
     }
 
-    public static void ReadData(CompoundDataPiece piece)
+    private static void ReadData(CompoundDataPiece piece)
     {
         FixAndProperlyShowMailPatch.IsLoaded = false;
 
@@ -72,7 +72,7 @@ internal sealed class Main : ModEntryPoint
         FixAndProperlyShowMailPatch.IsLoaded = true;
     }
 
-    public static void WriteData(CompoundDataPiece piece)
+    private static void WriteData(CompoundDataPiece piece)
     {
         FixAndProperlyShowMailPatch.IsLoaded = false;
 

@@ -456,22 +456,12 @@ public static class SlimeManager
         var prefabRend = gordo.GetComponent<SkinnedMeshRenderer>();
         var sharedMesh = prefabRend.sharedMesh;
         var vertices = sharedMesh.vertices;
-        var zero = Vector3.zero;
-
-        for (var k = 0; k < vertices.Length; k++)
-            zero += vertices[k];
-
-        zero /= vertices.Length;
-        var num = 0f;
-
-        foreach (var vector in vertices)
-            num += (vector - zero).magnitude;
-
-        num /= vertices.Length;
+        var zero = vertices.Aggregate(Vector3.zero, (current, vector) => current + vector) / vertices.Length;
+        var num = vertices.Sum(vector => (vector - zero).magnitude) / vertices.Length;
         var parent = gordo.parent;
         var parentObj = parent.gameObject.FindChild("bone_root");
 
-        var bones = new Transform[]
+        var bones = new[]
         {
             parentObj.FindChild("bone_slime").transform,
             parentObj.FindChild("bone_skin_rig", true).transform,

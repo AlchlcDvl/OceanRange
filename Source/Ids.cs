@@ -1,5 +1,6 @@
 using SRML.Utils.Enum;
 
+// ReSharper disable UnusedMember.Global
 // ReSharper disable UnassignedReadonlyField
 
 namespace OceanRange;
