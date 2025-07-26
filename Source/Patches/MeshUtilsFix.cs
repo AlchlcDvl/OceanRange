@@ -6,7 +6,7 @@ namespace OceanRange.Patches;
 [HarmonyPatch(typeof(MeshUtils), nameof(MeshUtils.GenerateBoneData), typeof(SlimeAppearanceApplicator), typeof(SlimeAppearanceObject), typeof(float), typeof(float), typeof(Mesh[]), typeof(SlimeAppearanceObject[]))]
 public static class MeshUtilsImprovement
 {
-    public static bool Prefix(SlimeAppearanceApplicator slimePrefab, SlimeAppearanceObject bodyApp, float jiggleAmount, float scale, Mesh[] AdditionalMesh, SlimeAppearanceObject[] appearanceObjects)
+    public static bool Prefix(SlimeAppearanceApplicator slimePrefab, SlimeAppearanceObject bodyApp, float jiggleAmount, float scale, [HarmonyArgument(4)] Mesh[] additionalMesh, SlimeAppearanceObject[] appearanceObjects)
     {
         if (!slimePrefab)
             throw new ArgumentNullException(nameof(slimePrefab));
@@ -18,7 +18,6 @@ public static class MeshUtilsImprovement
         var vertices = sharedMesh.vertices;
         var zero = vertices.Aggregate(Vector3.zero, (current, vector) => current + vector) / vertices.Length;
         var num = vertices.Sum(vector => (vector - zero).magnitude) / vertices.Length;
-        var list = new List<Mesh> { sharedMesh };
 
         bodyApp.AttachedBones =
         [
@@ -30,6 +29,8 @@ public static class MeshUtilsImprovement
             SlimeAppearance.SlimeBone.JiggleFront,
             SlimeAppearance.SlimeBone.JiggleBack
         ];
+
+        var list = new List<Mesh> { sharedMesh };
 
         if (appearanceObjects != null)
         {
@@ -47,8 +48,8 @@ public static class MeshUtilsImprovement
             }
         }
 
-        if (AdditionalMesh != null)
-            list.AddRange(AdditionalMesh);
+        if (additionalMesh != null)
+            list.AddRange(additionalMesh);
 
         var rootMatrix = slimePrefab.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;
 
