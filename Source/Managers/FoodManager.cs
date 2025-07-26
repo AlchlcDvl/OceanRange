@@ -28,74 +28,68 @@ public static class FoodManager
         Chimkens.AddRange(AssetManager.GetJson<CustomChimkenData[]>("chimkenpedia"));
         Plants.AddRange(AssetManager.GetJson<CustomPlantData[]>("plantpedia"));
 
-        Foods.AddRange(Chimkens);
-        Foods.AddRange(Plants);
-
         AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
         AssetManager.UnloadAsset<JsonAsset>("plantpedia");
 
-        Chimkens.ForEach(BasePreLoadChimken);
-        Plants.ForEach(BasePreloadPlant);
-    }
+        Foods.AddRange(Chimkens);
+        Foods.AddRange(Plants);
 
-    private static void BasePreLoadChimken(CustomChimkenData chimkenData)
-    {
-        var amount = chimkenData.SpawnAmount / 2;
-
-        SRCallbacks.PreSaveGameLoad += _ =>
+        SRCallbacks.PreSaveGameLoad += context =>
         {
-            var henPrefab = chimkenData.MainId.GetPrefab();
-            var chickPrefab = chimkenData.ChickId.GetPrefab();
+            var spawners = UObject.FindObjectsOfType<DirectedAnimalSpawner>();
 
-            foreach (var directedAnimalSpawner2 in UObject.FindObjectsOfType<DirectedAnimalSpawner>().Where(spawner =>
+            foreach (var chimkenData in Chimkens)
             {
-                var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
-                return zoneId == Zone.NONE || chimkenData.Zones.Contains(zoneId);
-            }))
-            {
-                foreach (var constraint in directedAnimalSpawner2.constraints)
+                var amount = chimkenData.SpawnAmount / 2;
+                var henPrefab = chimkenData.MainId.GetPrefab();
+                var chickPrefab = chimkenData.ChickId.GetPrefab();
+
+                foreach (var directedAnimalSpawner2 in spawners.Where(spawner => Helpers.IsValidZone(spawner, chimkenData.Zones)))
                 {
-                    constraint.slimeset.members =
-                    [
-                        .. constraint.slimeset.members,
-                        new()
-                        {
-                            prefab = henPrefab,
-                            weight = amount
-                        },
-                        new()
-                        {
-                            prefab = chickPrefab,
-                            weight = amount
-                        }
-                    ];
+                    foreach (var constraint in directedAnimalSpawner2.constraints)
+                    {
+                        constraint.slimeset.members =
+                        [
+                            .. constraint.slimeset.members,
+                            new()
+                            {
+                                prefab = henPrefab,
+                                weight = amount
+                            },
+                            new()
+                            {
+                                prefab = chickPrefab,
+                                weight = amount
+                            }
+                        ];
+                    }
+                }
+            }
+
+            // FIXME: Dirt in veggie patches are invisible for some reason
+            foreach (var plantData in Plants)
+            {
+                var prefab = AssetManager.GetResource<SpawnResource>((plantData.Group == FoodGroup.VEGGIES ? "patchCarrot" : "treePogo") + "02");
+                var name = plantData.ResourceIdSuffix.ToLower() + plantData.Name + "0";
+                var array = new[] { plantData.MainId.GetPrefab() };
+
+                foreach (var (cell, positions) in plantData.SpawnLocations)
+                {
+                    var parent = AssetManager.GetResource<GameObject>("cell" + cell).FindChild("Sector/Resources").transform;
+
+                    for (var i = 0; i < positions.Length; i++)
+                    {
+                        var pos = positions[i];
+                        var resource = prefab.Instantiate(parent);
+                        resource.transform.position = pos;
+                        resource.name = name + i;
+                        resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
+                        context.GameModel.RegisterResourceSpawner(pos, resource);
+                    }
                 }
             }
         };
     }
-
-    // FIXME: Dirt in veggie patches is invisible for some reason
-    private static void BasePreloadPlant(CustomPlantData plantData) => SRCallbacks.PreSaveGameLoad += context =>
-    {
-        var prefab = AssetManager.GetResource<SpawnResource>((plantData.Group == FoodGroup.VEGGIES ? "patchCarrot" : "treePogo") + "02");
-        var name = plantData.ResourceIdSuffix.ToLower() + plantData.Name + "0";
-        var array = new[] { plantData.MainId.GetPrefab() };
-
-        foreach (var (cell, positions) in plantData.SpawnLocations)
-        {
-            var parent = AssetManager.GetResource<GameObject>("cell" + cell).FindChild("Sector/Resources").transform;
-
-            for (var i = 0; i < positions.Length; i++)
-            {
-                var pos = positions[i];
-                var resource = prefab.Instantiate(parent);
-                resource.transform.position = pos;
-                resource.name = name + i;
-                resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
-                context.GameModel.RegisterResourceSpawner(pos, resource);
-            }
-        }
-    };
 
 #if DEBUG
     [TimeDiagnostic("Foods Load")]

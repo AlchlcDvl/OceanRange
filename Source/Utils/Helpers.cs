@@ -188,6 +188,12 @@ public static class Helpers
 
     public static float Sum(this Vector3 vector) => vector.x + vector.y + vector.z;
 
+    public static bool IsValidZone(DirectedActorSpawner spawner, Zone[] zones)
+    {
+        var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
+        return zoneId == Zone.NONE || zones.Contains(zoneId);
+    }
+
 #if DEBUG
     public static GameObject GetClosestCell(Vector3 pos)
     {

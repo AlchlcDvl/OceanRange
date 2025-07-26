@@ -43,45 +43,44 @@ public static class SlimeManager
 
         AssetManager.UnloadAsset<JsonAsset>("slimepedia");
 
-        Slimes.ForEach(BasePreLoadSlime);
-
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt_gordo", "Silky Sand");
+
+        SRCallbacks.PreSaveGameLoad += _ =>
+        {
+            var spawners = UObject.FindObjectsOfType<DirectedSlimeSpawner>();
+
+            foreach (var slimeData in Slimes)
+            {
+                var prefab = slimeData.MainId.GetPrefab();
+
+                foreach (var item in spawners.Where(spawner => Helpers.IsValidZone(spawner, slimeData.Zones)))
+                {
+                    foreach (var constraint in item.constraints)
+                    {
+                        if (slimeData.NightSpawn && constraint.window.timeMode != DirectedActorSpawner.TimeMode.NIGHT)
+                            continue;
+
+                        constraint.slimeset.members =
+                        [
+                            .. constraint.slimeset.members,
+                            new()
+                            {
+                                prefab = prefab,
+                                weight = slimeData.SpawnAmount
+                            }
+                        ];
+                    }
+                }
+
+                if (slimeData.HasGordo && slimeData.MainId != Ids.SAND_SLIME)
+                    Helpers.BuildGordo(slimeData, AssetManager.GetResource<GameObject>("cell" + slimeData.GordoLocation).FindChild("Sector/Slimes"));
+            }
+        };
 
         // var modded = Slimes.Select(x => x.Name.ToUpper()).ToArray(); // WIP
         // Slimes.ForEach(x => x.GenerateLargos(modded));
     }
-
-    private static void BasePreLoadSlime(CustomSlimeData slimeData) => SRCallbacks.PreSaveGameLoad += _ =>
-    {
-        var prefab = slimeData.MainId.GetPrefab();
-
-        foreach (var item in UObject.FindObjectsOfType<DirectedSlimeSpawner>().Where(spawner =>
-        {
-            var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
-            return zoneId == Zone.NONE || slimeData.Zones.Contains(zoneId);
-        }))
-        {
-            foreach (var constraint in item.constraints)
-            {
-                if (slimeData.NightSpawn && constraint.window.timeMode != DirectedActorSpawner.TimeMode.NIGHT)
-                    continue;
-
-                constraint.slimeset.members =
-                [
-                    .. constraint.slimeset.members,
-                    new()
-                    {
-                        prefab = prefab,
-                        weight = slimeData.SpawnAmount
-                    }
-                ];
-            }
-        }
-
-        if (slimeData.HasGordo && slimeData.MainId != Ids.SAND_SLIME)
-            Helpers.BuildGordo(slimeData, AssetManager.GetResource<GameObject>("cell" + slimeData.GordoLocation).FindChild("Sector/Slimes"));
-    };
 
 #if DEBUG
     [TimeDiagnostic("Slimes Load")]
