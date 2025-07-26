@@ -175,9 +175,9 @@ public static class SlimeManager
 
         prefab.AddComponent<CustomGordo>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
 
-        slimeData.InitGordoDetails?.Invoke(null, [prefab, definition, gordoObj]);
+        slimeData.InitGordoDetails?.Invoke(null, [prefab, gordoDefinition, gordoObj]);
 
-        TranslationPatcher.AddPediaTranslation("t." + definition.name, name);
+        TranslationPatcher.AddPediaTranslation("t." + gordoDefinition.name, name);
         TranslationPatcher.AddActorTranslation("l." + slimeData.GordoId.ToString().ToLower(), name);
         LookupRegistry.RegisterGordo(prefab);
         SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);

@@ -23,7 +23,7 @@ internal sealed class Main : ModEntryPoint
 #endif
         Console = ConsoleInstance;
 
-        HarmonyInstance.PatchAll();
+        HarmonyInstance.PatchAll(AssetManager.Core);
 
         AssetManager.InitialiseAssets();
 
