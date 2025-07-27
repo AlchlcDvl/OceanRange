@@ -653,26 +653,24 @@ public static class SlimeManager
 
     public static void InitMineGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)
     {
-        var structs = definition.AppearancesDefault[0].Structures;
-        var material = structs[1].DefaultMaterials[0];
-        gordoObj.GenerateBones(1f, (i, meshRend) =>
-        {
-            if (i == 0)
-                return;
+        var material = definition.AppearancesDefault[0].Structures[1].DefaultMaterials[0];
 
-            meshRend.material = meshRend.sharedMaterial = material;
-            meshRend.materials = meshRend.sharedMaterials = [material];
-        }, null, "mine_ring_gordo", "mine_spikes_gordo");
-
-        var rend = gordoObj.GetComponent<SkinnedMeshRenderer>();
         var color = "#445660".HexToColor();
         var material2 = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
         material2.SetColor(TopColor, color);
         material2.SetColor(MiddleColor, color);
         material2.SetColor(BottomColor, color);
         material2.SetFloat(Gloss, 1f);
-        rend.material = rend.sharedMaterial = material2;
-        rend.materials[0] = rend.sharedMaterials[0] = material2;
+
+        gordoObj.GenerateBones(1f, (i, meshRend) =>
+        {
+            meshRend.material = meshRend.sharedMaterial = i == 0 ? material2 : material;
+
+            if (i == 0)
+                meshRend.materials[0] = meshRend.sharedMaterials[0] = material2;
+            else
+                meshRend.materials = meshRend.sharedMaterials = [material];
+        }, null, "mine_ring_gordo", "mine_spikes_gordo");
     }
 
     public static void InitLanternSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
