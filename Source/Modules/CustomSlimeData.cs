@@ -135,11 +135,8 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("gordoRewards")]
     public IdentifiableId[] GordoRewards;
 
-    [JsonProperty("gordoPos")]
-    public Vector3 GordoPos;
-
-    [JsonProperty("gordoRot")]
-    public Vector3 GordoRotation;
+    [JsonProperty("gordoOri")]
+    public Orientation GordoPos;
 
     [JsonProperty("gordoLoc")]
     public string GordoLocation;

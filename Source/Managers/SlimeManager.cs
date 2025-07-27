@@ -172,7 +172,7 @@ public static class SlimeManager
         meshRend.material = material;
         meshRend.materials[0] = material;
 
-        prefab.AddComponent<CustomGordo>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
+        prefab.AddComponent<PersistentId>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
 
         slimeData.InitGordoDetails?.Invoke(null, [prefab, gordoDefinition, gordoObj]);
 

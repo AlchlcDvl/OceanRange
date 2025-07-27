@@ -21,34 +21,78 @@ public sealed class Vector3Converter : OceanRangeJsonConverter<Vector3>
         if (reader.TokenType != JsonToken.String)
             throw new JsonSerializationException($"Cannot convert value '{valString}' to Vector3. Expected string format 'x,y,z' or 'x,y'.");
 
-        var components = valString.TrueSplit(',', ' ');
+        try
+        {
+            return Parse(valString);
+        }
+        catch (Exception ex)
+        {
+            throw new JsonSerializationException("Encountered an error while deserialising:", ex);
+        }
+    }
+
+    public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer _) =>  writer.WriteValue(ToVectorString(value));
+
+    public static Vector3 Parse(string value)
+    {
+        var components = value.TrueSplit(',', ' ');
 
         switch (components.Length)
         {
             case < 2:
-                throw new JsonSerializationException($"'{valString}' has too less values!");
+                throw new InvalidDataException($"'{value}' has too less values!");
             case > 3:
-                throw new JsonSerializationException($"'{valString}' has too many values!");
+                throw new InvalidDataException($"'{value}' has too many values!");
         }
 
         if (!float.TryParse(components[0], Style, InvariantCulture, out var x))
-            throw new JsonSerializationException($"Invalid float string '{components[0]}'!");
+            throw new InvalidDataException($"Invalid float string '{components[0]}'!");
 
         if (!float.TryParse(components[1], Style, InvariantCulture, out var y))
-            throw new JsonSerializationException($"Invalid float string '{components[1]}'!");
+            throw new InvalidDataException($"Invalid float string '{components[1]}'!");
 
         float z;
 
         if (components.Length == 2)
             z = 0f;
         else if (!float.TryParse(components[2], Style, InvariantCulture, out z))
-            throw new JsonSerializationException($"Invalid float string '{components[2]}'!");
+            throw new InvalidDataException($"Invalid float string '{components[2]}'!");
 
         return new(x, y, z);
     }
 
-    public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer _) =>
-        writer.WriteValue($"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}");
+    public static string ToVectorString(Vector3 value) => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
+}
+
+public sealed class OrientationConverter : OceanRangeJsonConverter<Orientation>
+{
+    public override Orientation ReadJson(JsonReader reader, Type _, Orientation __, bool ___, JsonSerializer ____)
+    {
+        if (reader.TokenType == JsonToken.Null)
+            return default;
+
+        var valString = reader.Value?.ToString() ?? "null";
+
+        if (reader.TokenType != JsonToken.String)
+            throw new JsonSerializationException($"Cannot convert value '{valString}' to Orientation. Expected string format of a pair of 'x,y,z' or 'x,y' separated by a ;.");
+
+        var components = valString.TrueSplit(';');
+
+        if (components.Length != 2)
+            throw new JsonSerializationException("Incorrect amount of 3d info!");
+
+        try
+        {
+            return new(Vector3Converter.Parse(components[0]), Vector3Converter.Parse(components[1]));
+        }
+        catch (Exception ex)
+        {
+            throw new JsonSerializationException("Encountered an error while deserialising:", ex);
+        }
+    }
+
+    public override void WriteJson(JsonWriter writer, Orientation value, JsonSerializer _) =>
+        writer.WriteValue($"{Vector3Converter.ToVectorString(value.Position)},{Vector3Converter.ToVectorString(value.Rotation)}");
 }
 
 // Made because srml's enum patching is causing errors with patched enums being read by newtonsoft, will be removed if and when a fix is administered
