@@ -7,10 +7,10 @@ public static class FoodManager
 {
     public static readonly List<CustomFoodData> Foods = [];
 
-    private static bool StmExists;
-
     private static readonly List<CustomChimkenData> Chimkens = [];
     private static readonly List<CustomPlantData> Plants = [];
+
+    private static bool StmExists;
 
     private static readonly int RampRed = Shader.PropertyToID("_RampRed");
     private static readonly int RampGreen = Shader.PropertyToID("_RampGreen");
@@ -222,8 +222,8 @@ public static class FoodManager
         SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
-        var resource = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH : SpawnResource.Id.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, default, false);
-        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH_DLX : SpawnResource.Id.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, default, true);
+        var resource = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH : SpawnResource.Id.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
+        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH_DLX : SpawnResource.Id.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
         PlantSlotRegistry.RegisterPlantSlot(new()
@@ -240,24 +240,16 @@ public static class FoodManager
         PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress);
     }
 
-    private static GameObject CreateFarmSetup(SpawnResource.Id baseFarm, string patchName, SpawnResource.Id spawnResource, GameObject plant, Vector3 transformPosition, bool isDlx)
+    private static GameObject CreateFarmSetup(SpawnResource.Id baseFarm, string patchName, SpawnResource.Id spawnResource, GameObject plant)
     {
         var basePrefab = baseFarm.GetResourcePrefab();
         var prefab = basePrefab.CreatePrefab();
-        prefab.transform.position -= transformPosition;
         prefab.name = patchName;
         var component = prefab.GetComponent<SpawnResource>();
         var prefabComponent = basePrefab.GetComponent<SpawnResource>();
         component.id = spawnResource;
         component.ObjectsToSpawn = [plant];
-        component.BonusObjectsToSpawn = [plant];
-        component.MaxObjectsSpawned = prefabComponent.MaxObjectsSpawned * (isDlx ? 1.5f : 1);
-        component.MinObjectsSpawned = prefabComponent.MinObjectsSpawned * (isDlx ? 1.5f : 1);
-        component.MinNutrientObjectsSpawned = prefabComponent.MinNutrientObjectsSpawned;
-        component.MinSpawnIntervalGameHours = prefabComponent.MinSpawnIntervalGameHours;
-        component.MaxSpawnIntervalGameHours = prefabComponent.MaxSpawnIntervalGameHours;
-        component.BonusChance = prefabComponent.BonusChance * (isDlx ? 2 : 1);
-        component.minBonusSelections = prefabComponent.minBonusSelections * (isDlx ? 2 : 1);
+        component.BonusObjectsToSpawn = [];
         var partial = plant.FindChildWithPartialName("model_");
         var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
         var material = partial.GetComponent<MeshRenderer>().sharedMaterial;

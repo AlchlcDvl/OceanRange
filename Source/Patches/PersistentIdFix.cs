@@ -14,7 +14,7 @@ public static class PersistentIdFix
 
         if (!__instance.director)
         {
-            __instance.director = IdHandlerUtils.GlobalIdDirector;
+            __instance.director = __instance.GetRequiredComponentInParent<IdDirector>() ?? IdHandlerUtils.GlobalIdDirector;
             __instance.director?.persistenceDict?.Add(__instance, __result);
         }
 

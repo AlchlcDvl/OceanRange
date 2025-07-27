@@ -44,7 +44,6 @@ public static class SlimeManager
         AssetManager.UnloadAsset<JsonAsset>("slimepedia");
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
-        TranslationPatcher.AddUITranslation("m.foodgroup.dirt_gordo", "Silky Sand");
 
         SRCallbacks.PreSaveGameLoad += _ =>
         {
@@ -802,4 +801,6 @@ public static class SlimeManager
     }
 
     public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _) => SandBehaviour.PlortPrefab = prefab;
+
+    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition _, Transform __) => prefab.GetComponent<GordoEat>().slimeDefinition.Diet = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet;
 }

@@ -127,8 +127,8 @@ public static class Helpers
     public static void BuildGordo(CustomSlimeData slimeData, GameObject sectorCategory)
     {
         var gordo = slimeData.GordoId.GetPrefab().Instantiate(sectorCategory.transform);
-        gordo.transform.position = slimeData.GordoPos.Position;
-        gordo.transform.localEulerAngles  = slimeData.GordoPos.Rotation;
+        gordo.transform.position = slimeData.GordoOrientation.Position;
+        gordo.transform.localEulerAngles  = slimeData.GordoOrientation.Rotation;
         gordo.name = gordo.name.Replace("(Clone)", "").Trim();
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs];
     }

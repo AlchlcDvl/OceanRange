@@ -1,5 +1,6 @@
 namespace OceanRange.Patches;
 
+// This patch exists because the assembly publicizer has issues trying to publicize events
 [HarmonyPatch(typeof(SlimeAppearanceApplicator), nameof(SlimeAppearanceApplicator.ApplyAppearance))]
 public static class MineSlimeAppearanceFix
 {

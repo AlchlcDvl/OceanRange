@@ -1,5 +1,6 @@
 namespace OceanRange.Patches;
 
+// TODO: Remove when SRML v0.3.0 comes out
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
 public static class EatMapFix
 {
