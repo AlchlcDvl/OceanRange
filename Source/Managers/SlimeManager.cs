@@ -97,8 +97,8 @@ public static class SlimeManager
 #endif
     private static void BaseLoadSlime(CustomSlimeData slimeData)
     {
-        CreatePlort(slimeData);
         CreateSlime(slimeData);
+        CreatePlort(slimeData);
 
         if (slimeData.HasGordo)
             CreateGordo(slimeData);
@@ -219,19 +219,9 @@ public static class SlimeManager
             filter.mesh = filter.sharedMesh = AssetManager.GetMesh(plortLower);
         }
 
-        // Add any slime specific plort details (which is almost all slimes)
-        var plortDetails = $"{nameLower}_{plortLower}";
+        var definition = slimeData.MainId.GetSlimeDefinition();
 
-        if (AssetManager.AssetExists(plortDetails))
-        {
-            var rocks = RocksPrefab.Instantiate(prefab.transform);
-            var filter = rocks.GetComponent<MeshFilter>();
-            filter.mesh = filter.sharedMesh = AssetManager.GetMesh(plortDetails);
-            rocks.GetComponent<MeshRenderer>().material = material.Clone();
-            rocks.name = plortDetails;
-        }
-
-        slimeData.InitPlortDetails?.Invoke(null, [prefab]);
+        slimeData.InitPlortDetails?.Invoke(null, [prefab, definition]);
 
         // Registering the prefab and its id along with any other additional stuff
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
@@ -387,12 +377,11 @@ public static class SlimeManager
 
 #if DEBUG
     [TimeDiagnostic]
-#endif
-    private static void TypeLoadExceptionBypass(CustomSlimeData slimeData)
-#if DEBUG
-        => TypeLoadExceptionBypass2(slimeData);
+    private static void TypeLoadExceptionBypass(CustomSlimeData slimeData) => TypeLoadExceptionBypass2(slimeData);
 
     private static void TypeLoadExceptionBypass2(CustomSlimeData slimeData)
+#else
+    private static void TypeLoadExceptionBypass(CustomSlimeData slimeData)
 #endif
     {
         try
@@ -405,16 +394,21 @@ public static class SlimeManager
         }
     }
 
-    private static void BasicInitSlimeAppearance
-    (
-        GameObject prefab,
-        SlimeAppearance appearance, SlimeAppearanceApplicator applicator,
-        string[] meshes,
-        Action<int, SlimeAppearanceStructure> materialHandler,
-        Type[] toAdd, Type[] toRemove,
-        float jiggleAmount,
-        bool skipNull = false
-    )
+    private static void BaseInitPlortAppearance(GameObject prefab, Action<int, MeshRenderer> materialHandler, params string[] meshNames)
+    {
+        for (var i = 0; i < meshNames.Length; i++)
+        {
+            var meshName = meshNames[i];
+            var rocks = RocksPrefab.Instantiate(prefab.transform);
+            var filter = rocks.GetComponent<MeshFilter>();
+            filter.mesh = filter.sharedMesh = AssetManager.GetMesh(meshName);
+            rocks.name = meshName;
+            materialHandler?.Invoke(i, rocks.GetComponent<MeshRenderer>());
+        }
+    }
+
+    private static void BasicInitSlimeAppearance(GameObject prefab, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, string[] meshes, Action<int, SlimeAppearanceStructure> materialHandler, Type[] toAdd, Type[] toRemove, float
+        jiggleAmount, bool skipNull = false)
     {
         toAdd?.Do(x => prefab.AddComponent(x));
         toRemove?.Do(prefab.RemoveComponent);
@@ -583,6 +577,21 @@ public static class SlimeManager
         );
     }
 
+    public static void InitRosiPlortDetails(GameObject prefab, SlimeDefinition definition)
+    {
+        var structs = definition.AppearancesDefault[0].Structures;
+        BaseInitPlortAppearance
+        (
+            prefab,
+            (i, meshRend) =>
+            {
+                meshRend.material = meshRend.sharedMaterial = structs[i + 1].DefaultMaterials[0];
+                meshRend.materials = meshRend.sharedMaterials = [meshRend.material];
+            },
+            "rosi_stalk_pearl", "rosi_frills_pearl"
+        );
+    }
+
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)
     {
         var structs = definition.AppearancesDefault[0].Structures;
@@ -647,6 +656,21 @@ public static class SlimeManager
             [typeof(MineBehaviour)],
             [typeof(BoomSlimeExplode), typeof(BoomMaterialAnimator)],
             jiggleAmount
+        );
+    }
+
+    public static void InitMinePlortDetails(GameObject prefab, SlimeDefinition definition)
+    {
+        var material = definition.AppearancesDefault[0].Structures[1].DefaultMaterials[0];
+        BaseInitPlortAppearance
+        (
+            prefab,
+            (i, meshRend) =>
+            {
+                meshRend.material = meshRend.sharedMaterial = material;
+                meshRend.materials = meshRend.sharedMaterials = [material];
+            },
+            "mine_pearl"
         );
     }
 
@@ -722,6 +746,21 @@ public static class SlimeManager
         appearance.Face._expressionToFaceLookup[Ids.Sleeping] = sleeping;
     }
 
+    public static void InitLanternPlortDetails(GameObject prefab, SlimeDefinition definition)
+    {
+        var structs = definition.AppearancesDefault[0].Structures;
+        BaseInitPlortAppearance
+        (
+            prefab,
+            (i, meshRend) =>
+            {
+                meshRend.material = meshRend.sharedMaterial = structs[i + 2].DefaultMaterials[0];
+                meshRend.materials = meshRend.sharedMaterials = [meshRend.material];
+            },
+            "lantern_stalk_pearl", "lantern_lure_pearl"
+        );
+    }
+
     public static void InitLanternGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)
     {
         var structs = definition.AppearancesDefault[0].Structures;
@@ -762,5 +801,5 @@ public static class SlimeManager
         );
     }
 
-    public static void InitSandPlortDetails(GameObject prefab) => SandBehaviour.PlortPrefab = prefab;
+    public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _) => SandBehaviour.PlortPrefab = prefab;
 }
