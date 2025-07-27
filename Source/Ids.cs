@@ -55,4 +55,7 @@ public static class Ids
     // public static readonly RancherChatMetadata.Entry.RancherName LISA;
 
     // public static readonly Zone SWIRLPOOL;
+    // public static readonly Zone GREAT_REEF;
+    // public static readonly Zone LISA_RANCH;
+    // public static readonly Zone BLUE_DEPTHS;
 }

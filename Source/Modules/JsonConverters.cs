@@ -113,7 +113,7 @@ public abstract class EnumConverter<T> : OceanRangeJsonConverter<T> where T : st
     }
 }
 
-public sealed class ZoneConverter : EnumConverter<Zone>;
+// public sealed class ZoneConverter : EnumConverter<Zone>;
 
 public sealed class PediaIdConverter : EnumConverter<PediaId>;
 

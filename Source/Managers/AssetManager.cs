@@ -31,7 +31,7 @@ public static class AssetManager
         Core.GetManifestResourceNames().Do(x => CreateAssetHandle(x.SanitisePath(), x));
 
         JsonSettings.Formatting = Formatting.Indented;
-        JsonSettings.Converters.Add(new ZoneConverter());
+        // JsonSettings.Converters.Add(new ZoneConverter());
         JsonSettings.Converters.Add(new PediaIdConverter());
         JsonSettings.Converters.Add(new Vector3Converter());
         JsonSettings.Converters.Add(new FoodGroupConverter());

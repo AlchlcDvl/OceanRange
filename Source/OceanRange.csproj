@@ -32,7 +32,7 @@
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" />
     </Target>
 
-    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <PropertyGroup Condition="$(Configuration)==Release">
         <Optimize>true</Optimize>
     </PropertyGroup>
 
