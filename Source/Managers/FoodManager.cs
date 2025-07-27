@@ -66,10 +66,14 @@ public static class FoodManager
                 }
             }
 
+            var resources = UObject.FindObjectsOfType<SpawnResource>();
+            var veggiePrefab = Array.Find(resources, x => x.name == "patchCarrot02");
+            var fruitPrefab = Array.Find(resources, x => x.name == "treePogo02");
+
             // FIXME: Dirt in veggie patches are invisible for some reason
             foreach (var plantData in Plants)
             {
-                var prefab = AssetManager.GetResource<SpawnResource>((plantData.Group == FoodGroup.VEGGIES ? "patchCarrot" : "treePogo") + "02");
+                var prefab = plantData.Group == FoodGroup.VEGGIES ? veggiePrefab : fruitPrefab;
                 var name = plantData.ResourceIdSuffix.ToLower() + plantData.Name + "0";
                 var array = new[] { plantData.MainId.GetPrefab() };
 

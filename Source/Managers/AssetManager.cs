@@ -39,6 +39,17 @@ public static class AssetManager
         JsonSettings.Converters.Add(new IdentifiableIdConverter());
     }
 
+    public static void DisposeModHandles(string[] handles)
+    {
+        foreach (var handleName in handles)
+        {
+            if (ModAssets.Remove(handleName, out var handle))
+                handle.Dispose();
+            else
+                throw new FileNotFoundException(handleName);
+        }
+    }
+
     private static string SanitisePath(this string path) => path.ReplaceAll("", ".png", ".json", ".mesh").TrueSplit('/', '\\', '.').Last().ToLower();
 
     public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<JsonAsset>(path).text, JsonSettings);

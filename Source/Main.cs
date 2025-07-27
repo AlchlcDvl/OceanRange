@@ -56,6 +56,11 @@ internal sealed class Main : ModEntryPoint
         SlimeManager.LoadAllSlimes();
     }
 
+#if DEBUG
+    [TimeDiagnostic("Mod Postload")]
+#endif
+    public override void PostLoad() => AssetManager.DisposeModHandles(["chimkenpedia", "plantpedia", "mailbox", "slimepedia"]);
+
     private static void ReadData(CompoundDataPiece piece)
     {
         FixAndProperlyShowMailPatch.IsLoaded = false;

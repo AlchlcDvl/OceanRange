@@ -30,7 +30,7 @@ public static class GordoIdFix
     [HarmonyPatch(nameof(GordoEat.Start)), HarmonyPrefix]
     public static bool StartPrefix(GordoEat __instance)
     {
-        if (!__instance.TryGetComponent<GordoIdentifiable>(out var identifiable) || identifiable.id != Ids.SAND_GORDO)
+        if (!SlimeManager.MgExists || !__instance.TryGetComponent<GordoIdentifiable>(out var identifiable) || identifiable.id != Ids.SAND_GORDO)
             return true;
 
         var count = __instance.GetEatenCount();
@@ -44,7 +44,7 @@ public static class GordoIdFix
     [HarmonyPatch(nameof(GordoEat.GetDirectFoodGroupsMsg))]
     public static bool Prefix(GordoEat __instance, ref string __result)
     {
-        if (!__instance.TryGetComponent<GordoIdentifiable>(out var identifiable) || identifiable.id != Ids.SAND_GORDO)
+        if (!SlimeManager.MgExists || !__instance.TryGetComponent<GordoIdentifiable>(out var identifiable) || identifiable.id != Ids.SAND_GORDO)
             return true;
 
         __result = "m.foodgroup.dirt_gordo";

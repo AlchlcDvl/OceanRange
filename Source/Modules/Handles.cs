@@ -45,6 +45,12 @@ public sealed class AssetHandle(string name) : Handle(name)
         if (Assets.Remove(tType, out var asset))
             asset.Destroy();
     }
+
+    protected override void OnDisposal()
+    {
+        Paths.Clear();
+        Assets.Values.Do(x => x.Destroy());
+    }
 }
 
 public sealed class ResourceHandle(string name) : Handle(name)
@@ -68,8 +74,17 @@ public sealed class ResourceHandle(string name) : Handle(name)
     // public void Unload<T>() where T : UObject => Assets.Remove(typeof(T));
 }
 
-public abstract class Handle(string name)
+public abstract class Handle(string name) : IDisposable
 {
     protected readonly string Name = name;
     protected readonly Dictionary<Type, UObject> Assets = []; // Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there can't be two of Plort.png anywhere)
+
+    protected virtual void OnDisposal() {}
+
+    public void Dispose()
+    {
+        OnDisposal();
+        Assets.Clear();
+        GC.SuppressFinalize(this);
+    }
 }

@@ -158,7 +158,7 @@
         "intro": "You can find it between your toes!",
         "pediaDiet": "Dirt",
         "fav": "None",
-        "zones": ["REEF"],
+        "zones": ["REEF", "DESERT"],
         "specialDiet": true,
         "spawnWeight": 0.15,
         "jiggle": 0.125,

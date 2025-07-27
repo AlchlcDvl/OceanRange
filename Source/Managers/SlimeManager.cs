@@ -514,12 +514,12 @@ public static class SlimeManager
             mesh.bindposes = poses;
             mesh.RecalculateBounds();
 
-            var meshRend = prefabRend.Instantiate(parent);
+            var meshRend = isNull ? prefabRend : prefabRend.Instantiate(parent);
             meshRend.sharedMesh = mesh;
             meshRend.localBounds = mesh.bounds;
             meshRend.bones = bones;
             meshRend.rootBone = meshRend.bones[0];
-            meshRend.gameObject.AddComponent<MeshCollider>();
+            meshRend.gameObject.GetOrAddComponent<MeshCollider>();
 
             if (!isNull)
                 meshRend.name = meshName;
@@ -589,9 +589,12 @@ public static class SlimeManager
         var structs = definition.AppearancesDefault[0].Structures;
         gordoObj.GenerateBones(1f, (i, meshRend) =>
         {
-            meshRend.material = meshRend.sharedMaterial = structs[i + 1].DefaultMaterials[0];
+            if (i == 0)
+                return;
+
+            meshRend.material = meshRend.sharedMaterial = structs[i].DefaultMaterials[0];
             meshRend.materials = meshRend.sharedMaterials = [meshRend.material];
-        }, "rosi_stalk_gordo", "rosi_frills_gordo");
+        }, null, "rosi_stalk_gordo", "rosi_frills_gordo");
     }
 
     public static void InitCocoSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount) => BasicInitSlimeAppearance
@@ -652,11 +655,14 @@ public static class SlimeManager
     {
         var structs = definition.AppearancesDefault[0].Structures;
         var material = structs[1].DefaultMaterials[0];
-        gordoObj.GenerateBones(1f, (_, meshRend) =>
+        gordoObj.GenerateBones(1f, (i, meshRend) =>
         {
+            if (i == 0)
+                return;
+
             meshRend.material = meshRend.sharedMaterial = material;
             meshRend.materials = meshRend.sharedMaterials = [material];
-        }, "mine_ring_gordo", "mine_spikes_gordo");
+        }, null, "mine_ring_gordo", "mine_spikes_gordo");
 
         var rend = gordoObj.GetComponent<SkinnedMeshRenderer>();
         var color = "#445660".HexToColor();
@@ -725,9 +731,12 @@ public static class SlimeManager
 
         gordoObj.GenerateBones(1f, (i, meshRend) =>
         {
-            meshRend.material = meshRend.sharedMaterial = structs[i + 1].DefaultMaterials[0];
+            if (i == 0)
+                return;
+
+            meshRend.material = meshRend.sharedMaterial = structs[i].DefaultMaterials[0];
             meshRend.materials = meshRend.sharedMaterials = [meshRend.material];
-        }, "lantern_fins", "lantern_stalk", "lantern_lure");
+        }, null, "lantern_fins", "lantern_stalk", "lantern_lure");
     }
 
     public static void InitSandSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
