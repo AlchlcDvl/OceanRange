@@ -519,7 +519,6 @@ public static class SlimeManager
             meshRend.localBounds = mesh.bounds;
             meshRend.bones = bones;
             meshRend.rootBone = meshRend.bones[0];
-            meshRend.gameObject.GetOrAddComponent<MeshCollider>();
 
             if (!isNull && i != 0)
                 meshRend.name = meshName;

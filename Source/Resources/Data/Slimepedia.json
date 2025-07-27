@@ -16,7 +16,7 @@
         "saturation": 100,
         "jiggle": 0.75,
         "gordoPos": "17.2751,13.3003,-36.969",
-        "gordoRot": "0,40,0",
+        "gordoRot": "0,30,0",
         "gordoRewards": ["KEY", "CRATE_REEF_01", "POGO_FRUIT"],
         "gordoZone": "REEF",
         "gordoLoc": "Reef_Intro",
