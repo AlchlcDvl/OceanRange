@@ -514,14 +514,14 @@ public static class SlimeManager
             mesh.bindposes = poses;
             mesh.RecalculateBounds();
 
-            var meshRend = isNull ? prefabRend : prefabRend.Instantiate(parent);
+            var meshRend = i == 0 ? prefabRend : prefabRend.Instantiate(parent);
             meshRend.sharedMesh = mesh;
             meshRend.localBounds = mesh.bounds;
             meshRend.bones = bones;
             meshRend.rootBone = meshRend.bones[0];
             meshRend.gameObject.GetOrAddComponent<MeshCollider>();
 
-            if (!isNull)
+            if (!isNull && i != 0)
                 meshRend.name = meshName;
 
             materialHandler?.Invoke(i, meshRend);
@@ -594,7 +594,7 @@ public static class SlimeManager
 
             meshRend.material = meshRend.sharedMaterial = structs[i].DefaultMaterials[0];
             meshRend.materials = meshRend.sharedMaterials = [meshRend.material];
-        }, null, "rosi_stalk_gordo", "rosi_frills_gordo");
+        }, "rosi_body_gordo", "rosi_stalk_gordo", "rosi_frills_gordo");
     }
 
     public static void InitCocoSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount) => BasicInitSlimeAppearance
