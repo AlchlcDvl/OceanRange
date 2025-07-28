@@ -54,7 +54,7 @@ public static class AssetManager
             CreateAssetHandle(path.SanitisePath(), path);
 
 #if DEBUG // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
-            JsonSettings.Formatting = Formatting.Indented;
+        JsonSettings.Formatting = Formatting.Indented;
 #endif
         // Adding the json converters
         // JsonSettings.Converters.Add(new ZoneConverter());
@@ -187,7 +187,7 @@ public static class AssetManager
         return mesh;
     }
 
-    // Helper fields to reduce compiler generated code
+    // Helper fields to reduce compiler generated code and delegate overhead
     private static readonly Func<BinaryReader, int> ReadInt = ReadIntMethod;
     private static readonly Func<BinaryReader, Vector2> ReadVector2 = BinaryUtils.ReadVector2;
     private static readonly Func<BinaryReader, Vector3> ReadVector3 = BinaryUtils.ReadVector3;

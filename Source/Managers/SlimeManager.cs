@@ -54,6 +54,9 @@ public static class SlimeManager
 
     private static readonly SRCallbacks.OnSaveGameLoadedDelegate PreOnSaveLoad = PreOnSaveLoadMethod;
 
+#if DEBUG
+    [TimeDiagnostic("Slime OnSavePreLoad")]
+#endif
     private static void PreOnSaveLoadMethod(SceneContext _)
     {
         var spawners = UObject.FindObjectsOfType<DirectedSlimeSpawner>();
@@ -85,6 +88,9 @@ public static class SlimeManager
 
     private static readonly SRCallbacks.OnSaveGameLoadedDelegate OnSaveLoaded = OnSaveLoadedMethod;
 
+#if DEBUG
+    [TimeDiagnostic("Slime OnSaveLoad")]
+#endif
     private static void OnSaveLoadedMethod(SceneContext _)
     {
         foreach (var slimeData in Slimes)

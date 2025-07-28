@@ -37,12 +37,15 @@ public static class FoodManager
         AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
         AssetManager.UnloadAsset<JsonAsset>("plantpedia");
 
-        SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
-        SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
+        SRCallbacks.PreSaveGameLoad += PreOnSaveGameLoad;
+        SRCallbacks.OnSaveGameLoaded += OnSaveGameLoaded;
     }
 
-    private static readonly SRCallbacks.OnSaveGameLoadedDelegate PreOnSaveLoad = PreOnSaveLoadMethod;
+    private static readonly SRCallbacks.OnSaveGameLoadedDelegate PreOnSaveGameLoad = PreOnSaveLoadMethod;
 
+#if DEBUG
+    [TimeDiagnostic("Foods OnSavePreLoad")]
+#endif
     private static void PreOnSaveLoadMethod(SceneContext _)
     {
         var spawners = UObject.FindObjectsOfType<DirectedAnimalSpawner>();
@@ -76,8 +79,11 @@ public static class FoodManager
         }
     }
 
-    private static readonly SRCallbacks.OnSaveGameLoadedDelegate OnSaveLoaded = OnSaveLoadedMethod;
+    private static readonly SRCallbacks.OnSaveGameLoadedDelegate OnSaveGameLoaded = OnSaveLoadedMethod;
 
+#if DEBUG
+    [TimeDiagnostic("Foods OnSaveLoad")]
+#endif
     private static void OnSaveLoadedMethod(SceneContext context)
     {
         var resources = UObject.FindObjectsOfType<SpawnResource>();
@@ -116,7 +122,7 @@ public static class FoodManager
 
     private static bool IsCarrotPatch(SpawnResource x) => x.name == "patchCarrot02" && x.transform.parent?.name == "Resources";
 
-    private static bool IsPogoTree(SpawnResource x) => x.name == "patchCarrot02" && x.transform.parent?.name == "Resources";
+    private static bool IsPogoTree(SpawnResource x) => x.name == "treePogo02" && x.transform.parent?.name == "Resources";
 
 #if DEBUG
     [TimeDiagnostic("Foods Load")]
