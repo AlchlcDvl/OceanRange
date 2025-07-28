@@ -2,17 +2,14 @@ namespace OceanRange.Managers;
 
 public static class MailManager
 {
-    public static readonly List<CustomMailData> Mail = [];
+    public static CustomMailData[] Mail;
 
 #if DEBUG
     [TimeDiagnostic("Mail Preload")]
 #endif
     public static void PreLoadMailData()
     {
-        Mail.AddRange(AssetManager.GetJson<CustomMailData[]>("mailbox"));
-
-        AssetManager.UnloadAsset<JsonAsset>("mailbox");
-
+        Mail = AssetManager.GetJson<CustomMailData[]>("mailbox");
         Mail.ForEach(PreLoadMail);
     }
 

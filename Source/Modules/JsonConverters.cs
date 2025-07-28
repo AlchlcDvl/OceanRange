@@ -2,14 +2,16 @@ using System.Globalization;
 
 namespace OceanRange.Modules;
 
-public abstract class OceanRangeJsonConverter<T> : JsonConverter<T> where T : struct
+public abstract class OceanRangeJsonConverter<T> : JsonConverter<T>
+    where T : struct; // Limiting to value types for now
+
+public abstract class MultiComponentConverter<TValue, TComponent> : OceanRangeJsonConverter<TValue>
+    where TValue : struct // The value being read/written
+    where TComponent : struct // The type that make up the value's components
 {
     protected static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
-}
 
-public abstract class MultiComponentConverter<TValue, TComponent> : OceanRangeJsonConverter<TValue> where TValue : struct where TComponent : struct
-{
-    protected delegate bool TryParse(string value, NumberStyles style, CultureInfo culture, out TComponent component);
+    protected delegate bool TryParseDelegate(string value, NumberStyles style, CultureInfo culture, out TComponent component);
 
     protected abstract string Format { get; }
 
@@ -36,32 +38,39 @@ public abstract class MultiComponentConverter<TValue, TComponent> : OceanRangeJs
         }
     }
 
-    protected static TComponent[] ParseComponents(string value, NumberStyles style, TryParse tryParse, TComponent defaultValue, int maxLength, int minLength, char separator)
+    protected static void ParseComponents(string value, ParseOptions options)
     {
-        var components = value.TrueSplit(separator);
+        var components = value.TrueSplit(options.Separator);
 
-        if (components.Length < minLength)
+        if (components.Length < options.MinLength)
             throw new InvalidDataException($"'{value}' has too less values!");
 
-        if (components.Length > maxLength)
+        if (components.Length > options.MaxLength)
             throw new InvalidDataException($"'{value}' has too many values!");
-
-        var values = new TComponent[maxLength];
 
         for (var i = 0; i < components.Length; i++)
         {
             var component = components[i];
 
-            if (tryParse(component, style, InvariantCulture, out var valueComponent))
-                values[i] = valueComponent;
+            if (options.TryParse(component, options.Style, InvariantCulture, out var valueComponent))
+                options.ToFill[i] = valueComponent;
             else
                 throw new InvalidDataException($"Invalid {typeof(TComponent).Name} string '{component}'!");
         }
 
-        for (var i = components.Length; i < maxLength; i++)
-            values[i] = defaultValue;
+        for (var i = components.Length; i < options.MaxLength; i++)
+            options.ToFill[i] = options.Default;
+    }
 
-        return values;
+    protected sealed class ParseOptions(NumberStyles style, TryParseDelegate tryParse, TComponent defaultValue, int maxLength, int minLength, char separator)
+    {
+        public readonly TryParseDelegate TryParse = tryParse;
+        public readonly TComponent[] ToFill = new TComponent[maxLength];
+        public readonly int MaxLength = maxLength;
+        public readonly int MinLength = minLength;
+        public readonly char Separator = separator;
+        public readonly TComponent Default = defaultValue;
+        public readonly NumberStyles Style = style;
     }
 }
 
@@ -69,10 +78,12 @@ public sealed class Vector3Converter : MultiComponentConverter<Vector3, float>
 {
     protected override string Format => "'x,y,z' or 'x,y'";
 
+    private static readonly ParseOptions Options = new(NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 0f, 3, 2, ',');
+
     protected override Vector3 ReadJson(string valString)
     {
-        var values = ParseComponents(valString, NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 0f, 3, 2, ',');
-        return new(values[0], values[1], values[2]);
+        ParseComponents(valString, Options);
+        return new(Options.ToFill[0], Options.ToFill[1], Options.ToFill[2]);
     }
 
     public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer _) => writer.WriteValue(ToVectorString(value));
@@ -84,10 +95,12 @@ public sealed class OrientationConverter : MultiComponentConverter<Orientation, 
 {
     protected override string Format => "of a pair of 'x,y,z' or 'x,y' separated by a ;";
 
+    private static readonly ParseOptions Options = new(NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, default, 2, 2, ';');
+
     protected override Orientation ReadJson(string valString)
     {
-        var values = ParseComponents(valString, NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, default, 2, 2, ';');
-        return new(values[0], values[1]);
+        ParseComponents(valString, Options);
+        return new(Options.ToFill[0], Options.ToFill[1]);
     }
 
     public override void WriteJson(JsonWriter writer, Orientation value, JsonSerializer _) =>
@@ -95,7 +108,8 @@ public sealed class OrientationConverter : MultiComponentConverter<Orientation, 
 }
 
 // Made because srml's enum patching is causing errors with patched enums being read by newtonsoft, will be removed if and when a fix is administered
-public abstract class EnumConverter<T> : OceanRangeJsonConverter<T> where T : struct, Enum
+public abstract class EnumConverter<T> : OceanRangeJsonConverter<T>
+    where T : struct, Enum
 {
     public override void WriteJson(JsonWriter writer, T value, JsonSerializer _) => writer.WriteValue(value.ToString());
 
@@ -125,6 +139,8 @@ public sealed class IdentifiableIdConverter : EnumConverter<IdentifiableId>;
 // {
 //     protected override string Format => "'r,g,b', 'r,g,b,a' or hex code";
 
+//    private static readonly ParseOptions Options = new(NumberStyles.Float, float.TryParse, 1f, 4, 3, ',');
+
 //     protected override Color ReadJson(string valString)
 //     {
 //         if (valString.StartsWith("#"))
@@ -135,8 +151,8 @@ public sealed class IdentifiableIdConverter : EnumConverter<IdentifiableId>;
 //             throw new JsonSerializationException($"'{valString}' was not correctly formatted as a hex code!");
 //         }
 
-//         var values = ParseComponents(valString, NumberStyles.Float, float.TryParse, 1f, 4, 3, ',');
-//         return new(values[0], values[1], values[2], values[3]);
+//         ParseComponents(valString, Options);
+//         return new(Options.ToFill[0], Options.ToFill[1], Options.ToFill[2], Options.ToFill[3]);
 //     }
 
 //     public override void WriteJson(JsonWriter writer, Color value, JsonSerializer _) =>
@@ -146,6 +162,8 @@ public sealed class IdentifiableIdConverter : EnumConverter<IdentifiableId>;
 // public sealed class Color32Converter : MultiComponentConverter<Color32, byte>
 // {
 //     protected override string Format => "'r,g,b', 'r,g,b,a' or hex code";
+
+//    private static readonly ParseOptions Options = new(NumberStyles.Integer, byte.TryParse, 255, 4, 3, ',');
 
 //     protected override Color32 ReadJson(string valString)
 //     {
@@ -157,8 +175,8 @@ public sealed class IdentifiableIdConverter : EnumConverter<IdentifiableId>;
 //             throw new JsonSerializationException($"'{valString}' was not correctly formatted as a hex code!");
 //         }
 
-//         var values = ParseComponents(valString, NumberStyles.HexNumber, byte.TryParse, 255, 4, 3, ',');
-//         return new(values[0], values[1], values[2], values[3]);
+//         ParseComponents(valString, Options);
+//         return new(Options.ToFill[0], Options.ToFill[1], Options.ToFill[2], Options.ToFill[3]);
 //     }
 
 //     public override void WriteJson(JsonWriter writer, Color32 value, JsonSerializer _) => writer.WriteValue(value.ToHexRGBA());

@@ -10,8 +10,9 @@ namespace OceanRange.Managers;
 // TODO: Finish largo setup; relegated to next update most likely
 public static class SlimeManager
 {
-    public static readonly List<CustomSlimeData> Slimes = [];
     // public static readonly string[] VanillaSlimes = ["PINK", "ROCK", "PHOSPHOR", "CRYSTAL", "RAD", "BOOM", "TANGLE", "DERVISH", "TABBY", "HUNTER", "SABER", "HONEY", "MOSAIC", "QUANTUM"]; // WIP
+
+    public static CustomSlimeData[] Slimes;
     public static bool MgExists;
 
     private static bool SamExists;
@@ -39,9 +40,7 @@ public static class SlimeManager
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
         MgExists = SRModLoader.IsModPresent("luckygordo");
 
-        Slimes.AddRange(AssetManager.GetJson<CustomSlimeData[]>("slimepedia"));
-
-        AssetManager.UnloadAsset<JsonAsset>("slimepedia");
+        Slimes = AssetManager.GetJson<CustomSlimeData[]>("slimepedia");
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 

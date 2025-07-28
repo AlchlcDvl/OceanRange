@@ -21,7 +21,12 @@ public static class CreateExchanges
                 value = x.PlortExchangeWeight
             }
         }),
-        .. FoodManager.Foods.Select(x => new ValueEntry
+        .. FoodManager.Chimkens.Select(x => new ValueEntry
+        {
+            id = x.MainId,
+            value = x.ExchangeWeight
+        }),
+        .. FoodManager.Plants.Select(x => new ValueEntry
         {
             id = x.MainId,
             value = x.ExchangeWeight

@@ -5,13 +5,19 @@ namespace OceanRange.Managers;
 
 public static class FoodManager
 {
-    public static readonly List<CustomFoodData> Foods = [];
+    /// <summary>
+    /// The array containing all plant related data.
+    /// </summary>
+    public static CustomChimkenData[] Chimkens;
 
-    private static readonly List<CustomChimkenData> Chimkens = [];
-    private static readonly List<CustomPlantData> Plants = [];
+    /// <summary>
+    /// The array containing all meat related data.
+    /// </summary>
+    public static CustomPlantData[] Plants;
 
-    private static bool StmExists;
+    private static bool StmExists; // Mod check flag
 
+    // Shader properties
     private static readonly int RampRed = Shader.PropertyToID("_RampRed");
     private static readonly int RampGreen = Shader.PropertyToID("_RampGreen");
     private static readonly int RampBlue = Shader.PropertyToID("_RampBlue");
@@ -25,14 +31,8 @@ public static class FoodManager
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
 
-        Chimkens.AddRange(AssetManager.GetJson<CustomChimkenData[]>("chimkenpedia"));
-        Plants.AddRange(AssetManager.GetJson<CustomPlantData[]>("plantpedia"));
-
-        AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
-        AssetManager.UnloadAsset<JsonAsset>("plantpedia");
-
-        Foods.AddRange(Chimkens);
-        Foods.AddRange(Plants);
+        Chimkens = AssetManager.GetJson<CustomChimkenData[]>("chimkenpedia");
+        Plants = AssetManager.GetJson<CustomPlantData[]>("plantpedia");
 
         SRCallbacks.PreSaveGameLoad += context =>
         {
@@ -149,7 +149,7 @@ public static class FoodManager
         // Register both chicks and hens
         RegisterFood(chickPrefab, AssetManager.GetSprite($"{lower}chick"), ammo, chimkenData.ChickId, chimkenData.ChickEntry, [StorageType.NON_SLIMES]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
-            CommonChickAboutPedia.Replace("%type%",  chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
+            CommonChickAboutPedia.Replace("%type%", chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
 
         RegisterFood(henPrefab, AssetManager.GetSprite($"{lower}hen"), ammo, chimkenData.MainId, chimkenData.MainEntry, [StorageType.NON_SLIMES, StorageType.FOOD]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,

@@ -77,7 +77,7 @@ internal sealed class Main : ModEntryPoint
         while (mailCount-- > 0)
         {
             var mailId = piece.GetValue<string>("mailId");
-            var mail = MailManager.Mail.Find(x => x.Id == mailId);
+            var mail = Array.Find(MailManager.Mail, x => x.Id == mailId);
             mail.Sent = piece.GetValue<bool>("mailSent");
             mail.Read = piece.GetValue<bool>("mailRead");
         }
@@ -89,7 +89,7 @@ internal sealed class Main : ModEntryPoint
     {
         FixAndProperlyShowMailPatch.IsLoaded = false;
 
-        piece.SetValue("mailCount", MailManager.Mail.Count);
+        piece.SetValue("mailCount", MailManager.Mail.Length);
 
         foreach (var mail in MailManager.Mail)
         {
