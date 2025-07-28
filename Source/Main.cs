@@ -14,6 +14,7 @@ internal sealed class Main : ModEntryPoint
     public static readonly SavePositionCommand SavePos = new();
 #endif
 
+    /// <inheritdoc/>
     public override void PreLoad()
     {
 #if DEBUG
@@ -50,6 +51,7 @@ internal sealed class Main : ModEntryPoint
 #if DEBUG
     [TimeDiagnostic("Mod Load")]
 #endif
+    /// <inheritdoc/>
     public override void Load()
     {
         FoodManager.LoadFoods();
@@ -59,7 +61,12 @@ internal sealed class Main : ModEntryPoint
 #if DEBUG
     [TimeDiagnostic("Mod Postload")]
 #endif
-    public override void PostLoad() => AssetManager.DisposeModHandles(["chimkenpedia", "plantpedia", "mailbox", "slimepedia"]);
+    /// <inheritdoc/>
+    public override void PostLoad()
+    {
+        AssetManager.ReleaseHandles(["chimkenpedia", "plantpedia", "mailbox", "slimepedia"]); // Release handles
+        GC.Collect(); // Free up temp memory
+    }
 
     private static void ReadData(CompoundDataPiece piece)
     {

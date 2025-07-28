@@ -4,10 +4,24 @@ using System.IO.Compression;
 
 namespace OceanRange.Managers;
 
+/// <summary>
+/// The main manager class that handles assets, be it from the game or the mod itself.
+/// </summary>
 public static class AssetManager
 {
+    /// <summary>
+    /// Assembly data for the mod's dll.
+    /// </summary>
     public static readonly Assembly Core = typeof(Main).Assembly;
+
+    /// <summary>
+    /// Common json serialisation settings to avoid creating a new json settings instance for each json file.
+    /// </summary>
     public static readonly JsonSerializerSettings JsonSettings = new();
+
+    /// <summary>
+    /// Very basic mapping of types to relevant file extensions and how they are loaded.
+    /// </summary>
     public static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         [typeof(Mesh)] = ("mesh", LoadMesh),
@@ -17,20 +31,40 @@ public static class AssetManager
         // AudioClip is not currently in use, so implementation for it comes later
     };
 
+    /// <summary>
+    /// Dictionary to hold handles for mod assets.
+    /// </summary>
     private static readonly Dictionary<string, AssetHandle> ModAssets = [];
+
+    /// <summary>
+    /// Dictionary to hold handles for fetched game assets.
+    /// </summary>
     private static readonly Dictionary<string, ResourceHandle> GameAssets = [];
+
+    /// <summary>
+    /// Another dictionary that handles arrays of assets of a certain type, mainly to avoid repetitive calls to Resources.FindObjectsOfTypeAll, which is very expensive.
+    /// </summary>
     private static readonly Dictionary<Type, UObject[]> FetchedAssets = [];
 
 #if DEBUG
+    /// <summary>
+    /// Debug string path for the mod to dump assets.
+    /// </summary>
     public static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath)!, "SRML");
 
     [TimeDiagnostic("Assets Initialis")]
 #endif
+    /// <summary>
+    /// Initialises the asset handling by creating relevant handles and creating the proper json settings.
+    /// </summary>
     public static void InitialiseAssets()
     {
-        Core.GetManifestResourceNames().Do(x => CreateAssetHandle(x.SanitisePath(), x));
+        Core.GetManifestResourceNames().Do(x => CreateAssetHandle(x.SanitisePath(), x)); // Create handles
 
+#if DEBUG // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
         JsonSettings.Formatting = Formatting.Indented;
+#endif
+        // Adding the json converters
         // JsonSettings.Converters.Add(new ZoneConverter());
         JsonSettings.Converters.Add(new PediaIdConverter());
         JsonSettings.Converters.Add(new Vector3Converter());
@@ -40,27 +74,66 @@ public static class AssetManager
         JsonSettings.Converters.Add(new IdentifiableIdConverter());
     }
 
-    public static void DisposeModHandles(string[] handles)
+    /// <summary>
+    /// Frees up memory by releasing handles of certain assets.
+    /// </summary>
+    /// <param name="handles">The names of the assets to be released.</param>
+    /// <exception cref="FileNotFoundException">Thrown if an asset name is not an asset shipped with the mod.</exception>
+    public static void ReleaseHandles(string[] handles)
     {
         foreach (var handleName in handles)
         {
             if (ModAssets.Remove(handleName, out var handle))
-                handle.Dispose();
+                handle.Dispose(); // Releasing the handles
             else
                 throw new FileNotFoundException(handleName);
         }
     }
 
-    private static string SanitisePath(this string path) => path.ReplaceAll("", ".png", ".json", ".mesh").TrueSplit('/', '\\', '.').Last().ToLower();
+    /// <summary>
+    /// Helper method to converge all asset paths and names to a shorter string representation, aka their file names.
+    /// </summary>
+    /// <param name="path">The original path of the asset.</param>
+    /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
+    /// <remarks>If you add in a new asset type (with its own extension), make sure to add the extension in the ReplaceAll!</remarks>
+    private static string SanitisePath(this string path) => path
+        .ReplaceAll("", ".png", ".json", ".mesh") // Removing all of the file extensions if any
+        .TrueSplit('/', '\\', '.').Last() // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
+        .ToLowerInvariant(); // Lowercase for make asset fetching case insensitive
 
+    /// <summary>
+    /// Gets and serialise json data from the assets associated with the provided name.
+    /// </summary>
+    /// <typeparam name="T">The type to deserialise to.</typeparam>
+    /// <param name="path">The name of the asset.</param>
+    /// <returns>The read and converted json data.</returns>
     public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<JsonAsset>(path).text, JsonSettings);
 
-    public static Texture2D GetTexture2D(string path) => Get<Texture2D>(path);
+    /// <summary>
+    /// Gets a Texture2D from the assets associated with the provided name.
+    /// </summary>
+    /// <inheritdoc cref="Get"/>
+    public static Texture2D GetTexture2D(string name) => Get<Texture2D>(name);
 
-    public static Sprite GetSprite(string path) => Get<Sprite>(path);
+    /// <summary>
+    /// Gets a Sprite from the assets associated with the provided name.
+    /// </summary>
+    /// <inheritdoc cref="Get"/>
+    public static Sprite GetSprite(string name) => Get<Sprite>(name);
 
-    public static Mesh GetMesh(string path) => Get<Mesh>(path);
+    /// <summary>
+    /// Gets a Mesh from the assets associated with the provided name.
+    /// </summary>
+    /// <inheritdoc cref="Get"/>
+    public static Mesh GetMesh(string name) => Get<Mesh>(name);
 
+    /// <summary>
+    /// Fetches an asset resource from the game. Tries to fetch from a cache first if it can.
+    /// </summary>
+    /// <typeparam name="T">The type of the asset.</typeparam>
+    /// <param name="name">The name of the asset.</param>
+    /// <param name="throwError">The flag that indicates if an error should be thrown.</param>
+    /// <returns>The fetched asset.</returns>
     public static T GetResource<T>(string name, bool throwError = true) where T : UObject
     {
         if (!GameAssets.TryGetValue(name, out var handle))
@@ -69,6 +142,11 @@ public static class AssetManager
         return handle.Load<T>(throwError);
     }
 
+    /// <summary>
+    /// A wrapper for Resources.FindObjectsOfTypeAll that uses a cache to avoid its expensive usage.
+    /// </summary>
+    /// <typeparam name="T">The type of the assets.</typeparam>
+    /// <returns>A typed array of all game assets of the provided type.</returns>
     public static T[] GetAllResources<T>() where T : UObject
     {
         var tType = typeof(T);
@@ -76,11 +154,15 @@ public static class AssetManager
         if (!FetchedAssets.TryGetValue(tType, out var assets))
             assets = FetchedAssets[tType] = Resources.FindObjectsOfTypeAll<T>();
 
-        return assets as T[];
+        return (T[])assets;
     }
 
-    // public static IEnumerable<T> GetAll<T>() where T : UObject => Assets.Values.Select(x => x.Load<T>(false));
-
+    /// <summary>
+    /// Gets an asset associated with the provided name.
+    /// </summary>
+    /// <param name="name">The name of the asset.</param>
+    /// <inheritdoc cref="AssetHandle.Load"/>
+    /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
     private static T Get<T>(string name, bool throwError = true) where T : UObject
     {
         if (!ModAssets.TryGetValue(name, out var handle))
@@ -89,16 +171,25 @@ public static class AssetManager
         return handle.Load<T>(throwError);
     }
 
-    public static bool AssetExists(string path) => ModAssets.ContainsKey(path);
-
+    /// <summary>
+    /// Unloads an asset to free up memory.
+    /// </summary>
+    /// <param name="name">The name of the asset.</param>
+    /// <inheritdoc cref="AssetHandle.Unload"/>
+    /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
     public static void UnloadAsset<T>(string name, bool throwError = true) where T : UObject
     {
         if (ModAssets.TryGetValue(name, out var handle))
-            handle.Unload<T>();
+            handle.Unload<T>(throwError);
         else if (throwError)
             throw new FileNotFoundException($"{name}, {typeof(T).Name}");
     }
 
+    /// <summary>
+    /// Loads a json file from the provided path.
+    /// </summary>
+    /// <param name="path">The path of the asset.</param>
+    /// <returns>The json asset loaded from the path.</returns>
     private static JsonAsset LoadJson(string path)
     {
         using var stream = Core.GetManifestResourceStream(path)!;
@@ -106,8 +197,16 @@ public static class AssetManager
         return new(reader.ReadToEnd());
     }
 
+    /// <summary>
+    /// Loads a json file from the provided path.
+    /// </summary>
+    /// <param name="path">The path of the asset.</param>
+    /// <returns>The json asset loaded from the path.</returns>
     private static Mesh LoadMesh(string path)
     {
+        // This method uses a specially serialised version of the models to save on disk space and to make it easier to ship the mod
+        // TODO: Add a reverse importer for the unity project so that .mesh files can be used to import models
+
         using var stream = Core.GetManifestResourceStream(path)!;
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
         using var reader = new BinaryReader(decompressor);
@@ -115,7 +214,7 @@ public static class AssetManager
         var mesh = new Mesh
         {
             vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            triangles = BinaryUtils.ReadArray(reader, ReadInt),
+            triangles = BinaryUtils.ReadArray(reader, reader => reader.ReadInt32()),
             normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
             tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4)
         };
@@ -126,33 +225,50 @@ public static class AssetManager
         return mesh;
     }
 
-    private static int ReadInt(BinaryReader reader) => reader.ReadInt32();
-
+    // Helper to create an empty texture
     private static Texture2D EmptyTexture(TextureFormat format, bool mipChain) => new(2, 2, format, mipChain) { filterMode = FilterMode.Bilinear };
 
+    /// <summary>
+    /// Loads a texture from the provided path.
+    /// </summary>
+    /// <param name="path">The path of the asset.</param>
+    /// <returns>The texture asset loaded from the path.</returns>
     private static Texture2D LoadTexture(string path)
     {
         var name = path.SanitisePath();
         var texture = EmptyTexture(GetFormat(name), GenerateMipChains(name));
         texture.LoadImage(path.ReadBytes(), true);
         texture.wrapMode = GetWrapMode(name);
+        texture.name = name;
         return texture;
     }
 
+    // Texture optimisation stuff
     private static bool GenerateMipChains(string name) => name == "sleepingeyes" || name.Contains("ramp") || name.Contains("pattern");
 
     private static TextureFormat GetFormat(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureFormat.DXT1 : TextureFormat.DXT5;
 
     private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
 
+    /// <summary>
+    /// Loads a sprite from the provided path.
+    /// </summary>
+    /// <param name="path">The path of the asset.</param>
+    /// <returns>The sprite asset loaded from the path.</returns>
     private static Sprite LoadSprite(string path)
     {
         var tex = LoadTexture(path);
         return Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, GetMeshType(tex.name));
     }
 
+    // Another optimisation related thing
     private static SpriteMeshType GetMeshType(string name) => name is "sleepingeyes" || name.Contains("pattern") || name.Contains("ramp") ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
 
+    /// <summary>
+    /// Reads all of the bytes from the provided stream.
+    /// </summary>
+    /// <param name="input">The stream data to serialise to bytes.</param>
+    /// <returns>A byte array representing the stream.</returns>
     private static byte[] ReadFully(this Stream input)
     {
         using var ms = new MemoryStream();
@@ -160,8 +276,18 @@ public static class AssetManager
         return ms.ToArray();
     }
 
+    /// <summary>
+    /// Reads all of the bytes from the provided file path.
+    /// </summary>
+    /// <param name="path">The file path to serialise to bytes.</param>
+    /// <returns>A byte array representing the file.</returns>
     private static byte[] ReadBytes(this string path) => Core.GetManifestResourceStream(path)!.ReadFully();
 
+    /// <summary>
+    /// Creates an asset handle for the provided asset name and registers the path among the handle's paths.
+    /// </summary>
+    /// <param name="name">The name of the asset.</param>
+    /// <param name="path">The path of the asset.</param>
     private static void CreateAssetHandle(string name, string path)
     {
         if (!ModAssets.TryGetValue(name, out var handle))
@@ -170,6 +296,7 @@ public static class AssetManager
         handle.AddPath(path);
     }
 
+#if DEBUG
     // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use but keep commented for releases
 
     // public static void Dump(this Texture texture, string path)
@@ -194,4 +321,5 @@ public static class AssetManager
     //     readableText.name = source.name;
     //     return readableText;
     // }
+#endif
 }
