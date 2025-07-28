@@ -1,5 +1,6 @@
 // using SRML;
 using System.Globalization;
+using AssetsLib;
 using SRML.Utils;
 
 #if DEBUG
@@ -59,7 +60,14 @@ public static class Helpers
         return @string;
     }
 
-    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators).Select(x => x.Trim()).Where(x => !string.IsNullOrWhiteSpace(x) && x.Length != 0)];
+    private static readonly Func<string, bool> IsNotNullEmptyOrWhiteSpaceDel = IsNotNullEmptyOrWhiteSpace;
+    private static readonly Func<string, string> TrimDel = Trim;
+
+    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators).Select(TrimDel).Where(IsNotNullEmptyOrWhiteSpaceDel)];
+
+    private static bool IsNotNullEmptyOrWhiteSpace(string @string) => !string.IsNullOrWhiteSpace(@string) && @string.Length != 0;
+
+    private static string Trim(string @string) => @string.Trim();
 
     // public static IEnumerable<(int, T)> Indexed<T>(this IEnumerable<T> source)
     // {
@@ -166,6 +174,16 @@ public static class Helpers
         return mesh;
     }
 
+    public static Vector3 ToPower(this Vector3 vector, int power)
+    {
+        var result = vector;
+
+        for (var i = 1; i < power; i++)
+            result = result.Multiply(vector);
+
+        return result;
+    }
+
     // public static Texture2D CreateRamp(string name, Color a, Color b)
     // {
     //     var texture2D = new Texture2D(128, 32);
@@ -240,16 +258,19 @@ public static class Helpers
     }
 
 #if DEBUG
+    private static bool IsZoneObj(GameObject gameObject) => gameObject.name.StartsWith("zone");
+
+    private static GameObject[] GetCellObjects(GameObject zone) => zone.FindChildrenWithPartialName("cell", true);
+
+    private static readonly Func<GameObject, bool> IsZone = IsZoneObj;
+    private static readonly Func<GameObject, GameObject[]> GetCells = GetCellObjects;
+
     public static GameObject GetClosestCell(Vector3 pos)
     {
         GameObject closest = null;
         var distance = float.MaxValue;
 
-        foreach (var cell in SceneManager
-            .GetActiveScene()
-            .GetRootGameObjects()
-            .Where(x => x.name.StartsWith("zone"))
-            .SelectMany(x => x.FindChildrenWithPartialName("cell", true)))
+        foreach (var cell in SceneManager.GetActiveScene().GetRootGameObjects().Where(IsZone).SelectMany(GetCells))
         {
             var diff = (cell.transform.position - pos).sqrMagnitude;
 

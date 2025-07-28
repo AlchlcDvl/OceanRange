@@ -37,52 +37,65 @@ public static class FoodManager
         AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
         AssetManager.UnloadAsset<JsonAsset>("plantpedia");
 
-        SRCallbacks.PreSaveGameLoad += context =>
+        SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
+        SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
+    }
+
+    private static readonly SRCallbacks.OnSaveGameLoadedDelegate PreOnSaveLoad = PreOnSaveLoadMethod;
+
+    private static void PreOnSaveLoadMethod(SceneContext _)
+    {
+        var spawners = UObject.FindObjectsOfType<DirectedAnimalSpawner>();
+
+        foreach (var chimkenData in Chimkens)
         {
-            var spawners = UObject.FindObjectsOfType<DirectedAnimalSpawner>();
+            var amount = chimkenData.SpawnAmount / 2;
+            var henPrefab = chimkenData.MainId.GetPrefab();
+            var chickPrefab = chimkenData.ChickId.GetPrefab();
 
-            foreach (var chimkenData in Chimkens)
+            foreach (var animalSpawner in spawners.Where(spawner => Helpers.IsValidZone(spawner, chimkenData.Zones)))
             {
-                var amount = chimkenData.SpawnAmount / 2;
-                var henPrefab = chimkenData.MainId.GetPrefab();
-                var chickPrefab = chimkenData.ChickId.GetPrefab();
-
-                foreach (var directedAnimalSpawner2 in spawners.Where(spawner => Helpers.IsValidZone(spawner, chimkenData.Zones)))
+                foreach (var constraint in animalSpawner.constraints)
                 {
-                    foreach (var constraint in directedAnimalSpawner2.constraints)
-                    {
-                        constraint.slimeset.members =
-                        [
-                            .. constraint.slimeset.members,
-                            new()
-                            {
-                                prefab = henPrefab,
-                                weight = amount
-                            },
-                            new()
-                            {
-                                prefab = chickPrefab,
-                                weight = amount
-                            }
-                        ];
-                    }
+                    constraint.slimeset.members =
+                    [
+                        .. constraint.slimeset.members,
+                        new()
+                        {
+                            prefab = henPrefab,
+                            weight = amount
+                        },
+                        new()
+                        {
+                            prefab = chickPrefab,
+                            weight = amount
+                        }
+                    ];
                 }
             }
+        }
+    }
 
-            var resources = UObject.FindObjectsOfType<SpawnResource>();
-            var veggiePrefab = Array.Find(resources, x => x.name == "patchCarrot02");
-            var fruitPrefab = Array.Find(resources, x => x.name == "treePogo02");
+    private static readonly SRCallbacks.OnSaveGameLoadedDelegate OnSaveLoaded = OnSaveLoadedMethod;
 
-            // FIXME: Dirt in veggie patches are invisible for some reason
-            foreach (var plantData in Plants)
+    private static void OnSaveLoadedMethod(SceneContext context)
+    {
+        var resources = UObject.FindObjectsOfType<SpawnResource>();
+        var veggiePrefab = Array.Find(resources, IsPatch);
+        var fruitPrefab = Array.Find(resources, IsTree);
+
+        // FIXME: Dirt in veggie patches are invisible for some reason
+        foreach (var plantData in Plants)
+        {
+            var prefab = plantData.Group == FoodGroup.VEGGIES ? veggiePrefab : fruitPrefab;
+            var name = plantData.ResourceIdSuffix.ToLower() + plantData.Name + "0";
+            var array = new[] { plantData.MainId.GetPrefab() };
+
+            foreach (var (zone, spawnLocations) in plantData.SpawnLocations)
             {
-                var prefab = plantData.Group == FoodGroup.VEGGIES ? veggiePrefab : fruitPrefab;
-                var name = plantData.ResourceIdSuffix.ToLower() + plantData.Name + "0";
-                var array = new[] { plantData.MainId.GetPrefab() };
-
-                foreach (var (cell, positions) in plantData.SpawnLocations)
+                foreach (var (cell, positions) in spawnLocations)
                 {
-                    var parent = AssetManager.GetResource<GameObject>("cell" + cell).FindChild("Sector/Resources").transform;
+                    var parent = GameObject.Find("zone" + zone + "/cell" + cell + "/Sector/Resources").transform;
 
                     for (var i = 0; i < positions.Length; i++)
                     {
@@ -95,16 +108,26 @@ public static class FoodManager
                     }
                 }
             }
-        };
+        }
     }
+
+    private static readonly Predicate<SpawnResource> IsPatch = IsCarrotPatch;
+    private static readonly Predicate<SpawnResource> IsTree = IsPogoTree;
+
+    private static bool IsCarrotPatch(SpawnResource x) => x.name == "patchCarrot02" && x.transform.parent?.name == "Resources";
+
+    private static bool IsPogoTree(SpawnResource x) => x.name == "patchCarrot02" && x.transform.parent?.name == "Resources";
 
 #if DEBUG
     [TimeDiagnostic("Foods Load")]
 #endif
     public static void LoadFoods()
     {
-        Chimkens.ForEach(BaseCreateChimken);
-        Plants.ForEach(BaseCreatePlant);
+        foreach (var chimkenData in Chimkens)
+            BaseCreateChimken(chimkenData);
+
+        foreach (var plantData in Plants)
+            BaseCreatePlant(plantData);
     }
 
     private const string CommonHenRanchPedia = "%type% hens in close proximity to roostros will periodically lay eggs that produce %type% chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.";
@@ -257,7 +280,7 @@ public static class FoodManager
         var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
         var material = partial.GetComponent<MeshRenderer>().sharedMaterial;
         TranslateModel(prefab.FindChildren("Sprout"), mesh, material);
-        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), mesh, material);
+        TranslateModel(component.SpawnJoints.Select(GetGameObj), mesh, material);
         return prefab;
     }
 
@@ -269,4 +292,8 @@ public static class FoodManager
             gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
         }
     }
+
+    private static readonly Func<Joint, GameObject> GetGameObj = GetGameObject;
+
+    private static GameObject GetGameObject(Joint joint) => joint.gameObject;
 }

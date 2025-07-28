@@ -16,5 +16,9 @@ public static class MineSlimeAppearanceFix
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
 public static class EatMapFix
 {
-    public static void Postfix(SlimeDiet __instance) => __instance.EatMap.RemoveAll(x => Identifiable.CHICK_CLASS.Contains(x.eats));
+    public static void Postfix(SlimeDiet __instance) => __instance.EatMap.RemoveAll(IsChick);
+
+    private static readonly Predicate<SlimeDiet.EatMapEntry> IsChick = IsChickMethod;
+
+    private static bool IsChickMethod(SlimeDiet.EatMapEntry entry) => Identifiable.CHICK_CLASS.Contains(entry.eats);
 }

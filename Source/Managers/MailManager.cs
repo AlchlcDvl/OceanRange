@@ -11,7 +11,9 @@ public static class MailManager
     {
         Mail = AssetManager.GetJson<CustomMailData[]>("mailbox");
         AssetManager.UnloadAsset<JsonAsset>("mailbox");
-        Mail.ForEach(PreLoadMail);
+
+        foreach (var mail in Mail)
+            PreLoadMail(mail);
     }
 
     private static void PreLoadMail(CustomMailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id)

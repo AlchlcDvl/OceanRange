@@ -34,17 +34,7 @@ public static class AssetManager
     /// <summary>
     /// Dictionary to hold handles for mod assets.
     /// </summary>
-    private static readonly Dictionary<string, AssetHandle> ModAssets = [];
-
-    /// <summary>
-    /// Dictionary to hold handles for fetched game assets.
-    /// </summary>
-    private static readonly Dictionary<string, ResourceHandle> GameAssets = [];
-
-    /// <summary>
-    /// Another dictionary that handles arrays of assets of a certain type, mainly to avoid repetitive calls to Resources.FindObjectsOfTypeAll, which is very expensive.
-    /// </summary>
-    private static readonly Dictionary<Type, UObject[]> FetchedAssets = [];
+    private static readonly Dictionary<string, AssetHandle> Assets = [];
 
 #if DEBUG
     /// <summary>
@@ -59,10 +49,12 @@ public static class AssetManager
     /// </summary>
     public static void InitialiseAssets()
     {
-        Core.GetManifestResourceNames().Do(x => CreateAssetHandle(x.SanitisePath(), x)); // Create handles
+        // Create handles
+        foreach (var path in Core.GetManifestResourceNames())
+            CreateAssetHandle(path.SanitisePath(), path);
 
 #if DEBUG // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
-        JsonSettings.Formatting = Formatting.Indented;
+            JsonSettings.Formatting = Formatting.Indented;
 #endif
         // Adding the json converters
         // JsonSettings.Converters.Add(new ZoneConverter());
@@ -83,7 +75,7 @@ public static class AssetManager
     {
         foreach (var handleName in handles)
         {
-            if (ModAssets.Remove(handleName, out var handle))
+            if (Assets.Remove(handleName, out var handle))
                 handle.Dispose(); // Releasing the handles
             else
                 throw new FileNotFoundException(handleName);
@@ -128,36 +120,6 @@ public static class AssetManager
     public static Mesh GetMesh(string name) => Get<Mesh>(name);
 
     /// <summary>
-    /// Fetches an asset resource from the game. Tries to fetch from a cache first if it can.
-    /// </summary>
-    /// <typeparam name="T">The type of the asset.</typeparam>
-    /// <param name="name">The name of the asset.</param>
-    /// <param name="throwError">The flag that indicates if an error should be thrown.</param>
-    /// <returns>The fetched asset.</returns>
-    public static T GetResource<T>(string name, bool throwError = true) where T : UObject
-    {
-        if (!GameAssets.TryGetValue(name, out var handle))
-            handle = GameAssets[name] = new(name);
-
-        return handle.Load<T>(throwError);
-    }
-
-    /// <summary>
-    /// A wrapper for Resources.FindObjectsOfTypeAll that uses a cache to avoid its expensive usage.
-    /// </summary>
-    /// <typeparam name="T">The type of the assets.</typeparam>
-    /// <returns>A typed array of all game assets of the provided type.</returns>
-    public static T[] GetAllResources<T>() where T : UObject
-    {
-        var tType = typeof(T);
-
-        if (!FetchedAssets.TryGetValue(tType, out var assets))
-            assets = FetchedAssets[tType] = Resources.FindObjectsOfTypeAll<T>();
-
-        return (T[])assets;
-    }
-
-    /// <summary>
     /// Gets an asset associated with the provided name.
     /// </summary>
     /// <param name="name">The name of the asset.</param>
@@ -165,7 +127,7 @@ public static class AssetManager
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
     private static T Get<T>(string name, bool throwError = true) where T : UObject
     {
-        if (!ModAssets.TryGetValue(name, out var handle))
+        if (!Assets.TryGetValue(name, out var handle))
             return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : null;
 
         return handle.Load<T>(throwError);
@@ -179,7 +141,7 @@ public static class AssetManager
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
     public static void UnloadAsset<T>(string name, bool throwError = true) where T : UObject
     {
-        if (ModAssets.TryGetValue(name, out var handle))
+        if (Assets.TryGetValue(name, out var handle))
             handle.Unload<T>(throwError);
         else if (throwError)
             throw new FileNotFoundException($"{name}, {typeof(T).Name}");
@@ -213,17 +175,25 @@ public static class AssetManager
 
         var mesh = new Mesh
         {
-            vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            triangles = BinaryUtils.ReadArray(reader, reader => reader.ReadInt32()),
-            normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4)
+            vertices = BinaryUtils.ReadArray(reader, ReadVector3),
+            triangles = BinaryUtils.ReadArray(reader, ReadInt),
+            normals = BinaryUtils.ReadArray(reader, ReadVector3),
+            tangents = BinaryUtils.ReadArray(reader, ReadVector4)
         };
 
         for (var i = 0; i < 8; i++)
-            mesh.SetUVs(i, BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2));
+            mesh.SetUVs(i, BinaryUtils.ReadArray(reader, ReadVector2));
 
         return mesh;
     }
+
+    // Helper fields to reduce compiler generated code
+    private static readonly Func<BinaryReader, int> ReadInt = ReadIntMethod;
+    private static readonly Func<BinaryReader, Vector2> ReadVector2 = BinaryUtils.ReadVector2;
+    private static readonly Func<BinaryReader, Vector3> ReadVector3 = BinaryUtils.ReadVector3;
+    private static readonly Func<BinaryReader, Vector4> ReadVector4 = BinaryUtils.ReadVector4;
+
+    private static int ReadIntMethod(BinaryReader reader) => reader.ReadInt32();
 
     // Helper to create an empty texture
     private static Texture2D EmptyTexture(TextureFormat format, bool mipChain) => new(2, 2, format, mipChain) { filterMode = FilterMode.Bilinear };
@@ -258,11 +228,8 @@ public static class AssetManager
     private static Sprite LoadSprite(string path)
     {
         var tex = LoadTexture(path);
-        return Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, GetMeshType(tex.name));
+        return Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight);
     }
-
-    // Another optimisation related thing
-    private static SpriteMeshType GetMeshType(string name) => name is "sleepingeyes" || name.Contains("pattern") || name.Contains("ramp") ? SpriteMeshType.FullRect : SpriteMeshType.Tight;
 
     /// <summary>
     /// Reads all of the bytes from the provided stream.
@@ -290,8 +257,8 @@ public static class AssetManager
     /// <param name="path">The path of the asset.</param>
     private static void CreateAssetHandle(string name, string path)
     {
-        if (!ModAssets.TryGetValue(name, out var handle))
-            handle = ModAssets[name] = new(name);
+        if (!Assets.TryGetValue(name, out var handle))
+            handle = Assets[name] = new(name);
 
         handle.AddPath(path);
     }

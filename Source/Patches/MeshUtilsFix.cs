@@ -16,9 +16,18 @@ public static class MeshUtilsImprovement
 
         var sharedMesh = bodyApp.GetComponent<SkinnedMeshRenderer>().sharedMesh;
         var vertices = sharedMesh.vertices;
-        var zero = vertices.Aggregate(Vector3.zero, (current, vector) => current + vector) / vertices.Length;
-        var num = vertices.Sum(vector => (vector - zero).magnitude) / vertices.Length;
+        var zero = Vector3.zero;
 
+        foreach (var vector in vertices)
+            zero += vector;
+
+        zero /= vertices.Length;
+        var num = 0f;
+
+        foreach (var vector in vertices)
+            num += (vector - zero).magnitude;
+
+        num /= vertices.Length;
         bodyApp.AttachedBones =
         [
             SlimeAppearance.SlimeBone.Slime,
@@ -51,7 +60,7 @@ public static class MeshUtilsImprovement
         if (additionalMesh != null)
             list.AddRange(additionalMesh);
 
-        var rootMatrix = slimePrefab.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;
+        var rootMatrix = slimePrefab.Bones.First(IsBone).BoneObject.transform.localToWorldMatrix;
 
         foreach (var item in list)
         {
@@ -70,17 +79,17 @@ public static class MeshUtilsImprovement
                 var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
                 var weight = new BoneWeight
                 {
-                    weight0 = 1f - jiggle,
-                    boneIndex0 = 0
+                    m_Weight0 = 1f - jiggle,
+                    m_BoneIndex0 = 0
                 };
 
                 if (jiggle > 0f)
                 {
-                    weight.boneIndex1 = diff.x >= 0f ? 1 : 2;
-                    weight.boneIndex2 = diff.y >= 0f ? 3 : 4;
-                    weight.boneIndex3 = diff.z >= 0f ? 5 : 6;
+                    weight.m_BoneIndex1 = diff.x >= 0f ? 1 : 2;
+                    weight.m_BoneIndex2 = diff.y >= 0f ? 3 : 4;
+                    weight.m_BoneIndex3 = diff.z >= 0f ? 5 : 6;
 
-                    var value = diff.Multiply(diff).Multiply(diff).Abs();
+                    var value = diff.ToPower(3).Abs();
                     var normal = value.Sum();
 
                     if (normal > 0f)
@@ -88,15 +97,15 @@ public static class MeshUtilsImprovement
 
                     value *= jiggle;
 
-                    weight.weight1 = value.x;
-                    weight.weight2 = value.y;
-                    weight.weight3 = value.z;
+                    weight.m_Weight1 = value.x;
+                    weight.m_Weight2 = value.y;
+                    weight.m_Weight3 = value.z;
                 }
 
-                weight.weight0 *= scale;
-                weight.weight1 *= scale;
-                weight.weight2 *= scale;
-                weight.weight3 *= scale;
+                weight.m_Weight0 *= scale;
+                weight.m_Weight1 *= scale;
+                weight.m_Weight2 *= scale;
+                weight.m_Weight3 *= scale;
 
                 weights[n] = weight;
             }
@@ -116,4 +125,8 @@ public static class MeshUtilsImprovement
 
         return false;
     }
+
+    private static readonly Func<SlimeAppearanceApplicator.BoneMapping, bool> IsBone = IsBoneRoot;
+
+    private static bool IsBoneRoot(SlimeAppearanceApplicator.BoneMapping appearance) => appearance.Bone == SlimeAppearance.SlimeBone.Root;
 }

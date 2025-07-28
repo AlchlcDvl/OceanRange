@@ -65,7 +65,7 @@ public sealed class CustomPlantData : CustomFoodData
     public SpawnResource.Id DlxResourceId;
 
     [JsonProperty("spawnLocations"), JsonRequired]
-    public Dictionary<string, Vector3[]> SpawnLocations;
+    public Dictionary<string, Dictionary<string, Vector3[]>> SpawnLocations;
 
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)

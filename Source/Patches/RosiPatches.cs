@@ -5,10 +5,10 @@ public static class SlimeEatProduce
 {
     public static void Prefix(SlimeEat __instance, ref int count)
     {
-        if (!__instance.GetComponent<RosiBehaviour>())
+        if (!__instance.GetComponent<RosiBehaviour>() || !CorralRegion.allCorrals.TryFinding(x => x.GetComponent<Collider>().bounds.Contains(__instance.transform.position), out var corral))
             return;
 
-        var collider = CorralRegion.allCorrals.Find(x => x.GetComponent<Collider>().bounds.Contains(__instance.transform.position))?.GetComponent<Collider>();
-        count = Mathf.Min(collider ? RosiBehaviour.All.Count(item => collider.bounds.Contains(item.transform.position)) : 1, 10);
+        var collider = corral.GetComponent<Collider>();
+        count = Mathf.Min(RosiBehaviour.All.Count(item => collider.bounds.Contains(item.transform.position)), 10);
     }
 }

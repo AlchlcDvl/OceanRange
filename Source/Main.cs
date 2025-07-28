@@ -1,8 +1,9 @@
 ﻿using SRML;
 using SRML.SR.SaveSystem;
-using SRML.SR.SaveSystem.Data;
 using OceanRange.Patches;
 using static SRML.Console.Console;
+using SRML.SR.SaveSystem.Registry;
+using SRML.SR.SaveSystem.Data;
 
 namespace OceanRange;
 
@@ -68,7 +69,9 @@ internal sealed class Main : ModEntryPoint
         GC.Collect(); // Free up temp memory
     }
 
-    private static void ReadData(CompoundDataPiece piece)
+    private static readonly WorldDataLoadDelegate ReadData = ReadDataMethod;
+
+    private static void ReadDataMethod(CompoundDataPiece piece)
     {
         FixAndProperlyShowMailPatch.IsLoaded = false;
 
@@ -85,7 +88,9 @@ internal sealed class Main : ModEntryPoint
         FixAndProperlyShowMailPatch.IsLoaded = true;
     }
 
-    private static void WriteData(CompoundDataPiece piece)
+    private static readonly WorldDataSaveDelegate WriteData = WriteDataMethod;
+
+    private static void WriteDataMethod(CompoundDataPiece piece)
     {
         FixAndProperlyShowMailPatch.IsLoaded = false;
 

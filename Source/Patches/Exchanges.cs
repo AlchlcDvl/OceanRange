@@ -5,31 +5,33 @@ namespace OceanRange.Patches;
 [HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake))]
 public static class CreateExchanges
 {
-    public static void Prefix(ExchangeDirector __instance) => __instance.values =
-    [
-        .. __instance.values,
-        .. SlimeManager.Slimes.SelectMany(x => new ValueEntry[]
+    public static void Prefix(ExchangeDirector __instance)
+    {
+        var list = new List<ValueEntry>(__instance.values.Length + FoodManager.Chimkens.Length + FoodManager.Plants.Length + (SlimeManager.Slimes.Length * 2));
+        list.AddRange(__instance.values);
+
+        foreach (var chimkenData in FoodManager.Chimkens)
+            list.Add(CreateEntry(chimkenData));
+
+        foreach (var plantData in FoodManager.Plants)
+            list.Add(CreateEntry(plantData));
+
+        foreach (var slimeData in SlimeManager.Slimes)
         {
-            new()
+            list.Add(CreateEntry(slimeData));
+            list.Add(new()
             {
-                id = x.MainId,
-                value = x.ExchangeWeight
-            },
-            new()
-            {
-                id = x.PlortId,
-                value = x.PlortExchangeWeight
-            }
-        }),
-        .. FoodManager.Chimkens.Select(x => new ValueEntry
-        {
-            id = x.MainId,
-            value = x.ExchangeWeight
-        }),
-        .. FoodManager.Plants.Select(x => new ValueEntry
-        {
-            id = x.MainId,
-            value = x.ExchangeWeight
-        })
-    ];
+                id = slimeData.PlortId,
+                value = slimeData.PlortExchangeWeight
+            });
+        }
+
+        __instance.values = [.. list];
+    }
+
+    private static ValueEntry CreateEntry(JsonData data) => new()
+    {
+        id = data.MainId,
+        value = data.ExchangeWeight
+    };
 }

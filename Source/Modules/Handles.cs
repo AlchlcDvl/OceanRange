@@ -4,12 +4,34 @@ namespace OceanRange.Modules;
 /// The handle class specialised to handle mod assets.
 /// </summary>
 /// <inheritdoc cref="Handle"/>
-public sealed class AssetHandle(string name) : Handle(name)
+public sealed class AssetHandle(string name) : IDisposable
 {
     /// <summary>
     /// Contains the manifest paths of the assets.
     /// </summary>
     private readonly List<string> Paths = [];
+
+    /// <summary>
+    /// The collective name of the assets contained by this handle.
+    /// </summary>
+    private readonly string Name = name;
+
+    /// <summary>
+    /// Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there can't be two of Plort.png anywhere).
+    /// </summary>
+    private readonly Dictionary<Type, UObject> Assets = [];
+
+    /// <inheritdoc cref="IDisposable.Dispose"/>
+    public void Dispose()
+    {
+        Paths.Clear();
+
+        foreach (var asset in Assets.Values)
+            asset.Destroy();
+
+        Assets.Clear();
+        GC.SuppressFinalize(this);
+    }
 
     /// <summary>
     /// Attempts to add an asset path to the handle.
@@ -73,79 +95,5 @@ public sealed class AssetHandle(string name) : Handle(name)
             asset.Destroy();
         else if (throwError)
             throw new FileLoadException($"Not such asset {Name} of type {tType.Name} was loaded!");
-    }
-
-    /// <inheritdoc/>
-    protected override void OnDisposal()
-    {
-        Paths.Clear();
-        Assets.Values.Do(x => x.Destroy());
-    }
-}
-
-/// <summary>
-/// The handle class specialised to handle game assets.
-/// </summary>
-/// <inheritdoc cref="Handle"/>
-public sealed class ResourceHandle(string name) : Handle(name)
-{
-    /// <summary>
-    /// Loads and returns an asset handled by this handle.
-    /// </summary>
-    /// <typeparam name="T">The type of the asset.</typeparam>
-    /// <param name="throwError">The flag that indicates if an error should be thrown.</param>
-    /// <returns>The fetched asset.</returns>
-    /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name.</exception>
-    public T Load<T>(bool throwError = true) where T : UObject
-    {
-        var tType = typeof(T);
-
-        if (Assets.TryGetValue(tType, out var asset)) // Try to fetch the asset if it's already loaded
-            return asset as T;
-
-        asset = Array.Find(AssetManager.GetAllResources<T>(), x => x.name == Name); // Find the asset with the provided name among the game resources
-
-        if (!asset) // Throw an error if null
-            return throwError ? throw new FileNotFoundException($"{Name}, {tType.Name}") : null;
-
-        // Save and return the asset
-        Assets.Add(tType, asset);
-        return (T)asset;
-    }
-
-    // /// <summary>
-    // /// Unloads the asset of the requested type to free up some memory.
-    // /// </summary>
-    // /// <typeparam name="T">The type of the asset.</typeparam>
-    // public void Unload<T>() where T : UObject => Assets.Remove(typeof(T));
-}
-
-/// <summary>
-/// Base handle class for better encapsulation between the two handle types.
-/// </summary>
-/// <param name="name">The collective name of the assets contained by this handle.</param>
-public abstract class Handle(string name) : IDisposable
-{
-    /// <summary>
-    /// The collective name of the assets contained by this handle.
-    /// </summary>
-    protected readonly string Name = name;
-
-    /// <summary>
-    /// Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there can't be two of Plort.png anywhere).
-    /// </summary>
-    protected readonly Dictionary<Type, UObject> Assets = [];
-
-    /// <summary>
-    /// An event that's invoked when the handle is being released. Use to free up any additional memory before the disposal is finalised.
-    /// </summary>
-    protected virtual void OnDisposal() { }
-
-    /// <inheritdoc cref="IDisposable.Dispose"/>
-    public void Dispose()
-    {
-        OnDisposal();
-        Assets.Clear();
-        GC.SuppressFinalize(this);
     }
 }

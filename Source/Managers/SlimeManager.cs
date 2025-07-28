@@ -45,40 +45,53 @@ public static class SlimeManager
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 
-        SRCallbacks.PreSaveGameLoad += _ =>
-        {
-            var spawners = UObject.FindObjectsOfType<DirectedSlimeSpawner>();
-
-            foreach (var slimeData in Slimes)
-            {
-                var prefab = slimeData.MainId.GetPrefab();
-
-                foreach (var item in spawners.Where(spawner => Helpers.IsValidZone(spawner, slimeData.Zones)))
-                {
-                    foreach (var constraint in item.constraints)
-                    {
-                        if (slimeData.NightSpawn && constraint.window.timeMode != DirectedActorSpawner.TimeMode.NIGHT)
-                            continue;
-
-                        constraint.slimeset.members =
-                        [
-                            .. constraint.slimeset.members,
-                            new()
-                            {
-                                prefab = prefab,
-                                weight = slimeData.SpawnAmount
-                            }
-                        ];
-                    }
-                }
-
-                if (slimeData.HasGordo && slimeData.MainId != Ids.SAND_SLIME)
-                    Helpers.BuildGordo(slimeData, AssetManager.GetResource<GameObject>("cell" + slimeData.GordoLocation).FindChild("Sector/Slimes"));
-            }
-        };
+        SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
+        SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
 
         // var modded = Slimes.Select(x => x.Name.ToUpper()).ToArray(); // WIP
         // Slimes.ForEach(x => x.GenerateLargos(modded));
+    }
+
+    private static readonly SRCallbacks.OnSaveGameLoadedDelegate PreOnSaveLoad = PreOnSaveLoadMethod;
+
+    private static void PreOnSaveLoadMethod(SceneContext _)
+    {
+        var spawners = UObject.FindObjectsOfType<DirectedSlimeSpawner>();
+
+        foreach (var slimeData in Slimes)
+        {
+            var prefab = slimeData.MainId.GetPrefab();
+
+            foreach (var slimeSpawner in spawners.Where(spawner => Helpers.IsValidZone(spawner, slimeData.Zones)))
+            {
+                foreach (var constraint in slimeSpawner.constraints)
+                {
+                    if (slimeData.NightSpawn && constraint.window.timeMode != DirectedActorSpawner.TimeMode.NIGHT)
+                        continue;
+
+                    constraint.slimeset.members =
+                    [
+                        .. constraint.slimeset.members,
+                        new()
+                        {
+                            prefab = prefab,
+                            weight = slimeData.SpawnAmount
+                        }
+                    ];
+                }
+            }
+        }
+    }
+
+    private static readonly SRCallbacks.OnSaveGameLoadedDelegate OnSaveLoaded = OnSaveLoadedMethod;
+
+    private static void OnSaveLoadedMethod(SceneContext _)
+    {
+        foreach (var slimeData in Slimes)
+        {
+            if (slimeData.HasGordo && slimeData.MainId != Ids.SAND_SLIME)
+                Helpers.BuildGordo(slimeData, GameObject.Find("zone" + slimeData.GordoZone + "/cell" + slimeData.GordoLocation + "/Sector/Slimes"));
+        }
     }
 
 #if DEBUG
@@ -88,7 +101,8 @@ public static class SlimeManager
     {
         RocksPrefab = IdentifiableId.ROCK_PLORT.GetPrefab().transform.Find("rocks");
 
-        Slimes.ForEach(BaseLoadSlime);
+        foreach (var slimeData in Slimes)
+            BaseLoadSlime(slimeData);
     }
 
 #if DEBUG
@@ -159,7 +173,7 @@ public static class SlimeManager
         }
 
         var rewards = prefab.GetComponent<GordoRewards>();
-        rewards.rewardPrefabs = [..slimeData.GordoRewards.Select(x => x.GetPrefab())];
+        rewards.rewardPrefabs = [..slimeData.GordoRewards.Select(GetPrefab)];
         rewards.slimePrefab = slimeData.MainId.GetPrefab();
         rewards.rewardOverrides = [];
 
@@ -180,6 +194,8 @@ public static class SlimeManager
         LookupRegistry.RegisterGordo(prefab);
         SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);
     }
+
+    private static readonly Func<IdentifiableId, GameObject> GetPrefab = id => id.GetPrefab();
 
 #if DEBUG
     [TimeDiagnostic]
@@ -409,8 +425,17 @@ public static class SlimeManager
     private static void BasicInitSlimeAppearance(GameObject prefab, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, string[] meshes, Action<int, SlimeAppearanceStructure> materialHandler, Type[] toAdd, Type[] toRemove, float
         jiggleAmount, bool skipNull = false)
     {
-        toAdd?.Do(x => prefab.AddComponent(x));
-        toRemove?.Do(prefab.RemoveComponent);
+        if (toAdd != null)
+        {
+            foreach (var type in toAdd)
+                prefab.AddComponent(type);
+        }
+
+        if (toRemove != null)
+        {
+            foreach (var type in toRemove)
+                prefab.RemoveComponent(type);
+        }
 
         if (meshes?.Length is null or 0 || (meshes.Length == 1 && meshes[0] == null && skipNull))
             return;
@@ -468,8 +493,18 @@ public static class SlimeManager
         var prefabRend = gordo.GetComponent<SkinnedMeshRenderer>();
         var sharedMesh = prefabRend.sharedMesh;
         var vertices = sharedMesh.vertices;
-        var zero = vertices.Aggregate(Vector3.zero, (current, vector) => current + vector) / vertices.Length;
-        var num = vertices.Sum(vector => (vector - zero).magnitude) / vertices.Length;
+        var zero = Vector3.zero;
+
+        foreach (var vector in vertices)
+            zero += vector;
+
+        zero /= vertices.Length;
+        var num = 0f;
+
+        foreach (var vector in vertices)
+            num += (vector - zero).magnitude;
+
+        num /= vertices.Length;
         var parent = gordo.parent;
         var parentObj = parent.gameObject.FindChild("bone_root");
 
