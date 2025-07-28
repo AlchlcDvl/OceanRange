@@ -51,11 +51,10 @@ public sealed class AssetHandle(string name) : Handle(name)
         asset = generator.LoadAsset(path); // Create the asset
 
         // Save the asset if not null, otherwise throw an error
-        if (asset)
-            Assets.Add(tType, asset);
-        else
+        if (!asset)
             return throwError ? throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!") : null;
 
+        Assets.Add(tType, asset);
         asset.name = Name; // Set name
         return (T)asset.DontDestroy(); // Allow the asset to persist across scene loads and return
     }
@@ -109,10 +108,15 @@ public sealed class ResourceHandle(string name) : Handle(name)
         if (!asset) // Throw an error if null
             return throwError ? throw new FileNotFoundException($"{Name}, {tType.Name}") : null;
 
+        // Save and return the asset
         Assets.Add(tType, asset);
         return (T)asset;
     }
 
+    // /// <summary>
+    // /// Unloads the asset of the requested type to free up some memory.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the asset.</typeparam>
     // public void Unload<T>() where T : UObject => Assets.Remove(typeof(T));
 }
 

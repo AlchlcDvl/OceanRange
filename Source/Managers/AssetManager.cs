@@ -297,7 +297,7 @@ public static class AssetManager
     }
 
 #if DEBUG
-    // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use but keep commented for releases
+    // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use
 
     // public static void Dump(this Texture texture, string path)
     // {

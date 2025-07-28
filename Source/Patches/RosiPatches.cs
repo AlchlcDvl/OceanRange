@@ -8,21 +8,7 @@ public static class SlimeEatProduce
         if (!__instance.GetComponent<RosiBehaviour>())
             return;
 
-        Collider val = null;
-        var flag = false;
-
-        foreach (var allCorral in CorralRegion.allCorrals)
-        {
-            var collider = allCorral.GetComponent<Collider>();
-
-            if (!collider.bounds.Contains(__instance.transform.position))
-                continue;
-
-            val = collider;
-            flag = true;
-            break;
-        }
-
-        count = flag && val ? RosiBehaviour.All.Count(item => val.bounds.Contains(item.transform.position)) : 1;
+        var collider = CorralRegion.allCorrals.Find(x => x.GetComponent<Collider>().bounds.Contains(__instance.transform.position))?.GetComponent<Collider>();
+        count = Mathf.Min(collider ? RosiBehaviour.All.Count(item => collider.bounds.Contains(item.transform.position)) : 1, 10);
     }
 }
