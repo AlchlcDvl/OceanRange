@@ -179,17 +179,25 @@ public static class FoodManager
         ];
 
         // Register both chicks and hens
-        RegisterFood(chickPrefab, AssetManager.GetSprite($"{lower}chick"), ammo, chimkenData.ChickId, chimkenData.ChickEntry, [StorageType.NON_SLIMES]);
+        var chickIcon = AssetManager.GetSprite($"{lower}chick");
+        RegisterFood(chickPrefab, chickIcon, ammo, chimkenData.ChickId, chimkenData.ChickEntry, [StorageType.NON_SLIMES]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
             CommonChickAboutPedia.Replace("%type%", chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
 
-        RegisterFood(henPrefab, AssetManager.GetSprite($"{lower}hen"), ammo, chimkenData.MainId, chimkenData.MainEntry, [StorageType.NON_SLIMES, StorageType.FOOD]);
+        var henIcon = AssetManager.GetSprite($"{lower}hen");
+        RegisterFood(henPrefab, henIcon, ammo, chimkenData.MainId, chimkenData.MainEntry, [StorageType.NON_SLIMES, StorageType.FOOD]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
 
+        if (Main.ClsExists)
+        {
+            Main.AddIconBypass(henIcon);
+            Main.AddIconBypass(chickIcon);
+        }
+
         // Compatibility
-        if (!StmExists)
-            return;
+            if (!StmExists)
+                return;
 
         PlortRegistry.AddEconomyEntry(chimkenData.MainId, chimkenData.BasePrice, chimkenData.Saturation);
         PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress);
@@ -250,7 +258,8 @@ public static class FoodManager
         var material2 = prefab.GetComponent<ResourceCycle>().rottenMat = material.Clone();
         material2.SetColor(Color1, "#333333".HexToColor());
 
-        RegisterFood(prefab, AssetManager.GetSprite(lower), plantData.MainAmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [StorageType.NON_SLIMES, StorageType.FOOD]);
+        var icon = AssetManager.GetSprite(lower);
+        RegisterFood(prefab, icon, plantData.MainAmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [StorageType.NON_SLIMES, StorageType.FOOD]);
         SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
@@ -264,6 +273,9 @@ public static class FoodManager
             deluxePlantedPrefab = resourceDlx,
             plantedPrefab = resource
         });
+
+        if (Main.ClsExists)
+            Main.AddIconBypass(icon);
 
         if (!StmExists)
             return;

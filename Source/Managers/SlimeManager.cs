@@ -141,10 +141,12 @@ public static class SlimeManager
         var lower = slimeData.Name.ToLower();
         var name = slimeData.Name + " Gordo";
 
+        var icon = AssetManager.GetSprite($"{lower}gordo");
+
         var gordoDisplay = prefab.GetComponent<GordoDisplayOnMap>();
         var markerPrefab = gordoDisplay.markerPrefab.CreatePrefab();
         markerPrefab.name = "Gordo" + slimeData.Name + "Marker";
-        markerPrefab.GetComponent<Image>().sprite = AssetManager.GetSprite($"{lower}gordo");
+        markerPrefab.GetComponent<Image>().sprite = icon;
         gordoDisplay.markerPrefab = markerPrefab;
 
         var isSand = slimeData.MainId == Ids.SAND_SLIME;
@@ -179,7 +181,7 @@ public static class SlimeManager
         }
 
         var rewards = prefab.GetComponent<GordoRewards>();
-        rewards.rewardPrefabs = [..slimeData.GordoRewards.Select(GetPrefab)];
+        rewards.rewardPrefabs = [.. slimeData.GordoRewards.Select(GetPrefab)];
         rewards.slimePrefab = slimeData.MainId.GetPrefab();
         rewards.rewardOverrides = [];
 
@@ -199,6 +201,9 @@ public static class SlimeManager
         TranslationPatcher.AddActorTranslation("l." + slimeData.GordoId.ToString().ToLower(), name);
         LookupRegistry.RegisterGordo(prefab);
         SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);
+
+        if (Main.ClsExists)
+            Main.AddIconBypass(icon);
     }
 
     private static readonly Func<IdentifiableId, GameObject> GetPrefab = id => id.GetPrefab();
@@ -245,11 +250,12 @@ public static class SlimeManager
         slimeData.InitPlortDetails?.Invoke(null, [prefab, definition]);
 
         // Registering the prefab and its id along with any other additional stuff
+        var icon = AssetManager.GetSprite($"{nameLower}plort");
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
         TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLower(), $"{slimeData.Name} {slimeData.PlortType}");
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
-        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.HexToColor(), AssetManager.GetSprite($"{nameLower}plort"));
+        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.HexToColor(), icon);
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
@@ -262,6 +268,9 @@ public static class SlimeManager
 
         if (slimeData.CanBeRefined)
             AmmoRegistry.RegisterRefineryResource(slimeData.PlortId);
+
+        if (Main.ClsExists)
+            Main.AddIconBypass(icon);
     }
 
 #if DEBUG
@@ -394,6 +403,9 @@ public static class SlimeManager
         SlimePediaCreation.PreLoadSlimePediaConnection(slimeData.MainEntry, slimeData.MainId, PediaCategory.SLIMES);
         SlimePediaCreation.CreateSlimePediaForSlimeWithName(slimeData.MainEntry, title, slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks, slimeData.Plortonomics);
         PediaRegistry.RegisterIdEntry(slimeData.MainEntry, appearance.Icon);
+
+        if (Main.ClsExists)
+            Main.AddIconBypass(appearance.Icon);
     }
 
 #if DEBUG

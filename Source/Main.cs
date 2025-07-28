@@ -10,6 +10,7 @@ namespace OceanRange;
 internal sealed class Main : ModEntryPoint
 {
     public static ConsoleInstance Console;
+    public static bool ClsExists;
 
 #if DEBUG
     public static readonly SavePositionCommand SavePos = new();
@@ -27,6 +28,10 @@ internal sealed class Main : ModEntryPoint
 
         HarmonyInstance.PatchAll(AssetManager.Core);
 
+        SystemContext.IsModded = true;
+
+        ClsExists = SRModLoader.IsModPresent("custom.loading");
+
         AssetManager.InitialiseAssets();
 
         FoodManager.PreLoadFoodData();
@@ -36,7 +41,8 @@ internal sealed class Main : ModEntryPoint
         SaveRegistry.RegisterWorldDataLoadDelegate(ReadData);
         SaveRegistry.RegisterWorldDataSaveDelegate(WriteData);
 
-        SystemContext.IsModded = true;
+        if (ClsExists)
+            AddSplashBypass(AssetManager.GetSprite("loading"));
 
 #if DEBUG
         RegisterCommand(SavePos);
@@ -104,5 +110,21 @@ internal sealed class Main : ModEntryPoint
         }
 
         FixAndProperlyShowMailPatch.IsLoaded = true;
+    }
+
+    public static void AddIconBypass(Sprite icon)
+    {
+        try
+        {
+            CLS.AddToLoading.AddIcon(icon);
+        } catch {}
+    }
+
+    public static void AddSplashBypass(Sprite splash)
+    {
+        try
+        {
+            CLS.AddToLoading.AddSplash(splash);
+        } catch {}
     }
 }
