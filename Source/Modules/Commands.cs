@@ -50,11 +50,11 @@ public sealed class TeleportCommand : ConsoleCommand
             return false;
 
         if (args.Length == 1)
-            args = args[0].TrueSplit(',');
+            args = args[0].TrueSplit(',', ' ');
 
-        var pos = new Vector3(float.Parse(args[0]), float.Parse(args[1]), float.Parse(args[2]));
-        SceneContext.Instance.Player.transform.position = pos;
-        Main.Console.Log("Teleported to " + pos.ToString());
+        var vector = string.Join(",", args);
+        SceneContext.Instance.Player.transform.position = Helpers.ParseVector(vector);
+        Main.Console.Log("Teleported to " + vector);
         return true;
     }
 }

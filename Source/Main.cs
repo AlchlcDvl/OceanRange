@@ -48,20 +48,20 @@ internal sealed class Main : ModEntryPoint
 #endif
     }
 
+    /// <inheritdoc/>
 #if DEBUG
     [TimeDiagnostic("Mod Load")]
 #endif
-    /// <inheritdoc/>
     public override void Load()
     {
         FoodManager.LoadFoods();
         SlimeManager.LoadAllSlimes();
     }
 
+    /// <inheritdoc/>
 #if DEBUG
     [TimeDiagnostic("Mod Postload")]
 #endif
-    /// <inheritdoc/>
     public override void PostLoad()
     {
         AssetManager.ReleaseHandles(["chimkenpedia", "plantpedia", "mailbox", "slimepedia"]); // Release handles

@@ -1,4 +1,5 @@
 // using SRML;
+using System.Globalization;
 using SRML.Utils;
 
 #if DEBUG
@@ -184,7 +185,7 @@ public static class Helpers
 
     // public static Texture2D CreateRamp(string name, string hexA, string hexB) => CreateRamp(name, hexA.HexToColor(), hexB.HexToColor());
 
-    // public static string ToHexRGBA(this Color32 color) => $"{color.r:X2},{color.g:X2},{color.b:X2},{color.a:X2}";
+    // public static string ToHexRGBA(this Color32 color) => $"#{color.r:X2}{color.g:X2}{color.b:X2}{color.a:X2}";
 
     public static float Sum(this Vector3 vector) => vector.x + vector.y + vector.z;
 
@@ -192,6 +193,50 @@ public static class Helpers
     {
         var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
         return zoneId == Zone.NONE || zones.Contains(zoneId);
+    }
+
+    public static Vector3 ParseVector(string value) => ParseVector(value, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture);
+
+    public static Vector3 ParseVector(string value, NumberStyles style, CultureInfo culture)
+    {
+        var components = value.TrueSplit(',', ' ');
+
+        switch (components.Length)
+        {
+            case < 2:
+                throw new InvalidDataException($"'{value}' has too less values!");
+            case > 3:
+                throw new InvalidDataException($"'{value}' has too many values!");
+        }
+
+        if (!float.TryParse(components[0], style, culture, out var x))
+            throw new InvalidDataException($"Invalid float string '{components[0]}'!");
+
+        if (!float.TryParse(components[1], style, culture, out var y))
+            throw new InvalidDataException($"Invalid float string '{components[1]}'!");
+
+        float z;
+
+        if (components.Length == 2)
+            z = 0f;
+        else if (!float.TryParse(components[2], style, culture, out z))
+            throw new InvalidDataException($"Invalid float string '{components[2]}'!");
+
+        return new(x, y, z);
+    }
+
+    public static bool TryParseVector(string value, NumberStyles styles, CultureInfo culture, out Vector3 result)
+    {
+        try
+        {
+            result = ParseVector(value, styles, culture);
+            return true;
+        }
+        catch
+        {
+            result = default;
+            return false;
+        }
     }
 
 #if DEBUG
