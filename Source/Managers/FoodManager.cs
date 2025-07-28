@@ -34,6 +34,9 @@ public static class FoodManager
         Chimkens = AssetManager.GetJson<CustomChimkenData[]>("chimkenpedia");
         Plants = AssetManager.GetJson<CustomPlantData[]>("plantpedia");
 
+        AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
+        AssetManager.UnloadAsset<JsonAsset>("plantpedia");
+
         SRCallbacks.PreSaveGameLoad += context =>
         {
             var spawners = UObject.FindObjectsOfType<DirectedAnimalSpawner>();
