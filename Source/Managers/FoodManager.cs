@@ -160,32 +160,16 @@ public static class FoodManager
 
         // Set specific data for each prefab
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
-        var transformChance = henPrefab.GetComponent<TransformChanceOnReproduce>();
-        transformChance.targetPrefab = IdentifiableId.ELDER_HEN.GetPrefab();
-        transformChance.transformChance = 2.5f;
-
-        chickPrefab.GetComponent<TransformAfterTime>().options =
-        [
-            new()
-            {
-                targetPrefab = henPrefab,
-                weight = 4.5f
-            },
-            new()
-            {
-                targetPrefab = IdentifiableId.ROOSTER.GetPrefab(),
-                weight = 3.5f
-            }
-        ];
+        chickPrefab.GetComponent<TransformAfterTime>().options[0].targetPrefab = henPrefab;
 
         // Register both chicks and hens
         var chickIcon = AssetManager.GetSprite($"{lower}chick");
-        RegisterFood(chickPrefab, chickIcon, ammo, chimkenData.ChickId, chimkenData.ChickEntry, [StorageType.NON_SLIMES]);
+        RegisterFood(chickPrefab, chickIcon, ammo, chimkenData.ChickId, chimkenData.ChickEntry, StorageType.NON_SLIMES);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
             CommonChickAboutPedia.Replace("%type%", chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
 
         var henIcon = AssetManager.GetSprite($"{lower}hen");
-        RegisterFood(henPrefab, henIcon, ammo, chimkenData.MainId, chimkenData.MainEntry, [StorageType.NON_SLIMES, StorageType.FOOD]);
+        RegisterFood(henPrefab, henIcon, ammo, chimkenData.MainId, chimkenData.MainEntry, StorageType.NON_SLIMES, StorageType.FOOD);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
 
@@ -218,7 +202,7 @@ public static class FoodManager
         return prefab;
     }
 
-    private static void RegisterFood(GameObject prefab, Sprite icon, Color ammo, IdentifiableId id, PediaId pediaId, StorageType[] siloStorage)
+    private static void RegisterFood(GameObject prefab, Sprite icon, Color ammo, IdentifiableId id, PediaId pediaId, params StorageType[] siloStorage)
     {
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, id);
