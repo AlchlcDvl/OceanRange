@@ -38,12 +38,9 @@ public sealed class AssetHandle(string name) : IDisposable
     /// </summary>
     /// <param name="path">The path to add.</param>
     /// <exception cref="ArgumentException">Thrown if the path contains a file extension that's already been added.</exception>
-    public void AddPath(string path)
+    public void AddPath(string path, string extension)
     {
-        if (!AssetManager.NamesToExtensions.TryGetValue(Name, out var extension))
-            throw new ArgumentException("No extension found!");
-
-        if (!Paths.TryAdd(extension, path))
+        if ((AssetManager.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other)) || !Paths.TryAdd(extension, path))
             throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing!");
     }
 

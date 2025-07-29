@@ -41,14 +41,23 @@ public static class AssetManager
     };
 
     /// <summary>
-    /// Handles mapping file names to their respective extensions
+    /// Handles the mapping of extensions that essentially mean the same thing.
     /// </summary>
-    public static readonly Dictionary<string, string> NamesToExtensions = [];
+    public static readonly Dictionary<string, string> ExclusiveExtensions = new()
+    {
+        ["png"] = "jpg",
+        ["jpg"] = "png"
+    };
 
     /// <summary>
     /// Dictionary to hold handles for mod assets.
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
+
+    /// <summary>
+    /// Handles mapping file names to their respective extensions
+    /// </summary>
+    private static readonly Dictionary<string, HashSet<string>> NamesToExtensions = [];
 
 #if DEBUG
     /// <summary>
@@ -87,6 +96,9 @@ public static class AssetManager
     /// <exception cref="FileNotFoundException">Thrown if an asset name is not an asset shipped with the mod.</exception>
     public static void ReleaseHandles(params string[] handles)
     {
+        if (handles.Length == 0)
+            handles = [.. Assets.Keys];
+
         foreach (var handleName in handles)
         {
             if (Assets.Remove(handleName, out var handle))
@@ -119,13 +131,13 @@ public static class AssetManager
     /// Gets a Texture2D from the assets associated with the provided name.
     /// </summary>
     /// <inheritdoc cref="Get"/>
-    public static Texture2D GetTexture2D(string name) => ((Texture2DAsset)(NamesToExtensions[name] == "jpg" ? Get<JpgTexture2D>(name) : Get<PngTexture2D>(name))).Asset;
+    public static Texture2D GetTexture2D(string name) => ((Texture2DAsset)(NamesToExtensions["jpg"].Contains(name) ? Get<JpgTexture2D>(name) : Get<PngTexture2D>(name))).Asset;
 
     /// <summary>
     /// Gets a Sprite from the assets associated with the provided name.
     /// </summary>
     /// <inheritdoc cref="Get"/>
-    public static Sprite GetSprite(string name) => ((SpriteAsset)(NamesToExtensions[name] == "jpg" ? Get<JpgSprite>(name) : Get<PngSprite>(name))).Asset;
+    public static Sprite GetSprite(string name) => ((SpriteAsset)(NamesToExtensions["jpg"].Contains(name) ? Get<JpgSprite>(name) : Get<PngSprite>(name))).Asset;
 
     /// <summary>
     /// Gets a Mesh from the assets associated with the provided name.
@@ -233,9 +245,9 @@ public static class AssetManager
     // Texture optimisation stuff
     private static bool GenerateMipChains(string name) => name == "sleepingeyes" || name.Contains("ramp") || name.Contains("pattern");
 
-    private static TextureFormat GetFormat(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureFormat.DXT1 : TextureFormat.DXT5;
+    private static TextureFormat GetFormat(string name) => NamesToExtensions["jpg"].Contains(name) ? TextureFormat.DXT1 : TextureFormat.DXT5;
 
-    private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
+    private static TextureWrapMode GetWrapMode(string name) => NamesToExtensions["jpg"].Contains(name) ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
 
     /// <summary>
     /// Loads a sprite from the provided path.
@@ -282,8 +294,13 @@ public static class AssetManager
         if (!Assets.TryGetValue(name, out var handle))
             handle = Assets[name] = new(name);
 
-        NamesToExtensions[name] = path.TrueSplit('.').Last();
-        handle.AddPath(path);
+        var extension = path.TrueSplit('.').Last();
+
+        if (!NamesToExtensions.TryGetValue(extension, out var set))
+            set = NamesToExtensions[extension] = [];
+
+        set.Add(name);
+        handle.AddPath(path, extension);
     }
 
 #if DEBUG
