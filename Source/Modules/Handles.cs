@@ -61,16 +61,16 @@ public sealed class AssetHandle(string name) : IDisposable
             return (T)asset;
 
         if (!AssetManager.AssetTypeExtensions.TryGetValue(tType, out var generator)) // Check if the requested type is valid
-            return throwError ? throw new NotSupportedException($"{tType.Name} is not a valid asset type to load") : default;
+            return throwError ? throw new NotSupportedException($"{tType.Name} is not a valid asset type to load") : null;
 
         if (!Paths.TryGetValue(generator.Extension, out var path)) // Check if there's an asset path that maps to the relevant file extension
-            return throwError ? throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}") : default;
+            return throwError ? throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}") : null;
 
         asset = generator.LoadAsset(path); // Create the asset
 
         // Save the asset if not null, otherwise throw an error
-        if (asset == null)
-            return throwError ? throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!") : default;
+        if (!asset?.BoxedAsset)
+            return throwError ? throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!") : null;
 
         Assets.Add(tType, asset);
 

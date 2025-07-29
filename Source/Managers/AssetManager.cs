@@ -154,7 +154,7 @@ public static class AssetManager
     private static T Get<T>(string name, bool throwError = true) where T : OceanAsset
     {
         if (!Assets.TryGetValue(name, out var handle))
-            return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : default;
+            return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : null;
 
         return handle.Load<T>(throwError);
     }
