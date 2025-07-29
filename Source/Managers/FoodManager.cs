@@ -196,8 +196,8 @@ public static class FoodManager
         }
 
         // Compatibility
-            if (!StmExists)
-                return;
+        if (!StmExists)
+            return;
 
         PlortRegistry.AddEconomyEntry(chimkenData.MainId, chimkenData.BasePrice, chimkenData.Saturation);
         PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress);

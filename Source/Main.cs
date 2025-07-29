@@ -42,7 +42,7 @@ internal sealed class Main : ModEntryPoint
         SaveRegistry.RegisterWorldDataSaveDelegate(WriteData);
 
         if (ClsExists)
-            AddSplashBypass(AssetManager.GetSprite("loading"));
+            AddSplashesBypass([AssetManager.GetSprite("loading"), AssetManager.GetSprite("loading2")]);
 
 #if DEBUG
         RegisterCommand(SavePos);
@@ -120,11 +120,11 @@ internal sealed class Main : ModEntryPoint
         } catch {}
     }
 
-    public static void AddSplashBypass(Sprite splash)
+    private static void AddSplashesBypass(IEnumerable<Sprite> splashes)
     {
         try
         {
-            CLS.AddToLoading.AddSplash(splash);
+            CLS.AddToLoading.AddSplashes(splashes);
         } catch {}
     }
 }

@@ -3,6 +3,7 @@ using AssetsLib;
 namespace OceanRange.Patches;
 
 // Aims to reduce a bit of the overhead (comparison, array initialisation and indexing mainly) that the original code introduces + allows the meshes to recalculate bounds after their poses have been set for maximum effectiveness
+// TODO: Refactor when AssetsLib 1.2.7 comes out
 [HarmonyPatch(typeof(MeshUtils), nameof(MeshUtils.GenerateBoneData), typeof(SlimeAppearanceApplicator), typeof(SlimeAppearanceObject), typeof(float), typeof(float), typeof(Mesh[]), typeof(SlimeAppearanceObject[]))]
 public static class MeshUtilsImprovement
 {

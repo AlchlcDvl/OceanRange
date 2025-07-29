@@ -104,10 +104,14 @@ public sealed class OrientationConverter : MultiComponentConverter<Orientation, 
     }
 
     public override void WriteJson(JsonWriter writer, Orientation value, JsonSerializer _) =>
-        writer.WriteValue($"{Vector3Converter.ToVectorString(value.Position)},{Vector3Converter.ToVectorString(value.Rotation)}");
+        writer.WriteValue($"{Vector3Converter.ToVectorString(value.Position)};{Vector3Converter.ToVectorString(value.Rotation)}");
 }
 
-// Made because srml's enum patching is causing errors with patched enums being read by newtonsoft, will be removed if and when a fix is administered
+/// <summary>
+/// A JsonConverter class that handles the serialisation of enum values.
+/// </summary>
+/// <typeparam name="T">The enum type.</typeparam>
+/// <remarks>Made because srml's enum patching is causing errors with patched enums being read by newtonsoft, will be removed if and when a fix is administered.</remarks>
 public abstract class EnumConverter<T> : OceanRangeJsonConverter<T>
     where T : struct, Enum
 {
