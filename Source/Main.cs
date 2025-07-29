@@ -42,7 +42,7 @@ internal sealed class Main : ModEntryPoint
         SaveRegistry.RegisterWorldDataSaveDelegate(WriteData);
 
         if (ClsExists)
-            AddSplashesBypass([AssetManager.GetSprite("loading"), AssetManager.GetSprite("loading2")]);
+            AddSplashesBypass(AssetManager.GetSprites("loading", "loading2", "loading3"));
 
 #if DEBUG
         RegisterCommand(SavePos);
@@ -72,6 +72,10 @@ internal sealed class Main : ModEntryPoint
     public override void PostLoad()
     {
         AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo"); // Release handles
+
+        if (!ClsExists)
+            AssetManager.ReleaseHandles("loading", "loading2", "loading3");
+
         GC.Collect(); // Free up temp memory
     }
 

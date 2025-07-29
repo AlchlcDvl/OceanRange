@@ -139,6 +139,12 @@ public static class AssetManager
     /// <inheritdoc cref="Get"/>
     public static Sprite GetSprite(string name) => ((SpriteAsset)(NamesToExtensions["jpg"].Contains(name) ? Get<JpgSprite>(name) : Get<PngSprite>(name))).Asset;
 
+    public static IEnumerable<Sprite> GetSprites(params string[] names)
+    {
+        foreach (var name in names)
+            yield return GetSprite(name);
+    }
+
     /// <summary>
     /// Gets a Mesh from the assets associated with the provided name.
     /// </summary>

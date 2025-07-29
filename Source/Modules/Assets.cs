@@ -1,9 +1,9 @@
 namespace OceanRange.Modules;
 
 // These classes exist because Sprite and Texture2D are sealed, warrantying the need for these wrapper classes
-public abstract class OceanAsset : IDisposable
+public abstract class OceanAsset(UObject asset) : IDisposable
 {
-    public abstract UObject BoxedAsset { get; }
+    public readonly UObject BoxedAsset = asset;
 
     public void Dispose()
     {
@@ -14,12 +14,10 @@ public abstract class OceanAsset : IDisposable
     }
 }
 
-public abstract class OceanAsset<T>(T asset) : OceanAsset
+public abstract class OceanAsset<T>(T asset) : OceanAsset(asset)
     where T : UObject // The actual asset
 {
-    public T Asset = asset;
-
-    public sealed override UObject BoxedAsset => Asset;
+    public readonly T Asset = asset;
 }
 
 public abstract class SpriteAsset(Sprite sprite) : OceanAsset<Sprite>(sprite);
