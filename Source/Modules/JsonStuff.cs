@@ -29,5 +29,3 @@ public abstract class JsonData
     [JsonProperty("ammoColor"), JsonRequired]
     public string MainAmmoColor;
 }
-
-public sealed class JsonAsset(string text) : TextAsset(text);

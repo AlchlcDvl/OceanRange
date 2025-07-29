@@ -71,7 +71,7 @@ internal sealed class Main : ModEntryPoint
 #endif
     public override void PostLoad()
     {
-        AssetManager.ReleaseHandles(["chimkenpedia", "plantpedia", "mailbox", "slimepedia"]); // Release handles
+        AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo"); // Release handles
         GC.Collect(); // Free up temp memory
     }
 

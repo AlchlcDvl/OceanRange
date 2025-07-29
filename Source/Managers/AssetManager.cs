@@ -19,17 +19,31 @@ public static class AssetManager
     /// </summary>
     public static readonly JsonSerializerSettings JsonSettings = new();
 
+    private static readonly Func<string, OceanAsset> LoadJsonDel = LoadJson;
+    private static readonly Func<string, OceanAsset> LoadMeshDel = LoadMesh;
+    private static readonly Func<string, OceanAsset> LoadPngSpriteDel = LoadPngSprite;
+    private static readonly Func<string, OceanAsset> LoadJpgSpriteDel = LoadJpgSprite;
+    private static readonly Func<string, OceanAsset> LoadPngTexture2DDel = LoadPngTexture2D;
+    private static readonly Func<string, OceanAsset> LoadJpgTexture2DDel = LoadJpgTexture2D;
+
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
     /// </summary>
-    public static readonly Dictionary<Type, (string Extension, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
+    public static readonly Dictionary<Type, (string Extension, Func<string, OceanAsset> LoadAsset)> AssetTypeExtensions = new()
     {
-        [typeof(Mesh)] = ("mesh", LoadMesh),
-        [typeof(Sprite)] = ("png", LoadSprite),
-        [typeof(JsonAsset)] = ("json", LoadJson),
-        [typeof(Texture2D)] = ("png", LoadTexture),
+        [typeof(JsonAsset)] = ("json", LoadJsonDel),
+        [typeof(MeshAsset)] = ("mesh", LoadMeshDel),
+        [typeof(PngSprite)] = ("png", LoadPngSpriteDel),
+        [typeof(JpgSprite)] = ("jpg", LoadJpgSpriteDel),
+        [typeof(PngTexture2D)] = ("png", LoadPngTexture2DDel),
+        [typeof(JpgTexture2D)] = ("jpg", LoadJpgTexture2DDel),
         // AudioClip is not currently in use, so implementation for it comes later
     };
+
+    /// <summary>
+    /// Handles mapping file names to their respective extensions
+    /// </summary>
+    public static readonly Dictionary<string, string> NamesToExtensions = [];
 
     /// <summary>
     /// Dictionary to hold handles for mod assets.
@@ -51,7 +65,7 @@ public static class AssetManager
     {
         // Create handles
         foreach (var path in Core.GetManifestResourceNames())
-            CreateAssetHandle(path.SanitisePath(), path);
+            CreateAssetHandle(path);
 
 #if DEBUG // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
         JsonSettings.Formatting = Formatting.Indented;
@@ -71,7 +85,7 @@ public static class AssetManager
     /// </summary>
     /// <param name="handles">The names of the assets to be released.</param>
     /// <exception cref="FileNotFoundException">Thrown if an asset name is not an asset shipped with the mod.</exception>
-    public static void ReleaseHandles(string[] handles)
+    public static void ReleaseHandles(params string[] handles)
     {
         foreach (var handleName in handles)
         {
@@ -89,7 +103,7 @@ public static class AssetManager
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
     /// <remarks>If you add in a new asset type (with its own extension), make sure to add the extension in the ReplaceAll!</remarks>
     private static string SanitisePath(this string path) => path
-        .ReplaceAll("", ".png", ".json", ".mesh") // Removing all of the file extensions if any
+        .ReplaceAll("", ".png", ".json", ".mesh", ".jpg") // Removing all of the file extensions if any
         .TrueSplit('/', '\\', '.').Last() // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
         .ToLowerInvariant(); // Lowercase for make asset fetching case insensitive
 
@@ -99,25 +113,25 @@ public static class AssetManager
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted json data.</returns>
-    public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<JsonAsset>(path).text, JsonSettings);
+    public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<JsonAsset>(path).Asset.text, JsonSettings);
 
     /// <summary>
     /// Gets a Texture2D from the assets associated with the provided name.
     /// </summary>
     /// <inheritdoc cref="Get"/>
-    public static Texture2D GetTexture2D(string name) => Get<Texture2D>(name);
+    public static Texture2D GetTexture2D(string name) => ((Texture2DAsset)(NamesToExtensions[name] == "jpg" ? Get<JpgTexture2D>(name) : Get<PngTexture2D>(name))).Asset;
 
     /// <summary>
     /// Gets a Sprite from the assets associated with the provided name.
     /// </summary>
     /// <inheritdoc cref="Get"/>
-    public static Sprite GetSprite(string name) => Get<Sprite>(name);
+    public static Sprite GetSprite(string name) => ((SpriteAsset)(NamesToExtensions[name] == "jpg" ? Get<JpgSprite>(name) : Get<PngSprite>(name))).Asset;
 
     /// <summary>
     /// Gets a Mesh from the assets associated with the provided name.
     /// </summary>
     /// <inheritdoc cref="Get"/>
-    public static Mesh GetMesh(string name) => Get<Mesh>(name);
+    public static Mesh GetMesh(string name) => Get<MeshAsset>(name).Asset;
 
     /// <summary>
     /// Gets an asset associated with the provided name.
@@ -125,10 +139,10 @@ public static class AssetManager
     /// <param name="name">The name of the asset.</param>
     /// <inheritdoc cref="AssetHandle.Load"/>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
-    private static T Get<T>(string name, bool throwError = true) where T : UObject
+    private static T Get<T>(string name, bool throwError = true) where T : OceanAsset
     {
         if (!Assets.TryGetValue(name, out var handle))
-            return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : null;
+            return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : default;
 
         return handle.Load<T>(throwError);
     }
@@ -139,7 +153,7 @@ public static class AssetManager
     /// <param name="name">The name of the asset.</param>
     /// <inheritdoc cref="AssetHandle.Unload"/>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
-    public static void UnloadAsset<T>(string name, bool throwError = true) where T : UObject
+    public static void UnloadAsset<T>(string name, bool throwError = true) where T : OceanAsset
     {
         if (Assets.TryGetValue(name, out var handle))
             handle.Unload<T>(throwError);
@@ -164,7 +178,7 @@ public static class AssetManager
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     /// <returns>The json asset loaded from the path.</returns>
-    private static Mesh LoadMesh(string path)
+    private static MeshAsset LoadMesh(string path)
     {
         // This method uses a specially serialised version of the models to save on disk space and to make it easier to ship the mod
         // TODO: Add a reverse importer for the unity project so that .mesh files can be used to import models
@@ -184,7 +198,7 @@ public static class AssetManager
         for (var i = 0; i < 8; i++)
             mesh.SetUVs(i, BinaryUtils.ReadArray(reader, ReadVector2));
 
-        return mesh;
+        return new(mesh);
     }
 
     // Helper fields to reduce compiler generated code and delegate overhead
@@ -209,9 +223,12 @@ public static class AssetManager
         var texture = EmptyTexture(GetFormat(name), GenerateMipChains(name));
         texture.LoadImage(path.ReadBytes(), true);
         texture.wrapMode = GetWrapMode(name);
-        texture.name = name;
         return texture;
     }
+
+    private static PngTexture2D LoadPngTexture2D(string path) => new(LoadTexture(path));
+
+    private static JpgTexture2D LoadJpgTexture2D(string path) => new(LoadTexture(path));
 
     // Texture optimisation stuff
     private static bool GenerateMipChains(string name) => name == "sleepingeyes" || name.Contains("ramp") || name.Contains("pattern");
@@ -230,6 +247,10 @@ public static class AssetManager
         var tex = LoadTexture(path);
         return Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight);
     }
+
+    private static PngSprite LoadPngSprite(string path) => new(LoadSprite(path));
+
+    private static JpgSprite LoadJpgSprite(string path) => new(LoadSprite(path));
 
     /// <summary>
     /// Reads all of the bytes from the provided stream.
@@ -251,15 +272,17 @@ public static class AssetManager
     private static byte[] ReadBytes(this string path) => Core.GetManifestResourceStream(path)!.ReadFully();
 
     /// <summary>
-    /// Creates an asset handle for the provided asset name and registers the path among the handle's paths.
+    /// Creates an asset handle for the provided asset.
     /// </summary>
-    /// <param name="name">The name of the asset.</param>
     /// <param name="path">The path of the asset.</param>
-    private static void CreateAssetHandle(string name, string path)
+    private static void CreateAssetHandle(string path)
     {
+        var name = path.SanitisePath();
+
         if (!Assets.TryGetValue(name, out var handle))
             handle = Assets[name] = new(name);
 
+        NamesToExtensions[name] = path.TrueSplit('.').Last();
         handle.AddPath(path);
     }
 
