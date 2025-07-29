@@ -28,23 +28,23 @@ internal sealed class Main : ModEntryPoint
 
         HarmonyInstance.PatchAll(AssetManager.Core);
 
-        SystemContext.IsModded = true;
+        SystemContext.IsModded = true; // I don't what this does fully, but it's better have this one than not, although it'd be better if SRML did this
 
-        ClsExists = SRModLoader.IsModPresent("custom.loading");
+        ClsExists = SRModLoader.IsModPresent("custom.loading"); // Checks if Custom Loading Screens is present in the mods folder
 
-        AssetManager.InitialiseAssets();
+        AssetManager.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
 
+        // Preloads the various forms of data the mod uses
         FoodManager.PreLoadFoodData();
         SlimeManager.PreLoadSlimeData();
         MailManager.PreLoadMailData();
 
+        // Helpers to avoid the eventual lag with custom mail when there's a ton added
         SaveRegistry.RegisterWorldDataLoadDelegate(ReadData);
         SaveRegistry.RegisterWorldDataSaveDelegate(WriteData);
 
-        if (ClsExists)
-            AddSplashesBypass(AssetManager.GetSprites("loading", "loading2", "loading3"));
-
 #if DEBUG
+        // Debug stuff for the special commands
         RegisterCommand(SavePos);
         RegisterCommand(new EchoCommand());
         RegisterCommand(new TeleportCommand());
@@ -61,8 +61,12 @@ internal sealed class Main : ModEntryPoint
 #endif
     public override void Load()
     {
+        // Loads slimes and food
         FoodManager.LoadFoods();
         SlimeManager.LoadAllSlimes();
+
+        if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
+            AddSplashesBypass(AssetManager.GetSprites("loading", "loading2", "loading3"));
     }
 
     /// <inheritdoc/>
@@ -73,7 +77,7 @@ internal sealed class Main : ModEntryPoint
     {
         AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo"); // Release handles
 
-        if (!ClsExists)
+        if (!ClsExists) // Conditionally release the splash art handles if they're not used
             AssetManager.ReleaseHandles("loading", "loading2", "loading3");
 
         GC.Collect(); // Free up temp memory

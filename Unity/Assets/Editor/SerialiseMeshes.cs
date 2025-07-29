@@ -22,7 +22,7 @@ class ExportMeshes
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 
-            if (!assetPath.EndsWith(".obj", System.StringComparison.OrdinalIgnoreCase))
+            if (!assetPath.EndsWith(".obj", System.StringComparison.OrdinalIgnoreCase) && !assetPath.EndsWith(".fbx", System.StringComparison.OrdinalIgnoreCase))
                 continue;
 
             Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);

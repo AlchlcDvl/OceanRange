@@ -19,6 +19,7 @@ public static class AssetManager
     /// </summary>
     public static readonly JsonSerializerSettings JsonSettings = new();
 
+    // Delegates to reduce compiler generation overhead
     private static readonly Func<string, OceanAsset> LoadJsonDel = LoadJson;
     private static readonly Func<string, OceanAsset> LoadMeshDel = LoadMesh;
     private static readonly Func<string, OceanAsset> LoadPngSpriteDel = LoadPngSprite;
@@ -64,12 +65,14 @@ public static class AssetManager
     /// Debug string path for the mod to dump assets.
     /// </summary>
     public static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath)!, "SRML");
-
-    [TimeDiagnostic("Assets Initialis")]
 #endif
+
     /// <summary>
     /// Initialises the asset handling by creating relevant handles and creating the proper json settings.
     /// </summary>
+#if DEBUG
+    [TimeDiagnostic("Assets Initialis")]
+#endif
     public static void InitialiseAssets()
     {
         // Create handles
@@ -115,7 +118,7 @@ public static class AssetManager
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
     /// <remarks>If you add in a new asset type (with its own extension), make sure to add the extension in the ReplaceAll!</remarks>
     private static string SanitisePath(this string path) => path
-        .ReplaceAll("", ".png", ".json", ".mesh", ".jpg") // Removing all of the file extensions if any
+        .ReplaceAll("", "png", "json", "mesh", "jpg") // Removing all of the file extensions if any
         .TrueSplit('/', '\\', '.').Last() // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
         .ToLowerInvariant(); // Lowercase for make asset fetching case insensitive
 
@@ -139,6 +142,11 @@ public static class AssetManager
     /// <inheritdoc cref="Get"/>
     public static Sprite GetSprite(string name) => ((SpriteAsset)(NamesToExtensions["jpg"].Contains(name) ? Get<JpgSprite>(name) : Get<PngSprite>(name))).Asset;
 
+    /// <summary>
+    /// Gets a collection of sprites with the provided names.
+    /// </summary>
+    /// <param name="names">The names of the assets.</param>
+    /// <returns>A collection of sprites.</returns>
     public static IEnumerable<Sprite> GetSprites(params string[] names)
     {
         foreach (var name in names)

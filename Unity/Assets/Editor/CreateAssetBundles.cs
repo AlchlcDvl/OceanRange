@@ -26,11 +26,14 @@ public class CreateAssetBundles
         BuildPipeline.BuildAssetBundles(win, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
         BuildPipeline.BuildAssetBundles(lin, BuildAssetBundleOptions.None, BuildTarget.StandaloneLinux64);
 
-        string bundles = "Assets/StreamingAssets/Bundles";
+        string bundles = "Assets/../../Source/Resources/Bundles";
         PrepDirectory(bundles);
+
         MoveAndRenameSpecificBundle(mac, bundles, "mac");
         MoveAndRenameSpecificBundle(lin, bundles, "lin");
         MoveAndRenameSpecificBundle(win, bundles, "win");
+
+        Directory.Delete(assetBundleDirectory, true);
 
         Debug.Log("Bundles built!");
     }
