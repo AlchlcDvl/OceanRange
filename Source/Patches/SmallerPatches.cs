@@ -12,13 +12,32 @@ public static class MineSlimeAppearanceFix
 }
 
 // This is such a goofy oversight lmao, SRML used Identifiable.IsAnimal instead of directly comparing with the Identifiable.MEAT_CLASS, leading to chicks being eaten as well lol
-// TODO: Remove when SRML v0.3.0 comes out
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
 public static class EatMapFix
 {
-    public static void Postfix(SlimeDiet __instance) => __instance.EatMap.RemoveAll(IsChick);
+    public static void Postfix(SlimeDiet __instance, SlimeDefinition definition)
+    {
+        __instance.EatMap.RemoveAll(Exclusion);
 
-    private static readonly Predicate<SlimeDiet.EatMapEntry> IsChick = IsChickMethod;
+        if (definition.IdentifiableId != Ids.SAND_SLIME)
+            return;
 
-    private static bool IsChickMethod(SlimeDiet.EatMapEntry entry) => Identifiable.CHICK_CLASS.Contains(entry.eats);
+        __instance.EatMap.Add(new()
+        {
+            eats = IdentifiableId.SILKY_SAND_CRAFT,
+            producesId = Ids.SAND_PLORT,
+            isFavorite = true,
+            favoriteProductionCount = __instance.FavoriteProductionCount,
+            driver = SlimeEmotions.Emotion.NONE,
+            minDrive = 0f,
+            extraDrive = 0f,
+            becomesId = IdentifiableId.NONE
+        });
+    }
+
+    private static readonly Predicate<SlimeDiet.EatMapEntry> Exclusion = ExclusionMethod;
+
+    private static bool ExclusionMethod(SlimeDiet.EatMapEntry entry)
+        => Identifiable.CHICK_CLASS.Contains(entry.eats) // TODO: Remove when SRML v0.3.0 comes out
+        || entry.eats == IdentifiableId.SILKY_SAND_CRAFT;
 }

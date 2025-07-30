@@ -1,4 +1,5 @@
 using AssetsLib;
+using OceanRange.Patches;
 using SRML;
 using SRML.SR.SaveSystem;
 using SRML.Utils;
@@ -44,6 +45,8 @@ public static class SlimeManager
         AssetManager.UnloadAsset<JsonAsset>("slimepedia");
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
+
+        GordoSnarePatches.Pinks = [IdentifiableId.PINK_SLIME, Ids.ROSI_SLIME];
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
@@ -282,11 +285,12 @@ public static class SlimeManager
         var lower = slimeData.Name.ToLower();
 
         // Create a copy for our slimes and populate with info
+        var isSand = slimeData.MainId == Ids.SAND_SLIME;
         var definition = baseDefinition.DeepCopy();
         definition.Diet.Produces = [slimeData.PlortId];
         definition.Diet.MajorFoodGroups = slimeData.SpecialDiet ? [] : [slimeData.Diet];
-        definition.Diet.AdditionalFoods = slimeData.MainId == Ids.SAND_SLIME ? [] : [IdentifiableId.SPICY_TOFU];
-        definition.Diet.Favorites = slimeData.SpecialDiet ? [] : [slimeData.FavFood];
+        definition.Diet.AdditionalFoods = isSand ? [] : [IdentifiableId.SPICY_TOFU];
+        definition.Diet.Favorites = slimeData.SpecialDiet && !isSand ? [] : [slimeData.FavFood];
         definition.Diet.EatMap?.Clear();
         definition.CanLargofy = slimeData.CanLargofy;
         definition.FavoriteToys = [slimeData.FavToy];
