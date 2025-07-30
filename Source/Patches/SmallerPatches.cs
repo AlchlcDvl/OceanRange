@@ -19,7 +19,7 @@ public static class EatMapFix
     {
         __instance.EatMap.RemoveAll(Exclusion);
 
-        if (definition.IdentifiableId != Ids.SAND_SLIME)
+        if (!definition.IdentifiableId.IsAny(Ids.SAND_SLIME, Ids.SAND_GORDO))
             return;
 
         __instance.EatMap.Add(new()

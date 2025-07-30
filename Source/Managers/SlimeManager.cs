@@ -262,6 +262,7 @@ public static class SlimeManager
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
+        Helpers.CreateRanchExchangeOffer(slimeData.PlortId, slimeData.PlortExchangeWeight, slimeData.Progress);
         var silo = new List<StorageType> { StorageType.NON_SLIMES, StorageType.PLORT };
 
         if (slimeData.CanBeRefined)
@@ -399,6 +400,7 @@ public static class SlimeManager
         SlimeRegistry.RegisterSlimeDefinition(definition);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.MainId);
         LookupRegistry.RegisterVacEntry(slimeData.MainId, appearance.ColorPalette.Ammo, appearance.Icon);
+        Helpers.CreateRanchExchangeOffer(slimeData.MainId, slimeData.ExchangeWeight, slimeData.Progress);
         var title = slimeData.Name + " Slime";
         var slimeIdName = slimeData.MainId.ToString().ToLower();
         TranslationPatcher.AddPediaTranslation("t." + slimeIdName, title);
@@ -859,5 +861,9 @@ public static class SlimeManager
 
     public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _) => SandBehaviour.PlortPrefab = prefab;
 
-    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition _, Transform __) => prefab.GetComponent<GordoEat>().slimeDefinition.Diet = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet;
+    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition _, Transform __)
+    {
+        prefab.GetComponent<GordoEat>().slimeDefinition.Diet = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet;
+        SnareRegistry.RegisterAsSnareable(IdentifiableId.SILKY_SAND_CRAFT);
+    }
 }

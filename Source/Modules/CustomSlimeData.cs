@@ -142,7 +142,7 @@ public sealed class CustomSlimeData : JsonData
     public string GordoLocation;
 
     [JsonProperty("plortExchangeWeight")]
-    public float PlortExchangeWeight = 16f;
+    public int PlortExchangeWeight = 16;
 
     [JsonProperty("jiggle")]
     public float JiggleAmount = 1f;

@@ -164,12 +164,12 @@ public static class FoodManager
 
         // Register both chicks and hens
         var chickIcon = AssetManager.GetSprite($"{lower}chick");
-        RegisterFood(chickPrefab, chickIcon, ammo, chimkenData.ChickId, chimkenData.ChickEntry, StorageType.NON_SLIMES);
+        RegisterFood(chickPrefab, chickIcon, ammo, chimkenData.ChickId, chimkenData.ChickEntry, -1, chimkenData.Progress, StorageType.NON_SLIMES);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
             CommonChickAboutPedia.Replace("%type%", chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
 
         var henIcon = AssetManager.GetSprite($"{lower}hen");
-        RegisterFood(henPrefab, henIcon, ammo, chimkenData.MainId, chimkenData.MainEntry, StorageType.NON_SLIMES, StorageType.FOOD);
+        RegisterFood(henPrefab, henIcon, ammo, chimkenData.MainId, chimkenData.MainEntry, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
 
@@ -202,7 +202,7 @@ public static class FoodManager
         return prefab;
     }
 
-    private static void RegisterFood(GameObject prefab, Sprite icon, Color ammo, IdentifiableId id, PediaId pediaId, params StorageType[] siloStorage)
+    private static void RegisterFood(GameObject prefab, Sprite icon, Color ammo, IdentifiableId id, PediaId pediaId, int exchangeWeight, ProgressType[] progress, params StorageType[] siloStorage)
     {
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, id);
@@ -210,6 +210,9 @@ public static class FoodManager
         SlimePediaCreation.PreLoadSlimePediaConnection(pediaId, id, PediaCategory.RESOURCES);
         PediaRegistry.RegisterIdEntry(pediaId, icon);
         AmmoRegistry.RegisterSiloAmmo(siloStorage.Contains, id);
+
+        if (exchangeWeight != -1)
+            Helpers.CreateRanchExchangeOffer(id, exchangeWeight, progress);
     }
 
     private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
@@ -243,7 +246,7 @@ public static class FoodManager
         material2.SetColor(Color1, "#333333".HexToColor());
 
         var icon = AssetManager.GetSprite(lower);
-        RegisterFood(prefab, icon, plantData.MainAmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, [StorageType.NON_SLIMES, StorageType.FOOD]);
+        RegisterFood(prefab, icon, plantData.MainAmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
         SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 

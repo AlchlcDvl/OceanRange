@@ -1,5 +1,6 @@
 ﻿namespace OceanRange.Patches;
 
+// TODO: Remove when the pr is merged and SRML 0.3.0 is out
 [HarmonyPatch(typeof(GordoSnare)), HarmonyPriority(Priority.First + 1)]
 public static class GordoSnarePatches
 {
@@ -11,68 +12,54 @@ public static class GordoSnarePatches
     public static bool Prefix(GordoSnare __instance, ref IdentifiableId __result)
     {
         var dictionary = new Dictionary<IdentifiableId, float>(Identifiable.idComparer);
-        var id = IdentifiableId.NONE;
-        var ids = new List<IdentifiableId>();
+        var normalIds = new List<IdentifiableId>();
+        var favIds = new List<IdentifiableId>();
 
         foreach (var gordoEntry in GameContext.Instance.LookupDirector.GordoEntries)
         {
-            var component2 = gordoEntry.GetComponent<GordoIdentifiable>();
+            var gordo = gordoEntry.GetComponent<GordoIdentifiable>();
 
-            if (Pinks.Contains(component2.id))
+            if (Pinks.Contains(gordo.id) || !gordo.nativeZones.Any(HasAccessToZone))
                 continue;
 
             var diet = gordoEntry.GetComponent<GordoEat>().slimeDefinition.Diet;
             var list2 = new List<SlimeDiet.EatMapEntry>();
             diet.AddEatMapEntries(__instance.model.baitTypeId, list2);
             var eatMapEntry = list2.FirstOrDefault();
-            var flag = component2.nativeZones.Any(HasAccessToZone);
 
-            if (!flag || eatMapEntry == null)
+            if (eatMapEntry == null)
                 continue;
 
-            Log.Debug(eatMapEntry.isFavorite ? "Found favorite" : "Adding potential", "gordo", component2.id, "hasAccess", flag);
-
-            if (eatMapEntry.isFavorite)
-                id = component2.id;
-            else
-                ids.Add(component2.id);
+            var (message, ids) = eatMapEntry.isFavorite ? ("Found favorite", favIds) : ("Adding potential", normalIds);
+            Log.Debug(message, "gordo", gordo.id, "hasAccess", true);
+            ids.Add(gordo.id);
         }
 
-        if (ids.Count > 0)
+        if (normalIds.Count > 0)
         {
-            var value = (float)__instance.foodTypeSnareWeight / ids.Count;
+            var value = (float)__instance.foodTypeSnareWeight / normalIds.Count;
 
-            for (var j = 0; j < ids.Count; j++)
-                dictionary.Add(ids[j], value);
+            for (var j = 0; j < normalIds.Count; j++)
+                dictionary.Add(normalIds[j], value);
         }
 
-        if (id != 0)
-            dictionary.Add(id, __instance.favoredFoodSnareWeight);
-
-        var pink = Randoms.SHARED.Pick(Pinks);
-        dictionary.Add(pink, __instance.pinkSnareWeight);
-        __result = Randoms.SHARED.Pick(dictionary, pink);
-        return false;
-    }
-
-    [HarmonyPatch(nameof(GordoSnare.OnTriggerEnter))]
-    public static bool Prefix(GordoSnare __instance, Collider col)
-    {
-        if (!SlimeManager.MgExists)
-            return true;
-
-        if (col.isTrigger || __instance.bait || __instance.isSnared || !col.TryGetComponent<Identifiable>(out var identifiable))
-            return false;
-
-        if (Identifiable.IsFood(identifiable.id) || identifiable.id == IdentifiableId.SILKY_SAND_CRAFT)
+        if (favIds.Count > 0)
         {
-            if (__instance.baitAttachedFx)
-                SRBehaviour.SpawnAndPlayFX(__instance.baitAttachedFx, __instance.gameObject);
+            var value = (float)__instance.favoredFoodSnareWeight / favIds.Count;
 
-            Destroyer.DestroyActor(col.gameObject, "GordoSnare.OnTriggerEnter");
-            __instance.AttachBait(identifiable.id);
+            for (var j = 0; j < favIds.Count; j++)
+                dictionary.Add(favIds[j], value);
         }
 
+        if (Pinks?.Length is > 0)
+        {
+            var value = (float)__instance.pinkSnareWeight / Pinks.Length;
+
+            for (var j = 0; j < Pinks.Length; j++)
+                dictionary.Add(Pinks[j], value);
+        }
+
+        __result = Randoms.SHARED.Pick(dictionary, IdentifiableId.PINK_GORDO);
         return false;
     }
 }

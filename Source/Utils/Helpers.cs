@@ -257,6 +257,16 @@ public static class Helpers
         }
     }
 
+    public static void CreateRanchExchangeOffer(IdentifiableId id, int weight, ProgressType[] progress)
+    {
+        if (progress.Length == 0)
+            ExchangeOfferRegistry.RegisterInitialItem(id, weight);
+        else
+            ExchangeOfferRegistry.RegisterUnlockableItem(id, progress[0], weight);
+    }
+
+    public static bool IsAny<T>(this T item, params T[] items) => items.Any(x => item.Equals(x));
+
 #if DEBUG
     private static bool IsZoneObj(GameObject gameObject) => gameObject.name.StartsWith("zone");
 
