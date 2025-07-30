@@ -46,7 +46,7 @@ public static class SlimeManager
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 
-        GordoSnarePatches.Pinks = [IdentifiableId.PINK_SLIME, Ids.ROSI_SLIME];
+        GordoSnarePatches.Pinks = [IdentifiableId.PINK_GORDO, Ids.ROSI_GORDO];
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;

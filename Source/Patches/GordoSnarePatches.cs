@@ -21,22 +21,21 @@ public static class GordoSnarePatches
             if (Pinks.Contains(component2.id))
                 continue;
 
-            var eatMapEntry = gordoEntry.GetComponent<GordoEat>().slimeDefinition.Diet.EatMap.First(x => x.eats == __instance.model.baitTypeId);
+            var diet = gordoEntry.GetComponent<GordoEat>().slimeDefinition.Diet;
+            var list2 = new List<SlimeDiet.EatMapEntry>();
+            diet.AddEatMapEntries(__instance.model.baitTypeId, list2);
+            var eatMapEntry = list2.FirstOrDefault();
             var flag = component2.nativeZones.Any(HasAccessToZone);
 
             if (!flag || eatMapEntry == null)
                 continue;
 
+            Log.Debug(eatMapEntry.isFavorite ? "Found favorite" : "Adding potential", "gordo", component2.id, "hasAccess", flag);
+
             if (eatMapEntry.isFavorite)
-            {
-                Log.Debug("Found favorite", "gordo", component2.id, "hasAccess", flag);
                 id = component2.id;
-            }
             else
-            {
-                Log.Debug("Adding potential", "gordo", component2.id, "hasAccess", flag);
                 ids.Add(component2.id);
-            }
         }
 
         if (ids.Count > 0)
