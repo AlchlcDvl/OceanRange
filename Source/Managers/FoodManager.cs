@@ -237,13 +237,23 @@ public static class FoodManager
         var material = meshRend.material = meshRend.material.Clone();
 
         var ramp = lower + "ramp";
-        material.SetTexture(RampRed, AssetManager.GetTexture2D($"{ramp}red"));
-        material.SetTexture(RampGreen, AssetManager.GetTexture2D($"{ramp}green"));
-        material.SetTexture(RampBlue, AssetManager.GetTexture2D($"{ramp}blue"));
-        material.SetTexture(RampBlack, AssetManager.GetTexture2D($"{ramp}black"));
+        var red = AssetManager.GetTexture2D($"{ramp}red");
+        var green = AssetManager.GetTexture2D($"{ramp}green");
+        var blue = AssetManager.GetTexture2D($"{ramp}blue");
+        var black = AssetManager.GetTexture2D($"{ramp}black");
 
-        var material2 = prefab.GetComponent<ResourceCycle>().rottenMat = material.Clone();
-        material2.SetColor(Color1, "#333333".HexToColor());
+        material.SetTexture(RampRed, red);
+        material.SetTexture(RampGreen, green);
+        material.SetTexture(RampBlue, blue);
+        material.SetTexture(RampBlack, black);
+
+        var cycle = prefab.GetComponent<ResourceCycle>();
+        var material2 = cycle.rottenMat = cycle.rottenMat.Clone();
+
+        material2.SetTexture(RampRed, red);
+        material2.SetTexture(RampGreen, green);
+        material2.SetTexture(RampBlue, blue);
+        material2.SetTexture(RampBlack, black);
 
         var icon = AssetManager.GetSprite(lower);
         RegisterFood(prefab, icon, plantData.MainAmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);

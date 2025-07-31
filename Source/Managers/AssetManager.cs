@@ -83,13 +83,9 @@ public static class AssetManager
         JsonSettings.Formatting = Formatting.Indented;
 #endif
         // Adding the json converters
-        // JsonSettings.Converters.Add(new ZoneConverter());
-        JsonSettings.Converters.Add(new PediaIdConverter());
+        JsonSettings.Converters.Add(new EnumConverter());
         JsonSettings.Converters.Add(new Vector3Converter());
-        JsonSettings.Converters.Add(new FoodGroupConverter());
         JsonSettings.Converters.Add(new OrientationConverter());
-        JsonSettings.Converters.Add(new ProgressTypeConverter());
-        JsonSettings.Converters.Add(new IdentifiableIdConverter());
     }
 
     /// <summary>

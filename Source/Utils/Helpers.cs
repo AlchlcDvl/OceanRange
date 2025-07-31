@@ -267,6 +267,20 @@ public static class Helpers
 
     public static bool IsAny<T>(this T item, params T[] items) => items.Any(x => item.Equals(x));
 
+    public static bool TryParse(Type enumType, string value, bool ignoreCase, out object result)
+    {
+        try
+        {
+            result = Enum.Parse(enumType, value, ignoreCase);
+            return true;
+        }
+        catch
+        {
+            result = null;
+            return false;
+        }
+    }
+
 #if DEBUG
     private static bool IsZoneObj(GameObject gameObject) => gameObject.name.StartsWith("zone");
 

@@ -2,10 +2,7 @@ using System.Globalization;
 
 namespace OceanRange.Modules;
 
-public abstract class OceanRangeJsonConverter<T> : JsonConverter<T>
-    where T : struct; // Limiting to value types for now
-
-public abstract class MultiComponentConverter<TValue, TComponent> : OceanRangeJsonConverter<TValue>
+public abstract class MultiComponentConverter<TValue, TComponent> : JsonConverter<TValue>
     where TValue : struct // The value being read/written
     where TComponent : struct // The type that make up the value's components
 {
@@ -110,34 +107,24 @@ public sealed class OrientationConverter : MultiComponentConverter<Orientation, 
 /// <summary>
 /// A JsonConverter class that handles the serialisation of enum values.
 /// </summary>
-/// <typeparam name="T">The enum type.</typeparam>
 /// <remarks>Made because srml's enum patching is causing errors with patched enums being read by newtonsoft, will be removed if and when a fix is administered.</remarks>
-public abstract class EnumConverter<T> : OceanRangeJsonConverter<T>
-    where T : struct, Enum
+public sealed class EnumConverter : JsonConverter
 {
-    public override void WriteJson(JsonWriter writer, T value, JsonSerializer _) => writer.WriteValue(value.ToString());
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer _) => writer.WriteValue(value.ToString());
 
-    public override T ReadJson(JsonReader reader, Type _, T __, bool ___, JsonSerializer ____)
+    public override object ReadJson(JsonReader reader, Type objectType, object _, JsonSerializer __)
     {
         var enumString = reader.Value?.ToString() ?? "null";
         return reader.TokenType switch
         {
-            JsonToken.String when Enum.TryParse<T>(enumString, true, out var result) => result,
-            JsonToken.Integer => Helpers.ToEnum<T>(reader.Value),
-            _ => throw new JsonSerializationException($"Cannot convert value '{enumString}' ({reader.TokenType}) to {typeof(T).Name}. Expected a defined string or an integer."),
+            JsonToken.String when Helpers.TryParse(objectType, enumString, true, out var result) => result,
+            JsonToken.Integer => Enum.ToObject(objectType, reader.Value),
+            _ => throw new JsonSerializationException($"Cannot convert value '{enumString}' ({reader.TokenType}) to {objectType.Name}. Expected a defined string or an integer."),
         };
     }
+
+    public override bool CanConvert(Type objectType) => objectType.IsEnum;
 }
-
-// public sealed class ZoneConverter : EnumConverter<Zone>;
-
-public sealed class PediaIdConverter : EnumConverter<PediaId>;
-
-public sealed class FoodGroupConverter : EnumConverter<FoodGroup>;
-
-public sealed class ProgressTypeConverter : EnumConverter<ProgressType>;
-
-public sealed class IdentifiableIdConverter : EnumConverter<IdentifiableId>;
 
 // public sealed class ColorConverter : MultiComponentConverter<Color, float>
 // {
