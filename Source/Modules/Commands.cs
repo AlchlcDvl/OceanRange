@@ -19,7 +19,8 @@ public sealed class SavePositionCommand : ConsoleCommand
 
     public override string ID => "savePos";
     public override string Usage => "savePos";
-    public override string Description => "Saves the player's position into a dictionary with the closest cell's name as the key to later output into a json file upon quit";
+    public override string Description => "Saves the player's position into a dictionary with the closest cell's name.";
+    public override string ExtendedDescription => "Saves the player's position into a dictionary with the closest cell's name as the key to later output into a json file upon quit";
 
     public override bool Execute(string[] args)
     {
@@ -42,15 +43,23 @@ public sealed class TeleportCommand : ConsoleCommand
 {
     public override string ID => "tp";
     public override string Usage => "tp <x,y,z or x y z coordinates>";
-    public override string Description => "Teleports the player to the specified position";
+    public override string Description => "Teleports the player to the specified position.";
 
     public override bool Execute(string[] args)
     {
-        if (args?.Length is not (1 or 3))
-            return false;
-
         if (args.Length == 1)
             args = args[0].TrueSplit(',', ' ');
+
+        if (args?.Length is not 3)
+            return false;
+
+        var pos = SceneContext.Instance.Player.transform.position;
+
+        for (var i = 0; i < 3; i++)
+        {
+            if (args[i] == "~")
+                args[i] = pos[i].ToString();
+        }
 
         var vector = string.Join(",", args);
         SceneContext.Instance.Player.transform.position = Helpers.ParseVector(vector);

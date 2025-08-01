@@ -11,6 +11,17 @@ public abstract class MultiComponentConverter<TValue, TComponent> : JsonConverte
     protected delegate bool TryParseDelegate(string value, NumberStyles style, CultureInfo culture, out TComponent component);
 
     protected abstract string Format { get; }
+    protected abstract TryParseDelegate TryParse { get; }
+    protected abstract int MinLength { get; }
+    protected abstract int MaxLength { get; }
+    protected abstract NumberStyles Style { get; }
+
+    protected virtual char Separator => ',';
+    protected virtual TComponent Default => default;
+
+    private readonly ParseOptions Options;
+
+    protected MultiComponentConverter() => Options = new(Style, TryParse, Default, MaxLength, MinLength, Separator);
 
     protected void BaseCheckJson(JsonReader reader, out string valString)
     {
@@ -20,14 +31,25 @@ public abstract class MultiComponentConverter<TValue, TComponent> : JsonConverte
             throw new InvalidDataException($"Cannot convert value '{valString}' to {typeof(TValue).Name}. Expected string format {Format}.");
     }
 
-    protected abstract TValue ReadJson(string valString);
+    protected abstract TValue FillFromArray(TComponent[] array);
+
+    // protected virtual bool ParseOtherFormat(string valString, out TValue result)
+    // {
+    //     result = default;
+    //     return false;
+    // }
 
     public sealed override TValue ReadJson(JsonReader reader, Type _, TValue __, bool ___, JsonSerializer ____)
     {
         try
         {
             BaseCheckJson(reader, out var valString);
-            return ReadJson(valString);
+
+            // if (ParseOtherFormat(valString, out var result))
+            //     return result;
+
+            ParseComponents(valString, Options);
+            return FillFromArray(Options.ToFill);
         }
         catch (Exception ex)
         {
@@ -73,15 +95,13 @@ public abstract class MultiComponentConverter<TValue, TComponent> : JsonConverte
 
 public sealed class Vector3Converter : MultiComponentConverter<Vector3, float>
 {
+    protected override int MinLength => 2;
+    protected override int MaxLength => 3;
     protected override string Format => "'x,y,z' or 'x,y'";
+    protected override TryParseDelegate TryParse { get; } = float.TryParse;
+    protected override NumberStyles Style => NumberStyles.Float | NumberStyles.AllowThousands;
 
-    private static readonly ParseOptions Options = new(NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 0f, 3, 2, ',');
-
-    protected override Vector3 ReadJson(string valString)
-    {
-        ParseComponents(valString, Options);
-        return new(Options.ToFill[0], Options.ToFill[1], Options.ToFill[2]);
-    }
+    protected override Vector3 FillFromArray(float[] array) => new(array[0], array[1], array[2]);
 
     public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer _) => writer.WriteValue(ToVectorString(value));
 
@@ -90,19 +110,65 @@ public sealed class Vector3Converter : MultiComponentConverter<Vector3, float>
 
 public sealed class OrientationConverter : MultiComponentConverter<Orientation, Vector3>
 {
+    protected override int MinLength => 2;
+    protected override int MaxLength => 2;
+    protected override char Separator => ';';
+    protected override TryParseDelegate TryParse { get; } = Helpers.TryParseVector;
     protected override string Format => "of a pair of 'x,y,z' or 'x,y' separated by a ;";
+    protected override NumberStyles Style => NumberStyles.Float | NumberStyles.AllowThousands;
 
-    private static readonly ParseOptions Options = new(NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, default, 2, 2, ';');
-
-    protected override Orientation ReadJson(string valString)
-    {
-        ParseComponents(valString, Options);
-        return new(Options.ToFill[0], Options.ToFill[1]);
-    }
+    protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1]);
 
     public override void WriteJson(JsonWriter writer, Orientation value, JsonSerializer _) =>
         writer.WriteValue($"{Vector3Converter.ToVectorString(value.Position)};{Vector3Converter.ToVectorString(value.Rotation)}");
 }
+
+// public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentConverter<TColor, TComponent>
+//     where TColor : struct // Color or Color32 but I don't know how to limit to only those two types
+//     where TComponent : struct // float or byte, same as above
+// {
+//     protected delegate bool TryParseHtml(string valString, out TColor color);
+
+//     protected sealed override int MinLength => 3;
+//     protected sealed override int MaxLength => 4;
+//     protected sealed override string Format => "'r,g,b', 'r,g,b,a' or hex code";
+
+//     protected abstract TryParseHtml TryParseHtmlColor { get; }
+
+//     protected sealed override bool ParseOtherFormat(string valString, out TColor result)
+//     {
+//         if (valString.StartsWith("#"))
+//             return TryParseHtmlColor(valString, out result);
+
+//         result = default;
+//         return false;
+//     }
+// }
+
+// public sealed class ColorConverter : BaseColorConverter<Color, float>
+// {
+//     protected override float Default => 1f;
+//     protected override NumberStyles Style => NumberStyles.Float;
+//     protected override TryParseDelegate TryParse { get; } = float.TryParse;
+//     protected override TryParseHtml TryParseHtmlColor { get; } = ColorUtility.TryParseHtmlString;
+
+//     protected override Color FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3]);
+
+//     public override void WriteJson(JsonWriter writer, Color value, JsonSerializer _) =>
+//         writer.WriteValue($"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}");
+// }
+
+// public sealed class Color32Converter : BaseColorConverter<Color32, byte>
+// {
+//     protected override byte Default => 255;
+//     protected override NumberStyles Style => NumberStyles.Integer;
+//     protected override TryParseDelegate TryParse { get; } = byte.TryParse;
+//     protected override TryParseHtml TryParseHtmlColor { get; } = ColorUtility.DoTryParseHtmlColor;
+
+//     protected override Color32 FillFromArray(byte[] array) => new(array[0], array[1], array[2], array[3]);
+
+//     public override void WriteJson(JsonWriter writer, Color32 value, JsonSerializer _) => writer.WriteValue(value.ToHexRGBA());
+// }
 
 /// <summary>
 /// A JsonConverter class that handles the serialisation of enum values.
@@ -125,50 +191,3 @@ public sealed class EnumConverter : JsonConverter
 
     public override bool CanConvert(Type objectType) => objectType.IsEnum;
 }
-
-// public sealed class ColorConverter : MultiComponentConverter<Color, float>
-// {
-//     protected override string Format => "'r,g,b', 'r,g,b,a' or hex code";
-
-//    private static readonly ParseOptions Options = new(NumberStyles.Float, float.TryParse, 1f, 4, 3, ',');
-
-//     protected override Color ReadJson(string valString)
-//     {
-//         if (valString.StartsWith("#"))
-//         {
-//             if (ColorUtility.TryParseHtmlString(valString, out var color))
-//                 return color;
-
-//             throw new JsonSerializationException($"'{valString}' was not correctly formatted as a hex code!");
-//         }
-
-//         ParseComponents(valString, Options);
-//         return new(Options.ToFill[0], Options.ToFill[1], Options.ToFill[2], Options.ToFill[3]);
-//     }
-
-//     public override void WriteJson(JsonWriter writer, Color value, JsonSerializer _) =>
-//         writer.WriteValue($"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}");
-// }
-
-// public sealed class Color32Converter : MultiComponentConverter<Color32, byte>
-// {
-//     protected override string Format => "'r,g,b', 'r,g,b,a' or hex code";
-
-//    private static readonly ParseOptions Options = new(NumberStyles.Integer, byte.TryParse, 255, 4, 3, ',');
-
-//     protected override Color32 ReadJson(string valString)
-//     {
-//         if (valString.StartsWith("#"))
-//         {
-//             if (ColorUtility.DoTryParseHtmlColor(valString, out var color))
-//                 return color;
-
-//             throw new JsonSerializationException($"'{valString}' was not correctly formatted as a hex code!");
-//         }
-
-//         ParseComponents(valString, Options);
-//         return new(Options.ToFill[0], Options.ToFill[1], Options.ToFill[2], Options.ToFill[3]);
-//     }
-
-//     public override void WriteJson(JsonWriter writer, Color32 value, JsonSerializer _) => writer.WriteValue(value.ToHexRGBA());
-// }

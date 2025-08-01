@@ -54,11 +54,11 @@ public static class Helpers
         return obj;
     }
 
-    public static string ReplaceAll(this string @string, string newValue, params string[] valuesToReplace)
-    {
-        valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
-        return @string;
-    }
+    // public static string ReplaceAll(this string @string, string newValue, params string[] valuesToReplace)
+    // {
+    //     valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
+    //     return @string;
+    // }
 
     private static readonly Func<string, bool> IsNotNullEmptyOrWhiteSpaceDel = IsNotNullEmptyOrWhiteSpace;
     private static readonly Func<string, string> TrimDel = Trim;
@@ -82,7 +82,10 @@ public static class Helpers
     //     if (HexToColor32s.TryGetValue(hex, out var color))
     //         return color;
 
-    //     return HexToColor32s[hex] = ColorUtility.DoTryParseHtmlColor(hex, out color) ? color : Color.white;
+    //     if (ColorUtility.DoTryParseHtmlColor(hex, out color))
+    //         return HexToColor32s[hex] = color;
+
+    //     throw new InvalidDataException($"Invalid color hex {hex}!");
     // }
 
     public static Color HexToColor(this string hex)
@@ -90,7 +93,10 @@ public static class Helpers
         if (HexToColors.TryGetValue(hex, out var color))
             return color;
 
-        return HexToColors[hex] = ColorUtility.TryParseHtmlString(hex, out color) ? color : Color.white;
+        if (ColorUtility.TryParseHtmlString(hex, out color))
+            return HexToColors[hex] = color;
+
+        throw new InvalidDataException($"Invalid color hex {hex}!");
     }
 
     public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value);

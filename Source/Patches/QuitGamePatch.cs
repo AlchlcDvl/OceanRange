@@ -1,6 +1,6 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(MainMenuUI), nameof(MainMenuUI.Quit))]
+[HarmonyPatch(typeof(Application), nameof(Application.Quit), [])]
 public static class DumpDebugStuff
 {
     public static void Prefix()

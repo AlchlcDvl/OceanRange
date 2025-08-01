@@ -79,7 +79,8 @@ public static class AssetManager
         foreach (var path in Core.GetManifestResourceNames())
             CreateAssetHandle(path);
 
-#if DEBUG // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
+#if DEBUG
+        // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
         JsonSettings.Formatting = Formatting.Indented;
 #endif
         // Adding the json converters
@@ -112,9 +113,8 @@ public static class AssetManager
     /// </summary>
     /// <param name="path">The original path of the asset.</param>
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
-    /// <remarks>If you add in a new asset type (with its own extension), make sure to add the extension in the ReplaceAll!</remarks>
-    private static string SanitisePath(this string path) => path
-        .ReplaceAll("", "png", "json", "mesh", "jpg") // Removing all of the file extensions if any
+    private static string SanitisePath(this string path, string extension) => path
+        .Replace(extension, "") // Removing the file extension first
         .TrueSplit('/', '\\', '.').Last() // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
         .ToLowerInvariant(); // Lowercase for make asset fetching case insensitive
 
@@ -239,18 +239,18 @@ public static class AssetManager
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     /// <returns>The texture asset loaded from the path.</returns>
-    private static Texture2D LoadTexture(string path)
+    private static Texture2D LoadTexture(string path, string extension)
     {
-        var name = path.SanitisePath();
+        var name = path.SanitisePath(extension);
         var texture = EmptyTexture(GetFormat(name), GenerateMipChains(name));
         texture.LoadImage(path.ReadBytes(), true);
         texture.wrapMode = GetWrapMode(name);
         return texture;
     }
 
-    private static PngTexture2D LoadPngTexture2D(string path) => new(LoadTexture(path));
+    private static PngTexture2D LoadPngTexture2D(string path) => new(LoadTexture(path, "png"));
 
-    private static JpgTexture2D LoadJpgTexture2D(string path) => new(LoadTexture(path));
+    private static JpgTexture2D LoadJpgTexture2D(string path) => new(LoadTexture(path, "jpg"));
 
     // Texture optimisation stuff
     private static bool GenerateMipChains(string name) => name == "sleepingeyes" || name.Contains("ramp") || name.Contains("pattern");
@@ -264,15 +264,15 @@ public static class AssetManager
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     /// <returns>The sprite asset loaded from the path.</returns>
-    private static Sprite LoadSprite(string path)
+    private static Sprite LoadSprite(string path, string extension)
     {
-        var tex = LoadTexture(path);
+        var tex = LoadTexture(path, extension);
         return Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight);
     }
 
-    private static PngSprite LoadPngSprite(string path) => new(LoadSprite(path));
+    private static PngSprite LoadPngSprite(string path) => new(LoadSprite(path, "png"));
 
-    private static JpgSprite LoadJpgSprite(string path) => new(LoadSprite(path));
+    private static JpgSprite LoadJpgSprite(string path) => new(LoadSprite(path, "jpg"));
 
     /// <summary>
     /// Reads all of the bytes from the provided stream.
@@ -299,12 +299,11 @@ public static class AssetManager
     /// <param name="path">The path of the asset.</param>
     private static void CreateAssetHandle(string path)
     {
-        var name = path.SanitisePath();
+        var extension = path.TrueSplit('.').Last();
+        var name = path.SanitisePath(extension);
 
         if (!Assets.TryGetValue(name, out var handle))
             handle = Assets[name] = new(name);
-
-        var extension = path.TrueSplit('.').Last();
 
         if (!NamesToExtensions.TryGetValue(extension, out var set))
             set = NamesToExtensions[extension] = [];
