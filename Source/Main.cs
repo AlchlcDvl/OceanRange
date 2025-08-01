@@ -13,7 +13,7 @@ internal sealed class Main : ModEntryPoint
     public static bool ClsExists;
 
 #if DEBUG
-    public static readonly SavePositionCommand SavePos = new();
+    public static readonly SavePositionCommand SavePos = new(); // Keeping the instance of the command because it stores saved positions
 #endif
 
     /// <inheritdoc/>
@@ -24,9 +24,9 @@ internal sealed class Main : ModEntryPoint
         var watch = new System.Diagnostics.Stopwatch();
         watch.Start();
 #endif
-        Console = ConsoleInstance;
+        Console = ConsoleInstance; // Passing the console so that every other class can log things as well
 
-        HarmonyInstance.PatchAll(AssetManager.Core);
+        HarmonyInstance.PatchAll(AssetManager.Core); // Patch methods
 
         SystemContext.IsModded = true; // I don't what this does fully, but it's better have this one than not, although it'd be better if SRML did this
 
@@ -80,9 +80,11 @@ internal sealed class Main : ModEntryPoint
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             AssetManager.ReleaseHandles("loading", "loading2", "loading3");
 
+
         GC.Collect(); // Free up temp memory
     }
 
+    // Configuring the modded mail data
     private static readonly WorldDataLoadDelegate ReadData = ReadDataMethod;
 
     private static void ReadDataMethod(CompoundDataPiece piece)
