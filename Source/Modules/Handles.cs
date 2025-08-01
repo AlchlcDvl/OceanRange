@@ -93,6 +93,6 @@ public sealed class AssetHandle(string name) : IDisposable
         if (Assets.Remove(tType, out var asset))
             asset.BoxedAsset.Destroy();
         else if (throwError)
-            throw new FileLoadException($"Not such asset {Name} of type {tType.Name} was loaded!");
+            throw new FileLoadException($"No such asset {Name} of type {tType.Name} was loaded!");
     }
 }
