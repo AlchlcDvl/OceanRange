@@ -42,13 +42,13 @@ public sealed class SavePositionCommand : ConsoleCommand
 public sealed class TeleportCommand : ConsoleCommand
 {
     public override string ID => "tp";
-    public override string Usage => "tp <x,y,z or x y z coordinates>";
+    public override string Usage => "tp <x,y,z or x y z or x;y;z coordinates>";
     public override string Description => "Teleports the player to the specified position.";
 
     public override bool Execute(string[] args)
     {
         if (args?.Length is 1)
-            args = args[0].TrueSplit(',', ' ');
+            args = args[0].TrueSplit(',', ' ', ';');
 
         if (args?.Length is not 3)
             return false;
