@@ -27,7 +27,7 @@ public sealed class AssetHandle(string name) : IDisposable
         Paths.Clear();
 
         foreach (var asset in Assets.Values)
-            asset.BoxedAsset.Destroy();
+            asset.Dispose();
 
         Assets.Clear();
         GC.SuppressFinalize(this);
