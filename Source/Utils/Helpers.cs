@@ -219,7 +219,9 @@ public static class Helpers
         return zoneId == Zone.NONE || zones.Contains(zoneId);
     }
 
-    public static Vector3 ParseVector(string value) => ParseVector(value, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture);
+    private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
+
+    public static Vector3 ParseVector(string value) => ParseVector(value, NumberStyles.Float | NumberStyles.AllowThousands, InvariantCulture);
 
     public static Vector3 ParseVector(string value, NumberStyles style, CultureInfo culture)
     {
@@ -299,6 +301,8 @@ public static class Helpers
 
         return false;
     }
+
+    public static string ToVectorString(Vector3 value) => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
 
 #if DEBUG
     private static bool IsZoneObj(GameObject gameObject) => gameObject.name.StartsWith("zone");

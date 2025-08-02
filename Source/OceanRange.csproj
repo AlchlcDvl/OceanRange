@@ -28,7 +28,7 @@
         <EmbeddedResource Include="Resources\*\*" />
     </ItemGroup>
 
-    <Target Name="Copy" AfterTargets="Build" >
+    <Target Name="Copy" AfterTargets="Build" > <!-- This will create new directories if you don't have a test copy of modded SR -->
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" />
     </Target>
 
@@ -36,5 +36,5 @@
         <Optimize>true</Optimize>
     </PropertyGroup>
 
-    <Import Project="../SlimeRancher.props" />
+    <Import Project="../SlimeRancher.props" /> <!-- This will error if there's no SLimeRancher.props file, delete this line if you don't use it -->
 </Project>

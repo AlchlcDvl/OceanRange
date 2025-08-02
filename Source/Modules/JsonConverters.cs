@@ -11,8 +11,6 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     where TValue : struct // The value being read/written
     where TComponent : struct // The type that make up the value's components
 {
-    protected static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
-
     private readonly TryParseDelegate<TValue, TComponent> TryParse = tryParse;
     private readonly TComponent[] ToFill = new TComponent[maxLength];
     private readonly int MaxLength = maxLength;
@@ -32,13 +30,15 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
 
     protected abstract TValue FillFromArray(TComponent[] array);
 
+    protected abstract string ToValueString(TValue value);
+
     // protected virtual bool ParseOtherFormat(string valString, out TValue result)
     // {
     //     result = default;
     //     return false;
     // }
 
-    public sealed override TValue ReadJson(JsonReader reader, Type _, TValue __, bool ___, JsonSerializer ____)
+    public sealed override TValue ReadJson(JsonReader reader, Type _1, TValue _2, bool _3, JsonSerializer _4)
     {
         try
         {
@@ -56,6 +56,8 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
         }
     }
 
+    public sealed override void WriteJson(JsonWriter writer, TValue value, JsonSerializer _) => writer.WriteValue(ToValueString(value));
+
     protected static void ParseComponents(string value, MultiComponentConverter<TValue, TComponent> converter)
     {
         var components = value.TrueSplit(converter.Separator);
@@ -70,7 +72,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
         {
             var component = components[i];
 
-            if (converter.TryParse(component, converter.Style, InvariantCulture, out var valueComponent))
+            if (converter.TryParse(component, converter.Style, CultureInfo.InvariantCulture, out var valueComponent))
                 converter.ToFill[i] = valueComponent;
             else
                 throw new InvalidDataException($"Invalid {typeof(TComponent).Name} string '{component}'!");
@@ -85,17 +87,14 @@ public sealed class Vector3Converter() : MultiComponentConverter<Vector3, float>
 {
     protected override Vector3 FillFromArray(float[] array) => new(array[0], array[1], array[2]);
 
-    public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer _) => writer.WriteValue(ToVectorString(value));
-
-    public static string ToVectorString(Vector3 value) => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
+    protected override string ToValueString(Vector3 value) => Helpers.ToVectorString(value);
 }
 
 public sealed class OrientationConverter() : MultiComponentConverter<Orientation, Vector3>("of a pair of 'x,y,z' or 'x,y' separated by a ;", NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, 2, 2, default, ';')
 {
     protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1]);
 
-    public override void WriteJson(JsonWriter writer, Orientation value, JsonSerializer _) =>
-        writer.WriteValue($"{Vector3Converter.ToVectorString(value.Position)};{Vector3Converter.ToVectorString(value.Rotation)}");
+    protected override string ToValueString(Orientation value)  => $"{Helpers.ToVectorString(value.Position)};{Helpers.ToVectorString(value.Rotation)}";
 }
 
 // public abstract class BaseColorConverter<TColor, TComponent>(NumberStyles style, TryParseDelegate<TColor, TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser)
@@ -119,15 +118,14 @@ public sealed class OrientationConverter() : MultiComponentConverter<Orientation
 // {
 //     protected override Color FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3]);
 
-//     public override void WriteJson(JsonWriter writer, Color value, JsonSerializer _) =>
-//         writer.WriteValue($"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}");
+//     protected override string ToValueString(Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
 // }
 
 // public sealed class Color32Converter() : BaseColorConverter<Color32, byte>(NumberStyles.Integer, byte.TryParse, 255, ColorUtility.DoTryParseHtmlColor)
 // {
 //     protected override Color32 FillFromArray(byte[] array) => new(array[0], array[1], array[2], array[3]);
 
-//     public override void WriteJson(JsonWriter writer, Color32 value, JsonSerializer _) => writer.WriteValue(value.ToHexRGBA());
+//     protected override string ToValueString(Color32 value) => value.ToHexRGBA();
 // }
 
 /// <summary>
