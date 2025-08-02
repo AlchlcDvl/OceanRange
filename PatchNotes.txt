@@ -2,4 +2,5 @@
 - Release!
 
 0.0.2
+- Updated how mod assets are handled
 - Fixed the pink gordo appearing more times than it should on gordo snares when compared to the rosi gordo
