@@ -2,4 +2,4 @@
 - Release!
 
 0.0.2
-- 
+- Fixed the pink gordo appearing more times than it should on gordo snares when compared to the rosi gordo

@@ -106,8 +106,7 @@ public static class AssetManager
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
     private static string SanitisePath(this string path) => path
         .ReplaceAll("", "json", "mesh", "png", "jpg") // Removing the file extension first
-        .TrueSplit('/', '\\', '.').Last() // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
-        .ToLowerInvariant(); // Lowercase for make asset fetching case insensitive
+        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
 
     /// <summary>
     /// Gets and serialise json data from the assets associated with the provided name.

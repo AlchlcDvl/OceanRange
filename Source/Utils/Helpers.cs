@@ -63,7 +63,7 @@ public static class Helpers
     private static readonly Func<string, bool> IsNotNullEmptyOrWhiteSpaceDel = IsNotNullEmptyOrWhiteSpace;
     private static readonly Func<string, string> TrimDel = Trim;
 
-    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators).Select(TrimDel).Where(IsNotNullEmptyOrWhiteSpaceDel)];
+    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators, StringSplitOptions.RemoveEmptyEntries).Select(TrimDel).Where(IsNotNullEmptyOrWhiteSpaceDel)];
 
     private static bool IsNotNullEmptyOrWhiteSpace(string @string) => !string.IsNullOrWhiteSpace(@string) && @string.Length != 0;
 

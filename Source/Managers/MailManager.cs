@@ -10,7 +10,6 @@ public static class MailManager
     public static void PreLoadMailData()
     {
         Mail = AssetManager.GetJson<CustomMailData[]>("mailbox");
-        AssetManager.UnloadAsset<Json>("mailbox");
 
         foreach (var mail in Mail)
             PreLoadMail(mail);

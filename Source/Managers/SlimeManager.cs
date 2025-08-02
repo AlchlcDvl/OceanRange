@@ -42,7 +42,6 @@ public static class SlimeManager
         MgExists = SRModLoader.IsModPresent("luckygordo");
 
         Slimes = AssetManager.GetJson<CustomSlimeData[]>("slimepedia");
-        AssetManager.UnloadAsset<Json>("slimepedia");
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 
@@ -144,7 +143,7 @@ public static class SlimeManager
         var lower = slimeData.Name.ToLower();
         var name = slimeData.Name + " Gordo";
 
-        var icon = AssetManager.GetSprite($"{lower}gordo");
+        var icon = AssetManager.GetSprite($"{lower}_gordo");
 
         var gordoDisplay = prefab.GetComponent<GordoDisplayOnMap>();
         var markerPrefab = gordoDisplay.markerPrefab.CreatePrefab();
@@ -253,7 +252,7 @@ public static class SlimeManager
         slimeData.InitPlortDetails?.Invoke(null, [prefab, definition]);
 
         // Registering the prefab and its id along with any other additional stuff
-        var icon = AssetManager.GetSprite($"{nameLower}plort");
+        var icon = AssetManager.GetSprite($"{nameLower}_plort");
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
         TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLower(), $"{slimeData.Name} {slimeData.PlortType}");
@@ -379,7 +378,7 @@ public static class SlimeManager
             Ammo = slimeData.MainAmmoColor.HexToColor()
         };
 
-        appearance.Icon = AssetManager.GetSprite($"{lower}slime");
+        appearance.Icon = AssetManager.GetSprite($"{lower}_slime");
         applicator.Appearance = appearance;
 
         slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance, applicator, slimeData.JiggleAmount]); // Slime specific details being put here
@@ -705,7 +704,7 @@ public static class SlimeManager
         material2.SetColor(MiddleColor, color3);
         material2.SetColor(BottomColor, color3);
 
-        material.SetTexture(StripeTexture, AssetManager.GetTexture2D("minepattern"));
+        material.SetTexture(StripeTexture, AssetManager.GetTexture2D("mine_pattern"));
 
         BasicInitSlimeAppearance
         (
@@ -770,7 +769,7 @@ public static class SlimeManager
         material2.SetColor(MiddleColor, color);
         material2.SetColor(BottomColor, color2);
         material2.SetFloat(Gloss, 1f);
-        material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("lanternpattern"));
+        material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("lantern_pattern"));
 
         var color3 = "#EBDB6A".HexToColor();
         var material3 = IdentifiableId.PHOSPHOR_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
@@ -799,7 +798,7 @@ public static class SlimeManager
             Eyes = blink.Eyes?.Clone(),
             Mouth = blink.Mouth?.Clone()
         };
-        sleeping.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleepingeyes"));
+        sleeping.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleeping_eyes"));
         appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, sleeping];
         appearance.Face._expressionToFaceLookup[Ids.Sleeping] = sleeping;
     }

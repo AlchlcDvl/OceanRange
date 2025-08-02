@@ -32,10 +32,7 @@ public static class FoodManager
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
 
         Chimkens = AssetManager.GetJson<CustomChimkenData[]>("chimkenpedia");
-        AssetManager.UnloadAsset<Json>("chimkenpedia");
-
         Plants = AssetManager.GetJson<CustomPlantData[]>("plantpedia");
-        AssetManager.UnloadAsset<Json>("plantpedia");
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveGameLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveGameLoaded;
@@ -147,7 +144,7 @@ public static class FoodManager
     {
         // Fetch ramps and caching values because reusing them is tedious
         var lower = chimkenData.Name.ToLower();
-        var ramp = $"{lower}skinramp";
+        var ramp = $"{lower}_ramp_";
         var red = AssetManager.GetTexture2D($"{ramp}red");
         var green = AssetManager.GetTexture2D($"{ramp}green");
         var blue = AssetManager.GetTexture2D($"{ramp}blue");
@@ -163,12 +160,12 @@ public static class FoodManager
         chickPrefab.GetComponent<TransformAfterTime>().options[0].targetPrefab = henPrefab;
 
         // Register both chicks and hens
-        var chickIcon = AssetManager.GetSprite($"{lower}chick");
+        var chickIcon = AssetManager.GetSprite($"{lower}_chick");
         RegisterFood(chickPrefab, chickIcon, ammo, chimkenData.ChickId, chimkenData.ChickEntry, -1, chimkenData.Progress, StorageType.NON_SLIMES);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
             CommonChickAboutPedia.Replace("%type%", chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
 
-        var henIcon = AssetManager.GetSprite($"{lower}hen");
+        var henIcon = AssetManager.GetSprite($"{lower}_hen");
         RegisterFood(henPrefab, henIcon, ammo, chimkenData.MainId, chimkenData.MainEntry, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
@@ -236,7 +233,7 @@ public static class FoodManager
         var meshRend = meshModel.GetComponent<MeshRenderer>();
         var material = meshRend.material = meshRend.material.Clone();
 
-        var ramp = lower + "ramp";
+        var ramp = $"{lower}_ramp_";
         var red = AssetManager.GetTexture2D($"{ramp}red");
         var green = AssetManager.GetTexture2D($"{ramp}green");
         var blue = AssetManager.GetTexture2D($"{ramp}blue");

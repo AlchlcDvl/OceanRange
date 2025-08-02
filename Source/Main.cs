@@ -66,7 +66,7 @@ internal sealed class Main : ModEntryPoint
         SlimeManager.LoadAllSlimes();
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
-            AddSplashesBypass(AssetManager.GetSprites("loading", "loading2", "loading3"));
+            AddSplashesBypass(AssetManager.GetSprites("loading_1", "loading_2", "loading_3"));
     }
 
     /// <inheritdoc/>
@@ -78,7 +78,7 @@ internal sealed class Main : ModEntryPoint
         AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
-            AssetManager.ReleaseHandles("loading", "loading2", "loading3");
+            AssetManager.ReleaseHandles("loading_1", "loading_2", "loading_3");
 
         GC.Collect(); // Free up temp memory
     }
