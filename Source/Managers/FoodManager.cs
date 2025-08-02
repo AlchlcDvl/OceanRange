@@ -22,7 +22,7 @@ public static class FoodManager
     private static readonly int RampGreen = Shader.PropertyToID("_RampGreen");
     private static readonly int RampBlue = Shader.PropertyToID("_RampBlue");
     private static readonly int RampBlack = Shader.PropertyToID("_RampBlack");
-    private static readonly int Color1 = Shader.PropertyToID("_Color");
+    // private static readonly int Color1 = Shader.PropertyToID("_Color");
 
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
@@ -32,9 +32,9 @@ public static class FoodManager
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
 
         Chimkens = AssetManager.GetJson<CustomChimkenData[]>("chimkenpedia");
-        Plants = AssetManager.GetJson<CustomPlantData[]>("plantpedia");
-
         AssetManager.UnloadAsset<Json>("chimkenpedia");
+
+        Plants = AssetManager.GetJson<CustomPlantData[]>("plantpedia");
         AssetManager.UnloadAsset<Json>("plantpedia");
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveGameLoad;

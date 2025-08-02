@@ -287,6 +287,19 @@ public static class Helpers
         }
     }
 
+    public static bool TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey[] keys, out TValue result)
+    {
+        result = default;
+
+        foreach (var key in keys)
+        {
+            if (dict.TryGetValue(key, out result))
+                return true;
+        }
+
+        return false;
+    }
+
 #if DEBUG
     private static bool IsZoneObj(GameObject gameObject) => gameObject.name.StartsWith("zone");
 

@@ -1,14 +1,13 @@
 ﻿namespace OceanRange.Patches;
 
 // TODO: Remove when the pr is merged and SRML 0.3.0 is out
-[HarmonyPatch(typeof(GordoSnare)), HarmonyPriority(Priority.First + 1)]
-public static class GordoSnarePatches
+[HarmonyPatch(typeof(GordoSnare), nameof(GordoSnare.GetGordoIdForBait)), HarmonyPriority(Priority.First + 1)]
+public static class GordoSnarePatch
 {
     private static readonly Func<Zone, bool> HasAccessToZone = ZoneDirector.HasAccessToZone;
 
     public static IdentifiableId[] Pinks;
 
-    [HarmonyPatch(nameof(GordoSnare.GetGordoIdForBait))]
     public static bool Prefix(GordoSnare __instance, ref IdentifiableId __result)
     {
         var dictionary = new Dictionary<IdentifiableId, float>(Identifiable.idComparer);
@@ -32,7 +31,9 @@ public static class GordoSnarePatches
 
             var (message, ids) = eatMapEntry.isFavorite ? ("Found favorite", favIds) : ("Adding potential", normalIds);
             Log.Debug(message, "gordo", gordo.id, "hasAccess", true);
-            ids.Add(gordo.id);
+
+            if (gordo.id != Ids.SAND_GORDO && !eatMapEntry.isFavorite)
+                ids.Add(gordo.id);
         }
 
         if (normalIds.Count > 0)
@@ -51,7 +52,7 @@ public static class GordoSnarePatches
                 dictionary.Add(favIds[j], value);
         }
 
-        if (Pinks?.Length is > 0)
+        if (Pinks.Length > 0)
         {
             var value = (float)__instance.pinkSnareWeight / Pinks.Length;
 
@@ -59,7 +60,8 @@ public static class GordoSnarePatches
                 dictionary.Add(Pinks[j], value);
         }
 
-        __result = Randoms.SHARED.Pick(dictionary, IdentifiableId.PINK_GORDO);
+        var pink = Randoms.SHARED.Pick(Pinks);
+        __result = Randoms.SHARED.Pick(dictionary, pink);
         return false;
     }
 }

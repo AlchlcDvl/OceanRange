@@ -65,9 +65,7 @@ public sealed class AssetHandle(string name) : IDisposable
         if (!AssetManager.AssetTypeExtensions.TryGetValue(tType, out var generator)) // Check if the requested type is valid
             return throwError ? throw new NotSupportedException($"{tType.Name} is not a valid asset type to load") : null;
 
-        string path = null;
-
-        if (!generator.Extensions.Any(x => Paths.TryGetValue(x, out path))) // Check if there's an asset path that maps to the relevant file extension
+        if (!Paths.TryGetValue(generator.Extensions, out var path)) // Check if there's an asset path that maps to the relevant file extension
             return throwError ? throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}") : null;
 
         asset = generator.LoadAsset(path); // Create the asset
