@@ -19,7 +19,7 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <summary>
     /// Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there can't be two of Plort.png anywhere).
     /// </summary>
-    private readonly Dictionary<Type, OceanAsset> Assets = [];
+    private readonly Dictionary<Type, UObject> Assets = [];
 
     /// <inheritdoc cref="IDisposable.Dispose"/>
     public void Dispose()
@@ -27,7 +27,7 @@ public sealed class AssetHandle(string name) : IDisposable
         Paths.Clear();
 
         foreach (var asset in Assets.Values)
-            asset.Dispose();
+            asset.Destroy();
 
         Assets.Clear();
         GC.SuppressFinalize(this);
@@ -38,8 +38,10 @@ public sealed class AssetHandle(string name) : IDisposable
     /// </summary>
     /// <param name="path">The path to add.</param>
     /// <exception cref="ArgumentException">Thrown if the path contains a file extension that's already been added.</exception>
-    public void AddPath(string path, string extension)
+    public void AddPath(string path)
     {
+        var extension = path.TrueSplit('.').Last();
+
         if ((AssetManager.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other)) || !Paths.TryAdd(extension, path))
             throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing!");
     }
@@ -53,7 +55,7 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <exception cref="NotSupportedException">Thrown if an invalid asset type was requested.</exception>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided type.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the asset was not loaded properly for reasons unknown.</exception>
-    public T Load<T>(bool throwError = true) where T : OceanAsset
+    public T Load<T>(bool throwError = true) where T : UObject
     {
         var tType = typeof(T);
 
@@ -63,21 +65,22 @@ public sealed class AssetHandle(string name) : IDisposable
         if (!AssetManager.AssetTypeExtensions.TryGetValue(tType, out var generator)) // Check if the requested type is valid
             return throwError ? throw new NotSupportedException($"{tType.Name} is not a valid asset type to load") : null;
 
-        if (!Paths.TryGetValue(generator.Extension, out var path)) // Check if there's an asset path that maps to the relevant file extension
+        string path = null;
+
+        if (!generator.Extensions.Any(x => Paths.TryGetValue(x, out path))) // Check if there's an asset path that maps to the relevant file extension
             return throwError ? throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}") : null;
 
         asset = generator.LoadAsset(path); // Create the asset
 
         // Save the asset if not null, otherwise throw an error
-        if (!asset?.BoxedAsset)
+        if (!asset)
             return throwError ? throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!") : null;
 
         Assets.Add(tType, asset);
 
         // Set name and allow persistence
-        asset.BoxedAsset.name = Name;
-        asset.BoxedAsset.DontDestroy();
-        return (T)asset;
+        asset.name = Name;
+        return (T)asset.DontDestroy();
     }
 
     /// <summary>
@@ -86,12 +89,12 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <typeparam name="T">The type of the asset.</typeparam>
     /// <param name="throwError">The flag that indicates if an error should be thrown.</param>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided type.</exception>
-    public void Unload<T>(bool throwError = true) where T : OceanAsset
+    public void Unload<T>(bool throwError = true) where T : UObject
     {
         var tType = typeof(T);
 
         if (Assets.Remove(tType, out var asset))
-            asset.BoxedAsset.Destroy();
+            asset.Destroy();
         else if (throwError)
             throw new FileLoadException($"No such asset {Name} of type {tType.Name} was loaded!");
     }

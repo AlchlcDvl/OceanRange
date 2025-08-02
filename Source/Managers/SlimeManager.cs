@@ -42,7 +42,7 @@ public static class SlimeManager
         MgExists = SRModLoader.IsModPresent("luckygordo");
 
         Slimes = AssetManager.GetJson<CustomSlimeData[]>("slimepedia");
-        AssetManager.UnloadAsset<JsonAsset>("slimepedia");
+        AssetManager.UnloadAsset<Json>("slimepedia");
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 

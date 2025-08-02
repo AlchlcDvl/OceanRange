@@ -34,8 +34,8 @@ public static class FoodManager
         Chimkens = AssetManager.GetJson<CustomChimkenData[]>("chimkenpedia");
         Plants = AssetManager.GetJson<CustomPlantData[]>("plantpedia");
 
-        AssetManager.UnloadAsset<JsonAsset>("chimkenpedia");
-        AssetManager.UnloadAsset<JsonAsset>("plantpedia");
+        AssetManager.UnloadAsset<Json>("chimkenpedia");
+        AssetManager.UnloadAsset<Json>("plantpedia");
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveGameLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveGameLoaded;

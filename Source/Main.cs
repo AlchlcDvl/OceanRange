@@ -80,7 +80,6 @@ internal sealed class Main : ModEntryPoint
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             AssetManager.ReleaseHandles("loading", "loading2", "loading3");
 
-
         GC.Collect(); // Free up temp memory
     }
 

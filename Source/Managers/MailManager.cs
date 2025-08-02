@@ -10,10 +10,11 @@ public static class MailManager
     public static void PreLoadMailData()
     {
         Mail = AssetManager.GetJson<CustomMailData[]>("mailbox");
-        AssetManager.UnloadAsset<JsonAsset>("mailbox");
 
         foreach (var mail in Mail)
             PreLoadMail(mail);
+
+        AssetManager.UnloadAsset<Json>("mailbox");
     }
 
     private static void PreLoadMail(CustomMailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id)

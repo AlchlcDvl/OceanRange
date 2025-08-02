@@ -54,11 +54,11 @@ public static class Helpers
         return obj;
     }
 
-    // public static string ReplaceAll(this string @string, string newValue, params string[] valuesToReplace)
-    // {
-    //     valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
-    //     return @string;
-    // }
+    public static string ReplaceAll(this string @string, string newValue, params string[] valuesToReplace)
+    {
+        valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
+        return @string;
+    }
 
     private static readonly Func<string, bool> IsNotNullEmptyOrWhiteSpaceDel = IsNotNullEmptyOrWhiteSpace;
     private static readonly Func<string, string> TrimDel = Trim;
