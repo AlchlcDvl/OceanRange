@@ -226,7 +226,7 @@ public static class AssetManager
     private static int ReadIntMethod(BinaryReader reader) => reader.ReadInt32();
 
     // Helper to create an empty texture
-    private static Texture2D EmptyTexture(TextureFormat format, bool mipChain) => new(2, 2, format, mipChain) { filterMode = FilterMode.Bilinear };
+    private static Texture2D EmptyTexture(TextureFormat format) => new(2, 2, format, true) { filterMode = FilterMode.Bilinear };
 
     /// <summary>
     /// Loads a texture from the provided path.
@@ -236,15 +236,13 @@ public static class AssetManager
     private static Texture2D LoadTexture2D(string path)
     {
         var name = path.SanitisePath();
-        var texture = EmptyTexture(GetFormat(name), GenerateMipChains(name));
+        var texture = EmptyTexture(GetFormat(name));
         texture.LoadImage(path.ReadBytes(), true);
         texture.wrapMode = GetWrapMode(name);
         return texture;
     }
 
     // Texture optimisation stuff
-    private static bool GenerateMipChains(string name) => name == "sleepingeyes" || name.Contains("ramp") || name.Contains("pattern");
-
     private static TextureFormat GetFormat(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureFormat.DXT1 : TextureFormat.DXT5;
 
     private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;

@@ -1,3 +1,4 @@
+using AssetsLib;
 using Unity.Collections;
 
 namespace OceanRange.Utils;
@@ -48,13 +49,14 @@ public static class MeshCalculator
 
             mesh.bindposes = poses;
 
-            var meshRend = i == 0 ? prefabRend : prefabRend.Instantiate(parent);
+            var isFirst = i == 0;
+            var meshRend = isFirst ? prefabRend : prefabRend.Instantiate(parent);
             meshRend.sharedMesh = mesh;
             meshRend.localBounds = mesh.bounds;
             meshRend.bones = bones;
             meshRend.rootBone = meshRend.bones[0];
 
-            if (!isNull && i != 0)
+            if (!isNull && !isFirst)
                 meshRend.name = meshName;
 
             materialHandler?.Invoke(i, meshRend);
@@ -115,99 +117,58 @@ public static class MeshCalculator
         }
     }
 
-    public static Vector3 Abs(this Vector3 value) => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
-
-    private static Dictionary<int, float> HandleBoneWeight(Vector3 diff, float num, int power, float jiggleAmount)
+    private static BoneWeight HandleBoneWeight(Vector3 diff, float num, float jiggleAmount, int power)
     {
         var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
-        var dict = new Dictionary<int, float>() { [0] = 1f - jiggle };
-        var value = diff.ToPower(power);
+        var weight = new BoneWeight
+        {
+            m_Weight0 = 1f - jiggle,
+            m_BoneIndex0 = 0
+        };
 
-        if (power % 2 == 1)
-            value = value.Abs();
+        if (jiggle == 0f)
+            return weight;
 
+        weight.m_BoneIndex1 = diff.x >= 0f ? 1 : 2;
+        weight.m_BoneIndex2 = diff.y >= 0f ? 3 : 4;
+        weight.m_BoneIndex3 = diff.z >= 0f ? 5 : 6;
+
+        var value = diff.ToPower(power).Abs();
         var normal = value.Sum();
 
         if (normal > 0f)
-            value = value.MultipliedBy(1f / normal);
+            value /= normal;
 
-        value = value.MultipliedBy(jiggle);
+        value *= jiggle;
 
-        for (var i = 0; i < 3; i++)
-        {
-            var component = value[i];
+        weight.m_Weight1 = value.x;
+        weight.m_Weight2 = value.y;
+        weight.m_Weight3 = value.z;
 
-            if (component != 0)
-                dict[(component > 0 ? 1 : 2) + (i * 2)] = component;
-        }
-
-        return dict;
-    }
-
-    public static void SetBoneWeightsPerVertex(this Mesh mesh, Dictionary<int, Dictionary<int, float>> weights)
-    {
-        var boneWeights = new List<BoneWeight1>();
-        var perVertex = new List<byte>();
-        var vertexCount = mesh.vertexCount;
-
-        for (var i = 0; i < vertexCount; i++)
-        {
-            if (weights.TryGetValue(i, out var dict))
-            {
-                perVertex.Add((byte)dict.Count);
-
-                foreach (var p in dict)
-                    boneWeights.Add(new BoneWeight1() { m_BoneIndex = p.Key, m_Weight = p.Value });
-            }
-            else
-                perVertex.Add(0);
-        }
-
-        using var nativePerVertex = new NativeArray<byte>(perVertex.ToArray(), Allocator.TempJob);
-        using var nativeBoneWeights = new NativeArray<BoneWeight1>(boneWeights.ToArray(), Allocator.TempJob);
-        mesh.SetBoneWeights(nativePerVertex, nativeBoneWeights);
+        return weight;
     }
 
     public static void GenerateBoneDataRaw(Mesh mesh, Vector3 zero, float num, float jiggleAmount, int power)
     {
         var vertices = mesh.vertices;
-        var weightIndices = new Dictionary<int, Dictionary<int, float>>();
+        var weights = new BoneWeight[vertices.Length];
 
-        for (var n = 0; n < vertices.Length; n++)
-            weightIndices[n] = HandleBoneWeight(vertices[n] - zero, num, power, jiggleAmount);
+        for (var i = 0; i < vertices.Length; i++)
+            weights[i] = HandleBoneWeight(vertices[i] - zero, num, jiggleAmount, power);
 
-        mesh.SetBoneWeightsPerVertex(weightIndices);
+        mesh.boneWeights = weights;
     }
 
     private static (Vector3, float) CalculateZeroes(Mesh mesh)
     {
         var vertices = mesh.vertices;
-        var min = Vector3.one * float.PositiveInfinity;
-        var max = Vector3.one * float.NegativeInfinity;
+        var zero = Vector3.zero;
 
         foreach (var vector in vertices)
-        {
-            if (vector.x > max.x)
-                max.x = vector.x;
+            zero += vector;
 
-            if (vector.x < min.x)
-                min.x = vector.x;
-
-            if (vector.y > max.y)
-                max.y = vector.y;
-
-            if (vector.y < min.y)
-                min.y = vector.y;
-
-            if (vector.z > max.z)
-                max.z = vector.z;
-
-            if (vector.z < min.z)
-                min.z = vector.z;
-        }
-
+        zero /= vertices.Length;
         var num = 0f;
-        var zero = (max + min) / 2;
 
         foreach (var vector in vertices)
             num += (vector - zero).magnitude;
