@@ -41,7 +41,7 @@ public static class SlimeManager
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
         MgExists = SRModLoader.IsModPresent("luckygordo");
 
-        Slimes = AssetManager.GetJson<CustomSlimeData[]>("slimepedia");
+        Slimes = AssetManager.GetJsonArray<CustomSlimeData>("slimepedia");
 
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 
@@ -310,7 +310,7 @@ public static class SlimeManager
         var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
         applicator.SlimeDefinition = definition;
 
-        // Try to remove pink slime food tracker, skip there's no such component
+        // Try to remove pink slime food tracker, skip if there's no such component
         if (prefab.TryGetComponent<PinkSlimeFoodTypeTracker>(out var tracker))
             tracker.Destroy();
 
@@ -505,108 +505,7 @@ public static class SlimeManager
                 prefabsForBoneData[i - 1] = prefab2;
         }
 
-        MeshUtils.GenerateBoneData(applicator, slimeBase, jiggleAmount, 1f, prefabsForBoneData);
-    }
-
-    private static void GenerateBones(this Transform gordo, float jiggleAmount, Action<int, SkinnedMeshRenderer> materialHandler, params string[] meshNames)
-    {
-        if (meshNames.Length == 0)
-            return;
-
-        var prefabRend = gordo.GetComponent<SkinnedMeshRenderer>();
-        var sharedMesh = prefabRend.sharedMesh;
-        var vertices = sharedMesh.vertices;
-        var zero = Vector3.zero;
-
-        foreach (var vector in vertices)
-            zero += vector;
-
-        zero /= vertices.Length;
-        var num = 0f;
-
-        foreach (var vector in vertices)
-            num += (vector - zero).magnitude;
-
-        num /= vertices.Length;
-        var parent = gordo.parent;
-        var parentObj = parent.gameObject.FindChild("bone_root");
-
-        var bones = new[]
-        {
-            parentObj.FindChild("bone_slime").transform,
-            parentObj.FindChild("bone_skin_rig", true).transform,
-            parentObj.FindChild("bone_skin_lef", true).transform,
-            parentObj.FindChild("bone_skin_top", true).transform,
-            parentObj.FindChild("bone_skin_bot", true).transform,
-            parentObj.FindChild("bone_skin_fro", true).transform,
-            parentObj.FindChild("bone_skin_bac", true).transform,
-        };
-
-        var rootMatrix = parent.localToWorldMatrix;
-
-        for (var i = 0; i < meshNames.Length; i++)
-        {
-            var meshName = meshNames[i];
-            var isNull = meshName == null;
-            var mesh = isNull ? sharedMesh.Clone() : AssetManager.GetMesh(meshName);
-
-            var vertices2 = mesh.vertices;
-            var weights = new BoneWeight[vertices2.Length];
-
-            for (var n = 0; n < vertices2.Length; n++)
-                weights[n] = HandleBoneWeight(vertices2[n] - zero, num, jiggleAmount);
-
-            mesh.boneWeights = weights;
-            var poses = new Matrix4x4[bones.Length];
-
-            for (var k = 0; k < bones.Length; k++)
-                poses[k] = bones[k].worldToLocalMatrix * rootMatrix;
-
-            mesh.bindposes = poses;
-            mesh.RecalculateBounds();
-
-            var meshRend = i == 0 ? prefabRend : prefabRend.Instantiate(parent);
-            meshRend.sharedMesh = mesh;
-            meshRend.localBounds = mesh.bounds;
-            meshRend.bones = bones;
-            meshRend.rootBone = meshRend.bones[0];
-
-            if (!isNull && i != 0)
-                meshRend.name = meshName;
-
-            materialHandler?.Invoke(i, meshRend);
-        }
-    }
-
-    private static BoneWeight HandleBoneWeight(Vector3 diff, float num, float jiggleAmount)
-    {
-        var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
-        var weight = new BoneWeight
-        {
-            m_Weight0 = 1f - jiggle,
-            m_BoneIndex0 = 0
-        };
-
-        if (jiggle == 0f)
-            return weight;
-
-        weight.m_BoneIndex1 = diff.x >= 0f ? 1 : 2;
-        weight.m_BoneIndex2 = diff.y >= 0f ? 3 : 4;
-        weight.m_BoneIndex3 = diff.z >= 0f ? 5 : 6;
-
-        var value = diff.Multiply(diff);
-        var normal = value.Sum();
-
-        if (normal > 0f)
-            value /= normal;
-
-        value *= jiggle;
-
-        weight.m_Weight1 = value.x;
-        weight.m_Weight2 = value.y;
-        weight.m_Weight3 = value.z;
-
-        return weight;
+        applicator.GenerateSlimeBoneData(slimeBase, jiggleAmount, prefabsForBoneData);
     }
 
     public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
@@ -652,7 +551,7 @@ public static class SlimeManager
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)
     {
         var structs = definition.AppearancesDefault[0].Structures;
-        gordoObj.GenerateBones(1f, (i, meshRend) =>
+        gordoObj.GenerateGordoBoneData((i, meshRend) =>
         {
             if (i == 0)
                 return;
@@ -742,7 +641,7 @@ public static class SlimeManager
         material2.SetColor(BottomColor, color);
         material2.SetFloat(Gloss, 1f);
 
-        gordoObj.GenerateBones(1f, (i, meshRend) =>
+        gordoObj.GenerateGordoBoneData((i, meshRend) =>
         {
             meshRend.material = meshRend.sharedMaterial = i == 0 ? material2 : material;
 
@@ -822,7 +721,7 @@ public static class SlimeManager
     {
         var structs = definition.AppearancesDefault[0].Structures;
 
-        gordoObj.GenerateBones(1f, (i, meshRend) =>
+        gordoObj.GenerateGordoBoneData((i, meshRend) =>
         {
             if (i == 0)
                 return;
@@ -860,9 +759,10 @@ public static class SlimeManager
 
     public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _) => SandBehaviour.PlortPrefab = prefab;
 
-    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition _, Transform __)
+    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition _, Transform gordoObj)
     {
         prefab.GetComponent<GordoEat>().slimeDefinition.Diet = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet;
-        SnareRegistry.RegisterAsSnareable(IdentifiableId.SILKY_SAND_CRAFT);
+        IdentifiableId.SILKY_SAND_CRAFT.RegisterAsSnareable();
+        gordoObj.GenerateGordoBoneData(null, null, "puddle_body_gordo");
     }
 }

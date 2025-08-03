@@ -109,7 +109,15 @@ public static class AssetManager
         .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
 
     /// <summary>
-    /// Gets and serialise json data from the assets associated with the provided name.
+    /// Gets and serialise json data from the asset associated with the provided name.
+    /// </summary>
+    /// <typeparam name="T">The type to deserialise to.</typeparam>
+    /// <param name="path">The name of the asset.</param>
+    /// <returns>The read and converted json data.</returns>
+    public static T[] GetJsonArray<T>(string path) => GetJson<T[]>(path);
+
+    /// <summary>
+    /// Gets and serialise json data from the asset associated with the provided name.
     /// </summary>
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
@@ -199,18 +207,14 @@ public static class AssetManager
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
         using var reader = new BinaryReader(decompressor);
 
-        var mesh = new Mesh
+        return new()
         {
             vertices = BinaryUtils.ReadArray(reader, ReadVector3),
             triangles = BinaryUtils.ReadArray(reader, ReadInt),
             normals = BinaryUtils.ReadArray(reader, ReadVector3),
-            tangents = BinaryUtils.ReadArray(reader, ReadVector4)
+            tangents = BinaryUtils.ReadArray(reader, ReadVector4),
+            uv = BinaryUtils.ReadArray(reader, ReadVector2)
         };
-
-        for (var i = 0; i < 8; i++)
-            mesh.SetUVs(i, BinaryUtils.ReadArray(reader, ReadVector2));
-
-        return mesh;
     }
 
     // Helper fields to reduce compiler generated code and delegate overhead

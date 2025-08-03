@@ -1,6 +1,5 @@
 // using SRML;
 using System.Globalization;
-using AssetsLib;
 using SRML.Utils;
 
 #if DEBUG
@@ -182,12 +181,30 @@ public static class Helpers
 
     public static Vector3 ToPower(this Vector3 vector, int power)
     {
-        var result = vector;
+        if (power == 0)
+            return Vector3.zero;
 
-        for (var i = 1; i < power; i++)
-            result = result.Multiply(vector);
+        var result = vector;
+        var isBelowZero = power < 0;
+
+        if (isBelowZero)
+            power = -power;
+
+        for (var i = 1; i <= power; i++)
+            result = result.MultipliedBy(vector);
+
+        if (isBelowZero)
+            result = Vector3.one.DividedBy(result);
 
         return result;
+    }
+
+    private static Vector3 DividedBy(this Vector3 value, Vector3 factor)
+    {
+        value.x *= factor.x;
+        value.y *= factor.y;
+        value.z *= factor.z;
+        return value;
     }
 
     // public static Texture2D CreateRamp(string name, Color a, Color b)

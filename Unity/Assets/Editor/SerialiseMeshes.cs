@@ -46,16 +46,7 @@ class ExportMeshes
         WriteArray(writer, mesh.triangles, WriteInt);
         WriteArray(writer, mesh.normals, WriteVector3);
         WriteArray(writer, mesh.tangents, WriteVector4);
-
-        List<Vector2> uvs = new List<Vector2>();
-
-        for (int i = 0; i < 8; i++)
-        {
-            mesh.GetUVs(i, uvs);
-            WriteList(writer, uvs, WriteVector2);
-            uvs.Clear();
-        }
-
+        WriteArray(writer, mesh.uv, WriteVector2);
         writer.Flush();
     }
 
@@ -86,20 +77,6 @@ class ExportMeshes
 
         for (var i = 0; i < array.Length; i++)
             writeAction(writer, array[i]);
-    }
-
-    static void WriteList<T>(BinaryWriter writer, List<T> list, Action<BinaryWriter, T> writeAction)
-    {
-        if (list == null)
-        {
-            writer.Write(0);
-            return;
-        }
-
-        writer.Write(list.Count);
-
-        for (var i = 0; i < list.Count; i++)
-            writeAction(writer, list[i]);
     }
 
     static void WriteVector4(BinaryWriter writer, Vector4 vec)
