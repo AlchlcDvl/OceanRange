@@ -1,4 +1,5 @@
 // using SRML;
+using System.Collections;
 using System.Globalization;
 using SRML.Utils;
 
@@ -15,40 +16,36 @@ public static class Helpers
 
     public static bool TryFinding<T>(this IEnumerable<T> source, Func<T, bool> predicate, out T value)
     {
-        var result = source.TryFindingAll(predicate, out var values);
-        value = values.FirstOrDefault();
-        return result;
+        foreach (var item in source)
+        {
+            if (!predicate(item))
+                continue;
+
+            value = item;
+            return true;
+        }
+
+        value = default;
+        return false;
     }
 
-    public static bool TryFinding<T1, T2>(this IEnumerable<T1> source, out T2 value, Func<T2, bool> predicate1 = null, Func<T1, bool> predicate2 = null)
+    public static bool TryFinding(this IEnumerable source, Func<object, bool> predicate, out object value)
     {
-        var result = source.TryFindingAll(out var values, predicate1, predicate2);
-        value = values.FirstOrDefault();
-        return result;
-    }
+        foreach (var item in source)
+        {
+            if (!predicate(item))
+                continue;
 
-    private static bool TryFindingAll<T>(this IEnumerable<T> source, Func<T, bool> predicate, out IEnumerable<T> value)
-    {
-        value = source.Where(predicate);
-        return value.Any();
-    }
+            value = item;
+            return true;
+        }
 
-    private static bool TryFindingAll<T1, T2>(this IEnumerable<T1> source, out IEnumerable<T2> value, Func<T2, bool> predicate1 = null, Func<T1, bool> predicate2 = null)
-    {
-        if (predicate2 is not null)
-            source = source.Where(predicate2);
-
-        value = source.OfType<T2>();
-
-        if (predicate1 is not null)
-            value = value.Where(predicate1);
-
-        return value.Any();
+        value = default;
+        return false;
     }
 
     public static T DontDestroy<T>(this T obj) where T : UObject
     {
-        obj.hideFlags |= HideFlags.HideAndDontSave;
         obj.DontDestroyOnLoad();
         return obj;
     }
@@ -142,9 +139,12 @@ public static class Helpers
     {
         var gordo = slimeData.GordoId.GetPrefab().Instantiate(sectorCategory.transform);
         gordo.transform.position = slimeData.GordoOrientation.Position;
-        gordo.transform.localEulerAngles  = slimeData.GordoOrientation.Rotation;
+        gordo.transform.localEulerAngles = slimeData.GordoOrientation.Rotation;
         gordo.name = gordo.name.Replace("(Clone)", "").Trim();
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs];
+
+        if (slimeData.IsPopped)
+            gordo.SetActive(false);
     }
 
     public static Mesh Clone(this Mesh originalMesh)
@@ -182,29 +182,26 @@ public static class Helpers
     public static Vector3 ToPower(this Vector3 vector, int power)
     {
         if (power == 0)
-            return Vector3.zero;
+            return Vector3.one;
 
-        var result = vector;
-        var isBelowZero = power < 0;
+        var result = Vector3.one;
+        var abs = Mathf.Abs(power);
 
-        if (isBelowZero)
-            power = -power;
+        for (var i = 0; i < abs; i++)
+        {
+            result.x *= vector.x;
+            result.y *= vector.y;
+            result.z *= vector.z;
+        }
 
-        for (var i = 1; i <= power; i++)
-            result = result.MultipliedBy(vector);
-
-        if (isBelowZero)
-            result = Vector3.one.DividedBy(result);
+        if (power < 0)
+        {
+            result.x = 1f / result.x;
+            result.y = 1f / result.y;
+            result.z = 1f / result.z;
+        }
 
         return result;
-    }
-
-    private static Vector3 DividedBy(this Vector3 value, Vector3 factor)
-    {
-        value.x *= factor.x;
-        value.y *= factor.y;
-        value.z *= factor.z;
-        return value;
     }
 
     // public static Texture2D CreateRamp(string name, Color a, Color b)
@@ -292,18 +289,23 @@ public static class Helpers
 
     public static bool IsAny<T>(this T item, params T[] items) => items.Any(x => item.Equals(x));
 
-    public static bool TryParse(Type enumType, string value, bool ignoreCase, out object result)
+    private static readonly Dictionary<Type, Array> EnumMaps = [];
+
+    public static bool TryParse(Type enumType, string name, bool ignoreCase, out object result)
     {
-        try
+        if (!EnumMaps.TryGetValue(enumType, out var enums))
+            enums = EnumMaps[enumType] = Enum.GetValues(enumType);
+
+        var caseCheck = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
+
+        if (enums.TryFinding(value => string.Equals(value.ToString(), name, caseCheck), out var value))
         {
-            result = Enum.Parse(enumType, value, ignoreCase);
+            result = value;
             return true;
         }
-        catch
-        {
-            result = null;
-            return false;
-        }
+
+        result = null;
+        return false;
     }
 
     public static bool TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey[] keys, out TValue result)

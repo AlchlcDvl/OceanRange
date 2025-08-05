@@ -93,7 +93,7 @@ public static class SlimeManager
 #if DEBUG
     [TimeDiagnostic("Slime OnSaveLoad")]
 #endif
-    private static void OnSaveLoadedMethod(SceneContext _)
+    private static void OnSaveLoadedMethod(SceneContext context)
     {
         foreach (var slimeData in Slimes)
         {
@@ -505,7 +505,107 @@ public static class SlimeManager
                 prefabsForBoneData[i - 1] = prefab2;
         }
 
-        applicator.GenerateSlimeBoneData(slimeBase, jiggleAmount, prefabsForBoneData);
+        MeshUtils.GenerateBoneData(applicator, slimeBase, jiggleAmount, 1f, prefabsForBoneData);
+    }
+
+    private static void GenerateGordoBoneData(this Transform gordo, Action<int, SkinnedMeshRenderer> materialHandler, params string[] meshNames)
+    {
+        if (meshNames.Length == 0)
+            return;
+
+        var prefabRend = gordo.GetComponent<SkinnedMeshRenderer>();
+        var sharedMesh = meshNames[0] != null ? AssetManager.GetMesh(meshNames[0]) : prefabRend.sharedMesh;
+        var vertices = sharedMesh.vertices;
+        var zero = Vector3.zero;
+
+        foreach (var vector in vertices)
+            zero += vector;
+
+        zero /= vertices.Length;
+        var num = 0f;
+
+        foreach (var vector in vertices)
+            num += (vector - zero).magnitude;
+
+        num /= vertices.Length;
+        var parent = gordo.parent;
+        var parentObj = parent.gameObject.FindChild("bone_root");
+
+        var bones = new[]
+        {
+            parentObj.FindChild("bone_slime").transform,
+            parentObj.FindChild("bone_skin_rig", true).transform,
+            parentObj.FindChild("bone_skin_lef", true).transform,
+            parentObj.FindChild("bone_skin_top", true).transform,
+            parentObj.FindChild("bone_skin_bot", true).transform,
+            parentObj.FindChild("bone_skin_fro", true).transform,
+            parentObj.FindChild("bone_skin_bac", true).transform,
+        };
+
+        var rootMatrix = parent.localToWorldMatrix;
+
+        for (var i = 0; i < meshNames.Length; i++)
+        {
+            var meshName = meshNames[i];
+            var isNull = meshName == null;
+            var mesh = isNull ? sharedMesh.Clone() : AssetManager.GetMesh(meshName);
+
+            var vertices2 = mesh.vertices;
+            var weights = new BoneWeight[vertices2.Length];
+
+            for (var n = 0; n < vertices2.Length; n++)
+                weights[n] = HandleBoneWeight(vertices2[n] - zero, num);
+
+            mesh.boneWeights = weights;
+            var poses = new Matrix4x4[bones.Length];
+
+            for (var k = 0; k < bones.Length; k++)
+                poses[k] = bones[k].worldToLocalMatrix * rootMatrix;
+
+            mesh.bindposes = poses;
+            mesh.RecalculateBounds();
+
+            var meshRend = i == 0 ? prefabRend : prefabRend.Instantiate(parent);
+            meshRend.sharedMesh = mesh;
+            meshRend.localBounds = mesh.bounds;
+            meshRend.bones = bones;
+            meshRend.rootBone = parent;
+
+            if (!isNull && i != 0)
+                meshRend.name = meshName;
+
+            materialHandler?.Invoke(i, meshRend);
+        }
+    }
+
+    private static BoneWeight HandleBoneWeight(Vector3 diff, float num)
+    {
+        var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f));
+        var weight = new BoneWeight
+        {
+            m_Weight0 = 1f - jiggle,
+            m_BoneIndex0 = 0
+        };
+
+        if (jiggle == 0f)
+            return weight;
+
+        weight.m_BoneIndex1 = diff.x >= 0f ? 1 : 2;
+        weight.m_BoneIndex2 = diff.y >= 0f ? 3 : 4;
+        weight.m_BoneIndex3 = diff.z >= 0f ? 5 : 6;
+
+        var normal = diff.Sum();
+
+        if (normal > 0f)
+            diff /= normal;
+
+        diff *= jiggle;
+
+        weight.m_Weight1 = diff.x;
+        weight.m_Weight2 = diff.y;
+        weight.m_Weight3 = diff.z;
+
+        return weight;
     }
 
     public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)

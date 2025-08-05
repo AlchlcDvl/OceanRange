@@ -1,9 +1,5 @@
 ﻿using SRML;
-using SRML.SR.SaveSystem;
-using OceanRange.Patches;
 using static SRML.Console.Console;
-using SRML.SR.SaveSystem.Registry;
-using SRML.SR.SaveSystem.Data;
 
 namespace OceanRange;
 
@@ -35,13 +31,10 @@ internal sealed class Main : ModEntryPoint
         AssetManager.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
 
         // Preloads the various forms of data the mod uses
+        SaveManager.PreLoadSaveData();
         FoodManager.PreLoadFoodData();
         SlimeManager.PreLoadSlimeData();
         MailManager.PreLoadMailData();
-
-        // Helpers to avoid the eventual lag with custom mail when there's a ton added
-        SaveRegistry.RegisterWorldDataLoadDelegate(ReadData);
-        SaveRegistry.RegisterWorldDataSaveDelegate(WriteData);
 
 #if DEBUG
         // Debug stuff for the special commands
@@ -81,44 +74,6 @@ internal sealed class Main : ModEntryPoint
             AssetManager.ReleaseHandles("loading_1", "loading_2", "loading_3");
 
         GC.Collect(); // Free up temp memory
-    }
-
-    // Configuring the modded mail data
-    private static readonly WorldDataLoadDelegate ReadData = ReadDataMethod;
-
-    private static void ReadDataMethod(CompoundDataPiece piece)
-    {
-        FixAndProperlyShowMailPatch.IsLoaded = false;
-
-        var mailCount = piece.GetValue<int>("mailCount");
-
-        while (mailCount-- > 0)
-        {
-            var mailId = piece.GetValue<string>("mailId");
-            var mail = Array.Find(MailManager.Mail, x => x.Id == mailId);
-            mail.Sent = piece.GetValue<bool>("mailSent");
-            mail.Read = piece.GetValue<bool>("mailRead");
-        }
-
-        FixAndProperlyShowMailPatch.IsLoaded = true;
-    }
-
-    private static readonly WorldDataSaveDelegate WriteData = WriteDataMethod;
-
-    private static void WriteDataMethod(CompoundDataPiece piece)
-    {
-        FixAndProperlyShowMailPatch.IsLoaded = false;
-
-        piece.SetValue("mailCount", MailManager.Mail.Length);
-
-        foreach (var mail in MailManager.Mail)
-        {
-            piece.SetValue("mailId", mail.Id);
-            piece.SetValue("mailSent", mail.Sent);
-            piece.SetValue("mailRead", mail.Read);
-        }
-
-        FixAndProperlyShowMailPatch.IsLoaded = true;
     }
 
     public static void AddIconBypass(Sprite icon)

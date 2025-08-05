@@ -147,6 +147,9 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("jiggle")]
     public float JiggleAmount = 1f;
 
+    [JsonIgnore]
+    public bool IsPopped;
+
     // [JsonIgnore]
     // public readonly HashSet<IdentifiableId> Largos = [];
 
