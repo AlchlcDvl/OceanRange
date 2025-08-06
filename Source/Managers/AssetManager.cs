@@ -76,6 +76,8 @@ public static class AssetManager
 #endif
         // Adding the json converters
         JsonSettings.Converters.Add(new EnumConverter());
+        // JsonSettings.Converters.Add(new ColorConverter());
+        // JsonSettings.Converters.Add(new Color32Converter());
         JsonSettings.Converters.Add(new Vector3Converter());
         JsonSettings.Converters.Add(new OrientationConverter());
     }
@@ -233,14 +235,20 @@ public static class AssetManager
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     /// <returns>The texture asset loaded from the path.</returns>
-    private static Texture2D LoadTexture2D(string path)
+    private static Texture2D LoadTexture2D(string path, bool forSprite)
     {
         var name = path.SanitisePath();
         var texture = EmptyTexture(GetFormat(name));
         texture.LoadImage(path.ReadBytes(), true);
         texture.wrapMode = GetWrapMode(name);
+
+        if (forSprite)
+            texture.name = name + "_tex";
+
         return texture;
     }
+
+    private static Texture2D LoadTexture2D(string path) => LoadTexture2D(path, false);
 
     // Texture optimisation stuff
     private static TextureFormat GetFormat(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureFormat.DXT1 : TextureFormat.DXT5;
@@ -254,7 +262,7 @@ public static class AssetManager
     /// <returns>The sprite asset loaded from the path.</returns>
     private static Sprite LoadSprite(string path)
     {
-        var tex = LoadTexture2D(path);
+        var tex = LoadTexture2D(path, true);
         return Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight);
     }
 
@@ -294,13 +302,13 @@ public static class AssetManager
 #if DEBUG
     // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use
 
-    // public static void Dump(this Texture texture, string path)
+    // public static void Dump(this Texture texture, string path = null)
     // {
     //     if (texture)
-    //         File.WriteAllBytes(path, texture.Decompress().EncodeToPNG());
+    //         File.WriteAllBytes(Path.Combine(path ?? DumpPath, texture.name + ".png"), texture.Decompress().EncodeToPNG());
     // }
 
-    // public static void Dump(this Sprite sprite, string path) => sprite.texture.Dump(path);
+    // public static void Dump(this Sprite sprite, string path = null) => sprite.texture.Dump(path);
 
     // public static Texture2D Decompress(this Texture source)
     // {

@@ -62,6 +62,13 @@ public static class MeshUtilsImprovement
             list.AddRange(additionalMesh);
 
         var rootMatrix = slimePrefab.Bones.First(IsRoot).BoneObject.transform.localToWorldMatrix;
+        var poses = new Matrix4x4[bodyApp.AttachedBones.Length];
+
+        for (var i = 0; i < bodyApp.AttachedBones.Length; i++)
+        {
+            var bone = bodyApp.AttachedBones[i];
+            poses[i] = slimePrefab.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
+        }
 
         foreach (var item in list)
         {
@@ -112,16 +119,7 @@ public static class MeshUtilsImprovement
             }
 
             item.boneWeights = weights;
-            var poses = new Matrix4x4[bodyApp.AttachedBones.Length];
-
-            for (var i = 0; i < bodyApp.AttachedBones.Length; i++)
-            {
-                var bone = bodyApp.AttachedBones[i];
-                poses[i] = slimePrefab.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
-            }
-
             item.bindposes = poses;
-            item.RecalculateBounds();
         }
 
         return false;

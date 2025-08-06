@@ -6,7 +6,7 @@ public sealed class MailSaveData : ISaveData
 
     public ulong[] Write(out byte padding)
     {
-        using var writer = new SaveWriter();
+        var writer = new SaveWriter();
         writer.Write(MailManager.Mail.Length);
 
         foreach (var mail in MailManager.Mail)
@@ -23,7 +23,7 @@ public sealed class MailSaveData : ISaveData
 
     public void Read(ulong[] data, byte padding)
     {
-        using var reader = new SaveReader(data, padding);
+        var reader = new SaveReader(data, padding);
         var length = reader.ReadInt32();
 
         for (var i = 0; i < length; i++)
@@ -39,10 +39,12 @@ public sealed class GordoSaveData : ISaveData
 {
     public bool Deprecated => false;
 
+    private static readonly Func<CustomSlimeData, bool> HasGordoDel = HasGordo;
+
     public ulong[] Write(out byte padding)
     {
-        using var writer = new SaveWriter();
-        var gordos = SlimeManager.Slimes.Where(x => x.HasGordo).ToArray();
+        var writer = new SaveWriter();
+        var gordos = SlimeManager.Slimes.Where(HasGordoDel).ToArray();
         writer.Write(gordos.Length);
 
         foreach (var gordo in gordos)
@@ -57,7 +59,7 @@ public sealed class GordoSaveData : ISaveData
 
     public void Read(ulong[] data, byte padding)
     {
-        using var reader = new SaveReader(data, padding);
+        var reader = new SaveReader(data, padding);
         var count = reader.ReadInt32();
 
         while (count-- > 0)
@@ -67,4 +69,6 @@ public sealed class GordoSaveData : ISaveData
             gordo.IsPopped = reader.ReadBoolean();
         }
     }
+
+    private static bool HasGordo(CustomSlimeData slimeData) => slimeData.HasGordo;
 }

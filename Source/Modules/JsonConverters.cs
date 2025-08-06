@@ -32,6 +32,15 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
 
     protected abstract string ToValueString(TValue value);
 
+    public TValue Parse(string valString)
+    {
+        // if (ParseOtherFormat(valString, out var result))
+        //     return result;
+
+        ParseComponents(valString, this);
+        return FillFromArray(ToFill);
+    }
+
     // protected virtual bool ParseOtherFormat(string valString, out TValue result)
     // {
     //     result = default;
@@ -43,12 +52,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
         try
         {
             BaseCheckJson(reader, out var valString);
-
-            // if (ParseOtherFormat(valString, out var result))
-            //     return result;
-
-            ParseComponents(valString, this);
-            return FillFromArray(ToFill);
+            return Parse(valString);
         }
         catch (Exception ex)
         {
@@ -83,14 +87,19 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     }
 }
 
-public sealed class Vector3Converter() : MultiComponentConverter<Vector3, float>("'x,y,z' or 'x,y'", NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 3, 2)
+public sealed class Vector3Converter : MultiComponentConverter<Vector3, float>
 {
+    public static Vector3Converter Instance;
+
+    public Vector3Converter() : base("'x,y,z' or 'x,y'", NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 3, 2) => Instance = this;
+
     protected override Vector3 FillFromArray(float[] array) => new(array[0], array[1], array[2]);
 
     protected override string ToValueString(Vector3 value) => Helpers.ToVectorString(value);
 }
 
-public sealed class OrientationConverter() : MultiComponentConverter<Orientation, Vector3>("of a pair of 'x,y,z' or 'x,y' separated by a ;", NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, 2, 2, default, ';')
+public sealed class OrientationConverter() : MultiComponentConverter<Orientation, Vector3>("of a pair of 'x,y,z' or 'x,y' separated by a ;", NumberStyles.Float | NumberStyles.AllowThousands,
+    Helpers.TryParseVector, 2, 2, default, ';')
 {
     protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1]);
 
@@ -118,7 +127,7 @@ public sealed class OrientationConverter() : MultiComponentConverter<Orientation
 // {
 //     protected override Color FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3]);
 
-//     protected override string ToValueString(Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
+//     protected override string ToValueString(Color value) => Helpers.ToColorString(value);
 // }
 
 // public sealed class Color32Converter() : BaseColorConverter<Color32, byte>(NumberStyles.Integer, byte.TryParse, 255, ColorUtility.DoTryParseHtmlColor)

@@ -3,15 +3,11 @@ using System.Collections;
 using System.Globalization;
 using SRML.Utils;
 
-#if DEBUG
-using UnityEngine.SceneManagement;
-#endif
-
 namespace OceanRange.Utils;
 
 public static class Helpers
 {
-    // private static readonly Dictionary<string, Color32> HexToColor32s = [];
+    private static readonly Dictionary<string, Color32> HexToColor32s = [];
     private static readonly Dictionary<string, Color> HexToColors = [];
 
     public static bool TryFinding<T>(this IEnumerable<T> source, Func<T, bool> predicate, out T value)
@@ -61,28 +57,20 @@ public static class Helpers
 
     public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators, StringSplitOptions.RemoveEmptyEntries).Select(TrimDel).Where(IsNotNullEmptyOrWhiteSpaceDel)];
 
-    private static bool IsNotNullEmptyOrWhiteSpace(string @string) => !string.IsNullOrWhiteSpace(@string) && @string.Length != 0;
+    private static bool IsNotNullEmptyOrWhiteSpace(string @string) => !string.IsNullOrWhiteSpace(@string);
 
     private static string Trim(string @string) => @string.Trim();
 
-    // public static IEnumerable<(int, T)> Indexed<T>(this IEnumerable<T> source)
-    // {
-    //     var i = 0;
+    public static Color32 HexToColor32(this string hex)
+    {
+        if (HexToColor32s.TryGetValue(hex, out var color))
+            return color;
 
-    //     foreach (var item in source)
-    //         yield return (i++, item);
-    // }
+        if (ColorUtility.DoTryParseHtmlColor(hex, out color))
+            return HexToColor32s[hex] = color;
 
-    // public static Color32 HexToColor32(this string hex)
-    // {
-    //     if (HexToColor32s.TryGetValue(hex, out var color))
-    //         return color;
-
-    //     if (ColorUtility.DoTryParseHtmlColor(hex, out color))
-    //         return HexToColor32s[hex] = color;
-
-    //     throw new InvalidDataException($"Invalid color hex {hex}!");
-    // }
+        throw new InvalidDataException($"Invalid color hex {hex}!");
+    }
 
     public static Color HexToColor(this string hex)
     {
@@ -97,22 +85,9 @@ public static class Helpers
 
     public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value);
 
-    // public static T ToEnum<T>(object value) where T : struct, Enum => (T)Enum.ToObject(typeof(T), value);
+    public static T ToEnum<T>(object value) where T : struct, Enum => (T)Enum.ToObject(typeof(T), value);
 
     public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
-
-    // public static string GetPath(this Transform transform)
-    // {
-    //     var result = "";
-
-    //     while (transform)
-    //     {
-    //         result = transform.name + "/" + result;
-    //         transform = transform.parent;
-    //     }
-
-    //     return result;
-    // }
 
     public static bool IsInLoopedRange(this float num, float min, float max, float rangeMin, float rangeMax, bool inner)
     {
@@ -120,20 +95,6 @@ public static class Helpers
         var part = num >= min && num <= max;
         return (inner ? result : !result) && part;
     }
-
-    // private static T AddEnumValue<T>(string name) where T : struct, Enum
-    // {
-    //     var value = EnumPatcher.GetFirstFreeValue<T>();
-    //     EnumPatcher.AddEnumValueWithAlternatives<T>(value, name);
-    //     return value;
-    // }
-
-    // public static IdentifiableId CreateIdentifiableId(string name)
-    // {
-    //     var value = AddEnumValue<IdentifiableId>(name);
-    //     IdentifiableRegistry.CategorizeId(value);
-    //     return value;
-    // }
 
     public static void BuildGordo(CustomSlimeData slimeData, GameObject sectorCategory)
     {
@@ -204,27 +165,6 @@ public static class Helpers
         return result;
     }
 
-    // public static Texture2D CreateRamp(string name, Color a, Color b)
-    // {
-    //     var texture2D = new Texture2D(128, 32);
-
-    //     for (var i = 0; i < 128; i++)
-    //     {
-    //         var color = Color.Lerp(a, b, i / 127f);
-
-    //         for (var j = 0; j < 32; j++)
-    //             texture2D.SetPixel(i, j, color);
-    //     }
-
-    //     texture2D.name = name;
-    //     texture2D.Apply();
-    //     return texture2D;
-    // }
-
-    // public static Texture2D CreateRamp(string name, string hexA, string hexB) => CreateRamp(name, hexA.HexToColor(), hexB.HexToColor());
-
-    // public static string ToHexRGBA(this Color32 color) => $"#{color.r:X2}{color.g:X2}{color.b:X2}{color.a:X2}";
-
     public static float Sum(this Vector3 vector) => vector.x + vector.y + vector.z;
 
     public static bool IsValidZone(DirectedActorSpawner spawner, Zone[] zones)
@@ -235,41 +175,13 @@ public static class Helpers
 
     private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
-    public static Vector3 ParseVector(string value) => ParseVector(value, NumberStyles.Float | NumberStyles.AllowThousands, InvariantCulture);
+    public static Vector3 ParseVector(string value) => Vector3Converter.Instance.Parse(value);
 
-    public static Vector3 ParseVector(string value, NumberStyles style, CultureInfo culture)
-    {
-        var components = value.TrueSplit(',', ' ');
-
-        switch (components.Length)
-        {
-            case < 2:
-                throw new InvalidDataException($"'{value}' has too less values!");
-            case > 3:
-                throw new InvalidDataException($"'{value}' has too many values!");
-        }
-
-        if (!float.TryParse(components[0], style, culture, out var x))
-            throw new InvalidDataException($"Invalid float string '{components[0]}'!");
-
-        if (!float.TryParse(components[1], style, culture, out var y))
-            throw new InvalidDataException($"Invalid float string '{components[1]}'!");
-
-        float z;
-
-        if (components.Length == 2)
-            z = 0f;
-        else if (!float.TryParse(components[2], style, culture, out z))
-            throw new InvalidDataException($"Invalid float string '{components[2]}'!");
-
-        return new(x, y, z);
-    }
-
-    public static bool TryParseVector(string value, NumberStyles styles, CultureInfo culture, out Vector3 result)
+    public static bool TryParseVector(string value, NumberStyles _1, CultureInfo _2, out Vector3 result)
     {
         try
         {
-            result = ParseVector(value, styles, culture);
+            result = ParseVector(value);
             return true;
         }
         catch
@@ -287,7 +199,7 @@ public static class Helpers
             ExchangeOfferRegistry.RegisterUnlockableItem(id, progress[0], weight);
     }
 
-    public static bool IsAny<T>(this T item, params T[] items) => items.Any(x => item.Equals(x));
+    public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used but it's better to be safe than sorry
 
     private static readonly Dictionary<Type, Array> EnumMaps = [];
 
@@ -310,18 +222,19 @@ public static class Helpers
 
     public static bool TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey[] keys, out TValue result)
     {
-        result = default;
-
         foreach (var key in keys)
         {
             if (dict.TryGetValue(key, out result))
                 return true;
         }
 
+        result = default;
         return false;
     }
 
     public static string ToVectorString(Vector3 value) => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
+
+    public static string ToColorString(Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
 
 #if DEBUG
     private static bool IsZoneObj(GameObject gameObject) => gameObject.name.StartsWith("zone");
@@ -336,7 +249,7 @@ public static class Helpers
         GameObject closest = null;
         var distance = float.MaxValue;
 
-        foreach (var cell in SceneManager.GetActiveScene().GetRootGameObjects().Where(IsZone).SelectMany(GetCells))
+        foreach (var cell in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects().Where(IsZone).SelectMany(GetCells))
         {
             var diff = (cell.transform.position - pos).sqrMagnitude;
 

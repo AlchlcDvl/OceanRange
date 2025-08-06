@@ -23,6 +23,9 @@ public static class SaveManager
 
     private static readonly List<ISaveData> SaveData = [new MailSaveData(), new GordoSaveData()];
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void ReadSaveData(CompoundDataPiece piece)
     {
         FixAndProperlyShowMailPatch.IsLoaded = false;
@@ -51,11 +54,13 @@ public static class SaveManager
         FixAndProperlyShowMailPatch.IsLoaded = true;
     }
 
+#if DEBUG
+    [TimeDiagnostic]
+#endif
     private static void WriteSaveData(CompoundDataPiece piece)
     {
         FixAndProperlyShowMailPatch.IsLoaded = false;
 
-        Main.Console.Log("Writing");
         piece.SetValue("version", SaveData.Count);
 
         for (var i = 0; i < SaveData.Count; i++)

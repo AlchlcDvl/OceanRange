@@ -3,7 +3,7 @@ namespace OceanRange.Saves;
 /// <summary>
 /// A writer class that compresses data and converts it into a ulong array.
 /// </summary>
-public sealed class SaveWriter : IDisposable
+public sealed class SaveWriter
 {
     // The internal streams and writer.
     private readonly List<byte> Bytes = [];
@@ -33,22 +33,13 @@ public sealed class SaveWriter : IDisposable
 
         return ulongArray;
     }
-
-    /// <summary>
-    /// Disposes of the internal streams and writer.
-    /// </summary>
-    public void Dispose()
-    {
-        Bytes.Clear();
-        GC.SuppressFinalize(this);
-    }
 }
 
 /// <summary>
 /// A reader class that de-serializes a ulong array, decompresses it,
 /// and allows reading of various data types.
 /// </summary>
-public sealed class SaveReader : IDisposable
+public sealed class SaveReader
 {
     private readonly byte[] Data;
     private int Position;
@@ -75,7 +66,7 @@ public sealed class SaveReader : IDisposable
     }
 
     // Read methods for various data types.
-    public bool ReadBoolean() => Data[Position++] == 1;
+    public bool ReadBoolean() => Data[Position++] != 0;
 
     public int ReadInt32()
     {
@@ -83,9 +74,4 @@ public sealed class SaveReader : IDisposable
         Position += 4;
         return result;
     }
-
-    /// <summary>
-    /// Disposes of the internal streams and reader.
-    /// </summary>
-    public void Dispose() => GC.SuppressFinalize(this);
 }
