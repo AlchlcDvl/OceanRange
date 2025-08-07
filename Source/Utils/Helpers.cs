@@ -7,7 +7,7 @@ namespace OceanRange.Utils;
 
 public static class Helpers
 {
-    private static readonly Dictionary<string, Color32> HexToColor32s = [];
+    // private static readonly Dictionary<string, Color32> HexToColor32s = [];
     private static readonly Dictionary<string, Color> HexToColors = [];
 
     public static bool TryFinding<T>(this IEnumerable<T> source, Func<T, bool> predicate, out T value)
@@ -61,16 +61,16 @@ public static class Helpers
 
     private static string Trim(string @string) => @string.Trim();
 
-    public static Color32 HexToColor32(this string hex)
-    {
-        if (HexToColor32s.TryGetValue(hex, out var color))
-            return color;
+    // public static Color32 HexToColor32(this string hex)
+    // {
+    //     if (HexToColor32s.TryGetValue(hex, out var color))
+    //         return color;
 
-        if (ColorUtility.DoTryParseHtmlColor(hex, out color))
-            return HexToColor32s[hex] = color;
+    //     if (ColorUtility.DoTryParseHtmlColor(hex, out color))
+    //         return HexToColor32s[hex] = color;
 
-        throw new InvalidDataException($"Invalid color hex {hex}!");
-    }
+    //     throw new InvalidDataException($"Invalid color hex {hex}!");
+    // }
 
     public static Color HexToColor(this string hex)
     {
@@ -85,7 +85,7 @@ public static class Helpers
 
     public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value);
 
-    public static T ToEnum<T>(object value) where T : struct, Enum => (T)Enum.ToObject(typeof(T), value);
+    // public static T ToEnum<T>(object value) where T : struct, Enum => (T)Enum.ToObject(typeof(T), value);
 
     public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
@@ -139,6 +139,22 @@ public static class Helpers
 
         return mesh;
     }
+
+    // private static T AddEnumValue<T>(string name) where T : struct, Enum
+    // {
+    //     var value = EnumPatcher.GetFirstFreeValue<T>();
+    //     EnumPatcher.AddEnumValueWithAlternatives<T>(value, name);
+    //     return value;
+    // }
+
+    // public static IdentifiableId CreateIdentifiableId(string name)
+    // {
+    //     var value = AddEnumValue<IdentifiableId>(name);
+    //     IdentifiableRegistry.CategorizeId(value);
+    //     return value;
+    // }
+
+    // public static string ToHexRGBA(this Color32 color) => $"#{color.r:X2}{color.g:X2}{color.b:X2}{color.a:X2}";
 
     public static Vector3 ToPower(this Vector3 vector, int power)
     {
@@ -232,11 +248,21 @@ public static class Helpers
         return false;
     }
 
-    public static string ToVectorString(Vector3 value) => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
+    public static string ToVectorString(this Vector3 value) => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
 
-    public static string ToColorString(Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
+    public static string ToColorString(this Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
+
+    public static bool IsNullableOf<T>(this Type type) => typeof(T).IsAssignableFrom(Nullable.GetUnderlyingType(type));
+
+    public static bool IsNullableEnum(this Type type) => Nullable.GetUnderlyingType(type)?.IsEnum == true;
 
 #if DEBUG
+    // public static void LogIf(this object message, bool condition)
+    // {
+    //     if (condition)
+    //         Main.Console.Log(message ?? "message was null");
+    // }
+
     private static bool IsZoneObj(GameObject gameObject) => gameObject.name.StartsWith("zone");
 
     private static GameObject[] GetCellObjects(GameObject zone) => zone.FindChildrenWithPartialName("cell", true);

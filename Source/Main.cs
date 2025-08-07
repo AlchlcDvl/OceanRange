@@ -81,7 +81,8 @@ internal sealed class Main : ModEntryPoint
         try
         {
             CLS.AddToLoading.AddIcon(icon);
-        } catch {}
+        }
+        catch { }
     }
 
     private static void AddSplashesBypass(IEnumerable<Sprite> splashes)
@@ -89,6 +90,7 @@ internal sealed class Main : ModEntryPoint
         try
         {
             CLS.AddToLoading.AddSplashes(splashes);
-        } catch {}
+        }
+        catch { }
     }
 }

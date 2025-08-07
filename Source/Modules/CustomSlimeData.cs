@@ -46,55 +46,55 @@ public sealed class CustomSlimeData : JsonData
     public MethodInfo InitGordoDetails;
 
     [JsonProperty("gloss")]
-    public float Gloss = 1f;
+    public float? Gloss = 1f;
 
     [JsonProperty("topSlimeColor")]
-    public string TopSlimeColor;
+    public Color? TopSlimeColor;
 
     [JsonProperty("middleSlimeColor")]
-    public string MiddleSlimeColor;
+    public Color? MiddleSlimeColor;
 
     [JsonProperty("bottomSlimeColor")]
-    public string BottomSlimeColor;
+    public Color? BottomSlimeColor;
 
     [JsonProperty("topMouthColor")]
-    public string TopMouthColor = "#000000";
+    public Color? TopMouthColor;
 
     [JsonProperty("middleMouthColor")]
-    public string MiddleMouthColor = "#000000";
+    public Color? MiddleMouthColor;
 
     [JsonProperty("bottomMouthColor")]
-    public string BottomMouthColor = "#000000";
+    public Color? BottomMouthColor;
 
     [JsonProperty("redEyeColor")]
-    public string RedEyeColor = "#000000";
+    public Color? RedEyeColor;
 
     [JsonProperty("greenEyeColor")]
-    public string GreenEyeColor = "#000000";
+    public Color? GreenEyeColor;
 
     [JsonProperty("blueEyeColor")]
-    public string BlueEyeColor = "#000000";
+    public Color? BlueEyeColor;
 
     [JsonProperty("topPaletteColor")]
-    public string TopPaletteColor;
+    public Color? TopPaletteColor;
 
     [JsonProperty("middlePaletteColor")]
-    public string MiddlePaletteColor;
+    public Color? MiddlePaletteColor;
 
     [JsonProperty("bottomPaletteColor")]
-    public string BottomPaletteColor;
+    public Color? BottomPaletteColor;
 
     [JsonProperty("topPlortColor")]
-    public string TopPlortColor;
+    public Color? TopPlortColor;
 
     [JsonProperty("middlePlortColor")]
-    public string MiddlePlortColor;
+    public Color? MiddlePlortColor;
 
     [JsonProperty("bottomPlortColor")]
-    public string BottomPlortColor;
+    public Color? BottomPlortColor;
 
     [JsonProperty("plortAmmoColor")]
-    public string PlortAmmoColor;
+    public Color? PlortAmmoColor;
 
     [JsonProperty("pediaDiet"), JsonRequired]
     public string PediaDiet;

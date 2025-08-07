@@ -68,7 +68,6 @@ public static class SaveManager
             try
             {
                 var data = SaveData[i];
-                Main.Console.Log(data.GetType().Name);
                 piece.SetValue($"data{i}Deprecated", data.Deprecated);
 
                 if (data.Deprecated)

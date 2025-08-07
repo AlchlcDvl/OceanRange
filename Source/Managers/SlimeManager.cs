@@ -167,9 +167,6 @@ public static class SlimeManager
         gordoEat.slimeDefinition = gordoDefinition;
         gordoEat.targetCount = 50;
 
-        if (slimeData.SpecialDiet)
-            gordoEat.allEats = [slimeData.FavFood];
-
         if (isSand)
         {
             material.SetFloat(VertexOffset, 0f);
@@ -225,9 +222,9 @@ public static class SlimeManager
         var meshRend = prefab.GetComponent<MeshRenderer>();
         var material = meshRend.material = meshRend.material.Clone();
 
-        var topMatColor = slimeData.TopPlortColor?.HexToColor();
-        var middleMatColor = slimeData.MiddlePlortColor?.HexToColor();
-        var bottomMatColor = slimeData.BottomPlortColor?.HexToColor();
+        var topMatColor = slimeData.TopPlortColor;
+        var middleMatColor = slimeData.MiddlePlortColor;
+        var bottomMatColor = slimeData.BottomPlortColor;
 
         if (topMatColor.HasValue)
             material.SetColor(TopColor, topMatColor.Value);
@@ -257,7 +254,7 @@ public static class SlimeManager
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
         TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLower(), $"{slimeData.Name} {slimeData.PlortType}");
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
-        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.HexToColor(), icon);
+        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.Value, icon);
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
@@ -318,64 +315,70 @@ public static class SlimeManager
 
         var appearance = baseAppearance.DeepCopy(); // Cloning our own appearance
 
-        // Caching colors to avoid excessive implicit conversions and creations
-        var topMatColor = slimeData.TopSlimeColor?.HexToColor();
-        var middleMatColor = slimeData.MiddleSlimeColor?.HexToColor();
-        var bottomMatColor = slimeData.BottomSlimeColor?.HexToColor();
+        // Creating the base material for the slime
+        var structure = appearance.Structures[0];
 
-        // Creating a material for each structure
-        foreach (var structure in appearance.Structures)
+        if (structure.DefaultMaterials?.Length is not (null or 0))
         {
-            if (structure.DefaultMaterials?.Length is null or 0)
-                continue;
-
             var material = structure.DefaultMaterials[0] = structure.DefaultMaterials[0].Clone();
 
-            if (topMatColor.HasValue)
-                material.SetColor(TopColor, topMatColor.Value);
+            if (slimeData.TopSlimeColor.HasValue)
+                material.SetColor(TopColor, slimeData.TopSlimeColor.Value);
 
-            if (middleMatColor.HasValue)
-                material.SetColor(MiddleColor, middleMatColor.Value);
+            if (slimeData.MiddleSlimeColor.HasValue)
+                material.SetColor(MiddleColor, slimeData.MiddleSlimeColor.Value);
 
-            if (bottomMatColor.HasValue)
-                material.SetColor(BottomColor, bottomMatColor.Value);
+            if (slimeData.BottomSlimeColor.HasValue)
+                material.SetColor(BottomColor, slimeData.BottomSlimeColor.Value);
 
-            material.SetFloat(Gloss, slimeData.Gloss);
+            if (slimeData.Gloss.HasValue)
+                material.SetFloat(Gloss, slimeData.Gloss.Value);
         }
 
         // Caching colors again for the same reason
-        var topMouth = slimeData.TopMouthColor.HexToColor();
-        var middleMouth = slimeData.MiddleMouthColor.HexToColor();
-        var bottomMouth = slimeData.BottomMouthColor.HexToColor();
-        var redEye = slimeData.RedEyeColor.HexToColor();
-        var greenEye = slimeData.GreenEyeColor.HexToColor();
-        var blueEye = slimeData.BlueEyeColor.HexToColor();
+        var topMouth = slimeData.TopMouthColor;
+        var middleMouth = slimeData.MiddleMouthColor;
+        var bottomMouth = slimeData.BottomMouthColor;
+        var redEye = slimeData.RedEyeColor;
+        var greenEye = slimeData.GreenEyeColor;
+        var blueEye = slimeData.BlueEyeColor;
 
         // Faces stuff
         foreach (var face in appearance.Face.ExpressionFaces)
         {
             if (face.Mouth)
             {
-                face.Mouth.SetColor(MouthTop, topMouth);
-                face.Mouth.SetColor(MouthMiddle, middleMouth);
-                face.Mouth.SetColor(MouthBottom, bottomMouth);
+                if (topMouth.HasValue)
+                    face.Mouth.SetColor(MouthTop, topMouth.Value);
+
+                if (middleMouth.HasValue)
+                    face.Mouth.SetColor(MouthMiddle, middleMouth.Value);
+
+                if (bottomMouth.HasValue)
+                    face.Mouth.SetColor(MouthBottom, bottomMouth.Value);
             }
 
             if (face.Eyes)
             {
-                face.Eyes.SetColor(EyeRed, redEye);
-                face.Eyes.SetColor(EyeGreen, greenEye);
-                face.Eyes.SetColor(EyeBlue, blueEye);
+                if (redEye.HasValue)
+                    face.Eyes.SetColor(EyeRed, redEye.Value);
+
+                if (greenEye.HasValue)
+                    face.Eyes.SetColor(EyeGreen, greenEye.Value);
+
+                if (blueEye.HasValue)
+                    face.Eyes.SetColor(EyeBlue, blueEye.Value);
             }
         }
 
         appearance.Face.OnEnable();
+        var prevPalette = appearance.ColorPalette;
         appearance.ColorPalette = new()
         {
-            Top = slimeData.TopPaletteColor.HexToColor(),
-            Middle = slimeData.MiddlePaletteColor.HexToColor(),
-            Bottom = slimeData.BottomPaletteColor.HexToColor(),
-            Ammo = slimeData.MainAmmoColor.HexToColor()
+            Top = slimeData.TopPaletteColor ?? prevPalette.Top,
+            Middle = slimeData.MiddlePaletteColor ?? prevPalette.Middle,
+            Bottom = slimeData.BottomPaletteColor ?? prevPalette.Bottom,
+            Ammo = slimeData.MainAmmoColor
         };
 
         appearance.Icon = AssetManager.GetSprite($"{lower}_slime");
@@ -460,7 +463,7 @@ public static class SlimeManager
                 prefab.RemoveComponent(type);
         }
 
-        if (meshes?.Length is null or 0 || (meshes.Length == 1 && meshes[0] == null && skipNull))
+        if (meshes?.Length is null or 0 || (meshes.Length == 1 && meshes[0] == null))
             return;
 
         var firstStructure = appearance.Structures[0];
@@ -494,6 +497,7 @@ public static class SlimeManager
             elem.Prefabs = [prefab2];
             var meshRend = prefab2.GetComponent<SkinnedMeshRenderer>();
             meshRend.sharedMesh = isNull ? meshRend.sharedMesh.Clone() : AssetManager.GetMesh(meshName);
+            meshRend.name = meshName;
             prefab2.IgnoreLODIndex = true;
             structure.SupportsFaces = i == 0;
 
@@ -505,38 +509,17 @@ public static class SlimeManager
                 prefabsForBoneData[i - 1] = prefab2;
         }
 
-        MeshUtils.GenerateBoneData(applicator, slimeBase, jiggleAmount, 1f, prefabsForBoneData);
+        applicator.GenerateSlimeBones(slimeBase, jiggleAmount, prefabsForBoneData);
     }
 
-    private static void GenerateDebugBoneData(this Transform gordo, Action<int, SkinnedMeshRenderer> materialHandler, params string[] meshNames)
-    {
-        // var prefabRend = gordo.GetComponent<SkinnedMeshRenderer>();
-        // var sharedMesh = prefabRend.sharedMesh;
-        // var vertices = sharedMesh.vertices;
-        // var weights = sharedMesh.boneWeights;
-
-        // for (var i = 0; i < vertices.Length; i++)
-        // {
-        //     var weight = weights[i];
-        //     Main.Console.Log(vertices[i] + $" ({weight.boneIndex0}:{weight.weight0},{weight.boneIndex1}:{weight.weight1},{weight.boneIndex1}:{weight.weight1},{weight.boneIndex1}:{weight.weight1})");
-        // }
-
-        // var bones = prefabRend.bones;
-        // var poses = sharedMesh.bindposes;
-
-        // for (var i = 0; i < bones.Length; i++)
-        //     Main.Console.Log(bones[i] + " " + poses[i]);
-
-        GenerateGordoBoneData(gordo, materialHandler, meshNames);
-    }
-
-    private static void GenerateGordoBoneData(this Transform gordo, Action<int, SkinnedMeshRenderer> materialHandler, params string[] meshNames)
+    private static void GenerateGordoBones(this Transform gordo, Action<int, SkinnedMeshRenderer> materialHandler, params string[] meshNames)
     {
         if (meshNames.Length == 0)
             return;
 
         var prefabRend = gordo.GetComponent<SkinnedMeshRenderer>();
-        var sharedMesh = meshNames[0] != null ? AssetManager.GetMesh(meshNames[0]) : prefabRend.sharedMesh;
+        var firstIsNull = meshNames[0] == null;
+        var sharedMesh = firstIsNull ? prefabRend.sharedMesh : AssetManager.GetMesh(meshNames[0]);
         var vertices = sharedMesh.vertices;
         var zero = Vector3.zero;
 
@@ -544,7 +527,19 @@ public static class SlimeManager
             zero += vector;
 
         zero /= vertices.Length;
-        var poses = prefabRend.sharedMesh.bindposes;
+        Matrix4x4[] poses;
+
+        if (firstIsNull)
+            poses = prefabRend.sharedMesh.bindposes;
+        else
+        {
+            var root = prefabRend.rootBone.localToWorldMatrix;
+            var bones = prefabRend.bones;
+            poses = new Matrix4x4[bones.Length];
+
+            for (var i = 0; i < bones.Length; i++)
+                poses[i] = bones[i].worldToLocalMatrix * root;
+        }
 
         for (var i = 0; i < meshNames.Length; i++)
         {
@@ -560,9 +555,11 @@ public static class SlimeManager
 
             mesh.boneWeights = weights;
             mesh.bindposes = poses;
+            mesh.RecalculateBounds();
 
             var meshRend = i == 0 ? prefabRend : prefabRend.Instantiate(gordo.parent);
             meshRend.sharedMesh = mesh;
+            meshRend.localBounds = mesh.bounds;
 
             if (!isNull && i != 0)
                 meshRend.name = meshName;
@@ -581,6 +578,116 @@ public static class SlimeManager
         m_Weight2 = diff.y,
         m_Weight3 = diff.z
     };
+
+    private static void GenerateSlimeBones(this SlimeAppearanceApplicator slimePrefab, SlimeAppearanceObject bodyApp, float jiggleAmount, SlimeAppearanceObject[] appearanceObjects)
+    {
+        var meshRend = bodyApp.GetComponent<SkinnedMeshRenderer>();
+        var sharedMesh = meshRend.sharedMesh;
+        var vertices = sharedMesh.vertices;
+        var zero = Vector3.zero;
+
+        foreach (var vector in vertices)
+            zero += vector;
+
+        zero /= vertices.Length;
+        var num = 0f;
+
+        foreach (var vector in vertices)
+            num += (vector - zero).magnitude;
+
+        num /= vertices.Length;
+        bodyApp.AttachedBones =
+        [
+            SlimeAppearance.SlimeBone.Slime,
+            SlimeAppearance.SlimeBone.JiggleRight,
+            SlimeAppearance.SlimeBone.JiggleLeft,
+            SlimeAppearance.SlimeBone.JiggleTop,
+            SlimeAppearance.SlimeBone.JiggleBottom,
+            SlimeAppearance.SlimeBone.JiggleFront,
+            SlimeAppearance.SlimeBone.JiggleBack
+        ];
+
+        var list = new List<(SkinnedMeshRenderer, Mesh)> { (meshRend, sharedMesh) };
+
+        if (appearanceObjects != null)
+        {
+            foreach (var appearanceObject in appearanceObjects)
+            {
+                if (!appearanceObject)
+                    throw new NullReferenceException("One or more of the SlimeAppearanceObjects are null");
+
+                appearanceObject.AttachedBones = bodyApp.AttachedBones;
+
+                if (appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
+                    list.Add((rend, rend.sharedMesh));
+                else
+                    Debug.LogWarning("One of the SlimeAppearanceObjects provided to AssetsLib.MeshUtils.GenerateBoneData does not use a SkinnedMeshRenderer");
+            }
+        }
+
+        var rootMatrix = slimePrefab.Bones.First(IsRoot).BoneObject.transform.localToWorldMatrix;
+        var poses = new Matrix4x4[bodyApp.AttachedBones.Length];
+
+        for (var i = 0; i < bodyApp.AttachedBones.Length; i++)
+        {
+            var bone = bodyApp.AttachedBones[i];
+            poses[i] = slimePrefab.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
+        }
+
+        foreach (var (rend, mesh) in list)
+        {
+            if (!mesh)
+            {
+                Debug.LogWarning("One of the Meshes provided to AssetsLib.MeshUtils.GenerateBoneData is null");
+                continue;
+            }
+
+            var vertices2 = mesh.vertices;
+            var weights = new BoneWeight[vertices2.Length];
+
+            for (var n = 0; n < vertices2.Length; n++)
+            {
+                var diff = vertices2[n] - zero;
+                var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
+                var weight = new BoneWeight
+                {
+                    m_Weight0 = 1f - jiggle,
+                    m_BoneIndex0 = 0
+                };
+
+                if (jiggle > 0f)
+                {
+                    weight.m_BoneIndex1 = diff.x >= 0f ? 1 : 2;
+                    weight.m_BoneIndex2 = diff.y >= 0f ? 3 : 4;
+                    weight.m_BoneIndex3 = diff.z >= 0f ? 5 : 6;
+
+                    var value = diff.ToPower(3).Abs();
+                    var normal = value.Sum();
+
+                    if (normal > 0f)
+                        value /= normal;
+
+                    value *= jiggle;
+
+                    weight.m_Weight1 = value.x;
+                    weight.m_Weight2 = value.y;
+                    weight.m_Weight3 = value.z;
+                }
+
+                weights[n] = weight;
+            }
+
+            mesh.boneWeights = weights;
+            mesh.bindposes = poses;
+            mesh.RecalculateBounds();
+
+            rend.localBounds = mesh.bounds;
+        }
+    }
+
+    private static readonly Func<SlimeAppearanceApplicator.BoneMapping, bool> IsRoot = IsBoneRoot;
+
+    private static bool IsBoneRoot(SlimeAppearanceApplicator.BoneMapping appearance) => appearance.Bone == SlimeAppearance.SlimeBone.Root;
 
     public static void InitRosiSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance, SlimeAppearanceApplicator applicator, float jiggleAmount)
     {
@@ -625,7 +732,7 @@ public static class SlimeManager
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition, Transform gordoObj)
     {
         var structs = definition.AppearancesDefault[0].Structures;
-        gordoObj.GenerateGordoBoneData((i, meshRend) =>
+        gordoObj.GenerateGordoBones((i, meshRend) =>
         {
             if (i == 0)
                 return;
@@ -715,7 +822,7 @@ public static class SlimeManager
         material2.SetColor(BottomColor, color);
         material2.SetFloat(Gloss, 1f);
 
-        gordoObj.GenerateDebugBoneData((i, meshRend) =>
+        gordoObj.GenerateGordoBones((i, meshRend) =>
         {
             meshRend.material = meshRend.sharedMaterial = i == 0 ? material2 : material;
 
@@ -764,7 +871,7 @@ public static class SlimeManager
             jiggleAmount
         );
 
-        var blink = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Face._expressionToFaceLookup[SlimeFace.SlimeExpression.Blink];
+        var blink = appearance.Face._expressionToFaceLookup[SlimeFace.SlimeExpression.Blink];
         var sleeping = new SlimeExpressionFace()
         {
             SlimeExpression = Ids.Sleeping,
@@ -795,7 +902,7 @@ public static class SlimeManager
     {
         var structs = definition.AppearancesDefault[0].Structures;
 
-        gordoObj.GenerateGordoBoneData((i, meshRend) =>
+        gordoObj.GenerateGordoBones((i, meshRend) =>
         {
             if (i == 0)
                 return;
@@ -837,6 +944,6 @@ public static class SlimeManager
     {
         prefab.GetComponent<GordoEat>().slimeDefinition.Diet = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet;
         IdentifiableId.SILKY_SAND_CRAFT.RegisterAsSnareable();
-        gordoObj.GenerateGordoBoneData(null, null, "puddle_body_gordo");
+        gordoObj.GenerateGordoBones(null, null, "puddle_body_gordo");
     }
 }

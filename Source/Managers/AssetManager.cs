@@ -17,7 +17,7 @@ public static class AssetManager
     /// <summary>
     /// Common json serialisation settings to avoid creating a new json settings instance for each json file.
     /// </summary>
-    public static readonly JsonSerializerSettings JsonSettings = new();
+    public static JsonSerializerSettings JsonSettings;
 
     // Delegates to reduce compiler generation overhead
     private static readonly Func<string, Mesh> LoadMeshDel = LoadMesh;
@@ -70,16 +70,22 @@ public static class AssetManager
         foreach (var path in Core.GetManifestResourceNames())
             CreateAssetHandle(path);
 
+        JsonSettings = new()
+        {
 #if DEBUG
-        // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
-        JsonSettings.Formatting = Formatting.Indented;
+            // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
+            Formatting = Formatting.Indented,
 #endif
-        // Adding the json converters
-        JsonSettings.Converters.Add(new EnumConverter());
-        // JsonSettings.Converters.Add(new ColorConverter());
-        // JsonSettings.Converters.Add(new Color32Converter());
-        JsonSettings.Converters.Add(new Vector3Converter());
-        JsonSettings.Converters.Add(new OrientationConverter());
+            // Adding the json converters
+            Converters =
+            [
+                new EnumConverter(),
+                new ColorConverter(),
+                // new Color32Converter(),
+                new Vector3Converter(),
+                new OrientationConverter(),
+            ]
+        };
     }
 
     /// <summary>

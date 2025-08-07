@@ -148,7 +148,6 @@ public static class FoodManager
         var green = AssetManager.GetTexture2D($"{ramp}green");
         var blue = AssetManager.GetTexture2D($"{ramp}blue");
         var black = AssetManager.GetTexture2D($"{ramp}black");
-        var ammo = chimkenData.MainAmmoColor.HexToColor();
 
         // Find and create the prefab for chicks and set values
         var chickPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
@@ -160,12 +159,12 @@ public static class FoodManager
 
         // Register both chicks and hens
         var chickIcon = AssetManager.GetSprite($"{lower}_chick");
-        RegisterFood(chickPrefab, chickIcon, ammo, chimkenData.ChickId, chimkenData.ChickEntry, -1, chimkenData.Progress, StorageType.NON_SLIMES);
+        RegisterFood(chickPrefab, chickIcon, chimkenData.MainAmmoColor, chimkenData.ChickId, chimkenData.ChickEntry, -1, chimkenData.Progress, StorageType.NON_SLIMES);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
             CommonChickAboutPedia.Replace("%type%", chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
 
         var henIcon = AssetManager.GetSprite($"{lower}_hen");
-        RegisterFood(henPrefab, henIcon, ammo, chimkenData.MainId, chimkenData.MainEntry, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
+        RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor, chimkenData.MainId, chimkenData.MainEntry, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
         SlimePediaCreation.CreateSlimePediaForItemWithName(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
 
@@ -252,7 +251,7 @@ public static class FoodManager
         material2.SetTexture(RampBlack, black);
 
         var icon = AssetManager.GetSprite(lower);
-        RegisterFood(prefab, icon, plantData.MainAmmoColor.HexToColor(), plantData.MainId, plantData.MainEntry, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
+        RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.MainEntry, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
         SlimePediaCreation.CreateSlimePediaForItemWithName(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 

@@ -1,18 +1,66 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace OceanRange.Modules;
 
-public delegate bool TryParseDelegate<TValue, TComponent>(string value, NumberStyles style, CultureInfo culture, out TComponent component);
+public delegate bool TryParseDelegate<TValue, TComponent>(string value, NumberStyles style, CultureInfo culture, out TComponent component)
+    where TValue : struct
+    where TComponent : struct;
 
-// public delegate bool TryParseHtml<TColor>(string valString, out TColor color);
+public delegate bool TryParseHtml<TColor>(string valString, out TColor color)
+    where TColor : struct;
+
+public abstract class OceanJsonConverter : JsonConverter
+{
+    public sealed override object ReadJson(JsonReader reader, Type objectType, [AllowNull] object _1, JsonSerializer _2)
+    {
+        if (reader.TokenType == JsonToken.Null)
+            return default;
+
+        try
+        {
+            return ParseFromJson(reader, objectType);
+        }
+        catch (Exception ex)
+        {
+            throw new JsonSerializationException("Encountered an error while deserialising:", ex);
+        }
+    }
+
+    public sealed override void WriteJson(JsonWriter writer, [AllowNull] object value, JsonSerializer _)
+    {
+        if (value == null)
+            writer.WriteNull();
+        else
+            writer.WriteValue(ToValueString(value));
+    }
+
+    protected abstract object ParseFromJson(JsonReader reader, Type objectType);
+
+    protected virtual string ToValueString(object value) => value.ToString();
+}
+
+public abstract class OceanJsonConverter<T> : OceanJsonConverter
+{
+    public sealed override bool CanConvert(Type objectType) => typeof(T).IsAssignableFrom(objectType) || objectType.IsNullableOf<T>();
+
+    protected sealed override string ToValueString(object value)
+    {
+        if (value is T tValue)
+            return ToValueString(tValue);
+
+        throw new JsonSerializationException("Received unknown value: " + value);
+    }
+
+    protected abstract string ToValueString(T value);
+}
 
 public abstract class MultiComponentConverter<TValue, TComponent>(string format, NumberStyles style, TryParseDelegate<TValue, TComponent> tryParse, int maxLength, int minLength, TComponent defaultValue = default, char separator = ',')
-    : JsonConverter<TValue>()
+    : OceanJsonConverter<TValue>()
     where TValue : struct // The value being read/written
     where TComponent : struct // The type that make up the value's components
 {
     private readonly TryParseDelegate<TValue, TComponent> TryParse = tryParse;
-    private readonly TComponent[] ToFill = new TComponent[maxLength];
     private readonly int MaxLength = maxLength;
     private readonly int MinLength = minLength;
     private readonly char Separator = separator;
@@ -20,7 +68,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     private readonly NumberStyles Style = style;
     private readonly string Format = format;
 
-    protected void BaseCheckJson(JsonReader reader, out string valString)
+    private void BaseCheckJson(JsonReader reader, out string valString)
     {
         valString = reader.Value?.ToString() ?? "null";
 
@@ -30,39 +78,21 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
 
     protected abstract TValue FillFromArray(TComponent[] array);
 
-    protected abstract string ToValueString(TValue value);
+    public TValue Parse(string valString) => ParseOtherFormat(valString, out var result) ? result : FillFromArray(ParseComponents(valString, this));
 
-    public TValue Parse(string valString)
+    protected virtual bool ParseOtherFormat(string valString, out TValue result)
     {
-        // if (ParseOtherFormat(valString, out var result))
-        //     return result;
-
-        ParseComponents(valString, this);
-        return FillFromArray(ToFill);
+        result = default;
+        return false;
     }
 
-    // protected virtual bool ParseOtherFormat(string valString, out TValue result)
-    // {
-    //     result = default;
-    //     return false;
-    // }
-
-    public sealed override TValue ReadJson(JsonReader reader, Type _1, TValue _2, bool _3, JsonSerializer _4)
+    protected override object ParseFromJson(JsonReader reader, Type objectType)
     {
-        try
-        {
-            BaseCheckJson(reader, out var valString);
-            return Parse(valString);
-        }
-        catch (Exception ex)
-        {
-            throw new JsonSerializationException("Encountered an error while deserialising:", ex);
-        }
+        BaseCheckJson(reader, out var valString);
+        return Parse(valString);
     }
 
-    public sealed override void WriteJson(JsonWriter writer, TValue value, JsonSerializer _) => writer.WriteValue(ToValueString(value));
-
-    protected static void ParseComponents(string value, MultiComponentConverter<TValue, TComponent> converter)
+    protected static TComponent[] ParseComponents(string value, MultiComponentConverter<TValue, TComponent> converter)
     {
         var components = value.TrueSplit(converter.Separator);
 
@@ -72,18 +102,22 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
         if (components.Length > converter.MaxLength)
             throw new InvalidDataException($"'{value}' has too many values!");
 
+        var array = new TComponent[converter.MaxLength];
+
         for (var i = 0; i < components.Length; i++)
         {
             var component = components[i];
 
             if (converter.TryParse(component, converter.Style, CultureInfo.InvariantCulture, out var valueComponent))
-                converter.ToFill[i] = valueComponent;
+                array[i] = valueComponent;
             else
                 throw new InvalidDataException($"Invalid {typeof(TComponent).Name} string '{component}'!");
         }
 
         for (var i = components.Length; i < converter.MaxLength; i++)
-            converter.ToFill[i] = converter.Default;
+            array[i] = converter.Default;
+
+        return array;
     }
 }
 
@@ -95,7 +129,7 @@ public sealed class Vector3Converter : MultiComponentConverter<Vector3, float>
 
     protected override Vector3 FillFromArray(float[] array) => new(array[0], array[1], array[2]);
 
-    protected override string ToValueString(Vector3 value) => Helpers.ToVectorString(value);
+    protected override string ToValueString(Vector3 value) => value.ToVectorString();
 }
 
 public sealed class OrientationConverter() : MultiComponentConverter<Orientation, Vector3>("of a pair of 'x,y,z' or 'x,y' separated by a ;", NumberStyles.Float | NumberStyles.AllowThousands,
@@ -103,32 +137,32 @@ public sealed class OrientationConverter() : MultiComponentConverter<Orientation
 {
     protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1]);
 
-    protected override string ToValueString(Orientation value)  => $"{Helpers.ToVectorString(value.Position)};{Helpers.ToVectorString(value.Rotation)}";
+    protected override string ToValueString(Orientation value)  => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()}";
 }
 
-// public abstract class BaseColorConverter<TColor, TComponent>(NumberStyles style, TryParseDelegate<TColor, TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser)
-//     : MultiComponentConverter<TColor, TComponent>("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
-//     where TColor : struct // Color or Color32 but I don't know how to limit to only those two types
-//     where TComponent : struct // float or byte, same as above
-// {
-//     protected readonly TryParseHtml<TColor> TryParseHtmlColor = htmlParser;
+public abstract class BaseColorConverter<TColor, TComponent>(NumberStyles style, TryParseDelegate<TColor, TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser)
+    : MultiComponentConverter<TColor, TComponent>("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
+    where TColor : struct // Color or Color32 but I don't know how to limit to only those two types
+    where TComponent : struct // float or byte, same as above
+{
+    protected readonly TryParseHtml<TColor> TryParseHtmlColor = htmlParser;
 
-//     protected sealed override bool ParseOtherFormat(string valString, out TColor result)
-//     {
-//         if (valString.StartsWith("#"))
-//             return TryParseHtmlColor(valString, out result);
+    protected sealed override bool ParseOtherFormat(string valString, out TColor result)
+    {
+        if (valString.StartsWith("#"))
+            return TryParseHtmlColor(valString, out result);
 
-//         result = default;
-//         return false;
-//     }
-// }
+        result = default;
+        return false;
+    }
+}
 
-// public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberStyles.Float, float.TryParse, 1f, ColorUtility.TryParseHtmlString)
-// {
-//     protected override Color FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3]);
+public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberStyles.Float, float.TryParse, 1f, ColorUtility.TryParseHtmlString)
+{
+    protected override Color FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3]);
 
-//     protected override string ToValueString(Color value) => Helpers.ToColorString(value);
-// }
+    protected override string ToValueString(Color value) => value.ToColorString();
+}
 
 // public sealed class Color32Converter() : BaseColorConverter<Color32, byte>(NumberStyles.Integer, byte.TryParse, 255, ColorUtility.DoTryParseHtmlColor)
 // {
@@ -141,11 +175,11 @@ public sealed class OrientationConverter() : MultiComponentConverter<Orientation
 /// A JsonConverter class that handles the serialisation of enum values.
 /// </summary>
 /// <remarks>Made because srml's enum patching is causing errors with patched enums being read by newtonsoft, will be removed if and when a fix is administered.</remarks>
-public sealed class EnumConverter : JsonConverter
+public sealed class EnumConverter : OceanJsonConverter
 {
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer _) => writer.WriteValue(value.ToString());
+    public override bool CanConvert(Type objectType) => objectType.IsEnum;
 
-    public override object ReadJson(JsonReader reader, Type objectType, object _, JsonSerializer __)
+    protected override object ParseFromJson(JsonReader reader, Type objectType)
     {
         var enumString = reader.Value?.ToString() ?? "null";
         return reader.TokenType switch
@@ -156,5 +190,5 @@ public sealed class EnumConverter : JsonConverter
         };
     }
 
-    public override bool CanConvert(Type objectType) => objectType.IsEnum;
+    protected override string ToValueString(object value) => value.ToString();
 }

@@ -9,6 +9,6 @@ public static class SlimeEatProduce
             return;
 
         var collider = corral.GetComponent<Collider>();
-        count = Mathf.Min(RosiBehaviour.All.Count(item => collider.bounds.Contains(item.transform.position)), 10);
+        count = Mathf.RoundToInt(Mathf.Pow(RosiBehaviour.All.Count(item => collider.bounds.Contains(item.transform.position)), 0.51f));
     }
 }
