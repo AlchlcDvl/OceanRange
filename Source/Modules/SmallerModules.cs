@@ -5,7 +5,7 @@ public sealed class PersistentId : MonoBehaviour
     public string ID;
 }
 
-public struct Orientation(Vector3 pos, Vector3 rot)
+public struct Orientation(Vector3 pos, Vector3 rot) : IEquatable<Orientation>
 {
     public Vector3 Position = pos;
     public Vector3 Rotation = rot;
@@ -40,6 +40,16 @@ public struct Orientation(Vector3 pos, Vector3 rot)
             }
         }
     }
+
+    public override readonly bool Equals(object other) => other is Orientation orientation && Equals(orientation);
+
+    public readonly bool Equals(Orientation other) => Position.Equals(other.Position) && Rotation.Equals(other.Rotation);
+
+    public override int GetHashCode() => (Position.GetHashCode() << 2) ^ (Rotation.GetHashCode() >> 2);
+
+    public static bool operator ==(Orientation left, Orientation right) => left.Equals(right);
+
+    public static bool operator !=(Orientation left, Orientation right) => !(left == right);
 }
 
 // public sealed class BlankBehaviour : MonoBehaviour; // Blank class to be used as a persistent check, similar to PersistentId class
