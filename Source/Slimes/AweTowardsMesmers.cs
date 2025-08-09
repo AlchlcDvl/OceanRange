@@ -1,55 +1,52 @@
 namespace OceanRange.Slimes;
 
-// WIP awe behaviour
-public sealed class AweTowardsMesmers : SlimeSubbehaviour
+public sealed class AweTowardsMesmers : FindConsumable
 {
-    private Identifiable target;
-    private List<Identifiable> attractors = [];
-    private TimeDirector timeDir;
-    private SlimeFaceAnimator sfAnimator;
-    private double nextActivationTime;
-    private float endTime;
+    private GameObject Target;
+    private TimeDirector TimeDir;
+    private SlimeFaceAnimator SfAnimator;
+    private double NextActivationTime;
+    private float EndTime;
 
     public override void Awake()
     {
         base.Awake();
-        timeDir = SceneContext.Instance.TimeDirector;
-        sfAnimator = GetComponent<SlimeFaceAnimator>();
+        TimeDir = SceneContext.Instance.TimeDirector;
+        SfAnimator = GetComponent<SlimeFaceAnimator>();
     }
 
     public override float Relevancy(bool isGrounded)
     {
-        if (attractors.Count == 0 || !isGrounded || !timeDir.HasReached(nextActivationTime))
+        if (!isGrounded || !TimeDir.HasReached(NextActivationTime))
             return 0f;
 
-        target = Randoms.SHARED.Pick(attractors, null);
-
-        if (target == null)
-        {
-            attractors.Remove(target);
-            target = null;
-            return 0f;
-        }
-
-        return target ? Randoms.SHARED.GetInRange(0.05f, 0.5f) : 0f;
+        Target = FindNearestConsumable(MesmerBehaviour.AllMesmers, out _);
+        return Target ? Randoms.SHARED.GetInRange(0.1f, 1f) : 0f;
     }
 
     public override void Action()
     {
-        if (target)
-            RotateTowards(GetGotoPos(target.gameObject) - transform.position, 5f, 1f);
+        if (Target)
+            RotateTowards(GetGotoPos(Target.gameObject) - transform.position, 5f, 1f);
     }
 
     public override void Selected()
     {
-        sfAnimator.SetTrigger("triggerLongAwe");
-        nextActivationTime = timeDir.HoursFromNow(1f);
-        endTime = Time.time + 3f;
+        SfAnimator.SetTrigger("triggerLongAwe");
+        NextActivationTime = TimeDir.HoursFromNow(1f);
+        EndTime = Time.time + 3f;
     }
 
-    public override bool CanRethink() => Time.time >= endTime;
+    public override bool CanRethink() => Time.time >= EndTime;
 
-    public void RegisterMesmer(Identifiable mesmer) => attractors.Add(mesmer);
+    public override Dictionary<IdentifiableId, DriveCalculator> GetSearchIds()
+    {
+        var driveCalc = new DriveCalculator(SlimeEmotions.Emotion.NONE, 0f, 0f);
+        var result = new Dictionary<IdentifiableId, DriveCalculator>(Identifiable.idComparer) { [Ids.MESMER_SLIME] = driveCalc };
 
-    public void UnregisterMesmer(Identifiable mesmer) => attractors.Remove(mesmer);
+        foreach (var largo in SlimeManager.MesmerLargos)
+            result[largo] = driveCalc;
+
+        return result;
+    }
 }

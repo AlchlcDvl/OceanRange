@@ -17,6 +17,8 @@ public static class SlimeManager
         ["Pearl"] = [],
     };
 
+    public static readonly List<IdentifiableId> MesmerLargos = [];
+
     public static CustomSlimeData[] Slimes;
     public static bool MgExists;
 
@@ -178,7 +180,7 @@ public static class SlimeManager
         }
 
         var rewards = prefab.GetComponent<GordoRewards>();
-        rewards.rewardPrefabs = [.. slimeData.GordoRewards.Select(GetPrefab)];
+        rewards.rewardPrefabs = [.. slimeData.GordoRewards.Select(x => x.GetPrefab())];
         rewards.slimePrefab = slimeData.MainId.GetPrefab();
         rewards.rewardOverrides = [];
 
@@ -202,8 +204,6 @@ public static class SlimeManager
         if (Main.ClsExists)
             Main.AddIconBypass(icon);
     }
-
-    private static readonly Func<IdentifiableId, GameObject> GetPrefab = id => id.GetPrefab();
 
 #if DEBUG
     [TimeDiagnostic]
@@ -452,13 +452,19 @@ public static class SlimeManager
         if (toAdd != null)
         {
             foreach (var type in toAdd)
+            {
                 prefab.AddComponent(type);
+                type.FullName.DoLog();
+            }
         }
 
         if (toRemove != null)
         {
             foreach (var type in toRemove)
+            {
                 prefab.RemoveComponent(type);
+                type.FullName.DoLog();
+            }
         }
 
         if (meshes?.Length is null or 0 || (meshes.Length == 1 && meshes[0] == null))
@@ -998,9 +1004,18 @@ public static class SlimeManager
             (i, structure) =>
             {
             },
-            [typeof(StalkConsumable)],
+            [typeof(StalkConsumable), typeof(MesmerBehaviour)],
             null,
             jiggleAmount
         );
+    }
+
+#if DEBUG
+    [TimeDiagnostic("Slime Postload")]
+#endif
+    public static void PostLoadSlimes()
+    {
+        foreach (var slime in GameContext.Instance.LookupDirector.identifiablePrefabDict.Values)
+            slime.AddComponent<AweTowardsMesmers>();
     }
 }

@@ -52,14 +52,9 @@ public static class Helpers
         return @string;
     }
 
-    private static readonly Func<string, bool> IsNotNullEmptyOrWhiteSpaceDel = IsNotNullEmptyOrWhiteSpace;
-    private static readonly Func<string, string> TrimDel = Trim;
+    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ExceptBy(string.IsNullOrWhiteSpace)];
 
-    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators, StringSplitOptions.RemoveEmptyEntries).Select(TrimDel).Where(IsNotNullEmptyOrWhiteSpaceDel)];
-
-    private static bool IsNotNullEmptyOrWhiteSpace(string @string) => !string.IsNullOrWhiteSpace(@string);
-
-    private static string Trim(string @string) => @string.Trim();
+    private static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x));
 
     // public static Color32 HexToColor32(this string hex)
     // {
@@ -257,25 +252,24 @@ public static class Helpers
     public static bool IsNullableEnum(this Type type) => Nullable.GetUnderlyingType(type)?.IsEnum == true;
 
 #if DEBUG
-    // public static void LogIf(this object message, bool condition)
-    // {
-    //     if (condition)
-    //         Main.Console.Log(message ?? "message was null");
-    // }
+    public static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");
 
-    private static bool IsZoneObj(GameObject gameObject) => gameObject.name.StartsWith("zone");
-
-    private static GameObject[] GetCellObjects(GameObject zone) => zone.FindChildrenWithPartialName("cell", true);
-
-    private static readonly Func<GameObject, bool> IsZone = IsZoneObj;
-    private static readonly Func<GameObject, GameObject[]> GetCells = GetCellObjects;
+    public static void LogIf(this object message, bool condition)
+    {
+        if (condition)
+            message.DoLog();
+    }
 
     public static GameObject GetClosestCell(Vector3 pos)
     {
         GameObject closest = null;
         var distance = float.MaxValue;
 
-        foreach (var cell in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects().Where(IsZone).SelectMany(GetCells))
+        foreach (var cell in UnityEngine.SceneManagement
+            .SceneManager.GetActiveScene()
+            .GetRootGameObjects()
+            .Where(x => x.name.StartsWith("zone"))
+            .SelectMany(x => x.FindChildrenWithPartialName("cell", true)))
         {
             var diff = (cell.transform.position - pos).sqrMagnitude;
 

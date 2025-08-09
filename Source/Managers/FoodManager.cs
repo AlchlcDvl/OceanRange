@@ -119,7 +119,7 @@ public static class FoodManager
 #if DEBUG
     [TimeDiagnostic("Foods Load")]
 #endif
-    public static void LoadFoods()
+    public static void LoadAllFoods()
     {
         Array.ForEach(Chimkens, BaseCreateChimken);
         Array.ForEach(Plants, BaseCreatePlant);

@@ -2,7 +2,7 @@ namespace OceanRange.Slimes;
 
 public sealed class RosiBehaviour : SlimeSubbehaviour
 {
-    public static List<RosiBehaviour> All = [];
+    public static readonly List<RosiBehaviour> All = [];
 
     public override void Awake()
     {
@@ -12,7 +12,7 @@ public sealed class RosiBehaviour : SlimeSubbehaviour
 
     public override void OnDestroy() => All.Remove(this);
 
-    public override float Relevancy(bool _) => emotions.GetCurr(SlimeEmotions.Emotion.AGITATION) >= 0.5f ? 1f : 0f;
+    public override float Relevancy(bool _) => 1f;
 
     public override void Selected() {}
 

@@ -55,7 +55,7 @@ internal sealed class Main : ModEntryPoint
     public override void Load()
     {
         // Loads slimes and food
-        FoodManager.LoadFoods();
+        FoodManager.LoadAllFoods();
         SlimeManager.LoadAllSlimes();
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
@@ -68,6 +68,8 @@ internal sealed class Main : ModEntryPoint
 #endif
     public override void PostLoad()
     {
+        SlimeManager.PostLoadSlimes();
+
         AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
