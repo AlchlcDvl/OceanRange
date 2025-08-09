@@ -4,8 +4,6 @@
 [HarmonyPatch(typeof(GordoSnare), nameof(GordoSnare.GetGordoIdForBait)), HarmonyPriority(Priority.First + 1)]
 public static class GordoSnarePatch
 {
-    private static readonly Func<Zone, bool> HasAccessToZone = ZoneDirector.HasAccessToZone;
-
     public static IdentifiableId[] Pinks;
 
     public static bool Prefix(GordoSnare __instance, ref IdentifiableId __result)
@@ -18,7 +16,7 @@ public static class GordoSnarePatch
         {
             var gordo = gordoEntry.GetComponent<GordoIdentifiable>();
 
-            if (Pinks.Contains(gordo.id) || !gordo.nativeZones.Any(HasAccessToZone))
+            if (Pinks.Contains(gordo.id) || !gordo.nativeZones.Any(ZoneDirector.HasAccessToZone))
                 continue;
 
             var diet = gordoEntry.GetComponent<GordoEat>().slimeDefinition.Diet;

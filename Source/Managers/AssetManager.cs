@@ -19,21 +19,15 @@ public static class AssetManager
     /// </summary>
     public static JsonSerializerSettings JsonSettings;
 
-    // Delegates to reduce compiler generation overhead
-    private static readonly Func<string, Mesh> LoadMeshDel = LoadMesh;
-    private static readonly Func<string, Json> LoadJsonDel = LoadJson;
-    private static readonly Func<string, Sprite> LoadSpriteDel = LoadSprite;
-    private static readonly Func<string, Texture2D> LoadTexture2DDel = LoadTexture2D;
-
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
     /// </summary>
     public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
-        [typeof(Mesh)] = (["mesh"], LoadMeshDel),
-        [typeof(Json)] = (["json"], LoadJsonDel),
-        [typeof(Sprite)] = (["png", "jpg"], LoadSpriteDel),
-        [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2DDel),
+        [typeof(Json)] = (["json"], LoadJson),
+        [typeof(Mesh)] = (["cmesh"], LoadMesh),
+        [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
+        [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
         // AudioClip is not currently in use, so implementation for it comes later
     };
 
@@ -66,9 +60,7 @@ public static class AssetManager
 #endif
     public static void InitialiseAssets()
     {
-        // Create handles
-        foreach (var path in Core.GetManifestResourceNames())
-            CreateAssetHandle(path);
+        Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles
 
         JsonSettings = new()
         {
@@ -113,7 +105,7 @@ public static class AssetManager
     /// <param name="path">The original path of the asset.</param>
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
     private static string SanitisePath(this string path) => path
-        .ReplaceAll("", "json", "mesh", "png", "jpg") // Removing the file extension first
+        .ReplaceAll("", "json", "cmesh", "png", "jpg") // Removing the file extension first
         .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
 
     /// <summary>
@@ -209,7 +201,7 @@ public static class AssetManager
     private static Mesh LoadMesh(string path)
     {
         // This method uses a specially serialised version of the models to save on disk space and to make it easier to ship the mod
-        // TODO: Add a reverse importer for the unity project so that .mesh files can be used to import models
+        // TODO: Add a reverse importer for the unity project so that .cmesh files can be used to import models
 
         using var stream = Core.GetManifestResourceStream(path)!;
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
@@ -217,21 +209,15 @@ public static class AssetManager
 
         return new()
         {
-            vertices = BinaryUtils.ReadArray(reader, ReadVector3),
+            vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
             triangles = BinaryUtils.ReadArray(reader, ReadInt),
-            normals = BinaryUtils.ReadArray(reader, ReadVector3),
-            tangents = BinaryUtils.ReadArray(reader, ReadVector4),
-            uv = BinaryUtils.ReadArray(reader, ReadVector2)
+            normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
+            tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4),
+            uv = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2)
         };
     }
 
-    // Helper fields to reduce compiler generated code and delegate overhead
-    private static readonly Func<BinaryReader, int> ReadInt = ReadIntMethod;
-    private static readonly Func<BinaryReader, Vector2> ReadVector2 = BinaryUtils.ReadVector2;
-    private static readonly Func<BinaryReader, Vector3> ReadVector3 = BinaryUtils.ReadVector3;
-    private static readonly Func<BinaryReader, Vector4> ReadVector4 = BinaryUtils.ReadVector4;
-
-    private static int ReadIntMethod(BinaryReader reader) => reader.ReadInt32();
+    private static int ReadInt(BinaryReader reader) => reader.ReadInt32();
 
     // Helper to create an empty texture
     private static Texture2D EmptyTexture(TextureFormat format) => new(2, 2, format, true) { filterMode = FilterMode.Bilinear };

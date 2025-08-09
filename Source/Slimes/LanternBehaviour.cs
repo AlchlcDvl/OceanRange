@@ -1,10 +1,12 @@
 namespace OceanRange.Slimes;
 
-public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener
+public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener, CaveTrigger.Listener
 {
     private TimeDirector TimeDir;
     private SlimeAppearanceApplicator Applicator;
     private float FleeingUntil;
+    private readonly HashSet<GameObject> Caves = [];
+    private bool WaitForPhysicsUpdate;
 
     public bool CanMove;
     public bool Fleeing;
@@ -13,10 +15,15 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener
     {
         Applicator = GetComponent<SlimeAppearanceApplicator>();
         TimeDir = SceneContext.Instance.TimeDirector;
+        WaitForPhysicsUpdate = true;
     }
+
+    public void OnEnable() => WaitForPhysicsUpdate = true;
 
     public void FixedUpdate()
     {
+        WaitForPhysicsUpdate = false;
+
         if (Fleeing)
         {
             Fleeing = Time.fixedTime < FleeingUntil;
@@ -24,10 +31,25 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener
             return;
         }
 
+        if (Caves.Count > 0)
+        {
+            CanMove = true;
+            return;
+        }
+
         CanMove = TimeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
 
         if (!CanMove)
             Applicator.SetExpression(Ids.Sleeping);
+    }
+
+    public void Update()
+    {
+        if (WaitForPhysicsUpdate)
+            return;
+
+        if (Caves.Count > 0)
+            UnityWorkarounds.SafeRemoveAllNulls(Caves);
     }
 
     public void OnControllerCollision(GameObject gameObj)
@@ -40,4 +62,8 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener
         if (Fleeing)
             FleeingUntil = Time.fixedTime + 10f;
     }
+
+    public void OnCaveEnter(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => Caves.Add(caveObj);
+
+    public void OnCaveExit(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => Caves.Remove(caveObj);
 }

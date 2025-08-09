@@ -76,6 +76,18 @@ internal sealed class Main : ModEntryPoint
         GC.Collect(); // Free up temp memory
     }
 
+    /// <inheritdoc/>
+#if DEBUG
+    [TimeDiagnostic("Mod Unload")]
+    public override void Unload()
+    {
+        File.WriteAllText(Path.Combine(AssetManager.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePos.SavedPositions, AssetManager.JsonSettings));
+        AssetManager.ReleaseHandles();
+    }
+#else
+    public override void Unload() => AssetManager.ReleaseHandles();
+#endif
+
     public static void AddIconBypass(Sprite icon)
     {
         try

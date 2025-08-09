@@ -1,14 +1,14 @@
 namespace OceanRange.Saves;
 
 /// <summary>
-/// A writer class that compresses data and converts it into a ulong array.
+/// A writer class that stores data and converts it into a ulong array.
 /// </summary>
 public sealed class SaveWriter
 {
-    // The internal streams and writer.
+    // The internal writer.
     private readonly List<byte> Bytes = [];
 
-    // Write methods for various data types.
+    // Write methods for various data types. More to come as more and more data types are added
     public void Write(bool value) => Bytes.Add((byte)(value ? 1 : 0));
 
     public void Write(int value) => Bytes.AddRange(BitConverter.GetBytes(value));
@@ -36,8 +36,7 @@ public sealed class SaveWriter
 }
 
 /// <summary>
-/// A reader class that de-serializes a ulong array, decompresses it,
-/// and allows reading of various data types.
+/// A reader class that de-serializes a ulong array and allows reading of various data types.
 /// </summary>
 public sealed class SaveReader
 {

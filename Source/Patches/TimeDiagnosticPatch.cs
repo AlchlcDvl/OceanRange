@@ -1,4 +1,5 @@
 #if DEBUG
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace OceanRange.Patches;
 [HarmonyPatch]
 public static class TimeDiagnosticPatch
 {
-    private static readonly Dictionary<MethodBase, (string Stage, Stopwatch Watch)> Watches = [];
+    private static readonly ConcurrentDictionary<MethodBase, (string Stage, Stopwatch Watch)> Watches = [];
 
     public static IEnumerable<MethodBase> TargetMethods()
     {

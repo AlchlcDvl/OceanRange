@@ -25,10 +25,7 @@ public sealed class AssetHandle(string name) : IDisposable
     public void Dispose()
     {
         Paths.Clear();
-
-        foreach (var asset in Assets.Values)
-            asset.Destroy();
-
+        Assets.Values.Do(UObject.Destroy);
         Assets.Clear();
         GC.SuppressFinalize(this);
     }

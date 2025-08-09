@@ -35,9 +35,7 @@ public static class EatMapFix
         });
     }
 
-    private static readonly Predicate<SlimeDiet.EatMapEntry> Exclusion = ExclusionMethod;
-
-    private static bool ExclusionMethod(SlimeDiet.EatMapEntry entry)
+    private static bool Exclusion(SlimeDiet.EatMapEntry entry)
         => Identifiable.CHICK_CLASS.Contains(entry.eats) // TODO: Remove when SRML v0.3.0 comes out
         || entry.eats == IdentifiableId.SILKY_SAND_CRAFT;
 }

@@ -33,16 +33,14 @@ public static class FoodManager
         Chimkens = AssetManager.GetJsonArray<CustomChimkenData>("chimkenpedia");
         Plants = AssetManager.GetJsonArray<CustomPlantData>("plantpedia");
 
-        SRCallbacks.PreSaveGameLoad += PreOnSaveGameLoad;
-        SRCallbacks.OnSaveGameLoaded += OnSaveGameLoaded;
+        SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
+        SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
     }
-
-    private static readonly SRCallbacks.OnSaveGameLoadedDelegate PreOnSaveGameLoad = PreOnSaveLoadMethod;
 
 #if DEBUG
     [TimeDiagnostic("Foods OnSavePreLoad")]
 #endif
-    private static void PreOnSaveLoadMethod(SceneContext _)
+    private static void PreOnSaveLoad(SceneContext _)
     {
         var spawners = UObject.FindObjectsOfType<DirectedAnimalSpawner>();
 
@@ -75,12 +73,10 @@ public static class FoodManager
         }
     }
 
-    private static readonly SRCallbacks.OnSaveGameLoadedDelegate OnSaveGameLoaded = OnSaveLoadedMethod;
-
 #if DEBUG
     [TimeDiagnostic("Foods OnSaveLoad")]
 #endif
-    private static void OnSaveLoadedMethod(SceneContext context)
+    private static void OnSaveLoaded(SceneContext context)
     {
         var resources = UObject.FindObjectsOfType<SpawnResource>();
         var veggiePrefab = Array.Find(resources, IsPatch);
@@ -125,11 +121,8 @@ public static class FoodManager
 #endif
     public static void LoadFoods()
     {
-        foreach (var chimkenData in Chimkens)
-            BaseCreateChimken(chimkenData);
-
-        foreach (var plantData in Plants)
-            BaseCreatePlant(plantData);
+        Array.ForEach(Chimkens, BaseCreateChimken);
+        Array.ForEach(Plants, BaseCreatePlant);
     }
 
     private const string CommonHenRanchPedia = "%type% hens in close proximity to roostros will periodically lay eggs that produce %type% chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.";
@@ -290,7 +283,7 @@ public static class FoodManager
         var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
         var material = partial.GetComponent<MeshRenderer>().sharedMaterial;
         TranslateModel(prefab.FindChildren("Sprout"), mesh, material);
-        TranslateModel(component.SpawnJoints.Select(GetGameObj), mesh, material);
+        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), mesh, material);
         return prefab;
     }
 
@@ -302,8 +295,4 @@ public static class FoodManager
             gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
         }
     }
-
-    private static readonly Func<Joint, GameObject> GetGameObj = GetGameObject;
-
-    private static GameObject GetGameObject(Joint joint) => joint.gameObject;
 }

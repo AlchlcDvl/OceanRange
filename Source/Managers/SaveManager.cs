@@ -1,5 +1,4 @@
 using OceanRange.Patches;
-using SRML.SR.SaveSystem.Registry;
 using SRML.SR.SaveSystem.Data;
 using SRML.SR.SaveSystem;
 using OceanRange.Saves;
@@ -8,17 +7,14 @@ namespace OceanRange.Managers;
 
 public static class SaveManager
 {
-    private static readonly WorldDataLoadDelegate ReadData = ReadSaveData;
-    private static readonly WorldDataSaveDelegate WriteData = WriteSaveData;
-
     // Configuring the modded mail data
 #if DEBUG
     [TimeDiagnostic("Save Preload")]
 #endif
     public static void PreLoadSaveData()
     {
-        SaveRegistry.RegisterWorldDataLoadDelegate(ReadData);
-        SaveRegistry.RegisterWorldDataSaveDelegate(WriteData);
+        SaveRegistry.RegisterWorldDataLoadDelegate(ReadSaveData);
+        SaveRegistry.RegisterWorldDataSaveDelegate(WriteSaveData);
     }
 
     private static readonly List<ISaveData> SaveData = [new MailSaveData(), new GordoSaveData()];

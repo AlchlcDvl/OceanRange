@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 class ExportMeshes
 {
-    [MenuItem("Meshes/Export As .mesh")]
+    [MenuItem("Meshes/Export As .cmesh")]
     static void ExportSelectedMeshes()
     {
         string exportDirectory = "Assets/../../Source/Resources/Models";
@@ -30,7 +30,7 @@ class ExportMeshes
             if (mesh == null)
                 continue;
 
-            string filePath = Path.Combine(exportDirectory, Path.GetFileNameWithoutExtension(assetPath) + ".mesh");
+            string filePath = Path.Combine(exportDirectory, Path.GetFileNameWithoutExtension(assetPath) + ".cmesh");
             using Stream stream = File.OpenWrite(filePath);
             using GZipStream compressor = new GZipStream(stream, System.IO.Compression.CompressionLevel.Optimal);
             using BinaryWriter writer = new BinaryWriter(compressor);
