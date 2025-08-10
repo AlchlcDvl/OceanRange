@@ -39,12 +39,10 @@ public sealed class GordoSaveData : ISaveData
 {
     public bool Deprecated => false;
 
-    private static readonly Func<CustomSlimeData, bool> HasGordoDel = HasGordo;
-
     public ulong[] Write(out byte padding)
     {
         var writer = new SaveWriter();
-        var gordos = SlimeManager.Slimes.Where(HasGordoDel).ToArray();
+        var gordos = SlimeManager.Slimes.Where(x => x.HasGordo).ToArray();
         writer.Write(gordos.Length);
 
         foreach (var gordo in gordos)
@@ -69,6 +67,4 @@ public sealed class GordoSaveData : ISaveData
             gordo.IsPopped = reader.ReadBoolean();
         }
     }
-
-    private static bool HasGordo(CustomSlimeData slimeData) => slimeData.HasGordo;
 }

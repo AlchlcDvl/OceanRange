@@ -37,7 +37,7 @@ public static class Ids
 
     public static readonly IdentifiableId MESMER_SLIME;
     public static readonly IdentifiableId MESMER_PLORT;
-    // public static readonly IdentifiableId MESMER_GORDO;
+    public static readonly IdentifiableId MESMER_GORDO;
     public static readonly PediaId MESMER_SLIME_ENTRY;
 
     public static readonly IdentifiableId SANDY_HEN;

@@ -82,8 +82,8 @@ public static class FoodManager
     private static void OnSaveLoaded(SceneContext context)
     {
         var resources = UObject.FindObjectsOfType<SpawnResource>();
-        var veggiePrefab = Array.Find(resources, IsPatch);
-        var fruitPrefab = Array.Find(resources, IsTree);
+        var veggiePrefab = Array.Find(resources, x => x.name == "patchCarrot02" && x.transform.parent?.name == "Resources");
+        var fruitPrefab = Array.Find(resources, x => x.name == "treePogo02" && x.transform.parent?.name == "Resources");
 
         // FIXME: Dirt in veggie patches are invisible for some reason
         foreach (var plantData in Plants)
@@ -111,13 +111,6 @@ public static class FoodManager
             }
         }
     }
-
-    private static readonly Predicate<SpawnResource> IsPatch = IsCarrotPatch;
-    private static readonly Predicate<SpawnResource> IsTree = IsPogoTree;
-
-    private static bool IsCarrotPatch(SpawnResource x) => x.name == "patchCarrot02" && x.transform.parent?.name == "Resources";
-
-    private static bool IsPogoTree(SpawnResource x) => x.name == "treePogo02" && x.transform.parent?.name == "Resources";
 
 #if DEBUG
     [TimeDiagnostic("Foods Load")]

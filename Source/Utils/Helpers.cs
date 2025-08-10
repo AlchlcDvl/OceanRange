@@ -112,6 +112,7 @@ public static class Helpers
         gordo.transform.localEulerAngles = slimeData.GordoOrientation.Rotation;
         gordo.name = gordo.name.Replace("(Clone)", "").Trim();
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs];
+        gordo.AddComponent<GordoPop>().Data = slimeData;
 
         if (slimeData.IsPopped)
             gordo.SetActive(false);

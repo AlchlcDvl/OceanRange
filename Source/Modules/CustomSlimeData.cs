@@ -117,6 +117,9 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("gordoLoc")]
     public string GordoLocation;
 
+    [JsonProperty("natGordoSpawn")]
+    public bool NaturalGordoSpawn = true;
+
     [JsonProperty("plortExchangeWeight")]
     public int PlortExchangeWeight = 16;
 
@@ -142,7 +145,7 @@ public sealed class CustomSlimeData : JsonData
     public Type[] ComponentsToRemove;
 
     [JsonProperty("skipNull")]
-    public bool SkipNullMesh = false;
+    public bool SkipNullMesh;
 
     [JsonProperty("slimeMatData"), JsonRequired]
     public MaterialData[] SlimeMatData;

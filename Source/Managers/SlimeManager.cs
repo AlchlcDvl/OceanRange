@@ -97,7 +97,7 @@ public static class SlimeManager
     {
         foreach (var slimeData in Slimes)
         {
-            if (slimeData.HasGordo && slimeData.MainId != Ids.SAND_SLIME)
+            if (slimeData.HasGordo && slimeData.NaturalGordoSpawn)
                 Helpers.BuildGordo(slimeData, GameObject.Find("zone" + slimeData.GordoZone + "/cell" + slimeData.GordoLocation + "/Sector/Slimes"));
         }
     }
@@ -189,7 +189,6 @@ public static class SlimeManager
         gordoObj.GenerateGordoBones(slimeData, prefabRend);
 
         prefab.AddComponent<PersistentId>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
-        prefab.AddComponent<GordoPop>().Data = slimeData;
 
         slimeData.InitGordoDetails?.Invoke(null, [prefab, gordoDefinition]);
 

@@ -296,6 +296,7 @@
         "gordoMeshes": ["puddle_body_gordo"],
         "plortMeshes": ["pearl"],
         "skipNull": true,
+        "natGordoSpawn": false,
         "slimeMatData":
         [
             {
@@ -349,7 +350,6 @@
         "pediaDiet": "Fruit",
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
-        "hasGordo": false,
         "toAdd": ["OceanRange.Slimes.MesmerBehaviour, OceanRange", "StalkConsumable, Assembly-CSharp"],
         "slimeMeshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail"],
         "gordoMeshes": [null, "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_gordo"],
@@ -393,6 +393,8 @@
                 "sameAs": 3
             }
         ],
+        "natGordoSpawn": false,
+        "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
         "slimeology": "The perplexing, dangerous-looking, yet friendly mesmer slime emits very obvious pulsating colors on its body. It's a bit debatable what the true purpose of these displays are, but most slime scientists agree that it is to try and appeal to and be the favorite friend of as many slimes as possible, even with their scorpion-like appearances; interestingly, they seem to be very sociable. Mesmer slimes spend most of their time inside of lush jungles and caverns on the island, where you could easily spot their glows.",
         "risks": "Mesmer slimes may be a risk to ranch, as the patterns they produce enact a hypnotic effect on slimes that gaze upon them, which can leave them to want to bundle up with these slimes for hours, mainly during the dark, where their glow is especially visible. When a mesmer slime is not near another slime, its mood will also fall. During agitation, mesmer slimes exhibit a feral-like state, seemingly unhappy due to the gut feeling that no one wants to be friends with them. They channel this disappointment by exhibiting eye and mouth patterns similar to the tarr, which only scares off other slimes even more. They will also pounce and mindlessly attack ranchers and slimes with their bug-like appendages. Otherwise... They're quite simple to take care of. It's advised to keep them with other slimes, as their plorts cannot produce largos due to the odd contents.",
         "plortonomics": "The odd contents? Mesmer plorts contain bioluminescent bacteria, which seem to be the source of the colors of their source. These bacteria may display a large possibility of colors, however, they usually have to be artificially mutated using complex chemical compounds to show exact colors. The products made with mesmer plorts are usually luxurious, imperious, and greedy alternatives of renewable light for the rich, but their true value is surprisingly lower.",
