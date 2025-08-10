@@ -6,12 +6,12 @@ namespace OceanRange.Managers;
 public static class FoodManager
 {
     /// <summary>
-    /// The array containing all plant related data.
+    /// The array containing all meat related data.
     /// </summary>
     public static CustomChimkenData[] Chimkens;
 
     /// <summary>
-    /// The array containing all meat related data.
+    /// The array containing all plant related data.
     /// </summary>
     public static CustomPlantData[] Plants;
 
@@ -34,6 +34,7 @@ public static class FoodManager
         Plants = AssetManager.GetJsonArray<CustomPlantData>("plantpedia");
 
         Ids.DIRT.RegisterId(IdentifiableId.SILKY_SAND_CRAFT);
+        TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;

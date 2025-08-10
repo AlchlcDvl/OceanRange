@@ -49,8 +49,6 @@ public static class SlimeManager
 
         Slimes = AssetManager.GetJsonArray<CustomSlimeData>("slimepedia");
 
-        TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
-
         GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, Ids.ROSI_GORDO];
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
@@ -191,6 +189,7 @@ public static class SlimeManager
         gordoObj.GenerateGordoBones(slimeData, prefabRend);
 
         prefab.AddComponent<PersistentId>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
+        prefab.AddComponent<GordoPop>().Data = slimeData;
 
         slimeData.InitGordoDetails?.Invoke(null, [prefab, gordoDefinition]);
 
