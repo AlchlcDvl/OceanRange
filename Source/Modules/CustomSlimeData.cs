@@ -45,18 +45,6 @@ public sealed class CustomSlimeData : JsonData
     [JsonIgnore]
     public MethodInfo InitGordoDetails;
 
-    [JsonProperty("gloss")]
-    public float? Gloss = 1f;
-
-    [JsonProperty("topSlimeColor")]
-    public Color? TopSlimeColor;
-
-    [JsonProperty("middleSlimeColor")]
-    public Color? MiddleSlimeColor;
-
-    [JsonProperty("bottomSlimeColor")]
-    public Color? BottomSlimeColor;
-
     [JsonProperty("topMouthColor")]
     public Color? TopMouthColor;
 
@@ -83,15 +71,6 @@ public sealed class CustomSlimeData : JsonData
 
     [JsonProperty("bottomPaletteColor")]
     public Color? BottomPaletteColor;
-
-    [JsonProperty("topPlortColor")]
-    public Color? TopPlortColor;
-
-    [JsonProperty("middlePlortColor")]
-    public Color? MiddlePlortColor;
-
-    [JsonProperty("bottomPlortColor")]
-    public Color? BottomPlortColor;
 
     [JsonProperty("plortAmmoColor")]
     public Color? PlortAmmoColor;
@@ -126,9 +105,6 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("spawnAmount")]
     public float SpawnAmount = 0.25f;
 
-    [JsonProperty("specialDiet")]
-    public bool SpecialDiet;
-
     [JsonProperty("hasGordo")]
     public bool HasGordo = true;
 
@@ -149,6 +125,33 @@ public sealed class CustomSlimeData : JsonData
 
     [JsonIgnore]
     public bool IsPopped;
+
+    [JsonProperty("slimeMeshes")]
+    public string[] SlimeMeshes;
+
+    [JsonProperty("gordoMeshes")]
+    public string[] GordoMeshes;
+
+    [JsonProperty("plortMeshes")]
+    public string[] PlortMeshes;
+
+    [JsonProperty("toAdd")]
+    public Type[] ComponentsToAdd;
+
+    [JsonProperty("toRemove")]
+    public Type[] ComponentsToRemove;
+
+    [JsonProperty("skipNull")]
+    public bool SkipNullMesh = false;
+
+    [JsonProperty("slimeMatData"), JsonRequired]
+    public MaterialData[] SlimeMatData;
+
+    [JsonProperty("plortMatData"), JsonRequired]
+    public MaterialData[] PlortMatData;
+
+    [JsonProperty("gordoMatData"), JsonRequired]
+    public MaterialData[] GordoMatData;
 
     // [JsonIgnore]
     // public readonly HashSet<IdentifiableId> Largos = [];
@@ -175,17 +178,23 @@ public sealed class CustomSlimeData : JsonData
             InitGordoDetails = AccessTools.Method(type, init + "GordoDetails");
         }
 
-        TopPaletteColor ??= TopSlimeColor;
-        MiddlePaletteColor ??= MiddleSlimeColor;
-        BottomPaletteColor ??= BottomSlimeColor;
-
-        TopPlortColor ??= TopSlimeColor;
-        MiddlePlortColor ??= MiddleSlimeColor;
-        BottomPlortColor ??= BottomSlimeColor;
+        if (SlimeMatData?.Length is not null and > 0)
+        {
+            var matData = SlimeMatData[0];
+            TopPaletteColor ??= matData.TopColor;
+            MiddlePaletteColor ??= matData.MiddleColor;
+            BottomPaletteColor ??= matData.BottomColor;
+        }
 
         PlortAmmoColor ??= MainAmmoColor;
 
         Progress ??= [];
+
+        SlimeMeshes ??= [null];
+        PlortMeshes ??= [null];
+        GordoMeshes ??= [null];
+
+        SlimeManager.PlortTypesToSlimesMap[PlortType].Add(Name.ToUpper());
     }
 
     // public void GenerateLargos(string[] modded) // WIP
@@ -199,4 +208,41 @@ public sealed class CustomSlimeData : JsonData
     //     Largos.UnionWith(vanillaLargos);
     //     Largos.UnionWith(moddedLargos);
     // }
+}
+
+public sealed class MaterialData
+{
+    [JsonProperty("topColor")]
+    public Color? TopColor;
+
+    [JsonProperty("middleColor")]
+    public Color? MiddleColor;
+
+    [JsonProperty("bottomColor")]
+    public Color? BottomColor;
+
+    [JsonProperty("gloss")]
+    public float? Gloss;
+
+    [JsonProperty("pattern")]
+    public string Pattern;
+
+    [JsonProperty("sameAs")]
+    public int? SameAs;
+
+    [JsonProperty("cloneSameAs")]
+    public bool CloneSameAs;
+
+    [JsonProperty("matOrigin")]
+    public IdentifiableId? MatOriginSlime;
+
+    [JsonIgnore]
+    public Material CachedMaterial;
+
+    [OnDeserialized]
+    public void PopulateRemainingValues(StreamingContext _)
+    {
+        MiddleColor ??= TopColor;
+        BottomColor ??= TopColor;
+    }
 }

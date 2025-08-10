@@ -33,6 +33,8 @@ public static class FoodManager
         Chimkens = AssetManager.GetJsonArray<CustomChimkenData>("chimkenpedia");
         Plants = AssetManager.GetJsonArray<CustomPlantData>("plantpedia");
 
+        Ids.DIRT.RegisterId(IdentifiableId.SILKY_SAND_CRAFT);
+
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
     }

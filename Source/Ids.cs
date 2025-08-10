@@ -57,6 +57,8 @@ public static class Ids
     public static readonly SpawnResource.Id BLOWTATO_PATCH;
     public static readonly SpawnResource.Id BLOWTATO_PATCH_DLX;
 
+    public static readonly FoodGroup DIRT;
+
     // public static readonly RancherChatMetadata.Entry.RancherName LISA;
 
     // public static readonly Zone SWIRLPOOL;

@@ -8,10 +8,12 @@ public sealed class MesmerBehaviour : SRBehaviour
 
     public void Awake()
     {
+        var identifiable = GetComponent<Identifiable>();
         IndexEntry = new()
         {
-            id = GetComponent<Identifiable>().id,
-            gameObject = gameObject
+            id = identifiable.id,
+            gameObject = gameObject,
+            actorModel = identifiable.model
         };
         AllMesmers.Add(IndexEntry);
     }

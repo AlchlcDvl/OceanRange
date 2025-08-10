@@ -72,6 +72,7 @@ public static class AssetManager
             Converters =
             [
                 new EnumConverter(),
+                new TypeConverter(),
                 new ColorConverter(),
                 // new Color32Converter(),
                 new Vector3Converter(),

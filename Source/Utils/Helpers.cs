@@ -84,6 +84,20 @@ public static class Helpers
 
     public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
+    public static T DeepCopyNonUnityObject<T>(this T obj)
+    {
+        var instance = Activator.CreateInstance<T>();
+        var tType = typeof(T);
+
+        foreach (var field in tType.GetFields(AccessTools.all))
+            field.SetValue(instance, field.GetValue(obj));
+
+        foreach (var property in tType.GetProperties(AccessTools.all))
+            property.SetValue(instance, property.GetValue(obj));
+
+        return instance;
+    }
+
     public static bool IsInLoopedRange(this float num, float min, float max, float rangeMin, float rangeMax, bool inner)
     {
         var result = num >= rangeMin && num <= rangeMax;
