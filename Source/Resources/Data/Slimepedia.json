@@ -357,17 +357,31 @@
         [
             {
                 "topColor": "#0a094f",
-                "middleColor": "#2F2251",
-                "bottomColor": "#1e1140"
+                "middleColor": "#FFFFFF",
+                "bottomColor": "#0a094f",
+                "pattern": "mesmer_pattern",
+                "matOrigin": "TABBY_SLIME"
             },
             {
-                "sameAs": 0
+                "topColor": "#0a094f",
+                "middleColor": "#FFFFFF",
+                "bottomColor": "#0a094f",
+                "pattern": "mesmer_pincer_1_pattern",
+                "matOrigin": "TABBY_SLIME"
             },
             {
-                "sameAs": 0
+                "topColor": "#0a094f",
+                "middleColor": "#FFFFFF",
+                "bottomColor": "#0a094f",
+                "pattern": "mesmer_pincer_2_pattern",
+                "matOrigin": "TABBY_SLIME"
             },
             {
-                "sameAs": 0
+                "topColor": "#0a094f",
+                "middleColor": "#FFFFFF",
+                "bottomColor": "#0a094f",
+                "pattern": "mesmer_tail_pattern",
+                "matOrigin": "TABBY_SLIME"
             }
         ],
         "plortMatData":

@@ -39,3 +39,23 @@ public static class EatMapFix
         => Identifiable.CHICK_CLASS.Contains(entry.eats) // TODO: Remove when SRML v0.3.0 comes out
         || entry.eats == IdentifiableId.SILKY_SAND_CRAFT;
 }
+
+[HarmonyPatch(typeof(GordoEat), nameof(GordoEat.ImmediateReachedTarget))]
+public static class EnsureGordoStaysPopped
+{
+    public static void Postfix(GordoEat __instance)
+    {
+        if (__instance.TryGetComponent<GordoPop>(out var pop))
+            pop.Data.IsPopped = true;
+    }
+}
+
+[HarmonyPatch(typeof(GameObjectActorModelIdentifiableIndex), nameof(GameObjectActorModelIdentifiableIndex.Register))]
+public static class FixEqualityIfPossible
+{
+    public static void Postfix(GameObject obj)
+    {
+        if (obj.TryGetComponent<MesmerBehaviour>(out var mesmer))
+            mesmer.SetEntry();
+    }
+}

@@ -6,7 +6,7 @@ public sealed class MesmerBehaviour : SRBehaviour
 
     private GameObjectActorModelIdentifiableIndex.Entry IndexEntry;
 
-    public void Awake()
+    public void SetEntry()
     {
         var identifiable = GetComponent<Identifiable>();
         IndexEntry = new()
