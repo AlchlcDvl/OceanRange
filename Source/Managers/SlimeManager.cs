@@ -242,7 +242,7 @@ public static class SlimeManager
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
         TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLower(), $"{slimeData.Name} {slimeData.PlortType}");
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
-        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor.Value, icon);
+        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor!.Value, icon);
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
@@ -270,7 +270,6 @@ public static class SlimeManager
         var lower = slimeData.Name.ToLower();
 
         // Create a copy for our slimes and populate with info
-        var isSand = slimeData.MainId == Ids.SAND_SLIME;
         var definition = baseDefinition.DeepCopy();
         definition.Diet.Produces = [slimeData.PlortId];
         definition.Diet.MajorFoodGroups = [slimeData.Diet];
@@ -438,7 +437,10 @@ public static class SlimeManager
             elem.Prefabs = [prefab2];
             var meshRend = prefab2.GetComponent<SkinnedMeshRenderer>();
             meshRend.sharedMesh = isNull ? meshRend.sharedMesh.Clone() : AssetManager.GetMesh(meshName);
-            meshRend.name = meshName;
+
+            if (!isNull)
+                meshRend.name = meshName;
+
             prefab2.IgnoreLODIndex = true;
             structure.SupportsFaces = i == 0;
 
@@ -514,20 +516,6 @@ public static class SlimeManager
         if (slimeData.GordoMeshes.Length == 0)
             return;
 
-        var sharedMesh = prefabRend.sharedMesh;
-        var vertices = sharedMesh.vertices;
-        var zero = Vector3.zero;
-
-        foreach (var vector in vertices)
-            zero += vector;
-
-        zero /= vertices.Length;
-        var num = 0f;
-
-        foreach (var vector in vertices)
-            num += (vector - zero).magnitude;
-
-        num /= vertices.Length;
         var parent = gordo.parent;
         var parentObj = parent.gameObject.FindChild("bone_root");
 
@@ -547,6 +535,21 @@ public static class SlimeManager
 
         for (var k = 0; k < bones.Length; k++)
             poses[k] = bones[k].worldToLocalMatrix * rootMatrix;
+
+        var sharedMesh = prefabRend.sharedMesh;
+        var vertices = sharedMesh.vertices;
+        var zero = Vector3.zero;
+
+        foreach (var vector in vertices)
+            zero += vector;
+
+        zero /= vertices.Length;
+        var num = 0f;
+
+        foreach (var vector in vertices)
+            num += (vector - zero).magnitude;
+
+        num /= vertices.Length;
 
         for (var i = 0; i < slimeData.GordoMeshes.Length; i++)
         {
@@ -623,21 +626,6 @@ public static class SlimeManager
 
     private static void GenerateSlimeBones(this SlimeAppearanceApplicator slimePrefab, SlimeAppearanceObject bodyApp, float jiggleAmount, SlimeAppearanceObject[] appearanceObjects)
     {
-        var meshRend = bodyApp.GetComponent<SkinnedMeshRenderer>();
-        var sharedMesh = meshRend.sharedMesh;
-        var vertices = sharedMesh.vertices;
-        var zero = Vector3.zero;
-
-        foreach (var vector in vertices)
-            zero += vector;
-
-        zero /= vertices.Length;
-        var num = 0f;
-
-        foreach (var vector in vertices)
-            num += (vector - zero).magnitude;
-
-        num /= vertices.Length;
         bodyApp.AttachedBones =
         [
             SlimeAppearance.SlimeBone.Slime,
@@ -648,6 +636,9 @@ public static class SlimeManager
             SlimeAppearance.SlimeBone.JiggleFront,
             SlimeAppearance.SlimeBone.JiggleBack
         ];
+
+        var meshRend = bodyApp.GetComponent<SkinnedMeshRenderer>();
+        var sharedMesh = meshRend.sharedMesh;
 
         var list = new List<(SkinnedMeshRenderer, Mesh)> { (meshRend, sharedMesh) };
 
@@ -675,6 +666,20 @@ public static class SlimeManager
             var bone = bodyApp.AttachedBones[i];
             poses[i] = slimePrefab.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
         }
+
+        var vertices = sharedMesh.vertices;
+        var zero = Vector3.zero;
+
+        foreach (var vector in vertices)
+            zero += vector;
+
+        zero /= vertices.Length;
+        var num = 0f;
+
+        foreach (var vector in vertices)
+            num += (vector - zero).magnitude;
+
+        num /= vertices.Length;
 
         foreach (var (rend, mesh) in list)
         {
@@ -786,7 +791,7 @@ public static class SlimeManager
     {
         foreach (var (id, prefab) in GameContext.Instance.LookupDirector.identifiablePrefabDict)
         {
-            if (Identifiable.IsSlime(id))
+            if (Identifiable.IsSlime(id) && id != Ids.MESMER_SLIME && !MesmerLargos.Contains(id)) // Ensuring that only non-mesmer slimes are affected
                 prefab.AddComponent<AweTowardsMesmers>();
         }
     }

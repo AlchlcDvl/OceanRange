@@ -9,7 +9,7 @@ internal sealed class Main : ModEntryPoint
     public static bool ClsExists;
 
 #if DEBUG
-    public static readonly SavePositionCommand SavePos = new(); // Keeping the instance of the command because it stores saved positions
+    private static readonly SavePositionCommand SavePos = new(); // Keeping the instance of the command because it stores saved positions
 #endif
 
     /// <inheritdoc/>
@@ -24,7 +24,7 @@ internal sealed class Main : ModEntryPoint
 
         HarmonyInstance.PatchAll(AssetManager.Core); // Patch methods
 
-        SystemContext.IsModded = true; // I don't what this does fully, but it's better have this one than not, although it'd be better if SRML did this
+        SystemContext.IsModded = true; // I don't know what this does fully, but it's better have this one than not, although it'd be better if SRML did this
 
         ClsExists = SRModLoader.IsModPresent("custom.loading"); // Checks if Custom Loading Screens is present in the mods folder
 

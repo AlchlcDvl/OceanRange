@@ -15,7 +15,6 @@
         <Description>Dive into the slime sea!</Description>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <Configurations>Debug;Release</Configurations>
-        <ImplicitUsings>true</ImplicitUsings>
         <PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
         <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
     </PropertyGroup>

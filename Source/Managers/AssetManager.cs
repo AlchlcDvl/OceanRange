@@ -123,18 +123,18 @@ public static class AssetManager
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted json data.</returns>
-    public static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<Json>(path).text, JsonSettings);
+    private static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<Json>(path).text, JsonSettings);
 
     /// <summary>
     /// Gets a Texture2D from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get"/>
+    /// <inheritdoc cref="Get{Texture2D}"/>
     public static Texture2D GetTexture2D(string name) => Get<Texture2D>(name);
 
     /// <summary>
     /// Gets a Sprite from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get"/>
+    /// <inheritdoc cref="Get{Sprite}"/>
     public static Sprite GetSprite(string name) => Get<Sprite>(name);
 
     /// <summary>
@@ -142,23 +142,20 @@ public static class AssetManager
     /// </summary>
     /// <param name="names">The names of the assets.</param>
     /// <returns>A collection of sprites.</returns>
-    public static IEnumerable<Sprite> GetSprites(params string[] names)
-    {
-        foreach (var name in names)
-            yield return GetSprite(name);
-    }
+    public static IEnumerable<Sprite> GetSprites(params string[] names) => names.Select(GetSprite);
 
     /// <summary>
     /// Gets a Mesh from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get"/>
+    /// <inheritdoc cref="Get{Mesh}"/>
     public static Mesh GetMesh(string name) => Get<Mesh>(name);
 
     /// <summary>
-    /// Gets an asset associated with the provided name.
+    /// Gets a(n) <typeparamref name="T"/> associated with the provided name.
     /// </summary>
     /// <param name="name">The name of the asset.</param>
-    /// <inheritdoc cref="AssetHandle.Load"/>
+    /// <param name="throwError">Flag indicating whether errors should be thrown or not.</param>
+    /// <inheritdoc cref="AssetHandle.Load{T}"/>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
     private static T Get<T>(string name, bool throwError = true) where T : UObject
     {
@@ -168,19 +165,20 @@ public static class AssetManager
         return handle.Load<T>(throwError);
     }
 
-    /// <summary>
-    /// Unloads an asset to free up memory.
-    /// </summary>
-    /// <param name="name">The name of the asset.</param>
-    /// <inheritdoc cref="AssetHandle.Unload"/>
-    /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
-    public static void UnloadAsset<T>(string name, bool throwError = true) where T : UObject
-    {
-        if (Assets.TryGetValue(name, out var handle))
-            handle.Unload<T>(throwError);
-        else if (throwError)
-            throw new FileNotFoundException($"{name}, {typeof(T).Name}");
-    }
+    // /// <summary>
+    // /// Unloads an asset to free up memory.
+    // /// </summary>
+    // /// <param name="name">The name of the asset.</param>
+    // /// <param name="throwError">Flag indicating whether errors should be thrown or not.</param>
+    // /// <inheritdoc cref="AssetHandle.Unload{T}"/>
+    // /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
+    // public static void UnloadAsset<T>(string name, bool throwError = true) where T : UObject
+    // {
+    //     if (Assets.TryGetValue(name, out var handle))
+    //         handle.Unload<T>(throwError);
+    //     else if (throwError)
+    //         throw new FileNotFoundException($"{name}, {typeof(T).Name}");
+    // }
 
     /// <summary>
     /// Loads a json file from the provided path.
@@ -202,7 +200,6 @@ public static class AssetManager
     private static Mesh LoadMesh(string path)
     {
         // This method uses a specially serialised version of the models to save on disk space and to make it easier to ship the mod
-        // TODO: Add a reverse importer for the unity project so that .cmesh files can be used to import models
 
         using var stream = Core.GetManifestResourceStream(path)!;
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
@@ -227,6 +224,7 @@ public static class AssetManager
     /// Loads a texture from the provided path.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
+    /// <param name="forSprite">Flag indicating whether the texture is being made for a sprite, so that the texture's name is preset.</param>
     /// <returns>The texture asset loaded from the path.</returns>
     private static Texture2D LoadTexture2D(string path, bool forSprite)
     {
@@ -260,7 +258,7 @@ public static class AssetManager
     }
 
     /// <summary>
-    /// Reads all of the bytes from the provided stream.
+    /// Reads all the bytes from the provided stream.
     /// </summary>
     /// <param name="input">The stream data to serialise to bytes.</param>
     /// <returns>A byte array representing the stream.</returns>
@@ -272,7 +270,7 @@ public static class AssetManager
     }
 
     /// <summary>
-    /// Reads all of the bytes from the provided file path.
+    /// Reads all the bytes from the provided file path.
     /// </summary>
     /// <param name="path">The file path to serialise to bytes.</param>
     /// <returns>A byte array representing the file.</returns>

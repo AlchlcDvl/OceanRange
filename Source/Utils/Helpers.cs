@@ -25,7 +25,7 @@ public static class Helpers
         return false;
     }
 
-    public static bool TryFinding(this IEnumerable source, Func<object, bool> predicate, out object value)
+    private static bool TryFinding(this IEnumerable source, Func<object, bool> predicate, out object value)
     {
         foreach (var item in source)
         {
@@ -36,7 +36,7 @@ public static class Helpers
             return true;
         }
 
-        value = default;
+        value = null;
         return false;
     }
 
@@ -52,9 +52,48 @@ public static class Helpers
         return @string;
     }
 
-    public static string[] TrueSplit(this string @string, params char[] separators) => [.. @string.Split(separators, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ExceptBy(string.IsNullOrWhiteSpace)];
+    public static List<string> TrueSplit(this string @string, params char[] separators)
+    {
+        var separatorSet = separators.ToHashSet();
+        var separatorCount = 0;
 
-    private static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x));
+        for (var i = 0; i < @string.Length; i++)
+        {
+            if (separatorSet.Contains(@string[i]))
+                separatorCount++;
+        }
+
+        var list = new List<string>(separatorCount + 1);
+        var start = 0;
+
+        for (var i = 0; i < @string.Length; i++)
+        {
+            if (!separatorSet.Contains(@string[i]))
+                continue;
+
+            if (i > start)
+            {
+                var part = @string.Substring(start, i - start).Trim();
+
+                if (!string.IsNullOrWhiteSpace(part))
+                    list.Add(part);
+            }
+
+            start = i + 1;
+        }
+
+        if (start < @string.Length)
+        {
+            var lastPart = @string.Substring(start).Trim();
+
+            if (!string.IsNullOrWhiteSpace(lastPart))
+                list.Add(lastPart);
+        }
+
+        return list;
+    }
+
+    // private static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x));
 
     // public static Color32 HexToColor32(this string hex)
     // {
@@ -225,7 +264,7 @@ public static class Helpers
             ExchangeOfferRegistry.RegisterUnlockableItem(id, progress[0], weight);
     }
 
-    public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used but it's better to be safe than sorry
+    public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used, but it's better to be safe than sorry
 
     private static readonly Dictionary<Type, Array> EnumMaps = [];
 
@@ -236,7 +275,7 @@ public static class Helpers
 
         var caseCheck = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
 
-        if (enums.TryFinding(value => string.Equals(value.ToString(), name, caseCheck), out var value))
+        if (enums.TryFinding(enumVal => string.Equals(enumVal.ToString(), name, caseCheck), out var value))
         {
             result = value;
             return true;
@@ -267,13 +306,13 @@ public static class Helpers
     public static bool IsNullableEnum(this Type type) => Nullable.GetUnderlyingType(type)?.IsEnum == true;
 
 #if DEBUG
-    public static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");
+    // private static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");
 
-    public static void LogIf(this object message, bool condition)
-    {
-        if (condition)
-            message.DoLog();
-    }
+    // public static void LogIf(this object message, bool condition)
+    // {
+    //     if (condition)
+    //         message.DoLog();
+    // }
 
     public static GameObject GetClosestCell(Vector3 pos)
     {

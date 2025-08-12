@@ -48,7 +48,7 @@ public sealed class TeleportCommand : ConsoleCommand
     public override bool Execute(string[] args)
     {
         if (args?.Length is 1)
-            args = args[0].TrueSplit(',', ' ', ';');
+            args = [.. args[0].TrueSplit(',', ' ', ';')];
 
         if (args?.Length is not 3)
             return false;

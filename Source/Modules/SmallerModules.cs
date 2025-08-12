@@ -13,33 +13,33 @@ public struct Orientation(Vector3 pos, Vector3 rot) : IEquatable<Orientation>
     // public Orientation(float xPos, float yPos, float zPos, float xRot, float yRot, float zRot)
     //     : this(new(xPos, yPos, zPos), new(xRot, yRot, zRot)) { }
 
-    public Vector3 this[int index]
-    {
-        readonly get => index switch
-        {
-            0 => Position,
-            1 => Rotation,
-            _ => throw new ArgumentOutOfRangeException(nameof(index))
-        };
-        set
-        {
-            switch (index)
-            {
-                case 0:
-                {
-                    Position = value;
-                    break;
-                }
-                case 1:
-                {
-                    Rotation = value;
-                    break;
-                }
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(index));
-            }
-        }
-    }
+    // public Vector3 this[int index]
+    // {
+    //     readonly get => index switch
+    //     {
+    //         0 => Position,
+    //         1 => Rotation,
+    //         _ => throw new ArgumentOutOfRangeException(nameof(index))
+    //     };
+    //     set
+    //     {
+    //         switch (index)
+    //         {
+    //             case 0:
+    //             {
+    //                 Position = value;
+    //                 break;
+    //             }
+    //             case 1:
+    //             {
+    //                 Rotation = value;
+    //                 break;
+    //             }
+    //             default:
+    //                 throw new ArgumentOutOfRangeException(nameof(index));
+    //         }
+    //     }
+    // }
 
     public override readonly bool Equals(object other) => other is Orientation orientation && Equals(orientation);
 

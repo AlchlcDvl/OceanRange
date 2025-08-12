@@ -8,12 +8,12 @@ public static class FoodManager
     /// <summary>
     /// The array containing all meat related data.
     /// </summary>
-    public static CustomChimkenData[] Chimkens;
+    private static CustomChimkenData[] Chimkens;
 
     /// <summary>
     /// The array containing all plant related data.
     /// </summary>
-    public static CustomPlantData[] Plants;
+    private static CustomPlantData[] Plants;
 
     private static bool StmExists; // Mod check flag
 
@@ -271,7 +271,6 @@ public static class FoodManager
         var prefab = basePrefab.CreatePrefab();
         prefab.name = patchName;
         var component = prefab.GetComponent<SpawnResource>();
-        var prefabComponent = basePrefab.GetComponent<SpawnResource>();
         component.id = spawnResource;
         component.ObjectsToSpawn = [plant];
         component.BonusObjectsToSpawn = [];

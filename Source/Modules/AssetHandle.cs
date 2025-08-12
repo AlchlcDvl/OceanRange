@@ -3,7 +3,6 @@ namespace OceanRange.Modules;
 /// <summary>
 /// The handle class specialised to handle mod assets.
 /// </summary>
-/// <inheritdoc cref="Handle"/>
 public sealed class AssetHandle(string name) : IDisposable
 {
     /// <summary>
@@ -21,13 +20,20 @@ public sealed class AssetHandle(string name) : IDisposable
     /// </summary>
     private readonly Dictionary<Type, UObject> Assets = [];
 
+    ~AssetHandle() => InternalDispose();
+
     /// <inheritdoc cref="IDisposable.Dispose"/>
     public void Dispose()
+    {
+        InternalDispose();
+        GC.SuppressFinalize(this);
+    }
+
+    private void InternalDispose()
     {
         Paths.Clear();
         Assets.Values.Do(UObject.Destroy);
         Assets.Clear();
-        GC.SuppressFinalize(this);
     }
 
     /// <summary>
@@ -48,7 +54,7 @@ public sealed class AssetHandle(string name) : IDisposable
     /// </summary>
     /// <typeparam name="T">The type of the asset.</typeparam>
     /// <param name="throwError">The flag that indicates if an error should be thrown.</param>
-    /// <returns>The fetched asset.</returns>
+    /// <returns>The fetched <typeparamref name="T"/>.</returns>
     /// <exception cref="NotSupportedException">Thrown if an invalid asset type was requested.</exception>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided type.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the asset was not loaded properly for reasons unknown.</exception>
@@ -78,19 +84,19 @@ public sealed class AssetHandle(string name) : IDisposable
         return (T)asset.DontDestroy();
     }
 
-    /// <summary>
-    /// Unloads the asset of the requested type to free up some memory.
-    /// </summary>
-    /// <typeparam name="T">The type of the asset.</typeparam>
-    /// <param name="throwError">The flag that indicates if an error should be thrown.</param>
-    /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided type.</exception>
-    public void Unload<T>(bool throwError = true) where T : UObject
-    {
-        var tType = typeof(T);
-
-        if (Assets.Remove(tType, out var asset))
-            asset.Destroy();
-        else if (throwError)
-            throw new FileLoadException($"No such asset {Name} of type {tType.Name} was loaded!");
-    }
+    // /// <summary>
+    // /// Unloads the asset of the requested type to free up some memory.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the asset.</typeparam>
+    // /// <param name="throwError">The flag that indicates if an error should be thrown.</param>
+    // /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided type.</exception>
+    // public void Unload<T>(bool throwError = true) where T : UObject
+    // {
+    //     var tType = typeof(T);
+    //
+    //     if (Assets.Remove(tType, out var asset))
+    //         asset.Destroy();
+    //     else if (throwError)
+    //         throw new FileLoadException($"No such asset {Name} of type {tType.Name} was loaded!");
+    // }
 }
