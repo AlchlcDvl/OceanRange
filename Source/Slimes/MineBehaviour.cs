@@ -26,7 +26,6 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     private float NextExplodeDelayTime = MaxDelay;
     private SlimeFaceAnimator SfAnimator;
     private CalmedByWaterSpray Calmed;
-    private SlimeAppearanceApplicator Applicator;
     private ExplodeIndicatorMarker Marker;
     private bool Contact;
     private ExplodeState State;
@@ -37,11 +36,12 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         base.Awake();
         SfAnimator = GetComponent<SlimeFaceAnimator>();
         Calmed = GetComponent<CalmedByWaterSpray>();
-        Applicator = GetComponent<SlimeAppearanceApplicator>();
         Marker = GetComponentsInChildren<ExplodeIndicatorMarker>(true)[0];
 
-        if (Applicator.Appearance)
-            ExplodeFX = Applicator.Appearance.ExplosionAppearance.explodeFx;
+        var applicator = GetComponent<SlimeAppearanceApplicator>();
+
+        if (applicator.Appearance)
+            ExplodeFX = applicator.Appearance.ExplosionAppearance.explodeFx;
     }
 
     public override void OnEnable()

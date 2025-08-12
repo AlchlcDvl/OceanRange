@@ -49,13 +49,3 @@ public static class EnsureGordoStaysPopped
             pop.Data.IsPopped = true;
     }
 }
-
-[HarmonyPatch(typeof(GameObjectActorModelIdentifiableIndex), nameof(GameObjectActorModelIdentifiableIndex.Register))]
-public static class FixEqualityIfPossible
-{
-    public static void Postfix(GameObject obj)
-    {
-        if (obj.TryGetComponent<MesmerBehaviour>(out var mesmer))
-            mesmer.SetEntry();
-    }
-}

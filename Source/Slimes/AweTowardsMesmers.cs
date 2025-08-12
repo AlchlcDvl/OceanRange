@@ -20,7 +20,7 @@ public sealed class AweTowardsMesmers : FindConsumable
         if (!isGrounded || !TimeDir.HasReached(NextActivationTime))
             return 0f;
 
-        Target = FindNearestConsumable(MesmerBehaviour.AllMesmers, out _);
+        Target = FindNearestConsumable(out _);
         return Target ? Randoms.SHARED.GetInRange(0.1f, 1f) : 0f;
     }
 

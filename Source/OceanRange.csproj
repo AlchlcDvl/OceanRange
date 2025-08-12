@@ -3,7 +3,7 @@
         <AssemblyName>OceanRange</AssemblyName>
         <RootNamespace>TheOceanRange</RootNamespace>
         <TargetFramework>net4.8</TargetFramework>
-        <Version>0.0.1</Version>
+        <Version>0.0.2</Version>
         <DebugType>none</DebugType>
         <DebugSymbols>true</DebugSymbols>
         <LangVersion>preview</LangVersion>
@@ -17,6 +17,7 @@
         <Configurations>Debug;Release</Configurations>
         <ImplicitUsings>true</ImplicitUsings>
         <PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
+        <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
     </PropertyGroup>
 
     <ItemGroup>

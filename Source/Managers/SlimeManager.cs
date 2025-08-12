@@ -784,7 +784,10 @@ public static class SlimeManager
 #endif
     public static void PostLoadSlimes()
     {
-        foreach (var slime in GameContext.Instance.LookupDirector.identifiablePrefabDict.Values)
-            slime.AddComponent<AweTowardsMesmers>();
+        foreach (var (id, prefab) in GameContext.Instance.LookupDirector.identifiablePrefabDict)
+        {
+            if (Identifiable.IsSlime(id))
+                prefab.AddComponent<AweTowardsMesmers>();
+        }
     }
 }

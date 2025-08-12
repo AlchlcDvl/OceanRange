@@ -3,7 +3,6 @@
         "name": "Rosi",
         "zones": ["REEF"],
         "canLargofy": false,
-        "specialDiet": true,
         "favToy": "OCTO_BUDDY_TOY",
         "slimeMatData":
         [
@@ -12,12 +11,8 @@
                 "middleColor": "#E6C7D2",
                 "bottomColor": "#F68ED9"
             },
-            {
-                "sameAs": 0
-            },
-            {
-                "topColor": "#F46CB7"
-            }
+            { "sameAs": 0 },
+            { "topColor": "#F46CB7" }
         ],
         "ammoColor": "#F9E5F0",
         "plortMatData":
@@ -27,24 +22,14 @@
                 "middleColor": "#E6C7D2",
                 "bottomColor": "#F9E5F0"
             },
-            {
-                "sameAs": 1
-            },
-            {
-                "sameAs": 2
-            }
+            { "sameAs": 1 },
+            { "sameAs": 2 }
         ],
         "gordoMatData":
         [
-            {
-                "sameAs": 0
-            },
-            {
-                "sameAs": 1
-            },
-            {
-                "sameAs": 2
-            }
+            { "sameAs": 0 },
+            { "sameAs": 1 },
+            { "sameAs": 2 }
         ],
         "basePrice": 7,
         "saturation": 50,
@@ -100,12 +85,7 @@
                 "bottomColor": "#FEFCFF"
             }
         ],
-        "gordoMatData":
-        [
-            {
-                "sameAs": 0
-            }
-        ],
+        "gordoMatData": [ { "sameAs": 0 } ],
         "slimeology": "Coco slimes are commonly found hanging from the palm trees of the island. Being natives to SwirlPool Island, the coco slimes have natural adapted a higher jump in order to climb trees and escape predators. Due to them being grown from palm trees, they have plant like attributes which causes them to require constant sunlight and also tend to avoid eating fruits and vegetables as it would be cannibalism.",
         "risks": "Be cautious while walking under palm trees as coco slimes are very territorial and if they sense you underneath, they will harden their soft, squishy bodies to a hard coconut-like shell and crash down onto their targets. Tourists in the past who got hit in the head by a coco slime have reported blurred vision and dizziness afterwards with some even being knocked out cold. This is also how they hunt in the wild. Despite their hard skin and agility, they are quite easy to ranch as long as they are well feed and have enough exposure to sunlight.",
         "plortonomics": "Coco plorts, unlike their producer, are very soft and silky as well as being an excellent source of calcium when condensed to liquid. Despite being very similar to earth’s milk in properties, they can still be consumed by people who are lactose intolerance making them extremely popular for creating lactose intolerance options for dairy products. And due to their incredibly soft and silky texture, they are also very good for skin care and used often in spas as substitutes to milk baths.",
@@ -163,21 +143,13 @@
         ],
         "plortMatData":
         [
-            {
-                "topColor": "#445660"
-            },
-            {
-                "sameAs": 1
-            }
+            { "topColor": "#445660" },
+            { "sameAs": 1 }
         ],
         "gordoMatData":
         [
-            {
-                "topColor": "#445660"
-            },
-            {
-                "sameAs": 1
-            }
+            { "topColor": "#445660" },
+            { "sameAs": 1 }
         ],
         "slimeology": "The mine slime, a distant and more... prickly cousin to the boom slime, has a unique take on volatility. Unlike their explosive kin, a mine slime's detonations are triggered only by direct contact with another slime or an unwary rancher. To deter accidental bumps, their bodies are adorned with sharp, crystalline spikes; a clear warning sign. Despite their fiery tendencies, these slimes prefer a milder diet of vegetables, with the blowtato being their ultimate delight. This root's highly volatile compounds provide the perfect internal spark for their constant energetic needs and powerful bursts. If a mine slime goes too long without popping, however, their internal pressure builds to uncomfortable levels, driving them to seek relief by finding water, or joining in an explosive embrace with fellow boom or mine slimes.",
         "risks": "Approach mine slimes with caution, for their spikes aren't just for show! Any direct contact will result in a localized eruption. While other slimes will be boomed clear of the danger zone, only fellow mine slimes and their boom cousins possess a natural immunity to these contact explosions. This peculiar trait makes co-habitation an active (and often loud) affair, as they'll seek out their explosive kin for regular, relieving bursts. Keeping them together helps manage their volatile nature, preventing an otherwise grumpy slime.",
@@ -225,9 +197,7 @@
                 "pattern": "lantern_pattern",
                 "matOrigin": "TABBY_SLIME"
             },
-            {
-                "sameAs": 0
-            },
+            { "sameAs": 0 },
             {
                 "topColor": "#EBDB6A",
                 "matOrigin": "PHOSPHOR_SLIME"
@@ -241,27 +211,15 @@
                 "bottomColor": "#752C86",
                 "gloss": 1
             },
-            {
-                "sameAs": 2
-            },
-            {
-                "sameAs": 3
-            }
+            { "sameAs": 2 },
+            { "sameAs": 3 }
         ],
         "gordoMatData":
         [
-            {
-                "sameAs": 0
-            },
-            {
-                "sameAs": 1
-            },
-            {
-                "sameAs": 2
-            },
-            {
-                "sameAs": 3
-            }
+            { "sameAs": 0 },
+            { "sameAs": 1 },
+            { "sameAs": 2 },
+            { "sameAs": 3  }
         ],
         "slimeology": "The lantern slime is a distant cousin of the phosphor slime. At one point in its evolution, the phosphor slimes expelled their inner core, using it to attract prey underwater. Slime nature is indeed peculiar. Much like its cousins, the lantern slimes can be found at night in the deepest parts of the Moss Blanket and the Great Reef. They are often seen alone and rarely in groups, as they prefer an isolated lifestyle and little interest in socializing. However, when it comes to humans, lantern slimes often aid divers in finding their way back to land.",
         "risks": "Lantern slimes aren't the most social compared to other slime species. During the day, they can be found sleeping in dark caves. When disturbed from their nap, they emit a bright flash to startle any diver or slime that dares to interrupt their beauty sleep. However, at night, they become very docile and can be found swimming across the coral reef in search of food.",
@@ -319,12 +277,7 @@
                 "bottomColor": "#E2DFD2"
             }
         ],
-        "gordoMatData":
-        [
-            {
-                "sameAs": 0
-            }
-        ],
+        "gordoMatData": [ { "sameAs": 0 } ],
         "slimeology": "The sand slime, a curious terrestrial cousin to both the puddle and fire slimes, makes its home along the shallow, sun-drenched shores of the Far, Far Range. Much like its elemental kin, these intriguing slimes require no typical sustenance from a rancher's feeder; instead, they subsist entirely on good old dirt. After sifting through the gritty soil, sand slimes process the minerals within, producing glimmering plorts that bear a striking resemblance to Earth's precious pearls. Their calm demeanor and unique diet make them a rather low-maintenance addition to any ranch.",
         "risks": "Rest easy, ranchers! The sand slime is one of the most delightfully docile slimes you'll encounter. These mellow blobs pose virtually no risk to the ranch, thriving peacefully in any populated corral without inciting a single outbreak. However, despite their beach-dwelling nature, sand slimes are surprisingly delicate when it comes to deep water; prolonged submersion will cause them to slowly dissolve! Even their valuable pearl plorts are safe from hungry mouths; it seems no other slime has a taste for a glistening pearl that began its life as common dirt. Their laid-back nature and inability to cause a ruckus make them perfect companions for even the most timid slimes, just keep them away from the deep end!",
         "plortonomics": "Sand plorts are true marvels of natural refinement. Though the sand slime itself is soft and yielding, the pearls it produces are remarkably tougher than their Earth counterparts, defying their humble origins. These pristine, spherical treasures, born from nothing more than processed soil, fetch an exceptional price on the Plort Market. Their iridescent sheen and superior durability make them highly sought-after for crafting exquisite jewelry and other luxury adornments across the galaxy, proving that true beauty can indeed come from the ground up!"
@@ -336,50 +289,38 @@
         "diet": "FRUIT",
         "basePlort": "TABBY_PLORT",
         "canLargofy": false,
-        "gloss": 0.11,
-        "topSlimeColor": "#0a094f",
-        "middleSlimeColor": "#2F2251",
-        "bottomSlimeColor": "#1e1140",
         "ammoColor": "#0a094f",
-        "topPlortColor": "#0a094f",
-        "middlePlortColor": "#2F2251",
-        "bottomPlortColor": "#1e1140",
-        "basePrice": 20.0,
-        "saturation": 100.0,
+        "basePrice": 20,
+        "saturation": 100,
         "intro": "ooooooooooooooooooo pretty",
         "pediaDiet": "Fruit",
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
-        "toAdd": ["OceanRange.Slimes.MesmerBehaviour, OceanRange", "StalkConsumable, Assembly-CSharp"],
+        "toAdd": ["StalkConsumable, Assembly-CSharp"],
         "slimeMeshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail"],
         "gordoMeshes": [null, "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_gordo"],
         "slimeMatData":
         [
             {
                 "topColor": "#0a094f",
-                "middleColor": "#FFFFFF",
-                "bottomColor": "#0a094f",
+                "middleColor": "#000000",
+                "bottomColor": "#1e1140",
                 "pattern": "mesmer_pattern",
-                "matOrigin": "TABBY_SLIME"
+                "matOrigin": "TABBY_SLIME",
+                "gloss": 0.11
             },
             {
                 "topColor": "#0a094f",
-                "middleColor": "#FFFFFF",
-                "bottomColor": "#0a094f",
-                "pattern": "mesmer_pincer_1_pattern",
+                "middleColor": "#000000",
+                "bottomColor": "#1e1140",
+                "pattern": "mesmer_pincer_pattern",
                 "matOrigin": "TABBY_SLIME"
             },
+            { "sameAs": 1 },
             {
                 "topColor": "#0a094f",
-                "middleColor": "#FFFFFF",
-                "bottomColor": "#0a094f",
-                "pattern": "mesmer_pincer_2_pattern",
-                "matOrigin": "TABBY_SLIME"
-            },
-            {
-                "topColor": "#0a094f",
-                "middleColor": "#FFFFFF",
-                "bottomColor": "#0a094f",
+                "middleColor": "#000000",
+                "bottomColor": "#1e1140",
                 "pattern": "mesmer_tail_pattern",
                 "matOrigin": "TABBY_SLIME"
             }
@@ -394,18 +335,10 @@
         ],
         "gordoMatData":
         [
-            {
-                "sameAs": 0
-            },
-            {
-                "sameAs": 1
-            },
-            {
-                "sameAs": 2
-            },
-            {
-                "sameAs": 3
-            }
+            { "sameAs": 0 },
+            { "sameAs": 1 },
+            { "sameAs": 2 },
+            { "sameAs": 3 }
         ],
         "natGordoSpawn": false,
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
