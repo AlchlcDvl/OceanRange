@@ -93,7 +93,7 @@ public static class AssetManager
 
         foreach (var handleName in handles)
         {
-            if (Assets.Remove(handleName, out var handle))
+            if (Assets.TryRemove(handleName, out var handle))
                 handle.Dispose(); // Releasing the handles
             else
                 throw new FileNotFoundException(handleName);
@@ -217,9 +217,6 @@ public static class AssetManager
 
     private static int ReadInt(BinaryReader reader) => reader.ReadInt32();
 
-    // Helper to create an empty texture
-    private static Texture2D EmptyTexture(TextureFormat format) => new(2, 2, format, true) { filterMode = FilterMode.Bilinear };
-
     /// <summary>
     /// Loads a texture from the provided path.
     /// </summary>
@@ -229,8 +226,11 @@ public static class AssetManager
     private static Texture2D LoadTexture2D(string path, bool forSprite)
     {
         var name = path.SanitisePath();
-        var texture = EmptyTexture(GetFormat(name));
-        texture.LoadImage(path.ReadBytes(), true);
+        var texture = new Texture2D(2, 2, GetFormat(name), true) { filterMode = FilterMode.Bilinear };
+
+        if (!texture.LoadImage(path.ReadBytes(), true))
+            return null;
+
         texture.wrapMode = GetWrapMode(name);
 
         if (forSprite)
@@ -254,7 +254,7 @@ public static class AssetManager
     private static Sprite LoadSprite(string path)
     {
         var tex = LoadTexture2D(path, true);
-        return Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight);
+        return tex ? Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
     }
 
     /// <summary>

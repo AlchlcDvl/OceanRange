@@ -2,10 +2,11 @@ namespace OceanRange.Slimes;
 
 public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener, CaveTrigger.Listener
 {
+    private readonly HashSet<GameObject> Caves = [];
+
     private TimeDirector TimeDir;
     private SlimeAppearanceApplicator Applicator;
     private float FleeingUntil;
-    private readonly HashSet<GameObject> Caves = [];
     private bool WaitForPhysicsUpdate;
 
     public bool CanMove;

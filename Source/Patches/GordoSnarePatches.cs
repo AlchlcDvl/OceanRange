@@ -29,9 +29,7 @@ public static class GordoSnarePatch
 
             var (message, ids) = eatMapEntry.isFavorite ? ("Found favorite", favIds) : ("Adding potential", normalIds);
             Log.Debug(message, "gordo", gordo.id, "hasAccess", true);
-
-            if (gordo.id != Ids.SAND_GORDO || eatMapEntry.isFavorite)
-                ids.Add(gordo.id);
+            ids.Add(gordo.id);
         }
 
         if (normalIds.Count > 0)

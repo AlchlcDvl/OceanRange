@@ -17,7 +17,7 @@ public static class SaveManager
         SaveRegistry.RegisterWorldDataSaveDelegate(WriteSaveData);
     }
 
-    private static readonly List<ISaveData> SaveData = [new MailSaveData(), new GordoSaveData()];
+    private static readonly ISaveData[] SaveData = [new MailSaveData(), new GordoSaveData()];
 
 #if DEBUG
     [TimeDiagnostic]
@@ -57,9 +57,10 @@ public static class SaveManager
     {
         FixAndProperlyShowMailPatch.IsLoaded = false;
 
-        piece.SetValue("version", SaveData.Count);
+        var length = SaveData.Length;
+        piece.SetValue("version", length);
 
-        for (var i = 0; i < SaveData.Count; i++)
+        for (var i = 0; i < length; i++)
         {
             try
             {

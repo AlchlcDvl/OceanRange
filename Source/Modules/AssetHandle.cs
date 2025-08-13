@@ -20,6 +20,8 @@ public sealed class AssetHandle(string name) : IDisposable
     /// </summary>
     private readonly Dictionary<Type, UObject> Assets = [];
 
+    private bool Disposed;
+
     ~AssetHandle() => InternalDispose();
 
     /// <inheritdoc cref="IDisposable.Dispose"/>
@@ -31,9 +33,13 @@ public sealed class AssetHandle(string name) : IDisposable
 
     private void InternalDispose()
     {
+        if (Disposed)
+            return;
+
         Paths.Clear();
         Assets.Values.Do(UObject.Destroy);
         Assets.Clear();
+        Disposed = true;
     }
 
     /// <summary>
@@ -45,8 +51,11 @@ public sealed class AssetHandle(string name) : IDisposable
     {
         var extension = path.TrueSplit('.').Last();
 
-        if ((AssetManager.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other)) || !Paths.TryAdd(extension, path))
-            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing!");
+        if (AssetManager.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other))
+            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing!");
+
+        if (!Paths.TryAdd(extension, path))
+            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming!");
     }
 
     /// <summary>
@@ -75,7 +84,7 @@ public sealed class AssetHandle(string name) : IDisposable
 
         // Save the asset if not null, otherwise throw an error
         if (!asset)
-            return throwError ? throw new InvalidOperationException($"Something happened while trying to load {Name} of type {tType.Name}!") : null;
+            return throwError ? throw new InvalidOperationException($"The load function for asset '{Name}' of type '{tType.Name}' returned null. Path: {path}") : null;
 
         Assets.Add(tType, asset);
 

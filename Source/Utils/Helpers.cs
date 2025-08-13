@@ -1,5 +1,6 @@
 // using SRML;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Globalization;
 using SRML.Utils;
 
@@ -7,8 +8,8 @@ namespace OceanRange.Utils;
 
 public static class Helpers
 {
-    // private static readonly Dictionary<string, Color32> HexToColor32s = [];
-    private static readonly Dictionary<string, Color> HexToColors = [];
+    // private static readonly ConcurrentDictionary<string, Color32> HexToColor32s = [];
+    private static readonly ConcurrentDictionary<string, Color> HexToColors = [];
 
     public static bool TryFinding<T>(this IEnumerable<T> source, Func<T, bool> predicate, out T value)
     {
@@ -132,7 +133,10 @@ public static class Helpers
     //         field.SetValue(instance, field.GetValue(obj));
 
     //     foreach (var property in tType.GetProperties(AccessTools.all))
-    //         property.SetValue(instance, property.GetValue(obj));
+    //     {
+    //         if (property.CanWrite)
+    //             property.SetValue(instance, property.GetValue(obj));
+    //     }
 
     //     return instance;
     // }
@@ -304,6 +308,42 @@ public static class Helpers
     public static bool IsNullableOf<T>(this Type type) => typeof(T).IsAssignableFrom(Nullable.GetUnderlyingType(type));
 
     public static bool IsNullableEnum(this Type type) => Nullable.GetUnderlyingType(type)?.IsEnum == true;
+
+    public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue value)
+    {
+        try
+        {
+            dict.Add(key, value);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> pair, out TKey key, out TValue value)
+    {
+        key = pair.Key;
+        value = pair.Value;
+    }
+
+    public static bool TryRemove<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, out TValue value)
+    {
+        try
+        {
+            if (!dict.TryGetValue(key, out value))
+                return false;
+
+            dict.Remove(key);
+            return true;
+        }
+        catch
+        {
+            value = default;
+            return false;
+        }
+    }
 
 #if DEBUG
     // private static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");

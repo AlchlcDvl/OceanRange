@@ -17,7 +17,7 @@ public static class SlimeManager
         ["Pearl"] = [],
     };
 
-    public static readonly List<IdentifiableId> MesmerLargos = [];
+    public static readonly HashSet<IdentifiableId> MesmerLargos = new(Identifiable.idComparer);
 
     public static CustomSlimeData[] Slimes;
     public static bool MgExists;
@@ -683,9 +683,9 @@ public static class SlimeManager
 
         foreach (var (rend, mesh) in list)
         {
-            if (!mesh)
+            if (!mesh || !rend)
             {
-                Debug.LogWarning("One of the Meshes provided to AssetsLib.MeshUtils.GenerateBoneData is null");
+                Debug.LogWarning("One of the meshes or mesh rends provided is null");
                 continue;
             }
 

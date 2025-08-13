@@ -48,10 +48,10 @@ internal sealed class Main : ModEntryPoint
 #endif
     }
 
-    /// <inheritdoc/>
 #if DEBUG
     [TimeDiagnostic("Mod Load")]
 #endif
+    /// <inheritdoc/>
     public override void Load()
     {
         // Loads slimes and food
@@ -62,10 +62,10 @@ internal sealed class Main : ModEntryPoint
             AddSplashesBypass(AssetManager.GetSprites("loading_1", "loading_2", "loading_3"));
     }
 
-    /// <inheritdoc/>
 #if DEBUG
     [TimeDiagnostic("Mod Postload")]
 #endif
+    /// <inheritdoc/>
     public override void PostLoad()
     {
         SlimeManager.PostLoadSlimes();
@@ -78,15 +78,16 @@ internal sealed class Main : ModEntryPoint
         GC.Collect(); // Free up temp memory
     }
 
-    /// <inheritdoc/>
 #if DEBUG
     [TimeDiagnostic("Mod Unload")]
+    /// <inheritdoc/>
     public override void Unload()
     {
         File.WriteAllText(Path.Combine(AssetManager.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePos.SavedPositions, AssetManager.JsonSettings));
         AssetManager.ReleaseHandles();
     }
 #else
+    /// <inheritdoc/>
     public override void Unload() => AssetManager.ReleaseHandles();
 #endif
 

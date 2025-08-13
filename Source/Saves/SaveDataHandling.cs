@@ -21,16 +21,9 @@ public sealed class SaveWriter
     public ulong[] ToArray(out byte padding)
     {
         padding = (byte)((8 - (Bytes.Count % 8)) % 8);
-        var paddedData = new byte[Bytes.Count + padding];
-
-        for (var i = 0; i < Bytes.Count; i++)
-            paddedData[i] = Bytes[i];
-
-        var ulongArray = new ulong[paddedData.Length / 8];
-
-        for (var i = 0; i < paddedData.Length; i += 8)
-            ulongArray[i / 8] = BitConverter.ToUInt64(paddedData, i);
-
+        var totalBytes = Bytes.Count + padding;
+        var ulongArray = new ulong[totalBytes / 8];
+        Buffer.BlockCopy(Bytes.ToArray(), 0, ulongArray, 0, Bytes.Count);
         return ulongArray;
     }
 }
@@ -48,20 +41,16 @@ public sealed class SaveReader
     /// </summary>
     /// <param name="data">The ulong array to read from.</param>
     /// <param name="padding">The number of padding bytes to remove.</param>
-    public SaveReader(ulong[] data, byte padding)
+    public unsafe SaveReader(ulong[] data, byte padding)
     {
-        var totalBytes = data.Length * 8;
-        var list = new List<byte>(totalBytes);
+        var totalBytes = (data.Length * 8) - padding;
+        Data = new byte[totalBytes];
 
-        foreach (var val in data)
-            list.AddRange(BitConverter.GetBytes(val));
-
-        var limit = totalBytes - padding;
-
-        while (totalBytes-- > limit)
-            list.RemoveAt(totalBytes - 1);
-
-        Data = [.. list];
+        fixed (byte* dest = Data)
+        {
+            fixed (ulong* src = data)
+                Buffer.MemoryCopy(src, dest, totalBytes, totalBytes);
+        }
     }
 
     // Read methods for various data types.

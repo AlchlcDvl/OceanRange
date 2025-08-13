@@ -1,3 +1,5 @@
+using OceanRange.Patches;
+
 namespace OceanRange.Saves;
 
 public sealed class MailSaveData : ISaveData
@@ -13,6 +15,9 @@ public sealed class MailSaveData : ISaveData
         {
             writer.Write(mail.Read);
             writer.Write(mail.Sent);
+
+            if (EnsureAutoSaveDirectorData.IsAutoSave)
+                continue;
 
             mail.Read = false;
             mail.Sent = false;
@@ -39,17 +44,21 @@ public sealed class GordoSaveData : ISaveData
 {
     public bool Deprecated => false;
 
+    private static Dictionary<IdentifiableId, CustomSlimeData> Lookup;
+
     public ulong[] Write(out byte padding)
     {
         var writer = new SaveWriter();
-        var gordos = SlimeManager.Slimes.Where(x => x.HasGordo).ToArray();
-        writer.Write(gordos.Length);
+        Lookup ??= SlimeManager.Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId);
+        writer.Write(Lookup.Count);
 
-        foreach (var gordo in gordos)
+        foreach (var (id, slimeData) in Lookup)
         {
-            writer.Write((int)gordo.GordoId);
-            writer.Write(gordo.IsPopped);
-            gordo.IsPopped = false;
+            writer.Write((int)id);
+            writer.Write(slimeData.IsPopped);
+
+            if (!EnsureAutoSaveDirectorData.IsAutoSave)
+                slimeData.IsPopped = false;
         }
 
         return writer.ToArray(out padding);
@@ -59,12 +68,15 @@ public sealed class GordoSaveData : ISaveData
     {
         var reader = new SaveReader(data, padding);
         var count = reader.ReadInt32();
+        Lookup ??= SlimeManager.Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId);
 
         while (count-- > 0)
         {
             var id = (IdentifiableId)reader.ReadInt32();
-            var gordo = Array.Find(SlimeManager.Slimes, x => x.GordoId == id);
-            gordo.IsPopped = reader.ReadBoolean();
+            var flag = reader.ReadBoolean();
+
+            if (Lookup.TryGetValue(id, out var slimeData))
+                slimeData.IsPopped = flag;
         }
     }
 }

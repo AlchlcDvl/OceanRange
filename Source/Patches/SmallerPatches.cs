@@ -49,3 +49,15 @@ public static class EnsureGordoStaysPopped
             pop.Data.IsPopped = true;
     }
 }
+
+[HarmonyPatch(typeof(AutoSaveDirector))]
+public static class EnsureAutoSaveDirectorData
+{
+    public static bool IsAutoSave;
+
+    [HarmonyPatch(nameof(AutoSaveDirector.SaveAllNow))]
+    public static void Prefix() => IsAutoSave = true;
+
+    [HarmonyPatch(nameof(AutoSaveDirector.SaveGame))]
+    public static void Postfix() => IsAutoSave = false;
+}

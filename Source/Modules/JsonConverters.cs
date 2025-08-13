@@ -56,7 +56,7 @@ public abstract class OceanJsonConverter : JsonConverter
 }
 
 /// <summary>
-/// Generic base class for type safety and a simplified CanConvert check.
+/// Generic json converter for <typeparamref name="T"/> with a simplified CanConvert check.
 /// </summary>
 /// <typeparam name="T">The type of the value being handled.</typeparam>
 public abstract class OceanJsonConverter<T> : OceanJsonConverter
@@ -126,7 +126,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     /// </summary>
     /// <param name="valString">The string to parse.</param>
     /// <returns>The parse <typeparamref name="TValue"/>.</returns>
-    public TValue Parse(string valString) => ParseOtherFormat(valString, out var result) ? result : FillFromArray(ParseComponents(valString, this));
+    public TValue Parse(string valString) => ParseOtherFormat(valString, out var result) ? result : FillFromArray(ParseComponents(valString));
 
     /// <summary>
     /// An alternative parsing format that doesn't involve splitting the string to get the values.
@@ -155,36 +155,35 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     /// Breaks down a value string and returns an array of <typeparamref name="TComponent"/>.
     /// </summary>
     /// <param name="value">The value to parse.</param>
-    /// <param name="converter">The converter that's doing the parsing.</param>
     /// <returns>An array of parsed components from the provided string.</returns>
     /// <exception cref="InvalidDataException">Thrown if a component string was not of the correct number format.</exception>
-    private static TComponent[] ParseComponents(string value, MultiComponentConverter<TValue, TComponent> converter)
+    private TComponent[] ParseComponents(string value)
     {
-        var components = value.TrueSplit(converter.Separator); // Split into would be components
+        var components = value.TrueSplit(Separator); // Split into would be components
 
         // Ensure that the correct number of components are there
 
-        if (components.Count < converter.MinLength)
+        if (components.Count < MinLength)
             throw new InvalidDataException($"'{value}' has too less values!");
 
-        if (components.Count > converter.MaxLength)
+        if (components.Count > MaxLength)
             throw new InvalidDataException($"'{value}' has too many values!");
 
-        var array = new TComponent[converter.MaxLength]; // Create temp array (I wish the game used System.Memory so I could use ArrayPool)
+        var array = new TComponent[MaxLength]; // Create temp array (I wish the game used System.Memory so I could use ArrayPool)
 
         for (var i = 0; i < components.Count; i++) // For each string component
         {
             var component = components[i];
 
-            if (converter.TryParse(component, converter.Style, CultureInfo.InvariantCulture, out var valueComponent)) // Attempt to parse
+            if (TryParse(component, Style, CultureInfo.InvariantCulture, out var valueComponent)) // Attempt to parse
                 array[i] = valueComponent; // Assign to index of array if parsing successful
             else
                 throw new InvalidDataException($"Invalid {typeof(TComponent).Name} string '{component}'!"); // Throw error otherwise
         }
 
         // Filling in the missing values with the converter default
-        for (var i = components.Count; i < converter.MaxLength; i++)
-            array[i] = converter.Default;
+        for (var i = components.Count; i < MaxLength; i++)
+            array[i] = Default;
 
         return array;
     }
@@ -297,9 +296,7 @@ public sealed class EnumConverter : OceanJsonConverter
     }
 }
 
-/// <summary>
-/// Type converter.
-/// </summary>
+/// <inheritdoc cref="OceanJsonConverter{Type}"/>
 public sealed class TypeConverter : OceanJsonConverter<Type>
 {
     /// <inheritdoc/>
