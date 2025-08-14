@@ -44,6 +44,7 @@ public static class Helpers
     public static T DontDestroy<T>(this T obj) where T : UObject
     {
         obj.DontDestroyOnLoad();
+        obj.hideFlags |= HideFlags.HideAndDontSave;
         return obj;
     }
 
@@ -278,15 +279,7 @@ public static class Helpers
             enums = EnumMaps[enumType] = Enum.GetValues(enumType);
 
         var caseCheck = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
-
-        if (enums.TryFinding(enumVal => string.Equals(enumVal.ToString(), name, caseCheck), out var value))
-        {
-            result = value;
-            return true;
-        }
-
-        result = null;
-        return false;
+        return enums.TryFinding(enumVal => string.Equals(enumVal.ToString(), name, caseCheck), out result);
     }
 
     public static bool TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey[] keys, out TValue result)
@@ -332,11 +325,7 @@ public static class Helpers
     {
         try
         {
-            if (!dict.TryGetValue(key, out value))
-                return false;
-
-            dict.Remove(key);
-            return true;
+            return dict.TryGetValue(key, out value) && dict.Remove(key);
         }
         catch
         {
@@ -346,7 +335,7 @@ public static class Helpers
     }
 
 #if DEBUG
-    // private static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");
+    // public static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");
 
     // public static void LogIf(this object message, bool condition)
     // {

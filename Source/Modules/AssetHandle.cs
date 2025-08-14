@@ -49,7 +49,7 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <exception cref="ArgumentException">Thrown if the path contains a file extension that's already been added.</exception>
     public void AddPath(string path)
     {
-        var extension = path.TrueSplit('.').Last();
+        var extension = Path.GetExtension(path).Replace(".", "");
 
         if (AssetManager.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other))
             throw new ArgumentException($"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing!");
