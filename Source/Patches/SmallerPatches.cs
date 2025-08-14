@@ -14,7 +14,7 @@ public static class MineSlimeAppearanceFix
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
 public static class EatMapFix
 {
-    public static void Postfix(SlimeDiet __instance, SlimeDefinition definition)
+    public static void Postfix(SlimeDiet __instance, SlimeDefinitions definitions, SlimeDefinition definition)
     {
         // This is such a goofy oversight lmao, SRML used Identifiable.IsAnimal instead of directly comparing with the Identifiable.MEAT_CLASS, leading to chicks being eaten as well lol
         __instance.EatMap.RemoveAll(x => Identifiable.CHICK_CLASS.Contains(x.eats)); // TODO: Remove when SRML v0.3.0 comes out
@@ -35,9 +35,14 @@ public static class EatMapFix
             });
         }
 
-        foreach (var (largoId, slimeId) in LargoManagerTemp.LargoMaps)
+        foreach (var (largoId, slimeId, slimeOfPlort) in LargoManagerTemp.LargoMaps)
         {
-            if (definition.IdentifiableId != slimeId || definition.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !definition.Diet.Produces.TryFinding(Identifiable.IsPlort, out var plortId))
+            if (definition.IdentifiableId != slimeId || definition.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS))
+                continue;
+
+            var slimeDef = definitions.GetSlimeByIdentifiableId(slimeOfPlort);
+
+            if (slimeDef.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !slimeDef.Diet.Produces.TryFinding(Identifiable.IsPlort, out var plortId))
                 continue;
 
             __instance.EatMap.RemoveAll(x => x.eats == plortId);
