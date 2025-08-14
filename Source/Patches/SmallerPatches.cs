@@ -35,12 +35,12 @@ public static class EatMapFix
             });
         }
 
-        foreach (var (largoId, slimeId, slimeOfPlort) in LargoManagerTemp.LargoMaps)
-        {
-            if (definition.IdentifiableId != slimeId || definition.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS))
-                continue;
+        if (definition.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !LargoManagerTemp.LargoMaps.TryGetValue(definition.IdentifiableId, out var maps))
+            return;
 
-            var slimeDef = definitions.GetSlimeByIdentifiableId(slimeOfPlort);
+        foreach (var (largoId, slimeId) in maps)
+        {
+            var slimeDef = definitions.GetSlimeByIdentifiableId(slimeId);
 
             if (slimeDef.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !slimeDef.Diet.Produces.TryFinding(Identifiable.IsPlort, out var plortId))
                 continue;
