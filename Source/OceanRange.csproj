@@ -6,7 +6,7 @@
         <Version>0.0.2</Version>
         <DebugType>none</DebugType>
         <DebugSymbols>true</DebugSymbols>
-        <LangVersion>preview</LangVersion>
+        <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Authors>TheRanchExchange</Authors>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
@@ -16,7 +16,6 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <Configurations>Debug;Release</Configurations>
         <PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
-        <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
     </PropertyGroup>
 
     <ItemGroup>
@@ -28,10 +27,6 @@
         <EmbeddedResource Include="Resources\*" />
         <EmbeddedResource Include="Resources\*\*" />
     </ItemGroup>
-
-    <Target Name="Copy" AfterTargets="Build" > <!-- This will create new directories if you don't have a test copy of modded SR -->
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" />
-    </Target>
 
     <PropertyGroup Condition="$(Configuration)==Release">
         <Optimize>true</Optimize>

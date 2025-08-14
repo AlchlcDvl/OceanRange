@@ -122,7 +122,7 @@
         "intro": "The touch-me-not of slimes!",
         "pediaDiet": "Veggie",
         "fav": "Blowtato",
-        "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange", "DamagePlayerOnTouch, Assembly-CSharp"],
+        "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange"],
         "toRemove": ["BoomSlimeExplode, Assembly-CSharp", "BoomMaterialAnimator, Assembly-CSharp"],
         "plortMeshes": ["pearl", "mine_pearl"],
         "slimeMeshes": [null, "mine_exterior"],
@@ -307,17 +307,11 @@
                 "gloss": 0.11
             },
             {
-                "topColor": "#0a094f",
-                "middleColor": "#000000",
-                "bottomColor": "#1e1140",
                 "pattern": "mesmer_pincer_pattern",
                 "matOrigin": "TABBY_SLIME"
             },
             { "sameAs": 1 },
             {
-                "topColor": "#0a094f",
-                "middleColor": "#000000",
-                "bottomColor": "#1e1140",
                 "pattern": "mesmer_tail_pattern",
                 "matOrigin": "TABBY_SLIME"
             }

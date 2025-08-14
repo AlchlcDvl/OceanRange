@@ -5,7 +5,7 @@ namespace OceanRange.Utils;
 // Obtained this code from SimpleSrModLibrary, just been optimised to avoid excessive ToString and ToLower overhead
 public static class SlimePediaCreation
 {
-    public static void CreateSlimePediaForSlimeWithName(PediaId slimePediaId, string name, string intro, string diet, string favorite, string slimeology, string risks, string plortonomics)
+    public static void CreatePediaForSlime(PediaId slimePediaId, string name, string intro, string diet, string favorite, string slimeology, string risks, string plortonomics)
     {
         var id = slimePediaId.ToString().ToLower();
         TranslationPatcher.AddActorTranslation("l." + id, name);
@@ -18,7 +18,7 @@ public static class SlimePediaCreation
         TranslationPatcher.AddPediaTranslation("m.plortonomics." + id, plortonomics);
     }
 
-    public static void CreateSlimePediaForItemWithName(PediaId pediaId, string name, string intro, string type, string favored, string about, string ranch = null)
+    public static void CreatePediaForFood(PediaId pediaId, string name, string intro, string type, string favored, string about, string ranch)
     {
         var id = pediaId.ToString().ToLower();
         TranslationPatcher.AddActorTranslation("l." + id.Replace("_entry", ""), name);
@@ -27,9 +27,7 @@ public static class SlimePediaCreation
         TranslationPatcher.AddPediaTranslation("m.resource_type." + id, type);
         TranslationPatcher.AddPediaTranslation("m.favored_by." + id, favored);
         TranslationPatcher.AddPediaTranslation("m.desc." + id, about);
-
-        if (ranch != null)
-            TranslationPatcher.AddPediaTranslation("m.how_to_use." + id, ranch);
+        TranslationPatcher.AddPediaTranslation("m.how_to_use." + id, ranch);
     }
 
     // public static void CreateZoneSlimePedia(PediaId slimePediaId, Zone lNameId, string name, string presence, string fullName, string intro, string description)

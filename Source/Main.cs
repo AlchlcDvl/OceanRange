@@ -80,8 +80,8 @@ internal sealed class Main : ModEntryPoint
     }
 
 #if DEBUG
-    [TimeDiagnostic("Mod Unload")]
     /// <inheritdoc/>
+    [TimeDiagnostic("Mod Unload")]
     public override void Unload()
     {
         File.WriteAllText(Path.Combine(AssetManager.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePos.SavedPositions, AssetManager.JsonSettings));

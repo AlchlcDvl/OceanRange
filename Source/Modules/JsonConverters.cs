@@ -264,7 +264,7 @@ public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberSt
 // {
 //     /// <inheritdoc/>
 //     protected override Color32 FillFromArray(byte[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
-//
+
 //     /// <inheritdoc/>
 //     protected override string ToValueString(Color32 value) => value.ToHexRGBA(); // Using hex code here because it's a simpler representation
 // }
