@@ -1,0 +1,9 @@
+{
+    "id": "ocean.range",
+    "name": "Ocean Range",
+    "version": "0.0.2",
+    "author": "AlchlcSystm, LoyalRancher, JackZ, Miramation, DiegoBA, Sir.UWU, Ghostly, GielDBL",
+    "description": "Explore the slime sea!",
+    "dependencies": ["assetslib 1.2.6"],
+    "load_after": ["slimesandmarket", "sellthingsmod", "custom.loading"]
+}
