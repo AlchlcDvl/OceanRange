@@ -11,33 +11,49 @@ public static class MineSlimeAppearanceFix
     }
 }
 
-// This is such a goofy oversight lmao, SRML used Identifiable.IsAnimal instead of directly comparing with the Identifiable.MEAT_CLASS, leading to chicks being eaten as well lol
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
 public static class EatMapFix
 {
-    public static void Postfix(SlimeDiet __instance, SlimeDefinition definition)
+    public static void Postfix(SlimeDiet __instance, SlimeDefinitions definitions, SlimeDefinition definition)
     {
-        __instance.EatMap.RemoveAll(Exclusion);
+        // This is such a goofy oversight lmao, SRML used Identifiable.IsAnimal instead of directly comparing with the Identifiable.MEAT_CLASS, leading to chicks being eaten as well lol
+        __instance.EatMap.RemoveAll(x => Identifiable.CHICK_CLASS.Contains(x.eats)); // TODO: Remove when SRML v0.3.0 comes out
 
-        if (!definition.IdentifiableId.IsAny(Ids.SAND_SLIME, Ids.SAND_GORDO))
+        if (definition.IdentifiableId.IsAny(Ids.SAND_SLIME, Ids.SAND_GORDO))
+        {
+            __instance.EatMap.RemoveAll(x => x.eats == IdentifiableId.SILKY_SAND_CRAFT);
+            __instance.EatMap.Add(new()
+            {
+                eats = IdentifiableId.SILKY_SAND_CRAFT,
+                producesId = Ids.SAND_PLORT,
+                isFavorite = true,
+                favoriteProductionCount = __instance.FavoriteProductionCount,
+                driver = SlimeEmotions.Emotion.NONE,
+                minDrive = 0f,
+                extraDrive = 0f,
+                becomesId = IdentifiableId.NONE
+            });
+        }
+
+        if (definition.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !LargoManagerTemp.LargoMaps.TryGetValue(definition.IdentifiableId, out var maps))
             return;
 
-        __instance.EatMap.Add(new()
+        foreach (var (largoId, slimeId) in maps)
         {
-            eats = IdentifiableId.SILKY_SAND_CRAFT,
-            producesId = Ids.SAND_PLORT,
-            isFavorite = true,
-            favoriteProductionCount = __instance.FavoriteProductionCount,
-            driver = SlimeEmotions.Emotion.NONE,
-            minDrive = 0f,
-            extraDrive = 0f,
-            becomesId = IdentifiableId.NONE
-        });
-    }
+            var slimeDef = definitions.GetSlimeByIdentifiableId(slimeId);
 
-    private static bool Exclusion(SlimeDiet.EatMapEntry entry)
-        => Identifiable.CHICK_CLASS.Contains(entry.eats) // TODO: Remove when SRML v0.3.0 comes out
-        || entry.eats == IdentifiableId.SILKY_SAND_CRAFT;
+            if (slimeDef.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !slimeDef.Diet.Produces.TryFinding(Identifiable.IsPlort, out var plortId))
+                continue;
+
+            __instance.EatMap.RemoveAll(x => x.eats == plortId);
+            __instance.EatMap.Add(new()
+            {
+                becomesId = largoId,
+                eats = plortId,
+                minDrive = 1f
+            });
+        }
+    }
 }
 
 [HarmonyPatch(typeof(GordoEat), nameof(GordoEat.ImmediateReachedTarget))]

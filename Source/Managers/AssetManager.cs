@@ -128,13 +128,13 @@ public static class AssetManager
     /// <summary>
     /// Gets a Texture2D from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get{Texture2D}"/>
+    /// <inheritdoc cref="Get{T}"/>
     public static Texture2D GetTexture2D(string name) => Get<Texture2D>(name);
 
     /// <summary>
     /// Gets a Sprite from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get{Sprite}"/>
+    /// <inheritdoc cref="Get{T}"/>
     public static Sprite GetSprite(string name) => Get<Sprite>(name);
 
     /// <summary>
@@ -147,7 +147,7 @@ public static class AssetManager
     /// <summary>
     /// Gets a Mesh from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get{Mesh}"/>
+    /// <inheritdoc cref="Get{T}"/>
     public static Mesh GetMesh(string name) => Get<Mesh>(name);
 
     /// <summary>

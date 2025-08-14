@@ -299,8 +299,8 @@ public static class SlimeManager
             tracker.Destroy();
 
         var baseAppearance = baseDefinition.AppearancesDefault[0]; // Getting the base appearance
-
         var appearance = baseAppearance.DeepCopy(); // Cloning our own appearance
+        appearance.name = $"{slimeData.Name}Normal";
 
         // Faces stuff
         foreach (var face in appearance.Face.ExpressionFaces)
@@ -382,7 +382,7 @@ public static class SlimeManager
         TranslationPatcher.AddActorTranslation("l." + slimeIdName, title);
 
         SlimePediaCreation.PreLoadSlimePediaConnection(slimeData.MainEntry, slimeData.MainId, PediaCategory.SLIMES);
-        SlimePediaCreation.CreateSlimePediaForSlimeWithName(slimeData.MainEntry, title, slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks, slimeData.Plortonomics);
+        SlimePediaCreation.CreatePediaForSlime(slimeData.MainEntry, title, slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks, slimeData.Plortonomics);
         PediaRegistry.RegisterIdEntry(slimeData.MainEntry, appearance.Icon);
 
         if (Main.ClsExists)
@@ -435,6 +435,7 @@ public static class SlimeManager
             var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
             var prefab2 = elemPrefab.CreatePrefab();
             elem.Prefabs = [prefab2];
+            elem.name = elem.Name = i == 0 ? "Body" : "Structure";
             var meshRend = prefab2.GetComponent<SkinnedMeshRenderer>();
             meshRend.sharedMesh = isNull ? meshRend.sharedMesh.Clone() : AssetManager.GetMesh(meshName);
 
@@ -775,12 +776,10 @@ public static class SlimeManager
 
     public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _1) => SandBehaviour.PlortPrefab = prefab;
 
-    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition definition)
+    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition _)
     {
         var eat = prefab.GetComponent<GordoEat>();
-        var diet = eat.slimeDefinition.Diet = SlimeDiet.Combine(eat.slimeDefinition.Diet, IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet);
-        eat.allEats.Add(IdentifiableId.SILKY_SAND_CRAFT);
-        diet.RefreshEatMap(GameContext.Instance.SlimeDefinitions, definition);
+        eat.slimeDefinition.Diet = SlimeDiet.Combine(eat.slimeDefinition.Diet, IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet);
         IdentifiableId.SILKY_SAND_CRAFT.RegisterAsSnareable();
     }
 

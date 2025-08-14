@@ -11,7 +11,7 @@ public struct Orientation(Vector3 pos, Vector3 rot) : IEquatable<Orientation>
     public Vector3 Rotation = rot;
 
     // public Orientation(float xPos, float yPos, float zPos, float xRot, float yRot, float zRot)
-    //     : this(new(xPos, yPos, zPos), new(xRot, yRot, zRot)) { }
+    //    : this(new(xPos, yPos, zPos), new(ClampAngle(xRot), ClampAngle(yRot), ClampAngle(zRot))) { }
 
     // public Vector3 this[int index]
     // {
@@ -41,15 +41,27 @@ public struct Orientation(Vector3 pos, Vector3 rot) : IEquatable<Orientation>
     //     }
     // }
 
-    public override readonly bool Equals(object other) => other is Orientation orientation && Equals(orientation);
+    public override readonly bool Equals(object obj) => obj is Orientation orientation && Equals(orientation);
 
     public readonly bool Equals(Orientation other) => Position.Equals(other.Position) && Rotation.Equals(other.Rotation);
 
-    public override int GetHashCode() => (Position.GetHashCode() << 2) ^ (Rotation.GetHashCode() >> 2);
+    public override readonly int GetHashCode() => (Position.GetHashCode() * -1521134295) + Rotation.GetHashCode();
 
     public static bool operator ==(Orientation left, Orientation right) => left.Equals(right);
 
     public static bool operator !=(Orientation left, Orientation right) => !(left == right);
+
+    // public readonly void Deconstruct(out Vector3 position, out Vector3 rotation)
+    // {
+    //     position = Position;
+    //     rotation = Rotation;
+    // }
+
+    // private static float ClampAngle(float angle)
+    // {
+    //     var clampedAngle = angle % 360f;
+    //     return clampedAngle < 0 ? clampedAngle + 360f : clampedAngle;
+    // }
 }
 
 // public sealed class BlankBehaviour : MonoBehaviour; // Blank class to be used as a persistent check, similar to PersistentId class
