@@ -57,6 +57,7 @@ internal sealed class Main : ModEntryPoint
         // Loads slimes and food
         FoodManager.LoadAllFoods();
         SlimeManager.LoadAllSlimes();
+        LargoManager.LoadAllLargos();
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
             AddSplashesBypass(AssetManager.GetSprites("loading_1", "loading_2", "loading_3"));

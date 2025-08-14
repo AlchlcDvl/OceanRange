@@ -65,4 +65,24 @@ public static class Ids
     // public static readonly Zone GREAT_REEF;
     // public static readonly Zone LISA_RANCH;
     // public static readonly Zone BLUE_DEPTHS;
+
+    public static readonly IdentifiableId PINK_COCO_LARGO;
+    public static readonly IdentifiableId SABER_COCO_LARGO;
+    public static readonly IdentifiableId COCO_QUANTUM_LARGO;
+    public static readonly IdentifiableId COCO_HONEY_LARGO;
+    public static readonly IdentifiableId COCO_PHOSPHOR_LARGO;
+    public static readonly IdentifiableId COCO_MOSAIC_LARGO;
+    public static readonly IdentifiableId COCO_TANGLE_LARGO;
+    public static readonly IdentifiableId COCO_BOOM_LARGO;
+    public static readonly IdentifiableId COCO_RAD_LARGO;
+    public static readonly IdentifiableId COCO_ROCK_LARGO;
+    public static readonly IdentifiableId COCO_TABBY_LARGO;
+    public static readonly IdentifiableId COCO_HUNTER_LARGO;
+    public static readonly IdentifiableId COCO_CRYSTAL_LARGO;
+    public static readonly IdentifiableId COCO_DERVISH_LARGO;
+
+    public static readonly IdentifiableId ROSI_MINE_LARGO;
+    public static readonly IdentifiableId ROSI_LANTERN_LARGO;
+    public static readonly IdentifiableId MINE_LANTERN_LARGO;
+
 }

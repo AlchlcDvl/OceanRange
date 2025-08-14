@@ -283,6 +283,7 @@ public static class AssetManager
     private static void CreateAssetHandle(string path)
     {
         var name = path.SanitisePath();
+        Main.Console.Log($"{path}:{name}");
 
         if (!Assets.TryGetValue(name, out var handle))
             handle = Assets[name] = new(name);
