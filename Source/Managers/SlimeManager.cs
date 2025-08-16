@@ -54,7 +54,7 @@ public static class SlimeManager
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
 
-        // var modded = Slimes.Select(x => x.Name.ToUpper()).ToArray(); // WIP
+        // var modded = Slimes.Select(x => x.Name.ToUpperInvariant()).ToArray(); // WIP
         // Slimes.ForEach(x => x.GenerateLargos(modded));
     }
 
@@ -136,7 +136,7 @@ public static class SlimeManager
 
         var definition = slimeData.MainId.GetSlimeDefinition();
 
-        var lower = slimeData.Name.ToLower();
+        var lower = slimeData.Name.ToLowerInvariant();
         var name = slimeData.Name + " Gordo";
 
         var icon = AssetManager.GetSprite($"{lower}_gordo");
@@ -193,7 +193,7 @@ public static class SlimeManager
         slimeData.InitGordoDetails?.Invoke(null, [prefab, gordoDefinition]);
 
         TranslationPatcher.AddPediaTranslation("t." + gordoDefinition.name, name);
-        TranslationPatcher.AddActorTranslation("l." + slimeData.GordoId.ToString().ToLower(), name);
+        TranslationPatcher.AddActorTranslation("l." + slimeData.GordoId.ToString().ToLowerInvariant(), name);
         LookupRegistry.RegisterGordo(prefab);
         SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);
 
@@ -237,10 +237,10 @@ public static class SlimeManager
         slimeData.InitPlortDetails?.Invoke(null, [prefab, definition]);
 
         // Registering the prefab and its id along with any other additional stuff
-        var icon = AssetManager.GetSprite($"{slimeData.Name.ToLower()}_plort");
+        var icon = AssetManager.GetSprite($"{slimeData.Name.ToLowerInvariant()}_plort");
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
-        TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLower(), $"{slimeData.Name} {slimeData.PlortType}");
+        TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLowerInvariant(), $"{slimeData.Name} {slimeData.PlortType}");
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
         LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor!.Value, icon);
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
@@ -267,7 +267,7 @@ public static class SlimeManager
     private static void CreateSlime(CustomSlimeData slimeData)
     {
         var baseDefinition = slimeData.BaseSlime.GetSlimeDefinition(); // Finding the base slime definition to go off of
-        var lower = slimeData.Name.ToLower();
+        var lower = slimeData.Name.ToLowerInvariant();
 
         // Create a copy for our slimes and populate with info
         var definition = baseDefinition.DeepCopy();
@@ -376,13 +376,9 @@ public static class SlimeManager
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.MainId);
         LookupRegistry.RegisterVacEntry(slimeData.MainId, appearance.ColorPalette.Ammo, appearance.Icon);
         Helpers.CreateRanchExchangeOffer(slimeData.MainId, slimeData.ExchangeWeight, slimeData.Progress);
-        var title = slimeData.Name + " Slime";
-        var slimeIdName = slimeData.MainId.ToString().ToLower();
-        TranslationPatcher.AddPediaTranslation("t." + slimeIdName, title);
-        TranslationPatcher.AddActorTranslation("l." + slimeIdName, title);
 
         SlimePediaCreation.PreLoadSlimePediaConnection(slimeData.MainEntry, slimeData.MainId, PediaCategory.SLIMES);
-        SlimePediaCreation.CreatePediaForSlime(slimeData.MainEntry, title, slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks, slimeData.Plortonomics);
+        SlimePediaCreation.CreatePediaForSlime(slimeData.MainEntry, slimeData.Name + " Slime", slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks, slimeData.Plortonomics);
         PediaRegistry.RegisterIdEntry(slimeData.MainEntry, appearance.Icon);
 
         if (Main.ClsExists)

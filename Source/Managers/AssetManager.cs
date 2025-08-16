@@ -1,6 +1,7 @@
 using System.Reflection;
 using SRML.Utils;
 using System.IO.Compression;
+using System.Text;
 
 namespace OceanRange.Managers;
 
@@ -188,7 +189,7 @@ public static class AssetManager
     private static Json LoadJson(string path)
     {
         using var stream = Core.GetManifestResourceStream(path)!;
-        using var reader = new StreamReader(stream);
+        using var reader = new StreamReader(stream, Encoding.UTF8, false);
         return new(reader.ReadToEnd());
     }
 

@@ -119,7 +119,7 @@ public static class Helpers
         throw new InvalidDataException($"Invalid color hex {hex}!");
     }
 
-    public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value);
+    public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value, true);
 
     // public static T ToEnum<T>(object value) where T : struct, Enum => (T)Enum.ToObject(typeof(T), value);
 
@@ -278,7 +278,7 @@ public static class Helpers
         if (!EnumMaps.TryGetValue(enumType, out var enums))
             enums = EnumMaps[enumType] = Enum.GetValues(enumType);
 
-        var caseCheck = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.InvariantCulture;
+        var caseCheck = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
         return enums.TryFinding(enumVal => string.Equals(enumVal.ToString(), name, caseCheck), out result);
     }
 
