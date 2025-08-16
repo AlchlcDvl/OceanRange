@@ -3,8 +3,6 @@ namespace OceanRange.Managers;
 public static class LargoManager
 {
     /*
-    Slime 1 gives model and material, Slime 2 gives colour (and facial features??)
-    
     Largo Naming Hierarchy:
 
     PLORT:
@@ -47,7 +45,7 @@ public static class LargoManager
     public static void LoadAllLargos()
     {
         //COCO LARGOS
-        SlimeRegistry.CraftLargo(Ids.PINK_COCO_LARGO, Ids.COCO_SLIME, IdentifiableId.PINK_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
+        /*SlimeRegistry.CraftLargo(Ids.PINK_COCO_LARGO, Ids.COCO_SLIME, IdentifiableId.PINK_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.PINK_COCO_LARGO, Ids.COCO_SLIME, IdentifiableId.PINK_SLIME);
 
         SlimeRegistry.CraftLargo(Ids.COCO_SABER_LARGO, Ids.COCO_SLIME, IdentifiableId.SABER_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
@@ -89,8 +87,8 @@ public static class LargoManager
         SlimeRegistry.CraftLargo(Ids.COCO_DERVISH_LARGO, Ids.COCO_SLIME, IdentifiableId.DERVISH_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.COCO_DERVISH_LARGO, Ids.COCO_SLIME, IdentifiableId.DERVISH_SLIME);
 
-        //SlimeRegistry.CraftLargo(Ids.COCO_MESMER_LARGO, Ids.COCO_SLIME, Ids.MESMER_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
-
+        SlimeRegistry.CraftLargo(Ids.COCO_MESMER_LARGO, Ids.COCO_SLIME, Ids.MESMER_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
+        AddLargoEatMap(Ids.COCO_MESMER_LARGO, Ids.COCO_SLIME, Ids.MESMER_SLIME);*/
 
         //SlimeRegistry.CraftLargo(Ids.COCO_HERMIT_LARGO, Ids.COCO_SLIME, Ids.HERMIT_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
 
@@ -99,14 +97,14 @@ public static class LargoManager
         //HERMIT LARGOS
 
         //ROSI LARGOS
-        SlimeRegistry.CraftLargo(Ids.ROSI_MINE_LARGO, Ids.MINE_SLIME, Ids.ROSI_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
+        SlimeRegistry.CraftLargo(Ids.ROSI_MINE_LARGO, Ids.ROSI_SLIME, Ids.MINE_SLIME, SlimeRegistry.LargoProps.REPLACE_BASE_MAT_AS_SLIME2 | SlimeRegistry.LargoProps.RECOLOR_SLIME1_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.ROSI_MINE_LARGO, Ids.MINE_SLIME, Ids.ROSI_SLIME);
 
-        SlimeRegistry.CraftLargo(Ids.ROSI_LANTERN_LARGO, Ids.LANTERN_SLIME, Ids.ROSI_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
+        SlimeRegistry.CraftLargo(Ids.ROSI_LANTERN_LARGO, Ids.ROSI_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_BASE_MAT_AS_SLIME2 | SlimeRegistry.LargoProps.RECOLOR_SLIME1_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.ROSI_LANTERN_LARGO, Ids.LANTERN_SLIME, Ids.ROSI_SLIME);
 
         //MINE LARGOS
-        SlimeRegistry.CraftLargo(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
+        SlimeRegistry.CraftLargo(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_SLIME2_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME);
     }
 }

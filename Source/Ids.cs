@@ -66,7 +66,7 @@ public static class Ids
     // public static readonly Zone LISA_RANCH;
     // public static readonly Zone BLUE_DEPTHS;
 
-    public static readonly IdentifiableId PINK_COCO_LARGO;
+    /*public static readonly IdentifiableId PINK_COCO_LARGO;
     public static readonly IdentifiableId COCO_SABER_LARGO;
     public static readonly IdentifiableId COCO_QUANTUM_LARGO;
     public static readonly IdentifiableId COCO_HONEY_LARGO;
@@ -80,10 +80,10 @@ public static class Ids
     public static readonly IdentifiableId COCO_HUNTER_LARGO;
     public static readonly IdentifiableId COCO_CRYSTAL_LARGO;
     public static readonly IdentifiableId COCO_DERVISH_LARGO;
-    public static readonly IdentifiableId COCO_MESMER_LARGO;
-    public static readonly IdentifiableId COCO_HERMIT_LARGO;
+    public static readonly IdentifiableId COCO_MESMER_LARGO;*/
+    //public static readonly IdentifiableId COCO_HERMIT_LARGO;
 
-    public static readonly IdentifiableId PINK_MESMER_LARGO;
+    /*public static readonly IdentifiableId PINK_MESMER_LARGO;
     public static readonly IdentifiableId SABER_MESMER_LARGO;
     public static readonly IdentifiableId QUANTUM_MESMER_LARGO;
     public static readonly IdentifiableId HONEY_MESMER_LARGO;
@@ -112,7 +112,7 @@ public static class Ids
     public static readonly IdentifiableId TABBY_HERMIT_LARGO;
     public static readonly IdentifiableId HUNTER_HERMIT_LARGO;
     public static readonly IdentifiableId CRYSTAL_HERMIT_LARGO;
-    public static readonly IdentifiableId DERVISH_HERMIT_LARGO;
+    public static readonly IdentifiableId DERVISH_HERMIT_LARGO;*/
 
     public static readonly IdentifiableId ROSI_MINE_LARGO;
     public static readonly IdentifiableId ROSI_LANTERN_LARGO;

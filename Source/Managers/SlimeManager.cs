@@ -19,7 +19,7 @@ public static class SlimeManager
 
     public static readonly HashSet<IdentifiableId> MesmerLargos = new(Identifiable.idComparer)
     {
-        Ids.PINK_MESMER_LARGO,
+        /*Ids.PINK_MESMER_LARGO,
         Ids.COCO_MESMER_LARGO,
         Ids.SABER_MESMER_LARGO,
         Ids.QUANTUM_MESMER_LARGO,
@@ -34,7 +34,7 @@ public static class SlimeManager
         Ids.HUNTER_MESMER_LARGO,
         Ids.CRYSTAL_MESMER_LARGO,
         Ids.DERVISH_MESMER_LARGO,
-        Ids.MESMER_HERMIT_LARGO
+        Ids.MESMER_HERMIT_LARGO*/
     };
 
     public static CustomSlimeData[] Slimes;
