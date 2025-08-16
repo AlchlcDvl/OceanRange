@@ -17,7 +17,25 @@ public static class SlimeManager
         ["Pearl"] = [],
     };
 
-    public static readonly HashSet<IdentifiableId> MesmerLargos = new(Identifiable.idComparer);
+    public static readonly HashSet<IdentifiableId> MesmerLargos = new(Identifiable.idComparer)
+    {
+        Ids.PINK_MESMER_LARGO,
+        Ids.COCO_MESMER_LARGO,
+        Ids.SABER_MESMER_LARGO,
+        Ids.QUANTUM_MESMER_LARGO,
+        Ids.HONEY_MESMER_LARGO,
+        Ids.PHOSPHOR_MESMER_LARGO,
+        Ids.MOSAIC_MESMER_LARGO,
+        Ids.TANGLE_MESMER_LARGO,
+        Ids.BOOM_MESMER_LARGO,
+        Ids.RAD_MESMER_LARGO,
+        Ids.ROCK_MESMER_LARGO,
+        Ids.TABBY_MESMER_LARGO,
+        Ids.HUNTER_MESMER_LARGO,
+        Ids.CRYSTAL_MESMER_LARGO,
+        Ids.DERVISH_MESMER_LARGO,
+        Ids.MESMER_HERMIT_LARGO
+    };
 
     public static CustomSlimeData[] Slimes;
     public static bool MgExists;

@@ -57,8 +57,6 @@ internal sealed class Main : ModEntryPoint
         // Loads slimes and food
         FoodManager.LoadAllFoods();
         SlimeManager.LoadAllSlimes();
-        LargoManager.LoadAllLargos();
-
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
             AddSplashesBypass(AssetManager.GetSprites("loading_1", "loading_2", "loading_3"));
     }
@@ -70,7 +68,7 @@ internal sealed class Main : ModEntryPoint
     public override void PostLoad()
     {
         SlimeManager.PostLoadSlimes();
-
+        LargoManager.LoadAllLargos();
         AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
@@ -80,8 +78,8 @@ internal sealed class Main : ModEntryPoint
     }
 
 #if DEBUG
-    /// <inheritdoc/>
     [TimeDiagnostic("Mod Unload")]
+    /// <inheritdoc/>
     public override void Unload()
     {
         File.WriteAllText(Path.Combine(AssetManager.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePos.SavedPositions, AssetManager.JsonSettings));
