@@ -162,7 +162,7 @@ public sealed class CustomSlimeData : JsonData
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
-        var upper = Name.ToUpper();
+        var upper = Name.ToUpperInvariant();
 
         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_SLIME");
         PlortId = Helpers.ParseEnum<IdentifiableId>(upper + "_PLORT");
@@ -197,7 +197,7 @@ public sealed class CustomSlimeData : JsonData
         PlortMeshes ??= [null];
         GordoMeshes ??= [null];
 
-        SlimeManager.PlortTypesToSlimesMap[PlortType].Add(Name.ToUpper());
+        SlimeManager.PlortTypesToSlimesMap[PlortType].Add(upper);
     }
 
     // public void GenerateLargos(string[] modded) // WIP
@@ -205,7 +205,7 @@ public sealed class CustomSlimeData : JsonData
     //     if (!CanLargofy)
     //         return;
 
-    //     var upper = Name.ToUpper();
+    //     var upper = Name.ToUpperInvariant();
     //     var vanillaLargos = SlimeManager.VanillaSlimes.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
     //     var moddedLargos = modded.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
     //     Largos.UnionWith(vanillaLargos);

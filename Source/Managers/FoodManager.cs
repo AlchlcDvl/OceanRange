@@ -89,7 +89,7 @@ public static class FoodManager
         foreach (var plantData in Plants)
         {
             var prefab = plantData.Group == FoodGroup.VEGGIES ? veggiePrefab : fruitPrefab;
-            var name = plantData.ResourceIdSuffix.ToLower() + plantData.Name + "0";
+            var name = plantData.ResourceIdSuffix.ToLowerInvariant() + plantData.Name + "0";
             var array = new[] { plantData.MainId.GetPrefab() };
 
             foreach (var (zone, spawnLocations) in plantData.SpawnLocations)
@@ -131,7 +131,7 @@ public static class FoodManager
     private static void BaseCreateChimken(CustomChimkenData chimkenData)
     {
         // Fetch ramps and caching values because reusing them is tedious
-        var lower = chimkenData.Name.ToLower();
+        var lower = chimkenData.Name.ToLowerInvariant();
         var ramp = $"{lower}_ramp_";
         var red = AssetManager.GetTexture2D($"{ramp}red");
         var green = AssetManager.GetTexture2D($"{ramp}green");
@@ -209,12 +209,12 @@ public static class FoodManager
         var isVeggie = plantData.Group == FoodGroup.VEGGIES;
 
         var prefab = (isVeggie ? IdentifiableId.CARROT_VEGGIE : IdentifiableId.POGO_FRUIT).GetPrefab().CreatePrefab();
-        prefab.name = plantData.Type.ToLower() + plantData.Name;
+        prefab.name = plantData.Type.ToLowerInvariant() + plantData.Name;
         prefab.GetComponent<Identifiable>().id = plantData.MainId;
         prefab.GetComponent<Vacuumable>().size = 0;
 
         var meshModel = prefab.FindChildWithPartialName("model_");
-        var lower = plantData.Name.ToLower();
+        var lower = plantData.Name.ToLowerInvariant();
         meshModel.GetComponent<MeshFilter>().sharedMesh = AssetManager.GetMesh(lower);
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();

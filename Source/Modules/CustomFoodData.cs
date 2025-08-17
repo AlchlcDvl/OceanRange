@@ -37,7 +37,7 @@ public sealed class CustomChimkenData : CustomFoodData
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
-        var upper = Name.ToUpper();
+        var upper = Name.ToUpperInvariant();
         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_HEN");
         ChickId = Helpers.ParseEnum<IdentifiableId>(upper + "_CHICK");
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_HEN_ENTRY");
@@ -70,13 +70,13 @@ public sealed class CustomPlantData : CustomFoodData
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
-        var upper = Name.ToUpper();
+        var upper = Name.ToUpperInvariant();
 
-        var typeUpper = Type.ToUpper();
+        var typeUpper = Type.ToUpperInvariant();
         MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");
 
-        var resource = upper + "_" + ResourceIdSuffix.ToUpper();
+        var resource = upper + "_" + ResourceIdSuffix.ToUpperInvariant();
         ResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource);
         DlxResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource + "_DLX");
 

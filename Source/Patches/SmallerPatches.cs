@@ -35,7 +35,7 @@ public static class EatMapFix
             });
         }
 
-        if (definition.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !LargoManager.LargoMaps.TryGetValue(definition.IdentifiableId, out var maps))
+        if (definition.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !LargoManagerTemp.LargoMaps.TryGetValue(definition.IdentifiableId, out var maps))
             return;
 
         foreach (var (largoId, slimeId) in maps)
