@@ -45,6 +45,7 @@ public static class LargoManager
         slime1Values.Add((largoId, slimeId2));
         slime2Values.Add((largoId, slimeId1));
     }
+
     public static void LoadAllLargos()
     {
         //COCO LARGOS
@@ -93,7 +94,7 @@ public static class LargoManager
         SlimeRegistry.CraftLargo(Ids.COCO_MESMER_LARGO, Ids.COCO_SLIME, Ids.MESMER_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.COCO_MESMER_LARGO, Ids.COCO_SLIME, Ids.MESMER_SLIME);*/
 
-        //SlimeRegistry.CraftLargo(Ids.COCO_HERMIT_LARGO, Ids.COCO_SLIME, Ids.HERMIT_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
+        // SlimeRegistry.CraftLargo(Ids.COCO_HERMIT_LARGO, Ids.COCO_SLIME, Ids.HERMIT_SLIME, SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
 
         //MESMER LARGOS
 
@@ -105,25 +106,11 @@ public static class LargoManager
         //material??
         //fix Mine addons
 
-        SlimeRegistry.CraftLargo(Ids.ROSI_LANTERN_LARGO, Ids.ROSI_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_BASE_MAT_AS_SLIME2 | SlimeRegistry.LargoProps.RECOLOR_SLIME1_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
+        SlimeRegistry.CraftLargo(Ids.ROSI_LANTERN_LARGO, Ids.ROSI_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_BASE_MAT_AS_SLIME2 | SlimeRegistry.LargoProps.RECOLOR_SLIME1_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES | SlimeRegistry.LargoProps.SWAP_EYES);
         AddLargoEatMap(Ids.ROSI_LANTERN_LARGO, Ids.LANTERN_SLIME, Ids.ROSI_SLIME);
 
         //MINE LARGOS
-        SlimeRegistry.CraftLargo(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_SLIME2_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
+        SlimeRegistry.CraftLargo(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_SLIME2_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES | SlimeRegistry.LargoProps.SWAP_EYES);
         AddLargoEatMap(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME);
-
-        //Mine behaviour not working on largos, sleeping face not working on largos
-
-        List<Identifiable.Id> LanternLargos = new List<Identifiable.Id>
-        {
-            Ids.ROSI_LANTERN_LARGO,
-            Ids.MINE_LANTERN_LARGO
-        };
-        foreach (Identifiable.Id id in LanternLargos)
-        {
-            SlimeDefinition largoDefinition = SRSingleton<GameContext>.Instance.LookupDirector.slimeAppearanceDirector.SlimeDefinitions.GetSlimeByIdentifiableId(id);
-            GameObject largoObject = largoDefinition.GetPrefab();
-            SlimeAppearance largoAppearance = largoObject.GetComponent<SlimeAppearance>();
-        }
     }
 }

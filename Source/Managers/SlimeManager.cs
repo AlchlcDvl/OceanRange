@@ -43,6 +43,7 @@ public static class SlimeManager
 
     private static bool SamExists;
     private static Transform RocksPrefab;
+    private static SlimeExpressionFace Sleeping;
 
     private static readonly int TopColor = Shader.PropertyToID("_TopColor");
     private static readonly int MiddleColor = Shader.PropertyToID("_MiddleColor");
@@ -127,6 +128,15 @@ public static class SlimeManager
     public static void LoadAllSlimes()
     {
         RocksPrefab = IdentifiableId.ROCK_PLORT.GetPrefab().transform.Find("rocks");
+        var blink = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Face._expressionToFaceLookup[SlimeFace.SlimeExpression.Blink];
+        Sleeping = new SlimeExpressionFace()
+        {
+            SlimeExpression = Ids.Sleeping,
+            Eyes = blink.Eyes?.Clone(),
+            Mouth = blink.Mouth?.Clone()
+        };
+        Sleeping.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleeping_eyes"));
+
         Array.ForEach(Slimes, BaseLoadSlime);
     }
 
@@ -317,6 +327,9 @@ public static class SlimeManager
         var appearance = baseAppearance.DeepCopy(); // Cloning our own appearance
         appearance.name = $"{slimeData.Name}Normal";
 
+        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, Sleeping];
+        appearance.Face._expressionToFaceLookup[Ids.Sleeping] = Sleeping;
+
         // Faces stuff
         foreach (var face in appearance.Face.ExpressionFaces)
         {
@@ -371,6 +384,7 @@ public static class SlimeManager
         }
 
         BasicInitSlimeAppearance(appearance, applicator, slimeData);
+        SlimeRegistry.RegisterAppearance(definition, appearance);
 
         slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance]); // Slime specific details being put here
 
@@ -790,20 +804,6 @@ public static class SlimeManager
     //     material2.SetFloat(Gloss, 1f);
     //     material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("coco_pattern"));
     // }
-
-    public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
-    {
-        var blink = appearance.Face._expressionToFaceLookup[SlimeFace.SlimeExpression.Blink];
-        var sleeping = new SlimeExpressionFace()
-        {
-            SlimeExpression = Ids.Sleeping,
-            Eyes = blink.Eyes?.Clone(),
-            Mouth = blink.Mouth?.Clone()
-        };
-        sleeping.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleeping_eyes"));
-        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, sleeping];
-        appearance.Face._expressionToFaceLookup[Ids.Sleeping] = sleeping;
-    }
 
     public static void InitSandSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3) => SandBehaviour.ProduceFX = IdentifiableId.PUDDLE_SLIME.GetPrefab().GetComponent<SlimeEatWater>().produceFX;
 
