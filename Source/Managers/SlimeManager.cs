@@ -327,8 +327,8 @@ public static class SlimeManager
         var appearance = baseAppearance.DeepCopy(); // Cloning our own appearance
         appearance.name = $"{slimeData.Name}Normal";
 
-        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, Sleeping];
-        appearance.Face._expressionToFaceLookup[Ids.Sleeping] = Sleeping;
+        var sleeping = Sleeping.Clone();
+        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, sleeping];
 
         // Faces stuff
         foreach (var face in appearance.Face.ExpressionFaces)

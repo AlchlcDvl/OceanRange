@@ -1,5 +1,6 @@
 // using SRML;
 using System.Globalization;
+using AssetsLib;
 using SRML.Utils;
 
 namespace OceanRange.Utils;
@@ -330,6 +331,13 @@ public static class Helpers
             return false;
         }
     }
+
+    public static SlimeExpressionFace Clone(this SlimeExpressionFace face) => new()
+    {
+        SlimeExpression = face.SlimeExpression,
+        Eyes = face.Eyes?.Clone(),
+        Mouth = face.Mouth?.Clone(),
+    };
 
 #if DEBUG
     // public static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");
