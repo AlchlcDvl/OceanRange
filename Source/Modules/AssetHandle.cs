@@ -24,7 +24,7 @@ public sealed class AssetHandle(string name) : IDisposable
 
     ~AssetHandle() => InternalDispose();
 
-    /// <inheritdoc cref="IDisposable.Dispose"/>
+    /// <inheritdoc/>
     public void Dispose()
     {
         InternalDispose();
@@ -37,7 +37,15 @@ public sealed class AssetHandle(string name) : IDisposable
             return;
 
         Paths.Clear();
-        Assets.Values.Do(UObject.Destroy);
+
+        foreach (var asset in Assets.Values)
+        {
+            if (asset is AssetBundle bundle)
+                bundle.Unload(false);
+
+            asset.Destroy();
+        }
+
         Assets.Clear();
         Disposed = true;
     }

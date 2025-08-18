@@ -38,6 +38,7 @@ public static class SlimeManager
     private static readonly int EyeBlue = Shader.PropertyToID("_EyeBlue");
     private static readonly int FaceAtlas = Shader.PropertyToID("_FaceAtlas");
     private static readonly int VertexOffset = Shader.PropertyToID("_VertexOffset");
+    private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
 #if DEBUG
     [TimeDiagnostic("Slimes Preload")]
@@ -53,9 +54,6 @@ public static class SlimeManager
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
-
-        // var modded = Slimes.Select(x => x.Name.ToUpperInvariant()).ToArray(); // WIP
-        // Slimes.ForEach(x => x.GenerateLargos(modded));
     }
 
 #if DEBUG
@@ -377,8 +375,13 @@ public static class SlimeManager
         LookupRegistry.RegisterVacEntry(slimeData.MainId, appearance.ColorPalette.Ammo, appearance.Icon);
         Helpers.CreateRanchExchangeOffer(slimeData.MainId, slimeData.ExchangeWeight, slimeData.Progress);
 
+        var title = slimeData.Name + " Slime";
+        var slimeIdName = slimeData.MainId.ToString().ToLower();
+        TranslationPatcher.AddPediaTranslation("t." + slimeIdName, title);
+        TranslationPatcher.AddActorTranslation("l." + slimeIdName, title);
+
         SlimePediaCreation.PreLoadSlimePediaConnection(slimeData.MainEntry, slimeData.MainId, PediaCategory.SLIMES);
-        SlimePediaCreation.CreatePediaForSlime(slimeData.MainEntry, slimeData.Name + " Slime", slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks, slimeData.Plortonomics);
+        SlimePediaCreation.CreatePediaForSlime(slimeData.MainEntry, title, slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks, slimeData.Plortonomics);
         PediaRegistry.RegisterIdEntry(slimeData.MainEntry, appearance.Icon);
 
         if (Main.ClsExists)
@@ -461,6 +464,13 @@ public static class SlimeManager
             material = matData.CachedMaterial;
             setColors = false;
         }
+        else if (matData.OrShaderName != null)
+        {
+            material = new(AssetManager.GetShader(matData.OrShaderName));
+
+            if (matData.Pattern != null)
+                material.SetTexture(MainTex, AssetManager.GetTexture2D(matData.Pattern));
+        }
         else if (matData.MatOriginSlime != null)
         {
             var isTabby = matData.MatOriginSlime is IdentifiableId.TABBY_SLIME or IdentifiableId.TABBY_PLORT;
@@ -491,14 +501,17 @@ public static class SlimeManager
 
         if (setColors)
         {
-            if (matData.TopColor.HasValue)
-                material.SetColor(TopColor, matData.TopColor.Value);
+            if (matData.OrShaderName == null)
+            {
+                if (matData.TopColor.HasValue)
+                    material.SetColor(TopColor, matData.TopColor.Value);
 
-            if (matData.MiddleColor.HasValue)
-                material.SetColor(MiddleColor, matData.MiddleColor.Value);
+                if (matData.MiddleColor.HasValue)
+                    material.SetColor(MiddleColor, matData.MiddleColor.Value);
 
-            if (matData.BottomColor.HasValue)
-                material.SetColor(BottomColor, matData.BottomColor.Value);
+                if (matData.BottomColor.HasValue)
+                    material.SetColor(BottomColor, matData.BottomColor.Value);
+            }
 
             if (matData.Gloss.HasValue)
                 material.SetFloat(Gloss, matData.Gloss.Value);

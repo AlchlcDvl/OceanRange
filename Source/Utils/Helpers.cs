@@ -1,6 +1,4 @@
 // using SRML;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Globalization;
 using SRML.Utils;
 
@@ -8,8 +6,8 @@ namespace OceanRange.Utils;
 
 public static class Helpers
 {
-    // private static readonly ConcurrentDictionary<string, Color32> HexToColor32s = [];
-    private static readonly ConcurrentDictionary<string, Color> HexToColors = [];
+    // private static readonly Dictionary<string, Color32> HexToColor32s = [];
+    private static readonly Dictionary<string, Color> HexToColors = [];
 
     public static bool TryFinding<T>(this IEnumerable<T> source, Func<T, bool> predicate, out T value)
     {
@@ -23,21 +21,6 @@ public static class Helpers
         }
 
         value = default;
-        return false;
-    }
-
-    private static bool TryFinding(this IEnumerable source, Func<object, bool> predicate, out object value)
-    {
-        foreach (var item in source)
-        {
-            if (!predicate(item))
-                continue;
-
-            value = item;
-            return true;
-        }
-
-        value = null;
         return false;
     }
 
@@ -271,15 +254,18 @@ public static class Helpers
 
     public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used, but it's better to be safe than sorry
 
-    private static readonly Dictionary<Type, Array> EnumMaps = [];
-
     public static bool TryParse(Type enumType, string name, bool ignoreCase, out object result)
     {
-        if (!EnumMaps.TryGetValue(enumType, out var enums))
-            enums = EnumMaps[enumType] = Enum.GetValues(enumType);
-
-        var caseCheck = ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
-        return enums.TryFinding(enumVal => string.Equals(enumVal.ToString(), name, caseCheck), out result);
+        try
+        {
+            result = Enum.Parse(enumType, name, ignoreCase);
+            return true;
+        }
+        catch
+        {
+            result = null;
+            return false;
+        }
     }
 
     public static bool TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey[] keys, out TValue result)
@@ -293,6 +279,17 @@ public static class Helpers
         result = default;
         return false;
     }
+
+    // public static bool ContainsKey<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey[] keys)
+    // {
+    //     foreach (var key in keys)
+    //     {
+    //         if (dict.ContainsKey(key))
+    //             return true;
+    //     }
+
+    //     return false;
+    // }
 
     public static string ToVectorString(this Vector3 value) => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
 
