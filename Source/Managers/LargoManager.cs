@@ -1,3 +1,6 @@
+using SRML.SR.Utils;
+using UnityEngine.UIElements;
+
 namespace OceanRange.Managers;
 
 public static class LargoManager
@@ -99,6 +102,8 @@ public static class LargoManager
         //ROSI LARGOS
         SlimeRegistry.CraftLargo(Ids.ROSI_MINE_LARGO, Ids.ROSI_SLIME, Ids.MINE_SLIME, SlimeRegistry.LargoProps.REPLACE_BASE_MAT_AS_SLIME2 | SlimeRegistry.LargoProps.RECOLOR_SLIME1_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.ROSI_MINE_LARGO, Ids.MINE_SLIME, Ids.ROSI_SLIME);
+        //material??
+        //fix Mine addons
 
         SlimeRegistry.CraftLargo(Ids.ROSI_LANTERN_LARGO, Ids.ROSI_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_BASE_MAT_AS_SLIME2 | SlimeRegistry.LargoProps.RECOLOR_SLIME1_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.ROSI_LANTERN_LARGO, Ids.LANTERN_SLIME, Ids.ROSI_SLIME);
@@ -106,5 +111,19 @@ public static class LargoManager
         //MINE LARGOS
         SlimeRegistry.CraftLargo(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_SLIME2_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME);
+
+        //Mine behaviour not working on largos, sleeping face not working on largos
+
+        List<Identifiable.Id> LanternLargos = new List<Identifiable.Id>
+        {
+            Ids.ROSI_LANTERN_LARGO,
+            Ids.MINE_LANTERN_LARGO
+        };
+        foreach (Identifiable.Id id in LanternLargos)
+        {
+            SlimeDefinition largoDefinition = SRSingleton<GameContext>.Instance.LookupDirector.slimeAppearanceDirector.SlimeDefinitions.GetSlimeByIdentifiableId(id);
+            GameObject largoObject = largoDefinition.GetPrefab();
+            SlimeAppearance largoAppearance = largoObject.GetComponent<SlimeAppearance>();
+        }
     }
 }
