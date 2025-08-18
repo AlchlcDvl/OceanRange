@@ -1,5 +1,6 @@
 using AssetsLib;
 using OceanRange.Patches;
+using OceanRange.Saves;
 using SRML;
 using SRML.SR.SaveSystem;
 using SRML.Utils;
@@ -39,6 +40,7 @@ public static class SlimeManager
     private static readonly int FaceAtlas = Shader.PropertyToID("_FaceAtlas");
     private static readonly int VertexOffset = Shader.PropertyToID("_VertexOffset");
     private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+    private static readonly int Color1 = Shader.PropertyToID("_Color");
 
 #if DEBUG
     [TimeDiagnostic("Slimes Preload")]
@@ -51,6 +53,7 @@ public static class SlimeManager
         Slimes = AssetManager.GetJsonArray<CustomSlimeData>("slimepedia");
 
         GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, Ids.ROSI_GORDO];
+        GordoSaveData.Lookup = Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId);
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
@@ -169,11 +172,7 @@ public static class SlimeManager
             material.SetFloat(VertexOffset, 0f);
 
             var face = prefab.GetComponent<GordoFaceComponents>();
-            face.blinkEyes = appearance.Face.GetExpressionFace(SlimeFace.SlimeExpression.Blink).Eyes;
-            face.strainEyes = appearance.Face.GetExpressionFace(SlimeFace.SlimeExpression.Scared).Eyes;
-            face.chompOpenMouth = material;
-            face.happyMouth = material;
-            face.strainMouth = material;
+            face.chompOpenMouth = face.happyMouth = face.strainMouth = material;
         }
 
         var rewards = prefab.GetComponent<GordoRewards>();
@@ -466,9 +465,14 @@ public static class SlimeManager
         }
         else if (matData.OrShaderName != null)
         {
+            var isTextured = matData.OrShaderName == "textured_overlay";
+
+            if (isTextured && matData.Pattern == null)
+                throw new MissingComponentException($"Missing associated pattern for {name}!");
+
             material = new(AssetManager.GetShader(matData.OrShaderName));
 
-            if (matData.Pattern != null)
+            if (isTextured)
                 material.SetTexture(MainTex, AssetManager.GetTexture2D(matData.Pattern));
         }
         else if (matData.MatOriginSlime != null)
@@ -512,6 +516,8 @@ public static class SlimeManager
                 if (matData.BottomColor.HasValue)
                     material.SetColor(BottomColor, matData.BottomColor.Value);
             }
+            else if (matData.TopColor.HasValue)
+                material.SetColor(Color1, matData.TopColor.Value);
 
             if (matData.Gloss.HasValue)
                 material.SetFloat(Gloss, matData.Gloss.Value);

@@ -332,7 +332,7 @@ public static class Helpers
     }
 
 #if DEBUG
-    // public static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");
+    public static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");
 
     // public static void LogIf(this object message, bool condition)
     // {

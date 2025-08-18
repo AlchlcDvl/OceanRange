@@ -36,13 +36,19 @@ public static class AssetManager
         ]
     };
 
-    private static readonly string BundleSuffix = "bundle_" + Application.platform switch
+    private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
     {
-        RuntimePlatform.LinuxPlayer => "lin",
-        RuntimePlatform.OSXPlayer => "mac",
-        RuntimePlatform.WindowsPlayer => "win",
-        _ => throw new PlatformNotSupportedException(Application.platform.ToString())
+        [RuntimePlatform.OSXPlayer] = "mac",
+        [RuntimePlatform.LinuxPlayer] = "lin",
+        [RuntimePlatform.WindowsPlayer] = "win",
     };
+
+    private static readonly string BundleSuffix = "bundle_" +
+    (
+        Platforms.TryGetValue(Application.platform, out var suffix)
+        ? suffix
+        : throw new PlatformNotSupportedException(Application.platform.ToString())
+    );
 
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
@@ -122,9 +128,16 @@ public static class AssetManager
     /// </summary>
     /// <param name="path">The original path of the asset.</param>
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
-    private static string SanitisePath(this string path) => path
-        .ReplaceAll("", "json", "cmesh", "png", "jpg", "shader", BundleSuffix) // Removing the file extension first
-        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
+    private static string SanitisePath(this string path)
+    {
+        // Removing the file extension first
+        path = path.ReplaceAll("", "json", "cmesh", "png", "jpg", "shader");
+
+        foreach (var suffix in Platforms.Values)
+            path = path.Replace("bundle_" + suffix, "");
+
+        return path.TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
+    }
 
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.
