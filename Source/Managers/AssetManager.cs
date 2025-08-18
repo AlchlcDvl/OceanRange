@@ -282,8 +282,6 @@ public static class AssetManager
     private static Texture2D LoadTexture2D(string path) => LoadTexture2D(path, false);
 
     // Texture optimisation stuff
-    private static TextureFormat GetFormat(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureFormat.DXT1 : TextureFormat.DXT5;
-
     private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
 
     /// <summary>
