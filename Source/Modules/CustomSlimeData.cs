@@ -156,9 +156,6 @@ public sealed class CustomSlimeData : JsonData
     [JsonProperty("gordoMatData"), JsonRequired]
     public MaterialData[] GordoMatData;
 
-    // [JsonIgnore]
-    // public readonly HashSet<IdentifiableId> Largos = [];
-
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
@@ -199,18 +196,6 @@ public sealed class CustomSlimeData : JsonData
 
         SlimeManager.PlortTypesToSlimesMap[PlortType].Add(upper);
     }
-
-    // public void GenerateLargos(string[] modded) // WIP
-    // {
-    //     if (!CanLargofy)
-    //         return;
-
-    //     var upper = Name.ToUpperInvariant();
-    //     var vanillaLargos = SlimeManager.VanillaSlimes.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
-    //     var moddedLargos = modded.Select(x => Helpers.CreateIdentifiableId(x + "_" + upper + "_LARGO"));
-    //     Largos.UnionWith(vanillaLargos);
-    //     Largos.UnionWith(moddedLargos);
-    // }
 }
 
 public sealed class MaterialData
@@ -238,6 +223,9 @@ public sealed class MaterialData
 
     [JsonProperty("matOrigin")]
     public IdentifiableId? MatOriginSlime;
+
+    [JsonProperty("orShaderName")]
+    public string OrShaderName;
 
     [JsonIgnore]
     public Material CachedMaterial;

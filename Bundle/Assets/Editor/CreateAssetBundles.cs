@@ -9,9 +9,7 @@ public class CreateAssetBundles
     static void BuildBundles()
     {
         string assetBundleDirectory = "Assets/StreamingAssets";
-
-        if (!Directory.Exists(assetBundleDirectory))
-            Directory.CreateDirectory(assetBundleDirectory);
+        PrepDirectory(assetBundleDirectory);
 
         string mac = "Assets/StreamingAssets/Mac";
         PrepDirectory(mac);
@@ -35,6 +33,11 @@ public class CreateAssetBundles
 
         Directory.Delete(assetBundleDirectory, true);
 
+        string metaPath = "Assets/StreamingAssets.meta";
+
+        if (File.Exists(metaPath))
+            File.Delete(metaPath);
+
         Debug.Log("Bundles built!");
     }
 
@@ -49,7 +52,7 @@ public class CreateAssetBundles
     static void MoveAndRenameSpecificBundle(string sourceDir, string targetDir, string newExtension)
     {
         string sourceBundlePath = Path.Combine(sourceDir, "oceanrange");
-        string destBundleFileName = "OceanRange.bundle_" + newExtension;
+        string destBundleFileName = "ocean_range.bundle_" + newExtension;
         string destBundlePath = Path.Combine(targetDir, destBundleFileName);
 
         if (!File.Exists(sourceBundlePath))

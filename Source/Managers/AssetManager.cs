@@ -18,17 +18,54 @@ public static class AssetManager
     /// <summary>
     /// Common json serialisation settings to avoid creating a new json settings instance for each json file.
     /// </summary>
-    public static JsonSerializerSettings JsonSettings;
+    public static readonly JsonSerializerSettings JsonSettings = new()
+    {
+#if DEBUG
+        // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
+        Formatting = Formatting.Indented,
+#endif
+        // Adding the json converters
+        Converters =
+        [
+            new EnumConverter(),
+            new TypeConverter(),
+            new ColorConverter(),
+            // new Color32Converter(), // Unused at the moment, but kept around if needed
+            new Vector3Converter(),
+            new OrientationConverter(),
+        ]
+    };
+
+    private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
+    {
+        [RuntimePlatform.OSXPlayer] = "mac",
+        [RuntimePlatform.LinuxPlayer] = "lin",
+        [RuntimePlatform.WindowsPlayer] = "win",
+    };
+
+    private static readonly string BundleSuffix = "bundle_" +
+    (
+        Platforms.TryGetValue(Application.platform, out var suffix)
+        ? suffix
+        : throw new PlatformNotSupportedException(Application.platform.ToString())
+    );
 
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
     /// </summary>
     public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
+        // Embedded resources
         [typeof(Json)] = (["json"], LoadJson),
         [typeof(Mesh)] = (["cmesh"], LoadMesh),
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
+
+        [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
+
+        // Bundle resources
+        [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
+
         // AudioClip is not currently in use, so implementation for it comes later
     };
 
@@ -61,25 +98,10 @@ public static class AssetManager
 #endif
     public static void InitialiseAssets()
     {
-        Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles
+        Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles for embedded resources
 
-        JsonSettings = new()
-        {
-#if DEBUG
-            // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
-            Formatting = Formatting.Indented,
-#endif
-            // Adding the json converters
-            Converters =
-            [
-                new EnumConverter(),
-                new TypeConverter(),
-                new ColorConverter(),
-                // new Color32Converter(),
-                new Vector3Converter(),
-                new OrientationConverter(),
-            ]
-        };
+        var bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
+        Array.ForEach(bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
     }
 
     /// <summary>
@@ -106,9 +128,16 @@ public static class AssetManager
     /// </summary>
     /// <param name="path">The original path of the asset.</param>
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
-    private static string SanitisePath(this string path) => path
-        .ReplaceAll("", "json", "cmesh", "png", "jpg") // Removing the file extension first
-        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
+    private static string SanitisePath(this string path)
+    {
+        // Removing the file extension first
+        path = path.ReplaceAll("", "json", "cmesh", "png", "jpg", "shader");
+
+        foreach (var suffix in Platforms.Values)
+            path = path.Replace("bundle_" + suffix, "");
+
+        return path.TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
+    }
 
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.
@@ -143,7 +172,7 @@ public static class AssetManager
     /// </summary>
     /// <param name="names">The names of the assets.</param>
     /// <returns>A collection of sprites.</returns>
-    public static IEnumerable<Sprite> GetSprites(params string[] names) => names.Select(GetSprite);
+    public static IEnumerable<Sprite> GetSprites(params string[] names) => GetAll<Sprite>(names);
 
     /// <summary>
     /// Gets a Mesh from the assets associated with the provided name.
@@ -152,13 +181,23 @@ public static class AssetManager
     public static Mesh GetMesh(string name) => Get<Mesh>(name);
 
     /// <summary>
+    /// Gets a Shader from the assets associated with the provided name.
+    /// </summary>
+    /// <inheritdoc cref="Get{T}"/>
+    public static Shader GetShader(string name) => Get<Shader>(name);
+
+    public static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
+
+    private static T Get<T>(string name) where T : UObject => Get<T>(name, true);
+
+    /// <summary>
     /// Gets a(n) <typeparamref name="T"/> associated with the provided name.
     /// </summary>
     /// <param name="name">The name of the asset.</param>
     /// <param name="throwError">Flag indicating whether errors should be thrown or not.</param>
     /// <inheritdoc cref="AssetHandle.Load{T}"/>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
-    private static T Get<T>(string name, bool throwError = true) where T : UObject
+    private static T Get<T>(string name, bool throwError) where T : UObject
     {
         if (!Assets.TryGetValue(name, out var handle))
             return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : null;
@@ -227,7 +266,7 @@ public static class AssetManager
     private static Texture2D LoadTexture2D(string path, bool forSprite)
     {
         var name = path.SanitisePath();
-        var texture = new Texture2D(2, 2, GetFormat(name), true) { filterMode = FilterMode.Bilinear };
+        var texture = new Texture2D(2, 2, TextureFormat.RGBA32, true, false) { filterMode = FilterMode.Bilinear };
 
         if (!texture.LoadImage(path.ReadBytes(), true))
             return null;
@@ -243,8 +282,6 @@ public static class AssetManager
     private static Texture2D LoadTexture2D(string path) => LoadTexture2D(path, false);
 
     // Texture optimisation stuff
-    private static TextureFormat GetFormat(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureFormat.DXT1 : TextureFormat.DXT5;
-
     private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
 
     /// <summary>
@@ -257,6 +294,10 @@ public static class AssetManager
         var tex = LoadTexture2D(path, true);
         return tex ? Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
     }
+
+    private static T GetBundleAsset<T>(string path) where T : UObject => Get<AssetBundle>("ocean_range").LoadAsset<T>(path);
+
+    private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
 
     /// <summary>
     /// Reads all the bytes from the provided stream.

@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace OceanRange.Saves;
 
 /// <summary>
@@ -12,6 +14,13 @@ public sealed class SaveWriter
     public void Write(bool value) => Bytes.Add((byte)(value ? 1 : 0));
 
     public void Write(int value) => Bytes.AddRange(BitConverter.GetBytes(value));
+
+    public void Write(string value)
+    {
+        var bytes = Encoding.UTF8.GetBytes(value);
+        Write(bytes.Length);
+        Bytes.AddRange(bytes);
+    }
 
     /// <summary>
     /// Flushes and closes all internal streams, then converts the compressed data
@@ -60,6 +69,14 @@ public sealed class SaveReader
     {
         var result = BitConverter.ToInt32(Data, Position);
         Position += 4;
+        return result;
+    }
+
+    public string ReadString()
+    {
+        var length = ReadInt32();
+        var result = Encoding.UTF8.GetString(Data, Position, length);
+        Position += length;
         return result;
     }
 }

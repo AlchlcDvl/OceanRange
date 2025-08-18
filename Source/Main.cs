@@ -69,7 +69,7 @@ internal sealed class Main : ModEntryPoint
     public override void PostLoad()
     {
         SlimeManager.PostLoadSlimes();
-        AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo"); // Release handles
+        AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo", "ocean_range"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             AssetManager.ReleaseHandles("loading_1", "loading_2", "loading_3");

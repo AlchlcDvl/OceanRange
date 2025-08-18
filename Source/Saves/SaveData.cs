@@ -44,17 +44,16 @@ public sealed class GordoSaveData : ISaveData
 {
     public bool Deprecated => false;
 
-    private static Dictionary<IdentifiableId, CustomSlimeData> Lookup;
+    public static Dictionary<IdentifiableId, CustomSlimeData> Lookup;
 
     public ulong[] Write(out byte padding)
     {
         var writer = new SaveWriter();
-        Lookup ??= SlimeManager.Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId);
         writer.Write(Lookup.Count);
 
         foreach (var (id, slimeData) in Lookup)
         {
-            writer.Write((int)id);
+            writer.Write(id.ToString());
             writer.Write(slimeData.IsPopped);
 
             if (!EnsureAutoSaveDirectorData.IsAutoSave)
@@ -68,11 +67,10 @@ public sealed class GordoSaveData : ISaveData
     {
         var reader = new SaveReader(data, padding);
         var count = reader.ReadInt32();
-        Lookup ??= SlimeManager.Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId);
 
         while (count-- > 0)
         {
-            var id = (IdentifiableId)reader.ReadInt32();
+            var id = Helpers.ParseEnum<IdentifiableId>(reader.ReadString());
             var flag = reader.ReadBoolean();
 
             if (Lookup.TryGetValue(id, out var slimeData))

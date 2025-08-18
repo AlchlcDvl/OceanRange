@@ -299,21 +299,18 @@
         "slimeMatData":
         [
             {
-                "topColor": "#0a094f",
-                "middleColor": "#000000",
-                "bottomColor": "#1e1140",
                 "pattern": "mesmer_pattern",
-                "matOrigin": "TABBY_SLIME",
+                "orShaderName": "textured_overlay",
                 "gloss": 0.11
             },
             {
                 "pattern": "mesmer_pincer_pattern",
-                "matOrigin": "TABBY_SLIME"
+                "orShaderName": "textured_overlay"
             },
             { "sameAs": 1 },
             {
                 "pattern": "mesmer_tail_pattern",
-                "matOrigin": "TABBY_SLIME"
+                "orShaderName": "textured_overlay"
             }
         ],
         "plortMatData":
