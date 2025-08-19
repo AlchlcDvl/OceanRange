@@ -43,6 +43,9 @@ public sealed class CustomMailData : JsonData
 
     public bool ShouldUnlock(double time)
     {
+        if (Sent || Read)
+            return false;
+
         if (UnlockFuncOr?.Invoke(time) == true || Subscribers?.Length is null or 0)
             return true;
 

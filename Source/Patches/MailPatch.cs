@@ -14,11 +14,11 @@ public static class FixAndProperlyShowMailPatch
 
         foreach (var mail in Mailbox.Mail)
         {
-            if (mail.Sent || mail.Read || !mail.ShouldUnlock(time))
+            if (!mail.ShouldUnlock(time))
                 continue;
 
-            SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
             mail.Sent = true;
+            SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
         }
     }
 }
