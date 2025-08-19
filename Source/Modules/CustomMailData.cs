@@ -28,7 +28,7 @@ public sealed class CustomMailData : JsonData
     public event Func<double, bool> UnlockFuncAnd;
     public event Func<double, bool> UnlockFuncOr;
 
-    private Delegate[] Subscribers;
+    private Func<double, bool>[] Subscribers;
 
     [OnDeserialized]
     public void PopulateData(StreamingContext _)
@@ -38,7 +38,7 @@ public sealed class CustomMailData : JsonData
         if (UnlockAfter != null)
             UnlockFuncAnd += time => UnlockAfter.Value < time;
 
-        Subscribers = UnlockFuncAnd?.GetInvocationList();
+        Subscribers = UnlockFuncAnd?.GetInvocationList()?.Select(x => (Func<double, bool>)x)?.ToArray();
     }
 
     public bool ShouldUnlock(double time)
@@ -48,7 +48,7 @@ public sealed class CustomMailData : JsonData
 
         foreach (var subscriber in Subscribers)
         {
-            if (!((Func<double, bool>)subscriber).Invoke(time))
+            if (!subscriber(time))
                 return false;
         }
 

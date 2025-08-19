@@ -3,7 +3,6 @@ namespace OceanRange.Managers;
 public static class Contacts
 {
     public static CustomRancherData[] Ranchers;
-    private static Material Background;
 
 #if DEBUG
     [TimeDiagnostic("Contacts Preload")]
@@ -11,7 +10,7 @@ public static class Contacts
     public static void PreloadRancherData()
     {
         Ranchers = AssetManager.GetJsonArray<CustomRancherData>("contacts");
-        ExchangeOfferRegistry.RegisterCategory(Ids.OCEAN, [.. SlimeManager.Slimes.Select(x => x.MainId), .. FoodManager.Chimkens.Select(x => x.MainId), .. FoodManager.Plants.Select(x => x.MainId)]);
+        ExchangeOfferRegistry.RegisterCategory(Ids.OCEAN, [.. SlimeManager.Slimes.SelectMany(x => new[] { x.MainId, x.PlortId })]);
 
         SRCallbacks.PreSaveGameLoad += context =>
         {
@@ -23,10 +22,7 @@ public static class Contacts
 #if DEBUG
     [TimeDiagnostic("Contacts Load")]
 #endif
-    public static void LoadRancherData()
-    {
-        Array.ForEach(Ranchers, LoadRancher);
-    }
+    public static void LoadRancherData() => Array.ForEach(Ranchers, LoadRancher);
 
     private static void LoadRancher(CustomRancherData rancher)
     {
@@ -36,13 +32,12 @@ public static class Contacts
             defaultImg = AssetManager.GetSprite("lisa_default"),
             icon = AssetManager.GetSprite("lisa"),
             numBlurbs = rancher.Dialogues.Length,
-            requestCategories = [Ids.OCEAN, Category.SLIMES],
-            rewardCategories = [Ids.OCEAN, Category.SLIMES, Category.MEAT],
-            rareRewardCategories = [Category.CRAFT_MATS, Category.PLORTS],
+            requestCategories = [Ids.OCEAN],
+            rewardCategories = [Category.PLORTS, Category.MEAT],
+            rareRewardCategories = [Category.CRAFT_MATS],
             indivRequests = [],
             indivRewards = [],
-            indivRareRewards = [],
-            chatBackground = Background
+            indivRareRewards = []
         };
 
         ExchangeOfferRegistry.RegisterRancher(rancher.Rancher);

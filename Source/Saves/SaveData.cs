@@ -14,7 +14,9 @@ public sealed class MailSaveData : ISaveData
         foreach (var mail in Mailbox.Mail)
         {
             writer.Write(mail.Read);
-            writer.Write(mail.Sent);
+
+            if (!mail.Read)
+                writer.Write(mail.Sent);
 
             if (EnsureAutoSaveDirectorData.IsAutoSave)
                 continue;
@@ -35,7 +37,9 @@ public sealed class MailSaveData : ISaveData
         {
             var mail = Mailbox.Mail[i];
             mail.Read = reader.ReadBoolean();
-            mail.Sent = reader.ReadBoolean();
+
+            if (!mail.Read)
+                mail.Sent = reader.ReadBoolean();;
         }
     }
 }

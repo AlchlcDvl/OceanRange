@@ -1,5 +1,3 @@
-using MonomiPark.SlimeRancher.DataModel;
-
 namespace OceanRange.Patches;
 
 // This patch exists because the assembly publicizer has issues trying to publicize events, why???
@@ -78,19 +76,4 @@ public static class EnsureAutoSaveDirectorData
 
     [HarmonyPatch(nameof(AutoSaveDirector.SaveGame))]
     public static void Postfix() => IsAutoSave = false;
-}
-
-[HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake))]
-public static class DumpMails
-{
-    public static void Postfix()
-    {
-        var bundle = GameContext.Instance.MessageDirector.GetBundle("mail");
-
-        foreach (var (id, value) in bundle.bundle.dict)
-        {
-            id.DoLog();
-            value.DoLog();
-        }
-    }
 }
