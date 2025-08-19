@@ -1,0 +1,12 @@
+[
+    {
+        "id": "lisa",
+        "name": "Lisa",
+        "fullName": "Lisa Erwin",
+        "dialogues":
+        [
+            "Rise and shine!"
+        ],
+        "specialDialogue": ""
+    }
+]

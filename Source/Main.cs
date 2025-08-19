@@ -55,9 +55,10 @@ internal sealed class Main : ModEntryPoint
     /// <inheritdoc/>
     public override void Load()
     {
-        // Loads slimes and food
+        // Loads the various forms of data the mod uses
         FoodManager.LoadAllFoods();
         SlimeManager.LoadAllSlimes();
+        Contacts.LoadRancherData();
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
             AddSplashesBypass(AssetManager.GetSprites("loading_1", "loading_2", "loading_3"));

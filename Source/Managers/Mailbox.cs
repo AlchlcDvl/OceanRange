@@ -18,4 +18,6 @@ public static class Mailbox
         .SetFromTranslation(mailData.From)
         .SetBodyTranslation(mailData.Body)
         .SetReadCallback((_, _) => mailData.Read = true));
+
+    public static void InitLisaIntroDetails(CustomMailData mailData) => mailData.UnlockFuncAnd += _ => SceneContext.Instance.ProgressDirector.HasProgress(Ids.EXCHANGE_LISA);
 }

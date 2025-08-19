@@ -4,8 +4,17 @@ namespace OceanRange.Managers;
 
 public sealed class CustomRancherData : JsonData
 {
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonRequired]
     public string RancherId;
+
+    [JsonProperty("fullName"), JsonRequired]
+    public string FullName;
+
+    [JsonProperty("dialogues"), JsonRequired]
+    public string[] Dialogues;
+
+    [JsonProperty("specialDialogue"), JsonRequired]
+    public string SpecialDialogue;
 
     [JsonIgnore]
     public RancherName RancherName;
@@ -14,17 +23,5 @@ public sealed class CustomRancherData : JsonData
     public ExchangeDirector.Rancher Rancher;
 
     [OnDeserialized]
-    public void PopulateData(StreamingContext _)
-    {
-        RancherName = Helpers.ParseEnum<RancherName>(Name.ToUpperInvariant());
-        Rancher = new()
-        {
-            defaultImg = AssetManager.GetSprite("lisa_coffee"),
-            icon = AssetManager.GetSprite("lisa_exchange"),
-            numBlurbs = 1,
-            requestCategories = [Ids.OCEAN],
-            rewardCategories = [Ids.OCEAN, Category.SLIMES, Category.MEAT],
-            rareRewardCategories = [Category.CRAFT_MATS, Category.PLORTS]
-        };
-    }
+    public void PopulateData(StreamingContext _) => RancherName = Helpers.ParseEnum<RancherName>(RancherId.ToUpperInvariant());
 }
