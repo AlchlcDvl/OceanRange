@@ -8,12 +8,12 @@ public static class FoodManager
     /// <summary>
     /// The array containing all meat related data.
     /// </summary>
-    private static CustomChimkenData[] Chimkens;
+    public static CustomChimkenData[] Chimkens;
 
     /// <summary>
     /// The array containing all plant related data.
     /// </summary>
-    private static CustomPlantData[] Plants;
+    public static CustomPlantData[] Plants;
 
     private static bool StmExists; // Mod check flag
 

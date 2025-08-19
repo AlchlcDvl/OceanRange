@@ -1,25 +1,56 @@
+using System.Runtime.Serialization;
+
 namespace OceanRange.Modules;
 
-public sealed class CustomMailData
+public sealed class CustomMailData : JsonData
 {
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonRequired]
     public string Id;
 
-    [JsonProperty("title")]
+    [JsonProperty("title"), JsonRequired]
     public string Title;
 
-    [JsonProperty("from")]
+    [JsonProperty("from"), JsonRequired]
     public string From;
 
-    [JsonProperty("body")]
+    [JsonProperty("body"), JsonRequired]
     public string Body;
 
     [JsonProperty("unlockAfter")]
-    public float UnlockAfter;
+    public double? UnlockAfter;
 
     [JsonIgnore]
     public bool Sent;
 
     [JsonIgnore]
     public bool Read;
+
+    private event Func<double, bool> UnlockFuncAnd;
+    private event Func<double, bool> UnlockFuncOr;
+    private Delegate[] Subscribers;
+
+    [OnDeserialized]
+    public void PopulateData(StreamingContext _)
+    {
+        AccessTools.Method(typeof(Mailbox), "Init" + Name.Replace(" ", "") + "Details")?.Invoke(null, [this]);
+
+        if (UnlockAfter != null)
+            UnlockFuncAnd += time => UnlockAfter.Value > time;
+
+        Subscribers = UnlockFuncAnd.GetInvocationList();
+    }
+
+    public bool ShouldUnlock(double time)
+    {
+        if (UnlockFuncOr?.Invoke(time) == true)
+            return true;
+
+        foreach (var subscriber in Subscribers)
+        {
+            if (!((Func<double, bool>)subscriber).Invoke(time))
+                return false;
+        }
+
+        return true;
+    }
 }

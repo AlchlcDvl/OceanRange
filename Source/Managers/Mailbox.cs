@@ -1,6 +1,6 @@
 namespace OceanRange.Managers;
 
-public static class MailManager
+public static class Mailbox
 {
     public static CustomMailData[] Mail;
 

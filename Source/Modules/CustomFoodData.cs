@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 
 namespace OceanRange.Modules;
 
-public abstract class CustomFoodData : JsonData
+public abstract class CustomFoodData : CustomActorData
 {
     [JsonProperty("group")]
     public FoodGroup Group;

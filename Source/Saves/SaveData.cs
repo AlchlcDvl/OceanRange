@@ -9,9 +9,9 @@ public sealed class MailSaveData : ISaveData
     public ulong[] Write(out byte padding)
     {
         var writer = new SaveWriter();
-        writer.Write(MailManager.Mail.Length);
+        writer.Write(Mailbox.Mail.Length);
 
-        foreach (var mail in MailManager.Mail)
+        foreach (var mail in Mailbox.Mail)
         {
             writer.Write(mail.Read);
             writer.Write(mail.Sent);
@@ -33,7 +33,7 @@ public sealed class MailSaveData : ISaveData
 
         for (var i = 0; i < length; i++)
         {
-            var mail = MailManager.Mail[i];
+            var mail = Mailbox.Mail[i];
             mail.Read = reader.ReadBoolean();
             mail.Sent = reader.ReadBoolean();
         }

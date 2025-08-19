@@ -59,7 +59,10 @@ public static class Ids
 
     public static readonly FoodGroup DIRT;
 
-    // public static readonly RancherChatMetadata.Entry.RancherName LISA;
+    public static readonly RancherName LISA;
+    public static readonly ProgressType EXCHANGE_LISA;
+
+    public static readonly ExchangeDirector.Category OCEAN;
 
     // public static readonly Zone SWIRLPOOL;
     // public static readonly Zone GREAT_REEF;
