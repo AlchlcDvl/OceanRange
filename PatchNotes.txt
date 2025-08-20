@@ -3,14 +3,16 @@
 
 0.0.2
 - New slimes: Mesmer
+- Added Lisa Erwin, a new rancher!
 - The sand gordo now has a custom body
 - Sand gordo snare behaviour is now consistent with its diet
 - Lantern sleep habits now work similar to phosphor slimes, where they will be awake when under a solar shield or inside a cave
 - Updated how mod assets are handled
+- Updated the visual looks of the slimes
 - Slimes are now more consistent with their pedia entries
 - Fixed the pink gordo appearing more times than it should on gordo snares when compared to the rosi gordo
 - Fixed a couple typos
 - Fixed lantern slime fins appearing detached from the main body
 - Fixed the amount of plorts a rosi slime would produce in presence of other slimes
 - Fixed popped natural gordos respawning upon loading saves (you'll need to pop them once more for the mod to actually register its popped status)
-- Fixed the bug where the mod wouldn't load on certain locales
+- Fixed the bug where the mod wouldn't load on certain pc locales

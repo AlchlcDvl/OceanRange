@@ -59,10 +59,10 @@ public sealed class CustomPlantData : CustomFoodData
     public string ResourceIdSuffix;
 
     [JsonIgnore]
-    public SpawnResource.Id ResourceId;
+    public SpawnResourceId ResourceId;
 
     [JsonIgnore]
-    public SpawnResource.Id DlxResourceId;
+    public SpawnResourceId DlxResourceId;
 
     [JsonProperty("spawnLocations"), JsonRequired]
     public Dictionary<string, Dictionary<string, Vector3[]>> SpawnLocations;
@@ -77,8 +77,8 @@ public sealed class CustomPlantData : CustomFoodData
         MainEntry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");
 
         var resource = upper + "_" + ResourceIdSuffix.ToUpperInvariant();
-        ResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource);
-        DlxResourceId = Helpers.ParseEnum<SpawnResource.Id>(resource + "_DLX");
+        ResourceId = Helpers.ParseEnum<SpawnResourceId>(resource);
+        DlxResourceId = Helpers.ParseEnum<SpawnResourceId>(resource + "_DLX");
 
         Progress ??= [];
     }

@@ -15,12 +15,13 @@ Shader "Custom/TexturedOverlay"
         #pragma surface surf Standard fullforwardshadows
         #pragma target 3.0
 
+        sampler2D _MainTex;
+
         struct Input
         {
             float2 uv_MainTex;
         };
 
-        sampler2D _MainTex;
         fixed4 _Color;
         half _Gloss;
         half _Metallic;
@@ -33,9 +34,7 @@ Shader "Custom/TexturedOverlay"
             o.Metallic = _Metallic;
             o.Alpha = texColor.a;
         }
-
         ENDCG
     }
-
     FallBack "Diffuse"
 }

@@ -10,6 +10,7 @@ namespace OceanRange.Managers;
 
 // Manager class to handle the commonality of a bunch of slime handling code
 // TODO: Finish largo setup; relegated to next update most likely
+// FIXME: Coco mesh doesn't work atm
 public static class SlimeManager
 {
     public static readonly Dictionary<string, HashSet<string>> PlortTypesToSlimesMap = new()
@@ -375,7 +376,7 @@ public static class SlimeManager
         Helpers.CreateRanchExchangeOffer(slimeData.MainId, slimeData.ExchangeWeight, slimeData.Progress);
 
         var title = slimeData.Name + " Slime";
-        var slimeIdName = slimeData.MainId.ToString().ToLower();
+        var slimeIdName = slimeData.MainId.ToString().ToLowerInvariant();
         TranslationPatcher.AddPediaTranslation("t." + slimeIdName, title);
         TranslationPatcher.AddActorTranslation("l." + slimeIdName, title);
 
@@ -670,7 +671,7 @@ public static class SlimeManager
                 if (appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                     list.Add((rend, rend.sharedMesh));
                 else
-                    Debug.LogWarning("One of the SlimeAppearanceObjects provided to AssetsLib.MeshUtils.GenerateBoneData does not use a SkinnedMeshRenderer");
+                    Debug.LogWarning("One of the SlimeAppearanceObjects provided does not use a SkinnedMeshRenderer");
             }
         }
 
@@ -753,25 +754,6 @@ public static class SlimeManager
         definition.Diet.MajorFoodGroups = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet.MajorFoodGroups;
         definition.Diet.Favorites = [];
     }
-
-    // FIXME: Coco mesh doesn't work atm
-    // public static void InitCocoSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3)
-    // {
-    //     var color = "#633C00".HexToColor();
-    //     var material = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
-    //     material.SetColor(TopColor, color);
-    //     material.SetColor(MiddleColor, color);
-    //     material.SetColor(BottomColor, color);
-    //     material.SetFloat(Gloss, 1f);
-
-    //     var color2 = "#FFFFFF".HexToColor();
-    //     var material2 = IdentifiableId.TABBY_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
-    //     material2.SetColor(TopColor, color2);
-    //     material2.SetColor(MiddleColor, color2);
-    //     material2.SetColor(BottomColor, color2);
-    //     material2.SetFloat(Gloss, 1f);
-    //     material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("coco_pattern"));
-    // }
 
     public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
     {
