@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace OceanRange.Modules;
 
-public sealed class CustomSlimeData : JsonData
+public sealed class CustomSlimeData : CustomActorData
 {
     [JsonIgnore]
     public IdentifiableId GordoId;

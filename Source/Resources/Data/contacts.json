@@ -1,0 +1,14 @@
+[
+    {
+        "id": "lisa",
+        "name": "Lisa",
+        "fullName": "Lisa Erwin",
+        "dialogues":
+        [
+            "...Oops! Did I click that? Ah, sorry, mate... well, while you’re here, could ya lend me a hand?",
+            "Zzzz... huh?! What was I doin' again?",
+            "Rise 'n shine! We’ve got work to crack on with."
+        ],
+        "specialDialogue": "When I need a burst of energy, I just keep calm and grab a cuppa coffee."
+    }
+]

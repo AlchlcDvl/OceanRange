@@ -266,16 +266,22 @@ public static class AssetManager
     private static Texture2D LoadTexture2D(string path, bool forSprite)
     {
         var name = path.SanitisePath();
-        var texture = new Texture2D(2, 2, TextureFormat.RGBA32, true, false) { filterMode = FilterMode.Bilinear };
 
-        if (!texture.LoadImage(path.ReadBytes(), true))
-            return null;
+        var tempTex = new Texture2D(2, 2, TextureFormat.RGBA32, true, false);
+        tempTex.LoadImage(path.ReadBytes(), false);
 
+        var texture = new Texture2D(tempTex.width, tempTex.height, TextureFormat.RGBA32, true, false);
+        texture.SetPixels(tempTex.GetPixels());
+        texture.Apply(true, false);
         texture.wrapMode = GetWrapMode(name);
 
         if (forSprite)
+        {
             texture.name = name + "_tex";
+            texture.DontDestroy();
+        }
 
+        tempTex.Destroy();
         return texture;
     }
 

@@ -12,13 +12,13 @@ public static class FixAndProperlyShowMailPatch
 
         var time = __instance.WorldTime();
 
-        foreach (var mail in MailManager.Mail)
+        foreach (var mail in Mailbox.Mail)
         {
-            if (mail.Sent || mail.Read || mail.UnlockAfter > time)
+            if (!mail.ShouldUnlock(time))
                 continue;
 
-            SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
             mail.Sent = true;
+            SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
         }
     }
 }

@@ -54,12 +54,15 @@ public static class Ids
 
     public static readonly IdentifiableId BLOWTATO_VEGGIE;
     public static readonly PediaId BLOWTATO_VEGGIE_ENTRY;
-    public static readonly SpawnResource.Id BLOWTATO_PATCH;
-    public static readonly SpawnResource.Id BLOWTATO_PATCH_DLX;
+    public static readonly SpawnResourceId BLOWTATO_PATCH;
+    public static readonly SpawnResourceId BLOWTATO_PATCH_DLX;
 
     public static readonly FoodGroup DIRT;
 
-    // public static readonly RancherChatMetadata.Entry.RancherName LISA;
+    public static readonly RancherName LISA;
+    public static readonly ProgressType EXCHANGE_LISA;
+
+    public static readonly Category OCEAN;
 
     // public static readonly Zone SWIRLPOOL;
     // public static readonly Zone GREAT_REEF;

@@ -34,7 +34,8 @@ internal sealed class Main : ModEntryPoint
         SaveManager.PreLoadSaveData();
         FoodManager.PreLoadFoodData();
         SlimeManager.PreLoadSlimeData();
-        MailManager.PreLoadMailData();
+        Mailbox.PreLoadMailData();
+        Contacts.PreloadRancherData();
 
 #if DEBUG
         // Debug stuff for the special commands
@@ -54,9 +55,10 @@ internal sealed class Main : ModEntryPoint
     /// <inheritdoc/>
     public override void Load()
     {
-        // Loads slimes and food
+        // Loads the various forms of data the mod uses
         FoodManager.LoadAllFoods();
         SlimeManager.LoadAllSlimes();
+        Contacts.LoadRancherData();
         LargoManager.LoadAllLargos();
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background

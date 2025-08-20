@@ -4,7 +4,10 @@ public abstract class JsonData
 {
     [JsonProperty("name"), JsonRequired]
     public string Name;
+}
 
+public abstract class CustomActorData : JsonData
+{
     [JsonIgnore]
     public IdentifiableId MainId;
 

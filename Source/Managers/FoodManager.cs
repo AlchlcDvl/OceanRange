@@ -8,12 +8,12 @@ public static class FoodManager
     /// <summary>
     /// The array containing all meat related data.
     /// </summary>
-    private static CustomChimkenData[] Chimkens;
+    public static CustomChimkenData[] Chimkens;
 
     /// <summary>
     /// The array containing all plant related data.
     /// </summary>
-    private static CustomPlantData[] Plants;
+    public static CustomPlantData[] Plants;
 
     private static bool StmExists; // Mod check flag
 
@@ -244,8 +244,8 @@ public static class FoodManager
         SlimePediaCreation.CreatePediaForFood(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
-        var resource = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH : SpawnResource.Id.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
-        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResource.Id.CARROT_PATCH_DLX : SpawnResource.Id.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
+        var resource = CreateFarmSetup(isVeggie ? SpawnResourceId.CARROT_PATCH : SpawnResourceId.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
+        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResourceId.CARROT_PATCH_DLX : SpawnResourceId.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
         PlantSlotRegistry.RegisterPlantSlot(new()
@@ -265,7 +265,7 @@ public static class FoodManager
         PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress);
     }
 
-    private static GameObject CreateFarmSetup(SpawnResource.Id baseFarm, string patchName, SpawnResource.Id spawnResource, GameObject plant)
+    private static GameObject CreateFarmSetup(SpawnResourceId baseFarm, string patchName, SpawnResourceId spawnResource, GameObject plant)
     {
         var prefab = baseFarm.GetResourcePrefab().CreatePrefab();
         prefab.name = patchName;

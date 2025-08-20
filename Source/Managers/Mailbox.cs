@@ -1,6 +1,6 @@
 namespace OceanRange.Managers;
 
-public static class MailManager
+public static class Mailbox
 {
     public static CustomMailData[] Mail;
 
@@ -18,4 +18,6 @@ public static class MailManager
         .SetFromTranslation(mailData.From)
         .SetBodyTranslation(mailData.Body)
         .SetReadCallback((_, _) => mailData.Read = true));
+
+    public static void InitLisaIntroDetails(CustomMailData mailData) => mailData.UnlockFuncAnd += _ => SceneContext.Instance.ProgressDirector.HasProgress(Ids.EXCHANGE_LISA);
 }

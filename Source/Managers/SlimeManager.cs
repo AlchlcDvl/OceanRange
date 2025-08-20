@@ -10,6 +10,7 @@ namespace OceanRange.Managers;
 
 // Manager class to handle the commonality of a bunch of slime handling code
 // TODO: Finish largo setup; relegated to next update most likely
+// FIXME: Coco mesh doesn't work atm
 public static class SlimeManager
 {
     public static readonly Dictionary<string, HashSet<string>> PlortTypesToSlimesMap = new()
@@ -407,7 +408,7 @@ public static class SlimeManager
         Helpers.CreateRanchExchangeOffer(slimeData.MainId, slimeData.ExchangeWeight, slimeData.Progress);
 
         var title = slimeData.Name + " Slime";
-        var slimeIdName = slimeData.MainId.ToString().ToLower();
+        var slimeIdName = slimeData.MainId.ToString().ToLowerInvariant();
         TranslationPatcher.AddPediaTranslation("t." + slimeIdName, title);
         TranslationPatcher.AddActorTranslation("l." + slimeIdName, title);
 
@@ -702,7 +703,7 @@ public static class SlimeManager
                 if (appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                     list.Add((rend, rend.sharedMesh));
                 else
-                    Debug.LogWarning("One of the SlimeAppearanceObjects provided to AssetsLib.MeshUtils.GenerateBoneData does not use a SkinnedMeshRenderer");
+                    Debug.LogWarning("One of the SlimeAppearanceObjects provided does not use a SkinnedMeshRenderer");
             }
         }
 
@@ -786,6 +787,7 @@ public static class SlimeManager
         definition.Diet.Favorites = [];
     }
 
+<<<<<<< HEAD
     // FIXME: Coco mesh doesn't work atm
     // public static void InitCocoSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3)
     // {
@@ -804,6 +806,21 @@ public static class SlimeManager
     //     material2.SetFloat(Gloss, 1f);
     //     material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("coco_pattern"));
     // }
+=======
+    public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
+    {
+        var blink = appearance.Face._expressionToFaceLookup[SlimeFace.SlimeExpression.Blink];
+        var sleeping = new SlimeExpressionFace()
+        {
+            SlimeExpression = Ids.Sleeping,
+            Eyes = blink.Eyes?.Clone(),
+            Mouth = blink.Mouth?.Clone()
+        };
+        sleeping.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleeping_eyes"));
+        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, sleeping];
+        appearance.Face._expressionToFaceLookup[Ids.Sleeping] = sleeping;
+    }
+>>>>>>> origin/az-lisa
 
     public static void InitSandSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3) => SandBehaviour.ProduceFX = IdentifiableId.PUDDLE_SLIME.GetPrefab().GetComponent<SlimeEatWater>().produceFX;
 
