@@ -113,4 +113,33 @@ public static class LargoManager
         SlimeRegistry.CraftLargo(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_SLIME2_ADDON_MATS | SlimeRegistry.LargoProps.GENERATE_NAME | SlimeRegistry.LargoProps.GENERATE_SECRET_STYLES | SlimeRegistry.LargoProps.SWAP_EYES);
         AddLargoEatMap(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME);
     }
+    public static void LargoTweaks()
+    {
+        SlimeAppearanceStructure[] rmStructures = SRSingleton<GameContext>.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(Ids.ROSI_MINE_LARGO).AppearancesDefault[0].Structures;
+        GameObject slimeRosi = SRSingleton<GameContext>.Instance.LookupDirector.GetIdentifiable(Ids.ROSI_SLIME).gameObject;
+        SlimeAppearanceStructure rmBitsStructure = Array.Find(rmStructures, x => x.Element.Prefabs[0].name == "mine_exterior");
+        SlimeAppearanceObject rmBits = rmBitsStructure.Element.Prefabs[0].DeepCopy();
+        rmBits.AttachedBones =
+        [
+            SlimeAppearance.SlimeBone.Slime,
+            SlimeAppearance.SlimeBone.JiggleRight,
+            SlimeAppearance.SlimeBone.JiggleLeft,
+            SlimeAppearance.SlimeBone.JiggleTop,
+            SlimeAppearance.SlimeBone.JiggleBottom,
+            SlimeAppearance.SlimeBone.JiggleFront,
+            SlimeAppearance.SlimeBone.JiggleBack
+        ];
+        SlimeAppearanceApplicator slimeApp = slimeRosi.GetComponent<SlimeAppearanceApplicator>();
+        var rootMatrix = slimeApp.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;
+        var poses = new Matrix4x4[rmBits.AttachedBones.Length];
+        for (var i = 0; i < rmBits.AttachedBones.Length; i++)
+        {
+            var bone = rmBits.AttachedBones[i];
+            poses[i] = slimeApp.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
+        }
+        for (int i = 0; i < rmBitsStructure.Element.Prefabs.Length; i++)
+        {
+            rmBitsStructure.Element.Prefabs[i] = rmBits;
+        }
+    }
 }

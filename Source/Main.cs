@@ -60,6 +60,7 @@ internal sealed class Main : ModEntryPoint
         SlimeManager.LoadAllSlimes();
         Contacts.LoadRancherData();
         LargoManager.LoadAllLargos();
+        LargoManager.LargoTweaks();
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
             AddSplashesBypass(AssetManager.GetSprites("loading_1", "loading_2", "loading_3"));

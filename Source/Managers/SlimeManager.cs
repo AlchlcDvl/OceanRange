@@ -787,7 +787,6 @@ public static class SlimeManager
         definition.Diet.Favorites = [];
     }
 
-<<<<<<< HEAD
     // FIXME: Coco mesh doesn't work atm
     // public static void InitCocoSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3)
     // {
@@ -806,7 +805,6 @@ public static class SlimeManager
     //     material2.SetFloat(Gloss, 1f);
     //     material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("coco_pattern"));
     // }
-=======
     public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
     {
         var blink = appearance.Face._expressionToFaceLookup[SlimeFace.SlimeExpression.Blink];
@@ -820,8 +818,6 @@ public static class SlimeManager
         appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, sleeping];
         appearance.Face._expressionToFaceLookup[Ids.Sleeping] = sleeping;
     }
->>>>>>> origin/az-lisa
-
     public static void InitSandSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3) => SandBehaviour.ProduceFX = IdentifiableId.PUDDLE_SLIME.GetPrefab().GetComponent<SlimeEatWater>().produceFX;
 
     public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _1) => SandBehaviour.PlortPrefab = prefab;
