@@ -120,32 +120,61 @@ public static class LargoManager
     public static void LoadAllLargos()
     {
         //COCO LARGOS
-        /*SlimeRegistry.CraftLargo(Ids.PINK_COCO_LARGO, Ids.COCO_SLIME, IdentifiableId.PINK_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_SABER_LARGO, Ids.COCO_SLIME, IdentifiableId.SABER_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_QUANTUM_LARGO, Ids.COCO_SLIME, IdentifiableId.QUANTUM_SLIME, SlimeRegistry.LargoProps.REPLACE_BASE_MAT_AS_SLIME2);
-        SlimeRegistry.CraftLargo(Ids.COCO_HONEY_LARGO, Ids.COCO_SLIME, IdentifiableId.HONEY_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_PHOSPHOR_LARGO, Ids.COCO_SLIME, IdentifiableId.PHOSPHOR_SLIME,  SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_MOSAIC_LARGO, Ids.COCO_SLIME, IdentifiableId.MOSAIC_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_TANGLE_LARGO, Ids.COCO_SLIME, IdentifiableId.TANGLE_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_BOOM_LARGO, Ids.COCO_SLIME, IdentifiableId.BOOM_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_RAD_LARGO, Ids.COCO_SLIME, IdentifiableId.RAD_SLIME, SlimeRegistry.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_ROCK_LARGO, Ids.COCO_SLIME, IdentifiableId.ROCK_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_TABBY_LARGO, Ids.COCO_SLIME, IdentifiableId.TABBY_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_HUNTER_LARGO, Ids.COCO_SLIME, IdentifiableId.HUNTER_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_CRYSTAL_LARGO, Ids.COCO_SLIME, IdentifiableId.CRYSTAL_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_DERVISH_LARGO, Ids.COCO_SLIME, IdentifiableId.DERVISH_SLIME, SlimeRegistry.LargoProps.NONE);
-        SlimeRegistry.CraftLargo(Ids.COCO_MESMER_LARGO, Ids.COCO_SLIME, Ids.MESMER_SLIME, SlimeRegistry.LargoProps.NONE);*/
-        // SlimeRegistry.CraftLargo(Ids.COCO_HERMIT_LARGO, Ids.COCO_SLIME, Ids.HERMIT_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.PINK_COCO_LARGO, Ids.COCO_SLIME, IdentifiableId.PINK_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_SABER_LARGO, Ids.COCO_SLIME, IdentifiableId.SABER_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_QUANTUM_LARGO, Ids.COCO_SLIME, IdentifiableId.QUANTUM_SLIME, SlimeRegistry.LargoProps.REPLACE_BASE_MAT_AS_SLIME2);
+        CreateLargo(Ids.COCO_HONEY_LARGO, Ids.COCO_SLIME, IdentifiableId.HONEY_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_PHOSPHOR_LARGO, Ids.COCO_SLIME, IdentifiableId.PHOSPHOR_SLIME,  SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_MOSAIC_LARGO, Ids.COCO_SLIME, IdentifiableId.MOSAIC_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_TANGLE_LARGO, Ids.COCO_SLIME, IdentifiableId.TANGLE_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_BOOM_LARGO, Ids.COCO_SLIME, IdentifiableId.BOOM_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_RAD_LARGO, Ids.COCO_SLIME, IdentifiableId.RAD_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_ROCK_LARGO, Ids.COCO_SLIME, IdentifiableId.ROCK_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_TABBY_LARGO, Ids.COCO_SLIME, IdentifiableId.TABBY_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_HUNTER_LARGO, Ids.COCO_SLIME, IdentifiableId.HUNTER_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_CRYSTAL_LARGO, Ids.COCO_SLIME, IdentifiableId.CRYSTAL_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_DERVISH_LARGO, Ids.COCO_SLIME, IdentifiableId.DERVISH_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.COCO_MESMER_LARGO, Ids.COCO_SLIME, Ids.MESMER_SLIME, SlimeRegistry.LargoProps.NONE);
+        // CreateLargo(Ids.COCO_HERMIT_LARGO, Ids.COCO_SLIME, Ids.HERMIT_SLIME, SlimeRegistry.LargoProps.NONE);
 
         //MESMER LARGOS
+        CreateLargo(Ids.PINK_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.PINK_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.SABER_MESMER_LARGO, IdentifiableId.SABER_SLIME, Ids.MESMER_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.QUANTUM_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.QUANTUM_SLIME, SlimeRegistry.LargoProps.REPLACE_BASE_MAT_AS_SLIME2);
+        CreateLargo(Ids.HONEY_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.HONEY_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.PHOSPHOR_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.PHOSPHOR_SLIME,  SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.MOSAIC_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.MOSAIC_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.TANGLE_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.TANGLE_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.BOOM_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.BOOM_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.RAD_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.RAD_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.ROCK_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.ROCK_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.TABBY_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.TABBY_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.HUNTER_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.HUNTER_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.CRYSTAL_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.CRYSTAL_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.DERVISH_MESMER_LARGO, Ids.MESMER_SLIME, IdentifiableId.DERVISH_SLIME, SlimeRegistry.LargoProps.NONE);
+        // CreateLargo(Ids.MESMER_HERMIT_LARGO, Ids.MESMER_SLIME, Ids.HERMIT_SLIME, SlimeRegistry.LargoProps.NONE);
 
         //HERMIT LARGOS
+        /*CreateLargo(Ids.PINK_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.PINK_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.SABER_HERMIT_LARGO, IdentifiableId.SABER_SLIME, Ids.HERMIT_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.QUANTUM_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.QUANTUM_SLIME, SlimeRegistry.LargoProps.REPLACE_BASE_MAT_AS_SLIME2);
+        CreateLargo(Ids.HONEY_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.HONEY_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.PHOSPHOR_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.PHOSPHOR_SLIME,  SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.MOSAIC_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.MOSAIC_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.TANGLE_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.TANGLE_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.BOOM_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.BOOM_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.RAD_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.RAD_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.ROCK_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.ROCK_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.TABBY_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.TABBY_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.HUNTER_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.HUNTER_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.CRYSTAL_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.CRYSTAL_SLIME, SlimeRegistry.LargoProps.NONE);
+        CreateLargo(Ids.DERVISH_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.DERVISH_SLIME, SlimeRegistry.LargoProps.NONE);*/
 
         //ROSI LARGOS
         CreateLargo(Ids.ROSI_MINE_LARGO, Ids.ROSI_SLIME, Ids.MINE_SLIME, SlimeRegistry.LargoProps.REPLACE_BASE_MAT_AS_SLIME2 | SlimeRegistry.LargoProps.RECOLOR_SLIME1_ADDON_MATS);
-        CreateLargo(Ids.ROSI_LANTERN_LARGO, Ids.ROSI_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_BASE_MAT_AS_SLIME2 | SlimeRegistry.LargoProps.RECOLOR_SLIME1_ADDON_MATS | SlimeRegistry.LargoProps.SWAP_EYES);
+        CreateLargo(Ids.ROSI_LANTERN_LARGO, Ids.ROSI_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_BASE_MAT_AS_SLIME2 | SlimeRegistry.LargoProps.RECOLOR_SLIME1_ADDON_MATS);
 
         //MINE LARGOS
-        CreateLargo(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_SLIME2_ADDON_MATS | SlimeRegistry.LargoProps.SWAP_EYES);
+        CreateLargo(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME, SlimeRegistry.LargoProps.RECOLOR_SLIME2_ADDON_MATS);
     }
 }

@@ -69,7 +69,7 @@ public static class Ids
     // public static readonly Zone LISA_RANCH;
     // public static readonly Zone BLUE_DEPTHS;
 
-    /*public static readonly IdentifiableId PINK_COCO_LARGO;
+    public static readonly IdentifiableId PINK_COCO_LARGO;
     public static readonly IdentifiableId COCO_SABER_LARGO;
     public static readonly IdentifiableId COCO_QUANTUM_LARGO;
     public static readonly IdentifiableId COCO_HONEY_LARGO;
@@ -83,10 +83,10 @@ public static class Ids
     public static readonly IdentifiableId COCO_HUNTER_LARGO;
     public static readonly IdentifiableId COCO_CRYSTAL_LARGO;
     public static readonly IdentifiableId COCO_DERVISH_LARGO;
-    public static readonly IdentifiableId COCO_MESMER_LARGO;*/
+    public static readonly IdentifiableId COCO_MESMER_LARGO;
     //public static readonly IdentifiableId COCO_HERMIT_LARGO;
 
-    /*public static readonly IdentifiableId PINK_MESMER_LARGO;
+    public static readonly IdentifiableId PINK_MESMER_LARGO;
     public static readonly IdentifiableId SABER_MESMER_LARGO;
     public static readonly IdentifiableId QUANTUM_MESMER_LARGO;
     public static readonly IdentifiableId HONEY_MESMER_LARGO;
@@ -100,9 +100,9 @@ public static class Ids
     public static readonly IdentifiableId HUNTER_MESMER_LARGO;
     public static readonly IdentifiableId CRYSTAL_MESMER_LARGO;
     public static readonly IdentifiableId DERVISH_MESMER_LARGO;
-    public static readonly IdentifiableId MESMER_HERMIT_LARGO;
+    //public static readonly IdentifiableId MESMER_HERMIT_LARGO;
 
-    public static readonly IdentifiableId PINK_HERMIT_LARGO;
+    /*public static readonly IdentifiableId PINK_HERMIT_LARGO;
     public static readonly IdentifiableId SABER_HERMIT_LARGO;
     public static readonly IdentifiableId QUANTUM_HERMIT_LARGO;
     public static readonly IdentifiableId HONEY_HERMIT_LARGO;
@@ -121,5 +121,4 @@ public static class Ids
     public static readonly IdentifiableId ROSI_LANTERN_LARGO;
 
     public static readonly IdentifiableId MINE_LANTERN_LARGO;
-
 }
