@@ -7,9 +7,6 @@ public abstract class CustomFoodData : CustomActorData
     [JsonProperty("group")]
     public FoodGroup Group;
 
-    [JsonProperty("favouredBy"), JsonRequired]
-    public IdentifiableId[] FavouredBy;
-
     [JsonProperty("pediaFavouredBy"), JsonRequired]
     public string PediaFavouredBy;
 
@@ -24,6 +21,9 @@ public sealed class CustomChimkenData : CustomFoodData
 
     [JsonProperty("spawnAmount")]
     public float SpawnAmount = 1f;
+
+    [JsonProperty("chickSpawnAmount")]
+    public float ChickSpawnAmount = 1f;
 
     [JsonIgnore]
     public IdentifiableId ChickId;

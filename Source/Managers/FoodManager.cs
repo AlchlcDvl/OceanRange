@@ -18,10 +18,10 @@ public static class FoodManager
     private static bool StmExists; // Mod check flag
 
     // Shader properties
-    private static readonly int RampRed = Shader.PropertyToID("_RampRed");
-    private static readonly int RampGreen = Shader.PropertyToID("_RampGreen");
-    private static readonly int RampBlue = Shader.PropertyToID("_RampBlue");
-    private static readonly int RampBlack = Shader.PropertyToID("_RampBlack");
+    private static readonly int RampRed = ShaderUtils.GetOrSet("_RampRed");
+    private static readonly int RampGreen = ShaderUtils.GetOrSet("_RampGreen");
+    private static readonly int RampBlue = ShaderUtils.GetOrSet("_RampBlue");
+    private static readonly int RampBlack = ShaderUtils.GetOrSet("_RampBlack");
 
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
@@ -49,7 +49,6 @@ public static class FoodManager
 
         foreach (var chimkenData in Chimkens)
         {
-            var amount = chimkenData.SpawnAmount / 2;
             var henPrefab = chimkenData.MainId.GetPrefab();
             var chickPrefab = chimkenData.ChickId.GetPrefab();
 
@@ -63,12 +62,12 @@ public static class FoodManager
                         new()
                         {
                             prefab = henPrefab,
-                            weight = amount
+                            weight = chimkenData.SpawnAmount
                         },
                         new()
                         {
                             prefab = chickPrefab,
-                            weight = amount
+                            weight = chimkenData.ChickSpawnAmount
                         }
                     ];
                 }
@@ -218,7 +217,7 @@ public static class FoodManager
         meshModel.GetComponent<MeshFilter>().sharedMesh = AssetManager.GetMesh(lower);
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();
-        var material = meshRend.material = meshRend.material.Clone();
+        var material = meshRend.material = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
 
         var ramp = $"{lower}_ramp_";
         var red = AssetManager.GetTexture2D($"{ramp}red");
@@ -254,9 +253,6 @@ public static class FoodManager
             deluxePlantedPrefab = resourceDlx,
             plantedPrefab = resource
         });
-
-        if (Main.ClsExists)
-            Main.AddIconBypass(icon);
 
         if (!StmExists)
             return;

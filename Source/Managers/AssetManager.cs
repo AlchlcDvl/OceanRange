@@ -333,7 +333,7 @@ public static class AssetManager
         var name = path.SanitisePath();
 
         if (!Assets.TryGetValue(name, out var handle))
-            handle = Assets[name] = new(name);
+            Assets[name] = handle = new(name);
 
         handle.AddPath(path);
     }
