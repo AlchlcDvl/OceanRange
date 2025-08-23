@@ -146,7 +146,7 @@ public static class Helpers
             gordo.SetActive(false);
     }
 
-    public static Mesh Clone(this Mesh originalMesh)
+    public static Mesh Clone(this Mesh originalMesh, bool cloneRig = false)
     {
         var mesh = new Mesh
         {
@@ -174,6 +174,9 @@ public static class Helpers
 
         for (var i = 0; i < originalMesh.subMeshCount; i++)
             mesh.SetTriangles(originalMesh.GetTriangles(i), i);
+
+        if (cloneRig)
+            mesh.bindposes = originalMesh.bindposes;
 
         return mesh;
     }
