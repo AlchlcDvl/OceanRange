@@ -109,7 +109,16 @@ public static class SlimeManager
 #endif
     public static void LoadAllSlimes()
     {
-        RocksPrefab = IdentifiableId.ROCK_PLORT.GetPrefab().transform.Find("rocks");
+        var prefab = IdentifiableId.ROCK_PLORT.GetPrefab();
+        RocksPrefab = prefab.transform.Find("rocks");
+        AssetManager.CreateAssetHandle("plort", prefab.GetComponent<MeshFilter>().mesh);
+
+        var prefab2 = IdentifiableId.PINK_SLIME.GetSlimeDefinition();
+        AssetManager.CreateAssetHandle("slime", prefab2.AppearancesDefault[0].Structures[0].Element.Prefabs[0].GetComponent<SkinnedMeshRenderer>().sharedMesh);
+
+        var prefab3 = IdentifiableId.PINK_GORDO.GetPrefab();
+        AssetManager.CreateAssetHandle("gordo", prefab3.transform.Find("Vibrating/slime_gordo").GetComponent<SkinnedMeshRenderer>().sharedMesh);
+
         Array.ForEach(Slimes, BaseLoadSlime);
     }
 
@@ -213,10 +222,9 @@ public static class SlimeManager
             var meshName = slimeData.PlortMeshes[i];
             var rocks = i == 0 ? prefab.transform : RocksPrefab.Instantiate(prefab.transform);
             var filter = rocks.GetComponent<MeshFilter>();
-            var isNull = meshName == null;
-            filter.mesh = filter.sharedMesh = isNull ? filter.mesh.Clone() : AssetManager.GetMesh(meshName);
+            filter.mesh = filter.sharedMesh = AssetManager.GetMesh(meshName);
 
-            if (!isNull)
+            if (meshName != null)
                 rocks.name = meshName;
 
             var rend = rocks.GetComponent<MeshRenderer>();
@@ -415,9 +423,8 @@ public static class SlimeManager
             structure.DefaultMaterials[0] = GenerateMaterial(slimeData.SlimeMatData[i], slimeData.SlimeMatData, structure.DefaultMaterials[0], slimeData.Name);
 
             var meshName = slimeData.SlimeMeshes[i];
-            var isNull = meshName == null;
 
-            if (isNull && slimeData.SkipNullMesh)
+            if (meshName == "slime" && slimeData.SkipNullMesh)
             {
                 if (i == 0)
                     slimeBase = structure.Element.Prefabs[0];
@@ -430,9 +437,9 @@ public static class SlimeManager
             elem.Prefabs = [prefab2];
             elem.name = elem.Name = i == 0 ? "Body" : "Structure";
             var meshRend = prefab2.GetComponent<SkinnedMeshRenderer>();
-            meshRend.sharedMesh = isNull ? meshRend.sharedMesh.Clone() : AssetManager.GetMesh(meshName);
+            meshRend.sharedMesh = AssetManager.GetMesh(meshName);
 
-            if (!isNull)
+            if (i != 0)
                 meshRend.name = meshName;
 
             prefab2.IgnoreLODIndex = true;
@@ -444,7 +451,7 @@ public static class SlimeManager
                 prefabsForBoneData[i - 1] = prefab2;
         }
 
-        applicator.GenerateSlimeBones(slimeBase, slimeData.JiggleAmount, prefabsForBoneData);
+        applicator.GenerateSlimeBones(slimeBase, slimeData.JiggleAmount, prefabsForBoneData, slimeData.SkipNullMesh);
     }
 
     private static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback, string name)
@@ -564,12 +571,9 @@ public static class SlimeManager
         for (var i = 0; i < slimeData.GordoMeshes.Length; i++)
         {
             var meshName = slimeData.GordoMeshes[i];
-            var isNull = meshName == null;
             Mesh mesh;
 
-            if (isNull)
-                mesh = sharedMesh.Clone();
-            else if (meshName.Contains("_clone"))
+            if (meshName.Contains("_clone"))
                 mesh = AssetManager.GetMesh(meshName.Replace("_clone", "")).Clone();
             else
                 mesh = AssetManager.GetMesh(meshName);
@@ -590,7 +594,7 @@ public static class SlimeManager
             meshRend.bones = bones;
             meshRend.rootBone = parent;
 
-            if (!isNull && i != 0)
+            if (i != 0)
                 meshRend.name = meshName;
 
             var material = GenerateMaterial(slimeData.GordoMatData[i], slimeData.SlimeMatData, meshRend.material, slimeData.Name);
@@ -634,7 +638,7 @@ public static class SlimeManager
         return weight;
     }
 
-    private static void GenerateSlimeBones(this SlimeAppearanceApplicator slimePrefab, SlimeAppearanceObject bodyApp, float jiggleAmount, SlimeAppearanceObject[] appearanceObjects)
+    private static void GenerateSlimeBones(this SlimeAppearanceApplicator slimePrefab, SlimeAppearanceObject bodyApp, float jiggleAmount, SlimeAppearanceObject[] appearanceObjects, bool avoidRiggingBody)
     {
         bodyApp.AttachedBones =
         [
@@ -691,8 +695,13 @@ public static class SlimeManager
 
         num /= vertices.Length;
 
-        foreach (var (rend, mesh) in list)
+        for (var i = 0; i < list.Count; i++)
         {
+            if (i == 0 && avoidRiggingBody)
+                continue;
+
+            var (rend, mesh) = list[i];
+
             if (!mesh || !rend)
             {
                 Debug.LogWarning("One of the meshes or mesh rends provided is null");

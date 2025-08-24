@@ -193,9 +193,9 @@ public sealed class CustomSlimeData : CustomActorData
 
         Progress ??= [];
 
-        SlimeMeshes ??= [null];
-        PlortMeshes ??= [null];
-        GordoMeshes ??= [null];
+        SlimeMeshes ??= ["slime"];
+        PlortMeshes ??= ["plort"];
+        GordoMeshes ??= ["gordo"];
 
         SlimeManager.PlortTypesToSlimesMap[PlortType].Add(upper);
     }

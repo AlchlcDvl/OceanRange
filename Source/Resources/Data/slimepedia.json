@@ -127,8 +127,8 @@
         "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange"],
         "toRemove": ["BoomSlimeExplode, Assembly-CSharp", "BoomMaterialAnimator, Assembly-CSharp"],
         "plortMeshes": ["pearl", "mine_pearl"],
-        "slimeMeshes": [null, "mine_exterior"],
-        "gordoMeshes": [null, "mine_exterior_gordo"],
+        "slimeMeshes": ["slime", "mine_exterior"],
+        "gordoMeshes": ["gordo", "mine_exterior_gordo"],
         "slimeMatData":
         [
             {
@@ -184,8 +184,8 @@
         "jiggle": 0.25,
         "toAdd": ["OceanRange.Slimes.LanternBehaviour, OceanRange"],
         "plortMeshes": ["pearl", "lantern_stalk_pearl", "lantern_lure_pearl"],
-        "slimeMeshes": [null, "lantern_fins", "lantern_stalk", "lantern_lure"],
-        "gordoMeshes": [null, "lantern_fins_clone", "lantern_stalk_clone", "lantern_lure_clone"],
+        "slimeMeshes": ["slime", "lantern_fins", "lantern_stalk", "lantern_lure"],
+        "gordoMeshes": ["gordo", "lantern_fins_clone", "lantern_stalk_clone", "lantern_lure_clone"],
         "slimeMatData":
         [
             {
@@ -249,7 +249,7 @@
         "gordoZone": "RANCH",
         "toAdd": ["OceanRange.Slimes.SandBehaviour, OceanRange"],
         "toRemove": ["GotoWater, Assembly-CSharp", "GotoConsumable, Assembly-CSharp", "DestroyOnTouching, Assembly-CSharp", "SlimeEatWater, Assembly-CSharp"],
-        "slimeMeshes": [null, "sand_shells"],
+        "slimeMeshes": ["slime", "sand_shells"],
         "gordoMeshes": ["puddle_body_gordo"],
         "plortMeshes": ["pearl"],
         "skipNull": true,
@@ -296,8 +296,8 @@
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
         "toAdd": ["StalkConsumable, Assembly-CSharp"],
-        "slimeMeshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail"],
-        "gordoMeshes": [null, "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_gordo"],
+        "slimeMeshes": ["slime", "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail"],
+        "gordoMeshes": ["gordo", "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_gordo"],
         "slimeMatData":
         [
             {

@@ -178,7 +178,21 @@ public static class AssetManager
     /// Gets a Mesh from the assets associated with the provided name.
     /// </summary>
     /// <inheritdoc cref="Get{T}"/>
-    public static Mesh GetMesh(string name) => Get<Mesh>(name);
+    public static Mesh GetMesh(string name)
+    {
+        var assetName = name;
+        var isClone = name.EndsWith("_clone", StringComparison.OrdinalIgnoreCase);
+
+        if (isClone)
+            assetName = name.Replace("_clone", "");
+
+        var mesh = Get<Mesh>(assetName);
+
+        if (isClone)
+            CreateAssetHandle(name, mesh);
+
+        return mesh;
+    }
 
     /// <summary>
     /// Gets a Shader from the assets associated with the provided name.
@@ -336,6 +350,23 @@ public static class AssetManager
             Assets[name] = handle = new(name);
 
         handle.AddPath(path);
+    }
+
+    /// <summary>
+    /// Creates an asset handle for the provided asset.
+    /// </summary>
+    /// <typeparam name="T">The type of the asset.</typeparam>
+    /// <param name="path">The path of the asset.</param>
+    /// <param name="asset">The asset to automatically add to the handle.</param>
+    public static void CreateAssetHandle<T>(string path, T asset) where T : UObject
+    {
+        var name = path.SanitisePath();
+
+        if (!Assets.TryGetValue(name, out var handle))
+            Assets[name] = handle = new(name);
+
+        handle.AddPath(path);
+        handle.AddAsset(asset);
     }
 
 #if DEBUG
