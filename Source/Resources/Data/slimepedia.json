@@ -127,8 +127,8 @@
         "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange"],
         "toRemove": ["BoomSlimeExplode, Assembly-CSharp", "BoomMaterialAnimator, Assembly-CSharp"],
         "plortMeshes": ["pearl", "mine_pearl"],
-        "slimeMeshes": ["slime", "mine_exterior"],
-        "gordoMeshes": ["gordo", "mine_exterior_gordo"],
+        "slimeMeshes": [null, "mine_exterior"],
+        "gordoMeshes": [null, "mine_exterior_gordo"],
         "slimeMatData":
         [
             {
@@ -184,8 +184,8 @@
         "jiggle": 0.25,
         "toAdd": ["OceanRange.Slimes.LanternBehaviour, OceanRange"],
         "plortMeshes": ["pearl", "lantern_stalk_pearl", "lantern_lure_pearl"],
-        "slimeMeshes": ["slime", "lantern_fins", "lantern_stalk", "lantern_lure"],
-        "gordoMeshes": ["gordo", "lantern_fins_clone", "lantern_stalk_clone", "lantern_lure_clone"],
+        "slimeMeshes": [null, "lantern_fins", "lantern_stalk", "lantern_lure"],
+        "gordoMeshes": [null, "lantern_fins_clone", "lantern_stalk_clone", "lantern_lure_clone"],
         "slimeMatData":
         [
             {
@@ -249,7 +249,7 @@
         "gordoZone": "RANCH",
         "toAdd": ["OceanRange.Slimes.SandBehaviour, OceanRange"],
         "toRemove": ["GotoWater, Assembly-CSharp", "GotoConsumable, Assembly-CSharp", "DestroyOnTouching, Assembly-CSharp", "SlimeEatWater, Assembly-CSharp"],
-        "slimeMeshes": ["slime", "sand_shells"],
+        "slimeMeshes": [null, "sand_shells"],
         "gordoMeshes": ["puddle_body_gordo"],
         "plortMeshes": ["pearl"],
         "skipNull": true,
@@ -296,8 +296,8 @@
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
         "toAdd": ["StalkConsumable, Assembly-CSharp"],
-        "slimeMeshes": ["slime", "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail"],
-        "gordoMeshes": ["gordo", "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_gordo"],
+        "slimeMeshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail"],
+        "gordoMeshes": [null, "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_gordo"],
         "slimeMatData":
         [
             {
@@ -339,5 +339,64 @@
         "plortonomics": "The odd contents? Mesmer plorts contain bioluminescent bacteria, which seem to be the source of the colors of their source. These bacteria may display a large possibility of colors, however, they usually have to be artificially mutated using complex chemical compounds to show exact colors. The products made with mesmer plorts are usually luxurious, imperious, and greedy alternatives of renewable light for the rich, but their true value is surprisingly lower.",
         "plortType": "Plort",
         "zones": ["MOSS"]
+    },
+    {
+        "name": "Hermit",
+        "favToy": "DISCO_BALL_TOY",
+        "favFood": "POGO_FRUIT",
+        "diet": "FRUIT",
+        "basePlort": "TABBY_PLORT",
+        "canLargofy": false,
+        "ammoColor": "#0a094f",
+        "basePrice": 20,
+        "saturation": 100,
+        "intro": "ooooooooooooooooooo pretty",
+        "pediaDiet": "Fruit",
+        "fav": "Pogo Fruit",
+        "jiggle": 0.25,
+        "toAdd": ["StalkConsumable, Assembly-CSharp"],
+        "slimeMeshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail"],
+        "gordoMeshes": [null, "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_gordo"],
+        "slimeMatData":
+        [
+            {
+                "pattern": "mesmer_pattern",
+                "matOrigin": "TABBY_SLIME",
+                "gloss": 0.11
+            },
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            { "sameAs": 1 },
+            {
+                "pattern": "mesmer_tail_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
+        ],
+        "plortMatData":
+        [
+            {
+                "topColor": "#0a094f",
+                "middleColor": "#2F2251",
+                "bottomColor": "#1e1140"
+            }
+        ],
+        "gordoMatData":
+        [
+            { "sameAs": 0 },
+            { "sameAs": 1 },
+            { "sameAs": 2 },
+            { "sameAs": 3 }
+        ],
+        "natGordoSpawn": false,
+        "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
+        "slimeology": "The hermit slime is a fascinating creature that lives in coastal and rocky areas. This slime is characterized by always carrying a shell on its back, which it uses as a shelter and storage for the valuable objects it collects. The hermit slime has the unique characteristic of being able to shed its shell and adapt to its environment, being able to enter shells, coconuts, stones, and even garbage like boxes. Its favorite food is coral fruit, a delicious fruit that grows from an exotic plant that grows in the crevices of rocks and near the sea, this food can help the rancher gain the trust of the slime and thus facilitate its collection.",
+        "risks": "The hermit plorts are as unique as the slimes are. Thanks to the slimes' constant collection of materials in their environment, their plorts contain microfragments of shells and minerals. Hermit plorts are incredibly durable and are used to craft durable building materials and marine decorations. Additionally, they are famous for their ability to glow in the dark when rubbed against a hard surface! Some ranchers use them to decorate their ranches with natural underwater lights.",
+        "plortonomics": "Hermit slimes are naturally suspicious and can quickly hide when detecting sudden movement or loud noise. This can make it difficult to collect parcels and stored items. If it does not feel safe, it may spend long periods hidden in its shell, making it difficult to handle and collect its plorts. When trying to get items out of their shell, you need to do it carefully and patiently. Rough methods can make the slime even more reluctant to come out of its shell in the future. It is recommended to keep the hermit slimes happy and prevent them from becoming even more distrustful, it is advisable to use the coral fruit and other peaceful strategies to interact with them.",
+        "plortType": "Plort",
+        "zones": ["REEF"]
     }
 ]
