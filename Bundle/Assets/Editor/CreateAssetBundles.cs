@@ -5,35 +5,35 @@ using System.Linq;
 
 public class CreateAssetBundles
 {
+    static readonly List<Tuple<string, string, BuildTarget>> _targets = new()
+    {
+        new Tuple<string, string, BuildTarget>("Mac", "mac", BuiltTarget.StandaloneOSX),
+        new Tuple<string, string, BuildTarget>("Win", "win", BuiltTarget.StandaloneWindows),
+        new Tuple<string, string, BuildTarget>("Lin", "lin", BuiltTarget.StandaloneLinux64),
+    };
+
     [MenuItem("AssetBundle/Build")]
     static void BuildBundles()
     {
-        string assetBundleDirectory = "Assets/StreamingAssets";
+        string assetBundleDirectory = Path.Combine("Assets", "StreamingAssets");
         PrepDirectory(assetBundleDirectory);
 
-        string mac = "Assets/StreamingAssets/Mac";
-        PrepDirectory(mac);
-
-        string win = "Assets/StreamingAssets/Win";
-        PrepDirectory(win);
-
-        string lin = "Assets/StreamingAssets/Lin";
-        PrepDirectory(lin);
-
-        BuildPipeline.BuildAssetBundles(mac, BuildAssetBundleOptions.None, BuildTarget.StandaloneOSX);
-        BuildPipeline.BuildAssetBundles(win, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
-        BuildPipeline.BuildAssetBundles(lin, BuildAssetBundleOptions.None, BuildTarget.StandaloneLinux64);
-
-        string bundles = "Assets/../../Source/Resources/Bundles";
+        string bundles = Path.Combine("Assets", "..", "..", "Source", "Resources", "Bundles");
         PrepDirectory(bundles);
 
-        MoveAndRenameSpecificBundle(mac, bundles, "mac");
-        MoveAndRenameSpecificBundle(lin, bundles, "lin");
-        MoveAndRenameSpecificBundle(win, bundles, "win");
+        foreach ((string dir, string suffix, BuiltTarget target) in _targets)
+        {
+            string directory = Path.Combine(assetBundleDirectory, dir);
+            PrepDirectory(directory);
+
+            BuildPipeline.BuildAssetBundles(directory, BuildAssetBundleOptions.None, target);
+
+            MoveAndRenameSpecificBundle(directory, bundles, suffix);
+        }
 
         Directory.Delete(assetBundleDirectory, true);
 
-        string metaPath = "Assets/StreamingAssets.meta";
+        string metaPath = assetBundleDirectory + ".meta";
 
         if (File.Exists(metaPath))
             File.Delete(metaPath);
@@ -52,11 +52,14 @@ public class CreateAssetBundles
     static void MoveAndRenameSpecificBundle(string sourceDir, string targetDir, string newExtension)
     {
         string sourceBundlePath = Path.Combine(sourceDir, "oceanrange");
-        string destBundleFileName = "ocean_range.bundle_" + newExtension;
-        string destBundlePath = Path.Combine(targetDir, destBundleFileName);
 
         if (!File.Exists(sourceBundlePath))
+        {
+            Debug.LogError($"Source bundle not found at: {sourceBundlePath}");
             return;
+        }
+
+        string destBundlePath = Path.Combine(targetDir, "ocean_range.bundle_" + newExtension);
 
         if (File.Exists(destBundlePath))
             File.Delete(destBundlePath);

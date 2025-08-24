@@ -87,7 +87,10 @@ public static class Helpers
     //         return color;
 
     //     if (ColorUtility.DoTryParseHtmlColor(hex, out color))
-    //         return HexToColor32s[hex] = color;
+    //     {
+    //         HexToColors32[hex] = color;
+    //         return color;
+    //     }
 
     //     throw new InvalidDataException($"Invalid color hex {hex}!");
     // }
@@ -98,7 +101,10 @@ public static class Helpers
             return color;
 
         if (ColorUtility.TryParseHtmlString(hex, out color))
-            return HexToColors[hex] = color;
+        {
+            HexToColors[hex] = color;
+            return color;
+        }
 
         throw new InvalidDataException($"Invalid color hex {hex}!");
     }

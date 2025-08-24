@@ -31,7 +31,7 @@ public sealed class SavePositionCommand : ConsoleCommand
         var name = Helpers.GetClosestCell(pos).name.Replace("cell", "");
 
         if (!SavedPositions.TryGetValue(name, out var positions))
-            positions = SavedPositions[name] = [];
+            SavedPositions[name] = positions = [];
 
         positions.Add(pos);
         Main.Console.Log("Saved " + name + " at " + pos.ToString());

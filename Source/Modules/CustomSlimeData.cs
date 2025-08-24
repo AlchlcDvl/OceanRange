@@ -156,6 +156,9 @@ public sealed class CustomSlimeData : CustomActorData
     [JsonProperty("gordoMatData"), JsonRequired]
     public MaterialData[] GordoMatData;
 
+    [JsonProperty("spawners")]
+    public string[] ExcludedSpawners;
+
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
@@ -193,8 +196,6 @@ public sealed class CustomSlimeData : CustomActorData
         SlimeMeshes ??= [null];
         PlortMeshes ??= [null];
         GordoMeshes ??= [null];
-
-        SlimeManager.PlortTypesToSlimesMap[PlortType].Add(upper);
     }
 }
 
@@ -227,6 +228,12 @@ public sealed class MaterialData
     [JsonProperty("orShaderName")]
     public string OrShaderName;
 
+    [JsonProperty("miscColorProps")]
+    public Dictionary<string, Color> MiscColorPropsJson;
+
+    [JsonIgnore]
+    public Dictionary<int, Color> MiscColorProps;
+
     [JsonIgnore]
     public Material CachedMaterial;
 
@@ -235,5 +242,11 @@ public sealed class MaterialData
     {
         MiddleColor ??= TopColor;
         BottomColor ??= TopColor;
+
+        if (MiscColorPropsJson == null)
+            return;
+
+        foreach (var (prop, value) in MiscColorPropsJson)
+            MiscColorProps[ShaderUtils.GetOrSet(prop)] = value;
     }
 }

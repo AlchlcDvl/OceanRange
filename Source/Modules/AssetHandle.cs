@@ -40,6 +40,9 @@ public sealed class AssetHandle(string name) : IDisposable
 
         foreach (var asset in Assets.Values)
         {
+            if (!asset)
+                continue;
+
             if (asset is AssetBundle bundle)
                 bundle.Unload(false);
 
@@ -64,6 +67,21 @@ public sealed class AssetHandle(string name) : IDisposable
 
         if (!Paths.TryAdd(extension, path))
             throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming!");
+    }
+
+    /// <summary>
+    /// Adds an asset to the handle.
+    /// </summary>
+    /// <typeparam name="T">The type of the asset.</typeparam>
+    /// <param name="asset">The asset to add.</param>
+    public void AddAsset<T>(T asset) where T : UObject
+    {
+        var tType = typeof(T);
+
+        if (Assets.TryGetValue(tType, out var tAsset))
+            Main.Console.LogWarning($"Replacing existing asset! {tType.Name}:{tAsset.name}");
+
+        Assets[tType] = asset;
     }
 
     /// <summary>

@@ -9,7 +9,6 @@
         "garden": "crop",
         "type": "Veggie",
         "resource": "Patch",
-        "favouredBy": ["MINE_SLIME"],
         "basePrice": 4,
         "saturation": 10,
         "spawnLocations":

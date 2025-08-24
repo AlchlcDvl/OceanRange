@@ -1,6 +1,7 @@
 #if DEBUG
 using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 
 namespace OceanRange.Patches;
 
@@ -22,7 +23,7 @@ public static class TimeDiagnosticPatch
                 if (timeDiagnostic == null)
                     continue;
 
-                Watches[method] = (timeDiagnostic.Stage, timeDiagnostic.Stage == null, new(), method.GetParameters().FirstOrDefault()?.ParameterType == jsonType);
+                Watches[method] = (timeDiagnostic.Stage, timeDiagnostic.Stage == null, new(), jsonType.IsAssignableFrom(method.GetParameters().FirstOrDefault()?.ParameterType));
                 yield return method;
             }
         }
@@ -33,17 +34,16 @@ public static class TimeDiagnosticPatch
         var (stage, isNull, watch, hasJsonParam) = Watches[__originalMethod];
         watch.Start();
 
-        if (isNull)
-        {
-            var name = __originalMethod.Name + " Execut"; // Execut because the ed is added in the postfix so no need to have it here lol
+        var sb = new StringBuilder();
+        sb.Append(isNull ? __originalMethod.Name : stage);
 
-            if (hasJsonParam)
-                __state = ((JsonData)__args[0]).Name + $" {name}";
-            else
-                __state = name;
+        if (hasJsonParam)
+        {
+            sb.Insert(0, ((JsonData)__args[0]).Name + " ");
+            sb.Append(" Execut"); // Execut because the ed is added in the postfix so no need to have it here lol
         }
-        else
-            __state = stage;
+
+        __state = sb.ToString();
     }
 
     public static void Postfix(MethodBase __originalMethod, ref string __state)
