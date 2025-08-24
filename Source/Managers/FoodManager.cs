@@ -175,14 +175,26 @@ public static class FoodManager
     {
         var prefab = baseId.GetPrefab().CreatePrefab();
         prefab.name = $"bird{type}{name}";
-        var component = prefab.transform.Find($"{modelName}/mesh_body1").GetComponent<SkinnedMeshRenderer>();
-        var material = component.material = component.sharedMaterial = component.sharedMaterial.Clone();
-        material.SetTexture(RampRed, red);
-        material.SetTexture(RampGreen, green);
-        material.SetTexture(RampBlue, blue);
-        material.SetTexture(RampBlack, black);
         prefab.GetComponent<Identifiable>().id = id;
         prefab.GetComponent<Vacuumable>().size = 0;
+
+        var component = prefab.transform.Find($"{modelName}/mesh_body1").GetComponent<SkinnedMeshRenderer>();
+        var component2 = prefab.transform.Find($"{modelName}/root/handle_cog/loc_core/mesh_body MED").GetComponent<MeshRenderer>();
+        var component3 = prefab.transform.Find($"{modelName}/root/handle_cog/loc_core/mesh_body LOW").GetComponent<MeshRenderer>();
+
+        var materials = new Material[3];
+        materials[0] = component.material = component.sharedMaterial = component.sharedMaterial.Clone();
+        materials[1] = component2.material = component2.sharedMaterial = component2.sharedMaterial.Clone();
+        materials[2] = component3.material = component3.sharedMaterial = component3.sharedMaterial.Clone();
+
+        foreach (var material in materials)
+        {
+            material.SetTexture(RampRed, red);
+            material.SetTexture(RampGreen, green);
+            material.SetTexture(RampBlue, blue);
+            material.SetTexture(RampBlack, black);
+        }
+
         return prefab;
     }
 
@@ -218,7 +230,7 @@ public static class FoodManager
         meshModel.GetComponent<MeshFilter>().sharedMesh = AssetManager.GetMesh(lower);
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();
-        var material = meshRend.material = meshRend.material.Clone();
+        var material = meshRend.material = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
 
         var ramp = $"{lower}_ramp_";
         var red = AssetManager.GetTexture2D($"{ramp}red");

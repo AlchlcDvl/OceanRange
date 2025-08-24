@@ -211,7 +211,7 @@ public static class SlimeManager
 
         var gordoObj = prefab.transform.Find("Vibrating/slime_gordo");
         var prefabRend = gordoObj.GetComponent<SkinnedMeshRenderer>();
-        prefabRend.material = material;
+        prefabRend.material = prefabRend.sharedMaterial = material;
         gordoObj.GenerateGordoBones(slimeData, prefabRend);
 
         prefab.AddComponent<PersistentId>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
@@ -328,8 +328,7 @@ public static class SlimeManager
         var appearance = baseAppearance.DeepCopy(); // Cloning our own appearance
         appearance.name = $"{slimeData.Name}Normal";
 
-        var sleeping = Sleeping.Clone();
-        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, sleeping];
+        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, Sleeping.Clone()];
 
         // Faces stuff
         foreach (var face in appearance.Face.ExpressionFaces)
@@ -691,20 +690,17 @@ public static class SlimeManager
 
         var list = new List<(SkinnedMeshRenderer, Mesh)> { (meshRend, sharedMesh) };
 
-        if (appearanceObjects != null)
+        foreach (var appearanceObject in appearanceObjects)
         {
-            foreach (var appearanceObject in appearanceObjects)
-            {
-                if (!appearanceObject)
-                    throw new NullReferenceException("One or more of the SlimeAppearanceObjects are null");
+            if (!appearanceObject)
+                throw new NullReferenceException("One or more of the SlimeAppearanceObjects are null");
 
-                appearanceObject.AttachedBones = bodyApp.AttachedBones;
+            appearanceObject.AttachedBones = bodyApp.AttachedBones;
 
-                if (appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
-                    list.Add((rend, rend.sharedMesh));
-                else
-                    Debug.LogWarning("One of the SlimeAppearanceObjects provided does not use a SkinnedMeshRenderer");
-            }
+            if (appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
+                list.Add((rend, rend.sharedMesh));
+            else
+                Debug.LogWarning("One of the SlimeAppearanceObjects provided does not use a SkinnedMeshRenderer");
         }
 
         var rootMatrix = slimePrefab.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;
@@ -787,37 +783,6 @@ public static class SlimeManager
         definition.Diet.Favorites = [];
     }
 
-    // FIXME: Coco mesh doesn't work atm
-    // public static void InitCocoSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3)
-    // {
-    //     var color = "#633C00".HexToColor();
-    //     var material = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
-    //     material.SetColor(TopColor, color);
-    //     material.SetColor(MiddleColor, color);
-    //     material.SetColor(BottomColor, color);
-    //     material.SetFloat(Gloss, 1f);
-
-    //     var color2 = "#FFFFFF".HexToColor();
-    //     var material2 = IdentifiableId.TABBY_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0].Clone();
-    //     material2.SetColor(TopColor, color2);
-    //     material2.SetColor(MiddleColor, color2);
-    //     material2.SetColor(BottomColor, color2);
-    //     material2.SetFloat(Gloss, 1f);
-    //     material2.SetTexture(StripeTexture, AssetManager.GetTexture2D("coco_pattern"));
-    // }
-    public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
-    {
-        var blink = appearance.Face._expressionToFaceLookup[SlimeFace.SlimeExpression.Blink];
-        var sleeping = new SlimeExpressionFace()
-        {
-            SlimeExpression = Ids.Sleeping,
-            Eyes = blink.Eyes?.Clone(),
-            Mouth = blink.Mouth?.Clone()
-        };
-        sleeping.Eyes?.SetTexture(FaceAtlas, AssetManager.GetTexture2D("sleeping_eyes"));
-        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, sleeping];
-        appearance.Face._expressionToFaceLookup[Ids.Sleeping] = sleeping;
-    }
     public static void InitSandSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3) => SandBehaviour.ProduceFX = IdentifiableId.PUDDLE_SLIME.GetPrefab().GetComponent<SlimeEatWater>().produceFX;
 
     public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _1) => SandBehaviour.PlortPrefab = prefab;

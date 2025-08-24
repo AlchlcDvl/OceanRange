@@ -77,3 +77,9 @@ public static class EnsureAutoSaveDirectorData
     [HarmonyPatch(nameof(AutoSaveDirector.SaveGame))]
     public static void Postfix() => IsAutoSave = false;
 }
+
+[HarmonyPatch(typeof(CameraFacingBillboard), nameof(CameraFacingBillboard.FaceCamera))]
+public static class Type1ToMurderErrorSpams // TODO: Remove when the error is fixed
+{
+    public static Exception Finalizer() => null;
+}

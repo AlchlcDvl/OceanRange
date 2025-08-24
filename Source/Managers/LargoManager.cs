@@ -1,5 +1,5 @@
+using AssetsLib;
 using SRML.SR.Utils;
-using UnityEngine.UIElements;
 
 namespace OceanRange.Managers;
 
@@ -32,6 +32,7 @@ public static class LargoManager
     Mine
     Lantern
     */
+
     public static readonly Dictionary<IdentifiableId, List<(IdentifiableId, IdentifiableId)>> LargoMaps = [];
 
     public static void CreateLargo(Identifiable.Id largoId, Identifiable.Id slime1, Identifiable.Id slime2, SlimeRegistry.LargoProps props, out SlimeDefinition largoDefinition, out SlimeAppearance largoAppearance, out GameObject largoObject, SlimeRegistry.LargoProps slime1SSProps = SlimeRegistry.LargoProps.NONE, SlimeRegistry.LargoProps slime2SSProps = SlimeRegistry.LargoProps.NONE, SlimeRegistry.LargoProps slime12SSProps = SlimeRegistry.LargoProps.NONE)
