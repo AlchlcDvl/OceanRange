@@ -59,10 +59,22 @@ public static class LargoManager
     private static Material QuantumMat;
     private static float DefaultRadius;
 
+    private static LargoData[] Largos;
+
+#if DEBUG
+    [TimeDiagnostic("Largo Preload")]
+#endif
+    public static void PreLoadLargoData() => Largos = AssetManager.GetJsonArray<LargoData>("largopedia");
+
+#if DEBUG
+    [TimeDiagnostic("Largo Load")]
+#endif
     public static void LoadAllLargos()
     {
         QuantumMat = IdentifiableId.QUANTUM_SLIME.GetSlimeDefinition().AppearancesDefault[0].QubitAppearance.Structures[0].DefaultMaterials[0];
         DefaultRadius = IdentifiableId.PINK_SLIME.GetPrefab().GetComponent<SphereCollider>().radius;
+
+        Array.ForEach(Largos, CreateLargo);
 
         //COCO LARGOS
         // SlimeRegistry.CraftLargo(Ids.PINK_COCO_LARGO, Ids.COCO_SLIME, IdentifiableId.PINK_SLIME, LargoProps.RECOLOR_BASE_MAT_AS_SLIME2 | LargoProps.GENERATE_NAME | LargoProps.GENERATE_SECRET_STYLES);

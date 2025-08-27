@@ -34,6 +34,7 @@ internal sealed class Main : ModEntryPoint
         SaveManager.PreLoadSaveData();
         FoodManager.PreLoadFoodData();
         SlimeManager.PreLoadSlimeData();
+        LargoManager.PreLoadLargoData();
         Mailbox.PreLoadMailData();
         Contacts.PreloadRancherData();
 
