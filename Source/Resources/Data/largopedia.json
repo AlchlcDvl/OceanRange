@@ -4,7 +4,7 @@
         "slime1": "Rosi",
         "slime2": "Mine",
         "meshes": ["rosi_body_clone", "rosi_mine_exterior", "rosi_mine_stalk", "rosi_mine_frills"],
-        "props": ["UseSlime2ForEyes", "UseSlime2ForMouth", "CustomStructureSource"],
+        "props": ["UseSlime2ForEyes", "UseSlime2ForMouth", "CustomStructureSource", "UseSlime2ForBody"],
         "customMatData":
         [
             {

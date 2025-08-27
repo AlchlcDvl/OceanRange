@@ -228,6 +228,9 @@ public static class LargoManager
         prefab.GetComponent<Rigidbody>().mass += slime2Prefab.GetComponent<Rigidbody>().mass;
         prefab.GetComponent<AweTowardsLargos>().Destroy();
 
+        if (prefab.TryGetComponent<PinkSlimeFoodTypeTracker>(out var tracker))
+            tracker.Destroy();
+
         if (slime1.FavoriteToys != null)
             definition.FavoriteToys = [.. definition.FavoriteToys.Union(slime1.FavoriteToys, Identifiable.idComparer)];
 
@@ -385,7 +388,7 @@ public static class LargoManager
         if (prefab.TryGetComponent<ReactToToyNearby>(out var react))
             react.slimeDefinition = definition;
 
-        foreach (var component in prefab.GetComponents<Component>())
+        foreach (var component in slime2Prefab.GetComponents<Component>())
         {
             var type = component.GetType();
 
@@ -419,6 +422,9 @@ public static class LargoManager
             foreach (var component in largoData.Slime2Data.ComponentsToRemove)
                 prefab.RemoveComponent(component);
         }
+
+        if (prefab.TryGetComponent<MineBehaviour>(out var mine))
+            mine.IsLargo = true;
 
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterAppearance(definition, appearance);

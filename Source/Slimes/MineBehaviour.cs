@@ -21,6 +21,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     private const float MinDelay = 5f;
 
     public GameObject ExplodeFX;
+    public bool IsLargo;
 
     private float NextPossibleExplode;
     private float NextExplodeDelayTime = MaxDelay;
@@ -94,7 +95,10 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
 
     private void Explode()
     {
-        PhysicsUtil.Explode(gameObject, ExplodeRadius, ExplodePower, MinPlayerDamage, MaxPlayerDamage);
+        if (IsLargo)
+            PhysicsUtil.Explode(gameObject, ExplodeRadius * 2f, ExplodePower * 2f, MinPlayerDamage * 1.2f, MaxPlayerDamage * 1.2f);
+        else
+            PhysicsUtil.Explode(gameObject, ExplodeRadius, ExplodePower, MinPlayerDamage, MaxPlayerDamage);
 
         if (gameObject.layer == LayerMask.NameToLayer("Launched"))
             SceneContext.Instance.AchievementsDirector.AddToStat(AchievementsDirector.IntStat.LAUNCHED_BOOM_EXPLODE, 1);
