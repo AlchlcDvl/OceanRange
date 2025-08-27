@@ -44,7 +44,7 @@ public sealed class AweTowardsMesmers : FindConsumable
         var driveCalc = new DriveCalculator(SlimeEmotions.Emotion.NONE, 0f, 0f);
         var result = new Dictionary<IdentifiableId, DriveCalculator>(Identifiable.idComparer) { [Ids.MESMER_SLIME] = driveCalc };
 
-        foreach (var largo in SlimeManager.MesmerLargos)
+        foreach (var largo in LargoManager.MesmerLargos)
             result[largo] = driveCalc;
 
         return result;

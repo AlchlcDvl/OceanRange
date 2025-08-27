@@ -39,7 +39,7 @@ public sealed class MailSaveData : ISaveData
             mail.Read = reader.ReadBoolean();
 
             if (!mail.Read)
-                mail.Sent = reader.ReadBoolean();;
+                mail.Sent = reader.ReadBoolean();
         }
     }
 }
@@ -48,7 +48,7 @@ public sealed class GordoSaveData : ISaveData
 {
     public bool Deprecated => false;
 
-    public static Dictionary<IdentifiableId, CustomSlimeData> Lookup;
+    public static Dictionary<IdentifiableId, SlimeData> Lookup;
 
     public ulong[] Write(out byte padding)
     {

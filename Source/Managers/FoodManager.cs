@@ -8,12 +8,12 @@ public static class FoodManager
     /// <summary>
     /// The array containing all meat related data.
     /// </summary>
-    public static CustomChimkenData[] Chimkens;
+    private static ChimkenData[] Chimkens;
 
     /// <summary>
     /// The array containing all plant related data.
     /// </summary>
-    public static CustomPlantData[] Plants;
+    private static PlantData[] Plants;
 
     private static bool StmExists; // Mod check flag
 
@@ -30,8 +30,8 @@ public static class FoodManager
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
 
-        Chimkens = AssetManager.GetJsonArray<CustomChimkenData>("chimkenpedia");
-        Plants = AssetManager.GetJsonArray<CustomPlantData>("plantpedia");
+        Chimkens = AssetManager.GetJsonArray<ChimkenData>("chimkenpedia");
+        Plants = AssetManager.GetJsonArray<PlantData>("plantpedia");
 
         Ids.DIRT.RegisterId(IdentifiableId.SILKY_SAND_CRAFT);
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
@@ -127,7 +127,7 @@ public static class FoodManager
 #if DEBUG
     [TimeDiagnostic]
 #endif
-    private static void BaseCreateChimken(CustomChimkenData chimkenData)
+    private static void BaseCreateChimken(ChimkenData chimkenData)
     {
         // Fetch ramps and caching values because reusing them is tedious
         var lower = chimkenData.Name.ToLowerInvariant();
@@ -215,7 +215,7 @@ public static class FoodManager
 #if DEBUG
     [TimeDiagnostic]
 #endif
-    private static void BaseCreatePlant(CustomPlantData plantData)
+    private static void BaseCreatePlant(PlantData plantData)
     {
         var isVeggie = plantData.Group == FoodGroup.VEGGIES;
 

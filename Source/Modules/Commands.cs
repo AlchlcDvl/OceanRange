@@ -34,7 +34,7 @@ public sealed class SavePositionCommand : ConsoleCommand
             SavedPositions[name] = positions = [];
 
         positions.Add(pos);
-        Main.Console.Log("Saved " + name + " at " + pos.ToString());
+        Main.Console.Log("Saved " + name + " at " + pos);
         return true;
     }
 }

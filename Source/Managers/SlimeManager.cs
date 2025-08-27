@@ -13,42 +13,18 @@ namespace OceanRange.Managers;
 // FIXME: Coco mesh doesn't work atm
 public static class SlimeManager
 {
-    public static readonly Dictionary<string, HashSet<string>> PlortTypesToSlimesMap = new()
-    {
-        ["Plort"] = ["PINK", "SABER", "QUANTUM", "HONEY", "PHOSPHOR", "MOSAIC", "TANGLE", "BOOM", "RAD", "ROCK", "TABBY", "HUNTER", "CRYSTAL", "DERVISH"],
-        ["Pearl"] = [],
-    };
-
-    public static readonly HashSet<IdentifiableId> MesmerLargos = new(Identifiable.idComparer)
-    {
-        Ids.PINK_MESMER_LARGO,
-        Ids.COCO_MESMER_LARGO,
-        Ids.SABER_MESMER_LARGO,
-        Ids.QUANTUM_MESMER_LARGO,
-        Ids.HONEY_MESMER_LARGO,
-        Ids.PHOSPHOR_MESMER_LARGO,
-        Ids.MOSAIC_MESMER_LARGO,
-        Ids.TANGLE_MESMER_LARGO,
-        Ids.BOOM_MESMER_LARGO,
-        Ids.RAD_MESMER_LARGO,
-        Ids.ROCK_MESMER_LARGO,
-        Ids.TABBY_MESMER_LARGO,
-        Ids.HUNTER_MESMER_LARGO,
-        Ids.CRYSTAL_MESMER_LARGO,
-        Ids.DERVISH_MESMER_LARGO
-        //Ids.MESMER_HERMIT_LARGO
-    };
-
-    public static CustomSlimeData[] Slimes;
+    public static Dictionary<IdentifiableId, SlimeData> SlimeDataMap;
+    public static SlimeData[] Slimes;
     public static bool MgExists;
 
     private static bool SamExists;
     private static Transform RocksPrefab;
     private static SlimeExpressionFace Sleeping;
 
-    private static readonly int TopColor = ShaderUtils.GetOrSet("_TopColor");
-    private static readonly int MiddleColor = ShaderUtils.GetOrSet("_MiddleColor");
-    private static readonly int BottomColor = ShaderUtils.GetOrSet("_BottomColor");
+    public static readonly int TopColor = ShaderUtils.GetOrSet("_TopColor");
+    public static readonly int MiddleColor = ShaderUtils.GetOrSet("_MiddleColor");
+    public static readonly int BottomColor = ShaderUtils.GetOrSet("_BottomColor");
+
     private static readonly int Gloss = ShaderUtils.GetOrSet("_Gloss");
     private static readonly int StripeTexture = ShaderUtils.GetOrSet("_StripeTexture");
     private static readonly int MouthTop = ShaderUtils.GetOrSet("_MouthTop");
@@ -71,7 +47,8 @@ public static class SlimeManager
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
         MgExists = SRModLoader.IsModPresent("luckygordo");
 
-        Slimes = AssetManager.GetJsonArray<CustomSlimeData>("slimepedia");
+        Slimes = AssetManager.GetJsonArray<SlimeData>("slimepedia");
+        SlimeDataMap = Slimes.ToDictionary(x => x.MainId, Identifiable.idComparer);
 
         GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, Ids.ROSI_GORDO];
         GordoSaveData.Lookup = Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId);
@@ -130,8 +107,9 @@ public static class SlimeManager
     public static void LoadAllSlimes()
     {
         RocksPrefab = IdentifiableId.ROCK_PLORT.GetPrefab().transform.Find("rocks");
+
         var blink = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0].Face._expressionToFaceLookup[SlimeFace.SlimeExpression.Blink];
-        Sleeping = new SlimeExpressionFace()
+        Sleeping = new()
         {
             SlimeExpression = Ids.Sleeping,
             Eyes = blink.Eyes?.Clone(),
@@ -145,7 +123,7 @@ public static class SlimeManager
 #if DEBUG
     [TimeDiagnostic]
 #endif
-    private static void BaseLoadSlime(CustomSlimeData slimeData)
+    private static void BaseLoadSlime(SlimeData slimeData)
     {
         CreateSlime(slimeData);
         CreatePlort(slimeData);
@@ -160,7 +138,7 @@ public static class SlimeManager
 #if DEBUG
     [TimeDiagnostic]
 #endif
-    private static void CreateGordo(CustomSlimeData slimeData)
+    private static void CreateGordo(SlimeData slimeData)
     {
         var prefab = slimeData.BaseGordo.GetPrefab().CreatePrefab();
         prefab.name = "gordo" + slimeData.Name;
@@ -228,7 +206,7 @@ public static class SlimeManager
 #if DEBUG
     [TimeDiagnostic]
 #endif
-    private static void CreatePlort(CustomSlimeData slimeData)
+    private static void CreatePlort(SlimeData slimeData)
     {
         // First create a prefab and set details
         var prefab = slimeData.BasePlort.GetPrefab().CreatePrefab();
@@ -285,7 +263,7 @@ public static class SlimeManager
 #if DEBUG
     [TimeDiagnostic]
 #endif
-    private static void CreateSlime(CustomSlimeData slimeData)
+    private static void CreateSlime(SlimeData slimeData)
     {
         var baseDefinition = slimeData.BaseSlime.GetSlimeDefinition(); // Finding the base slime definition to go off of
         var lower = slimeData.Name.ToLowerInvariant();
@@ -414,7 +392,7 @@ public static class SlimeManager
             Main.AddIconBypass(appearance.Icon);
     }
 
-    private static void TypeLoadExceptionBypass(CustomSlimeData slimeData)
+    private static void TypeLoadExceptionBypass(SlimeData slimeData)
     {
         try
         {
@@ -426,7 +404,7 @@ public static class SlimeManager
         }
     }
 
-    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, CustomSlimeData slimeData)
+    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeData slimeData)
     {
         var firstStructure = appearance.Structures[0];
         var elemPrefab = firstStructure.Element.Prefabs[0];
@@ -479,7 +457,7 @@ public static class SlimeManager
         applicator.GenerateSlimeBones(slimeBase, slimeData.JiggleAmount, prefabsForBoneData, slimeData.SkipNullMesh);
     }
 
-    private static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback, string name)
+    public static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback, string name)
     {
         var setColors = true;
         Material material;
@@ -491,7 +469,7 @@ public static class SlimeManager
         }
         else if (matData.OrShaderName != null)
         {
-            material = new(Shader.Find(matData.OrShaderName));
+            material = new(Shader.Find(matData.OrShaderName) ?? AssetManager.GetShader(matData.OrShaderName));
 
             if (material.HasProperty(ColorMask))
                 material.SetTexture(ColorMask, AssetManager.GetTexture2D(matData.Pattern));
@@ -525,34 +503,37 @@ public static class SlimeManager
             material = fallback.Clone();
 
         if (setColors)
-        {
-            if (matData.TopColor.HasValue && material.HasProperty(BottomColor))
-                material.SetColor(TopColor, matData.TopColor.Value);
-
-            if (matData.MiddleColor.HasValue && material.HasProperty(BottomColor))
-                material.SetColor(MiddleColor, matData.MiddleColor.Value);
-
-            if (matData.BottomColor.HasValue && material.HasProperty(BottomColor))
-                material.SetColor(BottomColor, matData.BottomColor.Value);
-
-            if (matData.MiscColorProps != null)
-            {
-                foreach (var (prop, value) in matData.MiscColorProps)
-                {
-                    if (material.HasProperty(prop))
-                        material.SetColor(prop, value);
-                }
-            }
-
-            if (matData.Gloss.HasValue)
-                material.SetFloat(Gloss, matData.Gloss.Value);
-        }
+            SetMatProperties(matData, material);
 
         matData.CachedMaterial = material;
         return material;
     }
 
-    private static void GenerateGordoBones(this Transform gordo, CustomSlimeData slimeData, SkinnedMeshRenderer prefabRend)
+    public static void SetMatProperties(MaterialData matData, Material material)
+    {
+        if (matData.TopColor.HasValue && material.HasProperty(BottomColor))
+            material.SetColor(TopColor, matData.TopColor.Value);
+
+        if (matData.MiddleColor.HasValue && material.HasProperty(BottomColor))
+            material.SetColor(MiddleColor, matData.MiddleColor.Value);
+
+        if (matData.BottomColor.HasValue && material.HasProperty(BottomColor))
+            material.SetColor(BottomColor, matData.BottomColor.Value);
+
+        if (matData.MiscColorProps != null)
+        {
+            foreach (var (prop, value) in matData.MiscColorProps)
+            {
+                if (material.HasProperty(prop))
+                    material.SetColor(prop, value);
+            }
+        }
+
+        if (matData.Gloss.HasValue)
+            material.SetFloat(Gloss, matData.Gloss.Value);
+    }
+
+    private static void GenerateGordoBones(this Transform gordo, SlimeData slimeData, SkinnedMeshRenderer prefabRend)
     {
         if (slimeData.GordoMeshes.Length == 0)
             return;
@@ -778,10 +759,9 @@ public static class SlimeManager
 
     public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _1) => SandBehaviour.PlortPrefab = prefab;
 
-    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition _)
+    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition definition)
     {
-        var eat = prefab.GetComponent<GordoEat>();
-        eat.slimeDefinition.Diet = SlimeDiet.Combine(eat.slimeDefinition.Diet, IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet);
+        definition.Diet = SlimeDiet.Combine(definition.Diet, IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet);
         IdentifiableId.SILKY_SAND_CRAFT.RegisterAsSnareable();
     }
 
@@ -792,7 +772,7 @@ public static class SlimeManager
     {
         foreach (var (id, prefab) in GameContext.Instance.LookupDirector.identifiablePrefabDict)
         {
-            if (Identifiable.IsSlime(id) && id != Ids.MESMER_SLIME && !MesmerLargos.Contains(id)) // Ensuring that only non-mesmer slimes are affected
+            if (Identifiable.IsSlime(id) && id != Ids.MESMER_SLIME && !LargoManager.MesmerLargos.Contains(id)) // Ensuring that only non-mesmer slimes are affected
                 prefab.AddComponent<AweTowardsMesmers>();
         }
     }

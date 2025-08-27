@@ -158,13 +158,13 @@ public static class AssetManager
     /// <summary>
     /// Gets a Texture2D from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get{T}"/>
+    /// <inheritdoc cref="Get{T}(string)"/>
     public static Texture2D GetTexture2D(string name) => Get<Texture2D>(name);
 
     /// <summary>
     /// Gets a Sprite from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get{T}"/>
+    /// <inheritdoc cref="Get{T}(string)"/>
     public static Sprite GetSprite(string name) => Get<Sprite>(name);
 
     /// <summary>
@@ -177,7 +177,7 @@ public static class AssetManager
     /// <summary>
     /// Gets a Mesh from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get{T}"/>
+    /// <inheritdoc cref="Get{T}(string)"/>
     public static Mesh GetMesh(string name)
     {
         var assetName = name;
@@ -197,10 +197,10 @@ public static class AssetManager
     /// <summary>
     /// Gets a Shader from the assets associated with the provided name.
     /// </summary>
-    /// <inheritdoc cref="Get{T}"/>
+    /// <inheritdoc cref="Get{T}(string)"/>
     public static Shader GetShader(string name) => Get<Shader>(name);
 
-    public static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
+    private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
     private static T Get<T>(string name) where T : UObject => Get<T>(name, true);
 
@@ -358,7 +358,7 @@ public static class AssetManager
     /// <typeparam name="T">The type of the asset.</typeparam>
     /// <param name="path">The path of the asset.</param>
     /// <param name="asset">The asset to automatically add to the handle.</param>
-    public static void CreateAssetHandle<T>(string path, T asset) where T : UObject
+    private static void CreateAssetHandle<T>(string path, T asset) where T : UObject
     {
         var name = path.SanitisePath();
 

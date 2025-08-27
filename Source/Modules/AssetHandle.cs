@@ -40,17 +40,20 @@ public sealed class AssetHandle(string name) : IDisposable
 
         foreach (var asset in Assets.Values)
         {
-            if (!asset)
-                continue;
-
-            if (asset is AssetBundle bundle)
-                bundle.Unload(false);
-
-            asset.Destroy();
+            if (asset)
+                DestroyAsset(asset);
         }
 
         Assets.Clear();
         Disposed = true;
+    }
+
+    private static void DestroyAsset(UObject asset)
+    {
+        if (asset is AssetBundle bundle)
+            bundle.Unload(false);
+
+        asset.Destroy();
     }
 
     /// <summary>
@@ -79,7 +82,10 @@ public sealed class AssetHandle(string name) : IDisposable
         var tType = typeof(T);
 
         if (Assets.TryGetValue(tType, out var tAsset))
+        {
             Main.Console.LogWarning($"Replacing existing asset! {tType.Name}:{tAsset.name}");
+            DestroyAsset(tAsset);
+        }
 
         Assets[tType] = asset;
     }
@@ -119,6 +125,7 @@ public sealed class AssetHandle(string name) : IDisposable
         return (T)asset.DontDestroy();
     }
 
+    // Legacy code, retained for potential future use
     // /// <summary>
     // /// Unloads the asset of the requested type to free up some memory.
     // /// </summary>

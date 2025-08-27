@@ -162,3 +162,6 @@ dotnet_diagnostic.RCS1047.severity = none
 
 # IDE0002: Simplify Member Access
 dotnet_diagnostic.IDE0002.severity = warning
+
+# RCS1194: Implement exception constructors
+dotnet_diagnostic.RCS1194.severity = none

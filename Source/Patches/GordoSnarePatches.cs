@@ -36,28 +36,27 @@ public static class GordoSnarePatch
         {
             var value = (float)__instance.foodTypeSnareWeight / normalIds.Count;
 
-            for (var j = 0; j < normalIds.Count; j++)
-                dictionary.Add(normalIds[j], value);
+            foreach (var normalId in normalIds)
+                dictionary.Add(normalId, value);
         }
 
         if (favIds.Count > 0)
         {
             var value = (float)__instance.favoredFoodSnareWeight / favIds.Count;
 
-            for (var j = 0; j < favIds.Count; j++)
-                dictionary.Add(favIds[j], value);
+            foreach (var favId in favIds)
+                dictionary.Add(favId, value);
         }
 
         if (Pinks.Length > 0)
         {
             var value = (float)__instance.pinkSnareWeight / Pinks.Length;
 
-            for (var j = 0; j < Pinks.Length; j++)
-                dictionary.Add(Pinks[j], value);
+            foreach (var pink in Pinks)
+                dictionary.Add(pink, value);
         }
 
-        var pink = Randoms.SHARED.Pick(Pinks);
-        __result = Randoms.SHARED.Pick(dictionary, pink);
+        __result = Randoms.SHARED.Pick(dictionary, Randoms.SHARED.Pick(Pinks));
         return false;
     }
 }

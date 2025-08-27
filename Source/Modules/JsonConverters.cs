@@ -80,13 +80,13 @@ public abstract class OceanJsonConverter<T> : OceanJsonConverter
     /// Wrapper method without the type parameter.
     /// </summary>
     /// <inheritdoc cref="ParseFromJson(JsonReader, Type)"/>
-    protected abstract object ParseFromJson(JsonReader reader);
+    protected abstract T ParseFromJson(JsonReader reader);
 
     /// <summary>
     /// Type safe wrapper.
     /// </summary>
     /// <inheritdoc cref="ToValueString(object)"/>
-    protected abstract string ToValueString(T value);
+    protected virtual string ToValueString(T value) => value.ToString();
 }
 
 /// <summary>
@@ -141,7 +141,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     }
 
     /// <inheritdoc/>
-    protected override sealed object ParseFromJson(JsonReader reader)
+    protected override sealed TValue ParseFromJson(JsonReader reader)
     {
         var valString = reader.Value?.ToString() ?? "null";
 
@@ -283,7 +283,7 @@ public sealed class EnumConverter : OceanJsonConverter
     {
         var underlyingType = Nullable.GetUnderlyingType(objectType);
 
-        if (underlyingType?.IsEnum == true)
+        if (underlyingType is { IsEnum: true })
             objectType = underlyingType;
 
         var enumString = reader.Value?.ToString() ?? "null"; // Get string version
@@ -296,11 +296,13 @@ public sealed class EnumConverter : OceanJsonConverter
     }
 }
 
-/// <inheritdoc cref="OceanJsonConverter{Type}"/>
+/// <summary>
+/// Type converter.
+/// </summary>
 public sealed class TypeConverter : OceanJsonConverter<Type>
 {
     /// <inheritdoc/>
-    protected override object ParseFromJson(JsonReader reader)
+    protected override Type ParseFromJson(JsonReader reader)
     {
         if (reader.TokenType != JsonToken.String)
             throw new InvalidDataException("Expected a string of the format as 'Namespace.TypeName, Assembly' or 'Namespace.TypeName' or full qualified name"); // Throw if invalid

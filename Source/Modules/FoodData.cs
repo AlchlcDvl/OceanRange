@@ -1,8 +1,6 @@
-using System.Runtime.Serialization;
-
 namespace OceanRange.Modules;
 
-public abstract class CustomFoodData : CustomActorData
+public abstract class FoodData : SpawnedActorData
 {
     [JsonProperty("group")]
     public FoodGroup Group;
@@ -14,7 +12,7 @@ public abstract class CustomFoodData : CustomActorData
     public string About;
 }
 
-public sealed class CustomChimkenData : CustomFoodData
+public sealed class ChimkenData : FoodData
 {
     [JsonProperty("zones"), JsonRequired]
     public Zone[] Zones;
@@ -47,7 +45,7 @@ public sealed class CustomChimkenData : CustomFoodData
     }
 }
 
-public sealed class CustomPlantData : CustomFoodData
+public sealed class PlantData : FoodData
 {
     [JsonProperty("type"), JsonRequired]
     public string Type;

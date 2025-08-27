@@ -2,14 +2,14 @@ namespace OceanRange.Managers;
 
 public static class Contacts
 {
-    public static CustomRancherData[] Ranchers;
+    private static RancherData[] Ranchers;
 
 #if DEBUG
     [TimeDiagnostic("Contacts Preload")]
 #endif
     public static void PreloadRancherData()
     {
-        Ranchers = AssetManager.GetJsonArray<CustomRancherData>("contacts");
+        Ranchers = AssetManager.GetJsonArray<RancherData>("contacts");
         ExchangeOfferRegistry.RegisterCategory(Ids.OCEAN, [.. SlimeManager.Slimes.SelectMany(x => new[] { x.MainId, x.PlortId })]);
 
         SRCallbacks.PreSaveGameLoad += context =>
@@ -24,7 +24,7 @@ public static class Contacts
 #endif
     public static void LoadRancherData() => Array.ForEach(Ranchers, LoadRancher);
 
-    private static void LoadRancher(CustomRancherData rancher)
+    private static void LoadRancher(RancherData rancher)
     {
         rancher.Rancher = new()
         {

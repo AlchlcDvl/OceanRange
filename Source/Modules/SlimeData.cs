@@ -1,10 +1,8 @@
 ﻿using System.Reflection;
-using System.Runtime.Serialization;
-// using SRML;
 
 namespace OceanRange.Modules;
 
-public sealed class CustomSlimeData : CustomActorData
+public sealed class SlimeData : SpawnedActorData
 {
     [JsonIgnore]
     public IdentifiableId GordoId;
@@ -25,7 +23,7 @@ public sealed class CustomSlimeData : CustomActorData
     public FoodGroup Diet;
 
     [JsonProperty("canLargofy")]
-    public bool CanLargofy;
+    public bool CanLargofy = true;
 
     [JsonProperty("baseSlime")]
     public IdentifiableId BaseSlime = IdentifiableId.PINK_SLIME;
@@ -181,7 +179,10 @@ public sealed class CustomSlimeData : CustomActorData
             InitGordoDetails = AccessTools.Method(type, init + "GordoDetails");
         }
 
-        if (SlimeMatData?.Length is not null and > 0)
+        if (NaturalGordoSpawn)
+            NaturalGordoSpawn &= HasGordo;
+
+        if (SlimeMatData?.Length is > 0)
         {
             var matData = SlimeMatData[0];
             TopPaletteColor ??= matData.TopColor;
@@ -196,57 +197,5 @@ public sealed class CustomSlimeData : CustomActorData
         SlimeMeshes ??= [null];
         PlortMeshes ??= [null];
         GordoMeshes ??= [null];
-    }
-}
-
-public sealed class MaterialData
-{
-    [JsonProperty("topColor")]
-    public Color? TopColor;
-
-    [JsonProperty("middleColor")]
-    public Color? MiddleColor;
-
-    [JsonProperty("bottomColor")]
-    public Color? BottomColor;
-
-    [JsonProperty("gloss")]
-    public float? Gloss;
-
-    [JsonProperty("pattern")]
-    public string Pattern;
-
-    [JsonProperty("sameAs")]
-    public int? SameAs;
-
-    [JsonProperty("cloneSameAs")]
-    public bool CloneSameAs;
-
-    [JsonProperty("matOrigin")]
-    public IdentifiableId? MatOriginSlime;
-
-    [JsonProperty("orShaderName")]
-    public string OrShaderName;
-
-    [JsonProperty("miscColorProps")]
-    public Dictionary<string, Color> MiscColorPropsJson;
-
-    [JsonIgnore]
-    public Dictionary<int, Color> MiscColorProps;
-
-    [JsonIgnore]
-    public Material CachedMaterial;
-
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _)
-    {
-        MiddleColor ??= TopColor;
-        BottomColor ??= TopColor;
-
-        if (MiscColorPropsJson == null)
-            return;
-
-        foreach (var (prop, value) in MiscColorPropsJson)
-            MiscColorProps[ShaderUtils.GetOrSet(prop)] = value;
     }
 }

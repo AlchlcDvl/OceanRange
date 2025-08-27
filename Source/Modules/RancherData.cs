@@ -1,8 +1,6 @@
-using System.Runtime.Serialization;
-
 namespace OceanRange.Managers;
 
-public sealed class CustomRancherData : JsonData
+public sealed class RancherData : JsonData
 {
     [JsonProperty("id"), JsonRequired]
     public string RancherId;
@@ -16,12 +14,12 @@ public sealed class CustomRancherData : JsonData
     [JsonProperty("specialDialogue"), JsonRequired]
     public string SpecialDialogue;
 
-    [JsonIgnore]
-    public RancherName RancherName;
+    // [JsonIgnore]
+    // public RancherName RancherName;
 
     [JsonIgnore]
     public ExchangeDirector.Rancher Rancher;
 
-    [OnDeserialized]
-    public void PopulateData(StreamingContext _) => RancherName = Helpers.ParseEnum<RancherName>(RancherId.ToUpperInvariant());
+    // [OnDeserialized]
+    // public void PopulateData(StreamingContext _) => RancherName = Helpers.ParseEnum<RancherName>(RancherId.ToUpperInvariant());
 }

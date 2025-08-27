@@ -1,8 +1,6 @@
-using System.Runtime.Serialization;
-
 namespace OceanRange.Modules;
 
-public sealed class CustomMailData : JsonData
+public sealed class MailData : JsonData
 {
     [JsonProperty("id"), JsonRequired]
     public string Id;
@@ -26,7 +24,7 @@ public sealed class CustomMailData : JsonData
     public bool Read;
 
     public event Func<double, bool> UnlockFuncAnd;
-    public event Func<double, bool> UnlockFuncOr;
+    // public event Func<double, bool> UnlockFuncOr;
 
     private Func<double, bool>[] Subscribers;
 
@@ -46,7 +44,7 @@ public sealed class CustomMailData : JsonData
         if (Sent || Read)
             return false;
 
-        if (UnlockFuncOr?.Invoke(time) == true || Subscribers?.Length is null or 0)
+        if (/*UnlockFuncOr?.Invoke(time) == true || */Subscribers?.Length is null or 0)
             return true;
 
         foreach (var subscriber in Subscribers)

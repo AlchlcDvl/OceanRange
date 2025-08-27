@@ -6,11 +6,14 @@ public abstract class JsonData
     public string Name;
 }
 
-public abstract class CustomActorData : JsonData
+public abstract class ActorData : JsonData
 {
     [JsonIgnore]
     public IdentifiableId MainId;
+}
 
+public abstract class SpawnedActorData : ActorData
+{
     [JsonIgnore]
     public PediaId MainEntry;
 
