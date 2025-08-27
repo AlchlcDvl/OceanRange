@@ -63,7 +63,7 @@ internal sealed class Main : ModEntryPoint
         LargoManager.LoadAllLargos();
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
-            AddSplashesBypass(AssetManager.GetSprites("loading_1", "loading_2", "loading_3"));
+            AddSplashesBypass(AssetManager.GetSprites("loading_1", "loading_2", "loading_3", "loading_4"));
     }
 
     /// <inheritdoc/>
@@ -73,10 +73,10 @@ internal sealed class Main : ModEntryPoint
     public override void PostLoad()
     {
         SlimeManager.PostLoadSlimes();
-        AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo", "ocean_range"); // Release handles
+        AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo", "ocean_range", "largopedia"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
-            AssetManager.ReleaseHandles("loading_1", "loading_2", "loading_3");
+            AssetManager.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");
 
         GC.Collect(); // Free up temp memory
     }

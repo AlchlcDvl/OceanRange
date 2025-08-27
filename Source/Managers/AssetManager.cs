@@ -56,8 +56,8 @@ public static class AssetManager
     public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         // Embedded resources
-        [typeof(Json)] = (["json"], LoadJson),
         [typeof(Mesh)] = (["cmesh"], LoadMesh),
+        [typeof(Json)] = (["json", "jsonc"], LoadJson),
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
 
@@ -75,7 +75,9 @@ public static class AssetManager
     public static readonly Dictionary<string, string> ExclusiveExtensions = new()
     {
         ["png"] = "jpg",
-        ["jpg"] = "png"
+        ["jpg"] = "png",
+        ["json"] = "jsonc",
+        ["jsonc"] = "json"
     };
 
     /// <summary>
@@ -131,12 +133,12 @@ public static class AssetManager
     private static string SanitisePath(this string path)
     {
         // Removing the file extension first
-        path = path.ReplaceAll("", "json", "cmesh", "png", "jpg", "shader");
+        path = path.ReplaceAll("", "jsonc", "json", "cmesh", "png", "jpg", "shader");
 
         foreach (var suffix in Platforms.Values)
             path = path.Replace("bundle_" + suffix, "");
 
-        return path.TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows, \ for Mac/Linux/AssetBundle, . for Embedded) and get the last entry which should be the asset name
+        return path.TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux, \ for Mac/AssetBundle, . for Embedded) and get the last entry which should be the asset name
     }
 
     /// <summary>
@@ -153,7 +155,13 @@ public static class AssetManager
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted json data.</returns>
-    private static T GetJson<T>(string path) => JsonConvert.DeserializeObject<T>(Get<Json>(path).text, JsonSettings);
+    private static T GetJson<T>(string path)
+    {
+        var jsoncText = Get<Json>(path).text;
+        using var stringReader = new StringReader(jsoncText);
+        using var jsonTextReader = new JsonTextReader(stringReader);
+        return JsonSerializer.Create(JsonSettings).Deserialize<T>(jsonTextReader);
+    }
 
     /// <summary>
     /// Gets a Texture2D from the assets associated with the provided name.
@@ -219,6 +227,7 @@ public static class AssetManager
         return handle.Load<T>(throwError);
     }
 
+    // Legacy code, it's being kept around in case it's needed for more precise control
     // /// <summary>
     // /// Unloads an asset to free up memory.
     // /// </summary>
