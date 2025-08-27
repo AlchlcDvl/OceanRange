@@ -1,5 +1,23 @@
 [
     {
-        "name": "Rosi Mine"
+        "name": "Rosi Mine",
+        "slime1": "Rosi",
+        "slime2": "Mine",
+        "meshes": ["rosi_body_clone", "rosi_mine_exterior", "rosi_mine_stalk", "rosi_mine_frills"],
+        "props": ["UseSlime2ForEyes", "UseSlime2ForMouth", "CustomStructureSource"],
+        "customMatData":
+        [
+            {
+                "topColor": "#445660",
+                "matOrigin": "PINK_SLIME",
+                "gloss": 1
+            },
+            {
+                "topColor": "#212A2F",
+                "matOrigin": "PINK_SLIME"
+            },
+            { "sameAs": 0 },
+            { "sameAs": 1 }
+        ]
     }
 ]

@@ -25,12 +25,6 @@
             { "sameAs": 1 },
             { "sameAs": 2 }
         ],
-        "gordoMatData":
-        [
-            { "sameAs": 0 },
-            { "sameAs": 1 },
-            { "sameAs": 2 }
-        ],
         "basePrice": 7,
         "saturation": 50,
         "jiggle": 0.75,
@@ -216,13 +210,6 @@
             { "sameAs": 2 },
             { "sameAs": 3 }
         ],
-        "gordoMatData":
-        [
-            { "sameAs": 0 },
-            { "sameAs": 1 },
-            { "sameAs": 2 },
-            { "sameAs": 3  }
-        ],
         "slimeology": "The lantern slime is a distant cousin of the phosphor slime. At one point in its evolution, the phosphor slimes expelled their inner core, using it to attract prey underwater. Slime nature is indeed peculiar. Much like its cousins, the lantern slimes can be found at night in the deepest parts of the Moss Blanket and the Great Reef. They are often seen alone and rarely in groups, as they prefer an isolated lifestyle and little interest in socializing. However, when it comes to humans, lantern slimes often aid divers in finding their way back to land.",
         "risks": "Lantern slimes aren't the most social compared to other slime species. During the day, they can be found sleeping in dark caves. When disturbed from their nap, they emit a bright flash to startle any diver or slime that dares to interrupt their beauty sleep. However, at night, they become very docile and can be found swimming across the coral reef in search of food.",
         "plortonomics": "Lantern pearls are a key ingredient in many beauty products due to their natural moisturizing properties. These pearls not only hydrate the skin but also impart a radiant, plum-like glow, making them ideal for night creams. However, it's important to note that their protective barrier against bacteria diminishes rapidly when exposed to sunlight. Therefore, products containing a high concentration of lantern pearls are best applied before bedtime for their benefits."
@@ -325,71 +312,49 @@
                 "bottomColor": "#1e1140"
             }
         ],
-        "gordoMatData":
-        [
-            { "sameAs": 0 },
-            { "sameAs": 1 },
-            { "sameAs": 2 },
-            { "sameAs": 3 }
-        ],
         "natGordoSpawn": false,
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
         "slimeology": "The perplexing, dangerous-looking, yet friendly mesmer slime emits very obvious pulsating colors on its body. It’s somewhat debatable what the true purpose of these displays are, but most slime scientists agree that it is to try and appeal to and be the favorite friend of as many slimes as possible, even with their scorpion-like appearances. Interestingly, they seem to be very sociable. Mesmer slimes spend most of their time inside lush jungles and caverns on the island, where you could easily spot their glows.",
         "risks": "Mesmer slimes may be a risk to the ranch, as the patterns they produce enact a hypnotic effect on slimes that gaze upon them, which can leave them bundled up together for hours—especially during the dark, where their glow is most visible. When a mesmer slime is left alone without the company of others, its mood will also fall. During agitation, mesmer slimes exhibit a feral-like state, seemingly unhappy due to the gut feeling that no one wants to be friends with them. They channel this disappointment by exhibiting eye and mouth patterns similar to the tarr, which only scares off other slimes even more. They will also pounce and mindlessly attack ranchers and slimes with their bug-like appendages. Otherwise... they’re quite simple to take care of.",
-        "plortonomics": "Mesmer plorts contain bioluminescent bacteria, which seem to be the source of their radiant colors. These bacteria may display a wide range of hues, though they usually have to be artificially mutated using complex chemical compounds to show specific shades. Products made with mesmer plorts are often luxurious, imperious, and flashy alternatives to renewable light, favored by the wealthy for thheir novelty. Despite the lavish presentation, their true market value remains surprisingly modest.",
+        "plortonomics": "Mesmer plorts contain bioluminescent bacteria, which seem to be the source of their radiant colors. These bacteria may display a wide range of hues, though they usually have to be artificially mutated using complex chemical compounds to show specific shades. Products made with mesmer plorts are often luxurious, imperious, and flashy alternatives to renewable light, favored by the wealthy for their novelty. Despite the lavish presentation, their true market value remains surprisingly modest.",
         "plortType": "Plort",
         "zones": ["MOSS"]
     },
     {
         "name": "Hermit",
-        "favToy": "DISCO_BALL_TOY",
+        "favToy": "BEACH_BALL_TOY",
         "favFood": "POGO_FRUIT",
         "diet": "FRUIT",
         "basePlort": "TABBY_PLORT",
         "canLargofy": false,
-        "ammoColor": "#0a094f",
-        "basePrice": 20,
-        "saturation": 100,
-        "intro": "ooooooooooooooooooo pretty",
+        "ammoColor": "#e75651",
+        "plortAmmoColor": "#e0945e",
+        "basePrice": 30,
+        "saturation": 50,
+        "intro": "The ever reclusive shell wanderer!",
         "pediaDiet": "Fruit",
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
-        "toAdd": ["StalkConsumable, Assembly-CSharp"],
-        "slimeMeshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail"],
-        "gordoMeshes": [null, "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_gordo"],
+        "slimeMeshes": ["hermit_body", "hermit_shell", "hermit_claw_1", "hermit_claw_2"],
+        "gordoMeshes": ["hermit_body_gordo", "hermit_shell_gordo", "hermit_claw_1_clone", "hermit_claw_2_clone"],
+        "plortMeshes": [null, "hermit_shell_plort"],
         "slimeMatData":
         [
             {
-                "pattern": "mesmer_pattern",
+                "topColor": "#f09695",
+                "bottomColor": "#e65954",
+                "pattern": "hermit_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11
             },
-            {
-                "topColor": "#340ca1",
-                "bottomColor": "#320047",
-                "matOrigin": "TABBY_SLIME",
-                "pattern": "mesmer_pincer_pattern"
-            },
-            { "sameAs": 1 },
-            {
-                "pattern": "mesmer_tail_pattern",
-                "matOrigin": "TABBY_SLIME"
-            }
+            { "topColor": "#f7d18f" },
+            { "topColor": "#b53a35" },
+            { "sameAs": 2 }
         ],
         "plortMatData":
         [
-            {
-                "topColor": "#0a094f",
-                "middleColor": "#2F2251",
-                "bottomColor": "#1e1140"
-            }
-        ],
-        "gordoMatData":
-        [
             { "sameAs": 0 },
-            { "sameAs": 1 },
-            { "sameAs": 2 },
-            { "sameAs": 3 }
+            { "sameAs": 1 }
         ],
         "natGordoSpawn": false,
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],

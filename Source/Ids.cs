@@ -40,6 +40,11 @@ public static class Ids
     public static readonly IdentifiableId MESMER_GORDO;
     public static readonly PediaId MESMER_SLIME_ENTRY;
 
+    public static readonly IdentifiableId HERMIT_SLIME;
+    public static readonly IdentifiableId HERMIT_PLORT;
+    public static readonly IdentifiableId HERMIT_GORDO;
+    public static readonly PediaId HERMIT_SLIME_ENTRY;
+
     public static readonly IdentifiableId SANDY_HEN;
     public static readonly PediaId SANDY_HEN_ENTRY;
 

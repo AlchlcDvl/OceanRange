@@ -3,7 +3,7 @@ namespace OceanRange.Modules;
 public sealed class LargoData : ActorData
 {
     [JsonProperty("props"), JsonRequired]
-    public LargoProps[] PropValues;
+    private LargoProps[] PropValues;
 
     [JsonProperty("slime1"), JsonRequired]
     public string Slime1;
@@ -20,8 +20,17 @@ public sealed class LargoData : ActorData
     [JsonProperty("slime2StructureMatData")]
     public MaterialData[] Slime2StructMatData;
 
+    [JsonProperty("customMatData")]
+    public MaterialData[] MatData;
+
     [JsonProperty("meshes")]
     public string[] Meshes;
+
+    [JsonProperty("skipNull")]
+    public bool SkipNull;
+
+    [JsonProperty("jiggle")]
+    public float? Jiggle;
 
     [JsonIgnore]
     public LargoProps Props;
@@ -54,7 +63,13 @@ public sealed class LargoData : ActorData
         if (slime1Upper == "MESMER")
             LargoManager.MesmerLargos.Add(MainId);
 
-        Slime1Data = SlimeManager.SlimeDataMap[Slime1Id];
-        Slime2Data = SlimeManager.SlimeDataMap[Slime2Id];
+        if (SlimeManager.SlimeDataMap.TryGetValue(Slime1Id, out var data1))
+            Slime1Data = data1;
+
+        if (SlimeManager.SlimeDataMap.TryGetValue(Slime2Id, out var data2))
+            Slime2Data = data2;
+
+        if (Jiggle == null)
+            Jiggle = ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
     }
 }

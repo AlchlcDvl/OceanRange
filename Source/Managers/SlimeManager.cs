@@ -404,30 +404,33 @@ public static class SlimeManager
         }
     }
 
-    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeData slimeData)
+    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeData slimeData) => BasicInitSlimeAppearance(appearance, applicator, slimeData.SlimeMeshes, slimeData.SkipNullMesh,
+        slimeData.JiggleAmount, slimeData.Name, slimeData.SlimeMatData);
+
+    public static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, string[] meshes, bool skipNull, float jiggle, string name, MaterialData[] matData)
     {
         var firstStructure = appearance.Structures[0];
         var elemPrefab = firstStructure.Element.Prefabs[0];
 
-        appearance.Structures = new SlimeAppearanceStructure[slimeData.SlimeMeshes.Length];
+        appearance.Structures = new SlimeAppearanceStructure[meshes.Length];
         appearance.Structures[0] = firstStructure;
 
-        for (var i = 1; i < slimeData.SlimeMeshes.Length; i++)
+        for (var i = 1; i < meshes.Length; i++)
             appearance.Structures[i] = new(firstStructure);
 
         SlimeAppearanceObject slimeBase = null;
-        var prefabsForBoneData = new SlimeAppearanceObject[slimeData.SlimeMeshes.Length - 1];
+        var prefabsForBoneData = new SlimeAppearanceObject[meshes.Length - 1];
 
         for (var i = 0; i < appearance.Structures.Length; i++)
         {
             var structure = appearance.Structures[i];
 
-            structure.DefaultMaterials[0] = GenerateMaterial(slimeData.SlimeMatData[i], slimeData.SlimeMatData, structure.DefaultMaterials[0], slimeData.Name);
+            structure.DefaultMaterials[0] = GenerateMaterial(matData[i], matData, structure.DefaultMaterials[0], name);
 
-            var meshName = slimeData.SlimeMeshes[i];
+            var meshName = meshes[i];
             var isNull = meshName == null;
 
-            if (isNull && slimeData.SkipNullMesh)
+            if (isNull && skipNull)
             {
                 if (i == 0)
                     slimeBase = structure.Element.Prefabs[0];
@@ -454,7 +457,7 @@ public static class SlimeManager
                 prefabsForBoneData[i - 1] = prefab2;
         }
 
-        applicator.GenerateSlimeBones(slimeBase, slimeData.JiggleAmount, prefabsForBoneData, slimeData.SkipNullMesh);
+        applicator.GenerateSlimeBones(slimeBase, jiggle, prefabsForBoneData, skipNull);
     }
 
     public static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback, string name)

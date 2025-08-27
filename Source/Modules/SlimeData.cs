@@ -148,10 +148,10 @@ public sealed class SlimeData : SpawnedActorData
     [JsonProperty("slimeMatData"), JsonRequired]
     public MaterialData[] SlimeMatData;
 
-    [JsonProperty("plortMatData"), JsonRequired]
+    [JsonProperty("plortMatData")]
     public MaterialData[] PlortMatData;
 
-    [JsonProperty("gordoMatData"), JsonRequired]
+    [JsonProperty("gordoMatData")]
     public MaterialData[] GordoMatData;
 
     [JsonProperty("spawners")]
@@ -197,5 +197,8 @@ public sealed class SlimeData : SpawnedActorData
         SlimeMeshes ??= [null];
         PlortMeshes ??= [null];
         GordoMeshes ??= [null];
+
+        PlortMatData ??= SlimeMatData;
+        GordoMatData ??= SlimeMatData;
     }
 }
