@@ -263,7 +263,7 @@ public static class LargoManager
 
         if (allCustomModels)
         {
-            appearance.Structures = slime1.AppearancesDefault[0].Structures;
+            appearance.Structures = [new(slime1.AppearancesDefault[0].Structures[0])];
             SlimeManager.BasicInitSlimeAppearance(appearance, applicator, largoData.Meshes, largoData.SkipNull, largoData.Jiggle.Value, largoData.Name, largoData.MatData);
         }
         else
