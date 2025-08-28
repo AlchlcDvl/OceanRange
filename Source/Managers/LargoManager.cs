@@ -183,17 +183,6 @@ public static class LargoManager
         // AddLargoEatMap(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME);
     }
 
-    // public static void LargoTweaks()
-    // {
-        //Rosi Mine
-        //Rosi Lantern
-        //Tabby Mesmer
-        //Hunter Mesmer
-        //Tabby Hermit
-        //Hunter Hermit
-        //Mesmer Hermit
-    // }
-
 #if DEBUG
     [TimeDiagnostic]
 #endif

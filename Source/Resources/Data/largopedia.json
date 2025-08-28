@@ -19,5 +19,32 @@
             { "sameAs": 0 },
             { "sameAs": 1 }
         ]
+    },
+    {
+        "name": "Rosi Lantern",
+        "slime1": "Rosi",
+        "slime2": "Lantern",
+        "meshes": ["rosi_body_clone_clone", "rosi_lantern_fins", "lantern_stalk_clone_clone", "lantern_lure_clone_clone"],
+        "props": ["UseSlime2ForMouth", "CustomStructureSource"],
+        "customMatData":
+        [
+            {
+                "topColor": "#752C86",
+                "middleColor": "#9445A7",
+                "bottomColor": "#B15EC8",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#752C86",
+                "bottomColor": "#B15EC8",
+                "pattern": "lantern_pattern",
+                "matOrigin": "TABBY_SLIME"
+            },
+            { "sameAs": 0 },
+            {
+                "topColor": "#EBDB6A",
+                "matOrigin": "PHOSPHOR_SLIME"
+            }
+        ]
     }
 ]
