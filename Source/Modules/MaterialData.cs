@@ -26,8 +26,8 @@ public sealed class MaterialData
     [JsonProperty("matOrigin")]
     public IdentifiableId? MatOriginSlime;
 
-    [JsonProperty("orShaderName")]
-    public string OrShaderName;
+    // [JsonProperty("orShaderName")]
+    // public string OrShaderName;
 
     [JsonProperty("miscColorProps")]
     private Dictionary<string, Color> MiscColorPropsJson;

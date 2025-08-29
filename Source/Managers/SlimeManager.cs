@@ -1,4 +1,5 @@
 using AssetsLib;
+using JetBrains.Annotations;
 using OceanRange.Patches;
 using OceanRange.Saves;
 using SRML;
@@ -470,13 +471,13 @@ public static class SlimeManager
             material = matData.CachedMaterial;
             setColors = false;
         }
-        else if (matData.OrShaderName != null)
-        {
-            material = new(Shader.Find(matData.OrShaderName) ?? AssetManager.GetShader(matData.OrShaderName));
+        // else if (matData.OrShaderName != null)
+        // {
+        //     material = new(Shader.Find(matData.OrShaderName) ?? AssetManager.GetShader(matData.OrShaderName));
 
-            if (material.HasProperty(ColorMask))
-                material.SetTexture(ColorMask, AssetManager.GetTexture2D(matData.Pattern));
-        }
+        //     if (material.HasProperty(ColorMask))
+        //         material.SetTexture(ColorMask, AssetManager.GetTexture2D(matData.Pattern));
+        // }
         else if (matData.MatOriginSlime != null)
         {
             var isTabby = matData.MatOriginSlime is IdentifiableId.TABBY_SLIME or IdentifiableId.TABBY_PLORT;
@@ -532,7 +533,7 @@ public static class SlimeManager
             }
         }
 
-        if (matData.Gloss.HasValue)
+        if (matData.Gloss.HasValue && material.HasProperty(Gloss))
             material.SetFloat(Gloss, matData.Gloss.Value);
     }
 
@@ -752,17 +753,21 @@ public static class SlimeManager
         }
     }
 
+    [UsedImplicitly]
     public static void InitRosiSlimeDetails(GameObject _1, SlimeDefinition definition, SlimeAppearance _2)
     {
         definition.Diet.MajorFoodGroups = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet.MajorFoodGroups;
         definition.Diet.Favorites = [];
     }
 
+    [UsedImplicitly]
     public static void InitSandSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3) => SandBehaviour.ProduceFX = IdentifiableId.PUDDLE_SLIME.GetPrefab().GetComponent<SlimeEatWater>().produceFX;
 
+    [UsedImplicitly]
     public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _1) => SandBehaviour.PlortPrefab = prefab;
 
-    public static void InitSandGordoDetails(GameObject prefab, SlimeDefinition definition)
+    [UsedImplicitly]
+    public static void InitSandGordoDetails(GameObject _, SlimeDefinition definition)
     {
         definition.Diet = SlimeDiet.Combine(definition.Diet, IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet);
         IdentifiableId.SILKY_SAND_CRAFT.RegisterAsSnareable();

@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 namespace OceanRange.Managers;
 
 public static class Mailbox
@@ -19,5 +21,6 @@ public static class Mailbox
         .SetBodyTranslation(mailData.Body)
         .SetReadCallback((_, _) => mailData.Read = true));
 
+    [UsedImplicitly]
     public static void InitLisaIntroDetails(MailData mailData) => mailData.UnlockFuncAnd += _ => SceneContext.Instance.ProgressDirector.HasProgress(Ids.EXCHANGE_LISA);
 }
