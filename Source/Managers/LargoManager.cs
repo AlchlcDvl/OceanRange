@@ -171,16 +171,6 @@ public static class LargoManager
         AddLargoEatMap(Ids.CRYSTAL_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.CRYSTAL_SLIME);
         SlimeRegistry.CraftLargo(Ids.DERVISH_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.DERVISH_SLIME, LargoProps.GENERATE_NAME | LargoProps.GENERATE_SECRET_STYLES);
         AddLargoEatMap(Ids.DERVISH_HERMIT_LARGO, Ids.HERMIT_SLIME, IdentifiableId.DERVISH_SLIME);*/
-
-        //ROSI LARGOS
-        // SlimeRegistry.CraftLargo(Ids.ROSI_MINE_LARGO, Ids.ROSI_SLIME, Ids.MINE_SLIME, LargoProps.REPLACE_BASE_MAT_AS_SLIME2 | LargoProps.RECOLOR_SLIME1_ADDON_MATS | LargoProps.GENERATE_NAME | LargoProps.GENERATE_SECRET_STYLES);
-        // AddLargoEatMap(Ids.ROSI_MINE_LARGO, Ids.ROSI_SLIME, Ids.MINE_SLIME);
-        // SlimeRegistry.CraftLargo(Ids.ROSI_LANTERN_LARGO, Ids.ROSI_SLIME, Ids.LANTERN_SLIME, LargoProps.RECOLOR_BASE_MAT_AS_SLIME2 | LargoProps.RECOLOR_SLIME1_ADDON_MATS | LargoProps.GENERATE_NAME | LargoProps.GENERATE_SECRET_STYLES);
-        // AddLargoEatMap(Ids.ROSI_LANTERN_LARGO, Ids.ROSI_SLIME, Ids.LANTERN_SLIME);
-
-        // MINE LARGOS
-        // SlimeRegistry.CraftLargo(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME, LargoProps.RECOLOR_SLIME2_ADDON_MATS | LargoProps.GENERATE_NAME | LargoProps.GENERATE_SECRET_STYLES);
-        // AddLargoEatMap(Ids.MINE_LANTERN_LARGO, Ids.MINE_SLIME, Ids.LANTERN_SLIME);
     }
 
 #if DEBUG

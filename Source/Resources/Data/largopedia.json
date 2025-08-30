@@ -24,7 +24,7 @@
         "name": "Rosi Lantern",
         "slime1": "Rosi",
         "slime2": "Lantern",
-        "meshes": ["rosi_body_clone_clone", "rosi_lantern_fins", "lantern_stalk_clone_clone", "lantern_lure_clone_clone"],
+        "meshes": ["rosi_body_clone_clone", "lantern_fins_clone_clone", "lantern_stalk_clone_clone", "lantern_lure_clone_clone", "rosi_mine_stalk_clone", "rosi_mine_frills_clone"],
         "props": ["UseSlime2ForMouth", "CustomStructureSource"],
         "customMatData":
         [
@@ -44,7 +44,50 @@
             {
                 "topColor": "#EBDB6A",
                 "matOrigin": "PHOSPHOR_SLIME"
+            },
+            { "sameAs": 0 },
+            { 
+                "topColor": "#752C86",
+                "middleColor": "#752C86",
+                "bottomColor": "#752C86",
+                "matOrigin": "PINK_SLIME"
             }
         ]
+    },
+    {
+        "name": "Mine Lantern",
+        "slime1": "Mine",
+        "slime2": "Lantern",
+        "meshes": [null, "mine_exterior_clone", "lantern_stalk_clone_clone_clone", "lantern_lure_clone_clone_clone"],
+        "props": ["CustomStructureSource", "UseSlime2ForBody"],
+        "customMatData": 
+        [
+            {
+                "topColor": "#9EA16F",
+                "bottomColor": "#445660",
+                "pattern": "mine_pattern",
+                "matOrigin": "TABBY_SLIME",
+                "gloss": 1
+            },
+            {
+                "topColor": "#212A2F",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#445660",
+                "matOrigin": "PINK_SLIME",
+                "gloss": 1
+            },
+            {
+                "topColor": "#EBDB6A",
+                "matOrigin": "PHOSPHOR_SLIME"
+            }
+        ]
+    },
+    {
+        "name": "Pink Coco",
+        "slime1": "Coco",
+        "slime2": "Pink",
+        "props": []
     }
 ]
