@@ -63,7 +63,7 @@ public sealed class LargoData : ActorData
         if (SlimeManager.SlimeDataMap.TryGetValue(Slime2Id, out var data2))
             Slime2Data = data2;
 
-        if (Jiggle == null)
+        if (!Jiggle.HasValue)
             Jiggle = ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
     }
 }

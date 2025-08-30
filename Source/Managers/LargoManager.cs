@@ -376,7 +376,7 @@ public static class LargoManager
                 prefab.AddComponent(type).GetCopyOf(component);
         }
 
-        if (definition.Sounds != null)
+        if (definition.Sounds)
             prefab.GetComponent<SlimeAudio>().slimeSounds = definition.Sounds;
 
         if (prefab.TryGetComponent<SphereCollider>(out var collider) && slime2Prefab.TryGetComponent<SphereCollider>(out var collider2) && collider.radius == DefaultRadius && collider2.radius != DefaultRadius)

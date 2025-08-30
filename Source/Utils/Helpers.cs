@@ -397,7 +397,7 @@ public static class Helpers
 
     public static bool StartsWith(this string @string, char character) => @string[0] == character;
 
-    public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => Attribute.IsDefined(member, typeof(T));
+    public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => Attribute.IsDefined(member, typeof(T), false);
 
     public static IEnumerable<(T1, T2)> Zip<T1, T2>(this IEnumerable<T1> source1, IEnumerable<T2> source2)
     {
@@ -420,4 +420,12 @@ public static class Helpers
             yield return (e1.Current, e2.Current);
         }
     }
+
+    // public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TKey, TValue> func)
+    // {
+    //     if (!dict.TryGetValue(key, out var value))
+    //         dict[key] = value = func(key);
+
+    //     return value;
+    // }
 }

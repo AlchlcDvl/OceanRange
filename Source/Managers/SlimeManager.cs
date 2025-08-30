@@ -478,7 +478,7 @@ public static class SlimeManager
         //     if (material.HasProperty(ColorMask))
         //         material.SetTexture(ColorMask, AssetManager.GetTexture2D(matData.Pattern));
         // }
-        else if (matData.MatOriginSlime != null)
+        else if (matData.MatOriginSlime.HasValue)
         {
             var isTabby = matData.MatOriginSlime is IdentifiableId.TABBY_SLIME or IdentifiableId.TABBY_PLORT;
 
@@ -489,13 +489,13 @@ public static class SlimeManager
             (
                 Identifiable.IsPlort(matData.MatOriginSlime.Value)
                 ? matData.MatOriginSlime.Value.GetPrefab().GetComponent<MeshRenderer>().material
-                : matData.MatOriginSlime.Value.GetSlimeDefinition().AppearancesDefault[0].Structures[0].DefaultMaterials[0]
+                : matData.MatOriginSlime.Value.GetSlimeDefinition().AppearancesDefault[0].Structures[matData.SameAs ?? 0].DefaultMaterials[0]
             ).Clone();
 
             if (isTabby)
                 material.SetTexture(StripeTexture, AssetManager.GetTexture2D(matData.Pattern));
         }
-        else if (matData.SameAs != null)
+        else if (matData.SameAs.HasValue)
         {
             material = mainMatData[matData.SameAs.Value].CachedMaterial;
             setColors = matData.CloneSameAs;

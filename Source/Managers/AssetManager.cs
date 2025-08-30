@@ -27,7 +27,6 @@ public static class AssetManager
         // Adding the json converters
         Converters =
         [
-            new FlagsEnumConverter(),
             new EnumConverter(),
             new TypeConverter(),
             new ColorConverter(),

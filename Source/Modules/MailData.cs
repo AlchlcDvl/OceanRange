@@ -33,7 +33,7 @@ public sealed class MailData : JsonData
     {
         AccessTools.Method(typeof(Mailbox), "Init" + Name.Replace(" ", "") + "Details")?.Invoke(null, [this]);
 
-        if (UnlockAfter != null)
+        if (UnlockAfter.HasValue)
             UnlockFuncAnd += time => UnlockAfter.Value < time;
 
         Subscribers = UnlockFuncAnd?.GetInvocationList()?.Select(x => (Func<double, bool>)x)?.ToArray();

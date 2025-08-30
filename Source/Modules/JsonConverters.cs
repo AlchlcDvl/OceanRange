@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq.Expressions;
 
 namespace OceanRange.Modules;
 
@@ -345,62 +346,85 @@ public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberSt
 /// <remarks>Made because srml's enum patching is causing errors with patched enum types being read by newtonsoft, will be removed if and when a fix is administered.</remarks>
 public sealed class EnumConverter : OceanJsonConverter
 {
-    /// <inheritdoc/>
+    private sealed class EnumMetadata
+    {
+        public readonly bool IsFlags;
+        public readonly object[] Values;
+        public readonly string[] Names;
+        public readonly string ZeroName;
+        public readonly Func<object, ulong> ToUInt64;
+        public readonly Func<ulong, object> FromUInt64;
+
+        public EnumMetadata(Type enumType)
+        {
+            IsFlags = enumType.IsDefined(typeof(FlagsAttribute), inherit: false);
+            Values = [.. Enum.GetValues(enumType).Cast<object>()];
+            Names = Enum.GetNames(enumType);
+            ZeroName = Enum.ToObject(enumType, 0)?.ToString() ?? "0";
+
+            var underlying = Enum.GetUnderlyingType(enumType);
+            ToUInt64 = MakeToUInt64(underlying);
+            FromUInt64 = MakeFromUInt64(enumType, underlying);
+        }
+
+        private static Func<object, ulong> MakeToUInt64(Type underlying)
+        {
+            var obj = Expression.Parameter(typeof(object), "value");
+            var converted = Expression.ConvertChecked(Expression.Convert(obj, underlying),typeof(ulong));
+            return Expression.Lambda<Func<object, ulong>>(converted, obj).Compile();
+        }
+
+        private static Func<ulong, object> MakeFromUInt64(Type enumType, Type underlying)
+        {
+            var value = Expression.Parameter(typeof(ulong), "value");
+            var converted = Expression.ConvertChecked(value, underlying);
+            var boxed = Expression.Convert(Expression.Convert(converted, enumType), typeof(object));
+            return Expression.Lambda<Func<ulong, object>>(boxed, value).Compile();
+        }
+    }
+
+    private static readonly Dictionary<Type, EnumMetadata> MetadataCache = [];
+
+    protected override bool CustomSerialisation => true;
+
     public override bool CanConvert(Type objectType) => objectType.IsEnum || objectType.IsNullableEnum();
 
-    /// <inheritdoc/>
+    private static EnumMetadata GetMetadata(Type enumType)
+    {
+        if (!MetadataCache.TryGetValue(enumType, out var value))
+            MetadataCache[enumType] = value = new(enumType);
+
+        return value;
+    }
+
     protected override object ParseFromJson(JsonReader reader, Type objectType)
     {
         var targetType = Nullable.GetUnderlyingType(objectType) ?? objectType;
-        return reader.TokenType switch
-        {
-            JsonToken.String when Helpers.TryParse(targetType, reader.Value?.ToString() ?? "null", true, out var result) => result, // Attempt the parse the string, make sure to use this arm
-            JsonToken.Integer => Enum.ToObject(targetType, reader.Value!), // Mainly there for completion's sake as integers cannot be understood in json, because you don't know what the value means
-            _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {targetType.Name}. Expected a defined string or an integer."), // Throw an error because it was nothing else
-        };
-    }
-}
-
-/// <summary>
-/// Enum converter for enum types that are used as flags.
-/// </summary>
-public sealed class FlagsEnumConverter : OceanJsonConverter
-{
-    protected override bool CustomSerialisation => true;
-
-    public override bool CanConvert(Type objectType)
-    {
-        var type = Nullable.GetUnderlyingType(objectType) ?? objectType;
-        return type.IsEnum && type.IsDefined<FlagsAttribute>();
+        var metadata = GetMetadata(targetType);
+        return metadata.IsFlags ? ParseFlags(reader, targetType, metadata) : ParseSingle(reader, targetType, metadata, false);
     }
 
-    protected override object ParseFromJson(JsonReader reader, Type objectType)
+    private static object ParseSingle(JsonReader reader, Type enumType, EnumMetadata metadata, bool partOfArray) => reader.TokenType switch
     {
-        var targetType = Nullable.GetUnderlyingType(objectType) ?? objectType; // Ensures that we have the enum's type for the helper methods here
-        return reader.TokenType switch
-        {
-            JsonToken.StartArray => ParseArray(reader, targetType),
-            _ => ParseNonArray(reader, targetType, false)
-        };
-    }
-
-    private static object ParseNonArray(JsonReader reader, Type enumType, bool partOfArray) => reader.TokenType switch
-    {
-        JsonToken.String when Helpers.TryParse(enumType, reader.Value?.ToString() ?? "null", true, out var result) => result, // Attempt the parse the string, make sure to use this arm
-        JsonToken.Integer => Enum.ToObject(enumType, reader.Value!), // Mainly there for completion's sake as integers cannot be understood in json, because you don't know what the value means
-        JsonToken.Null when partOfArray => default, // When not part of array, the null case is handled in the base class already
+        JsonToken.String when Helpers.TryParse(enumType, reader.Value?.ToString() ?? "null", true, out var parsed) => parsed,
+        JsonToken.Integer => metadata.FromUInt64(Convert.ToUInt64(reader.Value)),
+        JsonToken.Null when partOfArray => default,
         _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {enumType.Name}. Expected {(partOfArray ? "a valid array of defined strings or ints, " : "")}a defined string or an integer."),
-        // Throw an error because it was nothing else
     };
 
-    private static object ParseArray(JsonReader reader, Type enumType)
+    private static object ParseFlags(JsonReader reader, Type enumType, EnumMetadata metadata)
     {
-        var combinedValue = 0L;
+        if (reader.TokenType == JsonToken.StartArray)
+        {
+            var combined = 0UL;
 
-        while (reader.Read() && reader.TokenType != JsonToken.EndArray)
-            combinedValue |= Convert.ToInt64(ParseNonArray(reader, enumType, true));
+            while (reader.Read() && reader.TokenType != JsonToken.EndArray)
+                combined |= metadata.ToUInt64(ParseSingle(reader, enumType, metadata, true));
 
-        return Enum.ToObject(enumType, Convert.ChangeType(combinedValue, Enum.GetUnderlyingType(enumType)));
+            return metadata.FromUInt64(combined);
+        }
+
+        return ParseSingle(reader, enumType, metadata, false);
     }
 
     /// <inheritdoc/>
@@ -414,24 +438,47 @@ public sealed class FlagsEnumConverter : OceanJsonConverter
 
         var type = value.GetType();
         var enumType = Nullable.GetUnderlyingType(type) ?? type;
-        var underlying = Convert.ToInt64(value);
+        var metadata = GetMetadata(enumType);
 
-        var names = Enum.GetNames(enumType);
-        var values = Enum.GetValues(enumType).Cast<object>();
-
-        var setFlags = new List<string>();
-
-        foreach (var (flagName, flagValue) in names.Zip(values))
+        if (!metadata.IsFlags)
         {
-            var longVal = Convert.ToInt64(flagValue);
+            var name = Enum.GetName(enumType, value);
 
-            if (longVal != 0 && (underlying & longVal) == longVal)
-                setFlags.Add(flagName);
+            if (name != null)
+                writer.WriteValue(name);
+            else
+                writer.WriteValue(metadata.ToUInt64(value));
+
+            return;
         }
 
+        var underlying = metadata.ToUInt64(value);
+
         if (underlying == 0)
-            writer.WriteValue(Enum.ToObject(enumType, 0).ToString());
-        else if (setFlags.Count == 1)
+        {
+            writer.WriteValue(metadata.ZeroName);
+            return;
+        }
+
+        var setFlags = new List<string>();
+        var matchedBits = 0UL;
+
+        for (var i = 0; i < metadata.Values.Length; i++)
+        {
+            var flag = metadata.ToUInt64(metadata.Values[i]);
+
+            if (flag == 0 || (underlying & flag) != flag)
+                continue;
+
+            setFlags.Add(metadata.Names[i]);
+            matchedBits |= flag;
+        }
+
+        var leftoverBits = underlying & ~matchedBits;
+
+        if (setFlags.Count == 0 && leftoverBits != 0)
+            writer.WriteValue(underlying);
+        else if (setFlags.Count == 1 && leftoverBits == 0)
             writer.WriteValue(setFlags[0]);
         else
         {
@@ -439,6 +486,9 @@ public sealed class FlagsEnumConverter : OceanJsonConverter
 
             foreach (var flag in setFlags)
                 writer.WriteValue(flag);
+
+            if (leftoverBits != 0)
+                writer.WriteValue(leftoverBits);
 
             writer.WriteEndArray();
         }

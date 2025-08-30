@@ -27,7 +27,7 @@ class ExportMeshes
 
             Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
 
-            if (mesh == null)
+            if (!mesh)
                 continue;
 
             string filePath = Path.Combine(exportDirectory, Path.GetFileNameWithoutExtension(assetPath) + ".cmesh");
