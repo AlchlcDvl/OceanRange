@@ -181,18 +181,8 @@ public static class AssetManager
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Mesh GetMesh(string name)
     {
-        var assetName = name;
-        var isClone = name.EndsWith("_clone", StringComparison.OrdinalIgnoreCase);
-
-        if (isClone)
-            assetName = name.Replace("_clone", "");
-
-        var mesh = Get<Mesh>(assetName);
-
-        if (isClone)
-            CreateAssetHandle(name, mesh);
-
-        return mesh;
+        var mesh = Get<Mesh>(name);
+        return mesh.bindposes.Length == 0 ? mesh : mesh.Clone();
     }
 
     /// <summary>
@@ -267,7 +257,8 @@ public static class AssetManager
             triangles = BinaryUtils.ReadArray(reader, ReadInt),
             normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
             tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4),
-            uv = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2)
+            uv = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2),
+            bindposes = []
         };
     }
 

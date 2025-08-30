@@ -112,5 +112,5 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
 
     public override bool CanRethink() => State == ExplodeState.Idle;
 
-    public void OnControllerCollision(GameObject gameObj) => Contact = Time.fixedTime > NextPossibleExplode && gameObj == SceneContext.Instance.Player;
+    public void OnControllerCollision(GameObject gameObj) => Contact = Time.fixedTime > NextPossibleExplode && (gameObj == SceneContext.Instance.Player || (gameObj.TryGetComponent<Identifiable>(out var id) && Identifiable.IsSlime(id.id)));
 }

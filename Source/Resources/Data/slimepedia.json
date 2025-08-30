@@ -179,7 +179,7 @@
         "toAdd": ["OceanRange.Slimes.LanternBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
         "plortMeshes": ["pearl", "lantern_stalk_pearl", "lantern_lure_pearl"],
         "slimeMeshes": [null, "lantern_fins", "lantern_stalk", "lantern_lure"],
-        "gordoMeshes": [null, "lantern_fins_clone", "lantern_stalk_clone", "lantern_lure_clone"],
+        "gordoMeshes": [null, "lantern_fins", "lantern_stalk", "lantern_lure"],
         "slimeMatData":
         [
             {
@@ -336,7 +336,7 @@
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
         "slimeMeshes": ["hermit_body", "hermit_shell", "hermit_claw_1", "hermit_claw_2"],
-        "gordoMeshes": ["hermit_body_gordo", "hermit_shell_gordo", "hermit_claw_1_clone", "hermit_claw_2_clone"],
+        "gordoMeshes": ["hermit_body_gordo", "hermit_shell_gordo", "hermit_claw_1", "hermit_claw_2"],
         "plortMeshes": [null, "hermit_shell_plort"],
         "slimeMatData":
         [

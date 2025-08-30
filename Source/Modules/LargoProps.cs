@@ -16,7 +16,7 @@ public enum LargoProps : ushort
     // Combines the above values so you don't have to write a long array just with the above values
     UseSlime2AsBase = UseSlime2ForSound | UseSlime2ForEyes | UseSlime2ForMouth | UseSlime2NameFirst | UseSlime2ForBody | UseSlime2ForBodyMaterial,
 
-    CustomStructureSource = 1 << 6, // Use for custom mesh models that the base slimes don't use (make sure to add "_clone" to non-largo mesh names for the rerigging)
+    CustomStructureSource = 1 << 6, // Use for custom mesh models that the base slimes don't use
 
     // Markers for whether custom (non base slime) materials are in use for relevant parts
     CustomSlime1StructureMaterials = 1 << 7,
