@@ -36,12 +36,12 @@ public static class AssetManager
         ]
     };
 
-    private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
-    {
-        [RuntimePlatform.OSXPlayer] = "mac",
-        [RuntimePlatform.LinuxPlayer] = "lin",
-        [RuntimePlatform.WindowsPlayer] = "win",
-    };
+    // private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
+    // {
+    //     [RuntimePlatform.OSXPlayer] = "mac",
+    //     [RuntimePlatform.LinuxPlayer] = "lin",
+    //     [RuntimePlatform.WindowsPlayer] = "win",
+    // };
 
     // private static readonly string BundleSuffix = "bundle_" +
     // (
@@ -56,8 +56,8 @@ public static class AssetManager
     public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         // Embedded resources
+        [typeof(Json)] = (["json"], LoadJson),
         [typeof(Mesh)] = (["cmesh"], LoadMesh),
-        [typeof(Json)] = (["json", "jsonc"], LoadJson),
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
 
@@ -75,15 +75,15 @@ public static class AssetManager
     public static readonly Dictionary<string, string> ExclusiveExtensions = new()
     {
         ["png"] = "jpg",
-        ["jpg"] = "png",
-        ["json"] = "jsonc",
-        ["jsonc"] = "json"
+        ["jpg"] = "png"
     };
 
     /// <summary>
     /// Dictionary to hold handles for mod assets.
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
+
+    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*, .. Platforms.Select(x => "bundle_" + x)*/];
 
 #if DEBUG
     /// <summary>
@@ -130,16 +130,9 @@ public static class AssetManager
     /// </summary>
     /// <param name="path">The original path of the asset.</param>
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
-    private static string SanitisePath(this string path)
-    {
-        // Removing the file extension first
-        path = path.ReplaceAll("", "jsonc", "json", "cmesh", "png", "jpg"/*, "shader"*/);
-
-        // foreach (var suffix in Platforms.Values)
-        //     path = path.Replace("bundle_" + suffix, "");
-
-        return path.TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux, \ for Mac/AssetBundle, . for Embedded) and get the last entry which should be the asset name
-    }
+    private static string SanitisePath(this string path) => path
+        .ReplaceAll("", Extensions) // Removing the file extension first
+        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux, \ for Mac/AssetBundle, . for Embedded) and get the last entry which should be the asset name
 
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.

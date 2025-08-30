@@ -393,4 +393,6 @@ public static class Helpers
     public static T EnsureComponent<T>(this GameObject go) where T : Component => go.GetComponent<T>() ?? go.AddComponent<T>();
 
     public static T EnsureComponent<T>(this Component component) where T : Component => component.gameObject.EnsureComponent<T>();
+
+    public static bool StartsWith(this string @string, char character) => @string[0] == character;
 }

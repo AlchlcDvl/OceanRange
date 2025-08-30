@@ -17,7 +17,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
     private static readonly Vector3 HiddenSize = Vector3.one * 0.1f;
 
-    private const float MaxShyRange = 5f;
+    private const float MaxShyRange = 3f;
     private const float MinShyRange = 1f;
 
     public override void Awake()

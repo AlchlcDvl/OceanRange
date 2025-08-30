@@ -10,8 +10,8 @@ public struct Orientation(Vector3 pos, Vector3 rot) : IEquatable<Orientation>
     public Vector3 Position = pos;
     public Vector3 Rotation = rot;
 
-    // public Orientation(float xPos, float yPos, float zPos, float xRot, float yRot, float zRot)
-    //    : this(new(xPos, yPos, zPos), new(ClampAngle(xRot), ClampAngle(yRot), ClampAngle(zRot))) { }
+    public Orientation(float xPos, float yPos, float zPos, float xRot, float yRot, float zRot)
+        : this(new(xPos, yPos, zPos), new(ClampAngle(xRot), ClampAngle(yRot), ClampAngle(zRot))) { }
 
     // public Vector3 this[int index]
     // {
@@ -57,11 +57,11 @@ public struct Orientation(Vector3 pos, Vector3 rot) : IEquatable<Orientation>
     //     rotation = Rotation;
     // }
 
-    // private static float ClampAngle(float angle)
-    // {
-    //     var clampedAngle = angle % 360f;
-    //     return clampedAngle < 0 ? clampedAngle + 360f : clampedAngle;
-    // }
+    private static float ClampAngle(float angle)
+    {
+        var clampedAngle = angle % 360f;
+        return clampedAngle < 0 ? clampedAngle + 360f : clampedAngle;
+    }
 }
 
 // public sealed class ValueMismatchException(string mainValue, object value1, object value2) : Exception($"{mainValue} contained {value1} but not {value2} or vice versa!");

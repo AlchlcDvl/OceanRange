@@ -13,7 +13,7 @@ public static class StopMoving
         if (!canMove.CanMove)
             return false;
 
-        if (canMove.TryGetComponent<LanternBehaviour>(out var lantern) && lantern.Fleeing)
+        if (__instance.TryGetComponent<LanternBehaviour>(out var lantern) && lantern.Fleeing)
         {
             __instance.scootSpeedFactor *= 2f;
             __instance.verticalFactor *= 2f;
