@@ -397,29 +397,29 @@ public static class Helpers
 
     public static bool StartsWith(this string @string, char character) => @string[0] == character;
 
-    public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => Attribute.IsDefined(member, typeof(T), false);
+    // public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => Attribute.IsDefined(member, typeof(T), false);
 
-    public static IEnumerable<(T1, T2)> Zip<T1, T2>(this IEnumerable<T1> source1, IEnumerable<T2> source2)
-    {
-        using var e1 = source1.GetEnumerator();
-        using var e2 = source2.GetEnumerator();
+    // public static IEnumerable<(T1, T2)> Zip<T1, T2>(this IEnumerable<T1> source1, IEnumerable<T2> source2)
+    // {
+    //     using var e1 = source1.GetEnumerator();
+    //     using var e2 = source2.GetEnumerator();
 
-        while (true)
-        {
-            var has1 = e1.MoveNext();
-            var has2 = e2.MoveNext();
+    //     while (true)
+    //     {
+    //         var has1 = e1.MoveNext();
+    //         var has2 = e2.MoveNext();
 
-            if (!has1 || !has2)
-            {
-                if (has1 != has2)
-                    throw new ArgumentException("Sequences have different lengths.");
+    //         if (!has1 || !has2)
+    //         {
+    //             if (has1 != has2)
+    //                 throw new ArgumentException("Sequences have different lengths.");
 
-                yield break;
-            }
+    //             yield break;
+    //         }
 
-            yield return (e1.Current, e2.Current);
-        }
-    }
+    //         yield return (e1.Current, e2.Current);
+    //     }
+    // }
 
     // public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TKey, TValue> func)
     // {
