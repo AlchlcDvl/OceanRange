@@ -60,8 +60,9 @@ public static class LargoManager
     private static float DefaultRadius;
 
     private static LargoData[] Largos;
+    private static readonly int GhostToggle = ShaderUtils.GetOrSet("_GhostToggle");
 
-#if DEBUG
+    #if DEBUG
     [TimeDiagnostic("Largo Preload")]
 #endif
     public static void PreLoadLargoData() => Largos = AssetManager.GetJsonArray<LargoData>("largopedia");
@@ -176,7 +177,7 @@ public static class LargoManager
 #if DEBUG
     [TimeDiagnostic]
 #endif
-    public static void CreateLargo(LargoData largoData)
+    private static void CreateLargo(LargoData largoData)
     {
         var slime1 = largoData.Slime1Id.GetSlimeDefinition();
         var slime2 = largoData.Slime2Id.GetSlimeDefinition();
@@ -317,7 +318,7 @@ public static class LargoManager
         {
             var qubitAppearance = appearance.QubitAppearance = appearance.DeepCopy();
             var material = QuantumMat.Clone();
-            material.SetFloat("_GhostToggle", 1f);
+            material.SetFloat(GhostToggle, 1f);
 
             for (var i = 0; i < appearance.Structures.Length; i++)
             {

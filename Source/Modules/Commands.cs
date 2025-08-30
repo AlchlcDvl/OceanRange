@@ -28,7 +28,7 @@ public sealed class SavePositionCommand : ConsoleCommand
             return false;
 
         var pos = SceneContext.Instance.Player.transform.position;
-        var name = Helpers.GetClosestCell(pos).name.Replace("cell", "");
+        var name = DebugUtils.GetClosestCell(pos).name.Replace("cell", "");
 
         if (!SavedPositions.TryGetValue(name, out var positions))
             SavedPositions[name] = positions = [];

@@ -36,19 +36,19 @@ public static class AssetManager
         ]
     };
 
-    private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
-    {
-        [RuntimePlatform.OSXPlayer] = "mac",
-        [RuntimePlatform.LinuxPlayer] = "lin",
-        [RuntimePlatform.WindowsPlayer] = "win",
-    };
+    // private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
+    // {
+    //     [RuntimePlatform.OSXPlayer] = "mac",
+    //     [RuntimePlatform.LinuxPlayer] = "lin",
+    //     [RuntimePlatform.WindowsPlayer] = "win",
+    // };
 
-    private static readonly string BundleSuffix = "bundle_" +
-    (
-        Platforms.TryGetValue(Application.platform, out var suffix)
-        ? suffix
-        : throw new PlatformNotSupportedException(Application.platform.ToString())
-    );
+    // private static readonly string BundleSuffix = "bundle_" +
+    // (
+    //     Platforms.TryGetValue(Application.platform, out var suffix)
+    //     ? suffix
+    //     : throw new PlatformNotSupportedException(Application.platform.ToString())
+    // );
 
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
@@ -56,15 +56,15 @@ public static class AssetManager
     public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         // Embedded resources
+        [typeof(Json)] = (["json"], LoadJson),
         [typeof(Mesh)] = (["cmesh"], LoadMesh),
-        [typeof(Json)] = (["json", "jsonc"], LoadJson),
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
 
-        [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
+        // [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
 
         // Bundle resources
-        [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
+        // [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
 
         // AudioClip is not currently in use, so implementation for it comes later
     };
@@ -75,15 +75,15 @@ public static class AssetManager
     public static readonly Dictionary<string, string> ExclusiveExtensions = new()
     {
         ["png"] = "jpg",
-        ["jpg"] = "png",
-        ["json"] = "jsonc",
-        ["jsonc"] = "json"
+        ["jpg"] = "png"
     };
 
     /// <summary>
     /// Dictionary to hold handles for mod assets.
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
+
+    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*, .. Platforms.Select(x => "bundle_" + x)*/];
 
 #if DEBUG
     /// <summary>
@@ -102,8 +102,8 @@ public static class AssetManager
     {
         Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles for embedded resources
 
-        var bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
-        Array.ForEach(bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
+        // var bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
+        // Array.ForEach(bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
     }
 
     /// <summary>
@@ -130,16 +130,9 @@ public static class AssetManager
     /// </summary>
     /// <param name="path">The original path of the asset.</param>
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
-    private static string SanitisePath(this string path)
-    {
-        // Removing the file extension first
-        path = path.ReplaceAll("", "jsonc", "json", "cmesh", "png", "jpg", "shader");
-
-        foreach (var suffix in Platforms.Values)
-            path = path.Replace("bundle_" + suffix, "");
-
-        return path.TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux, \ for Mac/AssetBundle, . for Embedded) and get the last entry which should be the asset name
-    }
+    private static string SanitisePath(this string path) => path
+        .ReplaceAll("", Extensions) // Removing the file extension first
+        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux, \ for Mac/AssetBundle, . for Embedded) and get the last entry which should be the asset name
 
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.
@@ -288,14 +281,12 @@ public static class AssetManager
     /// <returns>The texture asset loaded from the path.</returns>
     private static Texture2D LoadTexture2D(string path, bool forSprite)
     {
+        var texture = new Texture2D(2, 2, TextureFormat.RGBA32, true, false);
+
+        if (!texture.LoadImage(path.ReadBytes(), true))
+            return null;
+
         var name = path.SanitisePath();
-
-        var tempTex = new Texture2D(2, 2, TextureFormat.RGBA32, true, false);
-        tempTex.LoadImage(path.ReadBytes(), false);
-
-        var texture = new Texture2D(tempTex.width, tempTex.height, TextureFormat.RGBA32, true, false);
-        texture.SetPixels(tempTex.GetPixels());
-        texture.Apply(true, false);
         texture.wrapMode = GetWrapMode(name);
 
         if (forSprite)
@@ -304,7 +295,6 @@ public static class AssetManager
             texture.DontDestroy();
         }
 
-        tempTex.Destroy();
         return texture;
     }
 
@@ -324,9 +314,9 @@ public static class AssetManager
         return tex ? Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
     }
 
-    private static T GetBundleAsset<T>(string path) where T : UObject => Get<AssetBundle>("ocean_range").LoadAsset<T>(path);
+    // private static T GetBundleAsset<T>(string path) where T : UObject => Get<AssetBundle>("ocean_range").LoadAsset<T>(path);
 
-    private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
+    // private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
 
     /// <summary>
     /// Reads all the bytes from the provided stream.

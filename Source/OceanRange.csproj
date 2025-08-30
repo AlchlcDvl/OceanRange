@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>OceanRange</AssemblyName>
-        <RootNamespace>TheOceanRange</RootNamespace>
+        <RootNamespace>OceanRange</RootNamespace>
         <TargetFramework>net4.8</TargetFramework>
         <Version>0.0.2</Version>
         <DebugType>none</DebugType>

@@ -2,6 +2,7 @@ using SRML;
 using System.Globalization;
 using AssetsLib;
 using SRML.Utils;
+using System.Collections;
 
 namespace OceanRange.Utils;
 
@@ -345,36 +346,53 @@ public static class Helpers
         Mouth = face.Mouth?.Clone(),
     };
 
-#if DEBUG
-    // public static void DoLog(this object message) => Main.Console.Log(message ?? "message was null");
-
-    // public static void LogIf(this object message, bool condition)
-    // {
-    //     if (condition)
-    //         message.DoLog();
-    // }
-
-    public static GameObject GetClosestCell(Vector3 pos)
+    public static IEnumerator PerformTimedAction(float duration, Action<float> action)
     {
-        GameObject closest = null;
-        var distance = float.MaxValue;
-
-        foreach (var cell in UnityEngine.SceneManagement
-            .SceneManager.GetActiveScene()
-            .GetRootGameObjects()
-            .Where(x => x.name.StartsWith("zone"))
-            .SelectMany(x => x.FindChildrenWithPartialName("cell", true)))
+        for (var i = 0f; i < duration; i += Time.deltaTime)
         {
-            var diff = (cell.transform.position - pos).sqrMagnitude;
-
-            if (diff >= distance)
-                continue;
-
-            closest = cell;
-            distance = diff;
+            action(i);
+            yield return null;
         }
 
-        return closest;
+        action(1f);
     }
-#endif
+
+    public static IEnumerator WaitWhile(Func<bool> predicate)
+    {
+        while (predicate())
+            yield return null;
+    }
+
+    // public static IEnumerator WaitUntil(Func<bool> predicate)
+    // {
+    //     while (!predicate())
+    //         yield return null;
+    // }
+
+    // public static IEnumerator Wait(float duration)
+    // {
+    //     while (duration > 0f)
+    //     {
+    //         duration -= Time.deltaTime;
+    //         yield return null;
+    //     }
+    // }
+
+    // public static bool TryGetInterfaceComponent<T>(this Component obj, out T component) where T : class
+    // {
+    //     if (obj.TryGetComponent(typeof(T), out var result))
+    //     {
+    //         component = result as T;
+    //         return true;
+    //     }
+
+    //     component = default;
+    //     return false;
+    // }
+
+    public static T EnsureComponent<T>(this GameObject go) where T : Component => go.GetComponent<T>() ?? go.AddComponent<T>();
+
+    public static T EnsureComponent<T>(this Component component) where T : Component => component.gameObject.EnsureComponent<T>();
+
+    public static bool StartsWith(this string @string, char character) => @string[0] == character;
 }
