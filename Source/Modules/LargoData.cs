@@ -3,7 +3,7 @@ namespace OceanRange.Modules;
 public sealed class LargoData : ActorData
 {
     [JsonProperty("props"), JsonRequired]
-    private LargoProps[] PropValues;
+    public LargoProps Props;
 
     [JsonProperty("slime1"), JsonRequired]
     public string Slime1;
@@ -33,9 +33,6 @@ public sealed class LargoData : ActorData
     public float? Jiggle;
 
     [JsonIgnore]
-    public LargoProps Props;
-
-    [JsonIgnore]
     public IdentifiableId Slime1Id;
 
     [JsonIgnore]
@@ -50,9 +47,6 @@ public sealed class LargoData : ActorData
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
-        foreach (var prop in PropValues)
-            Props |= prop;
-
         var slime1Upper = Slime1.ToUpperInvariant();
         var slime2Upper = Slime2.ToUpperInvariant();
 

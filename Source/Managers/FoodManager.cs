@@ -255,8 +255,8 @@ public static class FoodManager
         SlimePediaCreation.CreatePediaForFood(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
-        var resource = CreateFarmSetup(isVeggie ? SpawnResourceId.CARROT_PATCH : SpawnResourceId.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
-        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResourceId.CARROT_PATCH_DLX : SpawnResourceId.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
+        var resource = CreateFarmSetup(isVeggie ? SpawnResourceId.CARROT_PATCH : SpawnResourceId.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
+        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResourceId.CARROT_PATCH_DLX : SpawnResourceId.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, lower);
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
         PlantSlotRegistry.RegisterPlantSlot(new()
@@ -273,7 +273,7 @@ public static class FoodManager
         PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress);
     }
 
-    private static GameObject CreateFarmSetup(SpawnResourceId baseFarm, string patchName, SpawnResourceId spawnResource, GameObject plant)
+    private static GameObject CreateFarmSetup(SpawnResourceId baseFarm, string patchName, SpawnResourceId spawnResource, GameObject plant, string lowerName)
     {
         var prefab = baseFarm.GetResourcePrefab().CreatePrefab();
         prefab.name = patchName;
@@ -282,10 +282,9 @@ public static class FoodManager
         component.ObjectsToSpawn = [plant];
         component.BonusObjectsToSpawn = [];
         var partial = plant.FindChildWithPartialName("model_");
-        var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
         var material = partial.GetComponent<MeshRenderer>().sharedMaterial;
-        TranslateModel(prefab.FindChildren("Sprout"), mesh, material);
-        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), mesh, material);
+        TranslateModel(prefab.FindChildren("Sprout"), AssetManager.GetMesh(lowerName + "_sprout"), material);
+        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), partial.GetComponent<MeshFilter>().sharedMesh, material);
         return prefab;
     }
 

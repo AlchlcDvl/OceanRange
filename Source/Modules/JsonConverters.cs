@@ -14,6 +14,8 @@ public delegate bool TryParseHtml<T>(string valString, out T color) where T : st
 /// </summary>
 public abstract class OceanJsonConverter : JsonConverter
 {
+    protected virtual bool CustomSerialisation => false;
+
     /// <inheritdoc/>
     public override sealed object ReadJson(JsonReader reader, Type objectType, [AllowNull] object _1, JsonSerializer _2)
     {
@@ -35,6 +37,8 @@ public abstract class OceanJsonConverter : JsonConverter
     {
         if (value == null)
             writer.WriteNull();
+        else if (CustomSerialisation)
+            WriteJson(writer, value);
         else
             writer.WriteValue(ToValueString(value));
     }
@@ -53,6 +57,13 @@ public abstract class OceanJsonConverter : JsonConverter
     /// <param name="value">The value to convert.</param>
     /// <returns>A string representation of the passed value.</returns>
     protected virtual string ToValueString(object value) => value.ToString();
+
+    /// <summary>
+    /// Writes the JSON representation of the object.
+    /// </summary>
+    /// <param name="writer">The JsonWriter to write to.</param>
+    /// <param name="value">The value to write.</param>
+    protected virtual void WriteJson(JsonWriter writer, [AllowNull] object value) { }
 }
 
 /// <summary>
@@ -76,6 +87,15 @@ public abstract class OceanJsonConverter<T> : OceanJsonConverter
     /// <inheritdoc/>
     protected override sealed object ParseFromJson(JsonReader reader, Type _) => ParseFromJson(reader);
 
+    /// <inheritdoc/>
+    protected sealed override void WriteJson(JsonWriter writer, [AllowNull] object value)
+    {
+        if (value is T tValue)
+            WriteJson(writer, tValue);
+        else
+            throw new JsonSerializationException("Received unknown value: " + value);
+    }
+
     /// <summary>
     /// Wrapper method without the type parameter.
     /// </summary>
@@ -87,6 +107,12 @@ public abstract class OceanJsonConverter<T> : OceanJsonConverter
     /// </summary>
     /// <inheritdoc cref="ToValueString(object)"/>
     protected virtual string ToValueString(T value) => value.ToString();
+
+    /// <summary>
+    /// Type safe wrapper.
+    /// </summary>
+    /// <inheritdoc cref="WriteJson(JsonWriter, object)"/>
+    protected virtual void WriteJson(JsonWriter writer, [AllowNull] T value) { }
 }
 
 /// <summary>
@@ -255,16 +281,28 @@ public sealed class OrientationConverter() : MultiComponentConverter<Orientation
 /// </summary>
 /// <typeparam name="TColor">The type of the color being handled (Color/Color32).</typeparam>
 /// <typeparam name="TComponent">The type of the values that make up <typeparamref name="TColor"/>.</typeparam>
-/// <param name="style">The accepted number style.</param>
-/// <param name="tryParse">The number parsing delegate.</param>
-/// <param name="defaultValue">The default value for missing values.</param>
-/// <param name="htmlParser">The delegate for the unity html parsing method.</param>
-public abstract class BaseColorConverter<TColor, TComponent>(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : MultiComponentConverter<TColor, TComponent>
-    ("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
+public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentConverter<TColor, TComponent>
     where TColor : struct // Color or Color32, but I don't know how to limit to only those two types
     where TComponent : struct // float or byte, same as above
 {
-    private readonly TryParseHtml<TColor> TryParseHtmlColor = htmlParser; // Unity parsing delegate
+    private readonly TryParseHtml<TColor> TryParseHtmlColor; // Unity parsing delegate
+
+    /// <summary>
+    /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+    /// </summary>
+    /// <param name="style">The accepted number style.</param>
+    /// <param name="tryParse">The number parsing delegate.</param>
+    /// <param name="defaultValue">The default value for missing values.</param>
+    /// <param name="htmlParser">The delegate for the unity html parsing method.</param>
+    protected BaseColorConverter(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : base("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
+    {
+        var tType = typeof(TColor);
+
+        if (tType != typeof(Color) && tType != typeof(Color32))
+            throw new InvalidOperationException($"Invalid color type: {tType.Name}. Only UnityEngine.Color or UnityEngine.Color32 are supported.");
+
+        TryParseHtmlColor = htmlParser;
+    }
 
     /// <inheritdoc/>
     protected override sealed bool ParseOtherFormat(string valString, out TColor result)
@@ -314,13 +352,96 @@ public sealed class EnumConverter : OceanJsonConverter
     protected override object ParseFromJson(JsonReader reader, Type objectType)
     {
         var targetType = Nullable.GetUnderlyingType(objectType) ?? objectType;
-        var enumString = reader.Value?.ToString() ?? "null"; // Get string version
         return reader.TokenType switch
         {
-            JsonToken.String when Helpers.TryParse(targetType, enumString, true, out var result) => result, // Attempt the parse the string, make sure to use this arm
-            JsonToken.Integer => Enum.ToObject(targetType, reader.Value!), // Mainly there for completion's sake as integers are unreadable in json, the string call is wasted here
-            _ => throw new InvalidDataException($"Cannot convert value '{enumString}' ({reader.TokenType}) to {targetType.Name}. Expected a defined string or an integer."), // Throw an error because it was nothing else
+            JsonToken.String when Helpers.TryParse(targetType, reader.Value?.ToString() ?? "null", true, out var result) => result, // Attempt the parse the string, make sure to use this arm
+            JsonToken.Integer => Enum.ToObject(targetType, reader.Value!), // Mainly there for completion's sake as integers cannot be understood in json, because you don't know what the value means
+            _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {targetType.Name}. Expected a defined string or an integer."), // Throw an error because it was nothing else
         };
+    }
+}
+
+/// <summary>
+/// Enum converter for enum types that are used as flags.
+/// </summary>
+public sealed class FlagsEnumConverter : OceanJsonConverter
+{
+    protected override bool CustomSerialisation => true;
+
+    public override bool CanConvert(Type objectType)
+    {
+        var type = Nullable.GetUnderlyingType(objectType) ?? objectType;
+        return type.IsEnum && type.IsDefined<FlagsAttribute>();
+    }
+
+    protected override object ParseFromJson(JsonReader reader, Type objectType)
+    {
+        var targetType = Nullable.GetUnderlyingType(objectType) ?? objectType; // Ensures that we have the enum's type for the helper methods here
+        return reader.TokenType switch
+        {
+            JsonToken.StartArray => ParseArray(reader, targetType),
+            _ => ParseNonArray(reader, targetType, false)
+        };
+    }
+
+    private static object ParseNonArray(JsonReader reader, Type enumType, bool partOfArray) => reader.TokenType switch
+    {
+        JsonToken.String when Helpers.TryParse(enumType, reader.Value?.ToString() ?? "null", true, out var result) => result, // Attempt the parse the string, make sure to use this arm
+        JsonToken.Integer => Enum.ToObject(enumType, reader.Value!), // Mainly there for completion's sake as integers cannot be understood in json, because you don't know what the value means
+        JsonToken.Null when partOfArray => default, // When not part of array, the null case is handled in the base class already
+        _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {enumType.Name}. Expected {(partOfArray ? "a valid array of defined strings or ints, " : "")}a defined string or an integer."),
+        // Throw an error because it was nothing else
+    };
+
+    private static object ParseArray(JsonReader reader, Type enumType)
+    {
+        var combinedValue = 0L;
+
+        while (reader.Read() && reader.TokenType != JsonToken.EndArray)
+            combinedValue |= Convert.ToInt64(ParseNonArray(reader, enumType, true));
+
+        return Enum.ToObject(enumType, Convert.ChangeType(combinedValue, Enum.GetUnderlyingType(enumType)));
+    }
+
+    /// <inheritdoc/>
+    protected override void WriteJson(JsonWriter writer, [AllowNull] object value)
+    {
+        if (value == null)
+        {
+            writer.WriteNull();
+            return;
+        }
+
+        var type = value.GetType();
+        var enumType = Nullable.GetUnderlyingType(type) ?? type;
+        var underlying = Convert.ToInt64(value);
+
+        var names = Enum.GetNames(enumType);
+        var values = Enum.GetValues(enumType).Cast<object>();
+
+        var setFlags = new List<string>();
+
+        foreach (var (flagName, flagValue) in names.Zip(values))
+        {
+            var longVal = Convert.ToInt64(flagValue);
+
+            if (longVal != 0 && (underlying & longVal) == longVal)
+                setFlags.Add(flagName);
+        }
+
+        if (underlying == 0)
+            writer.WriteValue(Enum.ToObject(enumType, 0).ToString());
+        else if (setFlags.Count == 1)
+            writer.WriteValue(setFlags[0]);
+        else
+        {
+            writer.WriteStartArray();
+
+            foreach (var flag in setFlags)
+                writer.WriteValue(flag);
+
+            writer.WriteEndArray();
+        }
     }
 }
 
@@ -337,7 +458,7 @@ public sealed class EnumConverter : OceanJsonConverter
 //         return reader.TokenType switch
 //         {
 //             JsonToken.String when Enum.TryParse<T>(enumString, true, out var result) => result, // Attempt the parse the string, make sure to use this arm
-//             JsonToken.Integer => Helpers.ToEnum<T>(reader.Value!), // Mainly there for completion's sake as integers are unreadable in json, the string call is wasted here
+//             JsonToken.Integer => Helpers.ToEnum<T>(reader.Value!), // Mainly there for completion's sake as integers cannot be understood in json, because you don't know what the value means
 //             _ => throw new InvalidDataException($"Cannot convert value '{enumString}' ({reader.TokenType}) to {typeof(T).Name}. Expected a defined string or an integer."), // Throw an error because it was nothing else
 //         };
 //     }
