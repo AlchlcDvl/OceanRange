@@ -243,11 +243,11 @@ public static class LargoManager
         appearance.NameXlateKey = appearance1.NameXlateKey;
         appearance.SaveSet = SlimeAppearance.AppearanceSaveSet.CLASSIC;
 
-        var struct1LastIndex = 0;
         var allCustomModels = props.HasFlag(LargoProps.CustomStructureSource);
-        var customBody = props.HasFlag(LargoProps.CustomBodyMaterial);
-        var customMats = props.HasFlag(LargoProps.CustomSlime1StructureMaterials);
-        var customMats2 = props.HasFlag(LargoProps.CustomSlime2StructureMaterials);
+        var customBody = false;
+        var customMats = false;
+        var customMats2 = false;
+        var struct1LastIndex = 0;
 
         var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
         applicator.SlimeDefinition = definition;
@@ -260,6 +260,9 @@ public static class LargoManager
         else
         {
             var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1);
+            customBody = props.HasFlag(LargoProps.CustomBodyMaterial);
+            customMats = props.HasFlag(LargoProps.CustomSlime1StructureMaterials);
+            customMats2 = props.HasFlag(LargoProps.CustomSlime2StructureMaterials);
 
             var slime1Body = appearance1.Structures.FirstOrDefault(x => x.Element.Name.Contains("Body"));
             var slime2Body = appearance2.Structures.FirstOrDefault(x => x.Element.Name.Contains("Body"));
