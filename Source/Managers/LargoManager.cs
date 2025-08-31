@@ -253,10 +253,7 @@ public static class LargoManager
         applicator.SlimeDefinition = definition;
 
         if (allCustomModels)
-        {
-            appearance.Structures = [new(slime1.AppearancesDefault[0].Structures[0])];
-            SlimeManager.BasicInitSlimeAppearance(appearance, applicator, largoData.Meshes, largoData.SkipNull, largoData.Jiggle.Value, largoData.Name, largoData.MatData);
-        }
+            SlimeManager.BasicInitSlimeAppearance(appearance, applicator, (useSlime2Body ? slime2 : slime1).AppearancesDefault[0].Structures[0], largoData.Meshes, largoData.SkipNull, largoData.Jiggle.Value, largoData.Name, largoData.MatData);
         else
         {
             var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1);
@@ -267,12 +264,12 @@ public static class LargoManager
             var slime1Body = appearance1.Structures.FirstOrDefault(x => x.Element.Name.Contains("Body"));
             var slime2Body = appearance2.Structures.FirstOrDefault(x => x.Element.Name.Contains("Body"));
 
-            var body = useSlime2Body ? slime2Body : slime1Body;
+            var body = new SlimeAppearanceStructure(useSlime2Body ? slime2Body : slime1Body);
 
-            list.Add(new(body));
+            list.Add(body);
 
-            if (customBody)
-                body.DefaultMaterials[0] = SlimeManager.GenerateMaterial(largoData.BodyMatData, null, body.DefaultMaterials[0], largoData.Name);
+            var bodyMat = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0];
+            body.DefaultMaterials[0] = customBody ? SlimeManager.GenerateMaterial(largoData.BodyMatData, null, bodyMat, largoData.Name) : bodyMat.Clone();
 
             var num = appearance1.Structures.IndexOfItem(slime1Body);
 

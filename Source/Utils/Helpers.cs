@@ -229,8 +229,16 @@ public static class Helpers
 
     public static float Sum(this Vector3 vector) => vector.x + vector.y + vector.z;
 
-    public static bool IsValidZone(DirectedActorSpawner spawner, Zone[] zones)
+    public static bool IsValidZone(DirectedActorSpawner spawner, Zone[] zones, string[] excluded = null)
     {
+        if (excluded?.Length is > 0)
+        {
+            var cell = spawner.GetComponentInParent<CellDirector>(true);
+
+            if (excluded.Contains(cell.name.Replace("cell", "")))
+                return false;
+        }
+
         var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
         return zoneId == Zone.NONE || zones.Contains(zoneId);
     }

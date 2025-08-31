@@ -11,17 +11,16 @@ public enum LargoProps : ushort
     UseSlime2ForMouth = 1 << 2,
     UseSlime2ForBody = 1 << 3,
     UseSlime2ForBodyMaterial = 1 << 4,
-    UseSlime2NameFirst = 1 << 5,
 
     // Combines the above values so you don't have to write a long array just with the above values
-    UseSlime2AsBase = UseSlime2ForSound | UseSlime2ForEyes | UseSlime2ForMouth | UseSlime2NameFirst | UseSlime2ForBody | UseSlime2ForBodyMaterial,
+    UseSlime2AsBase = UseSlime2ForSound | UseSlime2ForEyes | UseSlime2ForMouth | UseSlime2ForBody | UseSlime2ForBodyMaterial,
 
-    CustomStructureSource = 1 << 6, // Use for custom mesh models that the base slimes don't use
+    CustomStructureSource = 1 << 5, // Use for custom mesh models that the base slimes don't use
 
     // Markers for whether custom (non base slime) materials are in use for relevant parts
-    CustomSlime1StructureMaterials = 1 << 7,
-    CustomSlime2StructureMaterials = 1 << 8,
-    CustomBodyMaterial = 1 << 9,
+    CustomSlime1StructureMaterials = 1 << 6,
+    CustomSlime2StructureMaterials = 1 << 7,
+    CustomBodyMaterial = 1 << 8,
 
     // Same as UseSlime2AsBase
     AllMaterialsAreCustom = CustomSlime1StructureMaterials | CustomSlime2StructureMaterials | CustomBodyMaterial,

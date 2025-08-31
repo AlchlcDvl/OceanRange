@@ -69,7 +69,7 @@ public static class SlimeManager
         {
             var prefab = slimeData.MainId.GetPrefab();
 
-            foreach (var slimeSpawner in spawners.Where(spawner => Helpers.IsValidZone(spawner, slimeData.Zones)))
+            foreach (var slimeSpawner in spawners.Where(spawner => Helpers.IsValidZone(spawner, slimeData.Zones, slimeData.ExcludedSpawners)))
             {
                 foreach (var constraint in slimeSpawner.constraints)
                 {
@@ -405,19 +405,18 @@ public static class SlimeManager
         }
     }
 
-    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeData slimeData) => BasicInitSlimeAppearance(appearance, applicator, slimeData.SlimeMeshes, slimeData.SkipNullMesh,
-        slimeData.JiggleAmount, slimeData.Name, slimeData.SlimeMatData);
+    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeData slimeData) => BasicInitSlimeAppearance(appearance, applicator, appearance.Structures[0], slimeData.SlimeMeshes,
+        slimeData.SkipNullMesh, slimeData.JiggleAmount, slimeData.Name, slimeData.SlimeMatData);
 
-    public static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, string[] meshes, bool skipNull, float jiggle, string name, MaterialData[] matData)
+    public static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeAppearanceStructure first, string[] meshes, bool skipNull, float jiggle, string name, MaterialData[] matData)
     {
-        var firstStructure = appearance.Structures[0];
-        var elemPrefab = firstStructure.Element.Prefabs[0];
+        var elemPrefab = first.Element.Prefabs[0];
 
         appearance.Structures = new SlimeAppearanceStructure[meshes.Length];
-        appearance.Structures[0] = firstStructure;
+        appearance.Structures[0] = new(first);
 
         for (var i = 1; i < meshes.Length; i++)
-            appearance.Structures[i] = new(firstStructure);
+            appearance.Structures[i] = new(first);
 
         SlimeAppearanceObject slimeBase = null;
         var prefabsForBoneData = new SlimeAppearanceObject[meshes.Length - 1];

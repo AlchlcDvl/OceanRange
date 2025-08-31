@@ -50,7 +50,7 @@ public sealed class LargoData : ActorData
         var slime1Upper = Slime1.ToUpperInvariant();
         var slime2Upper = Slime2.ToUpperInvariant();
 
-        MainId = Helpers.CreateIdentifiableId((Props.HasFlag(LargoProps.UseSlime2NameFirst) ? (slime2Upper + "_" + slime1Upper) : (slime1Upper + "_" + slime2Upper)) + "_LARGO");
+        MainId = Helpers.CreateIdentifiableId(slime1Upper + "_" + slime2Upper + "_LARGO");
         Slime1Id = Helpers.ParseEnum<IdentifiableId>(slime1Upper + "_SLIME");
         Slime2Id = Helpers.ParseEnum<IdentifiableId>(slime2Upper + "_SLIME");
 

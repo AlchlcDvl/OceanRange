@@ -73,12 +73,8 @@
     },
     {
         "name": "Pink Coco",
-        "slime1": "Coco",
-        "slime2": "Pink",
-        "props": ["UseSlime2ForBody"],
-        "customMatData":
-        [
-            { "matOrigin": "PINK_SLIME" }
-        ]
+        "slime1": "Pink",
+        "slime2": "Coco",
+        "props": ["UseSlime2ForBody"]
     }
 ]
