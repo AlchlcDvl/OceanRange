@@ -328,8 +328,8 @@
         "pediaDiet": "Fruit",
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
-        "slimeMeshes": ["hermit_body", "hermit_shell", "hermit_claw_1", "hermit_claw_2"],
-        "gordoMeshes": ["hermit_body_gordo", "hermit_shell_gordo", "hermit_claw_1", "hermit_claw_2"],
+        "slimeMeshes": [null, "hermit_shell", "hermit_claw_1", "hermit_claw_2"],
+        "gordoMeshes": [null, "hermit_shell_gordo", "hermit_claw_1", "hermit_claw_2"],
         "plortMeshes": [null, "hermit_shell_plort"],
         "slimeMatData":
         [
