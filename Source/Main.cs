@@ -84,13 +84,14 @@ internal sealed class Main : ModEntryPoint
     /// <inheritdoc/>
 #if DEBUG
     [TimeDiagnostic("Mod Unload")]
-#endif
     public override void Unload()
     {
-#if DEBUG
         File.WriteAllText(Path.Combine(AssetManager.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePos.SavedPositions, AssetManager.JsonSettings));
-#endif
 
+#else
+    public override void Unload()
+    {
+#endif
         AssetManager.ReleaseHandles();
 
         foreach (var mesh in Helpers.ClonedMeshes)

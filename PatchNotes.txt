@@ -2,8 +2,8 @@
 - Release!
 
 0.0.2
-- New slimes: Mesmer
-- Added Lisa Erwin, a new rancher! She will try to first contact you by
+- New slimes: Mesmer*, Hermit*
+- Added Lisa Erwin, a new rancher! She will try to first contact you by day 7 at noon!
 - The sand gordo now has a custom body
 - Sand gordo snare behaviour is now consistent with its diet
 - Lantern sleep habits now work similar to phosphor slimes, where they will be awake when under a solar shield or inside a cave

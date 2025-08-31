@@ -28,10 +28,7 @@
         "props": ["UseSlime2ForMouth", "CustomStructureSource"],
         "customMatData":
         [
-            {
-                "sameAs": 0,
-                "matOrigin": "LANTERN_SLIME"
-            },
+            { "matOrigin": "LANTERN_SLIME" },
             {
                 "sameAs": 1,
                 "matOrigin": "LANTERN_SLIME"
@@ -56,15 +53,12 @@
         "props": ["CustomStructureSource"],
         "customMatData":
         [
-            {
-                "sameAs": 0,
-                "matOrigin": "ROSI_MINE_LARGO"
-            },
+            { "matOrigin": "ROSI_MINE_LARGO" },
             {
                 "sameAs": 1,
                 "matOrigin": "MINE_SLIME"
             },
-            { "sameAs": 0 },
+            { "sameAs": 1 },
             {
                 "topColor": "#9EA16F",
                 "matOrigin": "PHOSPHOR_SLIME"
@@ -81,6 +75,10 @@
         "name": "Pink Coco",
         "slime1": "Coco",
         "slime2": "Pink",
-        "props": []
+        "props": ["UseSlime2ForBody"],
+        "customMatData":
+        [
+            { "matOrigin": "PINK_SLIME" }
+        ]
     }
 ]

@@ -22,9 +22,6 @@ public sealed class SlimeData : SpawnedActorData
     [JsonProperty("diet")]
     public FoodGroup Diet;
 
-    [JsonProperty("canLargofy")]
-    public bool CanLargofy = true;
-
     [JsonProperty("baseSlime")]
     public IdentifiableId BaseSlime = IdentifiableId.PINK_SLIME;
 

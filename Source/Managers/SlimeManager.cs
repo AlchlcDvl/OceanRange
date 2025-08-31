@@ -276,7 +276,7 @@ public static class SlimeManager
         definition.Diet.AdditionalFoods = [IdentifiableId.SPICY_TOFU];
         definition.Diet.Favorites = [slimeData.FavFood];
         definition.Diet.EatMap?.Clear();
-        definition.CanLargofy = slimeData.CanLargofy;
+        definition.CanLargofy = Identifiable.LARGO_CLASS.Any(x => x.ToString().ToLowerInvariant().Contains(lower));
         definition.FavoriteToys = [slimeData.FavToy];
         definition.Name = slimeData.Name + " Slime";
         definition.IdentifiableId = slimeData.MainId;
