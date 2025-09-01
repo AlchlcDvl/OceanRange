@@ -457,7 +457,7 @@ public static class SlimeManager
                 prefabsForBoneData[i - 1] = prefab2;
         }
 
-        applicator.GenerateSlimeBones(slimeBase, jiggle, prefabsForBoneData, skipNull);
+        applicator.GenerateSlimeBones(slimeBase, jiggle, prefabsForBoneData);
     }
 
     public static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback, string name)
@@ -642,7 +642,7 @@ public static class SlimeManager
         return weight;
     }
 
-    private static void GenerateSlimeBones(this SlimeAppearanceApplicator slimePrefab, SlimeAppearanceObject bodyApp, float jiggleAmount, SlimeAppearanceObject[] appearanceObjects, bool avoidRiggingBody)
+    private static void GenerateSlimeBones(this SlimeAppearanceApplicator slimePrefab, SlimeAppearanceObject bodyApp, float jiggleAmount, SlimeAppearanceObject[] appearanceObjects)
     {
         bodyApp.AttachedBones =
         [
@@ -698,7 +698,7 @@ public static class SlimeManager
 
         for (var i = 0; i < list.Count; i++)
         {
-            if (i == 0 && avoidRiggingBody)
+            if (i == 0)
                 continue;
 
             var (rend, mesh) = list[i];
