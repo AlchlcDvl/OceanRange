@@ -73,12 +73,102 @@
     },
     {
         "name": "Pink Coco",
-        "slime1": "Coco",
-        "slime2": "Pink",
+        "slime1": "Pink",
+        "slime2": "Coco",
         "props": ["UseSlime2ForBody"],
         "customMatData":
         [
             { "matOrigin": "PINK_SLIME" }
         ]
+    },
+    {
+        "name": "Coco Saber",
+        "slime1": "Coco",
+        "slime2": "Saber",
+        "props": ["UseSlime2ForBody", "UseSlime2ForBodyMaterial"]
+    },
+    {
+        "name": "Coco Honey",
+        "slime1": "Coco",
+        "slime2": "Honey",
+        "props": ["None"],
+        "customMatData":
+        [
+            { "matOrigin": "HONEY_SLIME" }
+        ]
+    },
+    {
+        "name": "Coco Phosphor",
+        "slime1": "Coco",
+        "slime2": "Phosphor",
+        "props": ["None"],
+        "customMatData":
+        [
+            { "matOrigin": "PHOSPHOR_SLIME" }
+        ]
+    },
+    {
+        "name": "Coco Tangle",
+        "slime1": "Coco",
+        "slime2": "Tangle",
+        "props": ["None"]
+    },
+    {
+        "name": "Coco Boom",
+        "slime1": "Coco",
+        "slime2": "Boom",
+        "props": ["UseSlime2ForBodyMaterial"],
+        "customMatData":
+        [
+            { "matOrigin": "COCO_SLIME" }
+        ]
+    },
+    {
+        "name": "Coco Rad",
+        "slime1": "Coco",
+        "slime2": "Rad",
+        "props": ["None"]
+    },
+    {
+        "name": "Coco Rock",
+        "slime1": "Coco",
+        "slime2": "Rock",
+        "props": ["None"]
+    },
+    {
+        "name": "Coco Tabby",
+        "slime1": "Coco",
+        "slime2": "Tabby",
+        "props": ["None"]
+    },
+    {
+        "name": "Coco Hunter",
+        "slime1": "Coco",
+        "slime2": "Hunter",
+        "props": ["None"]
+    },
+    {
+        "name": "Coco Crystal",
+        "slime1": "Coco",
+        "slime2": "Crystal",
+        "props": ["None"]
+    },
+    {
+        "name": "Coco Dervish",
+        "slime1": "Coco",
+        "slime2": "Dervish",
+        "props": ["None"]
+    },
+    {
+        "name": "Coco Mesmer",
+        "slime1": "Coco",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Coco Hermit",
+        "slime1": "Coco",
+        "slime2": "Hermit",
+        "props": ["None"]
     }
 ]
