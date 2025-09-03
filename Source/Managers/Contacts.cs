@@ -55,5 +55,8 @@ public static class Contacts
         TranslationPatcher.AddExchangeTranslation(specId, rancher.SpecialDialogue);
 
         TranslationPatcher.AddExchangeTranslation($"m.rancher.{rancher.RancherId}", rancher.FullName);
+
+        if (Main.ClsExists)
+            Main.AddTipTextBypass(rancher.LoadingText);
     }
 }

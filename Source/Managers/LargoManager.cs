@@ -7,52 +7,34 @@ namespace OceanRange.Managers;
 public static class LargoManager
 {
     /*
-    Largo Naming Hierarchy:
+        Largo Naming Hierarchy:
 
-    PLORT:
-    Pink
-    Coco
-    Saber
-    Quantum
-    Honey
-    Phosphor
-    Mosaic
-    Tangle
-    Boom
-    Rad
-    Rock
-    Tabby
-    Hunter
-    Crystal
-    Dervish
-    Mesmer
-    Hermit
+        PLORT:
+        Pink
+        Coco
+        Saber
+        Quantum
+        Honey
+        Phosphor
+        Mosaic
+        Tangle
+        Boom
+        Rad
+        Rock
+        Tabby
+        Hunter
+        Crystal
+        Dervish
+        Mesmer
+        Hermit
 
-    PEARL:
-    Rosi
-    Mine
-    Lantern
+        PEARL:
+        Rosi
+        Mine
+        Lantern
     */
 
-    public static readonly HashSet<IdentifiableId> MesmerLargos = new(Identifiable.idComparer)
-    {
-        // Ids.PINK_MESMER_LARGO,
-        // Ids.COCO_MESMER_LARGO,
-        // Ids.SABER_MESMER_LARGO,
-        // Ids.QUANTUM_MESMER_LARGO,
-        // Ids.HONEY_MESMER_LARGO,
-        // Ids.PHOSPHOR_MESMER_LARGO,
-        // Ids.MOSAIC_MESMER_LARGO,
-        // Ids.TANGLE_MESMER_LARGO,
-        // Ids.BOOM_MESMER_LARGO,
-        // Ids.RAD_MESMER_LARGO,
-        // Ids.ROCK_MESMER_LARGO,
-        // Ids.TABBY_MESMER_LARGO,
-        // Ids.HUNTER_MESMER_LARGO,
-        // Ids.CRYSTAL_MESMER_LARGO,
-        // Ids.DERVISH_MESMER_LARGO,
-        // Ids.MESMER_HERMIT_LARGO
-    };
+    public static readonly HashSet<IdentifiableId> Mesmers = new(Identifiable.idComparer);
 
     public static readonly Dictionary<IdentifiableId, List<(IdentifiableId, IdentifiableId)>> LargoMaps = [];
 
@@ -63,12 +45,12 @@ public static class LargoManager
     private static readonly int GhostToggle = ShaderUtils.GetOrSet("_GhostToggle");
 
     #if DEBUG
-    [TimeDiagnostic("Largo Preload")]
+    [TimeDiagnostic("Largos Preload")]
 #endif
     public static void PreLoadLargoData() => Largos = AssetManager.GetJsonArray<LargoData>("largopedia");
 
 #if DEBUG
-    [TimeDiagnostic("Largo Load")]
+    [TimeDiagnostic("Largos Load")]
 #endif
     public static void LoadAllLargos()
     {
@@ -209,7 +191,7 @@ public static class LargoManager
         prefab.GetComponent<AweTowardsLargos>().Destroy();
 
         if (prefab.TryGetComponent<PinkSlimeFoodTypeTracker>(out var tracker))
-            tracker.Destroy();
+            tracker.Destroy("LargoManager.CreateLargo");
 
         if (slime1.FavoriteToys != null)
             definition.FavoriteToys = [.. definition.FavoriteToys.Union(slime1.FavoriteToys, Identifiable.idComparer)];

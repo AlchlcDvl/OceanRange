@@ -5,7 +5,7 @@ public enum LargoProps : ushort
 {
     None = 0,
 
-    // These should be self descriptive
+    // These should be self-descriptive
     UseSlime2ForSound = 1 << 0, // I kept for parity's sake with SRML's largo props
     UseSlime2ForEyes = 1 << 1,
     UseSlime2ForMouth = 1 << 2,
@@ -17,7 +17,7 @@ public enum LargoProps : ushort
 
     CustomStructureSource = 1 << 5, // Use for custom mesh models that the base slimes don't use
 
-    // Markers for whether custom (non base slime) materials are in use for relevant parts
+    // Markers for whether custom (non-base slime) materials are in use for relevant parts
     CustomSlime1StructureMaterials = 1 << 6,
     CustomSlime2StructureMaterials = 1 << 7,
     CustomBodyMaterial = 1 << 8,

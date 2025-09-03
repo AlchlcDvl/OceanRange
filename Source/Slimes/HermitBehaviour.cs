@@ -23,7 +23,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
     public override void Awake()
     {
         base.Awake();
-        Body = transform.Find("Appearance/hermit_body(Clone)");
+        Body = transform.Find("Appearance/slime_default(Clone)");
         Claw1 = transform.Find("Appearance/hermit_claw_1(Clone)");
         Claw2 = transform.Find("Appearance/hermit_claw_2(Clone)");
         Calmed = GetComponent<CalmedByWaterSpray>();
@@ -49,7 +49,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
     public override void Selected() => StartCoroutine(CoHideInShell());
 
-    public IEnumerator CoHideInShell()
+    private IEnumerator CoHideInShell()
     {
         Hiding = true;
         CanMove.CanMove = false;

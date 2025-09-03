@@ -13,6 +13,7 @@ public struct Orientation(Vector3 pos, Vector3 rot) : IEquatable<Orientation>
     public Orientation(float xPos, float yPos, float zPos, float xRot, float yRot, float zRot)
         : this(new(xPos, yPos, zPos), new(ClampAngle(xRot), ClampAngle(yRot), ClampAngle(zRot))) { }
 
+    // To maintain parity with Unity's indexers for structs like Vectors, Quaternions and Colors
     // public Vector3 this[int index]
     // {
     //     readonly get => index switch

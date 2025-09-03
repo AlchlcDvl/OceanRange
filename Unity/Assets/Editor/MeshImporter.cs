@@ -96,7 +96,7 @@ sealed class MeshImporterEditor : ScriptedImporterEditor
         base.OnInspectorGUI();
 
         EditorGUILayout.Space();
-        EditorGUILayout.HelpBox("This file is a custom .cmesh asset. Unity automatically imports it using the MeshImporter script.", MessageType.Info);
+        EditorGUILayout.HelpBox("This file is a custom .cmesh asset.", MessageType.Info);
 
         if (GUILayout.Button("Force Re-import"))
         {

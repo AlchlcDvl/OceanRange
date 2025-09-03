@@ -14,12 +14,15 @@ public sealed class RancherData : JsonData
     [JsonProperty("specialDialogue"), JsonRequired]
     public string SpecialDialogue;
 
+    [JsonProperty("loadingText"), JsonRequired]
+    public string LoadingText;
+
     // [JsonIgnore]
     // public RancherName RancherName;
 
     [JsonIgnore]
     public ExchangeDirector.Rancher Rancher;
 
-    // [OnDeserialized]
-    // public void PopulateData(StreamingContext _) => RancherName = Helpers.ParseEnum<RancherName>(RancherId.ToUpperInvariant());
+    [OnDeserialized]
+    public void PopulateData(StreamingContext _) => Helpers.AddEnumValue<RancherName>(RancherId.ToUpperInvariant());
 }

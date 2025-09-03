@@ -1,6 +1,6 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(SlimeRandomMove), nameof(SlimeRandomMove.Action))]
+[HarmonyPatch(typeof(SlimeRandomMove), nameof(SlimeRandomMove.Action)), UsedImplicitly]
 public static class StopMoving
 {
     public static bool Prefix(SlimeRandomMove __instance, ref (float, float) __state)
@@ -25,7 +25,7 @@ public static class StopMoving
     public static void Postfix(SlimeRandomMove __instance, ref (float, float) __state) => (__instance.scootSpeedFactor, __instance.verticalFactor) = __state;
 }
 
-[HarmonyPatch(typeof(GotoConsumable), nameof(GotoConsumable.Relevancy))]
+[HarmonyPatch(typeof(GotoConsumable), nameof(GotoConsumable.Relevancy)), UsedImplicitly]
 public static class StopMovingTowardsFood
 {
     public static bool Prefix(GotoConsumable __instance, ref float __result)

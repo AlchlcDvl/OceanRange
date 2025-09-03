@@ -1,7 +1,7 @@
 ﻿namespace OceanRange.Patches;
 
 // TODO: Remove when the pr is merged and SRML 0.3.0 is out
-[HarmonyPatch(typeof(GordoSnare), nameof(GordoSnare.GetGordoIdForBait)), HarmonyPriority(Priority.First + 1)]
+[HarmonyPatch(typeof(GordoSnare), nameof(GordoSnare.GetGordoIdForBait)), HarmonyPriority(Priority.First + 1), UsedImplicitly]
 public static class GordoSnarePatch
 {
     public static IdentifiableId[] Pinks;

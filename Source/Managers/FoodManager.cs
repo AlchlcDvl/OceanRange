@@ -87,9 +87,11 @@ public static class FoodManager
         // FIXME: Dirt in veggie patches are invisible for some reason
         foreach (var plantData in Plants)
         {
-            var prefab = plantData.Group == FoodGroup.VEGGIES ? veggiePrefab : fruitPrefab;
-            var name = plantData.ResourceIdSuffix.ToLowerInvariant() + plantData.Name + "0";
-            var array = new[] { plantData.MainId.GetPrefab() };
+            var prefab = plantData.IsVeggie ? veggiePrefab : fruitPrefab;
+
+            var toInstantiate = prefab.Instantiate();
+            toInstantiate.ObjectsToSpawn = toInstantiate.BonusObjectsToSpawn = [plantData.MainId.GetPrefab()];
+            toInstantiate.name = plantData.ResourceIdSuffix.ToLowerInvariant() + plantData.Name + "0";
 
             foreach (var (zone, spawnLocations) in plantData.SpawnLocations)
             {
@@ -102,12 +104,13 @@ public static class FoodManager
                         var pos = positions[i];
                         var resource = prefab.Instantiate(parent);
                         resource.transform.position = pos;
-                        resource.name = name + i;
-                        resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
+                        resource.name = resource.name.Replace("(Clone)", "") + i;
                         context.GameModel.RegisterResourceSpawner(pos, resource);
                     }
                 }
             }
+
+            toInstantiate.Destroy("FoodManager.OnSaveLoaded");
         }
     }
 
@@ -217,16 +220,14 @@ public static class FoodManager
 #endif
     private static void BaseCreatePlant(PlantData plantData)
     {
-        var isVeggie = plantData.Group == FoodGroup.VEGGIES;
-
-        var prefab = (isVeggie ? IdentifiableId.CARROT_VEGGIE : IdentifiableId.POGO_FRUIT).GetPrefab().CreatePrefab();
+        var prefab = (plantData.IsVeggie ? IdentifiableId.CARROT_VEGGIE : IdentifiableId.POGO_FRUIT).GetPrefab().CreatePrefab();
         prefab.name = plantData.Type.ToLowerInvariant() + plantData.Name;
         prefab.GetComponent<Identifiable>().id = plantData.MainId;
         prefab.GetComponent<Vacuumable>().size = 0;
 
         var meshModel = prefab.FindChildWithPartialName("model_");
         var lower = plantData.Name.ToLowerInvariant();
-        meshModel.GetComponent<MeshFilter>().sharedMesh = AssetManager.GetMesh(lower);
+        meshModel.GetComponent<MeshFilter>().sharedMesh = AssetManager.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();
         var material = meshRend.material = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
@@ -255,8 +256,8 @@ public static class FoodManager
         SlimePediaCreation.CreatePediaForFood(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
-        var resource = CreateFarmSetup(isVeggie ? SpawnResourceId.CARROT_PATCH : SpawnResourceId.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
-        var resourceDlx = CreateFarmSetup(isVeggie ? SpawnResourceId.CARROT_PATCH_DLX : SpawnResourceId.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, lower);
+        var resource = CreateFarmSetup(plantData.IsVeggie ? SpawnResourceId.CARROT_PATCH : SpawnResourceId.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
+        var resourceDlx = CreateFarmSetup(plantData.IsVeggie ? SpawnResourceId.CARROT_PATCH_DLX : SpawnResourceId.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, lower);
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
         PlantSlotRegistry.RegisterPlantSlot(new()

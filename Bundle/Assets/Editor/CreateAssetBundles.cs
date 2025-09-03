@@ -3,7 +3,7 @@ using UnityEditor;
 using System.IO;
 using System.Linq;
 
-public class CreateAssetBundles
+class CreateAssetBundles
 {
     static readonly List<Tuple<string, string, BuildTarget>> _targets = new()
     {

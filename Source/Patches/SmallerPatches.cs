@@ -1,7 +1,7 @@
 namespace OceanRange.Patches;
 
 // This patch exists because the assembly publicizer has issues trying to publicize events, why???
-[HarmonyPatch(typeof(SlimeAppearanceApplicator), nameof(SlimeAppearanceApplicator.ApplyAppearance))]
+[HarmonyPatch(typeof(SlimeAppearanceApplicator), nameof(SlimeAppearanceApplicator.ApplyAppearance)), UsedImplicitly]
 public static class MineSlimeAppearanceFix
 {
     public static void Postfix(SlimeAppearanceApplicator __instance)
@@ -11,7 +11,7 @@ public static class MineSlimeAppearanceFix
     }
 }
 
-[HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
+[HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap)), UsedImplicitly]
 public static class EatMapFix
 {
     public static void Postfix(SlimeDiet __instance, SlimeDefinitions definitions, SlimeDefinition definition)
@@ -19,13 +19,13 @@ public static class EatMapFix
         // This is such a goofy oversight lmao, SRML used Identifiable.IsAnimal instead of directly comparing with the Identifiable.MEAT_CLASS, leading to chicks being eaten as well lol
         __instance.EatMap.RemoveAll(x => Identifiable.CHICK_CLASS.Contains(x.eats)); // TODO: Remove when SRML v0.3.0 comes out
 
-        if (definition.IdentifiableId.IsAny(Ids.SAND_SLIME, Ids.SAND_GORDO))
+        if (definition.IdentifiableId.ToString().Contains("SAND"))
         {
             __instance.EatMap.RemoveAll(x => x.eats == IdentifiableId.SILKY_SAND_CRAFT);
             __instance.EatMap.Add(new()
             {
                 eats = IdentifiableId.SILKY_SAND_CRAFT,
-                producesId = Ids.SAND_PLORT,
+                producesId = definition.Diet.Produces[0],
                 isFavorite = true,
                 favoriteProductionCount = __instance.FavoriteProductionCount,
                 driver = SlimeEmotions.Emotion.NONE,
@@ -56,7 +56,7 @@ public static class EatMapFix
     }
 }
 
-[HarmonyPatch(typeof(GordoEat), nameof(GordoEat.ImmediateReachedTarget))]
+[HarmonyPatch(typeof(GordoEat), nameof(GordoEat.ImmediateReachedTarget)), UsedImplicitly]
 public static class EnsureGordoStaysPopped
 {
     public static void Postfix(GordoEat __instance)
@@ -66,7 +66,7 @@ public static class EnsureGordoStaysPopped
     }
 }
 
-[HarmonyPatch(typeof(AutoSaveDirector))]
+[HarmonyPatch(typeof(AutoSaveDirector)), UsedImplicitly]
 public static class EnsureAutoSaveDirectorData
 {
     public static bool IsAutoSave;
@@ -78,7 +78,7 @@ public static class EnsureAutoSaveDirectorData
     public static void Postfix() => IsAutoSave = false;
 }
 
-[HarmonyPatch(typeof(CameraFacingBillboard), nameof(CameraFacingBillboard.FaceCamera))]
+[HarmonyPatch(typeof(CameraFacingBillboard), nameof(CameraFacingBillboard.FaceCamera)), UsedImplicitly]
 public static class Type1ToMurderErrorSpams // TODO: Remove when the error is fixed
 {
     public static Exception Finalizer() => null;

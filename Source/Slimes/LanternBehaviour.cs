@@ -29,7 +29,7 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
         if (Fleeing)
         {
             Fleeing = Time.fixedTime < FleeingUntil;
-            Applicator.SetExpression(SlimeFace.SlimeExpression.Alarm);
+            Applicator.SetExpression(SlimeExpression.Alarm);
             return;
         }
 

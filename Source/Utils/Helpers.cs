@@ -3,7 +3,7 @@ using System.Globalization;
 using AssetsLib;
 using SRML.Utils;
 using System.Collections;
-using System.Reflection;
+// using System.Reflection;
 
 namespace OceanRange.Utils;
 
@@ -183,21 +183,44 @@ public static class Helpers
         return mesh;
     }
 
-    private static T AddEnumValue<T>(string name) where T : struct, Enum
+    private static readonly HashSet<IdentifiableId> IdentifiableIds = new(Identifiable.idComparer);
+    // private static readonly HashSet<GadgetId> GadgetIds = new(Gadget.idComparer);
+
+    public static T AddEnumValue<T>(string name) where T : struct, Enum
     {
         if (Enum.TryParse<T>(name, out var result))
             return result;
 
+        if (SRModLoader.CurrentLoadingStep > SRModLoader.LoadingStep.PRELOAD)
+            throw new InvalidOperationException("Can't add enums outside of the PreLoad step");
+
         var value = EnumPatcher.GetFirstFreeValue<T>();
         EnumPatcher.AddEnumValueWithAlternatives<T>(value, name);
+
+        switch (value)
+        {
+            case IdentifiableId identifiableId:
+            {
+                IdentifiableIds.Add(identifiableId);
+                break;
+            }
+            // case GadgetId gadgetId: // Uncomment once we add gadgets
+            // {
+            //     GadgetIds.Add(gadgetId);
+            //     break;
+            // }
+        }
+
         return value;
     }
 
-    public static IdentifiableId CreateIdentifiableId(string name)
+#if DEBUG
+    [TimeDiagnostic("Ids Categoriz")]
+#endif
+    public static void CategoriseIds()
     {
-        var value = AddEnumValue<IdentifiableId>(name);
-        IdentifiableRegistry.CategorizeId(value);
-        return value;
+        IdentifiableIds.Do(IdentifiableRegistry.CategorizeId);
+        // GadgetIds.Do(GadgetRegistry.CategorizeId);
     }
 
     // public static string ToHexRGBA(this Color32 color) => $"#{color.r.ToString(InvariantCulture):X2}{color.g.ToString(InvariantCulture):X2}{color.b.ToString(InvariantCulture):X2}{color.a.ToString(InvariantCulture):X2}";
@@ -399,7 +422,7 @@ public static class Helpers
     //     return false;
     // }
 
-    public static T EnsureComponent<T>(this GameObject go) where T : Component => go.GetComponent<T>() ?? go.AddComponent<T>();
+    private static T EnsureComponent<T>(this GameObject go) where T : Component => go.GetComponent<T>() ?? go.AddComponent<T>();
 
     public static T EnsureComponent<T>(this Component component) where T : Component => component.gameObject.EnsureComponent<T>();
 
@@ -407,27 +430,27 @@ public static class Helpers
 
     // public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => Attribute.IsDefined(member, typeof(T), false);
 
-    // public static IEnumerable<(T1, T2)> Zip<T1, T2>(this IEnumerable<T1> source1, IEnumerable<T2> source2)
-    // {
-    //     using var e1 = source1.GetEnumerator();
-    //     using var e2 = source2.GetEnumerator();
+    public static IEnumerable<(T1, T2)> Zip<T1, T2>(this IEnumerable<T1> source1, IEnumerable<T2> source2)
+    {
+        using var e1 = source1.GetEnumerator();
+        using var e2 = source2.GetEnumerator();
 
-    //     while (true)
-    //     {
-    //         var has1 = e1.MoveNext();
-    //         var has2 = e2.MoveNext();
+        while (true)
+        {
+            var has1 = e1.MoveNext();
+            var has2 = e2.MoveNext();
 
-    //         if (!has1 || !has2)
-    //         {
-    //             if (has1 != has2)
-    //                 throw new ArgumentException("Sequences have different lengths.");
+            if (!has1 || !has2)
+            {
+                if (has1 != has2)
+                    throw new ArgumentException("Sequences have different lengths.");
 
-    //             yield break;
-    //         }
+                yield break;
+            }
 
-    //         yield return (e1.Current, e2.Current);
-    //     }
-    // }
+            yield return (e1.Current, e2.Current);
+        }
+    }
 
     // public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TKey, TValue> func)
     // {
@@ -436,4 +459,6 @@ public static class Helpers
 
     //     return value;
     // }
+
+    public static void Destroy(this UObject obj, string source) => Destroyer.Destroy(obj, source);
 }

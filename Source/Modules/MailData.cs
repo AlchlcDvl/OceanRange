@@ -44,15 +44,6 @@ public sealed class MailData : JsonData
         if (Sent || Read)
             return false;
 
-        if (/*UnlockFuncOr?.Invoke(time) == true || */Subscribers?.Length is null or 0)
-            return true;
-
-        foreach (var subscriber in Subscribers)
-        {
-            if (!subscriber(time))
-                return false;
-        }
-
-        return true;
+        return /*UnlockFuncOr?.Invoke(time) == true || */Subscribers?.Length is null or 0 || Subscribers.All(subscriber => subscriber(time));
     }
 }

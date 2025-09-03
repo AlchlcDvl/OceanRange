@@ -53,7 +53,7 @@
         "plortAmmoColor": "#FEFCFF",
         "topMouthColor": "#FFFFFF",
         "middleMouthColor": "#888888",
-        "bottomMouthColor": "#FFFFFF",
+        "bottomMouthColor": "#FEFCFF",
         "intro": "The concussion slime, wear helmets!",
         "pediaDiet": "Meat",
         "fav": "Sandy Hens",
@@ -342,7 +342,16 @@
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11
             },
-            { "topColor": "#f7d18f" },
+            {
+                "shader": "MultiColor",
+                "pattern": "hermit_shell_pattern",
+                "colorProps":
+                {
+                    "_RedTopColor": "#f6d599",
+                    "_GreenTopColor": "#5c4f39",
+                    "_BlueTopColor": "#e75651"
+                }
+            },
             { "topColor": "#b53a35" },
             { "sameAs": 2 }
         ],

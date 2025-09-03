@@ -26,8 +26,8 @@ public sealed class MaterialData
     [JsonProperty("matOrigin")]
     public IdentifiableId? MatOriginSlime;
 
-    // [JsonProperty("orShaderName")]
-    // public string OrShaderName;
+    [JsonProperty("shader")]
+    public string Shader;
 
     [JsonProperty("miscColorProps")]
     private Dictionary<string, Color> MiscColorPropsJson;
@@ -46,6 +46,21 @@ public sealed class MaterialData
 
         if (MiscColorPropsJson == null)
             return;
+
+        foreach (var (prop, color) in MiscColorPropsJson.ToArray())
+        {
+            if (!prop.Contains("TopColor"))
+                continue;
+
+            var middle = prop.Replace("Top", "Middle");
+            var bottom = prop.Replace("Top", "Bottom");
+
+            if (!MiscColorPropsJson.ContainsKey(middle))
+                MiscColorPropsJson[middle] = color;
+
+            if (!MiscColorPropsJson.ContainsKey(bottom))
+                MiscColorPropsJson[bottom] = color;
+        }
 
         foreach (var (prop, value) in MiscColorPropsJson)
             MiscColorProps[ShaderUtils.GetOrSet(prop)] = value;

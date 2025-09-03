@@ -1,6 +1,6 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.OnEat))]
+[HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.OnEat)), UsedImplicitly]
 public static class IncreaseHermitAffection
 {
     public static void Postfix(SlimeEat __instance, bool isFavorite)
