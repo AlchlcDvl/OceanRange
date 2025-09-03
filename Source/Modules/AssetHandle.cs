@@ -53,7 +53,7 @@ public sealed class AssetHandle(string name) : IDisposable
         if (asset is AssetBundle bundle)
             bundle.Unload(false);
 
-        asset.Destroy();
+        asset.Destroy("AssetHandle.DestroyAsset");
     }
 
     /// <summary>
@@ -69,26 +69,26 @@ public sealed class AssetHandle(string name) : IDisposable
             throw new ArgumentException($"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing!");
 
         if (!Paths.TryAdd(extension, path))
-            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming!");
+            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing!");
     }
 
-    /// <summary>
-    /// Adds an asset to the handle.
-    /// </summary>
-    /// <typeparam name="T">The type of the asset.</typeparam>
-    /// <param name="asset">The asset to add.</param>
-    public void AddAsset<T>(T asset) where T : UObject
-    {
-        var tType = typeof(T);
+    // /// <summary>
+    // /// Adds an asset to the handle.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the asset.</typeparam>
+    // /// <param name="asset">The asset to add.</param>
+    // public void AddAsset<T>(T asset) where T : UObject
+    // {
+    //     var tType = typeof(T);
 
-        if (Assets.TryGetValue(tType, out var tAsset))
-        {
-            Main.Console.LogWarning($"Replacing existing asset! {tType.Name}:{tAsset.name}");
-            DestroyAsset(tAsset);
-        }
+    //     if (Assets.TryGetValue(tType, out var tAsset))
+    //     {
+    //         Main.Console.LogWarning($"Replacing existing asset! {tType.Name}:{tAsset.name}");
+    //         DestroyAsset(tAsset);
+    //     }
 
-        Assets[tType] = asset;
-    }
+    //     Assets[tType] = asset;
+    // }
 
     /// <summary>
     /// Loads and returns an asset handled by this handle.
@@ -137,7 +137,7 @@ public sealed class AssetHandle(string name) : IDisposable
     //     var tType = typeof(T);
     //
     //     if (Assets.Remove(tType, out var asset))
-    //         asset.Destroy();
+    //         asset.Destroy("AssetHandle.Unload");
     //     else if (throwError)
     //         throw new FileLoadException($"No such asset {Name} of type {tType.Name} was loaded!");
     // }

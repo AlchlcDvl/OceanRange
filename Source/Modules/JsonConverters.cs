@@ -21,7 +21,7 @@ public abstract class OceanJsonConverter : JsonConverter
     public override sealed object ReadJson(JsonReader reader, Type objectType, [AllowNull] object _1, JsonSerializer _2)
     {
         if (reader.TokenType == JsonToken.Null)
-            return default;
+            return null;
 
         try
         {
@@ -89,7 +89,7 @@ public abstract class OceanJsonConverter<T> : OceanJsonConverter
     protected override sealed object ParseFromJson(JsonReader reader, Type _) => ParseFromJson(reader);
 
     /// <inheritdoc/>
-    protected sealed override void WriteJson(JsonWriter writer, [AllowNull] object value)
+    protected override sealed void WriteJson(JsonWriter writer, [AllowNull] object value)
     {
         if (value is T tValue)
             WriteJson(writer, tValue);
@@ -248,17 +248,19 @@ public sealed class OrientationConverter() : MultiComponentConverter<Orientation
     /// <inheritdoc/>
     protected override bool ParseOtherFormat(string valString, out Orientation result)
     {
-        if (!valString.StartsWith('f'))
+        if (!valString.StartsWith('f')) // f = float
             return base.ParseOtherFormat(valString, out result);
 
         // I don't like the copy pasted bit here, but it's a necessary evil
         var components = valString.TrueSplit(',', 'f');
 
-        if (components.Count < 6)
-            throw new InvalidDataException($"'{valString}' has too less values!");
-
-        if (components.Count > 6)
-            throw new InvalidDataException($"'{valString}' has too many values!");
+        switch (components.Count)
+        {
+            case < 6:
+                throw new InvalidDataException($"'{valString}' has too less values!");
+            case > 6:
+                throw new InvalidDataException($"'{valString}' has too many values!");
+        }
 
         var array = new float[6];
 
@@ -349,18 +351,16 @@ public sealed class EnumConverter : OceanJsonConverter
     private sealed class EnumMetadata
     {
         public readonly bool IsFlags;
-        public readonly object[] Values;
-        public readonly string[] Names;
+        public readonly (object, string)[] Values;
         public readonly string ZeroName;
         public readonly Func<object, ulong> ToUInt64;
         public readonly Func<ulong, object> FromUInt64;
 
         public EnumMetadata(Type enumType)
         {
-            IsFlags = enumType.IsDefined(typeof(FlagsAttribute), inherit: false);
-            Values = [.. Enum.GetValues(enumType).Cast<object>()];
-            Names = Enum.GetNames(enumType);
-            ZeroName = Enum.ToObject(enumType, 0)?.ToString() ?? "0";
+            IsFlags = enumType.IsDefined(typeof(FlagsAttribute), false);
+            Values = [.. Enum.GetValues(enumType).Cast<object>().Zip(Enum.GetNames(enumType))];
+            ZeroName = Enum.ToObject(enumType, 0).ToString();
 
             var underlying = Enum.GetUnderlyingType(enumType);
             ToUInt64 = MakeToUInt64(underlying);
@@ -370,7 +370,7 @@ public sealed class EnumConverter : OceanJsonConverter
         private static Func<object, ulong> MakeToUInt64(Type underlying)
         {
             var obj = Expression.Parameter(typeof(object), "value");
-            var converted = Expression.ConvertChecked(Expression.Convert(obj, underlying),typeof(ulong));
+            var converted = Expression.ConvertChecked(Expression.Convert(obj, underlying), typeof(ulong));
             return Expression.Lambda<Func<object, ulong>>(converted, obj).Compile();
         }
 
@@ -406,25 +406,23 @@ public sealed class EnumConverter : OceanJsonConverter
 
     private static object ParseSingle(JsonReader reader, Type enumType, EnumMetadata metadata, bool partOfArray) => reader.TokenType switch
     {
-        JsonToken.String when Helpers.TryParse(enumType, reader.Value?.ToString() ?? "null", true, out var parsed) => parsed,
-        JsonToken.Integer => metadata.FromUInt64(Convert.ToUInt64(reader.Value)),
-        JsonToken.Null when partOfArray => default,
+        JsonToken.Null when partOfArray => null, // Only check null when in an array, because normal null values are handled outside this method
+        JsonToken.String when Helpers.TryParse(enumType, reader.Value?.ToString() ?? "null", true, out var parsed) => parsed, // Attempt the parse the string, make sure to use this arm
+        JsonToken.Integer => metadata.FromUInt64(Convert.ToUInt64(reader.Value)), // Avoid adding numbers, they're hard to understand in JSON when you don't have access to the relevant enum
         _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {enumType.Name}. Expected {(partOfArray ? "a valid array of defined strings or ints, " : "")}a defined string or an integer."),
     };
 
     private static object ParseFlags(JsonReader reader, Type enumType, EnumMetadata metadata)
     {
-        if (reader.TokenType == JsonToken.StartArray)
-        {
-            var combined = 0UL;
+        if (reader.TokenType != JsonToken.StartArray)
+            return ParseSingle(reader, enumType, metadata, false);
 
-            while (reader.Read() && reader.TokenType != JsonToken.EndArray)
-                combined |= metadata.ToUInt64(ParseSingle(reader, enumType, metadata, true));
+        var combined = 0UL;
 
-            return metadata.FromUInt64(combined);
-        }
+        while (reader.Read() && reader.TokenType != JsonToken.EndArray)
+            combined |= metadata.ToUInt64(ParseSingle(reader, enumType, metadata, true));
 
-        return ParseSingle(reader, enumType, metadata, false);
+        return metadata.FromUInt64(combined);
     }
 
     /// <inheritdoc/>
@@ -463,14 +461,14 @@ public sealed class EnumConverter : OceanJsonConverter
         var setFlags = new List<string>();
         var matchedBits = 0UL;
 
-        for (var i = 0; i < metadata.Values.Length; i++)
+        foreach (var (enumVal, name) in metadata.Values)
         {
-            var flag = metadata.ToUInt64(metadata.Values[i]);
+            var flag = metadata.ToUInt64(enumVal);
 
             if (flag == 0 || (underlying & flag) != flag)
                 continue;
 
-            setFlags.Add(metadata.Names[i]);
+            setFlags.Add(name);
             matchedBits |= flag;
         }
 
@@ -529,7 +527,7 @@ public sealed class TypeConverter : OceanJsonConverter<Type>
 
         var name = reader.Value as string; // Convert to string
 
-        if (!CachedTypes.TryGetValue(name, out var type)) // Try to find if a type was already deserialised
+        if (!CachedTypes.TryGetValue(name!, out var type)) // Try to find if a type was already deserialised
             CachedTypes[name] = type = Type.GetType(name!) ?? throw new ArgumentException($"Cannot find type {name}!"); // Find type or throw if not found
 
         return type;

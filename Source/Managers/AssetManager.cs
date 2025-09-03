@@ -66,7 +66,8 @@ public static class AssetManager
         // Bundle resources
         // [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
 
-        // AudioClip is not currently in use, so implementation for it comes later
+        // AudioClip is not currently in use
+        // [typeof(AudioClip)] = (["wav"], LoadAudioClip),
     };
 
     /// <summary>
@@ -93,7 +94,7 @@ public static class AssetManager
 #endif
 
     /// <summary>
-    /// Initialises the asset handling by creating relevant handles and creating the proper json settings.
+    /// Initialises the asset handling by creating relevant handles.
     /// </summary>
 #if DEBUG
     [TimeDiagnostic("Assets Initialis")]
@@ -185,11 +186,11 @@ public static class AssetManager
         return mesh.bindposes.Length == 0 ? mesh : mesh.Clone();
     }
 
-    /// <summary>
-    /// Gets a Shader from the assets associated with the provided name.
-    /// </summary>
-    /// <inheritdoc cref="Get{T}(string)"/>
-    public static Shader GetShader(string name) => Get<Shader>(name);
+    // /// <summary>
+    // /// Gets a Shader from the assets associated with the provided name.
+    // /// </summary>
+    // /// <inheritdoc cref="Get{T}(string)"/>
+    // public static Shader GetShader(string name) => Get<Shader>(name);
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
@@ -342,22 +343,102 @@ public static class AssetManager
         handle.AddPath(path);
     }
 
-    /// <summary>
-    /// Creates an asset handle for the provided asset.
-    /// </summary>
-    /// <typeparam name="T">The type of the asset.</typeparam>
-    /// <param name="path">The path of the asset.</param>
-    /// <param name="asset">The asset to automatically add to the handle.</param>
-    private static void CreateAssetHandle<T>(string path, T asset) where T : UObject
-    {
-        var name = path.SanitisePath();
+    // /// <summary>
+    // /// Creates an asset handle for the provided asset.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the asset.</typeparam>
+    // /// <param name="path">The path of the asset.</param>
+    // /// <param name="asset">The asset to automatically add to the handle.</param>
+    // private static void CreateAssetHandle<T>(string path, T asset) where T : UObject
+    // {
+    //     var name = path.SanitisePath();
 
-        if (!Assets.TryGetValue(name, out var handle))
-            Assets[name] = handle = new(name);
+    //     if (!Assets.TryGetValue(name, out var handle))
+    //         Assets[name] = handle = new(name);
 
-        handle.AddPath(path);
-        handle.AddAsset(asset);
-    }
+    //     handle.AddPath(path);
+    //     handle.AddAsset(asset);
+    // }
+
+    // Modified code from here: https://github.com/deadlyfingers/UnityWav/blob/master/WavUtility.cs
+
+    // /// <summary>
+    // /// Loads a wav audio file from the path provided.
+    // /// </summary>
+    // /// <param name="path">The path to the audio asset.</param>
+    // /// <returns>An AudioClip representing the audio file the path points to.</returns>
+    // /// <exception cref="InvalidOperationException">Thrown if the wav file had in incorrect bit depth.</exception>
+    // private static AudioClip LoadAudioClip(string path)
+    // {
+    //     var bytes = path.ReadBytes();
+    //     var chunk = BitConverter.ToInt32(bytes, 16) + 24;
+    //     var channels = BitConverter.ToUInt16(bytes, 22);
+    //     var sampleRate = BitConverter.ToInt32(bytes, 24);
+    //     var bitDepth = BitConverter.ToUInt16(bytes, 34);
+    //     var wavSize = BitConverter.ToInt32(bytes, chunk);
+    //     var data = bitDepth switch
+    //     {
+    //         8 => AudioData8Bits(bytes, wavSize),
+    //         16 => AudioData16Bits(bytes, chunk, wavSize),
+    //         24 => AudioData24Bits(bytes, chunk, wavSize),
+    //         32 => AudioData32Bits(bytes, chunk, wavSize),
+    //         _ => throw new InvalidOperationException(bitDepth + " bit depth is not supported."),
+    //     };
+
+    //     var audioClip = AudioClip.Create(path.SanitisePath(), data.Length, channels, sampleRate, false);
+    //     return audioClip.SetData(data, 0) ? audioClip : null;
+    // }
+
+    // private static float[] AudioData8Bits(byte[] source, int wavSize)
+    // {
+    //     var data = new float[wavSize];
+
+    //     for (var i = 0; i < wavSize; i++)
+    //         data[i] = (float)source[i] / sbyte.MaxValue;
+
+    //     return data;
+    // }
+
+    // private static float[] AudioData16Bits(byte[] source, int headerOffset, int wavSize)
+    // {
+    //     headerOffset += sizeof(int);
+    //     var convertedSize = wavSize / 2;
+    //     var data = new float[convertedSize];
+
+    //     for (var i = 0; i < convertedSize; i++)
+    //         data[i] = (float)BitConverter.ToInt16(source, (i * 2) + headerOffset) / short.MaxValue;
+
+    //     return data;
+    // }
+
+    // private static float[] AudioData24Bits(byte[] source, int headerOffset, int wavSize)
+    // {
+    //     const int intSize = sizeof(int);
+    //     headerOffset += intSize;
+    //     var convertedSize = wavSize / 3;
+    //     var data = new float[convertedSize];
+    //     var block = new byte[intSize]; // Using a 4-byte block for copying 3 bytes, then copy bytes with 1 offset
+
+    //     for (var i = 0; i < convertedSize; i++)
+    //     {
+    //         Buffer.BlockCopy(source, (i * 3) + headerOffset, block, 1, 3);
+    //         data[i] = (float)BitConverter.ToInt32(block, 0) / int.MaxValue;
+    //     }
+
+    //     return data;
+    // }
+
+    // private static float[] AudioData32Bits(byte[] source, int headerOffset, int wavSize)
+    // {
+    //     headerOffset += sizeof(int);
+    //     var convertedSize = wavSize / 4;
+    //     var data = new float[convertedSize];
+
+    //     for (var i = 0; i < convertedSize; i++)
+    //         data[i] = (float)BitConverter.ToInt32(source, (i * 4) + headerOffset) / int.MaxValue;
+
+    //     return data;
+    // }
 
 #if DEBUG
     // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use

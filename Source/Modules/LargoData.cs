@@ -50,12 +50,12 @@ public sealed class LargoData : ActorData
         var slime1Upper = Slime1.ToUpperInvariant();
         var slime2Upper = Slime2.ToUpperInvariant();
 
-        MainId = Helpers.CreateIdentifiableId((Props.HasFlag(LargoProps.UseSlime2NameFirst) ? (slime2Upper + "_" + slime1Upper) : (slime1Upper + "_" + slime2Upper)) + "_LARGO");
+        MainId = Helpers.AddEnumValue<IdentifiableId>(slime1Upper + "_" + slime2Upper + "_LARGO");
         Slime1Id = Helpers.ParseEnum<IdentifiableId>(slime1Upper + "_SLIME");
         Slime2Id = Helpers.ParseEnum<IdentifiableId>(slime2Upper + "_SLIME");
 
-        if (slime1Upper == "MESMER")
-            LargoManager.MesmerLargos.Add(MainId);
+        if (slime1Upper == "MESMER" || slime2Upper == "MESMER")
+            LargoManager.Mesmers.Add(MainId);
 
         if (SlimeManager.SlimeDataMap.TryGetValue(Slime1Id, out var data1))
             Slime1Data = data1;
@@ -63,7 +63,6 @@ public sealed class LargoData : ActorData
         if (SlimeManager.SlimeDataMap.TryGetValue(Slime2Id, out var data2))
             Slime2Data = data2;
 
-        if (!Jiggle.HasValue)
-            Jiggle = ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
+        Jiggle ??= ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
     }
 }

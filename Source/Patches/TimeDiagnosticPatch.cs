@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OceanRange.Patches;
 
-[HarmonyPatch]
+[HarmonyPatch, UsedImplicitly]
 public static class TimeDiagnosticPatch
 {
     private static readonly Dictionary<MethodBase, (string Stage, bool StageIsNull, Stopwatch Watch, bool HasJsonParam)> Watches = [];

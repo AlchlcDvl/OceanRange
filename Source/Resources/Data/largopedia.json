@@ -33,16 +33,16 @@
                 "sameAs": 1,
                 "matOrigin": "LANTERN_SLIME"
             },
-            { "sameAs": 0 },
+            {
+                "topColor": "#752C86",
+                "matOrigin": "PINK_SLIME"
+            },
             {
                 "sameAs": 3,
                 "matOrigin": "LANTERN_SLIME"
             },
             { "sameAs": 0 },
-            {
-                "topColor": "#752C86",
-                "matOrigin": "PINK_SLIME"
-            }
+            { "sameAs": 2 }
         ]
     },
     {

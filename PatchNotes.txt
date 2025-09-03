@@ -2,8 +2,36 @@
 - Release!
 
 0.0.2
+Discord:
+New!
+- Mesmer Slimes*: hypnotic and awe inducing slimes that are actually playful pacifists!
+- Hermit Slimes*: reclusive and shy slimes that like to nibble on fruits in their shells!
+- Lisa Erwin: The SPLASH foundation's resident slimeologist, ready to teach you interesting things about slimes!
+- Largos: The modded slimes can become largos!
+- Sand gordos now have a proper body shape!
+- Coral Fruit*: The oceanic fruit found rarely in the dry reef!
+
+Changes!
+- Change: Moved the lantern gordo to a new location, good luck finding it this time!
+- Improvement: Lantern slimes no longer sleep in a cave or cave adjacent location, similar to how phosphor slimes and stay alive
+- Improvement: Updated the asset handling
+- Improvement: Updated the visuals of a few slimes
+- Improvement: Updated the market entries to better mimic vanilla behaviour
+- Improvement: Slime behaviours are now more consistent with their pedia entries
+
+Fixes!
+- Critical: Fixed the mod not loading on certain pc and game locales
+- Critical: Fixed popped natural gordos respawning whenever you load a save (you'll need to pop them once more for the mod to actually register its popped status)
+- Semi-Critical: Fixed rosi slimes producing too many plorts
+- Gameplay: Fixed the pink gordo appearing more times than it should
+- Visual: Fixed a couple typos
+- Visual: Fixed lantern slime fins appearing detached from the main body
+
+Nexus:
 - New slimes: Mesmer*, Hermit*
+- New Fruit: Coral
 - Added Lisa Erwin, a new rancher! She will try to first contact you by day 7 at noon!
+- Added modded slime largos
 - The sand gordo now has a custom body
 - Sand gordo snare behaviour is now consistent with its diet
 - Lantern sleep habits now work similar to phosphor slimes, where they will be awake when under a solar shield or inside a cave
@@ -15,5 +43,5 @@
 - Fixed a couple typos
 - Fixed lantern slime fins appearing detached from the main body
 - Fixed the amount of plorts a rosi slime would produce in presence of other slimes
-- Fixed popped natural gordos respawning upon loading saves (you'll need to pop them once more for the mod to actually register its popped status)
+- Fixed popped natural gordos respawning upon loading saves
 - Fixed the bug where the mod wouldn't load on certain pc locales

@@ -1,6 +1,6 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.Produce))]
+[HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.Produce)), UsedImplicitly]
 public static class SlimeEatProduce
 {
     public static void Prefix(SlimeEat __instance, ref int count)

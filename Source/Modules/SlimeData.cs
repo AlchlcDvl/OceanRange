@@ -159,22 +159,25 @@ public sealed class SlimeData : SpawnedActorData
     {
         var upper = Name.ToUpperInvariant();
 
-        MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_SLIME");
-        PlortId = Helpers.ParseEnum<IdentifiableId>(upper + "_PLORT");
-        MainEntry = Helpers.ParseEnum<PediaId>(upper + "_SLIME_ENTRY");
+        MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_SLIME");
+        PlortId = Helpers.AddEnumValue<IdentifiableId>(upper + "_PLORT");
+        MainEntry = Helpers.AddEnumValue<PediaId>(upper + "_SLIME_ENTRY");
 
         var type = typeof(SlimeManager);
         var init = "Init" + Name;
         InitSlimeDetails = AccessTools.Method(type, init + "SlimeDetails");
         InitPlortDetails = AccessTools.Method(type, init + "PlortDetails");
 
-        HasGordo |= SlimeManager.MgExists && MainId == Ids.SAND_SLIME;
+        HasGordo |= SlimeManager.MgExists && upper == "SAND";
 
         if (HasGordo)
         {
-            GordoId = Helpers.ParseEnum<IdentifiableId>(upper + "_GORDO");
+            GordoId = Helpers.AddEnumValue<IdentifiableId>(upper + "_GORDO");
             InitGordoDetails = AccessTools.Method(type, init + "GordoDetails");
         }
+
+        if (upper == "MESMER")
+            LargoManager.Mesmers.Add(MainId);
 
         if (NaturalGordoSpawn)
             NaturalGordoSpawn &= HasGordo;

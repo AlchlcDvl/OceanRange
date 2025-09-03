@@ -2,7 +2,7 @@ using SRML.SR.Utils;
 
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(IdHandler), nameof(IdHandler.id), MethodType.Getter)]
+[HarmonyPatch(typeof(IdHandler), nameof(IdHandler.id), MethodType.Getter), UsedImplicitly]
 public static class PersistentIdFix
 {
     public static bool Prefix(IdHandler __instance, ref string __result)

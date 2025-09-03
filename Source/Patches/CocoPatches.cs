@@ -1,6 +1,6 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(WeaponVacuum), nameof(WeaponVacuum.ExpelHeld))]
+[HarmonyPatch(typeof(WeaponVacuum), nameof(WeaponVacuum.ExpelHeld)), UsedImplicitly]
 public static class CocoDamageRegisterPatch
 {
     public static bool Prefix(WeaponVacuum __instance)

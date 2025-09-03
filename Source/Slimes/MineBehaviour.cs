@@ -60,7 +60,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         Marker.SetActive(false);
     }
 
-    public override float Relevancy(bool _) => Calmed.IsCalmed() || !Contact || State is ExplodeState.Exploding ? 0f : 1f;
+    public override float Relevancy(bool _) => Calmed.IsCalmed() || !Contact || State is not ExplodeState.Idle ? 0f : 1f;
 
     public override void Action() {}
 

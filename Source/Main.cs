@@ -37,6 +37,7 @@ internal sealed class Main : ModEntryPoint
         LargoManager.PreLoadLargoData();
         Mailbox.PreLoadMailData();
         Contacts.PreloadRancherData();
+        Helpers.CategoriseIds();
 
 #if DEBUG
         // Debug stuff for the special commands
@@ -95,7 +96,7 @@ internal sealed class Main : ModEntryPoint
         AssetManager.ReleaseHandles();
 
         foreach (var mesh in Helpers.ClonedMeshes)
-            mesh.Destroy();
+            mesh.Destroy("Main.Unload");
 
         Helpers.ClonedMeshes.Clear();
     }
@@ -114,6 +115,15 @@ internal sealed class Main : ModEntryPoint
         try
         {
             CLS.AddToLoading.AddSplashes(splashes);
+        }
+        catch { }
+    }
+
+    public static void AddTipTextBypass(string tipText)
+    {
+        try
+        {
+            CLS.AddToLoading.AddTipText(tipText);
         }
         catch { }
     }

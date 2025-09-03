@@ -36,10 +36,13 @@ public sealed class ChimkenData : FoodData
     public void PopulateRemainingValues(StreamingContext _)
     {
         var upper = Name.ToUpperInvariant();
-        MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_HEN");
-        ChickId = Helpers.ParseEnum<IdentifiableId>(upper + "_CHICK");
-        MainEntry = Helpers.ParseEnum<PediaId>(upper + "_HEN_ENTRY");
-        ChickEntry = Helpers.ParseEnum<PediaId>(upper + "_CHICK_ENTRY");
+
+        MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_HEN");
+        ChickId = Helpers.AddEnumValue<IdentifiableId>(upper + "_CHICK");
+
+        MainEntry = Helpers.AddEnumValue<PediaId>(upper + "_HEN_ENTRY");
+        ChickEntry = Helpers.AddEnumValue<PediaId>(upper + "_CHICK_ENTRY");
+
         Group = FoodGroup.MEAT;
         Progress ??= [];
     }
@@ -57,6 +60,9 @@ public sealed class PlantData : FoodData
     public string ResourceIdSuffix;
 
     [JsonIgnore]
+    public bool IsVeggie;
+
+    [JsonIgnore]
     public SpawnResourceId ResourceId;
 
     [JsonIgnore]
@@ -71,12 +77,14 @@ public sealed class PlantData : FoodData
         var upper = Name.ToUpperInvariant();
 
         var typeUpper = Type.ToUpperInvariant();
-        MainId = Helpers.ParseEnum<IdentifiableId>(upper + "_" + typeUpper);
-        MainEntry = Helpers.ParseEnum<PediaId>(upper + "_" + typeUpper + "_ENTRY");
+        MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_" + typeUpper);
+        MainEntry = Helpers.AddEnumValue<PediaId>(upper + "_" + typeUpper + "_ENTRY");
 
         var resource = upper + "_" + ResourceIdSuffix.ToUpperInvariant();
-        ResourceId = Helpers.ParseEnum<SpawnResourceId>(resource);
-        DlxResourceId = Helpers.ParseEnum<SpawnResourceId>(resource + "_DLX");
+        ResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource);
+        DlxResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource + "_DLX");
+
+        IsVeggie = Group == FoodGroup.VEGGIES;
 
         Progress ??= [];
     }
