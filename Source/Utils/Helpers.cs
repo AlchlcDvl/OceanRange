@@ -10,7 +10,7 @@ namespace OceanRange.Utils;
 public static class Helpers
 {
     // private static readonly Dictionary<string, Color32> HexToColor32s = [];
-    // private static readonly Dictionary<string, Color> HexToColors = [];
+    private static readonly Dictionary<string, Color> HexToColors = [];
 
     public static bool TryFinding<T>(this IEnumerable<T> source, Func<T, bool> predicate, out T value)
     {
@@ -77,33 +77,35 @@ public static class Helpers
 
     // private static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x));
 
-    // public static Color32 HexToColor32(this string hex)
+    // public static bool TryHexToColor32(string hex, out Color32 color)
     // {
-    //     if (HexToColor32s.TryGetValue(hex, out var color))
-    //         return color;
+    //     if (HexToColor32s.TryGetValue(hex, out color))
+    //         return true;
 
     //     if (ColorUtility.DoTryParseHtmlColor(hex, out color))
     //     {
-    //         HexToColors32[hex] = color;
-    //         return color;
+    //         HexToColor32s[hex] = color;
+    //         return true;
     //     }
 
-    //     throw new InvalidDataException($"Invalid color hex {hex}!");
+    //     color = default;
+    //     return false;
     // }
 
-    // public static Color HexToColor(this string hex)
-    // {
-    //     if (HexToColors.TryGetValue(hex, out var color))
-    //         return color;
-    //
-    //     if (ColorUtility.TryParseHtmlString(hex, out color))
-    //     {
-    //         HexToColors[hex] = color;
-    //         return color;
-    //     }
-    //
-    //     throw new InvalidDataException($"Invalid color hex {hex}!");
-    // }
+    public static bool TryHexToColor(string hex, out Color color)
+    {
+        if (HexToColors.TryGetValue(hex, out color))
+            return true;
+
+        if (ColorUtility.TryParseHtmlString(hex, out color))
+        {
+            HexToColors[hex] = color;
+            return true;
+        }
+
+        color = default;
+        return false;
+    }
 
     public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value, true);
 
@@ -380,9 +382,12 @@ public static class Helpers
 
     public static IEnumerator PerformTimedAction(float duration, Action<float> action)
     {
-        for (var i = 0f; i < duration; i += Time.deltaTime)
+        var startTime = Time.time;
+        var endTime = startTime + duration;
+
+        while (Time.time < endTime)
         {
-            action(i);
+            action((Time.time - startTime) / duration);
             yield return null;
         }
 
@@ -403,11 +408,10 @@ public static class Helpers
 
     // public static IEnumerator Wait(float duration)
     // {
-    //     while (duration > 0f)
-    //     {
-    //         duration -= Time.deltaTime;
+    //     var endTime = Time.time + duration;
+
+    //     while (Time.time < endTime)
     //         yield return null;
-    //     }
     // }
 
     // public static bool TryGetInterfaceComponent<T>(this Component obj, out T component) where T : class

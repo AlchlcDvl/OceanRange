@@ -321,7 +321,7 @@ public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentCon
 /// <summary>
 /// Color converter.
 /// </summary>
-public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberStyles.Float, float.TryParse, 1f, ColorUtility.TryParseHtmlString)
+public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberStyles.Float, float.TryParse, 1f, Helpers.TryHexToColor)
 {
     /// <inheritdoc/>
     protected override Color FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
@@ -333,7 +333,7 @@ public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberSt
 // /// <summary>
 // /// Color32 converter.
 // /// </summary>
-// public sealed class Color32Converter() : BaseColorConverter<Color32, byte>(NumberStyles.Integer, byte.TryParse, 255, ColorUtility.DoTryParseHtmlColor)
+// public sealed class Color32Converter() : BaseColorConverter<Color32, byte>(NumberStyles.Integer, byte.TryParse, 255, Helpers.TryHexToColor32)
 // {
 //     /// <inheritdoc/>
 //     protected override Color32 FillFromArray(byte[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
@@ -492,25 +492,6 @@ public sealed class EnumConverter : OceanJsonConverter
         }
     }
 }
-
-// /// <summary>
-// /// Generic enum converter.
-// /// </summary>
-// /// <typeparam name="T">The type of the enum.</typeparam>
-// public abstract class EnumConverter<T> : OceanJsonConverter<T> where T : struct, Enum
-// {
-//     /// <inheritdoc/>
-//     protected override sealed T ParseFromJson(JsonReader reader)
-//     {
-//         var enumString = reader.Value?.ToString() ?? "null"; // Get string version
-//         return reader.TokenType switch
-//         {
-//             JsonToken.String when Enum.TryParse<T>(enumString, true, out var result) => result, // Attempt the parse the string, make sure to use this arm
-//             JsonToken.Integer => Helpers.ToEnum<T>(reader.Value!), // Mainly there for completion's sake as integers cannot be understood in json, because you don't know what the value means
-//             _ => throw new InvalidDataException($"Cannot convert value '{enumString}' ({reader.TokenType}) to {typeof(T).Name}. Expected a defined string or an integer."), // Throw an error because it was nothing else
-//         };
-//     }
-// }
 
 /// <summary>
 /// Type converter.

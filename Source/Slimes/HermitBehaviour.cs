@@ -6,10 +6,9 @@ namespace OceanRange.Slimes;
 
 public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participant
 {
-    private Transform Body;
-    private Transform Claw1;
-    private Transform Claw2;
+    private Transform Root;
     private CalmedByWaterSpray Calmed;
+    private SlimeAppearanceApplicator Applicator;
     private bool Hiding;
 
     public CanMoveHandler CanMove;
@@ -23,11 +22,10 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
     public override void Awake()
     {
         base.Awake();
-        Body = transform.Find("Appearance/slime_default(Clone)");
-        Claw1 = transform.Find("Appearance/hermit_claw_1(Clone)");
-        Claw2 = transform.Find("Appearance/hermit_claw_2(Clone)");
         Calmed = GetComponent<CalmedByWaterSpray>();
+        Applicator = GetComponent<SlimeAppearanceApplicator>();
         CanMove = this.EnsureComponent<CanMoveHandler>();
+        Root = Array.Find(Applicator.Bones, x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform;
     }
 
     public void ReadData(CompoundDataPiece piece) => Affection = piece.GetValue<float>("affection");
@@ -53,14 +51,9 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
     {
         Hiding = true;
         CanMove.CanMove = false;
+        Applicator.SetExpression(SlimeExpression.Alarm);
 
-        yield return Helpers.PerformTimedAction(2f, t =>
-        {
-            var scale = Vector3.Lerp(Vector3.one, HiddenSize, t);
-            Body.localScale = scale;
-            Claw1.localScale = scale;
-            Claw2.localScale = scale;
-        });
+        yield return Helpers.PerformTimedAction(2f, t => Root.localScale = Vector3.Lerp(Vector3.one, HiddenSize, t));
 
         var player = SceneContext.Instance.Player.transform;
 
@@ -69,13 +62,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
         yield return Helpers.WaitWhile(() => (player.position - transform.position).sqrMagnitude <= range);
 
-        yield return Helpers.PerformTimedAction(1f, t =>
-        {
-            var scale = Vector3.Lerp(Vector3.one, HiddenSize, 1f - t);
-            Body.localScale = scale;
-            Claw1.localScale = scale;
-            Claw2.localScale = scale;
-        });
+        yield return Helpers.PerformTimedAction(1f, t => Root.localScale = Vector3.Lerp(HiddenSize, Vector3.one, t));
 
         Hiding = false;
         CanMove.CanMove = true;
