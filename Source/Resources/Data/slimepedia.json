@@ -277,8 +277,8 @@
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
         "toAdd": ["StalkConsumable, Assembly-CSharp"],
-        "slimeMeshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail"],
-        "gordoMeshes": [null, "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_gordo"],
+        "slimeMeshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail_base", "mesmer_tail_stem_1", "mesmer_tail_stem_2", "mesmer_tail_tip"],
+        "gordoMeshes": [null, "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_base_gordo", "mesmer_tail_stem_1_gordo", "mesmer_tail_stem_2_gordo", "mesmer_tail_tip_gordo"],
         "slimeMatData":
         [
             {
@@ -294,8 +294,20 @@
             },
             { "sameAs": 1 },
             {
-                "pattern": "mesmer_tail_pattern",
-                "matOrigin": "TABBY_SLIME"
+                "topColor": "#33169a",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#821ed6",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#e034c9",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#dafe7a",
+                "matOrigin": "PINK_SLIME"
             }
         ],
         "plortMatData":
@@ -343,14 +355,8 @@
                 "gloss": 0.11
             },
             {
-                "shader": "MultiColor",
-                "pattern": "hermit_shell_pattern",
-                "colorProps":
-                {
-                    "_RedTopColor": "#f6d599",
-                    "_GreenTopColor": "#5c4f39",
-                    "_BlueTopColor": "#e75651"
-                }
+                "topColor": "#f6d599",
+                "matOrigin": "PINK_SLIME"
             },
             { "topColor": "#b53a35" },
             { "sameAs": 2 }
