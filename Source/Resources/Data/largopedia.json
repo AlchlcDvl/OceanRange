@@ -33,16 +33,16 @@
                 "sameAs": 1,
                 "matOrigin": "LANTERN_SLIME"
             },
-            {
-                "topColor": "#752C86",
-                "matOrigin": "PINK_SLIME"
-            },
+            { "sameAs": 0 },
             {
                 "sameAs": 3,
                 "matOrigin": "LANTERN_SLIME"
             },
             { "sameAs": 0 },
-            { "sameAs": 2 }
+            {
+                "topColor": "#752C86",
+                "matOrigin": "PINK_SLIME"
+            }
         ]
     },
     {
@@ -85,49 +85,71 @@
         "name": "Coco Saber",
         "slime1": "Coco",
         "slime2": "Saber",
-        "props": ["UseSlime2ForBody", "UseSlime2ForBodyMaterial"]
+        "props": ["UseSlime2ForBody"],
+        "customMatData":
+        [
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
+        ]
     },
     {
         "name": "Coco Honey",
         "slime1": "Coco",
         "slime2": "Honey",
-        "props": ["None"],
+        "props": ["UseSlime2ForBody"],
         "customMatData":
         [
-            { "matOrigin": "HONEY_SLIME" }
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
         ]
     },
     {
         "name": "Coco Phosphor",
         "slime1": "Coco",
         "slime2": "Phosphor",
-        "props": ["None"],
+        "props": ["UseSlime2ForBody"],
         "customMatData":
         [
-            { "matOrigin": "PHOSPHOR_SLIME" }
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
         ]
     },
     {
         "name": "Coco Tangle",
         "slime1": "Coco",
         "slime2": "Tangle",
-        "props": ["None"]
+        "props": ["UseSlime2ForBody"],
+        "customMatData":
+        [
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
+        ]
     },
     {
         "name": "Coco Boom",
         "slime1": "Coco",
         "slime2": "Boom",
-        "props": ["UseSlime2ForBodyMaterial"],
-        "customMatData":
-        [
-            { "matOrigin": "COCO_SLIME" }
-        ]
+        "props": ["UseSlime2ForBodyMaterial"]
     },
     {
         "name": "Coco Rad",
         "slime1": "Coco",
         "slime2": "Rad",
-        "props": ["None"]
+        "props": ["None"],
+        "customMatData":
+        [
+            {
+                "matOrigin": "RAD_SLIME"
+            }
+        ]
     },
     {
         "name": "Coco Rock",
@@ -139,13 +161,35 @@
         "name": "Coco Tabby",
         "slime1": "Coco",
         "slime2": "Tabby",
-        "props": ["None"]
+        "props": ["UseSlime2ForBody"],
+        "customMatData":
+        [
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            },
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
+        ]
     },
     {
         "name": "Coco Hunter",
         "slime1": "Coco",
         "slime2": "Hunter",
-        "props": ["None"]
+        "props": ["UseSlime2ForBody"],
+        "customMatData":
+        [
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            },
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
+        ]
     },
     {
         "name": "Coco Crystal",
@@ -163,12 +207,29 @@
         "name": "Coco Mesmer",
         "slime1": "Coco",
         "slime2": "Mesmer",
-        "props": ["None"]
+        "props": ["None"],
+        "customMatData":
+        [
+            {
+                "matOrigin": "MESMER_SLIME"
+            }
+        ]
     },
     {
         "name": "Coco Hermit",
         "slime1": "Coco",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["UseSlime2ForBody"],
+        "customMatData":
+        [
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            },
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
+        ]
     }
 ]
