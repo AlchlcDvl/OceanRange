@@ -72,163 +72,178 @@
         ]
     },
     {
-        "name": "Pink Coco",
+        "name": "Pink Mesmer",
         "slime1": "Pink",
-        "slime2": "Coco",
-        "props": ["UseSlime2ForBody"],
-        "customMatData":
-        [
-            { "matOrigin": "PINK_SLIME" }
-        ]
-    },
-    {
-        "name": "Coco Saber",
-        "slime1": "Coco",
-        "slime2": "Saber",
-        "props": ["UseSlime2ForBody"],
-        "customMatData":
-        [
-            {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
-            }
-        ]
-    },
-    {
-        "name": "Coco Honey",
-        "slime1": "Coco",
-        "slime2": "Honey",
-        "props": ["UseSlime2ForBody"],
-        "customMatData":
-        [
-            {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
-            }
-        ]
-    },
-    {
-        "name": "Coco Phosphor",
-        "slime1": "Coco",
-        "slime2": "Phosphor",
-        "props": ["UseSlime2ForBody"],
-        "customMatData":
-        [
-            {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
-            }
-        ]
-    },
-    {
-        "name": "Coco Tangle",
-        "slime1": "Coco",
-        "slime2": "Tangle",
-        "props": ["UseSlime2ForBody"],
-        "customMatData":
-        [
-            {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
-            }
-        ]
-    },
-    {
-        "name": "Coco Boom",
-        "slime1": "Coco",
-        "slime2": "Boom",
-        "props": ["UseSlime2ForBodyMaterial"]
-    },
-    {
-        "name": "Coco Rad",
-        "slime1": "Coco",
-        "slime2": "Rad",
-        "props": ["None"],
-        "customMatData":
-        [
-            {
-                "matOrigin": "RAD_SLIME"
-            }
-        ]
-    },
-    {
-        "name": "Coco Rock",
-        "slime1": "Coco",
-        "slime2": "Rock",
-        "props": ["None"]
-    },
-    {
-        "name": "Coco Tabby",
-        "slime1": "Coco",
-        "slime2": "Tabby",
-        "props": ["UseSlime2ForBody"],
-        "customMatData":
-        [
-            {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
-            },
-            {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
-            }
-        ]
-    },
-    {
-        "name": "Coco Hunter",
-        "slime1": "Coco",
-        "slime2": "Hunter",
-        "props": ["UseSlime2ForBody"],
-        "customMatData":
-        [
-            {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
-            },
-            {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
-            }
-        ]
-    },
-    {
-        "name": "Coco Crystal",
-        "slime1": "Coco",
-        "slime2": "Crystal",
-        "props": ["None"]
-    },
-    {
-        "name": "Coco Dervish",
-        "slime1": "Coco",
-        "slime2": "Dervish",
-        "props": ["None"]
-    },
-    {
-        "name": "Coco Mesmer",
-        "slime1": "Coco",
         "slime2": "Mesmer",
-        "props": ["None"],
-        "customMatData":
+        "props": ["None"]
+    },
+    {
+        "name": "Saber Mesmer",
+        "slime1": "Saber",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Honey Mesmer",
+        "slime1": "Honey",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Phosphor Mesmer",
+        "slime1": "Phosphor",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Mosaic Mesmer",
+        "slime1": "Mosaic",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Tangle Mesmer",
+        "slime1": "Tangle",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Boom Mesmer",
+        "slime1": "Boom",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Rad Mesmer",
+        "slime1": "Rad",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Rock Mesmer",
+        "slime1": "Rock",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Tabby Mesmer",
+        "slime1": "Tabby",
+        "slime2": "Mesmer",
+        "meshes": [null, "tabby_ears", "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail_base", "mesmer_tail_stem_1", "mesmer_tail_stem_2", "mesmer_tail_tip"],
+        "props": ["CustomStructureSource"],
+        "customMatData": 
         [
             {
-                "matOrigin": "MESMER_SLIME"
+                "matOrigin": "TABBY_SLIME",
+                "gloss": 0.11
+            },
+            { 
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "TABBY_SLIME"
+            },
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            { "sameAs": 2 },
+            {
+                "topColor": "#33169a",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#821ed6",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#e034c9",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#dafe7a",
+                "matOrigin": "PINK_SLIME"
             }
         ]
     },
     {
-        "name": "Coco Hermit",
-        "slime1": "Coco",
-        "slime2": "Hermit",
-        "props": ["UseSlime2ForBody"],
-        "customMatData":
+        "name": "Hunter Mesmer",
+        "slime1": "Hunter",
+        "slime2": "Mesmer",
+        "meshes": [null, "hunter_ears", "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail_base", "mesmer_tail_stem_1", "mesmer_tail_stem_2", "mesmer_tail_tip"],
+        "props": ["CustomStructureSource"],
+        "customMatData": 
         [
             {
-                "pattern": "coco_pattern",
+                "matOrigin": "HUNTER_SLIME",
+                "gloss": 0.11
+            },
+            { 
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
                 "matOrigin": "TABBY_SLIME"
             },
             {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            { "sameAs": 2 },
+            {
+                "topColor": "#33169a",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#821ed6",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#e034c9",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "topColor": "#dafe7a",
+                "matOrigin": "PINK_SLIME"
+            }
+        ]
+    },
+    {
+        "name": "Crystal Mesmer",
+        "slime1": "Crystal",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Dervish Mesmer",
+        "slime1": "Dervish",
+        "slime2": "Mesmer",
+        "props": ["None"]
+    },
+    {
+        "name": "Mesmer Hermit",
+        "slime1": "Mesmer",
+        "slime2": "Hermit",
+        "meshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "hermit_shell"],
+        "props": ["CustomStructureSource"],
+        "customMatData":
+        [
+            {
+                "pattern": "mesmer_pattern",
+                "matOrigin": "TABBY_SLIME",
+                "gloss": 0.11
+            },
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            { "sameAs": 1 },
+            {
+                "topColor": "#33169a",
+                "matOrigin": "PINK_SLIME"
             }
         ]
     }
