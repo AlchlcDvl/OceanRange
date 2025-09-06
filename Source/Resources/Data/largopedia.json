@@ -75,7 +75,17 @@
         "name": "Pink Mesmer",
         "slime1": "Pink",
         "slime2": "Mesmer",
-        "props": ["None"]
+        "props": ["UseSlime2ForBodyMaterial"],
+        "customMatData":
+        [
+            { "matOrigin": "PINK_SLIME"},
+            { "matOrigin": "PINK_SLIME"},
+            { "sameAs": 1 },
+            { "matOrigin": "PINK_SLIME"},
+            { "sameAs": 3},
+            { "sameAs": 3},
+            {"sameAs": 6}
+        ]
     },
     {
         "name": "Saber Mesmer",
@@ -242,9 +252,123 @@
             },
             { "sameAs": 1 },
             {
-                "topColor": "#33169a",
+                "topColor": "#f6d599",
                 "matOrigin": "PINK_SLIME"
             }
         ]
+    },
+    {
+        "name": "Pink Hermit",
+        "slime1": "Pink",
+        "slime2": "Hermit",
+        "props": ["None"]
+    },
+    {
+        "name": "Saber Hermit",
+        "slime1": "Saber",
+        "slime2": "Hermit",
+        "props": ["None"]
+    },
+    {
+        "name": "Honey Hermit",
+        "slime1": "Honey",
+        "slime2": "Hermit",
+        "props": ["None"]
+    },
+    {
+        "name": "Phosphor Hermit",
+        "slime1": "Phosphor",
+        "slime2": "Hermit",
+        "props": ["None"]
+    },
+    {
+        "name": "Mosaic Hermit",
+        "slime1": "Mosaic",
+        "slime2": "Hermit",
+        "props": ["None"]
+    },
+    {
+        "name": "Tangle Hermit",
+        "slime1": "Tangle",
+        "slime2": "Hermit",
+        "meshes": [null, "tangle_hermit_flower", "hermit_shell", "hermit_claw_1", "hermit_claw_2"],
+        "props": ["CustomStructureSource"],
+        "customMatData":
+        [
+            { "matOrigin": "TANGLE_SLIME"},
+            { "matOrigin": "TANGLE_SLIME"},
+            { 
+                "topColor": "#f6d599",
+                "matOrigin": "PINK_SLIME"
+            },
+            { "sameAs": 0},
+            { "sameAs": 0}
+        ]
+    },
+    {
+        "name": "Boom Hermit",
+        "slime1": "Boom",
+        "slime2": "Hermit",
+        "props": ["None"]
+    },
+    {
+        "name": "Rad Hermit",
+        "slime1": "Rad",
+        "slime2": "Hermit",
+        "props": ["None"]
+    },
+    {
+        "name": "Rock Hermit",
+        "slime1": "Rock",
+        "slime2": "Hermit",
+        "props": ["None"]
+    },
+    {
+        "name": "Tabby Hermit",
+        "slime1": "Tabby",
+        "slime2": "Hermit",
+        "meshes": [null, "tabby_ears", "hermit_shell", "hermit_claw_1", "hermit_claw_2"],
+        "props": ["CustomStructureSource"],
+        "customMatData":
+        [
+            { "matOrigin": "TABBY_SLIME"},
+            { "sameAs": 0},
+            { 
+                "topColor": "#f6d599",
+                "matOrigin": "PINK_SLIME"
+            },
+            { "sameAs": 0},
+            { "sameAs": 0}
+        ]
+    },
+    {
+        "name": "Hunter Hermit",
+        "slime1": "Hunter",
+        "slime2": "Hermit",
+        "meshes": [null, "hunter_ears", "hermit_shell", "hermit_claw_1", "hermit_claw_2"],
+        "props": ["CustomStructureSource"],
+        "customMatData":
+        [
+            { "matOrigin": "HUNTER_SLIME"},
+            { "sameAs": 0},
+            { 
+                "topColor": "#f6d599",
+                "matOrigin": "PINK_SLIME"
+            },
+            { "sameAs": 0},
+            { "sameAs": 0}
+        ]
+    },
+    {
+        "name": "Crystal Hermit",
+        "slime1": "Crystal",
+        "slime2": "Hermit",
+        "props": ["None"]
+    },
+    {
+        "name": "Dervish Hermit",
+        "slime1": "Dervish",
+        "slime2": "Hermit",
+        "props": ["None"]
     }
 ]
