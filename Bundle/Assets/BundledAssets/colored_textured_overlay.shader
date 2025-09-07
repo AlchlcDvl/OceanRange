@@ -33,14 +33,7 @@ Shader "Custom/ColoredTextureOverlay"
         void surf(Input IN, inout SurfaceOutputStandard o)
         {
             fixed4 colorMask = tex2D(_ColorTex, IN.uv_ColorTex);
-
-            fixed3 finalColor = colorMask.rgb;
-
-            finalColor = lerp(finalColor, _RedColor.rgb, colorMask.r);
-            finalColor = lerp(finalColor, _GreenColor.rgb, colorMask.g);
-            finalColor = lerp(finalColor, _BlueColor.rgb, colorMask.b);
-
-            o.Albedo = finalColor;
+            o.Albedo = (_RedColor * colorMask.r) + (_GreenColor * colorMask.g) + (_BlueColor * colorMask.b);
             o.Smoothness = _Gloss;
             o.Metallic = _Metallic;
             o.Alpha = colorMask.a;

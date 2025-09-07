@@ -1,5 +1,14 @@
 namespace OceanRange.Modules;
 
+public sealed class Ingredients
+{
+    [JsonProperty("plants")]
+    public PlantData[] Plants;
+
+    [JsonProperty("chimkens")]
+    public ChimkenData[] Chimkens;
+}
+
 public abstract class FoodData : SpawnedActorData
 {
     [JsonProperty("group")]

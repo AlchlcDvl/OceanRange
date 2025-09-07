@@ -127,8 +127,8 @@ public abstract class OceanJsonConverter<T> : OceanJsonConverter
 /// <param name="maxLength">Maximum accepted component values.</param>
 /// <param name="minLength">Minimum accepted component values.</param>
 /// <param name="defaultValue">The default value for missing components between min and max counts.</param>
-/// <param name="separator">The separator used for splitting the string into component parts.</param>
-public abstract class MultiComponentConverter<TValue, TComponent>(string format, NumberStyles style, TryParseDelegate<TComponent> tryParse, int maxLength, int minLength, TComponent defaultValue = default, char separator = ',')
+/// <param name="separators">The separator used for splitting the string into component parts.</param>
+public abstract class MultiComponentConverter<TValue, TComponent>(string format, NumberStyles style, TryParseDelegate<TComponent> tryParse, int maxLength, int minLength, TComponent defaultValue = default, params char[] separators)
     : OceanJsonConverter<TValue>
     where TValue : struct // The value being read/written
     where TComponent : struct // The type that make up the value's components
@@ -136,7 +136,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     private readonly TryParseDelegate<TComponent> TryParse = tryParse; // The delegate that handles converting strings to the component values
     private readonly int MaxLength = maxLength; // Maximum possible values needed
     private readonly int MinLength = minLength; // Minimum possible values needed
-    private readonly char Separator = separator; // Separator for complex formats
+    private readonly char[] Separators = separators.Length == 0 ? [','] : separators; // Separator for complex formats
     private readonly TComponent Default = defaultValue; // The default values for component indices between min and max counts
     protected readonly NumberStyles Style = style; // The supported styles of the numbers
     private readonly string Format = format; // The expected format in case of parsing error
@@ -186,7 +186,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     /// <exception cref="InvalidDataException">Thrown if a component string was not of the correct number format.</exception>
     private TComponent[] ParseComponents(string value)
     {
-        var components = value.TrueSplit(Separator); // Split into would be components
+        var components = value.TrueSplit(Separators); // Split into would be components
 
         // Ensure that the correct number of components are there
 
@@ -219,11 +219,9 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
 /// <summary>
 /// Vector3 converter.
 /// </summary>
-public sealed class Vector3Converter : MultiComponentConverter<Vector3, float>
+public sealed class Vector3Converter() : MultiComponentConverter<Vector3, float>("'x,y,z' or 'x,y'", NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 3, 2)
 {
-    public static Vector3Converter Instance; // Used for Orientation conversion
-
-    public Vector3Converter() : base("'x,y,z' or 'x,y'", NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 3, 2) => Instance = this;
+    public static readonly Vector3Converter Instance = new(); // Used for Orientation conversion
 
     /// <inheritdoc/>
     protected override Vector3 FillFromArray(float[] array) => new(array[0], array[1], array[2]); // 0 = x, 1 = y, 2 = z
@@ -235,88 +233,89 @@ public sealed class Vector3Converter : MultiComponentConverter<Vector3, float>
 /// <summary>
 /// Orientation converter.
 /// </summary>
-/// <remarks>Uses Vector3Converter under the hood.</remarks>
-public sealed class OrientationConverter() : MultiComponentConverter<Orientation, Vector3>("of a pair of 'x,y,z' separated by a ; or 'f xPos,yPos,zPos,xRot,yRot,zRot", NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, 2,
-    2, default, ';')
+public sealed class OrientationConverter : OceanJsonConverter<Orientation>
 {
-    /// <inheritdoc/>
-    protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1]); // 0 = position, 1 = rotation
+    private readonly static OrientationConverterFloat FloatHandler = new();
+    private readonly static OrientationConverterVector3 Vector3Handler = new();
 
-    /// <inheritdoc/>
-    protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()}";
-
-    /// <inheritdoc/>
-    protected override bool ParseOtherFormat(string valString, out Orientation result)
+    protected override Orientation ParseFromJson(JsonReader reader)
     {
-        if (!valString.StartsWith('f')) // f = float
-            return base.ParseOtherFormat(valString, out result);
+        var valString = reader.Value?.ToString() ?? "null";
 
-        // I don't like the copy pasted bit here, but it's a necessary evil
-        var components = valString.TrueSplit(',', 'f');
+        if (reader.TokenType != JsonToken.String)
+            throw new InvalidDataException($"Cannot convert value '{valString}' to Orientation. Expected string of vectors.");
 
-        switch (components.Count)
-        {
-            case < 6:
-                throw new InvalidDataException($"'{valString}' has too less values!");
-            case > 6:
-                throw new InvalidDataException($"'{valString}' has too many values!");
-        }
-
-        var array = new float[6];
-
-        for (var i = 0; i < 6; i++)
-        {
-            var component = components[i];
-
-            if (float.TryParse(component, Style, CultureInfo.InvariantCulture, out var valueComponent))
-                array[i] = valueComponent;
-            else
-                throw new InvalidDataException($"Invalid float string '{component}' at index {i}!");
-        }
-
-        result = new(array[0], array[1], array[2], array[3], array[4], array[5]); // 0 = position x, 1 = position y, 2 = position z, 3 = rotation x, 4 = rotation y, 5 = rotation z
-        return true;
+        return valString.StartsWith('f') ? FloatHandler.Parse(valString) : Vector3Handler.Parse(valString);
     }
+
+    protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()};{value.Scale.ToVectorString()}";
 }
 
 /// <summary>
-/// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+/// Orientation converter using a grouped Vector3 format.
 /// </summary>
-/// <typeparam name="TColor">The type of the color being handled (Color/Color32).</typeparam>
-/// <typeparam name="TComponent">The type of the values that make up <typeparamref name="TColor"/>.</typeparam>
-public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentConverter<TColor, TComponent>
-    where TColor : struct // Color or Color32, but I don't know how to limit to only those two types
-    where TComponent : struct // float or byte, same as above
+/// <remarks>Uses Vector3Converter under the hood.</remarks>
+public sealed class OrientationConverterVector3() : MultiComponentConverter<Orientation, Vector3>("'x,y' or 'x,y,z' in groups of two or three separated by ;", NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, 3,
+    2, Vector3.one, ';')
 {
-    private readonly TryParseHtml<TColor> TryParseHtmlColor; // Unity parsing delegate
-
-    /// <summary>
-    /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
-    /// </summary>
-    /// <param name="style">The accepted number style.</param>
-    /// <param name="tryParse">The number parsing delegate.</param>
-    /// <param name="defaultValue">The default value for missing values.</param>
-    /// <param name="htmlParser">The delegate for the unity html parsing method.</param>
-    protected BaseColorConverter(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : base("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
-    {
-        var tType = typeof(TColor);
-
-        if (tType != typeof(Color) && tType != typeof(Color32))
-            throw new InvalidOperationException($"Invalid color type: {tType.Name}. Only UnityEngine.Color or UnityEngine.Color32 are supported.");
-
-        TryParseHtmlColor = htmlParser;
-    }
+    /// <inheritdoc/>
+    protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1], array[2]); // 0 = position, 1 = rotation, 2 = scale
 
     /// <inheritdoc/>
-    protected override sealed bool ParseOtherFormat(string valString, out TColor result)
-    {
-        if (valString.StartsWith('#'))
-            return TryParseHtmlColor(valString, out result);
-
-        result = default;
-        return false;
-    }
+    protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()};{value.Scale.ToVectorString()}";
 }
+
+/// <summary>
+/// Orientation converter using an ungrouped set of floats.
+/// </summary>
+public sealed class OrientationConverterFloat() : MultiComponentConverter<Orientation, float>("two or three 'x,y,z' sets separated by ,", NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 9, 6, 1, 'f', ',')
+{
+    /// <inheritdoc/>
+    protected override Orientation FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3], array[4], array[5], array[6], array[7], array[8]);
+    // 0 = position x, 1 = position y, 2 = position z, 3 = rotation x, 4 = rotation y, 5 = rotation z, 6 = scale x, 7 = scale y, 8 = scale z
+
+    /// <inheritdoc/>
+    protected override string ToValueString(Orientation value) => $"f{value.Position.ToVectorString()},{value.Rotation.ToVectorString()},{value.Scale.ToVectorString()}";
+}
+
+/// <summary>
+    /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+    /// </summary>
+    /// <typeparam name="TColor">The type of the color being handled (Color/Color32).</typeparam>
+    /// <typeparam name="TComponent">The type of the values that make up <typeparamref name="TColor"/>.</typeparam>
+    public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentConverter<TColor, TComponent>
+        where TColor : struct // Color or Color32, but I don't know how to limit to only those two types
+        where TComponent : struct // float or byte, same as above
+    {
+        private readonly TryParseHtml<TColor> TryParseHtmlColor; // Unity parsing delegate
+
+        /// <summary>
+        /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+        /// </summary>
+        /// <param name="style">The accepted number style.</param>
+        /// <param name="tryParse">The number parsing delegate.</param>
+        /// <param name="defaultValue">The default value for missing values.</param>
+        /// <param name="htmlParser">The delegate for the unity html parsing method.</param>
+        protected BaseColorConverter(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : base("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
+        {
+            var tType = typeof(TColor);
+
+            if (tType != typeof(Color) && tType != typeof(Color32))
+                throw new InvalidOperationException($"Invalid color type: {tType.Name}. Only UnityEngine.Color or UnityEngine.Color32 are supported.");
+
+            TryParseHtmlColor = htmlParser;
+        }
+
+        /// <inheritdoc/>
+        protected override sealed bool ParseOtherFormat(string valString, out TColor result)
+        {
+            if (valString.StartsWith('#'))
+                return TryParseHtmlColor(valString, out result);
+
+            result = default;
+            return false;
+        }
+    }
 
 /// <summary>
 /// Color converter.
@@ -358,7 +357,7 @@ public sealed class EnumConverter : OceanJsonConverter
 
         public EnumMetadata(Type enumType)
         {
-            IsFlags = enumType.IsDefined(typeof(FlagsAttribute), false);
+            IsFlags = enumType.IsDefined<FlagsAttribute>();
             Values = [.. Enum.GetValues(enumType).Cast<object>().Zip(Enum.GetNames(enumType))];
             ZeroName = Enum.ToObject(enumType, 0).ToString();
 

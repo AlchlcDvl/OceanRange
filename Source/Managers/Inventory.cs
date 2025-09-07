@@ -8,7 +8,7 @@ namespace OceanRange.Managers;
 /// <summary>
 /// The main manager class that handles assets, be it from the game or the mod itself.
 /// </summary>
-public static class AssetManager
+public static class Inventory
 {
     /// <summary>
     /// Assembly data for the mod's dll.
@@ -84,7 +84,7 @@ public static class AssetManager
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
 
-    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*, .. Platforms.Select(x => "bundle_" + x)*/];
+    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).ToHashSet()/*, .. Platforms.Select(x => "bundle_" + x)*/];
 
 #if DEBUG
     /// <summary>
@@ -133,7 +133,7 @@ public static class AssetManager
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
     private static string SanitisePath(this string path) => path
         .ReplaceAll("", Extensions) // Removing the file extension first
-        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux, \ for Mac/AssetBundle, . for Embedded) and get the last entry which should be the asset name
+        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux/AssetBundle/Urls, \ for Mac, . for Embedded) and get the last entry which should be the asset name
 
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.
@@ -149,7 +149,7 @@ public static class AssetManager
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted json data.</returns>
-    private static T GetJson<T>(string path)
+    public static T GetJson<T>(string path)
     {
         var jsoncText = Get<Json>(path).text;
         using var stringReader = new StringReader(jsoncText);
@@ -194,7 +194,7 @@ public static class AssetManager
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
-    private static T Get<T>(string name) where T : UObject => Get<T>(name, true);
+    public static T Get<T>(string name) where T : UObject => Get<T>(name, true);
 
     /// <summary>
     /// Gets a(n) <typeparamref name="T"/> associated with the provided name.

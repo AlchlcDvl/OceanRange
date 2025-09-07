@@ -20,8 +20,14 @@ public sealed class AssetHandle(string name) : IDisposable
     /// </summary>
     private readonly Dictionary<Type, UObject> Assets = [];
 
+    /// <summary>
+    /// Flag that indicates whether the handle is disposed of.
+    /// </summary>
     private bool Disposed;
 
+    /// <summary>
+    /// Destructor.
+    /// </summary>
     ~AssetHandle() => InternalDispose();
 
     /// <inheritdoc/>
@@ -31,6 +37,9 @@ public sealed class AssetHandle(string name) : IDisposable
         GC.SuppressFinalize(this);
     }
 
+    /// <summary>
+    /// Shared disposal between the finaliser and the IDisposable.Dispose call.
+    /// </summary>
     private void InternalDispose()
     {
         if (Disposed)
@@ -41,19 +50,11 @@ public sealed class AssetHandle(string name) : IDisposable
         foreach (var asset in Assets.Values)
         {
             if (asset)
-                DestroyAsset(asset);
+                asset.Destroy();
         }
 
         Assets.Clear();
         Disposed = true;
-    }
-
-    private static void DestroyAsset(UObject asset)
-    {
-        if (asset is AssetBundle bundle)
-            bundle.Unload(false);
-
-        asset.Destroy("AssetHandle.DestroyAsset");
     }
 
     /// <summary>
@@ -65,7 +66,7 @@ public sealed class AssetHandle(string name) : IDisposable
     {
         var extension = Path.GetExtension(path).Replace(".", "");
 
-        if (AssetManager.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other))
+        if (Inventory.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other))
             throw new ArgumentException($"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing!");
 
         if (!Paths.TryAdd(extension, path))
@@ -106,7 +107,7 @@ public sealed class AssetHandle(string name) : IDisposable
         if (Assets.TryGetValue(tType, out var asset)) // Try to fetch the asset if it's already loaded
             return (T)asset;
 
-        if (!AssetManager.AssetTypeExtensions.TryGetValue(tType, out var generator)) // Check if the requested type is valid
+        if (!Inventory.AssetTypeExtensions.TryGetValue(tType, out var generator)) // Check if the requested type is valid
             return throwError ? throw new NotSupportedException($"{tType.Name} is not a valid asset type to load") : null;
 
         if (!Paths.TryGetValue(generator.Extensions, out var path)) // Check if there's an asset path that maps to the relevant file extension
@@ -137,7 +138,7 @@ public sealed class AssetHandle(string name) : IDisposable
     //     var tType = typeof(T);
     //
     //     if (Assets.Remove(tType, out var asset))
-    //         asset.Destroy("AssetHandle.Unload");
+    //         asset.Destroy();
     //     else if (throwError)
     //         throw new FileLoadException($"No such asset {Name} of type {tType.Name} was loaded!");
     // }

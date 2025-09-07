@@ -163,12 +163,12 @@ public sealed class SlimeData : SpawnedActorData
         PlortId = Helpers.AddEnumValue<IdentifiableId>(upper + "_PLORT");
         MainEntry = Helpers.AddEnumValue<PediaId>(upper + "_SLIME_ENTRY");
 
-        var type = typeof(SlimeManager);
+        var type = typeof(Slimepedia);
         var init = "Init" + Name;
         InitSlimeDetails = AccessTools.Method(type, init + "SlimeDetails");
         InitPlortDetails = AccessTools.Method(type, init + "PlortDetails");
 
-        HasGordo |= SlimeManager.MgExists && upper == "SAND";
+        HasGordo |= Slimepedia.MgExists && upper == "SAND";
 
         if (HasGordo)
         {
@@ -177,7 +177,7 @@ public sealed class SlimeData : SpawnedActorData
         }
 
         if (upper == "MESMER")
-            LargoManager.Mesmers.Add(MainId);
+            Largopedia.Mesmers.Add(MainId);
 
         if (NaturalGordoSpawn)
             NaturalGordoSpawn &= HasGordo;

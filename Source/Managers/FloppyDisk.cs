@@ -5,13 +5,18 @@ using OceanRange.Saves;
 
 namespace OceanRange.Managers;
 
-public static class SaveManager
+/// <summary>
+/// Handles the saving and reading of modded data that implement <c><see cref="ISaveData"/></c>.
+/// </summary>
+public static class FloppyDisk
 {
-    // Configuring the modded mail data
+    /// <summary>
+    /// Configures the events that handles the reading and writing of data.
+    /// </summary>
 #if DEBUG
     [TimeDiagnostic("Save Preload")]
 #endif
-    public static void PreLoadSaveData()
+    public static void PreloadSaveData()
     {
         SaveRegistry.RegisterWorldDataLoadDelegate(ReadSaveData);
         SaveRegistry.RegisterWorldDataSaveDelegate(WriteSaveData);
@@ -19,6 +24,10 @@ public static class SaveManager
 
     private static readonly ISaveData[] SaveData = [new MailSaveData(), new GordoSaveData()];
 
+    /// <summary>
+    /// Reads the save data from a compounded data piece.
+    /// </summary>
+    /// <param name="piece">The piece to be read from.</param>
 #if DEBUG
     [TimeDiagnostic]
 #endif
@@ -50,6 +59,10 @@ public static class SaveManager
         FixAndProperlyShowMailPatch.IsLoaded = true;
     }
 
+    /// <summary>
+    /// Writes the save data to a compounded data piece.
+    /// </summary>
+    /// <param name="piece">The piece to be write to.</param>
 #if DEBUG
     [TimeDiagnostic]
 #endif

@@ -22,20 +22,20 @@ internal sealed class Main : ModEntryPoint
 #endif
         Console = ConsoleInstance; // Passing the console so that every other class can log things as well
 
-        HarmonyInstance.PatchAll(AssetManager.Core); // Patch methods
+        HarmonyInstance.PatchAll(Inventory.Core); // Patch methods
 
         SystemContext.IsModded = true; // I don't know what this does fully, but it's better have this one than not, although it'd be better if SRML did this
 
         ClsExists = SRModLoader.IsModPresent("custom.loading"); // Checks if Custom Loading Screens is present in the mods folder
 
-        AssetManager.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
+        Inventory.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
 
         // Preloads the various forms of data the mod uses
-        SaveManager.PreLoadSaveData();
-        FoodManager.PreLoadFoodData();
-        SlimeManager.PreLoadSlimeData();
-        LargoManager.PreLoadLargoData();
-        Mailbox.PreLoadMailData();
+        FloppyDisk.PreloadSaveData();
+        Cookbook.PreloadFoodData();
+        Slimepedia.PreloadSlimeData();
+        Largopedia.PreloadLargoData();
+        Mailbox.PreloadMailData();
         Contacts.PreloadRancherData();
         Helpers.CategoriseIds();
 
@@ -58,13 +58,13 @@ internal sealed class Main : ModEntryPoint
     public override void Load()
     {
         // Loads the various forms of data the mod uses
-        FoodManager.LoadAllFoods();
-        SlimeManager.LoadAllSlimes();
-        Contacts.LoadRancherData();
-        LargoManager.LoadAllLargos();
+        Cookbook.LoadAllFoods();
+        Slimepedia.LoadAllSlimes();
+        Largopedia.LoadAllLargos();
+        Contacts.LoadAllRanchers();
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
-            AddSplashesBypass(AssetManager.GetSprites("loading_1", "loading_2", "loading_3", "loading_4"));
+            AddSplashesBypass(Inventory.GetSprites("loading_1", "loading_2", "loading_3", "loading_4"));
     }
 
     /// <inheritdoc/>
@@ -73,11 +73,12 @@ internal sealed class Main : ModEntryPoint
 #endif
     public override void PostLoad()
     {
-        SlimeManager.PostLoadSlimes();
-        AssetManager.ReleaseHandles("chimkenpedia", "plantpedia", "mailbox", "slimepedia", "modinfo"/*, "ocean_range"*/, "largopedia"); // Release handles
+        Slimepedia.PostLoadSlimes();
+        // AssetManager.Get<AssetBundle>("ocean_range").Unload(false);
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo"/*, "ocean_range"*/, "largopedia"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
-            AssetManager.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");
+            Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");
 
         GC.Collect(); // Free up temp memory
     }
@@ -87,16 +88,16 @@ internal sealed class Main : ModEntryPoint
     [TimeDiagnostic("Mod Unload")]
     public override void Unload()
     {
-        File.WriteAllText(Path.Combine(AssetManager.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePos.SavedPositions, AssetManager.JsonSettings));
+        File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePos.SavedPositions, Inventory.JsonSettings));
 
 #else
     public override void Unload()
     {
 #endif
-        AssetManager.ReleaseHandles();
+        Inventory.ReleaseHandles();
 
         foreach (var mesh in Helpers.ClonedMeshes)
-            mesh.Destroy("Main.Unload");
+            mesh.Destroy();
 
         Helpers.ClonedMeshes.Clear();
     }

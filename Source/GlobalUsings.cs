@@ -7,6 +7,7 @@ global using IdentifiableId = Identifiable.Id;
 global using SpawnResourceId = SpawnResource.Id;
 global using Category = ExchangeDirector.Category;
 global using StorageType = SiloStorage.StorageType;
+global using TimeMode = DirectedActorSpawner.TimeMode;
 global using SlimeExpression = SlimeFace.SlimeExpression;
 global using ProgressType = ProgressDirector.ProgressType;
 global using PediaCategory = SRML.SR.PediaRegistry.PediaCategory;

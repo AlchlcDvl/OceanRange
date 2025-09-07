@@ -55,12 +55,12 @@ public sealed class LargoData : ActorData
         Slime2Id = Helpers.ParseEnum<IdentifiableId>(slime2Upper + "_SLIME");
 
         if (slime1Upper == "MESMER" || slime2Upper == "MESMER")
-            LargoManager.Mesmers.Add(MainId);
+            Largopedia.Mesmers.Add(MainId);
 
-        if (SlimeManager.SlimeDataMap.TryGetValue(Slime1Id, out var data1))
+        if (Slimepedia.SlimeDataMap.TryGetValue(Slime1Id, out var data1))
             Slime1Data = data1;
 
-        if (SlimeManager.SlimeDataMap.TryGetValue(Slime2Id, out var data2))
+        if (Slimepedia.SlimeDataMap.TryGetValue(Slime2Id, out var data2))
             Slime2Data = data2;
 
         Jiggle ??= ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
