@@ -23,8 +23,14 @@ public sealed class MaterialData
     [JsonProperty("cloneSameAs")]
     public bool CloneSameAs;
 
+    [JsonProperty("cloneMatOrigin")]
+    public bool CloneMatOrigin = true;
+
     [JsonProperty("matOrigin")]
     public IdentifiableId? MatOriginSlime;
+
+    [JsonProperty("colorsOrigin")]
+    public IdentifiableId? ColorsOrigin;
 
     [JsonProperty("shader")]
     public string Shader;

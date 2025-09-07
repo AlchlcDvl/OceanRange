@@ -454,34 +454,36 @@ public static class Slimepedia
     public static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback, string name)
     {
         var setColors = true;
+        var clone = true;
         Material material;
 
         if (matData.CachedMaterial)
         {
             material = matData.CachedMaterial;
             setColors = false;
+            clone = false;
         }
         else if (matData.Shader != null)
+        {
             material = new(Array.Find(Resources.FindObjectsOfTypeAll<Shader>(), x => x.name.EndsWith(matData.Shader, StringComparison.OrdinalIgnoreCase))/* ?? AssetManager.GetShader(matData.Shader) */);
+            clone = false;
+        }
         else if (matData.MatOriginSlime.HasValue)
         {
-            material =
-            (
-                Identifiable.IsPlort(matData.MatOriginSlime.Value)
-                ? matData.MatOriginSlime.Value.GetPrefab().GetComponent<MeshRenderer>().material
-                : matData.MatOriginSlime.Value.GetSlimeDefinition().AppearancesDefault[0].Structures[matData.SameAs ?? 0].DefaultMaterials[0]
-            ).Clone();
+            material = GetMat(matData.MatOriginSlime.Value, matData.SameAs);
+            clone = matData.CloneMatOrigin;
         }
         else if (matData.SameAs.HasValue)
         {
             material = mainMatData[matData.SameAs.Value].CachedMaterial;
             setColors = matData.CloneSameAs;
-
-            if (matData.CloneSameAs)
-                material = material.Clone();
+            clone = matData.CloneSameAs;
         }
         else
-            material = fallback.Clone();
+            material = fallback;
+
+        if (clone)
+            material = material.Clone();
 
         if (setColors)
             SetMatProperties(matData, material);
@@ -490,8 +492,26 @@ public static class Slimepedia
         return material;
     }
 
+    private static Material GetMat(IdentifiableId source, int? index) =>Identifiable.IsPlort(source)
+        ? source.GetPrefab().GetComponent<MeshRenderer>().material
+        : source.GetSlimeDefinition().AppearancesDefault[0].Structures[index ?? 0].DefaultMaterials[0];
+
     public static void SetMatProperties(MaterialData matData, Material material)
     {
+        if (matData.ColorsOrigin.HasValue)
+        {
+            var temp = GetMat(matData.ColorsOrigin.Value, matData.SameAs);
+
+            if (temp.HasProperty(TopColor))
+                matData.TopColor ??= temp.GetColor(TopColor);
+
+            if (temp.HasProperty(MiddleColor))
+                matData.MiddleColor ??= temp.GetColor(MiddleColor);
+
+            if (temp.HasProperty(BottomColor))
+                matData.BottomColor ??= temp.GetColor(BottomColor);
+        }
+
         if (matData.TopColor.HasValue && material.HasProperty(BottomColor))
             material.SetColor(TopColor, matData.TopColor.Value);
 
