@@ -158,13 +158,8 @@ public static class Largopedia
             var bodyMat = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0];
             body.DefaultMaterials[0] = customBody ? Slimepedia.GenerateMaterial(largoData.BodyMatData, null, bodyMat) : bodyMat.Clone();
 
-            var num = appearance1.Structures.IndexOfItem(slime1Body);
-
-            for (var i = 0; i < appearance1.Structures.Length; i++)
+            for (var i = 1; i < appearance1.Structures.Length; i++)
             {
-                if (i == num)
-                    continue;
-
                 var structure = new SlimeAppearanceStructure(appearance1.Structures[i]);
 
                 if (customMats)
@@ -174,13 +169,9 @@ public static class Largopedia
             }
 
             struct1LastIndex = list.Count;
-            var num2 = appearance2.Structures.IndexOfItem(slime2Body);
 
-            for (var i = 0; i < appearance2.Structures.Length; i++)
+            for (var i = 1; i < appearance2.Structures.Length; i++)
             {
-                if (i == num2)
-                    continue;
-
                 var structure = new SlimeAppearanceStructure(appearance2.Structures[i]);
 
                 if (customMats2)
