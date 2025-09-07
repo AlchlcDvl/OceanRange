@@ -158,24 +158,41 @@ public static class Largopedia
             var bodyMat = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0];
             body.DefaultMaterials[0] = customBody ? Slimepedia.GenerateMaterial(largoData.BodyMatData, null, bodyMat) : bodyMat.Clone();
 
-            for (var i = 1; i < appearance1.Structures.Length; i++)
+            var num = appearance1.Structures.IndexOfItem(slime1Body);
+            var j = 0;
+
+            for (var i = 0; i < appearance1.Structures.Length; i++)
             {
+                if (i == num)
+                    continue;
+
                 var structure = new SlimeAppearanceStructure(appearance1.Structures[i]);
 
                 if (customMats)
-                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime1StructMatData[i], largoData.Slime1Data?.SlimeMatData, structure.DefaultMaterials[0]);
+                {
+                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime1StructMatData[j], largoData.Slime1Data?.SlimeMatData, structure.DefaultMaterials[0]);
+                    j++;
+                }
 
                 list.Add(structure);
             }
 
             struct1LastIndex = list.Count;
+            j = 0;
+            var num2 = appearance2.Structures.IndexOfItem(slime2Body);
 
-            for (var i = 1; i < appearance2.Structures.Length; i++)
+            for (var i = 0; i < appearance2.Structures.Length; i++)
             {
+                if (i == num2)
+                    continue;
+
                 var structure = new SlimeAppearanceStructure(appearance2.Structures[i]);
 
                 if (customMats2)
-                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime2StructMatData[i], largoData.Slime2Data?.SlimeMatData, structure.DefaultMaterials[0]);
+                {
+                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime2StructMatData[j], largoData.Slime2Data?.SlimeMatData, structure.DefaultMaterials[0]);
+                    j++;
+                }
 
                 list.Add(structure);
             }
