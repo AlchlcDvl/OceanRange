@@ -9,28 +9,36 @@ public static class Contacts
 #endif
     public static void PreloadRancherData()
     {
-        Ranchers = AssetManager.GetJsonArray<RancherData>("contacts");
-        ExchangeOfferRegistry.RegisterCategory(Ids.OCEAN, [.. SlimeManager.Slimes.SelectMany(x => new[] { x.MainId, x.PlortId })]);
+        Ranchers = Inventory.GetJsonArray<RancherData>("contacts");
 
-        SRCallbacks.PreSaveGameLoad += context =>
-        {
-            foreach (var rancher in Ranchers)
-                rancher.Rancher.chatBackground = context.ExchangeDirector.ranchers[1].chatBackground;
-        };
+        ExchangeOfferRegistry.RegisterCategory(Ids.OCEAN, [.. Slimepedia.Slimes.SelectMany(x => new[] { x.MainId, x.PlortId })]);
+
+        SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
+    }
+
+#if DEBUG
+    [TimeDiagnostic("Contacts OnSavePreload")]
+#endif
+    private static void PreOnSaveLoad(SceneContext context)
+    {
+        var background = context.ExchangeDirector.ranchers[1].chatBackground;
+
+        foreach (var rancher in Ranchers)
+            rancher.Rancher.chatBackground = background;
     }
 
 #if DEBUG
     [TimeDiagnostic("Contacts Load")]
 #endif
-    public static void LoadRancherData() => Array.ForEach(Ranchers, LoadRancher);
+    public static void LoadAllRanchers() => Array.ForEach(Ranchers, LoadRancher);
 
     private static void LoadRancher(RancherData rancher)
     {
         rancher.Rancher = new()
         {
             name = rancher.RancherId,
-            defaultImg = AssetManager.GetSprite("lisa_default"),
-            icon = AssetManager.GetSprite("lisa"),
+            defaultImg = Inventory.GetSprite("lisa_default"),
+            icon = Inventory.GetSprite("lisa"),
             numBlurbs = rancher.Dialogues.Length,
             requestCategories = [Ids.OCEAN],
             rewardCategories = [Category.PLORTS, Category.MEAT],

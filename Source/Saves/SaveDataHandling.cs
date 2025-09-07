@@ -23,8 +23,7 @@ public sealed class SaveWriter
     }
 
     /// <summary>
-    /// Flushes and closes all internal streams, then converts the compressed data
-    /// into a ulong array with padding.
+    /// Converts the byte data to a ulong array.
     /// </summary>
     /// <returns>A ulong[] that represents the data that was fed.</returns>
     public ulong[] ToArray(out byte padding)
@@ -46,7 +45,7 @@ public sealed class SaveReader
     private int Position;
 
     /// <summary>
-    /// Initializes a new instance of the CompressedUlongArrayReader with a ulong array.
+    /// Initializes a new instance of the SaveReader with a ulong array.
     /// </summary>
     /// <param name="data">The ulong array to read from.</param>
     /// <param name="padding">The number of padding bytes to remove.</param>

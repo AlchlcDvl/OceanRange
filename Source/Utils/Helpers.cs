@@ -3,7 +3,7 @@ using System.Globalization;
 using AssetsLib;
 using SRML.Utils;
 using System.Collections;
-// using System.Reflection;
+using System.Reflection;
 
 namespace OceanRange.Utils;
 
@@ -194,7 +194,7 @@ public static class Helpers
             return result;
 
         if (SRModLoader.CurrentLoadingStep > SRModLoader.LoadingStep.PRELOAD)
-            throw new InvalidOperationException("Can't add enums outside of the PreLoad step");
+            throw new InvalidOperationException("Can't add enums outside of the Preload step");
 
         var value = EnumPatcher.GetFirstFreeValue<T>();
         EnumPatcher.AddEnumValueWithAlternatives<T>(value, name);
@@ -432,7 +432,7 @@ public static class Helpers
 
     public static bool StartsWith(this string @string, char character) => @string[0] == character;
 
-    // public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => Attribute.IsDefined(member, typeof(T), false);
+    public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => member.IsDefined(typeof(T), false);
 
     public static IEnumerable<(T1, T2)> Zip<T1, T2>(this IEnumerable<T1> source1, IEnumerable<T2> source2)
     {
@@ -464,5 +464,5 @@ public static class Helpers
     //     return value;
     // }
 
-    public static void Destroy(this UObject obj, string source) => Destroyer.Destroy(obj, source);
+    public static T[] GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
 }

@@ -4,7 +4,8 @@ using AssetsLib;
 namespace OceanRange.Managers;
 
 // All hail the json gods, for they look upon me favourably
-public static class LargoManager
+// TODO: Finish largo setup
+public static class Largopedia
 {
     /*
         Largo Naming Hierarchy:
@@ -47,7 +48,7 @@ public static class LargoManager
     #if DEBUG
     [TimeDiagnostic("Largos Preload")]
 #endif
-    public static void PreLoadLargoData() => Largos = AssetManager.GetJsonArray<LargoData>("largopedia");
+    public static void PreloadLargoData() => Largos = Inventory.GetJsonArray<LargoData>("largopedia");
 
 #if DEBUG
     [TimeDiagnostic("Largos Load")]
@@ -191,7 +192,7 @@ public static class LargoManager
         prefab.GetComponent<AweTowardsLargos>().Destroy();
 
         if (prefab.TryGetComponent<PinkSlimeFoodTypeTracker>(out var tracker))
-            tracker.Destroy("LargoManager.CreateLargo");
+            tracker.Destroy();
 
         if (slime1.FavoriteToys != null)
             definition.FavoriteToys = [.. definition.FavoriteToys.Union(slime1.FavoriteToys, Identifiable.idComparer)];
@@ -235,7 +236,7 @@ public static class LargoManager
         applicator.SlimeDefinition = definition;
 
         if (allCustomModels)
-            SlimeManager.BasicInitSlimeAppearance(appearance, applicator, (useSlime2Body ? slime2 : slime1).AppearancesDefault[0].Structures[0], largoData.Meshes, largoData.SkipNull, largoData.Jiggle.Value, largoData.Name, largoData.MatData);
+            Slimepedia.BasicInitSlimeAppearance(appearance, applicator, (useSlime2Body ? slime2 : slime1).AppearancesDefault[0].Structures[0], largoData.Meshes, largoData.SkipNull, largoData.Jiggle.Value, largoData.Name, largoData.MatData);
         else
         {
             var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1);
@@ -251,7 +252,7 @@ public static class LargoManager
             list.Add(body);
 
             var bodyMat = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0];
-            body.DefaultMaterials[0] = customBody ? SlimeManager.GenerateMaterial(largoData.BodyMatData, null, bodyMat, largoData.Name) : bodyMat.Clone();
+            body.DefaultMaterials[0] = customBody ? Slimepedia.GenerateMaterial(largoData.BodyMatData, null, bodyMat, largoData.Name) : bodyMat.Clone();
 
             var num = appearance1.Structures.IndexOfItem(slime1Body);
 
@@ -263,7 +264,7 @@ public static class LargoManager
                 var structure = new SlimeAppearanceStructure(appearance1.Structures[i]);
 
                 if (customMats)
-                    structure.DefaultMaterials[0] = SlimeManager.GenerateMaterial(largoData.Slime1StructMatData[i], largoData.Slime1Data?.SlimeMatData, structure.DefaultMaterials[0], largoData.Name);
+                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime1StructMatData[i], largoData.Slime1Data?.SlimeMatData, structure.DefaultMaterials[0], largoData.Name);
 
                 list.Add(structure);
             }
@@ -279,7 +280,7 @@ public static class LargoManager
                 var structure = new SlimeAppearanceStructure(appearance2.Structures[i]);
 
                 if (customMats2)
-                    structure.DefaultMaterials[0] = SlimeManager.GenerateMaterial(largoData.Slime2StructMatData[i], largoData.Slime2Data?.SlimeMatData, structure.DefaultMaterials[0], largoData.Name);
+                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime2StructMatData[i], largoData.Slime2Data?.SlimeMatData, structure.DefaultMaterials[0], largoData.Name);
 
                 list.Add(structure);
             }
@@ -313,19 +314,19 @@ public static class LargoManager
                     var mat = material.Clone();
 
                     if (allCustomModels)
-                        SlimeManager.SetMatProperties(largoData.MatData[i], mat);
+                        Slimepedia.SetMatProperties(largoData.MatData[i], mat);
                     else if (j == 0 && customBody)
-                        SlimeManager.SetMatProperties(largoData.BodyMatData, mat);
+                        Slimepedia.SetMatProperties(largoData.BodyMatData, mat);
                     else if (j < struct1LastIndex && customMats)
-                        SlimeManager.SetMatProperties(largoData.Slime1StructMatData[i - 1], mat);
+                        Slimepedia.SetMatProperties(largoData.Slime1StructMatData[i - 1], mat);
                     else if (customMats2)
-                        SlimeManager.SetMatProperties(largoData.Slime2StructMatData[i - struct1LastIndex], mat);
+                        Slimepedia.SetMatProperties(largoData.Slime2StructMatData[i - struct1LastIndex], mat);
                     else
                     {
                         var og = structure.DefaultMaterials[j];
-                        mat.SetColor(SlimeManager.TopColor, og.GetColor(SlimeManager.TopColor));
-                        mat.SetColor(SlimeManager.MiddleColor, og.GetColor(SlimeManager.MiddleColor));
-                        mat.SetColor(SlimeManager.BottomColor, og.GetColor(SlimeManager.BottomColor));
+                        mat.SetColor(Slimepedia.TopColor, og.GetColor(Slimepedia.TopColor));
+                        mat.SetColor(Slimepedia.MiddleColor, og.GetColor(Slimepedia.MiddleColor));
+                        mat.SetColor(Slimepedia.BottomColor, og.GetColor(Slimepedia.BottomColor));
                     }
 
                     structure.DefaultMaterials[j] = mat;

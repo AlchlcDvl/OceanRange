@@ -1,5 +1,3 @@
-using JetBrains.Annotations;
-
 namespace OceanRange.Managers;
 
 public static class Mailbox
@@ -9,13 +7,13 @@ public static class Mailbox
 #if DEBUG
     [TimeDiagnostic("Mail Preload")]
 #endif
-    public static void PreLoadMailData()
+    public static void PreloadMailData()
     {
-        Mail = AssetManager.GetJsonArray<MailData>("mailbox");
-        Array.ForEach(Mail, PreLoadMail);
+        Mail = Inventory.GetJsonArray<MailData>("mailbox");
+        Array.ForEach(Mail, PreloadMail);
     }
 
-    private static void PreLoadMail(MailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id)
+    private static void PreloadMail(MailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id)
         .SetSubjectTranslation(mailData.Title)
         .SetFromTranslation(mailData.From)
         .SetBodyTranslation(mailData.Body)

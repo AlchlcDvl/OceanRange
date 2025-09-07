@@ -14,7 +14,7 @@ public static class TimeDiagnosticPatch
     {
         var jsonType = typeof(JsonData);
 
-        foreach (var type in AccessTools.GetTypesFromAssembly(AssetManager.Core))
+        foreach (var type in AccessTools.GetTypesFromAssembly(Inventory.Core))
         {
             foreach (var method in AccessTools.GetDeclaredMethods(type))
             {

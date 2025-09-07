@@ -3,7 +3,7 @@ using SRML;
 
 namespace OceanRange.Managers;
 
-public static class FoodManager
+public static class Cookbook
 {
     /// <summary>
     /// The array containing all meat related data.
@@ -26,12 +26,14 @@ public static class FoodManager
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
 #endif
-    public static void PreLoadFoodData()
+    public static void PreloadFoodData()
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
 
-        Chimkens = AssetManager.GetJsonArray<ChimkenData>("chimkenpedia");
-        Plants = AssetManager.GetJsonArray<PlantData>("plantpedia");
+        var food = Inventory.GetJson<Ingredients>("cookbook");
+
+        Chimkens = food.Chimkens;
+        Plants = food.Plants;
 
         Ids.DIRT.RegisterId(IdentifiableId.SILKY_SAND_CRAFT);
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
@@ -41,7 +43,7 @@ public static class FoodManager
     }
 
 #if DEBUG
-    [TimeDiagnostic("Foods OnSavePreLoad")]
+    [TimeDiagnostic("Foods OnSavePreload")]
 #endif
     private static void PreOnSaveLoad(SceneContext _)
     {
@@ -110,7 +112,7 @@ public static class FoodManager
                 }
             }
 
-            toInstantiate.Destroy("FoodManager.OnSaveLoaded");
+            toInstantiate.Destroy();
         }
     }
 
@@ -135,10 +137,10 @@ public static class FoodManager
         // Fetch ramps and caching values because reusing them is tedious
         var lower = chimkenData.Name.ToLowerInvariant();
         var ramp = $"{lower}_ramp_";
-        var red = AssetManager.GetTexture2D($"{ramp}red");
-        var green = AssetManager.GetTexture2D($"{ramp}green");
-        var blue = AssetManager.GetTexture2D($"{ramp}blue");
-        var black = AssetManager.GetTexture2D($"{ramp}black");
+        var red = Inventory.GetTexture2D($"{ramp}red");
+        var green = Inventory.GetTexture2D($"{ramp}green");
+        var blue = Inventory.GetTexture2D($"{ramp}blue");
+        var black = Inventory.GetTexture2D($"{ramp}black");
 
         // Find and create the prefab for chicks and set values
         var chickPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
@@ -149,14 +151,14 @@ public static class FoodManager
         chickPrefab.GetComponent<TransformAfterTime>().options[0].targetPrefab = henPrefab;
 
         // Register both chicks and hens
-        var chickIcon = AssetManager.GetSprite($"{lower}_chick");
+        var chickIcon = Inventory.GetSprite($"{lower}_chick");
         RegisterFood(chickPrefab, chickIcon, chimkenData.MainAmmoColor, chimkenData.ChickId, chimkenData.ChickEntry, -1, chimkenData.Progress, StorageType.NON_SLIMES);
-        SlimePediaCreation.CreatePediaForFood(chimkenData.ChickEntry, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
+        SlimepediaCreation.CreatePediaForFood(chimkenData.ChickEntry, chimkenData.ChickId, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
             CommonChickAboutPedia.Replace("%type%", chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
 
-        var henIcon = AssetManager.GetSprite($"{lower}_hen");
+        var henIcon = Inventory.GetSprite($"{lower}_hen");
         RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor, chimkenData.MainId, chimkenData.MainEntry, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
-        SlimePediaCreation.CreatePediaForFood(chimkenData.MainEntry, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
+        SlimepediaCreation.CreatePediaForFood(chimkenData.MainEntry, chimkenData.MainId, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
             CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
 
         if (Main.ClsExists)
@@ -205,7 +207,7 @@ public static class FoodManager
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, id);
         LookupRegistry.RegisterVacEntry(id, ammo, icon);
-        SlimePediaCreation.PreLoadSlimePediaConnection(pediaId, id, PediaCategory.RESOURCES);
+        SlimepediaCreation.PreloadSlimePediaConnection(pediaId, id, PediaCategory.RESOURCES);
         PediaRegistry.RegisterIdEntry(pediaId, icon);
         AmmoRegistry.RegisterSiloAmmo(siloStorage.Contains, id);
 
@@ -227,16 +229,16 @@ public static class FoodManager
 
         var meshModel = prefab.FindChildWithPartialName("model_");
         var lower = plantData.Name.ToLowerInvariant();
-        meshModel.GetComponent<MeshFilter>().sharedMesh = AssetManager.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
+        meshModel.GetComponent<MeshFilter>().sharedMesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();
         var material = meshRend.material = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
 
         var ramp = $"{lower}_ramp_";
-        var red = AssetManager.GetTexture2D($"{ramp}red");
-        var green = AssetManager.GetTexture2D($"{ramp}green");
-        var blue = AssetManager.GetTexture2D($"{ramp}blue");
-        var black = AssetManager.GetTexture2D($"{ramp}black");
+        var red = Inventory.GetTexture2D($"{ramp}red");
+        var green = Inventory.GetTexture2D($"{ramp}green");
+        var blue = Inventory.GetTexture2D($"{ramp}blue");
+        var black = Inventory.GetTexture2D($"{ramp}black");
 
         material.SetTexture(RampRed, red);
         material.SetTexture(RampGreen, green);
@@ -251,9 +253,9 @@ public static class FoodManager
         material2.SetTexture(RampBlue, blue);
         material2.SetTexture(RampBlack, black);
 
-        var icon = AssetManager.GetSprite(lower);
+        var icon = Inventory.GetSprite(lower);
         RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.MainEntry, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
-        SlimePediaCreation.CreatePediaForFood(plantData.MainEntry, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
+        SlimepediaCreation.CreatePediaForFood(plantData.MainEntry, plantData.MainId, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
             CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
 
         var resource = CreateFarmSetup(plantData.IsVeggie ? SpawnResourceId.CARROT_PATCH : SpawnResourceId.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
@@ -284,7 +286,7 @@ public static class FoodManager
         component.BonusObjectsToSpawn = [];
         var partial = plant.FindChildWithPartialName("model_");
         var material = partial.GetComponent<MeshRenderer>().sharedMaterial;
-        TranslateModel(prefab.FindChildren("Sprout"), AssetManager.GetMesh(lowerName + "_sprout"), material);
+        TranslateModel(prefab.FindChildren("Sprout"), Inventory.GetMesh(lowerName + "_sprout"), material);
         TranslateModel(component.SpawnJoints.Select(x => x.gameObject), partial.GetComponent<MeshFilter>().sharedMesh, material);
         return prefab;
     }
