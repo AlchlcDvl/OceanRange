@@ -224,7 +224,7 @@ public static class Slimepedia
                 rocks.name = meshName;
 
             var rend = rocks.GetComponent<MeshRenderer>();
-            var material = GenerateMaterial(slimeData.PlortMatData[i], slimeData.SlimeMatData, rend.material, slimeData.Name);
+            var material = GenerateMaterial(slimeData.PlortMatData[i], slimeData.SlimeMatData, rend.material);
             rend.material = rend.sharedMaterial = material;
 
             if (i != 0)
@@ -397,9 +397,9 @@ public static class Slimepedia
     }
 
     private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeData slimeData) => BasicInitSlimeAppearance(appearance, applicator, appearance.Structures[0], slimeData.SlimeMeshes,
-        slimeData.SkipNullMesh, slimeData.JiggleAmount, slimeData.Name, slimeData.SlimeMatData);
+        slimeData.SkipNullMesh, slimeData.JiggleAmount, slimeData.SlimeMatData);
 
-    public static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeAppearanceStructure first, string[] meshes, bool skipNull, float jiggle, string name, MaterialData[] matData)
+    public static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeAppearanceStructure first, string[] meshes, bool skipNull, float jiggle, MaterialData[] matData)
     {
         var elemPrefab = first.Element.Prefabs[0];
 
@@ -416,7 +416,7 @@ public static class Slimepedia
         {
             var structure = appearance.Structures[i];
 
-            structure.DefaultMaterials[0] = GenerateMaterial(matData[i], matData, structure.DefaultMaterials[0], name);
+            structure.DefaultMaterials[0] = GenerateMaterial(matData[i], matData, structure.DefaultMaterials[0]);
 
             var meshName = meshes[i];
             var isNull = meshName == null;
@@ -451,23 +451,19 @@ public static class Slimepedia
         applicator.GenerateSlimeBones(slimeBase, jiggle, prefabsForBoneData);
     }
 
-    public static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback, string name)
+    public static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback)
     {
         var setColors = true;
-        var clone = true;
+        var clone = false;
         Material material;
 
         if (matData.CachedMaterial)
         {
             material = matData.CachedMaterial;
             setColors = false;
-            clone = false;
         }
         else if (matData.Shader != null)
-        {
             material = new(Array.Find(Resources.FindObjectsOfTypeAll<Shader>(), x => x.name.EndsWith(matData.Shader, StringComparison.OrdinalIgnoreCase))/* ?? AssetManager.GetShader(matData.Shader) */);
-            clone = false;
-        }
         else if (matData.MatOriginSlime.HasValue)
         {
             material = GetMat(matData.MatOriginSlime.Value, matData.SameAs);
@@ -480,10 +476,13 @@ public static class Slimepedia
             clone = matData.CloneSameAs;
         }
         else
+        {
             material = fallback;
+            clone = true;
+        }
 
         if (clone)
-            material = material.Clone();
+                material = material.Clone();
 
         if (setColors)
             SetMatProperties(matData, material);
@@ -605,7 +604,7 @@ public static class Slimepedia
             if (!isNull && i != 0)
                 meshRend.name = meshName;
 
-            var material = GenerateMaterial(slimeData.GordoMatData[i], slimeData.SlimeMatData, meshRend.material, slimeData.Name);
+            var material = GenerateMaterial(slimeData.GordoMatData[i], slimeData.SlimeMatData, meshRend.material);
             meshRend.material = meshRend.sharedMaterial = material;
 
             if (i == 0)

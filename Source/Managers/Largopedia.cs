@@ -140,7 +140,7 @@ public static class Largopedia
         applicator.SlimeDefinition = definition;
 
         if (allCustomModels)
-            Slimepedia.BasicInitSlimeAppearance(appearance, applicator, (useSlime2Body ? slime2 : slime1).AppearancesDefault[0].Structures[0], largoData.Meshes, largoData.SkipNull, largoData.Jiggle.Value, largoData.Name, largoData.MatData);
+            Slimepedia.BasicInitSlimeAppearance(appearance, applicator, (useSlime2Body ? slime2 : slime1).AppearancesDefault[0].Structures[0], largoData.Meshes, largoData.SkipNull, largoData.Jiggle.Value, largoData.MatData);
         else
         {
             var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1);
@@ -156,7 +156,7 @@ public static class Largopedia
             list.Add(body);
 
             var bodyMat = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0];
-            body.DefaultMaterials[0] = customBody ? Slimepedia.GenerateMaterial(largoData.BodyMatData, null, bodyMat, largoData.Name) : bodyMat.Clone();
+            body.DefaultMaterials[0] = customBody ? Slimepedia.GenerateMaterial(largoData.BodyMatData, null, bodyMat) : bodyMat.Clone();
 
             var num = appearance1.Structures.IndexOfItem(slime1Body);
 
@@ -168,7 +168,7 @@ public static class Largopedia
                 var structure = new SlimeAppearanceStructure(appearance1.Structures[i]);
 
                 if (customMats)
-                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime1StructMatData[i], largoData.Slime1Data?.SlimeMatData, structure.DefaultMaterials[0], largoData.Name);
+                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime1StructMatData[i], largoData.Slime1Data?.SlimeMatData, structure.DefaultMaterials[0]);
 
                 list.Add(structure);
             }
@@ -184,7 +184,7 @@ public static class Largopedia
                 var structure = new SlimeAppearanceStructure(appearance2.Structures[i]);
 
                 if (customMats2)
-                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime2StructMatData[i], largoData.Slime2Data?.SlimeMatData, structure.DefaultMaterials[0], largoData.Name);
+                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime2StructMatData[i], largoData.Slime2Data?.SlimeMatData, structure.DefaultMaterials[0]);
 
                 list.Add(structure);
             }
@@ -210,31 +210,25 @@ public static class Largopedia
             for (var i = 0; i < appearance.Structures.Length; i++)
             {
                 var structure = qubitAppearance.Structures[i] = new(appearance.Structures[i]);
-                var length = structure.DefaultMaterials.Length;
-                structure.DefaultMaterials = new Material[length];
+                var mat = material.Clone();
 
-                for (var j = 0; j < length; j++)
+                if (allCustomModels)
+                    Slimepedia.SetMatProperties(largoData.MatData[i], mat);
+                else if (i == 0 && customBody)
+                    Slimepedia.SetMatProperties(largoData.BodyMatData, mat);
+                else if (i < struct1LastIndex && customMats)
+                    Slimepedia.SetMatProperties(largoData.Slime1StructMatData[i - 1], mat);
+                else if (customMats2)
+                    Slimepedia.SetMatProperties(largoData.Slime2StructMatData[i - struct1LastIndex], mat);
+                else
                 {
-                    var mat = material.Clone();
-
-                    if (allCustomModels)
-                        Slimepedia.SetMatProperties(largoData.MatData[i], mat);
-                    else if (j == 0 && customBody)
-                        Slimepedia.SetMatProperties(largoData.BodyMatData, mat);
-                    else if (j < struct1LastIndex && customMats)
-                        Slimepedia.SetMatProperties(largoData.Slime1StructMatData[i - 1], mat);
-                    else if (customMats2)
-                        Slimepedia.SetMatProperties(largoData.Slime2StructMatData[i - struct1LastIndex], mat);
-                    else
-                    {
-                        var og = structure.DefaultMaterials[j];
-                        mat.SetColor(Slimepedia.TopColor, og.GetColor(Slimepedia.TopColor));
-                        mat.SetColor(Slimepedia.MiddleColor, og.GetColor(Slimepedia.MiddleColor));
-                        mat.SetColor(Slimepedia.BottomColor, og.GetColor(Slimepedia.BottomColor));
-                    }
-
-                    structure.DefaultMaterials[j] = mat;
+                    var og = structure.DefaultMaterials[i];
+                    mat.SetColor(Slimepedia.TopColor, og.GetColor(Slimepedia.TopColor));
+                    mat.SetColor(Slimepedia.MiddleColor, og.GetColor(Slimepedia.MiddleColor));
+                    mat.SetColor(Slimepedia.BottomColor, og.GetColor(Slimepedia.BottomColor));
                 }
+
+                structure.DefaultMaterials[0] = mat;
             }
         }
 
