@@ -462,14 +462,14 @@ public static class Slimepedia
             material = matData.CachedMaterial;
             setColors = false;
         }
-        else if (matData.Shader != null)
-            material = new(Array.Find(Resources.FindObjectsOfTypeAll<Shader>(), x => x.name.EndsWith(matData.Shader, StringComparison.OrdinalIgnoreCase))/* ?? AssetManager.GetShader(matData.Shader) */);
+        // else if (matData.Shader != null)
+        //     material = new(Array.Find(Resources.FindObjectsOfTypeAll<Shader>(), x => x.name.EndsWith(matData.Shader, StringComparison.OrdinalIgnoreCase))/* ?? AssetManager.GetShader(matData.Shader) */);
         else if (matData.MatOriginSlime.HasValue)
         {
             material = GetMat(matData.MatOriginSlime.Value, matData.SameAs);
             clone = matData.CloneMatOrigin;
         }
-        else if (matData.SameAs.HasValue)
+        else if (matData.SameAs.HasValue && mainMatData?.Length is > 0)
         {
             material = mainMatData[matData.SameAs.Value].CachedMaterial;
             setColors = matData.CloneSameAs;

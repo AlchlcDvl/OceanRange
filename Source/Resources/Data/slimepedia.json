@@ -282,6 +282,8 @@
         "slimeMatData":
         [
             {
+                "topColor": "#e034c9",
+                "bottomColor": "#320047",
                 "pattern": "mesmer_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11

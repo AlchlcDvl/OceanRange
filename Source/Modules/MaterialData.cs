@@ -32,8 +32,8 @@ public sealed class MaterialData
     [JsonProperty("colorsOrigin")]
     public IdentifiableId? ColorsOrigin;
 
-    [JsonProperty("shader")]
-    public string Shader;
+    // [JsonProperty("shader")]
+    // public string Shader;
 
     [JsonProperty("miscColorProps")]
     private Dictionary<string, Color> MiscColorPropsJson;
