@@ -468,31 +468,67 @@
         "name": "Pink Hermit",
         "slime1": "Pink",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { "colorsOrigin": "PINK_SLIME" },
+            { "colorsOrigin": "PINK_SLIME" }
+        ]
     },
     {
         "name": "Saber Hermit",
         "slime1": "Saber",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { "colorsOrigin": "SABER_SLIME" },
+            { "colorsOrigin": "SABER_SLIME" }
+        ]
     },
     {
         "name": "Honey Hermit",
         "slime1": "Honey",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { 
+                "colorsOrigin": "HONEY_SLIME",
+                "matOrigin": "HONEY_SLIME" 
+            },
+            { 
+                "colorsOrigin": "HONEY_SLIME",
+                "matOrigin": "HONEY_SLIME" 
+            }
+        ]
     },
     {
         "name": "Phosphor Hermit",
         "slime1": "Phosphor",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { "colorsOrigin": "PHOSPHOR_SLIME"},
+            { "colorsOrigin": "PHOSPHOR_SLIME" }
+        ]
     },
     {
         "name": "Mosaic Hermit",
         "slime1": "Mosaic",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { "colorsOrigin": "MOSAIC_SLIME" },
+            { "colorsOrigin": "MOSAIC_SLIME" }
+        ]
     },
     {
         "name": "Tangle Hermit",
@@ -516,19 +552,49 @@
         "name": "Boom Hermit",
         "slime1": "Boom",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { 
+                "colorsOrigin": "BOOM_SLIME",
+                "matOrigin": "BOOM_SLIME" 
+            },
+            { 
+                "colorsOrigin": "BOOM_SLIME",
+                "matOrigin": "BOOM_SLIME" 
+            }
+        ]
     },
     {
         "name": "Rad Hermit",
         "slime1": "Rad",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { 
+                "colorsOrigin": "RAD_SLIME",
+                "matOrigin": "RAD_SLIME" 
+            },
+            { 
+                "colorsOrigin": "RAD_SLIME",
+                "matOrigin": "RAD_SLIME" 
+            }
+        ]
     },
     {
         "name": "Rock Hermit",
         "slime1": "Rock",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { "colorsOrigin": "ROCK_SLIME" },
+            { "colorsOrigin": "ROCK_SLIME" }
+        ]
     },
     {
         "name": "Tabby Hermit",
@@ -570,12 +636,24 @@
         "name": "Crystal Hermit",
         "slime1": "Crystal",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { "colorsOrigin": "CRYSTAL_SLIME" },
+            { "colorsOrigin": "CRYSTAL_SLIME" }
+        ]
     },
     {
         "name": "Dervish Hermit",
         "slime1": "Dervish",
         "slime2": "Hermit",
-        "props": ["None"]
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            { "cloneMatOrigin": "false" },
+            { "colorsOrigin": "DERVISH_SLIME" },
+            { "colorsOrigin": "DERVISH_SLIME" }
+        ]
     }
 ]
