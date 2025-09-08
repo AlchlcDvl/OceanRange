@@ -309,7 +309,7 @@
         "name": "Rock Mesmer",
         "slime1": "Rock",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial", "CustomSlime1StructureMaterials"],
+        "props": ["CustomBodyMaterial"],
         "bodyMatData": 
         {
             "topColor": "#e034c9",
@@ -317,14 +317,7 @@
             "pattern": "mesmer_pattern",
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11
-        },
-        "slime1StructureMatData": 
-        [
-            {
-                "topColor": "#e034c9",
-                "bottomColor": "#320047"
-            }
-        ]
+        }
     },
     {
         "name": "Tabby Mesmer",
