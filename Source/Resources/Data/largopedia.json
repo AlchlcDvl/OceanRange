@@ -75,14 +75,43 @@
         "name": "Pink Mesmer",
         "slime1": "Pink",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
+        "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
         "bodyMatData": 
         { 
             "colorsOrigin": "PINK_SLIME",
             "pattern": "mesmer_pattern",
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11
-        }
+        },
+        "slime2StructureMatData": 
+        [
+            {
+                "colorsOrigin": "PINK_SLIME",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            {
+                "colorsOrigin": "PINK_SLIME",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            {
+                "colorsOrigin": "PINK_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "PINK_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "PINK_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "PINK_SLIME",
+                "matOrigin": "PINK_SLIME"
+            }
+        ]
     },
     {
         "name": "Saber Mesmer",
@@ -102,13 +131,46 @@
         "name": "Honey Mesmer",
         "slime1": "Honey",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
+        "props": ["AllMaterialsAreCustom"],
         "bodyMatData": 
         {
             "topColor": "#e034c9",
             "bottomColor": "#320047",
             "matOrigin": "HONEY_SLIME"
-        }
+        },
+        "slime1StructureMatData": 
+        [
+            {"topColor": "#dafe7a"}
+        ],
+        "slime2StructureMatData": 
+        [
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "HONEY_SLIME"
+            },
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "HONEY_SLIME"
+            },
+            {
+                "topColor": "#33169a",
+                "matOrigin": "HONEY_SLIME"
+            },
+            {
+                "topColor": "#821ed6",
+                "matOrigin": "HONEY_SLIME"
+            },
+            {
+                "topColor": "#e034c9",
+                "matOrigin": "HONEY_SLIME"
+            },
+            {
+                "topColor": "#dafe7a",
+                "matOrigin": "HONEY_SLIME"
+            }
+        ]
     },
     {
         "name": "Phosphor Mesmer",
@@ -141,7 +203,7 @@
         "name": "Tangle Mesmer",
         "slime1": "Tangle",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
+        "props": ["CustomBodyMaterial", "CustomSlime1StructureMaterials"],
         "bodyMatData": 
         {
             "topColor": "#e034c9",
@@ -149,39 +211,105 @@
             "pattern": "mesmer_pattern",
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11
-        }
+        },
+        "slime1StructureMatData": 
+        [
+            {
+                "topColor": "#e034c9",
+                "middleColor": "#340ca1",
+                "bottomColor": "#320047"
+            }
+        ]
     },
     {
         "name": "Boom Mesmer",
         "slime1": "Boom",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
+        "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
         "bodyMatData": 
         {
             "topColor": "#e034c9",
             "bottomColor": "#320047",
             "matOrigin": "BOOM_SLIME",
             "gloss": 0.11
-        }
+        },
+        "slime2StructureMatData": 
+        [
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "BOOM_SLIME"
+            },
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "BOOM_SLIME"
+            },
+            {
+                "topColor": "#33169a",
+                "matOrigin": "BOOM_SLIME"
+            },
+            {
+                "topColor": "#821ed6",
+                "matOrigin": "BOOM_SLIME"
+            },
+            {
+                "topColor": "#e034c9",
+                "matOrigin": "BOOM_SLIME"
+            },
+            {
+                "topColor": "#dafe7a",
+                "matOrigin": "BOOM_SLIME"
+            }
+        ]
     },
     {
         "name": "Rad Mesmer",
         "slime1": "Rad",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
+        "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
         "bodyMatData": 
         {
             "topColor": "#320047",
             "bottomColor": "#e034c9",
             "matOrigin": "RAD_SLIME",
             "gloss": 0.11
-        }
+        },
+        "slime2StructureMatData": 
+        [
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "RAD_SLIME"
+            },
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "RAD_SLIME"
+            },
+            {
+                "topColor": "#33169a",
+                "matOrigin": "RAD_SLIME"
+            },
+            {
+                "topColor": "#821ed6",
+                "matOrigin": "RAD_SLIME"
+            },
+            {
+                "topColor": "#e034c9",
+                "matOrigin": "RAD_SLIME"
+            },
+            {
+                "topColor": "#dafe7a",
+                "matOrigin": "RAD_SLIME"
+            }
+        ]
     },
     {
         "name": "Rock Mesmer",
         "slime1": "Rock",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
+        "props": ["CustomBodyMaterial", "CustomSlime1StructureMaterials"],
         "bodyMatData": 
         {
             "topColor": "#e034c9",
@@ -189,7 +317,14 @@
             "pattern": "mesmer_pattern",
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11
-        }
+        },
+        "slime1StructureMatData": 
+        [
+            {
+                "topColor": "#e034c9",
+                "bottomColor": "#320047"
+            }
+        ]
     },
     {
         "name": "Tabby Mesmer",
@@ -291,7 +426,7 @@
         "name": "Dervish Mesmer",
         "slime1": "Dervish",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
+        "props": ["CustomBodyMaterial", "CustomSlime1StructureMaterials"],
         "bodyMatData": 
         {
             "topColor": "#e034c9",
@@ -299,7 +434,14 @@
             "pattern": "mesmer_pattern",
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11
-        }
+        },
+        "slime1StructureMatData": 
+        [
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047"
+            }
+        ]
     },
     {
         "name": "Mesmer Hermit",
