@@ -104,13 +104,7 @@
         "name": "Saber Mesmer",
         "slime1": "Saber",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
-        "bodyMatData":
-        {
-            "topColor": "#e034c9",
-            "bottomColor": "#320047",
-            "gloss": 0.11
-        }
+        "props": ["UseSlime2ForBodyMaterial"]
     },
     {
         "name": "Honey Mesmer",
@@ -207,7 +201,7 @@
         "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
         "bodyMatData":
         {
-            "topColor": "#340ca1",
+            "topColor": "#e034c9",
             "bottomColor": "#320047",
             "matOrigin": "BOOM_SLIME",
             "gloss": 0.11
@@ -245,7 +239,7 @@
         "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
         "bodyMatData":
         {
-            "topColor": "#320047",
+            "topColor": "#e034c9",
             "bottomColor": "#340ca1",
             "matOrigin": "RAD_SLIME",
             "gloss": 0.11
@@ -314,8 +308,9 @@
         "customMatData":
         [
             {
-                "topColor": "#340ca1",
+                "topColor": "#e034c9",
                 "bottomColor": "#320047",
+                "pattern": "mesmer_pattern",
                 "matOrigin": "TABBY_SLIME"
             },
             { "sameAs": 0 },
@@ -323,7 +318,7 @@
                 "sameAs": 1,
                 "matOrigin": "MESMER_SLIME"
             },
-            { "sameAs": 1 },
+            { "sameAs": 2 },
             {
                 "sameAs": 3,
                 "matOrigin": "MESMER_SLIME"
@@ -351,9 +346,10 @@
         "customMatData":
         [
             {
-                "topColor": "#340ca1",
+                "topColor": "#e034c9",
                 "bottomColor": "#320047",
-                "matOrigin": "HUNTER_SLIME"
+                "pattern": "mesmer_pattern",
+                "matOrigin": "TABBY_SLIME"
             },
             { "sameAs": 0 },
             {
@@ -438,9 +434,9 @@
         "customMatData":
         [
             {
-                "topColor": "#340ca1",
+                "topColor": "#e034c9",
                 "bottomColor": "#320047",
-                "pattern": "hermit_pattern",
+                "pattern": "mesmer_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11
             },
