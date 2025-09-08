@@ -176,14 +176,36 @@
         "name": "Phosphor Mesmer",
         "slime1": "Phosphor",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
-        "bodyMatData": 
-        {
-            "topColor": "#e034c9",
-            "bottomColor": "#320047",
-            "matOrigin": "PHOSPHOR_SLIME",
-            "gloss": 0.11
-        }
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData": 
+        [
+            {
+                "colorsOrigin": "PHOSPHOR_SLIME",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            {
+                "colorsOrigin": "PHOSPHOR_SLIME",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            {
+                "colorsOrigin": "PHOSPHOR_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "PHOSPHOR_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "PHOSPHOR_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "PHOSPHOR_SLIME",
+                "matOrigin": "PINK_SLIME"
+            }
+        ]
     },
     {
         "name": "Mosaic Mesmer",
@@ -309,15 +331,43 @@
         "name": "Rock Mesmer",
         "slime1": "Rock",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
+        "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
         "bodyMatData": 
         {
-            "topColor": "#e034c9",
-            "bottomColor": "#320047",
+            "colorsOrigin": "ROCK_SLIME",
             "pattern": "mesmer_pattern",
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11
-        }
+        },
+        "slime2StructureMatData": 
+        [
+            {
+                "colorsOrigin": "ROCK_SLIME",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            {
+                "colorsOrigin": "ROCK_SLIME",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            {
+                "colorsOrigin": "ROCK_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "ROCK_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "ROCK_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "ROCK_SLIME",
+                "matOrigin": "PINK_SLIME"
+            }
+        ]
     },
     {
         "name": "Tabby Mesmer",
@@ -405,15 +455,43 @@
         "name": "Crystal Mesmer",
         "slime1": "Crystal",
         "slime2": "Mesmer",
-        "props": ["CustomBodyMaterial"],
+        "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
         "bodyMatData": 
         {
-            "topColor": "#e034c9",
-            "bottomColor": "#320047",
+            "colorsOrigin": "CRYSTAL_SLIME",
             "pattern": "mesmer_pattern",
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11
-        }
+        },
+        "slime2StructureMatData": 
+        [
+            {
+                "colorsOrigin": "CRYSTAL_SLIME",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            {
+                "colorsOrigin": "CRYSTAL_SLIME",
+                "matOrigin": "TABBY_SLIME",
+                "pattern": "mesmer_pincer_pattern"
+            },
+            {
+                "colorsOrigin": "CRYSTAL_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "CRYSTAL_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "CRYSTAL_SLIME",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "colorsOrigin": "CRYSTAL_SLIME",
+                "matOrigin": "PINK_SLIME"
+            }
+        ]
     },
     {
         "name": "Dervish Mesmer",
