@@ -315,7 +315,8 @@
         [
             {
                 "topColor": "#340ca1",
-                "bottomColor": "#320047"
+                "bottomColor": "#320047",
+                "matOrigin": "TABBY_SLIME"
             },
             { "sameAs": 0 },
             {
@@ -350,35 +351,31 @@
         "customMatData":
         [
             {
-                "topColor": "#e034c9",
-                "bottomColor": "#320047",
-                "pattern": "mesmer_pattern",
-                "matOrigin": "TABBY_SLIME",
-                "gloss": 0.11
-            },
-            {
                 "topColor": "#340ca1",
                 "bottomColor": "#320047",
-                "matOrigin": "TABBY_SLIME",
-                "pattern": "mesmer_pincer_pattern"
+                "matOrigin": "HUNTER_SLIME"
             },
-            { "sameAs": 1 },
-            { "sameAs": 1 },
+            { "sameAs": 0 },
             {
-                "topColor": "#33169a",
-                "matOrigin": "PINK_SLIME"
+                "sameAs": 2,
+                "matOrigin": "MESMER_SLIME"
             },
+            { "sameAs": 2 },
             {
-                "topColor": "#821ed6",
-                "matOrigin": "PINK_SLIME"
-            },
-            {
-                "topColor": "#e034c9",
-                "matOrigin": "PINK_SLIME"
+                "sameAs": 3,
+                "matOrigin": "MESMER_SLIME"
             },
             {
-                "topColor": "#dafe7a",
-                "matOrigin": "PINK_SLIME"
+                "sameAs": 4,
+                "matOrigin": "MESMER_SLIME"
+            },
+            {
+                "sameAs": 5,
+                "matOrigin": "MESMER_SLIME"
+            },
+            {
+                "sameAs": 6,
+                "matOrigin": "MESMER_SLIME"
             }
         ]
     },
@@ -441,9 +438,9 @@
         "customMatData":
         [
             {
-                "topColor": "#e034c9",
+                "topColor": "#340ca1",
                 "bottomColor": "#320047",
-                "pattern": "mesmer_pattern",
+                "pattern": "hermit_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11
             },
@@ -467,7 +464,7 @@
         [
             { "cloneMatOrigin": false },
             { "colorsOrigin": "PINK_SLIME" },
-            { "colorsOrigin": "PINK_SLIME" }
+            { "sameAs": 1 }
         ]
     },
     {
@@ -479,7 +476,7 @@
         [
             { "cloneMatOrigin": false },
             { "colorsOrigin": "SABER_SLIME" },
-            { "colorsOrigin": "SABER_SLIME" }
+            { "sameAs": 1 }
         ]
     },
     {
@@ -490,14 +487,8 @@
         "slime2StructureMatData":
         [
             { "cloneMatOrigin": false },
-            {
-                "colorsOrigin": "HONEY_SLIME",
-                "matOrigin": "HONEY_SLIME"
-            },
-            {
-                "colorsOrigin": "HONEY_SLIME",
-                "matOrigin": "HONEY_SLIME"
-            }
+            { "matOrigin": "HONEY_SLIME" },
+            { "sameAs": 1 }
         ]
     },
     {
@@ -508,8 +499,8 @@
         "slime2StructureMatData":
         [
             { "cloneMatOrigin": false },
-            { "colorsOrigin": "PHOSPHOR_SLIME"},
-            { "colorsOrigin": "PHOSPHOR_SLIME" }
+            { "colorsOrigin": "PHOSPHOR_SLIME" },
+            { "sameAs": 1 }
         ]
     },
     {
@@ -521,7 +512,7 @@
         [
             { "cloneMatOrigin": false },
             { "colorsOrigin": "MOSAIC_SLIME" },
-            { "colorsOrigin": "MOSAIC_SLIME" }
+            { "sameAs": 1 }
         ]
     },
     {
@@ -538,8 +529,8 @@
                 "matOrigin": "TANGLE_SLIME"
             },
             {
-                "topColor": "#f6d599",
-                "matOrigin": "PINK_SLIME"
+                "sameAs": 1,
+                "matOrigin": "HERMIT_SLIME"
             },
             { "sameAs": 0 },
             { "sameAs": 0 }
@@ -557,10 +548,7 @@
                 "colorsOrigin": "BOOM_SLIME",
                 "matOrigin": "BOOM_SLIME"
             },
-            {
-                "colorsOrigin": "BOOM_SLIME",
-                "matOrigin": "BOOM_SLIME"
-            }
+            { "sameAs": 1 }
         ]
     },
     {
@@ -575,10 +563,7 @@
                 "colorsOrigin": "RAD_SLIME",
                 "matOrigin": "RAD_SLIME"
             },
-            {
-                "colorsOrigin": "RAD_SLIME",
-                "matOrigin": "RAD_SLIME"
-            }
+            { "sameAs": 1 }
         ]
     },
     {
@@ -590,7 +575,7 @@
         [
             { "cloneMatOrigin": false },
             { "colorsOrigin": "ROCK_SLIME" },
-            { "colorsOrigin": "ROCK_SLIME" }
+            { "sameAs": 1 }
         ]
     },
     {
@@ -607,11 +592,11 @@
                 "matOrigin": "TABBY_SLIME"
             },
             {
-                "topColor": "#f6d599",
-                "matOrigin": "PINK_SLIME"
+                "sameAs": 1,
+                "matOrigin": "HERMIT_SLIME"
             },
-            { "sameAs": 0 },
-            { "sameAs": 0 }
+            { "colorsOrigin": "TABBY_SLIME" },
+            { "sameAs": 3 }
         ]
     },
     {
@@ -623,13 +608,16 @@
         "customMatData":
         [
             { "matOrigin": "HUNTER_SLIME" },
-            { "sameAs": 0 },
             {
-                "topColor": "#f6d599",
-                "matOrigin": "PINK_SLIME"
+                "sameAs": 1,
+                "matOrigin": "HUNTER_SLIME"
             },
-            { "sameAs": 0 },
-            { "sameAs": 0 }
+            {
+                "sameAs": 1,
+                "matOrigin": "HERMIT_SLIME"
+            },
+            { "colorsOrigin": "HUNTER_SLIME" },
+            { "sameAs": 3 }
         ]
     },
     {
@@ -641,7 +629,7 @@
         [
             { "cloneMatOrigin": false },
             { "colorsOrigin": "CRYSTAL_SLIME" },
-            { "colorsOrigin": "CRYSTAL_SLIME" }
+            { "sameAs": 1 }
         ]
     },
     {
@@ -653,7 +641,7 @@
         [
             { "cloneMatOrigin": false },
             { "colorsOrigin": "DERVISH_SLIME" },
-            { "colorsOrigin": "DERVISH_SLIME" }
+            { "sameAs": 1 }
         ]
     }
 ]

@@ -170,7 +170,7 @@ public static class Largopedia
 
                 if (customMats)
                 {
-                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime1StructMatData[j], largoData.Slime1Data?.SlimeMatData, structure.DefaultMaterials[0]);
+                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime1StructMatData[j], largoData.Slime1StructMatData, structure.DefaultMaterials[0]);
                     j++;
                 }
 
@@ -190,7 +190,7 @@ public static class Largopedia
 
                 if (customMats2)
                 {
-                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime2StructMatData[j], largoData.Slime2Data?.SlimeMatData, structure.DefaultMaterials[0]);
+                    structure.DefaultMaterials[0] = Slimepedia.GenerateMaterial(largoData.Slime2StructMatData[j], largoData.Slime2StructMatData, structure.DefaultMaterials[0]);
                     j++;
                 }
 
