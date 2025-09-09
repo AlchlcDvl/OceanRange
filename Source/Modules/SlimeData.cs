@@ -110,7 +110,7 @@ public sealed class SlimeData : SpawnedActorData
     public Orientation GordoOrientation;
 
     [JsonProperty("gordoLoc")]
-    public string GordoLocation;
+    public string GordoCell;
 
     [JsonProperty("natGordoSpawn")]
     public bool NaturalGordoSpawn = true;

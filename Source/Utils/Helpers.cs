@@ -322,7 +322,7 @@ public static class Helpers
         return false;
     }
 
-    // public static bool ContainsKey<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey[] keys)
+    // public static bool ContainsKeys<TKey, TValue>(this IDictionary<TKey, TValue> dict, params TKey[] keys)
     // {
     //     foreach (var key in keys)
     //     {

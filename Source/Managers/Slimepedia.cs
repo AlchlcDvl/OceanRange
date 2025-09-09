@@ -94,7 +94,7 @@ public static class Slimepedia
         foreach (var slimeData in Slimes)
         {
             if (slimeData.HasGordo && slimeData.NaturalGordoSpawn)
-                Helpers.BuildGordo(slimeData, GameObject.Find("zone" + slimeData.GordoZone + "/cell" + slimeData.GordoLocation + "/Sector/Slimes"));
+                Helpers.BuildGordo(slimeData, GameObject.Find("zone" + slimeData.GordoZone + "/cell" + slimeData.GordoCell + "/Sector/Slimes"));
         }
     }
 
