@@ -140,6 +140,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     private readonly TComponent Default = defaultValue; // The default values for component indices between min and max counts
     protected readonly NumberStyles Style = style; // The supported styles of the numbers
     private readonly string Format = format; // The expected format in case of parsing error
+    private readonly TComponent[] Parsed = new TComponent[maxLength];
 
     /// <summary>
     /// Creates the instance of the type handled by the converter using the parse array of components.
@@ -173,7 +174,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
         var valString = reader.Value?.ToString() ?? "null";
 
         if (reader.TokenType != JsonToken.String)
-            throw new InvalidDataException($"Cannot convert value '{valString}' to {typeof(TValue).Name}. Expected string format {Format}.");
+            throw new InvalidDataException($"Cannot convert value '{valString}'. Expected string format {Format}.");
 
         return Parse(valString);
     }
@@ -196,23 +197,21 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
         if (components.Count > MaxLength)
             throw new InvalidDataException($"'{value}' has too many values!");
 
-        var array = new TComponent[MaxLength]; // Create temp array (I wish the game used System.Memory so I could use ArrayPool)
-
         for (var i = 0; i < components.Count; i++) // For each string component
         {
             var component = components[i];
 
             if (TryParse(component, Style, CultureInfo.InvariantCulture, out var valueComponent)) // Attempt to parse
-                array[i] = valueComponent; // Assign to index of array if parsing successful
+                Parsed[i] = valueComponent; // Assign to index of array if parsing successful
             else
                 throw new InvalidDataException($"Invalid {typeof(TComponent).Name} string '{component}' at index {i}!"); // Throw error otherwise
         }
 
         // Filling in the missing values with the converter default
         for (var i = components.Count; i < MaxLength; i++)
-            array[i] = Default;
+            Parsed[i] = Default;
 
-        return array;
+        return Parsed;
     }
 }
 

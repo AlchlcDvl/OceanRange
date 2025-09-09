@@ -177,7 +177,7 @@ public static class Largopedia
                 list.Add(structure);
             }
 
-            struct1LastIndex = j;
+            struct1LastIndex = appearance1.Structures.Length;
             j = 0;
             var num2 = appearance2.Structures.IndexOfItem(slime2Body);
 
@@ -241,6 +241,15 @@ public static class Largopedia
         }
 
         definition.AppearancesDefault = [appearance];
+
+        if (!LargoMaps.TryGetValue(largoData.Slime1Id, out var slime1Values))
+            LargoMaps[largoData.Slime1Id] = slime1Values = [];
+
+        if (!LargoMaps.TryGetValue(largoData.Slime2Id, out var slime2Values))
+            LargoMaps[largoData.Slime2Id] = slime2Values = [];
+
+        slime1Values.Add((largoData.MainId, largoData.Slime2Id));
+        slime2Values.Add((largoData.MainId, largoData.Slime1Id));
 
         if (prefab.TryGetComponent<PlayWithToys>(out var toys))
             toys.slimeDefinition = definition;

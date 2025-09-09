@@ -64,14 +64,5 @@ public sealed class LargoData : ActorData
             Slime2Data = data2;
 
         Jiggle ??= ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
-
-        if (!Largopedia.LargoMaps.TryGetValue(Slime1Id, out var slime1Values))
-            Largopedia.LargoMaps[Slime1Id] = slime1Values = [];
-
-        if (!Largopedia.LargoMaps.TryGetValue(Slime2Id, out var slime2Values))
-            Largopedia.LargoMaps[Slime2Id] = slime2Values = [];
-
-        slime1Values.Add((MainId, Slime2Id));
-        slime2Values.Add((MainId, Slime1Id));
     }
 }
