@@ -72,6 +72,193 @@
         ]
     },
     {
+        "name": "Pink Coco",
+        "slime1": "Pink",
+        "slime2": "Coco",
+        "props": ["UseSlime2ForBody", "CustomBodyMaterial"],
+        "bodyMatData":
+        { 
+            "colorsOrigin": "PINK_SLIME",
+            "pattern": "coco_pattern",
+            "matOrigin": "TABBY_SLIME"
+        }
+    },
+    {
+        "name": "Coco Saber",
+        "slime1": "Coco",
+        "slime2": "Saber",
+        "props": ["UseSlime2ForBody", "CustomBodyMaterial"],
+        "bodyMatData":
+        {
+            "pattern": "coco_pattern",
+            "matOrigin": "TABBY_SLIME"
+        }
+    },
+    {
+        "name": "Coco Quantum",
+        "slime1": "Coco",
+        "slime2": "Quantum",
+        "props": ["CustomBodyMaterial"],
+        "bodyMatData": 
+        {
+            "colorsOrigin": "COCO_SLIME",
+            "matOrigin": "QUANTUM_SLIME"
+        }
+    },
+    {
+        "name": "Coco Honey",
+        "slime1": "Coco",
+        "slime2": "Honey",
+        "props": ["UseSlime2ForBodyMaterial"]
+    },
+    {
+        "name": "Coco Phosphor",
+        "slime1": "Coco",
+        "slime2": "Phosphor",
+        "props": ["UseSlime2ForBodyMaterial"]
+    },
+    {
+        "name": "Coco Tangle",
+        "slime1": "Coco",
+        "slime2": "Tangle",
+        "props": ["CustomBodyMaterial"],
+        "bodyMatData":
+        {
+            "colorsOrigin": "TANGLE_SLIME",
+            "pattern": "coco_pattern",
+            "matOrigin": "TABBY_SLIME"
+        }
+    },
+    {
+        "name": "Coco Boom",
+        "slime1": "Coco",
+        "slime2": "Boom",
+        "props": ["CustomBodyMaterial"],
+        "bodyMatData":
+        {
+            "colorsOrigin": "COCO_SLIME",
+            "matOrigin": "BOOM_SLIME"
+        }
+    },
+    {
+        "name": "Coco Rad",
+        "slime1": "Coco",
+        "slime2": "Rad",
+        "props": ["CustomBodyMaterial"],
+        "bodyMatData":
+        {
+            "colorsOrigin": "RAD_SLIME",
+            "pattern": "coco_pattern",
+            "matOrigin": "TABBY_SLIME"
+        }
+    },
+    {
+        "name": "Coco Rock",
+        "slime1": "Coco",
+        "slime2": "Rock",
+        "props": ["CustomBodyMaterial"],
+        "bodyMatData":
+        {
+            "colorsOrigin": "ROCK_SLIME",
+            "pattern": "coco_pattern",
+            "matOrigin": "TABBY_SLIME"
+        }
+    },
+    {
+        "name": "Coco Tabby",
+        "slime1": "Coco",
+        "slime2": "Tabby",
+        "props": ["UseSlime2ForMouth", "CustomSlime2StructureMaterials"],
+        "slime2StructureMatData":
+        [
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            },
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
+        ]
+    },
+    {
+        "name": "Coco Hunter",
+        "slime1": "Coco",
+        "slime2": "Hunter",
+        "props": ["UseSlime2ForEyes", "UseSlime2ForMouth", "CustomSlime2StructureMaterials"],
+        "slime2StructureMatData":
+        [
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            },
+            {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            }
+        ]
+    },
+    {
+        "name": "Coco Crystal",
+        "slime1": "Coco",
+        "slime2": "Crystal",
+        "props": ["CustomBodyMaterial"],
+        "bodyMatData":
+        {
+            "colorsOrigin": "CRYSTAL_SLIME",
+            "pattern": "coco_pattern",
+            "matOrigin": "TABBY_SLIME"
+        }
+    },
+    {
+        "name": "Coco Dervish",
+        "slime1": "Coco",
+        "slime2": "Dervish",
+        "props": ["CustomBodyMaterial"],
+        "bodyMatData":
+        {
+            "colorsOrigin": "DERVISH_SLIME",
+            "pattern": "coco_pattern",
+            "matOrigin": "TABBY_SLIME"
+        }
+    },
+    {
+        "name": "Coco Mesmer",
+        "slime1": "Coco",
+        "slime2": "Mesmer",
+        "props": ["CustomBodyMaterial"],
+        "bodyMatData":
+        {
+            "topColor": "#e034c9",
+            "bottomColor": "#320047",
+            "pattern": "coco_pattern",
+            "matOrigin": "TABBY_SLIME"
+        }
+    },
+    {
+        "name": "Coco Hermit",
+        "slime1": "Coco",
+        "slime2": "Hermit",
+        "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
+        "bodyMatData":
+        {
+            "topColor": "#f09695",
+            "bottomColor": "#e65954",
+            "pattern": "coco_pattern",
+            "matOrigin": "TABBY_SLIME"
+        },
+        "slime2StructureMatData":
+        [
+            { "cloneMatOrigin": false },
+            {
+                "topColor": "#b53a35",
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME"
+            },
+            { "sameAs": 1 }
+        ]
+    },
+    {
         "name": "Pink Mesmer",
         "slime1": "Pink",
         "slime2": "Mesmer",
@@ -105,6 +292,43 @@
         "slime1": "Saber",
         "slime2": "Mesmer",
         "props": ["UseSlime2ForBodyMaterial"]
+    },
+    {
+        "name": "Quantum Mesmer",
+        "slime1": "Quantum",
+        "slime2": "Mesmer",
+        "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
+        "bodyMatData": 
+        {
+            "topColor": "#e034c9",
+            "bottomColor": "#320047",
+            "matOrigin": "QUANTUM_SLIME"
+        },
+        "slime2StructureMatData":
+        [
+            {
+                "topColor": "#340ca1",
+                "bottomColor": "#320047",
+                "matOrigin": "QUANTUM_SLIME"
+            },
+            { "sameAs": 0 },
+            {
+                "topColor": "#33169a",
+                "matOrigin": "QUANTUM_SLIME"
+            },
+            {
+                "topColor": "#821ed6",
+                "matOrigin": "QUANTUM_SLIME"
+            },
+            {
+                "topColor": "#e034c9",
+                "matOrigin": "QUANTUM_SLIME"
+            },
+            {
+                "topColor": "#dafe7a",
+                "matOrigin": "QUANTUM_SLIME"
+            }
+        ]
     },
     {
         "name": "Honey Mesmer",
@@ -475,6 +699,7 @@
             { "sameAs": 1 }
         ]
     },
+
     {
         "name": "Honey Hermit",
         "slime1": "Honey",
