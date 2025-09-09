@@ -177,7 +177,7 @@ public static class Largopedia
                 list.Add(structure);
             }
 
-            struct1LastIndex = list.Count;
+            struct1LastIndex = j;
             j = 0;
             var num2 = appearance2.Structures.IndexOfItem(slime2Body);
 
@@ -222,11 +222,11 @@ public static class Largopedia
 
                 if (allCustomModels)
                     Slimepedia.SetMatProperties(largoData.MatData[i], mat);
-                else if (i == 0 && customBody)
+                else if (customBody && i == 0)
                     Slimepedia.SetMatProperties(largoData.BodyMatData, mat);
-                else if (i < struct1LastIndex && customMats)
+                else if (customMats && i < struct1LastIndex)
                     Slimepedia.SetMatProperties(largoData.Slime1StructMatData[i - 1], mat);
-                else if (customMats2)
+                else if (customMats2 && i >= struct1LastIndex)
                     Slimepedia.SetMatProperties(largoData.Slime2StructMatData[i - struct1LastIndex], mat);
                 else
                 {
