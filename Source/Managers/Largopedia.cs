@@ -177,7 +177,6 @@ public static class Largopedia
                 list.Add(structure);
             }
 
-            struct1LastIndex = appearance1.Structures.Length;
             j = 0;
             var num2 = appearance2.Structures.IndexOfItem(slime2Body);
 
@@ -198,6 +197,7 @@ public static class Largopedia
             }
 
             appearance.Structures = [.. list];
+            struct1LastIndex = appearance1.Structures.Length;
         }
 
         appearance.ColorPalette = SlimeAppearance.Palette.FromMaterial(appearance.Structures[0].DefaultMaterials[0]);
@@ -274,10 +274,10 @@ public static class Largopedia
             collider.center = collider2.center;
         }
 
-        foreach (Transform item in prefab.transform)
+        foreach (Transform item in slime2Prefab.transform)
         {
             if (!prefab.transform.Find(item.name))
-                prefab.GetChildCopy(item.name).transform.SetParent(prefab.transform);
+                slime2Prefab.GetChildCopy(item.name).transform.SetParent(prefab.transform);
         }
 
         if (largoData.Slime1Data?.ComponentsToRemove != null)

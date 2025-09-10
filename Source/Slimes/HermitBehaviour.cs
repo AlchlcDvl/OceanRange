@@ -6,10 +6,11 @@ namespace OceanRange.Slimes;
 
 public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participant
 {
-    private Transform Root;
     private CalmedByWaterSpray Calmed;
     private SlimeAppearanceApplicator Applicator;
     private bool Hiding;
+    private GameObject Shell;
+    private Transform Appearance;
 
     public CanMoveHandler CanMove;
     public float Affection;
@@ -25,7 +26,9 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
         Calmed = GetComponent<CalmedByWaterSpray>();
         Applicator = GetComponent<SlimeAppearanceApplicator>();
         CanMove = this.EnsureComponent<CanMoveHandler>();
-        Root = Array.Find(Applicator.Bones, x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform;
+        Shell = gameObject.FindChild("Shell") ?? gameObject.FindChild("Shell(Clone)");
+        Appearance = transform.Find("Appearance");
+        Shell.SetActive(false);
     }
 
     public void ReadData(CompoundDataPiece piece) => Affection = piece.GetValue<float>("affection");
@@ -53,7 +56,8 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
         CanMove.CanMove = false;
         Applicator.SetExpression(SlimeExpression.Alarm);
 
-        yield return Helpers.PerformTimedAction(2f, t => Root.localScale = Vector3.Lerp(Vector3.one, HiddenSize, t));
+        Shell.SetActive(true);
+        yield return Helpers.PerformTimedAction(2f, t => Appearance.localScale = Vector3.Lerp(Vector3.one, HiddenSize, t));
 
         var player = SceneContext.Instance.Player.transform;
 
@@ -62,7 +66,8 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
         yield return Helpers.WaitWhile(() => (player.position - transform.position).sqrMagnitude <= range);
 
-        yield return Helpers.PerformTimedAction(1f, t => Root.localScale = Vector3.Lerp(HiddenSize, Vector3.one, t));
+        yield return Helpers.PerformTimedAction(1f, t => Appearance.localScale = Vector3.Lerp(HiddenSize, Vector3.one, t));
+        Shell.SetActive(false);
 
         Hiding = false;
         CanMove.CanMove = true;

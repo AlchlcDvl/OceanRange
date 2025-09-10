@@ -772,6 +772,20 @@ public static class Slimepedia
         IdentifiableId.SILKY_SAND_CRAFT.RegisterAsSnareable();
     }
 
+    [UsedImplicitly]
+    public static void InitHermitSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance)
+    {
+        var go = new GameObject("Shell");
+        go.SetActive(false);
+        go.transform.SetParent(prefab.transform);
+        go.AddComponent<MeshFilter>().sharedMesh = Inventory.GetMesh("hermit_shell");
+
+        var rend = go.AddComponent<MeshRenderer>();
+        var mats = appearance.Structures[1].DefaultMaterials;
+        rend.sharedMaterial = mats[0];
+        rend.sharedMaterials = mats;
+    }
+
 #if DEBUG
     [TimeDiagnostic("Slime Postload")]
 #endif
