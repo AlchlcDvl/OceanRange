@@ -699,7 +699,21 @@
             { "sameAs": 1 }
         ]
     },
-
+    {
+        "name": "Quantum Hermit",
+        "slime1": "Quantum",
+        "slime2": "Hermit",
+        "props": ["CustomSlime2StructureMaterials"],
+        "slime2StructureMatData":
+        [
+            {
+                "topColor": "#f6d599",
+                "matOrigin": "QUANTUM_SLIME"
+            },
+            { "matOrigin": "QUANTUM_SLIME" },
+            { "matOrigin": "QUANTUM_SLIME" }
+        ]
+    },
     {
         "name": "Honey Hermit",
         "slime1": "Honey",
