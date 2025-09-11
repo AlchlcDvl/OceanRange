@@ -41,7 +41,7 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
 
         CanMove.CanMove = TimeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
 
-        if (!CanMove)
+        if (!CanMove.CanMove)
             Applicator.SetExpression(Ids.Sleeping);
     }
 
