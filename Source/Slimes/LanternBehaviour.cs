@@ -56,7 +56,7 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
 
     public void OnControllerCollision(GameObject gameObj)
     {
-        if (CanMove)
+        if (CanMove.CanMove)
             return;
 
         CanMove.CanMove = Fleeing = gameObj == SceneContext.Instance.Player;

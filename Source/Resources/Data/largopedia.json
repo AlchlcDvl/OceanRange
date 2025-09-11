@@ -25,7 +25,7 @@
         "slime1": "Rosi",
         "slime2": "Lantern",
         "meshes": ["rosi_body", "rosi_lantern_fins", "lantern_stalk", "lantern_lure", "rosi_mine_stalk", "rosi_mine_frills"],
-        "props": ["UseSlime2ForMouth", "CustomStructureSource"],
+        "props": ["UseSlime2ForMouth", "CustomStructureSource", "UseSlime2ForEyes"],
         "customMatData":
         [
             { "matOrigin": "LANTERN_SLIME" },
@@ -77,7 +77,7 @@
         "slime2": "Coco",
         "props": ["UseSlime2ForBody", "CustomBodyMaterial"],
         "bodyMatData":
-        { 
+        {
             "colorsOrigin": "PINK_SLIME",
             "pattern": "coco_pattern",
             "matOrigin": "TABBY_SLIME"
@@ -99,7 +99,7 @@
         "slime1": "Coco",
         "slime2": "Quantum",
         "props": ["CustomBodyMaterial"],
-        "bodyMatData": 
+        "bodyMatData":
         {
             "colorsOrigin": "COCO_SLIME",
             "matOrigin": "QUANTUM_SLIME"
@@ -298,7 +298,7 @@
         "slime1": "Quantum",
         "slime2": "Mesmer",
         "props": ["CustomBodyMaterial", "CustomSlime2StructureMaterials"],
-        "bodyMatData": 
+        "bodyMatData":
         {
             "topColor": "#e034c9",
             "bottomColor": "#320047",

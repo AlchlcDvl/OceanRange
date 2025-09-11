@@ -17,7 +17,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
     private static readonly Vector3 HiddenSize = Vector3.one * 0.1f;
 
-    private const float MaxShyRange = 3f;
+    private const float MaxShyRange = 5f;
     private const float MinShyRange = 1f;
 
     public override void Awake()
@@ -26,7 +26,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
         Calmed = GetComponent<CalmedByWaterSpray>();
         Applicator = GetComponent<SlimeAppearanceApplicator>();
         CanMove = this.EnsureComponent<CanMoveHandler>();
-        Shell = gameObject.FindChild("Shell") ?? gameObject.FindChild("Shell(Clone)");
+        Shell = (transform.Find("Shell") ?? transform.Find("Shell(Clone)")).gameObject;
         Appearance = transform.Find("Appearance");
         Shell.SetActive(false);
     }

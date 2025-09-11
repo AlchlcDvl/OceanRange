@@ -15,3 +15,5 @@ SlimeRancher.props
 Libs/
 Ignore.*
 Dev*/
+UnusedAssets/
+SrExports/

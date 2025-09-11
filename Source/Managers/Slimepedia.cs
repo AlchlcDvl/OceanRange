@@ -117,9 +117,6 @@ public static class Slimepedia
         Array.ForEach(Slimes, BaseLoadSlime);
     }
 
-#if DEBUG
-    [TimeDiagnostic]
-#endif
     private static void BaseLoadSlime(SlimeData slimeData)
     {
         CreateSlime(slimeData);
@@ -214,21 +211,24 @@ public static class Slimepedia
         // Next set up the mesh and material details
         for (var i = 0; i < slimeData.PlortMeshes.Length; i++)
         {
+            var first = i == 0;
             var meshName = slimeData.PlortMeshes[i];
-            var rocks = i == 0 ? prefab.transform : RocksPrefab.Instantiate(prefab.transform);
+            var rocks = first ? prefab.transform : RocksPrefab.Instantiate(prefab.transform);
             var filter = rocks.GetComponent<MeshFilter>();
             var isNull = meshName == null;
             filter.mesh = filter.sharedMesh = isNull ? filter.mesh.Clone() : Inventory.GetMesh(meshName);
-
-            if (!isNull)
-                rocks.name = meshName;
 
             var rend = rocks.GetComponent<MeshRenderer>();
             var material = GenerateMaterial(slimeData.PlortMatData[i], slimeData.SlimeMatData, rend.material);
             rend.material = rend.sharedMaterial = material;
 
-            if (i != 0)
+            if (!first)
+            {
                 rend.materials = rend.sharedMaterials = [material];
+
+                if (!isNull)
+                    rocks.name = meshName;
+            }
         }
 
         var definition = slimeData.MainId.GetSlimeDefinition();
@@ -401,7 +401,8 @@ public static class Slimepedia
 
     public static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeAppearanceStructure first, string[] meshes, bool skipNull, float jiggle, MaterialData[] matData)
     {
-        var elemPrefab = first.Element.Prefabs[0];
+        var skinnedPrefab = first.Element.Prefabs[0];
+        var filterPrefab1 = first.Element.Prefabs[1];
 
         appearance.Structures = new SlimeAppearanceStructure[meshes.Length];
         appearance.Structures[0] = new(first);
@@ -409,10 +410,7 @@ public static class Slimepedia
         for (var i = 1; i < meshes.Length; i++)
             appearance.Structures[i] = new(first);
 
-        SlimeAppearanceObject slimeBase = null;
-        var prefabsForBoneData = new SlimeAppearanceObject[meshes.Length - 1];
-
-        for (var i = 0; i < appearance.Structures.Length; i++)
+        for (var i = 0; i < meshes.Length; i++)
         {
             var structure = appearance.Structures[i];
 
@@ -422,33 +420,47 @@ public static class Slimepedia
             var isNull = meshName == null;
 
             if (isNull && skipNull)
-            {
-                if (i == 0)
-                    slimeBase = structure.Element.Prefabs[0];
-
                 continue;
-            }
+
+            var isFirst = i == 0;
+            structure.SupportsFaces = isFirst;
 
             var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
-            var prefab2 = elemPrefab.CreatePrefab();
-            elem.Prefabs = [prefab2];
-            elem.name = elem.Name = i == 0 ? "Body" : "Structure";
-            var meshRend = prefab2.GetComponent<SkinnedMeshRenderer>();
-            meshRend.sharedMesh = isNull ? meshRend.sharedMesh.Clone() : Inventory.GetMesh(meshName);
+            elem.name = elem.Name = isFirst ? "Body" : "Structure";
 
-            if (!isNull)
-                meshRend.name = meshName;
+            var length = isFirst ? 4 : 2;
+            elem.Prefabs = new SlimeAppearanceObject[length];
 
-            prefab2.IgnoreLODIndex = true;
-            structure.SupportsFaces = i == 0;
+            for (var j = 0; j < length; j++)
+            {
+                var isFirst2 = j == 0;
 
-            if (structure.SupportsFaces)
-                slimeBase = prefab2;
-            else if (i > 0)
-                prefabsForBoneData[i - 1] = prefab2;
+                SlimeAppearanceObject appearanceObject;
+
+                if (isFirst2)
+                {
+                    appearanceObject = skinnedPrefab.CreatePrefab();
+                    var rend = appearanceObject.GetComponent<SkinnedMeshRenderer>();
+                    rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(meshName + "_LOD0");
+                }
+                else if (!isNull)
+                {
+                    appearanceObject = filterPrefab1.CreatePrefab();
+                    var filter = appearanceObject.GetComponent<MeshFilter>();
+                    filter.sharedMesh = Inventory.GetMesh(meshName + "_LOD" + j);
+                }
+                else
+                    appearanceObject = first.Element.Prefabs[j];
+
+                if (!isNull)
+                    appearanceObject.name = meshName + "_LOD" + j;
+
+                appearanceObject.LODIndex = j;
+                elem.Prefabs[j] = appearanceObject;
+            }
         }
 
-        applicator.GenerateSlimeBones(slimeBase, jiggle, prefabsForBoneData);
+        applicator.GenerateSlimeBones(appearance.Structures, jiggle);
     }
 
     public static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback)
@@ -583,7 +595,12 @@ public static class Slimepedia
         {
             var meshName = slimeData.GordoMeshes[i];
             var isNull = meshName == null;
-            var mesh = isNull ? sharedMesh.Clone() : Inventory.GetMesh(meshName);
+            var isFirst = i == 0;
+            var mesh = isNull
+                ? sharedMesh.Clone()
+                : (isFirst || meshName.EndsWith("_gordo", StringComparison.OrdinalIgnoreCase)
+                    ? Inventory.GetMesh(meshName)
+                    : Inventory.GetMesh(meshName + "_LOD0"));
 
             var vertices2 = mesh.vertices;
             var weights = new BoneWeight[vertices2.Length];
@@ -595,19 +612,19 @@ public static class Slimepedia
             mesh.bindposes = poses;
             mesh.RecalculateBounds();
 
-            var meshRend = i == 0 ? prefabRend : prefabRend.Instantiate(parent);
+            var meshRend = isFirst ? prefabRend : prefabRend.Instantiate(parent);
             meshRend.sharedMesh = mesh;
             meshRend.localBounds = mesh.bounds;
             meshRend.bones = bones;
             meshRend.rootBone = parent;
 
-            if (!isNull && i != 0)
+            if (!isNull && !isFirst)
                 meshRend.name = meshName;
 
             var material = GenerateMaterial(slimeData.GordoMatData[i], slimeData.SlimeMatData, meshRend.material);
             meshRend.material = meshRend.sharedMaterial = material;
 
-            if (i == 0)
+            if (isFirst)
                 meshRend.materials[0] = meshRend.sharedMaterials[0] = material;
             else
                 meshRend.materials = meshRend.sharedMaterials = [material];
@@ -645,10 +662,10 @@ public static class Slimepedia
         return weight;
     }
 
-    private static void GenerateSlimeBones(this SlimeAppearanceApplicator slimePrefab, SlimeAppearanceObject bodyApp, float jiggleAmount, SlimeAppearanceObject[] appearanceObjects)
+    private static void GenerateSlimeBones(this SlimeAppearanceApplicator applicator, SlimeAppearanceStructure[] structures, float jiggleAmount)
     {
-        bodyApp.AttachedBones =
-        [
+        var attachedBones = new[]
+        {
             SlimeAppearance.SlimeBone.Slime,
             SlimeAppearance.SlimeBone.JiggleRight,
             SlimeAppearance.SlimeBone.JiggleLeft,
@@ -656,19 +673,23 @@ public static class Slimepedia
             SlimeAppearance.SlimeBone.JiggleBottom,
             SlimeAppearance.SlimeBone.JiggleFront,
             SlimeAppearance.SlimeBone.JiggleBack
-        ];
+        };
 
-        var meshRend = bodyApp.GetComponent<SkinnedMeshRenderer>();
+        var first = structures[0].Element.Prefabs[0];
+        first.AttachedBones = attachedBones;
+        var meshRend = first.GetComponent<SkinnedMeshRenderer>();
         var sharedMesh = meshRend.sharedMesh;
 
         var list = new List<(SkinnedMeshRenderer, Mesh)> { (meshRend, sharedMesh) };
 
-        foreach (var appearanceObject in appearanceObjects)
+        for (var i = 1; i < structures.Length; i++)
         {
+            var appearanceObject = structures[i].Element.Prefabs[0];
+
             if (!appearanceObject)
                 throw new NullReferenceException("One or more of the SlimeAppearanceObjects are null");
 
-            appearanceObject.AttachedBones = bodyApp.AttachedBones;
+            appearanceObject.AttachedBones = attachedBones;
 
             if (appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                 list.Add((rend, rend.sharedMesh));
@@ -676,13 +697,13 @@ public static class Slimepedia
                 Debug.LogWarning("One of the SlimeAppearanceObjects provided does not use a SkinnedMeshRenderer");
         }
 
-        var rootMatrix = slimePrefab.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;
-        var poses = new Matrix4x4[bodyApp.AttachedBones.Length];
+        var rootMatrix = applicator.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;
+        var poses = new Matrix4x4[attachedBones.Length];
 
-        for (var i = 0; i < bodyApp.AttachedBones.Length; i++)
+        for (var i = 0; i < attachedBones.Length; i++)
         {
-            var bone = bodyApp.AttachedBones[i];
-            poses[i] = slimePrefab.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
+            var bone = attachedBones[i];
+            poses[i] = applicator.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
         }
 
         var vertices = sharedMesh.vertices;
@@ -778,7 +799,7 @@ public static class Slimepedia
         var go = new GameObject("Shell");
         go.SetActive(false);
         go.transform.SetParent(prefab.transform);
-        go.AddComponent<MeshFilter>().sharedMesh = Inventory.GetMesh("hermit_shell");
+        go.AddComponent<MeshFilter>().sharedMesh = Inventory.GetMesh("hermit_shell_LOD1");
 
         var rend = go.AddComponent<MeshRenderer>();
         var mats = appearance.Structures[1].DefaultMaterials;
