@@ -805,12 +805,21 @@
         "name": "Rock Hermit",
         "slime1": "Rock",
         "slime2": "Hermit",
-        "props": ["CustomSlime2StructureMaterials"],
-        "slime2StructureMatData":
+        "meshes": [null, "hermit_shell", "rock_hermit_spine", "hermit_claw_1", "hermit_claw_2"],
+        "props": ["CustomStructureSource"],
+        "customMatData":
         [
-            { "cloneMatOrigin": false },
-            { "colorsOrigin": "ROCK_SLIME" },
-            { "sameAs": 1 }
+            { "matOrigin": "ROCK_SLIME" },
+            {
+                "topColor": "#f6d599",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "sameAs": 1,
+                "matOrigin": "ROCK_SLIME"
+            },
+            { "sameAs": 2 },
+            { "sameAs": 2 }
         ]
     },
     {
@@ -859,12 +868,21 @@
         "name": "Crystal Hermit",
         "slime1": "Crystal",
         "slime2": "Hermit",
-        "props": ["CustomSlime2StructureMaterials"],
-        "slime2StructureMatData":
+        "meshes": [null, "hermit_shell", "crystal_hermit_spine", "hermit_claw_1", "hermit_claw_2"],
+        "props": ["CustomStructureSource"],
+        "customMatData":
         [
-            { "cloneMatOrigin": false },
-            { "colorsOrigin": "CRYSTAL_SLIME" },
-            { "sameAs": 1 }
+            { "matOrigin": "CRYSTAL_SLIME" },
+            {
+                "topColor": "#f6d599",
+                "matOrigin": "PINK_SLIME"
+            },
+            {
+                "sameAs": 1,
+                "matOrigin": "CRYSTAL_SLIME"
+            },
+            { "sameAs": 2 },
+            { "sameAs": 2 }
         ]
     },
     {
