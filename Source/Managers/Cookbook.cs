@@ -90,10 +90,8 @@ public static class Cookbook
         foreach (var plantData in Plants)
         {
             var prefab = plantData.IsVeggie ? veggiePrefab : fruitPrefab;
-
-            var toInstantiate = prefab.Instantiate();
-            toInstantiate.ObjectsToSpawn = toInstantiate.BonusObjectsToSpawn = [plantData.MainId.GetPrefab()];
-            toInstantiate.name = plantData.ResourceIdSuffix.ToLowerInvariant() + plantData.Name + "0";
+            var lower = plantData.ResourceIdSuffix.ToLowerInvariant();
+            var array = new[] { plantData.MainId.GetPrefab() };
 
             foreach (var (zone, spawnLocations) in plantData.SpawnLocations)
             {
@@ -106,13 +104,12 @@ public static class Cookbook
                         var pos = positions[i];
                         var resource = prefab.Instantiate(parent);
                         resource.transform.position = pos;
-                        resource.name = resource.name.Replace("(Clone)", "") + i;
+                        resource.name = lower + plantData.Name + "0" + i;
+                        resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
                         context.GameModel.RegisterResourceSpawner(pos, resource);
                     }
                 }
             }
-
-            toInstantiate.Destroy();
         }
     }
 

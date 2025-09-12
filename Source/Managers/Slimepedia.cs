@@ -442,6 +442,9 @@ public static class Slimepedia
                     appearanceObject = skinnedPrefab.CreatePrefab();
                     var rend = appearanceObject.GetComponent<SkinnedMeshRenderer>();
                     rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(meshName + "_LOD0");
+
+                    if (!isNull)
+                        appearanceObject.name = meshName + "_LOD0";
                 }
                 else if (!isNull)
                 {
@@ -465,38 +468,38 @@ public static class Slimepedia
 
     public static Material GenerateMaterial(MaterialData matData, MaterialData[] mainMatData, Material fallback)
     {
-        var setColors = true;
-        var clone = false;
+        var setProps = true;
+        var cloneMat = false;
         Material material;
 
         if (matData.CachedMaterial)
         {
             material = matData.CachedMaterial;
-            setColors = false;
+            setProps = false;
         }
         // else if (matData.Shader != null)
         //     material = new(Array.Find(Resources.FindObjectsOfTypeAll<Shader>(), x => x.name.EndsWith(matData.Shader, StringComparison.OrdinalIgnoreCase))/* ?? AssetManager.GetShader(matData.Shader) */);
         else if (matData.MatOriginSlime.HasValue)
         {
             material = GetMat(matData.MatOriginSlime.Value, matData.SameAs);
-            clone = matData.CloneMatOrigin;
+            cloneMat = matData.CloneMatOrigin;
         }
         else if (matData.SameAs.HasValue && mainMatData?.Length is > 0)
         {
             material = mainMatData[matData.SameAs.Value].CachedMaterial;
-            setColors = matData.CloneSameAs;
-            clone = matData.CloneSameAs;
+            setProps = matData.CloneSameAs;
+            cloneMat = matData.CloneSameAs;
         }
         else
         {
             material = fallback;
-            clone = true;
+            cloneMat = true;
         }
 
-        if (clone)
-                material = material.Clone();
+        if (cloneMat)
+            material = material.Clone();
 
-        if (setColors)
+        if (setProps)
             SetMatProperties(matData, material);
 
         matData.CachedMaterial = material;
@@ -511,7 +514,7 @@ public static class Slimepedia
     {
         if (matData.ColorsOrigin.HasValue)
         {
-            var temp = GetMat(matData.ColorsOrigin.Value, matData.SameAs);
+            var temp = GetMat(matData.ColorsOrigin.Value, matData.ColorsSameAs);
 
             if (temp.HasProperty(TopColor))
                 matData.TopColor ??= temp.GetColor(TopColor);
@@ -675,26 +678,24 @@ public static class Slimepedia
             SlimeAppearance.SlimeBone.JiggleBack
         };
 
-        var first = structures[0].Element.Prefabs[0];
-        first.AttachedBones = attachedBones;
-        var meshRend = first.GetComponent<SkinnedMeshRenderer>();
-        var sharedMesh = meshRend.sharedMesh;
+        Mesh sharedMesh = null;
+        var list = new List<(SkinnedMeshRenderer, Mesh)>(structures.Length);
 
-        var list = new List<(SkinnedMeshRenderer, Mesh)> { (meshRend, sharedMesh) };
-
-        for (var i = 1; i < structures.Length; i++)
+        for (var i = 0; i < structures.Length; i++)
         {
             var appearanceObject = structures[i].Element.Prefabs[0];
-
-            if (!appearanceObject)
-                throw new NullReferenceException("One or more of the SlimeAppearanceObjects are null");
-
             appearanceObject.AttachedBones = attachedBones;
 
-            if (appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
-                list.Add((rend, rend.sharedMesh));
-            else
+            if (!appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
+            {
                 Debug.LogWarning("One of the SlimeAppearanceObjects provided does not use a SkinnedMeshRenderer");
+                continue;
+            }
+
+            list.Add((rend, rend.sharedMesh));
+
+            if (i == 0)
+                sharedMesh = rend.sharedMesh;
         }
 
         var rootMatrix = applicator.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;

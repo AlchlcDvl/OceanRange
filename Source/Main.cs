@@ -19,10 +19,18 @@ internal sealed class Main : ModEntryPoint
         // This method is already running, so the time diagnostic patch doesn't work for it
         var watch = new System.Diagnostics.Stopwatch();
         watch.Start();
+
+        var harmonyWatch = new System.Diagnostics.Stopwatch();
+        harmonyWatch.Start();
 #endif
         Console = ConsoleInstance; // Passing the console so that every other class can log things as well
 
         HarmonyInstance.PatchAll(Inventory.Core); // Patch methods
+
+#if DEBUG
+        harmonyWatch.Stop();
+        ConsoleInstance.Log($"Game Patched in {harmonyWatch.ElapsedMilliseconds}ms!");
+#endif
 
         SystemContext.IsModded = true; // I don't know what this does fully, but it's better have this one than not, although it'd be better if SRML did this
 
@@ -31,6 +39,7 @@ internal sealed class Main : ModEntryPoint
         Inventory.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
 
         // Preloads the various forms of data the mod uses
+        // Atlas.PreloadMapData();
         FloppyDisk.PreloadSaveData();
         Cookbook.PreloadFoodData();
         Slimepedia.PreloadSlimeData();
@@ -47,7 +56,6 @@ internal sealed class Main : ModEntryPoint
 
         watch.Stop();
         ConsoleInstance.Log($"Mod Preloaded in {watch.ElapsedMilliseconds}ms!");
-        watch.Restart();
 #endif
     }
 

@@ -75,8 +75,7 @@
         [
             {
                 "topColor": "#FEFCFF",
-                "middleColor": "#DCDADD",
-                "bottomColor": "#FEFCFF"
+                "middleColor": "#DCDADD"
             }
         ],
         "gordoMatData": [ { "sameAs": 0 } ],
@@ -222,7 +221,7 @@
         "diet": "DIRT",
         "intro": "You can find it between your toes!",
         "pediaDiet": "Dirt",
-        "fav": "None",
+        "fav": "Silky Sand",
         "zones": ["REEF", "DESERT"],
         "spawnWeight": 0.15,
         "jiggle": 0.125,
@@ -245,19 +244,10 @@
             },
             {
                 "topColor": "#F4E2CC",
-                "middleColor": "#F4E2CC",
-                "bottomColor": "#F4E2CC",
                 "gloss": 1
             }
         ],
-        "plortMatData":
-        [
-            {
-                "topColor": "#E2DFD2",
-                "middleColor": "#E2DFD2",
-                "bottomColor": "#E2DFD2"
-            }
-        ],
+        "plortMatData": [ { "topColor": "#E2DFD2" } ],
         "gordoMatData": [ { "sameAs": 0 } ],
         "slimeology": "The sand slime, a curious terrestrial cousin to both the puddle and fire slimes, makes its home along the shallow, sun-drenched shores of the Far, Far Range. Much like its elemental kin, these intriguing slimes require no typical sustenance from a rancher's feeder; instead, they subsist entirely on good old dirt. After sifting through the gritty soil, sand slimes process the minerals within, producing glimmering plorts that bear a striking resemblance to Earth's precious pearls. Their calm demeanor and unique diet make them a rather low-maintenance addition to any ranch.",
         "risks": "Rest easy, ranchers! The sand slime is one of the most delightfully docile slimes you'll encounter. These mellow blobs pose virtually no risk to the ranch, thriving peacefully in any populated corral without inciting a single outbreak. However, despite their beach-dwelling nature, sand slimes are surprisingly delicate when it comes to deep water; prolonged submersion will cause them to slowly dissolve! Even their valuable pearl plorts are safe from hungry mouths; it seems no other slime has a taste for a glistening pearl that began its life as common dirt. Their laid-back nature and inability to cause a ruckus make them perfect companions for even the most timid slimes, just keep them away from the deep end!",
@@ -283,7 +273,8 @@
         [
             {
                 "topColor": "#e034c9",
-                "bottomColor": "#320047",
+                "middleColor": "#320047",
+                "bottomColor": "#340ca1",
                 "pattern": "mesmer_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11
@@ -297,18 +288,22 @@
             { "sameAs": 1 },
             {
                 "topColor": "#33169a",
+                "bottomColor": "#320047",
                 "matOrigin": "PINK_SLIME"
             },
             {
                 "topColor": "#821ed6",
+                "bottomColor": "#33169a",
                 "matOrigin": "PINK_SLIME"
             },
             {
                 "topColor": "#e034c9",
+                "bottomColor": "#821ed6",
                 "matOrigin": "PINK_SLIME"
             },
             {
                 "topColor": "#dafe7a",
+                "bottomColor": "#e034c9",
                 "matOrigin": "PINK_SLIME"
             }
         ],

@@ -20,6 +20,9 @@ public sealed class MaterialData
     [JsonProperty("sameAs")]
     public int? SameAs;
 
+    [JsonProperty("colorsSameAs")]
+    public int? ColorsSameAs;
+
     [JsonProperty("cloneSameAs")]
     public bool CloneSameAs;
 
