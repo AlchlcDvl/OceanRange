@@ -1,33 +1,40 @@
+using System.Reflection;
+
 namespace OceanRange.Modules;
 
 public sealed class LargoData : ActorData
 {
+    private static readonly Dictionary<string, MethodInfo> Methods = [];
+
+    static LargoData()
+    {
+        foreach (var method in AccessTools.GetDeclaredMethods(typeof(Largopedia)))
+        {
+            if (method.Name.EndsWith("Details", StringComparison.Ordinal))
+                Methods[method.Name] = method;
+        }
+    }
+
     [JsonProperty("props"), JsonRequired]
     public LargoProps Props;
 
-    [JsonProperty("slime1"), JsonRequired]
+    [JsonIgnore]
     public string Slime1;
 
-    [JsonProperty("slime2"), JsonRequired]
+    [JsonIgnore]
     public string Slime2;
 
-    [JsonProperty("bodyMatData")]
-    public MaterialData BodyMatData;
+    [JsonProperty("bodyMesh")]
+    public ModelData BodyStructData;
 
-    [JsonProperty("slime1StructureMatData")]
-    public MaterialData[] Slime1StructMatData;
+    [JsonProperty("slime1Meshes")]
+    public ModelData[] Slime1StructData;
 
-    [JsonProperty("slime2StructureMatData")]
-    public MaterialData[] Slime2StructMatData;
-
-    [JsonProperty("customMatData")]
-    public MaterialData[] MatData;
+    [JsonProperty("slime2Meshes")]
+    public ModelData[] Slime2StructData;
 
     [JsonProperty("meshes")]
-    public string[] Meshes;
-
-    [JsonProperty("skipNull")]
-    public bool SkipNull;
+    public ModelData[] LargoStructData;
 
     [JsonProperty("jiggle")]
     public float? Jiggle;
@@ -44,9 +51,23 @@ public sealed class LargoData : ActorData
     [JsonIgnore]
     public SlimeData Slime2Data;
 
+    [JsonIgnore]
+    public MethodInfo InitSlime1Details;
+
+    [JsonIgnore]
+    public MethodInfo InitSlime2Details;
+
+    [JsonIgnore]
+    public MethodInfo InitLargoDetails;
+
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {
+        var parts = Name.TrueSplit(' ');
+
+        Slime1 = parts[0];
+        Slime2 = parts[1];
+
         var slime1Upper = Slime1.ToUpperInvariant();
         var slime2Upper = Slime2.ToUpperInvariant();
 
@@ -54,15 +75,16 @@ public sealed class LargoData : ActorData
         Slime1Id = Helpers.ParseEnum<IdentifiableId>(slime1Upper + "_SLIME");
         Slime2Id = Helpers.ParseEnum<IdentifiableId>(slime2Upper + "_SLIME");
 
-        if (slime1Upper == "MESMER" || slime2Upper == "MESMER")
-            Largopedia.Mesmers.Add(MainId);
+        Methods.TryGetValue("Init" + Slime1 + "Details", out InitSlime1Details);
+        Methods.TryGetValue("Init" + Slime2 + "Details", out InitSlime2Details);
+        Methods.TryGetValue("Init" + Slime1 + Slime2 + "Details", out InitLargoDetails);
 
-        if (Slimepedia.SlimeDataMap.TryGetValue(Slime1Id, out var data1))
-            Slime1Data = data1;
-
-        if (Slimepedia.SlimeDataMap.TryGetValue(Slime2Id, out var data2))
-            Slime2Data = data2;
+        Slimepedia.SlimeDataMap.TryGetValue(Slime1Id, out Slime1Data);
+        Slimepedia.SlimeDataMap.TryGetValue(Slime2Id, out Slime2Data);
 
         Jiggle ??= ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
+
+        if (BodyStructData != null)
+            BodyStructData.LodLevels = 4;
     }
 }

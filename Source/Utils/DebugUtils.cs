@@ -20,7 +20,7 @@ public static class DebugUtils
 
         foreach (var cell in SceneManager.GetActiveScene()
             .GetRootGameObjects()
-            .Where(x => x.name.StartsWith("zone"))
+            .Where(x => x.name.StartsWith("zone", StringComparison.Ordinal))
             .SelectMany(x => x.FindChildrenWithPartialName("cell", true)))
         {
             var diff = (cell.transform.position - pos).sqrMagnitude;

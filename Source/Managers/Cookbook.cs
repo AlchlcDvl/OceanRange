@@ -1,4 +1,3 @@
-using AssetsLib;
 using SRML;
 
 namespace OceanRange.Managers;
@@ -184,9 +183,9 @@ public static class Cookbook
         var component3 = prefab.transform.Find($"{modelName}/root/handle_cog/loc_core/mesh_body LOW").GetComponent<MeshRenderer>();
 
         var materials = new Material[3];
-        materials[0] = component.material = component.sharedMaterial = component.sharedMaterial.Clone();
-        materials[1] = component2.material = component2.sharedMaterial = component2.sharedMaterial.Clone();
-        materials[2] = component3.material = component3.sharedMaterial = component3.sharedMaterial.Clone();
+        materials[0] = component.sharedMaterial = component.sharedMaterial.Clone();
+        materials[1] = component2.sharedMaterial = component2.sharedMaterial.Clone();
+        materials[2] = component3.sharedMaterial = component3.sharedMaterial.Clone();
 
         foreach (var material in materials)
         {
@@ -229,7 +228,7 @@ public static class Cookbook
         meshModel.GetComponent<MeshFilter>().sharedMesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();
-        var material = meshRend.material = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
+        var material = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
 
         var ramp = $"{lower}_ramp_";
         var red = Inventory.GetTexture2D($"{ramp}red");
@@ -281,10 +280,9 @@ public static class Cookbook
         component.id = spawnResource;
         component.ObjectsToSpawn = [plant];
         component.BonusObjectsToSpawn = [];
+        TranslateModel(prefab.FindChildren("Sprout"), Inventory.GetMesh(lowerName + "_sprout"), null);
         var partial = plant.FindChildWithPartialName("model_");
-        var material = partial.GetComponent<MeshRenderer>().sharedMaterial;
-        TranslateModel(prefab.FindChildren("Sprout"), Inventory.GetMesh(lowerName + "_sprout"), material);
-        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), partial.GetComponent<MeshFilter>().sharedMesh, material);
+        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), partial.GetComponent<MeshFilter>().sharedMesh, partial.GetComponent<MeshRenderer>().sharedMaterial);
         return prefab;
     }
 
@@ -293,7 +291,9 @@ public static class Cookbook
         foreach (var gameObj in gameObjects)
         {
             gameObj.GetComponent<MeshFilter>().sharedMesh = mesh;
-            gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
+
+            if (material)
+                gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
         }
     }
 }

@@ -2,7 +2,7 @@
     <PropertyGroup>
         <AssemblyName>OceanRange</AssemblyName>
         <RootNamespace>OceanRange</RootNamespace>
-        <TargetFramework>net4.8</TargetFramework>
+        <TargetFramework>net4.7.2</TargetFramework>
         <Version>0.0.2</Version>
         <DebugType>none</DebugType>
         <DebugSymbols>true</DebugSymbols>

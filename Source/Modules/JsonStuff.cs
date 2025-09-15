@@ -2,7 +2,7 @@ namespace OceanRange.Modules;
 
 public abstract class JsonData
 {
-    [JsonProperty("name"), JsonRequired]
+    [JsonProperty("name")]
     public string Name;
 }
 

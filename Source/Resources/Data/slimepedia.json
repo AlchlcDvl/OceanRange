@@ -3,26 +3,63 @@
         "name": "Rosi",
         "zones": ["REEF"],
         "favToy": "OCTO_BUDDY_TOY",
-        "slimeMatData":
+        "slimeFeatures":
         [
             {
-                "topColor": "#F9E5F0",
-                "middleColor": "#E6C7D2",
-                "bottomColor": "#F68ED9"
+                "mesh": "rosi_body",
+                "lodLevels": 4,
+                "supportsFaces": true,
+                "colorProps":
+                {
+                    "_TopColor": "#F9E5F0",
+                    "_MiddleColor": "#E6C7D2",
+                    "_BottomColor": "#F68ED9"
+                }
             },
-            { "sameAs": 0 },
-            { "topColor": "#F46CB7" }
+            {
+                "mesh": "rosi_stalk",
+                "sameAs": 0
+            },
+            {
+                "mesh": "rosi_frills",
+                "colorProps": { "_TopColor": "#F46CB7" }
+            }
         ],
         "ammoColor": "#F9E5F0",
-        "plortMatData":
+        "plortFeatures":
         [
             {
-                "topColor": "#F46CB7",
-                "middleColor": "#E6C7D2",
-                "bottomColor": "#F9E5F0"
+                "mesh": "pearl",
+                "colorProps":
+                {
+                    "_TopColor": "#F46CB7",
+                    "_MiddleColor": "#E6C7D2",
+                    "_BottomColor": "#F9E5F0"
+                }
             },
-            { "sameAs": 1 },
-            { "sameAs": 2 }
+            {
+                "mesh": "rosi_stalk_pearl",
+                "sameAs": 1
+            },
+            {
+                "mesh": "rosi_frills_pearl",
+                "sameAs": 2
+            }
+        ],
+        "gordoFeatures":
+        [
+            {
+                "mesh": "rosi_body_gordo",
+                "sameAs": 0
+            },
+            {
+                "mesh": "rosi_stalk_gordo",
+                "sameAs": 1
+            },
+            {
+                "mesh": "rosi_frills_gordo",
+                "sameAs": 2
+            }
         ],
         "basePrice": 7,
         "saturation": 40,
@@ -35,9 +72,6 @@
         "intro": "The pink pearl of the sea. Believed to be the cousin of the pink slime.",
         "pediaDiet": "Everything",
         "fav": "No favorite food. The Rosi slime loves everything equally.",
-        "plortMeshes": ["pearl", "rosi_stalk_pearl", "rosi_frills_pearl"],
-        "slimeMeshes": ["rosi_body", "rosi_stalk", "rosi_frills"],
-        "gordoMeshes": ["rosi_body_gordo", "rosi_stalk_gordo", "rosi_frills_gordo"],
         "slimeology": "The rosi slime is the most common slime found in The Great Reef. They are often seen as cheerful, friendly and mischievous, often pranking other slimes and even humans. Rosi slimes have a deep bond with one another and are very rarely seen alone, As long as they have a partner to play with, they will be happy forever, rarely showing any sadness. And when they are sad it's often at the expense of others. Trying their best to cheer the slime or human back to their happy selves.",
         "risks": "There is not much to worry about the rosi slime. They are very easy to ranch, only needing food and companionship. A lonely rosi slime is a sad rosi slime. So it's recommended for ranchers to have more than one if they want a healthy production of pearls.",
         "plortonomics": "Rosi pearls are often called the \"Aphrodite Pearl\" for their rejuvenating properties on human skin. Beauty companies frequently market their products as the key to a youthful glow, claiming that rosi pearls help rewind aging skin by 20-50 years. This wouldn't be a problem if their frills were also believed to have abilities to cure internal organs, even rare cancers when consumed. While their frills can slowly regenerate constant tearing causes smaller gills to grow. However, new research shows that these healing properties are temporary. The resulting constant consumption and usage of the pearl cause rapid aging, making rosi pearls an unreliable anti-aging solution."
@@ -62,23 +96,29 @@
         "gordoZone": "REEF",
         "gordoLoc": "Reef_RingIsland",
         "jiggle": 0.025,
-        "slimeMeshes": ["coco_body"],
         "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange"],
-        "slimeMatData":
+        "slimeFeatures":
         [
             {
+                "supportsFaces": true,
+                "lodLevels": 4,
+                "mesh": "coco_body",
                 "pattern": "coco_pattern",
                 "matOrigin": "TABBY_SLIME"
             }
         ],
-        "plortMatData":
+        "plortFeatures":
         [
             {
-                "topColor": "#FEFCFF",
-                "middleColor": "#DCDADD"
+                "colorProps":
+                {
+                    "_TopColor": "#FEFCFF",
+                    "_MiddleColor": "#DCDADD",
+                    "_BottomColor": "#ada08e"
+                }
             }
         ],
-        "gordoMatData": [ { "sameAs": 0 } ],
+        "gordoFeatures": [ { "sameAs": 0 } ],
         "slimeology": "Coco slimes are commonly found hanging from the palm trees of the island. Being natives to SwirlPool Island, the coco slimes have natural adapted a higher jump in order to climb trees and escape predators. Due to them being grown from palm trees, they have plant like attributes which causes them to require constant sunlight and also tend to avoid eating fruits and vegetables as it would be cannibalism.",
         "risks": "Be cautious while walking under palm trees as coco slimes are very territorial and if they sense you underneath, they will harden their soft, squishy bodies to a hard coconut-like shell and crash down onto their targets. Tourists in the past who got hit in the head by a coco slime have reported blurred vision and dizziness afterwards with some even being knocked out cold. This is also how they hunt in the wild. Despite their hard skin and agility, they are quite easy to ranch as long as they are well feed and have enough exposure to sunlight.",
         "plortonomics": "Coco plorts, unlike their producer, are very soft and silky as well as being an excellent source of calcium when condensed to liquid. Despite being very similar to earth's milk in properties, they can still be consumed by people who are lactose intolerance making them extremely popular for creating lactose intolerance options for dairy products. And due to their incredibly soft and silky texture, they are also very good for skin care and used often in spas as substitutes to milk baths.",
@@ -92,6 +132,7 @@
         "diet": "VEGGIES",
         "baseSlime": "BOOM_SLIME",
         "basePlort": "BOOM_PLORT",
+        "baseGordo": "BOOM_GORDO",
         "topMouthColor": "#FFFFFF",
         "middleMouthColor": "#888888",
         "bottomMouthColor": "#FFFFFF",
@@ -116,32 +157,44 @@
         "fav": "Blowtato",
         "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange"],
         "toRemove": ["BoomSlimeExplode, Assembly-CSharp", "BoomMaterialAnimator, Assembly-CSharp"],
-        "plortMeshes": ["pearl", "mine_pearl"],
-        "slimeMeshes": [null, "mine_exterior"],
-        "gordoMeshes": [null, "mine_exterior_gordo"],
-        "slimeMatData":
+        "slimeFeatures":
         [
             {
-                "topColor": "#9EA16F",
-                "bottomColor": "#445660",
+                "lodLevels": 4,
+                "supportsFaces": true,
                 "pattern": "mine_pattern",
                 "matOrigin": "TABBY_SLIME",
-                "gloss": 1
+                "gloss": 1,
+                "colorProps":
+                {
+                    "_TopColor": "#9EA16F",
+                    "_BottomColor": "#445660"
+                }
             },
             {
-                "topColor": "#212A2F",
-                "matOrigin": "PINK_SLIME"
+                "mesh": "mine_exterior",
+                "matOrigin": "PINK_SLIME",
+                "colorProps": { "_TopColor": "#212A2F" }
             }
         ],
-        "plortMatData":
+        "plortFeatures":
         [
-            { "topColor": "#445660" },
-            { "sameAs": 1 }
+            {
+                "mesh": "pearl",
+                "colorProps": { "_TopColor": "#445660" }
+            },
+            {
+                "mesh": "mine_pearl",
+                "sameAs": 1
+            }
         ],
-        "gordoMatData":
+        "gordoFeatures":
         [
-            { "topColor": "#445660" },
-            { "sameAs": 1 }
+            { "colorProps": { "_TopColor": "#445660" } },
+            {
+                "mesh": "mine_exterior_gordo",
+                "sameAs": 1
+            }
         ],
         "slimeology": "The mine slime, a distant and more... prickly cousin to the boom slime, has a unique take on volatility. Unlike their explosive kin, a mine slime's detonations are triggered only by direct contact with another slime or an unwary rancher. To deter accidental bumps, their bodies are adorned with sharp, crystalline spikes; a clear warning sign. Despite their fiery tendencies, these slimes prefer a milder diet of vegetables, with the blowtato being their ultimate delight. This root's highly volatile compounds provide the perfect internal spark for their constant energetic needs and powerful bursts. If a mine slime goes too long without popping, however, their internal pressure builds to uncomfortable levels, driving them to seek relief by finding water, or joining in an explosive embrace with fellow boom or mine slimes.",
         "risks": "Approach mine slimes with caution, for their spikes aren't just for show! Any direct contact will result in a localized eruption. While other slimes will be boomed clear of the danger zone, only fellow mine slimes and their boom cousins possess a natural immunity to these contact explosions. This peculiar trait makes co-habitation an active (and often loud) affair, as they'll seek out their explosive kin for regular, relieving bursts. Keeping them together helps manage their volatile nature, preventing an otherwise grumpy slime.",
@@ -171,39 +224,76 @@
         "gordoZone": "MOSS",
         "gordoLoc": "Moss_NorthPass",
         "jiggle": 0.25,
+        "spawnAmount": 1,
         "toAdd": ["OceanRange.Slimes.LanternBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
-        "plortMeshes": ["pearl", "lantern_stalk_pearl", "lantern_lure_pearl"],
-        "slimeMeshes": [null, "lantern_fins", "lantern_stalk", "lantern_lure"],
-        "gordoMeshes": [null, "lantern_fins_gordo", "lantern_stalk", "lantern_lure"],
-        "slimeMatData":
+        "slimeFeatures":
         [
             {
-                "topColor": "#752C86",
-                "middleColor": "#9445A7",
-                "bottomColor": "#B15EC8"
+                "lodLevels": 4,
+                "supportsFaces": true,
+                "colorProps":
+                {
+                    "_TopColor": "#752C86",
+                    "_MiddleColor": "#9445A7",
+                    "_BottomColor": "#B15EC8"
+                }
             },
             {
-                "topColor": "#752C86",
-                "bottomColor": "#B15EC8",
+                "mesh": "lantern_fins",
                 "pattern": "lantern_pattern",
-                "matOrigin": "TABBY_SLIME"
+                "matOrigin": "TABBY_SLIME",
+                "colorProps":
+                {
+                    "_TopColor": "#752C86",
+                    "_BottomColor": "#B15EC8"
+                }
             },
-            { "sameAs": 0 },
             {
-                "topColor": "#EBDB6A",
-                "matOrigin": "PHOSPHOR_SLIME"
+                "mesh": "lantern_stalk",
+                "sameAs": 0
+            },
+            {
+                "mesh": "lantern_lure",
+                "matOrigin": "PHOSPHOR_SLIME",
+                "colorProps": { "_TopColor": "#EBDB6A" }
             }
         ],
-        "plortMatData":
+        "plortFeatures":
         [
             {
-                "topColor": "#B15EC8",
-                "middleColor": "#EBDB6A",
-                "bottomColor": "#752C86",
-                "gloss": 1
+                "mesh": "pearl",
+                "gloss": 1,
+                "colorProps":
+                {
+                    "_TopColor": "#B15EC8",
+                    "_MiddleColor": "#EBDB6A",
+                    "_BottomColor": "#752C86"
+                }
             },
-            { "sameAs": 2 },
-            { "sameAs": 3 }
+            {
+                "mesh": "lantern_stalk_pearl",
+                "sameAs": 2
+            },
+            {
+                "mesh": "lantern_lure_pearl",
+                "sameAs": 3
+            }
+        ],
+        "gordoFeatures":
+        [
+            { "sameAs": 0 },
+            {
+                "mesh": "lantern_fins_gordo",
+                "sameAs": 1
+            },
+            {
+                "mesh": "lantern_stalk",
+                "sameAs": 2
+            },
+            {
+                "mesh": "lantern_lure",
+                "sameAs": 3
+            }
         ],
         "slimeology": "The lantern slime is a distant cousin of the phosphor slime. At one point in its evolution, the phosphor slimes expelled their inner core, using it to attract prey underwater. Slime nature is indeed peculiar. Much like its cousins, the lantern slimes can be found at night in the deepest parts of the Moss Blanket and the Great Reef. They are often seen alone and rarely in groups, as they prefer an isolated lifestyle and little interest in socializing. However, when it comes to humans, lantern slimes often aid divers in finding their way back to land.",
         "risks": "Lantern slimes aren't the most social compared to other slime species. During the day, they can be found sleeping in dark caves. When disturbed from their nap, they emit a bright flash to startle any diver or slime that dares to interrupt their beauty sleep. However, at night, they become very docile and can be found swimming across the coral reef in search of food.",
@@ -223,32 +313,46 @@
         "pediaDiet": "Dirt",
         "fav": "Silky Sand",
         "zones": ["REEF", "DESERT"],
-        "spawnWeight": 0.15,
+        "spawnAmount": 0.15,
         "jiggle": 0.125,
         "hasGordo": false,
         "gordoRewards": ["SILKY_SAND_CRAFT", "SILKY_SAND_CRAFT", "SILKY_SAND_CRAFT"],
         "gordoZone": "RANCH",
         "toAdd": ["OceanRange.Slimes.SandBehaviour, OceanRange"],
         "toRemove": ["GotoWater, Assembly-CSharp", "GotoConsumable, Assembly-CSharp", "DestroyOnTouching, Assembly-CSharp", "SlimeEatWater, Assembly-CSharp"],
-        "slimeMeshes": [null, "sand_shells"],
-        "gordoMeshes": ["puddle_body_gordo"],
-        "plortMeshes": ["pearl"],
-        "skipNull": true,
         "natGordoSpawn": false,
-        "slimeMatData":
+        "slimeFeatures":
         [
             {
-                "topColor": "#E2DFD2",
-                "middleColor": "#E8C499",
-                "bottomColor": "#EDA960"
+                "supportsFaces": true,
+                "skipNull": true,
+                "colorProps":
+                {
+                    "_TopColor": "#E2DFD2",
+                    "_MiddleColor": "#E8C499",
+                    "_BottomColor": "#EDA960"
+                }
             },
             {
-                "topColor": "#F4E2CC",
-                "gloss": 1
+                "mesh": "sand_shells",
+                "gloss": 1,
+                "colorProps": { "_TopColor": "#E8C499" }
             }
         ],
-        "plortMatData": [ { "topColor": "#E2DFD2" } ],
-        "gordoMatData": [ { "sameAs": 0 } ],
+        "plortFeatures":
+        [
+            {
+                "mesh": "pearl",
+                "colorProps": { "_TopColor": "#E2DFD2" }
+            }
+        ],
+        "gordoFeatures":
+        [
+            {
+                "mesh": "puddle_body_gordo",
+                "sameAs": 0
+            }
+        ],
         "slimeology": "The sand slime, a curious terrestrial cousin to both the puddle and fire slimes, makes its home along the shallow, sun-drenched shores of the Far, Far Range. Much like its elemental kin, these intriguing slimes require no typical sustenance from a rancher's feeder; instead, they subsist entirely on good old dirt. After sifting through the gritty soil, sand slimes process the minerals within, producing glimmering plorts that bear a striking resemblance to Earth's precious pearls. Their calm demeanor and unique diet make them a rather low-maintenance addition to any ranch.",
         "risks": "Rest easy, ranchers! The sand slime is one of the most delightfully docile slimes you'll encounter. These mellow blobs pose virtually no risk to the ranch, thriving peacefully in any populated corral without inciting a single outbreak. However, despite their beach-dwelling nature, sand slimes are surprisingly delicate when it comes to deep water; prolonged submersion will cause them to slowly dissolve! Even their valuable pearl plorts are safe from hungry mouths; it seems no other slime has a taste for a glistening pearl that began its life as common dirt. Their laid-back nature and inability to cause a ruckus make them perfect companions for even the most timid slimes, just keep them away from the deep end!",
         "plortonomics": "Sand plorts are true marvels of natural refinement. Though the sand slime itself is soft and yielding, the pearls it produces are remarkably tougher than their Earth counterparts, defying their humble origins. These pristine, spherical treasures, born from nothing more than processed soil, fetch an exceptional price on the Plort Market. Their iridescent sheen and superior durability make them highly sought-after for crafting exquisite jewelry and other luxury adornments across the galaxy, proving that true beauty can indeed come from the ground up!"
@@ -267,52 +371,109 @@
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
         "toAdd": ["StalkConsumable, Assembly-CSharp"],
-        "slimeMeshes": [null, "mesmer_pincer_1", "mesmer_pincer_2", "mesmer_tail_base", "mesmer_tail_stem_1", "mesmer_tail_stem_2", "mesmer_tail_tip"],
-        "gordoMeshes": [null, "mesmer_pincer_1_gordo", "mesmer_pincer_2_gordo", "mesmer_tail_base_gordo", "mesmer_tail_stem_1_gordo", "mesmer_tail_stem_2_gordo", "mesmer_tail_tip_gordo"],
-        "slimeMatData":
+        "slimeFeatures":
         [
             {
-                "topColor": "#e034c9",
-                "middleColor": "#320047",
-                "bottomColor": "#340ca1",
+                "lodLevels": 4,
+                "supportsFaces": true,
                 "pattern": "mesmer_pattern",
                 "matOrigin": "TABBY_SLIME",
-                "gloss": 0.11
+                "gloss": 0.11,
+                "colorProps":
+                {
+                    "_TopColor": "#e034c9",
+                    "_MiddleColor": "#320047",
+                    "_BottomColor": "#340ca1"
+                }
             },
             {
-                "topColor": "#340ca1",
-                "bottomColor": "#320047",
+                "mesh": "mesmer_pincer_1",
                 "matOrigin": "TABBY_SLIME",
-                "pattern": "mesmer_pincer_pattern"
-            },
-            { "sameAs": 1 },
-            {
-                "topColor": "#33169a",
-                "bottomColor": "#320047",
-                "matOrigin": "PINK_SLIME"
-            },
-            {
-                "topColor": "#821ed6",
-                "bottomColor": "#33169a",
-                "matOrigin": "PINK_SLIME"
+                "pattern": "mesmer_pincer_pattern",
+                "colorProps":
+                {
+                    "_TopColor": "#340ca1",
+                    "_BottomColor": "#320047"
+                }
             },
             {
-                "topColor": "#e034c9",
-                "bottomColor": "#821ed6",
-                "matOrigin": "PINK_SLIME"
+                "mesh": "mesmer_pincer_2",
+                "sameAs": 1
             },
             {
-                "topColor": "#dafe7a",
-                "bottomColor": "#e034c9",
-                "matOrigin": "PINK_SLIME"
+                "mesh": "mesmer_tail_base",
+                "matOrigin": "PINK_SLIME",
+                "colorProps":
+                {
+                    "_TopColor": "#33169a",
+                    "_BottomColor": "#320047"
+                }
+            },
+            {
+                "mesh": "mesmer_tail_stem_1",
+                "matOrigin": "PINK_SLIME",
+                "colorProps":
+                {
+                    "_TopColor": "#821ed6",
+                    "_BottomColor": "#33169a"
+                }
+            },
+            {
+                "mesh": "mesmer_tail_stem_2",
+                "matOrigin": "PINK_SLIME",
+                "colorProps":
+                {
+                    "_TopColor": "#e034c9",
+                    "_BottomColor": "#821ed6"
+                }
+            },
+            {
+                "mesh": "mesmer_tail_tip",
+                "matOrigin": "PINK_SLIME",
+                "colorProps":
+                {
+                    "_TopColor": "#dafe7a",
+                    "_BottomColor": "#e034c9"
+                }
             }
         ],
-        "plortMatData":
+        "gordoFeatures":
+        [
+            { "sameAs": 0 },
+            {
+                "mesh": "mesmer_pincer_1_gordo",
+                "sameAs": 1
+            },
+            {
+                "mesh": "mesmer_pincer_2_gordo",
+                "sameAs": 2
+            },
+            {
+                "mesh": "mesmer_tail_base_gordo",
+                "sameAs": 3
+            },
+            {
+                "mesh": "mesmer_tail_stem_1_gordo",
+                "sameAs": 4
+            },
+            {
+                "mesh": "mesmer_tail_stem_2_gordo",
+                "sameAs": 5
+            },
+            {
+                "mesh": "mesmer_tail_tip_gordo",
+                "sameAs": 6
+            }
+        ],
+        "plortFeatures":
         [
             {
-                "topColor": "#0a094f",
-                "middleColor": "#2F2251",
-                "bottomColor": "#1e1140"
+                "colorProps":
+                {
+                    "_TopColor": "#0a094f",
+                    "_MiddleColor": "#2F2251",
+                    "_BottomColor": "#1e1140"
+                }
             }
         ],
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
@@ -339,29 +500,57 @@
         "pediaDiet": "Fruit",
         "fav": "Pogo Fruit",
         "jiggle": 0.25,
-        "slimeMeshes": [null, "hermit_shell", "hermit_claw_1", "hermit_claw_2"],
-        "gordoMeshes": [null, "hermit_shell_gordo", "hermit_claw_1", "hermit_claw_2"],
-        "plortMeshes": [null, "hermit_shell_plort"],
-        "slimeMatData":
+        "slimeFeatures":
         [
             {
-                "topColor": "#f09695",
-                "bottomColor": "#e65954",
+                "lodLevels": 4,
+                "supportsFaces": true,
                 "pattern": "hermit_pattern",
                 "matOrigin": "TABBY_SLIME",
-                "gloss": 0.11
+                "gloss": 0.11,
+                "colorProps":
+                {
+                    "_TopColor": "#f09695",
+                    "_BottomColor": "#e65954"
+                }
             },
             {
-                "topColor": "#f6d599",
-                "matOrigin": "PINK_SLIME"
+                "mesh": "hermit_shell",
+                "matOrigin": "PINK_SLIME",
+                "colorProps": { "_TopColor": "#f6d599" }
             },
-            { "topColor": "#b53a35" },
-            { "sameAs": 2 }
+            {
+                "mesh": "hermit_claw_1",
+                "colorProps": { "_TopColor": "#b53a35" }
+            },
+            {
+                "mesh": "hermit_claw_2",
+                "sameAs": 2
+            }
         ],
-        "plortMatData":
+        "plortFeatures":
         [
             { "sameAs": 0 },
-            { "sameAs": 1 }
+            {
+                "mesh": "hermit_shell_plort",
+                "sameAs": 1
+            }
+        ],
+        "gordoFeatures":
+        [
+            { "sameAs": 0 },
+            {
+                "mesh": "hermit_shell_gordo",
+                "sameAs": 1
+            },
+            {
+                "mesh": "hermit_claw_1",
+                "sameAs": 2
+            },
+            {
+                "mesh": "hermit_claw_2",
+                "sameAs": 3
+            }
         ],
         "gordoOri": "f 101.948,-3.4949,40.8476,0,57,0",
         "gordoZone": "REEF",
@@ -373,5 +562,61 @@
         "plortonomics": "Hermit slimes are naturally suspicious and can quickly hide when detecting sudden movement or loud noise. This can make it difficult to collect parcels and stored items. If it does not feel safe, it may spend long periods hidden in its shell, making it difficult to handle and collect its plorts. When trying to get items out of their shell, you need to do it carefully and patiently. Rough methods can make the slime even more reluctant to come out of its shell in the future. It is recommended to keep the hermit slimes happy and prevent them from becoming even more distrustful, it is advisable to use the coral fruit and other peaceful strategies to interact with them.",
         "plortType": "Plort",
         "zones": ["REEF"]
+    },
+    {
+        "name": "Goldfish",
+        "favToy": "BEACH_BALL_TOY",
+        "favFood": "GINGER_VEGGIE",
+        "diet": "GINGER",
+        "baseSlime": "GOLD_SLIME",
+        "basePlort": "GOLD_PLORT",
+        "baseGordo": "GOLD_GORDO",
+        "ammoColor": "#ffdf00",
+        "basePrice": 400,
+        "saturation": 50000,
+        "jiggle": 0.5,
+        "slimeFeatures":
+        [
+            {
+                "lodLevels": 4,
+                "cloneBase": false
+            },
+            {
+                "lodLevels": 4,
+                "mesh": "slime_face",
+                "supportsFaces": true,
+                "cloneBase": false
+            },
+            {
+                "mesh": "goldfish_fins",
+                "matOrigin": "PINK_SLIME",
+                "colorProps": { "_TopColor": "#dbc777" }
+            }
+        ],
+        "plortFeatures":
+        [
+            {
+                "mesh": "pearl",
+                "cloneBase": false
+            }
+        ],
+        "gordoFeatures":
+        [
+            { "sameAs": 0 },
+            {
+                "mesh": "goldfish_fins_gordo",
+                "sameAs": 1
+            }
+        ],
+        "natGordoSpawn": false,
+        "gordoRewards": ["CRATE_MOSS_01", "CRATE_REEF_01", "CRATE_RUINS_01", "CRATE_QUARRY_01", "CRATE_DESERT_01"],
+        "intro": "The slippery slime!",
+        "pediaDiet": "Gilded Ginger",
+        "fav": "Gilded Ginger",
+        "slimeology": "Goldfish slimes are an exceptionally rare aquatic variant of the ever elusive gold slime. Unlike their land-loving cousin, these shimmering slimes have adapted to life beneath the waves, gracefully darting through underwater currents with their flowing tails and luminous scales. Their movement mimics that of koi or ornamental goldfish, and they leave behind glittering trails in the water when startled. While they share the same skittish nature as gold slimes, goldfish slimes are slightly easier to observe — if only for a moment longer. They often appear in deep reef trenches or near ancient underwater ruins, surfacing briefly before vanishing in a blink.",
+        "risks": "Goldfish slimes cannot be captured or contained in traditional corrals, and like gold slimes, they vanish shortly after being discovered. Attempting to corral one will only result in it slipping away with a splash. However, quick-thinking ranchers may be able to feed it its favorite food in time to earn a precious plort.",
+        "plortonomics": "Goldfish plorts are even rarer than gold plorts and twice as valuable, making them a highly sought-after resource. Their underwater origin gives them unique energetic properties, often used in cutting-edge aquatic tech and luxury hologlass manufacturing. Due to their rarity, the Slime Science Lab recommends handling with extreme care, and counting yourself lucky to have found one at all.",
+        "zones": ["REEF", "QUARRY", "DESERT", "MOSS", "RUINS", "WILDS"],
+        "vaccable": false
     }
 ]

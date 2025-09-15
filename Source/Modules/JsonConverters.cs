@@ -449,14 +449,22 @@ public sealed class EnumConverter : OceanJsonConverter
             return;
         }
 
+        var exactMatchName = Enum.GetName(enumType, value);
+
+        if (exactMatchName != null)
+        {
+            writer.WriteValue(exactMatchName);
+            return;
+        }
+
         var setFlags = new List<string>();
         var matchedBits = 0UL;
 
-        foreach (var (enumVal, name) in metadata.Values)
+        foreach (var (enumVal, name) in metadata.Values.OrderByDescending(x => metadata.ToUInt64(x.Item1)))
         {
             var flag = metadata.ToUInt64(enumVal);
 
-            if (flag == 0 || (underlying & flag) != flag)
+            if (flag == 0 || (underlying & flag) != flag || (matchedBits & flag) != 0)
                 continue;
 
             setFlags.Add(name);

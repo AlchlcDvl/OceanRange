@@ -1,7 +1,20 @@
+using System.Reflection;
+
 namespace OceanRange.Modules;
 
 public sealed class MailData : JsonData
 {
+    private static readonly Dictionary<string, MethodInfo> Methods = [];
+
+    static MailData()
+    {
+        foreach (var method in AccessTools.GetDeclaredMethods(typeof(Mailbox)))
+        {
+            if (method.Name.EndsWith("Details", StringComparison.Ordinal))
+                Methods[method.Name] = method;
+        }
+    }
+
     [JsonProperty("id"), JsonRequired]
     public string Id;
 
@@ -31,7 +44,8 @@ public sealed class MailData : JsonData
     [OnDeserialized]
     public void PopulateData(StreamingContext _)
     {
-        AccessTools.Method(typeof(Mailbox), "Init" + Name.Replace(" ", "") + "Details")?.Invoke(null, [this]);
+        if (Methods.TryGetValue("Init" + Name.Replace(" ", "") + "Details", out var method))
+            method.Invoke(null, [this]);
 
         if (UnlockAfter.HasValue)
             UnlockFuncAnd += time => UnlockAfter.Value < time;

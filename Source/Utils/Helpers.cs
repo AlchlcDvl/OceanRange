@@ -1,6 +1,5 @@
 using SRML;
 using System.Globalization;
-using AssetsLib;
 using SRML.Utils;
 using System.Collections;
 using System.Reflection;
@@ -154,6 +153,9 @@ public static class Helpers
 
     public static Mesh Clone(this Mesh originalMesh)
     {
+        if (!originalMesh.isReadable)
+            return originalMesh;
+
         var mesh = new Mesh
         {
             vertices = originalMesh.vertices,
@@ -337,7 +339,11 @@ public static class Helpers
 
     public static string ToColorString(this Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
 
-    public static bool IsNullableOf<T>(this Type type) => typeof(T).IsAssignableFrom(Nullable.GetUnderlyingType(type));
+    public static bool IsNullableOf<T>(this Type type)
+    {
+        var tType = typeof(T);
+        return tType.IsValueType && tType.IsAssignableFrom(Nullable.GetUnderlyingType(type));
+    }
 
     public static bool IsNullableEnum(this Type type) => Nullable.GetUnderlyingType(type) is { IsEnum: true };
 
@@ -465,4 +471,25 @@ public static class Helpers
     // }
 
     public static T[] GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
+
+    public static Material Clone(this Material material) => new(material);
+
+    public static T CreatePrefab<T>(this T obj) where T : UObject => UObject.Instantiate(obj, Main.PrefabParent, false);
+
+    public static Vector3 Multiply(this Vector3 value, Vector3 scale) => new(value.x * scale.x, value.y * scale.y, value.z * scale.z);
+
+    public static Vector3 Abs(this Vector3 value) => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
+
+    public static bool TryGetItem<T>(this T[] array, int index, out T value)
+    {
+        if (array == null)
+        {
+            value = default;
+            return false;
+        }
+
+        var result = index < array.Length;
+        value = result ? array[index] : default;
+        return result;
+    }
 }

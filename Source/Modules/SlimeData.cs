@@ -4,6 +4,17 @@ namespace OceanRange.Modules;
 
 public sealed class SlimeData : SpawnedActorData
 {
+    private static readonly Dictionary<string, MethodInfo> Methods = [];
+
+    static SlimeData()
+    {
+        foreach (var method in AccessTools.GetDeclaredMethods(typeof(Slimepedia)))
+        {
+            if (method.Name.EndsWith("Details", StringComparison.Ordinal))
+                Methods[method.Name] = method;
+        }
+    }
+
     [JsonIgnore]
     public IdentifiableId GordoId;
 
@@ -124,14 +135,14 @@ public sealed class SlimeData : SpawnedActorData
     [JsonIgnore]
     public bool IsPopped;
 
-    [JsonProperty("slimeMeshes")]
-    public string[] SlimeMeshes;
+    [JsonProperty("slimeFeatures"), JsonRequired]
+    public ModelData[] SlimeFeatures;
 
-    [JsonProperty("gordoMeshes")]
-    public string[] GordoMeshes;
+    [JsonProperty("gordoFeatures")]
+    public ModelData[] GordoFeatures;
 
-    [JsonProperty("plortMeshes")]
-    public string[] PlortMeshes;
+    [JsonProperty("plortFeatures")]
+    public ModelData[] PlortFeatures;
 
     [JsonProperty("toAdd")]
     public Type[] ComponentsToAdd;
@@ -139,20 +150,14 @@ public sealed class SlimeData : SpawnedActorData
     [JsonProperty("toRemove")]
     public Type[] ComponentsToRemove;
 
-    [JsonProperty("skipNull")]
-    public bool SkipNullMesh;
-
-    [JsonProperty("slimeMatData"), JsonRequired]
-    public MaterialData[] SlimeMatData;
-
-    [JsonProperty("plortMatData")]
-    public MaterialData[] PlortMatData;
-
-    [JsonProperty("gordoMatData")]
-    public MaterialData[] GordoMatData;
-
     [JsonProperty("spawners")]
     public string[] ExcludedSpawners;
+
+    [JsonProperty("vaccable")]
+    public bool Vaccable = true;
+
+    [JsonProperty("gordoEat")]
+    public int GordoEatAmount = 25;
 
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
@@ -163,42 +168,42 @@ public sealed class SlimeData : SpawnedActorData
         PlortId = Helpers.AddEnumValue<IdentifiableId>(upper + "_PLORT");
         MainEntry = Helpers.AddEnumValue<PediaId>(upper + "_SLIME_ENTRY");
 
-        var type = typeof(Slimepedia);
         var init = "Init" + Name;
-        InitSlimeDetails = AccessTools.Method(type, init + "SlimeDetails");
-        InitPlortDetails = AccessTools.Method(type, init + "PlortDetails");
+        Methods.TryGetValue(init + "SlimeDetails", out InitSlimeDetails);
+        Methods.TryGetValue(init + "PlortDetails", out InitPlortDetails);
 
         HasGordo |= Slimepedia.MgExists && upper == "SAND";
 
         if (HasGordo)
         {
             GordoId = Helpers.AddEnumValue<IdentifiableId>(upper + "_GORDO");
-            InitGordoDetails = AccessTools.Method(type, init + "GordoDetails");
+            Methods.TryGetValue(init + "GordoDetails", out InitGordoDetails);
         }
-
-        if (upper == "MESMER")
-            Largopedia.Mesmers.Add(MainId);
 
         if (NaturalGordoSpawn)
             NaturalGordoSpawn &= HasGordo;
 
-        if (SlimeMatData?.Length is > 0)
+        if (SlimeFeatures.Length > 0)
         {
-            var matData = SlimeMatData[0];
-            TopPaletteColor ??= matData.TopColor;
-            MiddlePaletteColor ??= matData.MiddleColor;
-            BottomPaletteColor ??= matData.BottomColor;
+            var matData = SlimeFeatures[0].ColorProps;
+
+            if (!TopPaletteColor.HasValue && matData.TryGetValue(Slimepedia.TopColor, out var topColor))
+                TopPaletteColor = topColor;
+
+            if (!MiddlePaletteColor.HasValue && matData.TryGetValue(Slimepedia.MiddleColor, out var middleColor))
+                MiddlePaletteColor = middleColor;
+
+            if (!BottomPaletteColor.HasValue && matData.TryGetValue(Slimepedia.BottomColor, out var bottomColor))
+                BottomPaletteColor = bottomColor;
         }
 
         PlortAmmoColor ??= MainAmmoColor;
 
         Progress ??= [];
 
-        SlimeMeshes ??= [null];
-        PlortMeshes ??= [null];
-        GordoMeshes ??= [null];
+        PlortFeatures ??= [.. SlimeFeatures.Select(x => new ModelData(x, false))];
+        GordoFeatures ??= [.. SlimeFeatures.Select(x => new ModelData(x, false))];
 
-        PlortMatData ??= SlimeMatData;
-        GordoMatData ??= SlimeMatData;
+        Vaccable |= Slimepedia.MvExists;
     }
 }

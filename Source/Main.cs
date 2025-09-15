@@ -7,6 +7,7 @@ internal sealed class Main : ModEntryPoint
 {
     public static ConsoleInstance Console;
     public static bool ClsExists;
+    public static Transform PrefabParent;
 
 #if DEBUG
     private static readonly SavePositionCommand SavePos = new(); // Keeping the instance of the command because it stores saved positions
@@ -47,6 +48,10 @@ internal sealed class Main : ModEntryPoint
         Mailbox.PreloadMailData();
         Contacts.PreloadRancherData();
         Helpers.CategoriseIds();
+
+        var gameObject = new GameObject("OceanPrefabs").DontDestroy();
+        gameObject.SetActive(false);
+        PrefabParent = gameObject.transform;
 
 #if DEBUG
         // Debug stuff for the special commands
