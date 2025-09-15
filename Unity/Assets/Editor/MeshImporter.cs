@@ -36,19 +36,20 @@ sealed class MeshImporter : ScriptedImporter
         }
     }
 
-    private void ReadMesh(BinaryReader reader, Mesh mesh)
+    static void ReadMesh(BinaryReader reader, Mesh mesh)
     {
         mesh.vertices = ReadArray(reader, ReadVector3);
         mesh.triangles = ReadArray(reader, ReadInt);
-        mesh.normals = ReadArray(reader, ReadVector3);
-        mesh.tangents = ReadArray(reader, ReadVector4);
         mesh.uv = ReadArray(reader, ReadVector2);
+
         mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+        mesh.RecalculateTangents();
     }
 
-    private int ReadInt(BinaryReader reader) => reader.ReadInt32();
+    static int ReadInt(BinaryReader reader) => reader.ReadInt32();
 
-    private Vector3 ReadVector3(BinaryReader reader)
+    static Vector3 ReadVector3(BinaryReader reader)
     {
         float x = reader.ReadSingle();
         float y = reader.ReadSingle();
@@ -56,23 +57,14 @@ sealed class MeshImporter : ScriptedImporter
         return new Vector3(x, y, z);
     }
 
-    private Vector2 ReadVector2(BinaryReader reader)
+    static Vector2 ReadVector2(BinaryReader reader)
     {
         float x = reader.ReadSingle();
         float y = reader.ReadSingle();
         return new Vector2(x, y);
     }
 
-    private Vector4 ReadVector4(BinaryReader reader)
-    {
-        float x = reader.ReadSingle();
-        float y = reader.ReadSingle();
-        float z = reader.ReadSingle();
-        float w = reader.ReadSingle();
-        return new Vector4(x, y, z, w);
-    }
-
-    private T[] ReadArray<T>(BinaryReader reader, Func<BinaryReader, T> readAction)
+    static T[] ReadArray<T>(BinaryReader reader, Func<BinaryReader, T> readAction)
     {
         int length = reader.ReadInt32();
 
@@ -123,5 +115,6 @@ sealed class MeshImportPostprocessor : AssetPostprocessor
         importer.animationType = ModelImporterAnimationType.None;
         importer.importAnimation = false;
         importer.materialImportMode = 0;
+        importer.importNormals = ModelImporterNormals.Calculate;
     }
 }

@@ -19,6 +19,7 @@ Changes!
 - Improvement: Updated the visuals of a few slimes
 - Improvement: Updated the market entries to better mimic vanilla behaviour
 - Improvement: Slime behaviours are now more consistent with their pedia entries
+- Removed: Removed the need for AssetsLib
 
 Fixes!
 - Critical: Fixed the mod not loading on certain pc and game locales
@@ -46,3 +47,4 @@ Nexus:
 - Fixed the amount of plorts a rosi slime would produce in presence of other slimes
 - Fixed popped natural gordos respawning upon loading saves
 - Fixed the bug where the mod wouldn't load on certain pc locales
+- Removed the need for AssetsLib
