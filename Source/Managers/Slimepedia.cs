@@ -701,7 +701,7 @@ public static class Slimepedia
                 var mesh = rend.sharedMesh;
                 list.Add((rend, mesh));
 
-                if (structure.Element.Name.Contains("Body") && !sharedMesh)
+                if (structure.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0 && !sharedMesh)
                     sharedMesh = mesh;
             }
         }
@@ -818,6 +818,9 @@ public static class Slimepedia
 
     [UsedImplicitly]
     public static void InitMesmerSlimeDetails(GameObject _1, SlimeDefinition definition, SlimeAppearance _2) => Largopedia.Mesmers.Add(definition.IdentifiableId);
+
+    [UsedImplicitly]
+    public static void InitGoldfishPlortDetails(GameObject prefab, SlimeDefinition definition) => definition.IdentifiableId.GetPrefab().GetComponent<GoldSlimeProducePlorts>().plortPrefab = prefab;
 
 #if DEBUG
     [TimeDiagnostic("Slime Postload")]

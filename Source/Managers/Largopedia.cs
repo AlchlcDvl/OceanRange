@@ -132,8 +132,8 @@ public static class Largopedia
         var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
         applicator.SlimeDefinition = definition;
 
-        var slime1Body = appearance1.Structures.FirstOrDefault(x => x.Element.Name.Contains("Body"));
-        var slime2Body = appearance2.Structures.FirstOrDefault(x => x.Element.Name.Contains("Body"));
+        var slime1Body = appearance1.Structures.FirstOrDefault(x => x.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0);
+        var slime2Body = appearance2.Structures.FirstOrDefault(x => x.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0);
         var baseBody = useSlime2Body ? slime2Body : slime1Body;
 
         var modelMap = new Dictionary<int, ModelData>();

@@ -574,16 +574,12 @@
         "ammoColor": "#ffdf00",
         "basePrice": 400,
         "saturation": 50000,
+        "spawnAmount": 0.00125,
         "jiggle": 0.5,
         "slimeFeatures":
         [
             {
                 "lodLevels": 4,
-                "cloneBase": false
-            },
-            {
-                "lodLevels": 4,
-                "mesh": "slime_face",
                 "supportsFaces": true,
                 "cloneBase": false
             },
