@@ -6,7 +6,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 
-class ExportMeshes
+static class ExportMeshes
 {
     [MenuItem("Meshes/Export As .cmesh")]
     static void ExportSelectedMeshes()
@@ -44,8 +44,6 @@ class ExportMeshes
     {
         WriteArray(writer, mesh.vertices, WriteVector3);
         WriteArray(writer, mesh.triangles, WriteInt);
-        WriteArray(writer, mesh.normals, WriteVector3);
-        WriteArray(writer, mesh.tangents, WriteVector4);
         WriteArray(writer, mesh.uv, WriteVector2);
         writer.Flush();
     }

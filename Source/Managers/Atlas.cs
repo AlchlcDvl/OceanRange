@@ -15,7 +15,7 @@ public static class Atlas
     }
 
 #if DEBUG
-    [TimeDiagnostic("Contacts OnSavePreload")]
+    [TimeDiagnostic("Atlas OnSavePreload")]
 #endif
     private static void PreOnSaveLoad(SceneContext _)
     {

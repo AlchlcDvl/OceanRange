@@ -578,10 +578,10 @@
         "jiggle": 0.5,
         "slimeFeatures":
         [
+            { "skipNull": true },
             {
-                "lodLevels": 4,
                 "supportsFaces": true,
-                "cloneBase": false
+                "skipNull": true
             },
             {
                 "mesh": "goldfish_fins",
@@ -601,7 +601,7 @@
             { "sameAs": 0 },
             {
                 "mesh": "goldfish_fins_gordo",
-                "sameAs": 1
+                "sameAs": 2
             }
         ],
         "natGordoSpawn": false,

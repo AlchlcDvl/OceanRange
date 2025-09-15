@@ -256,8 +256,6 @@ public static class Inventory
         {
             vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
             triangles = BinaryUtils.ReadArray(reader, ReadInt),
-            normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4),
             uv = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2),
             bindposes = []
         };

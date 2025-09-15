@@ -160,7 +160,6 @@ public static class Helpers
         {
             vertices = originalMesh.vertices,
             triangles = originalMesh.triangles,
-            normals = originalMesh.normals,
             tangents = originalMesh.tangents,
 
             colors = originalMesh.colors,

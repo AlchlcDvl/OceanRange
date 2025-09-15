@@ -639,6 +639,8 @@ public static class Slimepedia
             mesh.boneWeights = weights;
             mesh.bindposes = poses;
             mesh.RecalculateBounds();
+            mesh.RecalculateNormals();
+            mesh.RecalculateTangents();
 
             var meshRend = isFirst ? prefabRend : prefabRend.Instantiate(parent);
             meshRend.sharedMesh = mesh;
@@ -777,7 +779,10 @@ public static class Slimepedia
 
             mesh.boneWeights = weights;
             mesh.bindposes = poses;
+
             mesh.RecalculateBounds();
+            mesh.RecalculateNormals();
+            mesh.RecalculateTangents();
 
             rend.localBounds = mesh.bounds;
         }
