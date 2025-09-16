@@ -84,7 +84,10 @@ public sealed class LargoData : ActorData
 
         Jiggle ??= ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
 
-        if (BodyStructData != null)
-            BodyStructData.LodLevels = 4;
+        if (BodyStructData == null)
+            return;
+
+        BodyStructData.LodLevels = 4;
+        BodyStructData.SupportsFaces = true;
     }
 }

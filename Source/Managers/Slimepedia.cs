@@ -440,10 +440,7 @@ public static class Slimepedia
             return null;
 
         var structure = new SlimeAppearanceStructure(baseStruct);
-
         structure.DefaultMaterials[0] = GenerateMaterial(modelData, modelDatas, structure.DefaultMaterials[0]);
-        structure.SupportsFaces = modelData.SupportsFaces;
-
         var isNull = modelData.Mesh == null;
 
         if (isNull && modelData.SkipNull)
@@ -451,6 +448,7 @@ public static class Slimepedia
 
         var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
         elem.name = elem.Name = modelData.Name?.Replace("(Clone)", "") ?? (isBody ? "Body" : "Structure");
+        structure.SupportsFaces = modelData.SupportsFaces;
 
         if (modelData.IgnoreLodIndex)
         {

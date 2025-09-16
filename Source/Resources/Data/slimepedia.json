@@ -102,9 +102,16 @@
             {
                 "supportsFaces": true,
                 "lodLevels": 4,
-                "mesh": "coco_body",
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME"
+                "colorProps":
+                {
+                    "_TopColor": "#FEFCFF",
+                    "_MiddleColor": "#966F33"
+                }
+            },
+            {
+                "mesh": "coco_brows",
+                "supportsFaces": true,
+                "colorProps": { "_TopColor": "#744D11" }
             }
         ],
         "plortFeatures":
@@ -387,7 +394,7 @@
                 }
             },
             {
-                "mesh": "mesmer_pincer_1",
+                "mesh": "mesmer_pincers",
                 "matOrigin": "TABBY_SLIME",
                 "pattern": "mesmer_pincer_pattern",
                 "colorProps":
@@ -395,10 +402,6 @@
                     "_TopColor": "#340ca1",
                     "_BottomColor": "#320047"
                 }
-            },
-            {
-                "mesh": "mesmer_pincer_2",
-                "sameAs": 1
             },
             {
                 "mesh": "mesmer_tail_base",
@@ -441,28 +444,24 @@
         [
             { "sameAs": 0 },
             {
-                "mesh": "mesmer_pincer_1_gordo",
+                "mesh": "mesmer_pincers_gordo",
                 "sameAs": 1
             },
             {
-                "mesh": "mesmer_pincer_2_gordo",
+                "mesh": "mesmer_tail_base_gordo",
                 "sameAs": 2
             },
             {
-                "mesh": "mesmer_tail_base_gordo",
+                "mesh": "mesmer_tail_stem_1_gordo",
                 "sameAs": 3
             },
             {
-                "mesh": "mesmer_tail_stem_1_gordo",
+                "mesh": "mesmer_tail_stem_2_gordo",
                 "sameAs": 4
             },
             {
-                "mesh": "mesmer_tail_stem_2_gordo",
-                "sameAs": 5
-            },
-            {
                 "mesh": "mesmer_tail_tip_gordo",
-                "sameAs": 6
+                "sameAs": 5
             }
         ],
         "plortFeatures":
@@ -520,12 +519,8 @@
                 "colorProps": { "_TopColor": "#f6d599" }
             },
             {
-                "mesh": "hermit_claw_1",
+                "mesh": "hermit_claws",
                 "colorProps": { "_TopColor": "#b53a35" }
-            },
-            {
-                "mesh": "hermit_claw_2",
-                "sameAs": 2
             }
         ],
         "plortFeatures":
@@ -544,12 +539,8 @@
                 "sameAs": 1
             },
             {
-                "mesh": "hermit_claw_1",
+                "mesh": "hermit_claws",
                 "sameAs": 2
-            },
-            {
-                "mesh": "hermit_claw_2",
-                "sameAs": 3
             }
         ],
         "gordoOri": "f 101.948,-3.4949,40.8476,0,57,0",
@@ -579,10 +570,7 @@
         "slimeFeatures":
         [
             { "skipNull": true },
-            {
-                "supportsFaces": true,
-                "skipNull": true
-            },
+            { "skipNull": true },
             {
                 "mesh": "goldfish_fins",
                 "matOrigin": "PINK_SLIME",
