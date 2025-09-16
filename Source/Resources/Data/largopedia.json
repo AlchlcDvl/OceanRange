@@ -105,11 +105,7 @@
     },
     {
         "name": "Saber Coco",
-        "props": ["CustomBody"],
-        "bodyMesh":
-        {
-            "matOrigin": "TABBY_SLIME"
-        }
+        "props": []
     },
     {
         "name": "Quantum Coco",
