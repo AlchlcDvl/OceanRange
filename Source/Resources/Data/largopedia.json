@@ -2,40 +2,57 @@
     {
         "name": "Rosi Mine",
         "props": ["UseSlime2ForFace", "CustomStructures"],
-        "meshes":
+        "bodyMesh":
+        {
+            "mesh": "rosi_body",
+            "matOrigin": "PINK_SLIME",
+            "gloss": 1,
+            "colorProps": { "_TopColor": "#445660" }
+        },
+        "slime1Meshes":
         [
             {
-                "mesh": "rosi_body",
-                "isBody": true,
-                "matOrigin": "PINK_SLIME",
+                "mesh": "rosi_mine_stalk",
                 "gloss": 1,
                 "colorProps": { "_TopColor": "#445660" }
             },
             {
+                "mesh": "rosi_mine_frills",
+                "matSameAs": 1,
+                "matOrigin": "MINE_SLIME"
+            }
+        ],
+        "slime2Meshes":
+        [
+            {
                 "mesh": "rosi_mine_exterior",
                 "matSameAs": 1,
                 "matOrigin": "MINE_SLIME"
-            },
-            {
-                "mesh": "rosi_mine_stalk",
-                "sameAs": 0
-            },
-            {
-                "mesh": "rosi_mine_frills",
-                "sameAs": 1
             }
         ]
     },
     {
         "name": "Rosi Lantern",
         "props": "CustomStructures",
-        "meshes":
+        "bodyMesh":
+        {
+            "mesh": "rosi_body",
+            "matOrigin": "LANTERN_SLIME"
+        },
+        "slime1Meshes":
         [
             {
-                "mesh": "rosi_body",
-                "isBody": true,
+                "mesh": "rosi_mine_stalk",
                 "matOrigin": "LANTERN_SLIME"
             },
+            {
+                "mesh": "rosi_mine_frills",
+                "matOrigin": "PINK_SLIME",
+                "colorProps": { "_TopColor": "#752C86" }
+            }
+        ],
+        "slime2Meshes":
+        [
             {
                 "mesh": "rosi_lantern_fins",
                 "matSameAs": 1,
@@ -43,41 +60,33 @@
             },
             {
                 "mesh": "lantern_stalk",
-                "sameAs": 0
+                "matOrigin": "LANTERN_SLIME"
             },
             {
                 "mesh": "lantern_lure",
                 "matSameAs": 3,
                 "matOrigin": "LANTERN_SLIME"
-            },
-            {
-                "mesh": "rosi_mine_stalk",
-                "sameAs": 0
-            },
-            {
-                "mesh": "rosi_mine_frills",
-                "matOrigin": "PINK_SLIME",
-                "colorProps": { "_TopColor": "#752C86" }
             }
         ]
     },
     {
         "name": "Mine Lantern",
         "props": "CustomStructures",
-        "meshes":
+        "bodyMesh": { "matOrigin": "ROSI_MINE_LARGO" },
+        "slime1Meshes":
         [
-            {
-                "isBody": true,
-                "matOrigin": "ROSI_MINE_LARGO"
-            },
             {
                 "mesh": "mine_lantern_exterior",
                 "matSameAs": 1,
                 "matOrigin": "MINE_SLIME"
-            },
+            }
+        ],
+        "slime2Meshes":
+        [
             {
                 "mesh": "lantern_stalk",
-                "sameAs": 1
+                "matSameAs": 1,
+                "matOrigin": "ROSI_MINE_LARGO"
             },
             {
                 "mesh": "lantern_lure",
@@ -174,14 +183,13 @@
                 "matOrigin": "TABBY_SLIME",
                 "pattern": "mesmer_pincer_pattern"
             },
-            { "sameAs": 0 },
             {
                 "colorsOrigin": "PINK_SLIME",
                 "matOrigin": "PINK_SLIME"
             },
-            { "sameAs": 2 },
-            { "sameAs": 2 },
-            { "sameAs": 2 }
+            { "sameAs": 1 },
+            { "sameAs": 1 },
+            { "sameAs": 1 }
         ]
     },
     {
@@ -205,12 +213,7 @@
             },
             {
                 "colorsOrigin": "MESMER_SLIME",
-                "colorsSameAs": 2,
-                "matOrigin": "QUANTUM_SLIME"
-            },
-            {
-                "colorsOrigin": "MESMER_SLIME",
-                "colorsSameAs": 3,
+                "colorsSameAs": 5,
                 "matOrigin": "QUANTUM_SLIME"
             },
             {
@@ -220,7 +223,12 @@
             },
             {
                 "colorsOrigin": "MESMER_SLIME",
-                "colorsSameAs": 5,
+                "colorsSameAs": 3,
+                "matOrigin": "QUANTUM_SLIME"
+            },
+            {
+                "colorsOrigin": "MESMER_SLIME",
+                "colorsSameAs": 2,
                 "matOrigin": "QUANTUM_SLIME"
             }
         ]
@@ -233,6 +241,7 @@
             "colorsOrigin": "MESMER_SLIME",
             "matOrigin": "HONEY_SLIME"
         },
+        "slime1Meshes": [{ "colorProps": { "_TopColor": "#dafe7a" } }],
         "slime2Meshes":
         [
             {
@@ -260,8 +269,7 @@
                 "colorsSameAs": 5,
                 "matOrigin": "HONEY_SLIME"
             }
-        ],
-        "slime1Meshes": [ { "colorProps": { "_TopColor": "#dafe7a" } } ]
+        ]
     },
     {
         "name": "Phosphor Mesmer",
@@ -277,8 +285,8 @@
                 "colorsOrigin": "PHOSPHOR_SLIME",
                 "matOrigin": "PINK_SLIME"
             },
-            { "sameAs": 2 },
-            { "sameAs": 2 },
+            { "sameAs": 1 },
+            { "sameAs": 1 },
             { "matOrigin": "PHOSPHOR_SLIME" }
         ]
     },
@@ -399,8 +407,8 @@
                 "colorsOrigin": "ROCK_SLIME",
                 "matOrigin": "PINK_SLIME"
             },
-            { "sameAs": 2 },
-            { "sameAs": 2 },
+            { "sameAs": 1 },
+            { "sameAs": 1 },
             { "matOrigin": "PINK_SLIME" }
         ]
     },
@@ -411,7 +419,8 @@
         [
             {
                 "mesh": "tabby_ears",
-                "sameAs": 0
+                "sameAs": 1,
+                "matOrigin": "TABBY_SLIME"
             }
         ]
     },
@@ -422,7 +431,8 @@
         [
             {
                 "mesh": "hunter_ears",
-                "sameAs": 0
+                "sameAs": 1,
+                "matOrigin": "HUNTER_SLIME"
             }
         ]
     },
@@ -447,8 +457,8 @@
                 "colorsOrigin": "CRYSTAL_SLIME",
                 "matOrigin": "PINK_SLIME"
             },
-            { "sameAs": 2 },
-            { "sameAs": 2 },
+            { "sameAs": 1 },
+            { "sameAs": 1 },
             { "matOrigin": "CRYSTAL_SLIME" }
         ]
     },
@@ -472,11 +482,7 @@
         "props": ["CustomSlime1Structures", "CustomSlime2Structures"],
         "slime1Meshes":
         [
-            {
-                "mesh": "mesmer_pincers",
-                "matSameAs": 1,
-                "matOrigin": "MESMER_SLIME"
-            },
+            { "mesh": "mesmer_pincers" },
             { "skip": true },
             { "skip": true },
             { "skip": true },

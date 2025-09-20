@@ -137,37 +137,21 @@ public static class Largopedia
         var baseBody = useSlime2Body ? slime2Body : slime1Body;
 
         var modelMap = new Dictionary<int, ModelData>();
+        var customBody = props.HasFlag(LargoProps.CustomBody);
+        var body = Slimepedia.GenerateStructure(baseBody, customBody ? largoData.BodyStructData : null, null);
 
-        if (props.HasFlag(LargoProps.CustomStructures))
-        {
-            Slimepedia.BasicInitSlimeAppearance(appearance, applicator, baseBody, largoData.LargoStructData, largoData.Jiggle.Value);
-
-            for (var i = 0; i < largoData.LargoStructData.Length; i++)
-                modelMap[i] = largoData.LargoStructData[i];
-        }
+        if (customBody)
+            modelMap[0] = largoData.BodyStructData;
         else
-        {
-            SlimeAppearanceStructure body;
+            body.DefaultMaterials[0] = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone();
 
-            if (props.HasFlag(LargoProps.CustomBody))
-            {
-                body = Slimepedia.GenerateStructure(baseBody, largoData.BodyStructData, null);
-                modelMap[0] = largoData.BodyStructData;
-            }
-            else
-            {
-                body = new SlimeAppearanceStructure(baseBody);
-                body.DefaultMaterials[0] = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone();
-            }
+        var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
 
-            var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
+        GenerateStructures(appearance1.Structures, largoData.Slime1StructData, props.HasFlag(LargoProps.CustomSlime1Structures), list, appearance1.Structures.IndexOfItem(slime1Body), modelMap);
+        GenerateStructures(appearance2.Structures, largoData.Slime2StructData, props.HasFlag(LargoProps.CustomSlime2Structures), list, appearance2.Structures.IndexOfItem(slime2Body), modelMap);
 
-            GenerateStructures(appearance1.Structures, largoData.Slime1StructData, props.HasFlag(LargoProps.CustomSlime1Structures), list, slime1Body, modelMap);
-            GenerateStructures(appearance2.Structures, largoData.Slime2StructData, props.HasFlag(LargoProps.CustomSlime2Structures), list, slime2Body, modelMap);
-
-            appearance.Structures = [.. list];
-            applicator.GenerateSlimeBones(appearance.Structures, largoData.Jiggle.Value);
-        }
+        appearance.Structures = [.. list];
+        applicator.GenerateSlimeBones(appearance.Structures, largoData.Jiggle.Value);
 
         appearance.ColorPalette = SlimeAppearance.Palette.FromMaterial(appearance.Structures[0].DefaultMaterials[0]);
         appearance.CrystalAppearance = appearance1.CrystalAppearance ?? appearance2.CrystalAppearance;
@@ -268,17 +252,15 @@ public static class Largopedia
         TranslationPatcher.AddActorTranslation("l." + largoData.MainId.ToString().ToLowerInvariant(), SlimeRegistry.GenerateLargoName(largoData.MainId));
     }
 
-    private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, bool customMats, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure avoid, Dictionary<int, ModelData> modelMap)
+    private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, bool customMats, List<SlimeAppearanceStructure> list, int avoid, Dictionary<int, ModelData> modelMap)
     {
-        var num = baseStructs.IndexOfItem(avoid);
-
         if (customMats)
         {
             var j = 0;
 
             for (var i = 0; i < baseStructs.Length; i++)
             {
-                if (i == num)
+                if (i == avoid)
                     continue;
 
                 var modelData = modelDatas[j];
@@ -300,7 +282,7 @@ public static class Largopedia
         {
             for (var i = 0; i < baseStructs.Length; i++)
             {
-                if (i != num)
+                if (i != avoid)
                     list.Add(new(baseStructs[i]));
             }
         }

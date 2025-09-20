@@ -1,7 +1,7 @@
 namespace OceanRange.Modules;
 
 [Flags]
-public enum LargoProps : ushort
+public enum LargoProps : byte
 {
     None = 0,
 
@@ -24,5 +24,5 @@ public enum LargoProps : ushort
     CustomBody = 1 << 7,
 
     // Same as UseSlime2AsBase
-    CustomStructures = 1 << 8
+    CustomStructures = CustomSlime1Structures | CustomSlime2Structures | CustomBody
 }

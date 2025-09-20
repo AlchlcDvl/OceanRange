@@ -33,9 +33,6 @@ public sealed class LargoData : ActorData
     [JsonProperty("slime2Meshes")]
     public ModelData[] Slime2StructData;
 
-    [JsonProperty("meshes")]
-    public ModelData[] LargoStructData;
-
     [JsonProperty("jiggle")]
     public float? Jiggle;
 
@@ -84,6 +81,7 @@ public sealed class LargoData : ActorData
 
         Jiggle ??= ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
 
-        BodyStructData?.IsBody = true;
+        if (BodyStructData != null)
+            BodyStructData.IsBody = true;
     }
 }
