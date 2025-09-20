@@ -7,8 +7,7 @@
         [
             {
                 "mesh": "rosi_body",
-                "lodLevels": 4,
-                "supportsFaces": true,
+                "isBody": true,
                 "colorProps":
                 {
                     "_TopColor": "#F9E5F0",
@@ -100,8 +99,7 @@
         "slimeFeatures":
         [
             {
-                "supportsFaces": true,
-                "lodLevels": 4,
+                "isBody": true,
                 "colorProps":
                 {
                     "_TopColor": "#FEFCFF",
@@ -110,7 +108,6 @@
             },
             {
                 "mesh": "coco_brows",
-                "supportsFaces": true,
                 "colorProps": { "_TopColor": "#744D11" }
             }
         ],
@@ -167,8 +164,7 @@
         "slimeFeatures":
         [
             {
-                "lodLevels": 4,
-                "supportsFaces": true,
+                "isBody": true,
                 "pattern": "mine_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 1,
@@ -236,8 +232,7 @@
         "slimeFeatures":
         [
             {
-                "lodLevels": 4,
-                "supportsFaces": true,
+                "isBody": true,
                 "colorProps":
                 {
                     "_TopColor": "#752C86",
@@ -331,7 +326,6 @@
         "slimeFeatures":
         [
             {
-                "supportsFaces": true,
                 "skipNull": true,
                 "colorProps":
                 {
@@ -381,8 +375,7 @@
         "slimeFeatures":
         [
             {
-                "lodLevels": 4,
-                "supportsFaces": true,
+                "isBody": true,
                 "pattern": "mesmer_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11,
@@ -502,8 +495,7 @@
         "slimeFeatures":
         [
             {
-                "lodLevels": 4,
-                "supportsFaces": true,
+                "isBody": true,
                 "pattern": "hermit_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11,

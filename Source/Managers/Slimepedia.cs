@@ -374,6 +374,17 @@ public static class Slimepedia
                 prefab.RemoveComponent(type);
         }
 
+        if (slimeData.ComponentBase.HasValue)
+        {
+            foreach (var component in slimeData.ComponentBase.Value.GetPrefab().GetComponents<Component>())
+            {
+                var type = component.GetType();
+
+                if (!prefab.HasComponent(type))
+                    prefab.AddComponent(type).CopyValuesFrom(component);
+            }
+        }
+
         BasicInitSlimeAppearance(appearance, applicator, slimeData);
         SlimeRegistry.RegisterAppearance(definition, appearance);
 
@@ -429,12 +440,12 @@ public static class Slimepedia
         appearance.Structures = new SlimeAppearanceStructure[models.Length];
 
         for (var i = 0; i < models.Length; i++)
-            appearance.Structures[i] = GenerateStructure(baseStruct, models[i], models, i == 0);
+            appearance.Structures[i] = GenerateStructure(baseStruct, models[i], models);
 
         applicator.GenerateSlimeBones(appearance.Structures, jiggle);
     }
 
-    public static SlimeAppearanceStructure GenerateStructure(SlimeAppearanceStructure baseStruct, ModelData modelData, ModelData[] modelDatas, bool isBody)
+    public static SlimeAppearanceStructure GenerateStructure(SlimeAppearanceStructure baseStruct, ModelData modelData, ModelData[] modelDatas)
     {
         if (modelData.Skip)
             return null;
@@ -447,8 +458,8 @@ public static class Slimepedia
             return structure;
 
         var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
-        elem.name = elem.Name = modelData.Name?.Replace("(Clone)", "") ?? (isBody ? "Body" : "Structure");
-        structure.SupportsFaces = modelData.SupportsFaces;
+        elem.name = elem.Name = modelData.Name?.Replace("(Clone)", "") ?? (modelData.IsBody ? "Body" : "Structure");
+        structure.SupportsFaces = modelData.IsBody;
 
         if (modelData.IgnoreLodIndex)
         {
@@ -460,9 +471,10 @@ public static class Slimepedia
         }
         else
         {
-            elem.Prefabs = new SlimeAppearanceObject[modelData.LodLevels];
+            var length = modelData.IsBody ? 4 : 2;
+            elem.Prefabs = new SlimeAppearanceObject[length];
 
-            for (var j = 0; j < modelData.LodLevels; j++)
+            for (var j = 0; j < length; j++)
             {
                 SlimeAppearanceObject prefab;
 
@@ -636,6 +648,7 @@ public static class Slimepedia
 
             mesh.boneWeights = weights;
             mesh.bindposes = poses;
+
             mesh.RecalculateBounds();
             mesh.RecalculateNormals();
             mesh.RecalculateTangents();

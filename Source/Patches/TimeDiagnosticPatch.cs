@@ -35,8 +35,7 @@ public static class TimeDiagnosticPatch
         var (stage, isNull, watch, hasJsonParam, hasParams) = Watches[__originalMethod];
         watch.Start();
 
-        var sb = new StringBuilder();
-        sb.Append(isNull ? __originalMethod.Name : stage);
+        var sb = new StringBuilder(isNull ? __originalMethod.Name : stage, 20);
 
         if (hasJsonParam)
             sb.Insert(0, (((JsonData)__args[0]).Name ?? "Blank") + " ");

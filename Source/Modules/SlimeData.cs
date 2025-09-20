@@ -159,6 +159,9 @@ public sealed class SlimeData : SpawnedActorData
     [JsonProperty("gordoEat")]
     public int GordoEatAmount = 25;
 
+    [JsonProperty("componentBase")]
+    public IdentifiableId? ComponentBase;
+
     [OnDeserialized]
     public void PopulateRemainingValues(StreamingContext _)
     {

@@ -151,7 +151,7 @@ public static class Largopedia
 
             if (props.HasFlag(LargoProps.CustomBody))
             {
-                body = Slimepedia.GenerateStructure(baseBody, largoData.BodyStructData, null, true);
+                body = Slimepedia.GenerateStructure(baseBody, largoData.BodyStructData, null);
                 modelMap[0] = largoData.BodyStructData;
             }
             else
@@ -286,7 +286,7 @@ public static class Largopedia
                 if (modelData.Skip)
                     continue;
 
-                var structure = Slimepedia.GenerateStructure(baseStructs[i], modelData, modelDatas, false);
+                var structure = Slimepedia.GenerateStructure(baseStructs[i], modelData, modelDatas);
 
                 if (structure == null)
                     continue;

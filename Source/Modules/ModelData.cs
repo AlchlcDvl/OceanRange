@@ -22,6 +22,7 @@ public sealed class ModelData : JsonData
 
         if (data != null)
         {
+            IsBody = data.IsBody;
             CloneSameAs = data.CloneSameAs;
             CloneFallback = data.CloneFallback;
             CloneMatOrigin = data.CloneMatOrigin;
@@ -30,8 +31,6 @@ public sealed class ModelData : JsonData
             {
                 Skip = data.Skip;
                 SkipNull = data.SkipNull;
-                LodLevels = data.LodLevels;
-                SupportsFaces = data.SupportsFaces;
                 IgnoreLodIndex = data.IgnoreLodIndex;
             }
         }
@@ -78,20 +77,17 @@ public sealed class ModelData : JsonData
     [JsonProperty("mesh")]
     public string Mesh;
 
-    [JsonProperty("lodLevels")]
-    public int LodLevels = 2;
-
     [JsonProperty("skipNull")]
     public bool SkipNull;
-
-    [JsonProperty("supportsFaces")]
-    public bool SupportsFaces;
 
     [JsonProperty("ignoreLodIndex")]
     public bool IgnoreLodIndex;
 
     [JsonProperty("skip")]
     public bool Skip;
+
+    [JsonProperty("isBody")]
+    public bool IsBody;
 
     [JsonIgnore]
     public readonly Dictionary<int, Color> ColorProps = [];

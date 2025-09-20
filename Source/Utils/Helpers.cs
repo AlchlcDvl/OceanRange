@@ -115,19 +115,27 @@ public static class Helpers
     // public static T DeepCopyNonUnityObject<T>(this T obj)
     // {
     //     var instance = Activator.CreateInstance<T>();
-    //     var tType = typeof(T);
-
-    //     foreach (var field in tType.GetFields(AccessTools.all))
-    //         field.SetValue(instance, field.GetValue(obj));
-
-    //     foreach (var property in tType.GetProperties(AccessTools.all))
-    //     {
-    //         if (property.CanWrite)
-    //             property.SetValue(instance, property.GetValue(obj));
-    //     }
-
+    //     instance.CopyValues(obj);
     //     return instance;
     // }
+
+    public static void CopyValuesFrom(this object dest, object source)
+    {
+        var type1 = dest.GetType();
+        var type2 = source.GetType();
+
+        if (type1 != type2)
+            throw new InvalidOperationException($"Cannot copy over values between two different types! {type1.Name} & {type2.Name}");
+
+        foreach (var field in type1.GetFields(AccessTools.all))
+            field.SetValue(dest, field.GetValue(source));
+
+        foreach (var property in type1.GetProperties(AccessTools.all))
+        {
+            if (property.CanWrite)
+                property.SetValue(dest, property.GetValue(source));
+        }
+    }
 
     public static bool IsInLoopedRange(this float num, float min, float max, float rangeMin, float rangeMax, bool inner)
     {
@@ -294,7 +302,7 @@ public static class Helpers
             ExchangeOfferRegistry.RegisterUnlockableItem(id, progress[0], weight);
     }
 
-    public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used, but it's better to be safe than sorry
+    // public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used, but it's better to be safe than sorry
 
     public static bool TryParse(Type enumType, string name, bool ignoreCase, out object result)
     {
@@ -478,16 +486,16 @@ public static class Helpers
 
     public static Vector3 Abs(this Vector3 value) => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
 
-    public static bool TryGetItem<T>(this T[] array, int index, out T value)
-    {
-        if (array == null)
-        {
-            value = default;
-            return false;
-        }
+    // public static bool TryGetItem<T>(this T[] array, int index, out T value)
+    // {
+    //     if (array == null)
+    //     {
+    //         value = default;
+    //         return false;
+    //     }
 
-        var result = index < array.Length;
-        value = result ? array[index] : default;
-        return result;
-    }
+    //     var result = index < array.Length && index >= 0;
+    //     value = result ? array[index] : default;
+    //     return result;
+    // }
 }
