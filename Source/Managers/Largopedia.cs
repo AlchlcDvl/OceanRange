@@ -138,12 +138,18 @@ public static class Largopedia
 
         var modelMap = new Dictionary<int, ModelData>();
         var customBody = props.HasFlag(LargoProps.CustomBody);
-        var body = Slimepedia.GenerateStructure(baseBody, customBody ? largoData.BodyStructData : null, null);
+        SlimeAppearanceStructure body;
 
         if (customBody)
+        {
+            body = Slimepedia.GenerateStructure(baseBody, largoData.BodyStructData, null);
             modelMap[0] = largoData.BodyStructData;
+        }
         else
+        {
+            body = new(baseBody);
             body.DefaultMaterials[0] = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone();
+        }
 
         var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
 

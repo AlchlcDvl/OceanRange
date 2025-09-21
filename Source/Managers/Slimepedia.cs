@@ -447,28 +447,6 @@ public static class Slimepedia
 
     public static SlimeAppearanceStructure GenerateStructure(SlimeAppearanceStructure baseStruct, ModelData modelData, ModelData[] modelDatas)
     {
-        if (modelData == null)
-        {
-            var innerStructure = new SlimeAppearanceStructure(baseStruct);
-            var element = innerStructure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
-            element.name = element.Name = baseStruct.Element.Name.Replace("(Clone)", "");
-            element.Prefabs = new SlimeAppearanceObject[baseStruct.Element.Prefabs.Length];
-
-            for (var i = 0; i < element.Prefabs.Length; i++)
-            {
-                var appearanceObj = baseStruct.Element.Prefabs[i].CreatePrefab();
-
-                if (appearanceObj.TryGetComponent<SkinnedMeshRenderer>(out var skinned))
-                    skinned.sharedMesh = skinned.sharedMesh.Clone();
-                else if (appearanceObj.TryGetComponent<MeshFilter>(out var filter))
-                    filter.sharedMesh = filter.sharedMesh.Clone();
-
-                element.Prefabs[i] = appearanceObj;
-            }
-
-            return innerStructure;
-        }
-
         if (modelData.Skip)
             return null;
 

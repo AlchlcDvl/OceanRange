@@ -90,7 +90,7 @@ public sealed class ModelData : JsonData
     public bool IsBody;
 
     [JsonProperty("hasMatData")]
-    public bool HasMatData;
+    public bool HasMatData = true;
 
     [JsonIgnore]
     public readonly Dictionary<int, Color> ColorProps = [];

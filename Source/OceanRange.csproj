@@ -27,6 +27,9 @@
 
         <EmbeddedResource Include="Resources\*" />
         <EmbeddedResource Include="Resources\*\*" />
+
+        <Publicize Include="Assembly-CSharp" />
+        <Publicize Include="UnityEngine.CoreModule" />
     </ItemGroup>
 
     <PropertyGroup Condition="$(Configuration)==Release">

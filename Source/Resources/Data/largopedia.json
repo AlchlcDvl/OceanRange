@@ -178,15 +178,8 @@
         },
         "slime2Meshes":
         [
-            {
-                "colorsOrigin": "PINK_SLIME",
-                "matOrigin": "TABBY_SLIME",
-                "pattern": "mesmer_pincer_pattern"
-            },
-            {
-                "colorsOrigin": "PINK_SLIME",
-                "matOrigin": "PINK_SLIME"
-            },
+            { "colorsOrigin": "PINK_SLIME" },
+            { "matOrigin": "PINK_SLIME" },
             { "sameAs": 1 },
             { "sameAs": 1 },
             { "sameAs": 1 }
@@ -637,7 +630,10 @@
         "slime2Meshes":
         [
             { "useAsIs": true },
-            { "sameAs": 2 }
+            {
+                "colorsSameAs": 1,
+                "colorsOrigin": "CRYSTAL_SLIME"
+            }
         ],
         "slime1Meshes":
         [
@@ -645,7 +641,8 @@
                 "mesh": "crystal_hermit_spine",
                 "matSameAs": 1,
                 "matOrigin": "CRYSTAL_SLIME"
-            }
+            },
+            { "skip": true }
         ]
     },
     {
