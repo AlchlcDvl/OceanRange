@@ -36,19 +36,19 @@ public static class Inventory
         ]
     };
 
-    // private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
-    // {
-    //     [RuntimePlatform.OSXPlayer] = "mac",
-    //     [RuntimePlatform.LinuxPlayer] = "lin",
-    //     [RuntimePlatform.WindowsPlayer] = "win",
-    // };
+    private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
+    {
+        [RuntimePlatform.OSXPlayer] = "mac",
+        [RuntimePlatform.LinuxPlayer] = "lin",
+        [RuntimePlatform.WindowsPlayer] = "win",
+    };
 
-    // private static readonly string BundleSuffix = "bundle_" +
-    // (
-    //     Platforms.TryGetValue(Application.platform, out var suffix)
-    //     ? suffix
-    //     : throw new PlatformNotSupportedException(Application.platform.ToString())
-    // );
+    private static readonly string BundleSuffix = "bundle_" +
+    (
+        Platforms.TryGetValue(Application.platform, out var suffix)
+        ? suffix
+        : throw new PlatformNotSupportedException(Application.platform.ToString())
+    );
 
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
@@ -61,10 +61,10 @@ public static class Inventory
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
 
-        // [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
+        [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
 
         // Bundle resources
-        // [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
+        [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
 
         // AudioClip is not currently in use
         // [typeof(AudioClip)] = (["wav"], LoadAudioClip),
@@ -84,7 +84,7 @@ public static class Inventory
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
 
-    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).ToHashSet()/*, .. Platforms.Select(x => "bundle_" + x)*/];
+    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).ToHashSet(), .. Platforms.Select(x => "bundle_" + x)];
 
 #if DEBUG
     /// <summary>
@@ -103,8 +103,8 @@ public static class Inventory
     {
         Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles for embedded resources
 
-        // var bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
-        // Array.ForEach(bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
+        var bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
+        Array.ForEach(bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
     }
 
     /// <summary>
@@ -186,11 +186,11 @@ public static class Inventory
         return mesh.bindposes.Length == 0 ? mesh : mesh.Clone();
     }
 
-    // /// <summary>
-    // /// Gets a Shader from the assets associated with the provided name.
-    // /// </summary>
-    // /// <inheritdoc cref="Get{T}(string)"/>
-    // public static Shader GetShader(string name) => Get<Shader>(name);
+    /// <summary>
+    /// Gets a Shader from the assets associated with the provided name.
+    /// </summary>
+    /// <inheritdoc cref="Get{T}(string)"/>
+    public static Shader GetShader(string name) => Get<Shader>(name);
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
@@ -304,9 +304,9 @@ public static class Inventory
         return tex ? Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
     }
 
-    // private static T GetBundleAsset<T>(string path) where T : UObject => Get<AssetBundle>("ocean_range").LoadAsset<T>(path);
+    private static T GetBundleAsset<T>(string path) where T : UObject => Get<AssetBundle>("ocean_range").LoadAsset<T>(path);
 
-    // private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
+    private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
 
     /// <summary>
     /// Reads all the bytes from the provided stream.
