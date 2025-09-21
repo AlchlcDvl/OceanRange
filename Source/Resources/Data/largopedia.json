@@ -164,7 +164,7 @@
     },
     {
         "name": "Pink Mesmer",
-        "props": ["CustomBody", "CustomSlime2Structures"],
+        "props": ["CustomBody", "CustomSlime2Structures", "UseSlime2ForBody"],
         "bodyMesh": { "colorsOrigin": "PINK_SLIME" },
         "slime2Meshes":
         [
@@ -182,11 +182,7 @@
     {
         "name": "Quantum Mesmer",
         "props": ["CustomBody", "CustomSlime2Structures"],
-        "bodyMesh":
-        {
-            "colorsOrigin": "MESMER_SLIME",
-            "matOrigin": "QUANTUM_SLIME"
-        },
+        "bodyMesh": { "matOrigin": "QUANTUM_SLIME" },
         "slime2Meshes":
         [
             {
@@ -591,7 +587,7 @@
         ],
         "slime2Meshes":
         [
-            { "useAsIs": true },
+            { "skipNull": true },
             { "colorsOrigin": "TABBY_SLIME" }
         ]
     },
@@ -609,7 +605,7 @@
         ],
         "slime2Meshes":
         [
-            { "useAsIs": true },
+            { "skipNull": true },
             { "colorsOrigin": "HUNTER_SLIME" }
         ]
     },
@@ -619,20 +615,17 @@
         "bodyMesh": { "matOrigin": "CRYSTAL_SLIME" },
         "slime2Meshes":
         [
-            { "useAsIs": true },
-            {
-                "colorsSameAs": 1,
-                "colorsOrigin": "CRYSTAL_SLIME"
-            }
+            { "skipNull": true },
+            { "colorsOrigin": "CRYSTAL_SLIME" }
         ],
         "slime1Meshes":
         [
+            { "skip": true },
             {
                 "mesh": "crystal_hermit_spine",
                 "matSameAs": 1,
                 "matOrigin": "CRYSTAL_SLIME"
-            },
-            { "skip": true }
+            }
         ]
     },
     {

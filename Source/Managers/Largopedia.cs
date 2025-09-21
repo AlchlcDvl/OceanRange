@@ -78,6 +78,7 @@ public static class Largopedia
         definition.Sounds = largoData.Props.HasFlag(LargoProps.UseSlime2ForSound) ? slime2.Sounds : slime1.Sounds;
         definition.LoadLargoDiet();
         definition.FavoriteToys = [];
+        definition.name = largoData.Slime1 + largoData.Slime2;
 
         var props = largoData.Props;
         var useSlime2Body = props.HasFlag(LargoProps.UseSlime2ForBody);
@@ -111,6 +112,7 @@ public static class Largopedia
         appearance.DependentAppearances = [appearance1, appearance2];
         appearance.Face = appearance1.Face.DeepCopy();
         appearance.Face._expressionToFaceLookup.Clear();
+        appearance.name = largoData.Slime1 + largoData.Slime2;
 
         var eyes = props.HasFlag(LargoProps.UseSlime2ForEyes) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
         var mouth = props.HasFlag(LargoProps.UseSlime2ForMouth) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
@@ -153,8 +155,8 @@ public static class Largopedia
 
         var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
 
-        GenerateStructures(appearance1.Structures, largoData.Slime1StructData, props.HasFlag(LargoProps.CustomSlime1Structures), list, appearance1.Structures.IndexOfItem(slime1Body), modelMap);
-        GenerateStructures(appearance2.Structures, largoData.Slime2StructData, props.HasFlag(LargoProps.CustomSlime2Structures), list, appearance2.Structures.IndexOfItem(slime2Body), modelMap);
+        GenerateStructures(appearance1.Structures, largoData.Slime1StructData, props, LargoProps.CustomSlime1Structures, LargoProps.ExcludeSlime1Structures, list, slime1Body, modelMap);
+        GenerateStructures(appearance2.Structures, largoData.Slime2StructData, props, LargoProps.CustomSlime2Structures, LargoProps.ExcludeSlime2Structures, list, slime2Body, modelMap);
 
         appearance.Structures = [.. list];
         applicator.GenerateSlimeBones(appearance.Structures, largoData.Jiggle.Value);
@@ -215,7 +217,7 @@ public static class Largopedia
             var type = component.GetType();
 
             if (!prefab.HasComponent(type))
-                prefab.AddComponent(type).GetCopyOf(component);
+                prefab.AddComponent(type).CopyValuesFrom(component);
         }
 
         if (definition.Sounds)
@@ -258,9 +260,12 @@ public static class Largopedia
         TranslationPatcher.AddActorTranslation("l." + largoData.MainId.ToString().ToLowerInvariant(), SlimeRegistry.GenerateLargoName(largoData.MainId));
     }
 
-    private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, bool customMats, List<SlimeAppearanceStructure> list, int avoid, Dictionary<int, ModelData> modelMap)
+    private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, LargoProps props, LargoProps custom, LargoProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure body,
+        Dictionary<int, ModelData> modelMap)
     {
-        if (customMats)
+        var avoid = baseStructs.IndexOfItem(body);
+
+        if (props.HasFlag(custom))
         {
             var j = 0;
 
@@ -270,6 +275,7 @@ public static class Largopedia
                     continue;
 
                 var modelData = modelDatas[j];
+                j++;
 
                 if (modelData.Skip)
                     continue;
@@ -279,12 +285,11 @@ public static class Largopedia
                 if (structure == null)
                     continue;
 
-                j++;
                 modelMap[list.Count] = modelData;
                 list.Add(structure);
             }
         }
-        else
+        else if (!props.HasFlag(exclude))
         {
             for (var i = 0; i < baseStructs.Length; i++)
             {

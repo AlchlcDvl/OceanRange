@@ -488,16 +488,16 @@ public static class Helpers
 
     public static Vector3 Abs(this Vector3 value) => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
 
-    // public static bool TryGetItem<T>(this T[] array, int index, out T value)
-    // {
-    //     if (array == null)
-    //     {
-    //         value = default;
-    //         return false;
-    //     }
+    public static bool TryGetItem<T>(this T[] array, int index, out T value)
+    {
+        if (array == null)
+        {
+            value = default;
+            return false;
+        }
 
-    //     var result = index < array.Length && index >= 0;
-    //     value = result ? array[index] : default;
-    //     return result;
-    // }
+        var result = index < array.Length && index >= 0;
+        value = result ? array[index] : default;
+        return result;
+    }
 }
