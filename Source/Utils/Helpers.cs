@@ -119,6 +119,8 @@ public static class Helpers
     //     return instance;
     // }
 
+    private const BindingFlags CopyFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
+
     public static void CopyValuesFrom(this object dest, object source)
     {
         var type1 = dest.GetType();
@@ -127,10 +129,10 @@ public static class Helpers
         if (type1 != type2)
             throw new InvalidOperationException($"Cannot copy over values between two different types! {type1.Name} & {type2.Name}");
 
-        foreach (var field in type1.GetFields(AccessTools.all))
+        foreach (var field in type1.GetFields(CopyFlags))
             field.SetValue(dest, field.GetValue(source));
 
-        foreach (var property in type1.GetProperties(AccessTools.all))
+        foreach (var property in type1.GetProperties(CopyFlags))
         {
             if (property.CanWrite)
                 property.SetValue(dest, property.GetValue(source));

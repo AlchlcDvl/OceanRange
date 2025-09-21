@@ -86,11 +86,8 @@ public sealed class ModelData : JsonData
     [JsonProperty("skip")]
     public bool Skip;
 
-    [JsonProperty("isBody")]
+    [JsonIgnore]
     public bool IsBody;
-
-    [JsonProperty("hasMatData")]
-    public bool HasMatData = true;
 
     [JsonIgnore]
     public readonly Dictionary<int, Color> ColorProps = [];

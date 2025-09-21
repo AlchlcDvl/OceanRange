@@ -188,15 +188,16 @@ public sealed class SlimeData : SpawnedActorData
 
         if (SlimeFeatures.Length > 0)
         {
-            var matData = SlimeFeatures[0].ColorProps;
+            var matData = SlimeFeatures[0];
+            matData.IsBody = true;
 
-            if (!TopPaletteColor.HasValue && matData.TryGetValue(Slimepedia.TopColor, out var topColor))
+            if (!TopPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.TopColor, out var topColor))
                 TopPaletteColor = topColor;
 
-            if (!MiddlePaletteColor.HasValue && matData.TryGetValue(Slimepedia.MiddleColor, out var middleColor))
+            if (!MiddlePaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.MiddleColor, out var middleColor))
                 MiddlePaletteColor = middleColor;
 
-            if (!BottomPaletteColor.HasValue && matData.TryGetValue(Slimepedia.BottomColor, out var bottomColor))
+            if (!BottomPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.BottomColor, out var bottomColor))
                 BottomPaletteColor = bottomColor;
         }
 

@@ -451,9 +451,7 @@ public static class Slimepedia
             return null;
 
         var structure = new SlimeAppearanceStructure(baseStruct);
-
-        if (modelData.HasMatData)
-            structure.DefaultMaterials[0] = GenerateMaterial(modelData, modelDatas, structure.DefaultMaterials[0]);
+        structure.DefaultMaterials[0] = GenerateMaterial(modelData, modelDatas, structure.DefaultMaterials[0]);
 
         var isNull = modelData.Mesh == null;
 

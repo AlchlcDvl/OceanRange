@@ -1,12 +1,9 @@
 .idea/
 .vs*/
-Reworked/
 bin/
 obj/
 TODO.txt
-.vscode/
 packages.lock.json
-TownOfUsReworkedDev*/
 Test*/
 *.DotSettings.user
 Ignore/

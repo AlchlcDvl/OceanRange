@@ -7,7 +7,6 @@
         [
             {
                 "mesh": "rosi_body",
-                "isBody": true,
                 "colorProps":
                 {
                     "_TopColor": "#F9E5F0",
@@ -94,12 +93,11 @@
         "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
         "gordoZone": "REEF",
         "gordoLoc": "Reef_RingIsland",
-        "jiggle": 0.025,
+        "jiggle": 0.125,
         "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange"],
         "slimeFeatures":
         [
             {
-                "isBody": true,
                 "colorProps":
                 {
                     "_TopColor": "#FEFCFF",
@@ -164,7 +162,6 @@
         "slimeFeatures":
         [
             {
-                "isBody": true,
                 "pattern": "mine_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 1,
@@ -232,7 +229,6 @@
         "slimeFeatures":
         [
             {
-                "isBody": true,
                 "colorProps":
                 {
                     "_TopColor": "#752C86",
@@ -375,7 +371,6 @@
         "slimeFeatures":
         [
             {
-                "isBody": true,
                 "pattern": "mesmer_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11,
@@ -495,7 +490,6 @@
         "slimeFeatures":
         [
             {
-                "isBody": true,
                 "pattern": "hermit_pattern",
                 "matOrigin": "TABBY_SLIME",
                 "gloss": 0.11,
@@ -551,7 +545,7 @@
         "favToy": "BEACH_BALL_TOY",
         "favFood": "GINGER_VEGGIE",
         "diet": "GINGER",
-        "baseSlime": "GOLD_SLIME",
+        "componentBase": "GOLD_SLIME",
         "basePlort": "GOLD_PLORT",
         "baseGordo": "GOLD_GORDO",
         "ammoColor": "#ffdf00",
@@ -561,8 +555,10 @@
         "jiggle": 0.5,
         "slimeFeatures":
         [
-            { "skipNull": true },
-            { "skipNull": true },
+            {
+                "skipNull": true,
+                "matOrigin": "GOLD_SLIME"
+            },
             {
                 "mesh": "goldfish_fins",
                 "matOrigin": "PINK_SLIME",
@@ -581,7 +577,7 @@
             { "sameAs": 0 },
             {
                 "mesh": "goldfish_fins_gordo",
-                "sameAs": 2
+                "sameAs": 1
             }
         ],
         "natGordoSpawn": false,

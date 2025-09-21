@@ -19,7 +19,8 @@
             {
                 "mesh": "rosi_mine_frills",
                 "matSameAs": 1,
-                "matOrigin": "MINE_SLIME"
+                "matOrigin": "MINE_SLIME",
+                "cloneMatOrigin": false
             }
         ],
         "slime2Meshes":
@@ -55,17 +56,15 @@
         [
             {
                 "mesh": "rosi_lantern_fins",
-                "matSameAs": 1,
-                "matOrigin": "LANTERN_SLIME"
+                "cloneBase": false
             },
             {
                 "mesh": "lantern_stalk",
-                "matOrigin": "LANTERN_SLIME"
+                "cloneBase": false
             },
             {
                 "mesh": "lantern_lure",
-                "matSameAs": 3,
-                "matOrigin": "LANTERN_SLIME"
+                "cloneBase": false
             }
         ]
     },
@@ -84,24 +83,21 @@
         "slime2Meshes":
         [
             {
-                "mesh": "lantern_stalk",
-                "matSameAs": 1,
-                "matOrigin": "ROSI_MINE_LARGO"
-            },
-            {
-                "mesh": "lantern_lure",
-                "matOrigin": "PHOSPHOR_SLIME",
-                "colorProps": { "_TopColor": "#9EA16F" }
-            },
-            {
                 "mesh": "lantern_fins",
-                "pattern": "lantern_pattern",
-                "matOrigin": "TABBY_SLIME",
                 "colorProps":
                 {
                     "_TopColor": "#212A2F",
                     "_BottomColor": "#445660"
                 }
+            },
+            {
+                "mesh": "lantern_stalk",
+                "matSameAs": 1,
+                "matOrigin": "MINE_SLIME"
+            },
+            {
+                "mesh": "lantern_lure",
+                "colorProps": { "_TopColor": "#9EA16F" }
             }
         ]
     },
@@ -169,13 +165,7 @@
     {
         "name": "Pink Mesmer",
         "props": ["CustomBody", "CustomSlime2Structures"],
-        "bodyMesh":
-        {
-            "colorsOrigin": "PINK_SLIME",
-            "pattern": "mesmer_pattern",
-            "matOrigin": "TABBY_SLIME",
-            "gloss": 0.11
-        },
+        "bodyMesh": { "colorsOrigin": "PINK_SLIME" },
         "slime2Meshes":
         [
             { "colorsOrigin": "PINK_SLIME" },
