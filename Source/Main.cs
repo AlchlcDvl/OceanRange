@@ -88,7 +88,7 @@ internal sealed class Main : ModEntryPoint
     {
         Slimepedia.PostLoadSlimes();
         // AssetManager.Get<AssetBundle>("ocean_range").Unload(false);
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo"/*, "ocean_range"*/, "largopedia"); // Release handles
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "ocean_range", "largopedia"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");
