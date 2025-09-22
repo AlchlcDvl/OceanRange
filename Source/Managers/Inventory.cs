@@ -195,9 +195,9 @@ public static class Inventory
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Shader GetShader(string name) => Get<Shader>(name);
 
-    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<ScriptableObject>(name.ToLower()) as T;
+    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<ScriptableObject>(name.ToLowerInvariant()) as T;
 
-    public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLower());
+    public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
