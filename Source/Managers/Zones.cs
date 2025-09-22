@@ -88,14 +88,14 @@ public static class Zones
 
     private static void LoadSwirlPool(SceneContext context)
     {
-        var amb = Inventory.GetScriptable<AmbianceDirectorZoneSetting>("SWIRLPOOLAmb");
+        var amb = Inventory.GetScriptable<AmbianceDirectorZoneSetting>("swirlpoolamb");
         amb.zone = Ids.SWIRLPOOL_AMBIANCE;
 
         context.AmbianceDirector.zoneDict.Add(Ids.SWIRLPOOL_AMBIANCE, amb);
         context.AmbianceDirector.zoneSettings =
             context.AmbianceDirector.zoneSettings.AddToArray(amb);
 
-        var prefab =  Inventory.GetPrefab("zoneSWIRLPOOL");
+        var prefab =  Inventory.GetPrefab("zoneswirlpool");
 
         context.AmbianceDirector.zoneSettings.AddItem(amb);
         prefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL;

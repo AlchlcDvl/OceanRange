@@ -85,7 +85,7 @@ public sealed class AssetHandle(string name) : IDisposable
     //     if (Assets.TryGetValue(tType, out var tAsset))
     //     {
     //         Main.Console.LogWarning($"Replacing existing asset! {tType.Name}:{tAsset.name}");
-    //         DestroyAsset(tAsset);
+    //         tAsset.Destroy();
     //     }
 
     //     Assets[tType] = asset;
