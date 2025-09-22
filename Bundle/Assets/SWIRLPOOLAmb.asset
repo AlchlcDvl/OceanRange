@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zone: 0
   dayFogColor: {r: 0.4235294, g: 0.7365547, b: 0.99215686, a: 0}
-  dayFogDensity: 0.1
+  dayFogDensity: 0
   dayAmbientColor: {r: 0.16073336, g: 0.28246924, b: 0.7924528, a: 0}
   nightFogColor: {r: 0.027901389, g: 0.31514055, b: 0.5377358, a: 0}
-  nightFogDensity: 0.2
+  nightFogDensity: 0
   nightAmbientColor: {r: 0, g: 0.10769538, b: 0.3490566, a: 0}
   daySkyColor: {r: 0, g: 0.2440346, b: 0.745283, a: 0}
   daySkyHorizon: {r: 0, g: 0.061347853, b: 0.509434, a: 0}

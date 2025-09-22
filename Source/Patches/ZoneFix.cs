@@ -10,7 +10,7 @@ public class ZoneFix
         // cant do switch/case with modded ids...
         if (zone == Ids.SWIRLPOOL)
         {
-            __result = RegionRegistry.RegionSetId.HOME;
+            __result = Ids.UNDERWATER;
             return false;
         }
 

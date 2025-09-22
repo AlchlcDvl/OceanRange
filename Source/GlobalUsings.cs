@@ -1,6 +1,7 @@
 // global using GadgetId = Gadget.Id;
 global using Zone = ZoneDirector.Zone;
 global using Ambiance = AmbianceDirector.Zone;
+global using RegionId = MonomiPark.SlimeRancher.Regions.RegionRegistry.RegionSetId;
 global using PediaId = PediaDirector.Id;
 global using UObject = UnityEngine.Object;
 global using FoodGroup = SlimeEat.FoodGroup;

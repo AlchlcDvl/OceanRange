@@ -9,6 +9,10 @@ public static class Zones
     public static void LoadAllZones(SceneContext context)
     {
         LoadSwirlPool(context);
+        
+        SceneContext.Instance.RegionRegistry.managedWithSets.Add(Ids.UNDERWATER, new List<GameObject>());
+        // Copy HOME settings
+        SceneContext.Instance.RegionRegistry.regionsTrees.Add(Ids.UNDERWATER, new BoundsQuadtree<Region>(2000f, Vector3.zero, 250f, 1.2f));
     }
 
     #region Prep
@@ -70,9 +74,15 @@ public static class Zones
 
             if (source.name.Contains("_WaterSource"))
             {
-                var water = UObject.Instantiate(waterSourceBase, source.transform).GetComponentInChildren<LiquidSource>();
+                UObject.Destroy(source.GetComponent<LiquidSource>());
+                
+                var srcBase = UObject.Instantiate(waterSourceBase);
+                srcBase.transform.SetParent(source.transform, false);
+                var water = srcBase.GetComponentInChildren<LiquidSource>();
                 water.director = zone.GetComponent<IdDirector>();
                 water.director.persistenceDict.Add(water, $"{water.IdPrefix()}{split[1]}");
+                water.enabled = true;
+                water.transform.localPosition = Vector3.zero;
             }
             // todo: add more source types (else if)
             else
@@ -84,34 +94,68 @@ public static class Zones
         zone.GetComponentsInChildren<LiquidSource>(true);
     }
 
+    private static void PrepTeleporter(GameObject teleporter, Vector3 position)
+    {
+        var network = SceneContext.Instance.TeleportNetwork;
+        var dest = teleporter.GetComponent<TeleportDestination>();
+        if (dest.transform.childCount < 2)
+        {
+            Main.Console.LogError($"Failed to register teleport destination {teleporter.name}. (Invalid Teleporter Child Count)");
+            return;
+        }
+        
+        var region = teleporter.transform.GetChild(1);
+        if (!region.name.StartsWith('_'))
+        {
+            Main.Console.LogError($"Failed to register teleport destination {teleporter.name}. (Invalid Teleporter _Region: {region.name})");
+            return;
+        }
+        
+        dest.regionSetId = (RegionId)Enum.Parse(typeof(RegionId), region.name.Replace("_", ""));
+        network.Register(dest);
+
+        if (position != Vector3.zero)
+        {
+            dest.transform.position = position;
+        }
+    }
     #endregion
 
+    #region Zone Loading
     private static void LoadSwirlPool(SceneContext context)
     {
-        var amb = Inventory.GetScriptable<AmbianceDirectorZoneSetting>("swirlpoolamb");
+        var amb = Inventory.GetScriptable<AmbianceDirectorZoneSetting>("SWIRLPOOLAmb");
         amb.zone = Ids.SWIRLPOOL_AMBIANCE;
 
         context.AmbianceDirector.zoneDict.Add(Ids.SWIRLPOOL_AMBIANCE, amb);
         context.AmbianceDirector.zoneSettings =
             context.AmbianceDirector.zoneSettings.AddToArray(amb);
 
-        var prefab =  Inventory.GetPrefab("zoneswirlpool");
+        var prefab =  Inventory.GetPrefab("zoneSWIRLPOOL");
 
         context.AmbianceDirector.zoneSettings.AddItem(amb);
         prefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL;
 
-    //    CreateWaterSources(prefab);
+        CreateWaterSources(prefab);
         Spawners(prefab);
         foreach (var cell in prefab.GetComponentsInChildren<CellDirector>())
         {
+            var reg = cell.GetComponent<Region>();
             cell.ambianceZone = Ids.SWIRLPOOL_AMBIANCE;
-            cell.GetComponent<Region>().bounds.center += cell.transform.position;
+            reg.bounds.center += cell.transform.position;
         }
-
+        foreach (var tp in prefab.GetComponentsInChildren<TeleportDestination>())
+            PrepTeleporter(tp.gameObject, Vector3.zero);
+        
         PrepMaterials(prefab.GetComponentsInChildren<Renderer>());
 
+        var enterPortal = UObject.Instantiate(Inventory.GetPrefab("TeleporterDevEntrance"));
+        PrepTeleporter(enterPortal.gameObject, new Vector3(62.4343f, 15.83f, -137.3158f));
+        enterPortal.transform.eulerAngles = Vector3.up * 137f;
+        
         swirlpoolObject = UObject.Instantiate(prefab);
     }
+    #endregion
 
     #region Pedia
     // todo: add json pedia

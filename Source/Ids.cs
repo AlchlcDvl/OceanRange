@@ -24,4 +24,6 @@ public static class Ids
     public static readonly Ambiance SWIRLPOOL_AMBIANCE;
 
     public static readonly PediaId SWIRLPOOL_ENTRY; // TODO: make json versions of fixed pedia entries
+
+    public static readonly RegionId UNDERWATER;
 }
