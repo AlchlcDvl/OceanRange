@@ -1,5 +1,6 @@
 // global using GadgetId = Gadget.Id;
 global using Zone = ZoneDirector.Zone;
+global using Ambiance = AmbianceDirector.Zone;
 global using PediaId = PediaDirector.Id;
 global using UObject = UnityEngine.Object;
 global using FoodGroup = SlimeEat.FoodGroup;

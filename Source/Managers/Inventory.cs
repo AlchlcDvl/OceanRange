@@ -10,6 +10,7 @@ namespace OceanRange.Managers;
 /// </summary>
 public static class Inventory
 {
+    public static AssetBundle bundle;
     /// <summary>
     /// Assembly data for the mod's dll.
     /// </summary>
@@ -78,7 +79,7 @@ public static class Inventory
         ["png"] = "jpg",
         ["jpg"] = "png"
     };
-
+ 
     /// <summary>
     /// Dictionary to hold handles for mod assets.
     /// </summary>
@@ -103,8 +104,8 @@ public static class Inventory
     {
         Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles for embedded resources
 
-        var bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
-        Array.ForEach(bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
+        bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
+        //Array.ForEach(bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources // do not use :sob:
     }
 
     /// <summary>

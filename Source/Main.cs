@@ -49,10 +49,14 @@ internal sealed class Main : ModEntryPoint
         Contacts.PreloadRancherData();
         Helpers.CategoriseIds();
 
+        Zones.CreatePedia();
+        
         var gameObject = new GameObject("OceanPrefabs").DontDestroy();
         gameObject.SetActive(false);
         PrefabParent = gameObject.transform;
-
+        
+        SRCallbacks.PreSaveGameLoad += Zones.LoadAllZones;
+        
 #if DEBUG
         // Debug stuff for the special commands
         RegisterCommand(SavePos);

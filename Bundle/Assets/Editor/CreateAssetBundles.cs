@@ -2,14 +2,16 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 class CreateAssetBundles
 {
-    static readonly List<Tuple<string, string, BuildTarget>> _targets = new()
+    
+    static readonly List<(string, string, BuildTarget)> _targets = new List<(string, string, BuildTarget)>()
     {
-        new Tuple<string, string, BuildTarget>("Mac", "mac", BuiltTarget.StandaloneOSX),
-        new Tuple<string, string, BuildTarget>("Win", "win", BuiltTarget.StandaloneWindows),
-        new Tuple<string, string, BuildTarget>("Lin", "lin", BuiltTarget.StandaloneLinux64),
+        ("Mac", "mac", BuildTarget.StandaloneOSX),
+        ("Win", "win", BuildTarget.StandaloneWindows),
+        ("Lin", "lin", BuildTarget.StandaloneLinux64),
     };
 
     [MenuItem("AssetBundle/Build")]
@@ -21,7 +23,7 @@ class CreateAssetBundles
         string bundles = Path.Combine("Assets", "..", "..", "Source", "Resources", "Bundles");
         PrepDirectory(bundles);
 
-        foreach ((string dir, string suffix, BuiltTarget target) in _targets)
+        foreach ((string dir, string suffix, BuildTarget target) in _targets)
         {
             string directory = Path.Combine(assetBundleDirectory, dir);
             PrepDirectory(directory);
