@@ -198,9 +198,11 @@ public static class Inventory
 
     public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<ScriptableObject>(name) as T;
 
+    public static GameObject GetPrefab(string name) => Get<GameObject>(name);
+
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
-    public static T Get<T>(string name) where T : UObject => Get<T>(name, true);
+    private static T Get<T>(string name) where T : UObject => Get<T>(name, true);
 
     /// <summary>
     /// Gets a(n) <typeparamref name="T"/> associated with the provided name.

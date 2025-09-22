@@ -95,7 +95,7 @@ public static class Zones
         context.AmbianceDirector.zoneSettings =
             context.AmbianceDirector.zoneSettings.AddToArray(amb);
 
-        var prefab =  Inventory.Get<GameObject>("zoneSWIRLPOOL");
+        var prefab =  Inventory.GetPrefab("zoneSWIRLPOOL");
 
         context.AmbianceDirector.zoneSettings.AddItem(amb);
         prefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL;
