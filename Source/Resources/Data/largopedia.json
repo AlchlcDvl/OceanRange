@@ -103,23 +103,45 @@
     },
     {
         "name": "Pink Coco",
+        "props": ["CustomBody", "CustomSlime2Structures"],
+        "bodyMesh": 
+        { 
+            "colorsOrigin": "PINK_SLIME",
+            "matOrigin": "COCO_SLIME" 
+        },
+        "slime2Meshes": [{ "colorsOrigin": "PINK_SLIME" }]
+    },
+    {
+        "name": "Coco Saber",
+        "props": ["CustomBody", "UseSlime2ForBody"],
+        "bodyMesh": { "matOrigin": "COCO_SLIME" }
+    },
+    {
+        "name": "Coco Quantum",
+        "props": ["CustomBody", "CustomSlime1Structures"],
+        "bodyMesh": 
+        { 
+            "colorProps":
+            {
+                "_TopColor": "#966F33",
+                "_BottomColor": "#744D11"
+            },
+            "matOrigin": "QUANTUM_SLIME" 
+        },
+        "slime1Meshes": 
+        [
+            { 
+                "colorProps": { "_TopColor": "#744D11" },
+                "matOrigin": "QUANTUM_SLIME" 
+            }
+        ]
+    },
+    {
+        "name": "Coco Honey",
         "props": []
     },
     {
-        "name": "Saber Coco",
-        "props": []
-    },
-    {
-        "name": "Quantum Coco",
-        "props": ["CustomBody"],
-        "bodyMesh": { "colorsOrigin": "COCO_SLIME" }
-    },
-    {
-        "name": "Honey Coco",
-        "props": []
-    },
-    {
-        "name": "Phosphor Coco",
+        "name": "Coco Phosphor",
         "props": []
     },
     {
@@ -127,19 +149,19 @@
         "props": []
     },
     {
-        "name": "Boom Coco",
+        "name": "Coco Boom",
         "props": []
     },
     {
-        "name": "Rad Coco",
+        "name": "Coco Rad",
         "props": []
     },
     {
-        "name": "Rock Coco",
+        "name": "Coco Rock",
         "props": []
     },
     {
-        "name": "Tabby Coco",
+        "name": "Coco Tabby",
         "props": []
     },
     {
@@ -147,19 +169,19 @@
         "props": []
     },
     {
-        "name": "Crystal Coco",
+        "name": "Coco Crystal",
         "props": []
     },
     {
-        "name": "Dervish Coco",
+        "name": "Coco Dervish",
         "props": []
     },
     {
-        "name": "Mesmer Coco",
+        "name": "Coco Mesmer",
         "props": []
     },
     {
-        "name": "Hermit Coco",
+        "name": "Coco Hermit",
         "props": []
     },
     {
