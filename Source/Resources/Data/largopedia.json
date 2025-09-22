@@ -182,32 +182,51 @@
     {
         "name": "Quantum Mesmer",
         "props": ["CustomBody", "CustomSlime2Structures"],
-        "bodyMesh": { "matOrigin": "QUANTUM_SLIME" },
+        "bodyMesh":
+        { 
+            "matOrigin": "QUANTUM_SLIME",
+            "colorsOrigin": "MESMER_SLIME" 
+        },
         "slime2Meshes":
         [
             {
-                "colorsOrigin": "MESMER_SLIME",
-                "colorsSameAs": 1,
+                "colorProps":
+                {
+                    "_TopColor": "#340ca1",
+                    "_BottomColor": "#320047"
+                },
                 "matOrigin": "QUANTUM_SLIME"
             },
             {
-                "colorsOrigin": "MESMER_SLIME",
-                "colorsSameAs": 5,
+                "colorProps":
+                {
+                    "_TopColor": "#33169a",
+                    "_BottomColor": "#320047"
+                },
                 "matOrigin": "QUANTUM_SLIME"
             },
             {
-                "colorsOrigin": "MESMER_SLIME",
-                "colorsSameAs": 4,
+                "colorProps":
+                {
+                    "_TopColor": "#821ed6",
+                    "_BottomColor": "#33169a"
+                },
                 "matOrigin": "QUANTUM_SLIME"
             },
             {
-                "colorsOrigin": "MESMER_SLIME",
-                "colorsSameAs": 3,
+                "colorProps":
+                {
+                    "_TopColor": "#e034c9",
+                    "_BottomColor": "#821ed6"
+                },
                 "matOrigin": "QUANTUM_SLIME"
             },
             {
-                "colorsOrigin": "MESMER_SLIME",
-                "colorsSameAs": 2,
+                "colorProps":
+                {
+                    "_TopColor": "#dafe7a",
+                    "_BottomColor": "#e034c9"
+                },
                 "matOrigin": "QUANTUM_SLIME"
             }
         ]
