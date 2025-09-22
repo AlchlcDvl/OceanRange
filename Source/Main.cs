@@ -91,7 +91,7 @@ internal sealed class Main : ModEntryPoint
     public override void PostLoad()
     {
         Slimepedia.PostLoadSlimes();
-        Inventory.Bundle.Unload(false);
+        // Inventory.Bundle.Unload(false); no
         Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo"/*, "ocean_range"*/, "largopedia"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used

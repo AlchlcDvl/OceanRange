@@ -100,7 +100,7 @@ public static class Zones
         context.AmbianceDirector.zoneSettings.AddItem(amb);
         prefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL;
 
-        CreateWaterSources(prefab);
+    //    CreateWaterSources(prefab);
         Spawners(prefab);
         foreach (var cell in prefab.GetComponentsInChildren<CellDirector>())
         {

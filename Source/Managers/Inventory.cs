@@ -138,7 +138,6 @@ public static class Inventory
     private static string SanitisePath(this string path) => path
         .ReplaceAll("", Extensions) // Removing the file extension first
         .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux/AssetBundle/Urls, \ for Mac, . for Embedded) and get the last entry which should be the asset name
-
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.
     /// </summary>
@@ -196,9 +195,9 @@ public static class Inventory
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Shader GetShader(string name) => Get<Shader>(name);
 
-    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<ScriptableObject>(name) as T;
+    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<ScriptableObject>(name.ToLower()) as T;
 
-    public static GameObject GetPrefab(string name) => Get<GameObject>(name);
+    public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLower());
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
