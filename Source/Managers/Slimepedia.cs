@@ -478,7 +478,6 @@ public static class Slimepedia
                 if (!baseStruct.Element.Prefabs.TryGetItem(j, out var prefab))
                     break;
 
-
                 if (j == 0 || !isNull)
                     prefab = prefab.CreatePrefab();
 
@@ -714,7 +713,7 @@ public static class Slimepedia
             }
         }
 
-        if (list.Count == 0)
+        if (list.Count == 0 || !sharedMesh)
             return;
 
         var rootMatrix = applicator.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;

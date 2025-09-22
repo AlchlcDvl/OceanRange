@@ -1,5 +1,3 @@
-using DG.Tweening;
-
 namespace OceanRange.Managers;
 
 public static class Zones
@@ -7,13 +5,12 @@ public static class Zones
     public static GameObject swirlpoolObject;
 
     private static GameObject waterSourceBase;
-    
-    public static void LoadAllZones(SceneContext t)
+
+    public static void LoadAllZones(SceneContext context)
     {
-        var objects = Inventory.bundle.LoadAllAssets();
-        LoadSwirlpool(objects, t);
+        LoadSwirlPool(context);
     }
-    
+
     #region Prep
 
     private static void PrepMaterials(Renderer[] renderers)
@@ -22,6 +19,7 @@ public static class Zones
         {
             var mat = renderer.material;
             var shader = Shader.Find(mat.shader.name);
+
             if (shader != null)
                 mat.shader = shader;
         }
@@ -35,9 +33,7 @@ public static class Zones
             {
                 try
                 {
-                    member.prefab =
-                        GameContext.Instance.LookupDirector.GetPrefab(
-                            (Identifiable.Id)Enum.Parse(typeof(Identifiable.Id), member.prefab.name));
+                    member.prefab = Helpers.ParseEnum<IdentifiableId>(member.prefab.name).GetPrefab();
                 }
                 catch { }
             }
@@ -68,10 +64,10 @@ public static class Zones
         foreach (var source in zone.GetComponentsInChildren<LiquidSource>())
         {
             var split = source.name.Split('.');
-            
+
             if (split.Length != 1)
                 Main.Console.Log($"Invalid LiquidSource in zone '{zone.name}' make sure you name your water source correctly! (Invalid ID)");
-            
+
             if (source.name.Contains("_WaterSource"))
             {
                 var water = UObject.Instantiate(waterSourceBase, source.transform).GetComponentInChildren<LiquidSource>();
@@ -86,27 +82,24 @@ public static class Zones
         }
 
         zone.GetComponentsInChildren<LiquidSource>(true);
-        
     }
 
     #endregion
 
-    #region Swirlpool
-
-    private static void LoadSwirlpool(UObject[] objects, SceneContext t)
+    private static void LoadSwirlPool(SceneContext context)
     {
-        var amb = objects.FirstOrDefault(x => x.name == "SWIRLPOOLAmb") as AmbianceDirectorZoneSetting;
+        var amb = Inventory.GetScriptable<AmbianceDirectorZoneSetting>("SWIRLPOOLAmb");
         amb.zone = Ids.SWIRLPOOL_AMBIANCE;
 
-        SceneContext.Instance.AmbianceDirector.zoneDict.Add(Ids.SWIRLPOOL_AMBIANCE, amb);
-        SceneContext.Instance.AmbianceDirector.zoneSettings =
-            SceneContext.Instance.AmbianceDirector.zoneSettings.AddToArray(amb);
-        
-        var prefab =  objects.FirstOrDefault(x => x.name == "zoneSWIRLPOOL") as GameObject;
+        context.AmbianceDirector.zoneDict.Add(Ids.SWIRLPOOL_AMBIANCE, amb);
+        context.AmbianceDirector.zoneSettings =
+            context.AmbianceDirector.zoneSettings.AddToArray(amb);
 
-        SceneContext.Instance.AmbianceDirector.zoneSettings.AddItem(amb);
+        var prefab =  Inventory.Get<GameObject>("zoneSWIRLPOOL");
+
+        context.AmbianceDirector.zoneSettings.AddItem(amb);
         prefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL;
-        
+
         CreateWaterSources(prefab);
         Spawners(prefab);
         foreach (var cell in prefab.GetComponentsInChildren<CellDirector>())
@@ -114,20 +107,19 @@ public static class Zones
             cell.ambianceZone = Ids.SWIRLPOOL_AMBIANCE;
             cell.GetComponent<Region>().bounds.center += cell.transform.position;
         }
+
         PrepMaterials(prefab.GetComponentsInChildren<Renderer>());
 
-        swirlpoolObject = UnityEngine.Object.Instantiate(prefab);
-        }
+        swirlpoolObject = UObject.Instantiate(prefab);
+    }
 
-    #endregion
-    
     #region Pedia
     // todo: add json pedia
 
     public static void CreatePedia()
     {
         PediaUI.WORLD_ENTRIES = PediaUI.WORLD_ENTRIES.AddToArray(Ids.SWIRLPOOL_ENTRY);
-        
+
         TranslationPatcher.AddPediaTranslation("t.swirlpool_entry", "The Swirlpool");
         TranslationPatcher.AddPediaTranslation("m.intro.swirlpool_entry", "A Distant Land of wonder for those who are curious");
         TranslationPatcher.AddPediaTranslation("m.desc.swirlpool_entry", "The Swirlpool is distant land, not managed by 7Zee. Unlike the Far Far Range, The Swirlpool and some other locations are managed by S.P.L.A.S.H. It is one of the few locations on the Far Far Range that is underwater. Only some Slime Scientists ever get the chance to see this place, such as Viktor Humphries.");

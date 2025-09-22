@@ -10,7 +10,8 @@ namespace OceanRange.Managers;
 /// </summary>
 public static class Inventory
 {
-    public static AssetBundle bundle;
+    public static AssetBundle Bundle;
+
     /// <summary>
     /// Assembly data for the mod's dll.
     /// </summary>
@@ -66,6 +67,8 @@ public static class Inventory
 
         // Bundle resources
         [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
+        [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
+        [typeof(ScriptableObject)] = (["asset"], GetBundleAsset<ScriptableObject>),
 
         // AudioClip is not currently in use
         // [typeof(AudioClip)] = (["wav"], LoadAudioClip),
@@ -79,7 +82,7 @@ public static class Inventory
         ["png"] = "jpg",
         ["jpg"] = "png"
     };
- 
+
     /// <summary>
     /// Dictionary to hold handles for mod assets.
     /// </summary>
@@ -104,8 +107,8 @@ public static class Inventory
     {
         Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles for embedded resources
 
-        bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
-        //Array.ForEach(bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources // do not use :sob:
+        Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
+        Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
     }
 
     /// <summary>
@@ -192,6 +195,8 @@ public static class Inventory
     /// </summary>
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Shader GetShader(string name) => Get<Shader>(name);
+
+    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<ScriptableObject>(name) as T;
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
@@ -305,7 +310,7 @@ public static class Inventory
         return tex ? Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
     }
 
-    private static T GetBundleAsset<T>(string path) where T : UObject => Get<AssetBundle>("ocean_range").LoadAsset<T>(path);
+    private static T GetBundleAsset<T>(string path) where T : UObject => Bundle.LoadAsset<T>(path);
 
     private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
 

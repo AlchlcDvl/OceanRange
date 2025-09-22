@@ -50,13 +50,13 @@ internal sealed class Main : ModEntryPoint
         Helpers.CategoriseIds();
 
         Zones.CreatePedia();
-        
+
         var gameObject = new GameObject("OceanPrefabs").DontDestroy();
         gameObject.SetActive(false);
         PrefabParent = gameObject.transform;
-        
+
         SRCallbacks.PreSaveGameLoad += Zones.LoadAllZones;
-        
+
 #if DEBUG
         // Debug stuff for the special commands
         RegisterCommand(SavePos);
@@ -91,8 +91,8 @@ internal sealed class Main : ModEntryPoint
     public override void PostLoad()
     {
         Slimepedia.PostLoadSlimes();
-        // AssetManager.Get<AssetBundle>("ocean_range").Unload(false);
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "ocean_range", "largopedia"); // Release handles
+        Inventory.Bundle.Unload(false);
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo"/*, "ocean_range"*/, "largopedia"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");

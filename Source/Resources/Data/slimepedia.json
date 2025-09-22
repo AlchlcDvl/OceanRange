@@ -79,29 +79,37 @@
         "favFood": "SANDY_HEN",
         "favToy": "BEACH_BALL_TOY",
         "diet": "MEAT",
-        "ammoColor": "#966F33",
-        "basePrice": 20,
-        "saturation": 26,
-        "plortAmmoColor": "#FEFCFF",
         "topMouthColor": "#FFFFFF",
         "middleMouthColor": "#888888",
         "bottomMouthColor": "#FEFCFF",
-        "intro": "The concussion slime, wear helmets!",
-        "pediaDiet": "Meat",
-        "fav": "Sandy Hens",
+        "redEyeColor": "#888888",
+        "greenEyeColor": "#000000",
+        "blueEyeColor": "#FFFFFF",
+        "ammoColor": "#966F33",
+        "plortAmmoColor": "#DCDADD",
+        "basePrice": 20,
+        "saturation": 26,
+        "jiggle": 0.125,
+        "plortType": "Plort",
         "gordoOri": "f -494.6969,-2.37,-241.9137,0,200,0",
         "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
         "gordoZone": "REEF",
         "gordoLoc": "Reef_RingIsland",
-        "jiggle": 0.125,
+        "zones": ["REEF", "MOSS"],
+        "intro": "The concussion slime, wear helmets!",
+        "pediaDiet": "Meat",
+        "fav": "Sandy Hens",
         "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange"],
         "slimeFeatures":
         [
             {
+                "pattern": "coco_pattern",
+                "matOrigin": "TABBY_SLIME",
+                "gloss": 1,
                 "colorProps":
                 {
-                    "_TopColor": "#FEFCFF",
-                    "_MiddleColor": "#966F33"
+                    "_TopColor": "#744D11",
+                    "_BottomColor": "#966F33"
                 }
             },
             {
@@ -120,12 +128,9 @@
                 }
             }
         ],
-        "gordoFeatures": [ { "sameAs": 0 } ],
         "slimeology": "Coco slimes are commonly found hanging from the palm trees of the island. Being natives to SwirlPool Island, the coco slimes have natural adapted a higher jump in order to climb trees and escape predators. Due to them being grown from palm trees, they have plant like attributes which causes them to require constant sunlight and also tend to avoid eating fruits and vegetables as it would be cannibalism.",
         "risks": "Be cautious while walking under palm trees as coco slimes are very territorial and if they sense you underneath, they will harden their soft, squishy bodies to a hard coconut-like shell and crash down onto their targets. Tourists in the past who got hit in the head by a coco slime have reported blurred vision and dizziness afterwards with some even being knocked out cold. This is also how they hunt in the wild. Despite their hard skin and agility, they are quite easy to ranch as long as they are well feed and have enough exposure to sunlight.",
-        "plortonomics": "Coco plorts, unlike their producer, are very soft and silky as well as being an excellent source of calcium when condensed to liquid. Despite being very similar to earth's milk in properties, they can still be consumed by people who are lactose intolerance making them extremely popular for creating lactose intolerance options for dairy products. And due to their incredibly soft and silky texture, they are also very good for skin care and used often in spas as substitutes to milk baths.",
-        "plortType": "Plort",
-        "zones": ["REEF", "MOSS"]
+        "plortonomics": "Coco plorts, unlike their producer, are very soft and silky as well as being an excellent source of calcium when condensed to liquid. Despite being very similar to earth's milk in properties, they can still be consumed by people who are lactose intolerant, making them extremely popular for creating lactose intolerance options for dairy products. And due to their incredibly soft and silky texture, they are also very good for skin care and used often in spas as substitutes to milk baths."
     },
     {
         "name": "Mine",
@@ -144,7 +149,8 @@
         "topPaletteColor": "#9EA16f",
         "middlePaletteColor": "#445660",
         "bottomPaletteColor": "#212A2F",
-        "ammoColor": "#9EA16f",
+        "ammoColor": "#445660",
+        "plortAmmoColor": "#9EA16f",
         "basePrice": 30,
         "saturation": 20,
         "jiggle": 0.125,
