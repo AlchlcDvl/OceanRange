@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5174363394818538765}
   - component: {fileID: 294143685496960652}
   m_Layer: 0
-  m_Name: Spawner (1)
+  m_Name: Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567800067537205266}
-  m_LocalRotation: {x: 0.4459109, y: -0.57730573, z: 0.34851152, w: 0.5885757}
+  m_LocalRotation: {x: 0.4459116, y: -0.57730377, z: 0.3485129, w: 0.5885763}
   m_LocalPosition: {x: 6.549999, y: 4.95, z: 24.01001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b4950a3e7362d444974e8bad0ccfb14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnFX: {fileID: 0}
+  spawnFX: {fileID: 6080751411132168943, guid: 525fc723d6e2be142ba2bcbaffc4bb4b, type: 3}
   radius: 5
   spawnDelayFactor: 1
   enableToteming: 1
