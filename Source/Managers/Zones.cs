@@ -162,11 +162,15 @@ public static class Zones
 
     public static void CreatePedia()
     {
-        PediaUI.WORLD_ENTRIES = PediaUI.WORLD_ENTRIES.AddToArray(Ids.SWIRLPOOL_ENTRY);
 
-        TranslationPatcher.AddPediaTranslation("t.swirlpool_entry", "The Swirlpool");
-        TranslationPatcher.AddPediaTranslation("m.intro.swirlpool_entry", "A Distant Land of wonder for those who are curious");
-        TranslationPatcher.AddPediaTranslation("m.desc.swirlpool_entry", "The Swirlpool is distant land, not managed by 7Zee. Unlike the Far Far Range, The Swirlpool and some other locations are managed by S.P.L.A.S.H. It is one of the few locations on the Far Far Range that is underwater. Only some Slime Scientists ever get the chance to see this place, such as Viktor Humphries.");
+        SlimepediaCreation.CreateZoneSlimePedia(Ids.SWIRLPOOL_ENTRY,
+            Ids.SWIRLPOOL,
+            "ranch", // Can't make custom zone icons, so use existing ones.
+            "Discovering SwirlPool Island",
+            "SwirlPool Island",
+            "A Distant Land of wonder for those who are curious",
+            "<b><u>todo:</b></u> make entire pedia");
+        
     }
     #endregion
 }
