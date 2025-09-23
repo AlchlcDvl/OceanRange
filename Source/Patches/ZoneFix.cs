@@ -1,11 +1,11 @@
 namespace OceanRange.Patches;
 
 [HarmonyPatch]
-public class ZoneFix
+public static class ZoneFix
 {
     [HarmonyPatch(typeof(ZoneDirector), nameof(ZoneDirector.GetRegionSetId))]
     [HarmonyPrefix]
-    public static bool RegionSetId(ref RegionRegistry.RegionSetId __result, Zone zone)
+    public static bool RegionSetId(ref RegionId __result, Zone zone)
     {
         // cant do switch/case with modded ids...
         if (zone == Ids.SWIRLPOOL)
