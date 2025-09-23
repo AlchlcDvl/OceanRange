@@ -121,6 +121,9 @@ public sealed class AssetHandle(string name) : IDisposable
 
         Assets.Add(tType, asset);
 
+        if (tType == typeof(GameObject))
+            return (T)asset;
+
         // Set name and allow persistence
         asset.name = Name;
         return (T)asset.DontDestroy();

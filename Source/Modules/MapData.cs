@@ -2,54 +2,67 @@ namespace OceanRange.Modules;
 
 public sealed class ZoneData : JsonData
 {
-    [JsonProperty("zone"), JsonRequired]
+    [JsonProperty("intro"), JsonRequired]
+    public string Intro;
+
+    [JsonProperty("description"), JsonRequired]
+    public string Description;
+
+    [JsonProperty("presence"), JsonRequired]
+    public string Presence;
+
+    [JsonProperty("pediaName"), JsonRequired]
+    public string PediaName;
+
+    [JsonIgnore]
     public Zone Zone;
 
-    [JsonProperty("cells"), JsonRequired]
-    public CellData[] Cells;
+    [JsonIgnore]
+    public PediaId PediaId;
+
+    [JsonIgnore]
+    public Ambiance Ambiance;
+
+    public void PopulateValues(StreamingContext _)
+    {
+        var upper = Name.ToUpperInvariant();
+
+        Zone = Helpers.AddEnumValue<Zone>(upper);
+        PediaId = Helpers.AddEnumValue<PediaId>(upper + "_ENTRY");
+        Ambiance = Helpers.AddEnumValue<Ambiance>(upper + "_AMBIANCE");
+    }
 }
 
-public sealed class CellData : JsonData
+public sealed class RegionData : JsonData
 {
-    [JsonProperty("slimeSpawners")]
-    public SpawnerData[] Slimes;
+    [JsonProperty("initialWorldSize"), JsonRequired]
+    public float InitialWorldSize;
+
+    [JsonProperty("initialWorldPos"), JsonRequired]
+    public Vector3 InitialWorldPos;
+
+    [JsonProperty("minNodeSize"), JsonRequired]
+    public float MinNodeSize;
+
+    [JsonProperty("loosenessVal"), JsonRequired]
+    public float LoosenessVal;
+
+    [JsonIgnore]
+    public RegionId Region;
+
+    public void PopulateValues(StreamingContext _)
+    {
+        var upper = Name.ToUpperInvariant();
+
+        Region = Helpers.AddEnumValue<RegionId>(upper);
+    }
 }
 
-public sealed class SpawnerData
+public sealed class World
 {
-    [JsonProperty("orientation"), JsonRequired]
-    public Orientation Orientation;
+    [JsonProperty("zones")]
+    public ZoneData[] Zones;
 
-    [JsonProperty("commonMembers"), JsonRequired]
-    public SpawnerMember[] CommonMembers;
-
-    [JsonProperty("constraints"), JsonRequired]
-    public SpawnConstraint[] Constraints;
-}
-
-public sealed class SpawnerMember
-{
-    [JsonProperty("id"), JsonRequired]
-    public IdentifiableId Id;
-
-    [JsonProperty("weight"), JsonRequired]
-    public float Weight;
-}
-
-public sealed class SpawnConstraint
-{
-    [JsonProperty("window"), JsonRequired]
-    public TimeMode Window;
-
-    [JsonProperty("start")]
-    public float Start;
-
-    [JsonProperty("end")]
-    public float End;
-
-    [JsonProperty("feral")]
-    public bool Feral;
-
-    [JsonProperty("members")]
-    public SpawnerMember[] Members;
+    [JsonProperty("regions")]
+    public RegionData[] Regions;
 }

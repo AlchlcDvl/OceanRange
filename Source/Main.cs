@@ -40,7 +40,7 @@ internal sealed class Main : ModEntryPoint
         Inventory.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
 
         // Preloads the various forms of data the mod uses
-        // Atlas.PreloadMapData();
+        Atlas.PreloadMapData();
         FloppyDisk.PreloadSaveData();
         Cookbook.PreloadFoodData();
         Slimepedia.PreloadSlimeData();
@@ -49,13 +49,9 @@ internal sealed class Main : ModEntryPoint
         Contacts.PreloadRancherData();
         Helpers.CategoriseIds();
 
-        Zones.CreatePedia();
-
         var gameObject = new GameObject("OceanPrefabs").DontDestroy();
         gameObject.SetActive(false);
         PrefabParent = gameObject.transform;
-
-        SRCallbacks.PreSaveGameLoad += Zones.LoadAllZones;
 
 #if DEBUG
         // Debug stuff for the special commands
@@ -91,8 +87,7 @@ internal sealed class Main : ModEntryPoint
     public override void PostLoad()
     {
         Slimepedia.PostLoadSlimes();
-        // Inventory.Bundle.Unload(false); no
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo"/*, "ocean_range"*/, "largopedia"); // Release handles
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "map"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");

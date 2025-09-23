@@ -1,5 +1,3 @@
-// using RichPresence;
-
 using RichPresence;
 
 namespace OceanRange.Utils;
@@ -34,14 +32,12 @@ public static class SlimepediaCreation
         TranslationPatcher.AddPediaTranslation("m.how_to_use." + pediaTranslateId, ranch);
     }
 
-    public static void CreateZoneSlimePedia(PediaId slimePediaId, Zone lNameId, string name, string presence,
-        string fullName, string intro, string description)
+    public static void CreateZoneSlimePedia(PediaId slimePediaId, Zone lNameId, string name, string presence, string fullName, string intro, string description)
     {
-        
         PediaRegistry.RegisterIdEntry(slimePediaId, null);
-        
+
         PediaUI.WORLD_ENTRIES = PediaUI.WORLD_ENTRIES.AddToArray(slimePediaId);
-        
+
         var id = slimePediaId.ToString().ToLowerInvariant();
         Director.RICH_PRESENCE_ZONE_LOOKUP.Add(lNameId, name);
         TranslationPatcher.AddGlobalTranslation("l.presence." + lNameId.ToString().ToLowerInvariant(), presence);

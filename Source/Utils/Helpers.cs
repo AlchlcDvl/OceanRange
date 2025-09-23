@@ -198,16 +198,18 @@ public static class Helpers
     private static readonly HashSet<IdentifiableId> IdentifiableIds = new(Identifiable.idComparer);
     // private static readonly HashSet<GadgetId> GadgetIds = new(Gadget.idComparer);
 
-    public static T AddEnumValue<T>(string name) where T : struct, Enum
+    public static T AddEnumValue<T>(string name) where T : struct, Enum => (T)AddEnumValue(name, typeof(T));
+
+    public static object AddEnumValue(string name, Type enumType)
     {
-        if (Enum.TryParse<T>(name, out var result))
+        if (TryParseEnum(enumType, name, true, out var result))
             return result;
 
         if (SRModLoader.CurrentLoadingStep > SRModLoader.LoadingStep.PRELOAD)
             throw new InvalidOperationException("Can't add enums outside of the Preload step");
 
-        var value = EnumPatcher.GetFirstFreeValue<T>();
-        EnumPatcher.AddEnumValueWithAlternatives<T>(value, name);
+        var value = EnumPatcher.GetFirstFreeValue(enumType);
+        EnumPatcher.AddEnumValueWithAlternatives(enumType, value, name);
 
         switch (value)
         {
@@ -306,7 +308,7 @@ public static class Helpers
 
     // public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used, but it's better to be safe than sorry
 
-    public static bool TryParse(Type enumType, string name, bool ignoreCase, out object result)
+    public static bool TryParseEnum(Type enumType, string name, bool ignoreCase, out object result)
     {
         try
         {
