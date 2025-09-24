@@ -49,7 +49,8 @@ public sealed class RegionData : JsonData
 
     [JsonIgnore]
     public RegionId Region;
-
+    
+    [OnDeserialized]
     public void PopulateValues(StreamingContext _)
     {
         var upper = Name.ToUpperInvariant();

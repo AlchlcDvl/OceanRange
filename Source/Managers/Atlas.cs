@@ -24,13 +24,16 @@ public static class Atlas
 
     private static void PreOnSaveLoad(SceneContext context)
     {
+        // Load regions before the zones or the game implodes
+        
         if (!WaterSourceBase)
             WaterSourceBase = GameObject.Find("/zoneREEF/cellReef_Hub/Sector/Resources/waterFountain01/");
 
-        LoadSwirlPool(context);
-
         foreach (var region in Regions)
             PreLoadRegion(context, region);
+        
+        LoadSwirlPool(context);
+
 
         // foreach (var zone in Zones)
         //     PreLoadZone(context, zone);
@@ -109,13 +112,20 @@ public static class Atlas
             {
                 source.GetComponent<LiquidSource>().Destroy();
 
+                WaterSourceBase.SetActive(false);
+                
                 var srcBase = WaterSourceBase.Instantiate();
                 srcBase.transform.SetParent(source.transform, false);
+                
                 var water = srcBase.GetComponentInChildren<LiquidSource>();
                 water.director = zone.GetComponent<IdDirector>();
                 water.director.persistenceDict.Add(water, water.IdPrefix() + split[1]);
                 water.enabled = true;
-                water.transform.localPosition = Vector3.zero;
+                
+                srcBase.transform.localPosition = Vector3.zero;
+                srcBase.SetActive(true);
+                
+                WaterSourceBase.SetActive(true);
             }
             // todo: add more source types (else if)
             else
@@ -161,7 +171,8 @@ public static class Atlas
             context.AmbianceDirector.zoneSettings.AddToArray(amb);
 
         var prefab =  Inventory.GetPrefab("zoneSWIRLPOOL");
-
+        prefab.SetActive(false);
+        
         context.AmbianceDirector.zoneSettings.AddItem(amb);
         prefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL;
 
@@ -180,10 +191,12 @@ public static class Atlas
 
         PrepMaterials(prefab.GetComponentsInChildren<Renderer>());
 
-        var enterPortal = Inventory.GetPrefab("TeleporterDevEntrance").Instantiate();
+        var enterPortal = UObject.Instantiate(Inventory.GetPrefab("TeleporterDevEntrance"), GameObject.Find("zoneRANCH/cellRanch_Home/Sector/Ranch Features/").transform);
         PrepTeleporter(enterPortal.gameObject, new Vector3(62.4343f, 15.83f, -137.3158f));
         enterPortal.transform.eulerAngles = Vector3.up * 137f;
-
+        PrepMaterials(new[] { enterPortal.GetComponent<MeshRenderer>() });
         SwirlpoolObject = prefab.Instantiate();
+        
+        SwirlpoolObject.SetActive(true);
     }
 }
