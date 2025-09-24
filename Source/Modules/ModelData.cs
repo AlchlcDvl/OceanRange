@@ -86,6 +86,9 @@ public sealed class ModelData : JsonData
     [JsonProperty("skip")]
     public bool Skip;
 
+    [JsonProperty("invert")]
+    public bool InvertColorOriginColors;
+
     [JsonIgnore]
     public bool IsBody;
 
