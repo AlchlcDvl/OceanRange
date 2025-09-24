@@ -555,13 +555,13 @@ public static class Slimepedia
             var temp = GetMat(modelData.ColorsOrigin.Value, modelData.ColorsSameAs);
 
             if (temp.HasProperty(TopColor))
-                modelData.ColorProps[TopColor] = temp.GetColor(TopColor);
+                modelData.ColorProps[modelData.InvertColorOriginColors ? BottomColor : TopColor] = temp.GetColor(TopColor);
 
             if (temp.HasProperty(MiddleColor))
                 modelData.ColorProps[MiddleColor] = temp.GetColor(MiddleColor);
 
             if (temp.HasProperty(BottomColor))
-                modelData.ColorProps[BottomColor] = temp.GetColor(BottomColor);
+                modelData.ColorProps[modelData.InvertColorOriginColors ? TopColor : BottomColor] = temp.GetColor(BottomColor);
         }
 
         if (modelData.Gloss.HasValue && material.HasProperty(Gloss))
@@ -656,7 +656,12 @@ public static class Slimepedia
             if (!isNull && !isFirst)
                 meshRend.name = meshName.Mesh;
 
-            meshRend.sharedMaterial = GenerateMaterial(slimeData.GordoFeatures[i], slimeData.SlimeFeatures, meshRend.sharedMaterial);
+            var material = GenerateMaterial(slimeData.GordoFeatures[i], slimeData.SlimeFeatures, meshRend.sharedMaterial);
+
+            if (isFirst)
+                meshRend.sharedMaterial = material;
+            else
+                meshRend.sharedMaterials = [material];
         }
     }
 
