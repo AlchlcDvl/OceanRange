@@ -656,7 +656,12 @@ public static class Slimepedia
             if (!isNull && !isFirst)
                 meshRend.name = meshName.Mesh;
 
-            meshRend.sharedMaterial = GenerateMaterial(slimeData.GordoFeatures[i], slimeData.SlimeFeatures, meshRend.sharedMaterial);
+            var material = GenerateMaterial(slimeData.GordoFeatures[i], slimeData.SlimeFeatures, meshRend.sharedMaterial);
+
+            if (isFirst)
+                meshRend.sharedMaterial = material;
+            else
+                meshRend.sharedMaterials = [material];
         }
     }
 
