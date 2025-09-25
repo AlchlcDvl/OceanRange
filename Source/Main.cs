@@ -71,6 +71,7 @@ internal sealed class Main : ModEntryPoint
     public override void Load()
     {
         // Loads the various forms of data the mod uses
+        Atlas.LoadMap();
         Cookbook.LoadAllFoods();
         Slimepedia.LoadAllSlimes();
         Largopedia.LoadAllLargos();

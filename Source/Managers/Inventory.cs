@@ -88,7 +88,7 @@ public static class Inventory
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
 
-    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).ToHashSet(), .. Platforms.Select(x => "bundle_" + x)];
+    private static readonly HashSet<string> Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions), .. Platforms.Select(x => "bundle_" + x)];
 
 #if DEBUG
     /// <summary>

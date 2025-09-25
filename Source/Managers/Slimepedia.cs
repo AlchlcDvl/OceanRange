@@ -512,7 +512,7 @@ public static class Slimepedia
             setProps = false;
         }
         // else if (matData.Shader != null)
-        //     material = new(AssetManager.GetShader(matData.Shader));
+        //     material = new(Inventory.GetShader(matData.Shader));
         else if (matData.MatOriginSlime.HasValue)
         {
             material = GetMat(matData.MatOriginSlime.Value, matData.MatSameAs);

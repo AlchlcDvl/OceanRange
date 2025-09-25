@@ -17,7 +17,8 @@
             "pediaName": "Swirlpool Island",
             "intro": "A distant land of wonder for those who are curious",
             "description": "<b><u>todo</b></u>",
-            "presence": "Traversing the island"
+            "presence": "Traversing the island",
+            "region": "UNDERWATER"
         }
     ]
 }

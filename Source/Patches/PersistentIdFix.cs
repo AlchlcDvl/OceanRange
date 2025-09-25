@@ -7,7 +7,6 @@ public static class PersistentIdFix
 {
     public static bool Prefix(IdHandler __instance, ref string __result)
     {
-        
         if (__instance.director || !__instance.TryGetComponent<PersistentId>(out var id))
             return true;
 

@@ -1,28 +1,25 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch]
-public static class ZoneFix
+[HarmonyPatch(typeof(ZoneDirector), nameof(ZoneDirector.GetRegionSetId)), UsedImplicitly]
+public static class SetModdedRegionId
 {
-    [HarmonyPatch(typeof(ZoneDirector), nameof(ZoneDirector.GetRegionSetId))]
-    [HarmonyPrefix]
-    public static bool RegionSetId(ref RegionId __result, Zone zone)
+    public static bool Prefix(ref RegionId __result, Zone zone)
     {
-        // cant do switch/case with modded ids...
-        if (zone == Ids.SWIRLPOOL)
-        {
-            __result = Ids.UNDERWATER;
-            return false;
-        }
+        var isModded = Atlas.ZoneToDataMap.TryGetValue(zone, out var data);
 
-        return true;
+        if (isModded)
+            __result = data.Region;
+
+        return !isModded;
     }
+}
 
-    [HarmonyPatch(typeof(PlayerZoneTracker), nameof(PlayerZoneTracker.OnEntered))]
-    [HarmonyPostfix]
-    private static void ZoneEnter(Zone zone)
+[HarmonyPatch(typeof(PlayerZoneTracker), nameof(PlayerZoneTracker.OnEntered)), UsedImplicitly]
+public static class ShowZonePediaPopUp
+{
+    public static void Postfix(PlayerZoneTracker __instance, Zone zone)
     {
-        if (zone == Ids.SWIRLPOOL)
-            SceneContext.Instance.PediaDirector.MaybeShowPopup(Ids.SWIRLPOOL_ENTRY);
+        if (Atlas.ZoneToDataMap.TryGetValue(zone, out var data))
+            __instance.pediaDir.MaybeShowPopup(data.PediaId);
     }
-
 }
