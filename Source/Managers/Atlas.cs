@@ -170,9 +170,9 @@ public static class Atlas
     private static void LoadSwirlPool(SceneContext context)
     {
         var amb = Inventory.GetScriptable<AmbianceDirectorZoneSetting>("SWIRLPOOLAmb");
-        amb.zone = Ids.SWIRLPOOL_AMBIANCE;
+        amb.zone = Ids.SWIRLPOOL_ISLAND_AMBIANCE;
 
-        context.AmbianceDirector.zoneDict.Add(Ids.SWIRLPOOL_AMBIANCE, amb);
+        context.AmbianceDirector.zoneDict.Add(Ids.SWIRLPOOL_ISLAND_AMBIANCE, amb);
         context.AmbianceDirector.zoneSettings =
             context.AmbianceDirector.zoneSettings.AddToArray(amb);
 
@@ -180,7 +180,7 @@ public static class Atlas
         prefab.SetActive(false);
 
         context.AmbianceDirector.zoneSettings.AddItem(amb);
-        prefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL;
+        prefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL_ISLAND;
 
         CreateWaterSources(prefab);
         Spawners(prefab);
@@ -188,7 +188,7 @@ public static class Atlas
         foreach (var cell in prefab.GetComponentsInChildren<CellDirector>())
         {
             var reg = cell.GetComponent<Region>();
-            cell.ambianceZone = Ids.SWIRLPOOL_AMBIANCE;
+            cell.ambianceZone = Ids.SWIRLPOOL_ISLAND_AMBIANCE;
             reg.bounds.center += cell.transform.position;
         }
 
