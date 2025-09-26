@@ -104,7 +104,7 @@ public static class Atlas
     /// Example: _WaterSource.1707111978
     /// The '.' NEEDS to be there.
     /// </summary>
-    /// <param name="zone"></param>
+    /// <param name="zone">The zone.</param>
     private static void CreateWaterSources(GameObject zone)
     {
         foreach (var source in zone.GetComponentsInChildren<LiquidSource>())
@@ -143,7 +143,6 @@ public static class Atlas
 
     private static void PrepTeleporter(SceneContext context, GameObject teleporter, Vector3 position)
     {
-        var network = context.TeleportNetwork;
         var dest = teleporter.GetComponent<TeleportDestination>();
 
         if (dest.transform.childCount < 2)
@@ -161,7 +160,7 @@ public static class Atlas
         }
 
         dest.regionSetId = Helpers.ParseEnum<RegionId>(region.name.Replace("_", ""));
-        network.Register(dest);
+        context.TeleportNetwork.Register(dest);
 
         if (position != Vector3.zero)
             dest.transform.position = position;

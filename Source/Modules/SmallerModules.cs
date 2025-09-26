@@ -80,3 +80,34 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
 // public sealed class BlankBehaviour : MonoBehaviour; // Blank class to be used as a persistent check, similar to PersistentId class
 
 // public sealed record class Out<T>(T Value); // To be used as an out param for coroutines
+
+public sealed class SoftTypeDictionary<T> : Dictionary<Type, T>
+{
+    public bool TryGetEquivalentKey(Type type, out T result)
+    {
+        using var enumerator = GetEnumerator();
+
+        while (enumerator.MoveNext())
+        {
+            var (key, value) = enumerator.Current;
+
+            if (!key.IsAssignableFrom(type))
+                continue;
+
+            result = value;
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+}
+
+public sealed class PlatformComparer : IEqualityComparer<RuntimePlatform>
+{
+    public static readonly PlatformComparer Instance = new();
+
+    public bool Equals(RuntimePlatform id1, RuntimePlatform id2) => id1 == id2;
+
+    public int GetHashCode(RuntimePlatform id) => (int)id;
+}

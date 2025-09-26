@@ -107,7 +107,7 @@ public sealed class AssetHandle(string name) : IDisposable
         if (Assets.TryGetValue(tType, out var asset)) // Try to fetch the asset if it's already loaded
             return (T)asset;
 
-        if (!Inventory.AssetTypeExtensions.TryGetValue(tType, out var generator)) // Check if the requested type is valid
+        if (!Inventory.AssetTypeExtensions.TryGetEquivalentKey(tType, out var generator)) // Check if the requested type is valid
             return throwError ? throw new NotSupportedException($"{tType.Name} is not a valid asset type to load") : null;
 
         if (!Paths.TryGetValue(generator.Extensions, out var path)) // Check if there's an asset path that maps to the relevant file extension

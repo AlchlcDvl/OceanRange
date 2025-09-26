@@ -38,7 +38,7 @@ public static class Inventory
         ]
     };
 
-    private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
+    private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
     {
         [RuntimePlatform.OSXPlayer] = "mac",
         [RuntimePlatform.LinuxPlayer] = "lin",
@@ -55,7 +55,7 @@ public static class Inventory
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
     /// </summary>
-    public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
+    public static readonly SoftTypeDictionary<(string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         // Embedded resources
         [typeof(Json)] = (["json"], LoadJson),
@@ -88,7 +88,7 @@ public static class Inventory
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
 
-    private static readonly HashSet<string> Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions), .. Platforms.Select(x => "bundle_" + x)];
+    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).Union(Platforms.Select(x => "bundle_" + x))];
 
 #if DEBUG
     /// <summary>
@@ -195,7 +195,12 @@ public static class Inventory
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Shader GetShader(string name) => Get<Shader>(name);
 
-    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<ScriptableObject>(name.ToLowerInvariant()) as T;
+    /// <summary>
+    /// Gets a ScriptableObject instance associated with the provided type and name.
+    /// </summary>
+    /// <typeparam name="T">The type of the data.</typeparam>
+    /// <inheritdoc cref="Get{T}(string)"/>
+    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
 
     public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
 

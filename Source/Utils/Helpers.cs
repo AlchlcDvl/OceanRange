@@ -33,7 +33,7 @@ public static class Helpers
         return obj;
     }
 
-    public static string ReplaceAll(this string @string, string newValue, HashSet<string> valuesToReplace)
+    public static string ReplaceAll(this string @string, string newValue, string[] valuesToReplace)
     {
         valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
         return @string;
