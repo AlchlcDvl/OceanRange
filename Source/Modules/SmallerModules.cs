@@ -118,13 +118,11 @@ public sealed class SoftTypeDictionary<T> : IDictionary<Type, T>
 
         foreach (var innerKey in AllPairs.Keys.ToArray())
         {
-            if (!key.IsAssignableFrom(innerKey))
-                continue;
-
-            result &= AllPairs.Remove(innerKey);
+            if (key.IsAssignableFrom(innerKey))
+                result &= AllPairs.Remove(innerKey);
         }
 
-        return result && AllPairs.Remove(key);
+        return result;
     }
 
     public bool ContainsKey(Type key) => AllPairs.ContainsKey(key);
