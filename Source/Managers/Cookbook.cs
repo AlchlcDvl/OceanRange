@@ -37,6 +37,8 @@ public static class Cookbook
         Ids.DIRT.RegisterId(IdentifiableId.SILKY_SAND_CRAFT);
         TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
 
+        TranslationPatcher.AddPediaTranslation("m.favored_by.silky_sand_craft", "Sand Slime");
+
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
     }

@@ -95,12 +95,11 @@ public sealed class AssetHandle(string name) : IDisposable
     /// Loads and returns an asset handled by this handle.
     /// </summary>
     /// <typeparam name="T">The type of the asset.</typeparam>
-    /// <param name="throwError">The flag that indicates if an error should be thrown.</param>
     /// <returns>The fetched <typeparamref name="T"/>.</returns>
     /// <exception cref="NotSupportedException">Thrown if an invalid asset type was requested.</exception>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided type.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the asset was not loaded properly for reasons unknown.</exception>
-    public T Load<T>(bool throwError = true) where T : UObject
+    public T Load<T>() where T : UObject
     {
         var tType = typeof(T);
 
@@ -108,21 +107,18 @@ public sealed class AssetHandle(string name) : IDisposable
             return (T)asset;
 
         if (!Inventory.AssetTypeExtensions.TryGetEquivalentValue(tType, out var generator)) // Check if the requested type is valid
-            return throwError ? throw new NotSupportedException($"{tType.Name} is not a valid asset type to load") : null;
+            throw new NotSupportedException($"{tType.Name} is not a valid asset type to load");
 
         if (!Paths.TryGetValue(generator.Extensions, out var path)) // Check if there's an asset path that maps to the relevant file extension
-            return throwError ? throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}") : null;
+            throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}");
 
         asset = generator.LoadAsset(path); // Create the asset
 
         // Save the asset if not null, otherwise throw an error
         if (!asset)
-            return throwError ? throw new InvalidOperationException($"The load function for asset '{Name}' of type '{tType.Name}' returned null. Path: {path}") : null;
+            throw new InvalidOperationException($"The load function for asset '{Name}' of type '{tType.Name}' returned null. Path: {path}");
 
         Assets.Add(tType, asset);
-
-        if (tType == typeof(GameObject))
-            return (T)asset;
 
         // Set name and allow persistence
         asset.name = Name;

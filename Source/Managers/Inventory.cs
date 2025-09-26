@@ -206,21 +206,39 @@ public static class Inventory
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
-    private static T Get<T>(string name) where T : UObject => Get<T>(name, true);
+    // /// <summary>
+    // /// Attempts to fetch an asset of type <typeparamref name="T"/> associated with the provided name.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the asset.</typeparam>
+    // /// <param name="name">The name of the asset.</param>
+    // /// <param name="result">The fetched asset, if any.</param>
+    // /// <returns>true if an asset was found with the name.</returns>
+    // private static bool TryGet<T>(string name, out T result) where T : UObject
+    // {
+    //     try
+    //     {
+    //         result = Get<T>(name);
+    //         return true;
+    //     }
+    //     catch
+    //     {
+    //         result = null;
+    //         return false;
+    //     }
+    // }
 
     /// <summary>
     /// Gets a(n) <typeparamref name="T"/> associated with the provided name.
     /// </summary>
     /// <param name="name">The name of the asset.</param>
-    /// <param name="throwError">Flag indicating whether errors should be thrown or not.</param>
     /// <inheritdoc cref="AssetHandle.Load{T}"/>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
-    private static T Get<T>(string name, bool throwError) where T : UObject
+    private static T Get<T>(string name) where T : UObject
     {
         if (!Assets.TryGetValue(name, out var handle))
-            return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : null;
+            throw new FileNotFoundException($"{name}, {typeof(T).Name}");
 
-        return handle.Load<T>(throwError);
+        return handle.Load<T>();
     }
 
     // Legacy code, it's being kept around in case it's needed for more precise control
