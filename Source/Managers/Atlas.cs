@@ -56,6 +56,9 @@ public static class Atlas
 
     // }
 
+#if DEBUG
+    [TimeDiagnostic("Atlas Load")]
+#endif
     public static void LoadMap()
     {
         Array.ForEach(Zones, LoadZoneData);

@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace OceanRange.Modules;
 
 public sealed class PersistentId : MonoBehaviour
@@ -81,16 +83,67 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
 
 // public sealed record class Out<T>(T Value); // To be used as an out param for coroutines
 
-public sealed class SoftTypeDictionary<T> : Dictionary<Type, T>
+public sealed class SoftTypeDictionary<T> : IDictionary<Type, T>
 {
-    public bool TryGetEquivalentKey(Type type, out T result)
+    private readonly Dictionary<Type, T> AllPairs = [];
+
+    public ICollection<Type> Keys => AllPairs.Keys;
+    public ICollection<T> Values => AllPairs.Values;
+    public int Count => AllPairs.Count;
+    public bool IsReadOnly => false;
+
+    public T this[Type key]
     {
-        using var enumerator = GetEnumerator();
-
-        while (enumerator.MoveNext())
+        get => AllPairs[key];
+        set
         {
-            var (key, value) = enumerator.Current;
+            ClearKeys(key);
+            AllPairs[key] = value;
+        }
+    }
 
+    public void Add(Type key, T value)
+    {
+        ClearKeys(key);
+        AllPairs.Add(key, value);
+    }
+
+    public bool Remove(Type key) => ClearKeys(key);
+
+    public void Clear() => AllPairs.Clear();
+
+    private bool ClearKeys(Type key)
+    {
+        var result = true;
+
+        foreach (var innerKey in AllPairs.Keys.ToArray())
+        {
+            if (!key.IsAssignableFrom(innerKey))
+                continue;
+
+            result &= AllPairs.Remove(innerKey);
+        }
+
+        return result && AllPairs.Remove(key);
+    }
+
+    public bool ContainsKey(Type key) => AllPairs.ContainsKey(key);
+
+    public bool TryGetValue(Type key, out T value)
+    {
+        if (AllPairs.TryGetValue(key, out value))
+            return true;
+
+        if (!TryGetEquivalentValue(key, out value))
+            return false;
+
+        return AllPairs.TryAdd(key, value);
+    }
+
+    public bool TryGetEquivalentValue(Type type, out T result)
+    {
+        foreach (var (key, value) in AllPairs)
+        {
             if (!key.IsAssignableFrom(type))
                 continue;
 
@@ -101,6 +154,22 @@ public sealed class SoftTypeDictionary<T> : Dictionary<Type, T>
         result = default;
         return false;
     }
+
+    public void Add(KeyValuePair<Type, T> item)
+    {
+        ClearKeys(item.Key);
+        AllPairs.Add(item.Key, item.Value);
+    }
+
+    public bool Contains(KeyValuePair<Type, T> item) => TryGetValue(item.Key, out var value) && value.Equals(item.Value);
+
+    public void CopyTo(KeyValuePair<Type, T>[] array, int arrayIndex) => ((IDictionary<Type, T>)AllPairs).CopyTo(array, arrayIndex);
+
+    public bool Remove(KeyValuePair<Type, T> item) => Remove(item.Key);
+
+    public IEnumerator<KeyValuePair<Type, T>> GetEnumerator() => AllPairs.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
 public sealed class PlatformComparer : IEqualityComparer<RuntimePlatform>
