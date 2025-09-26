@@ -69,12 +69,12 @@ public static class Atlas
         SlimepediaCreation.CreateZoneSlimePedia(zone.PediaId, zone.Zone, "ranch", zone.Presence, zone.PediaName, zone.Intro, zone.Description);
     }
 
-    private static void PrepMaterials(Renderer[] renderers)
+    private static void PrepMaterials(params Renderer[] renderers)
     {
         foreach (var renderer in renderers)
         {
             var mat = renderer.material;
-            var shader = Shader.Find(mat.shader.name);
+            var shader = ShaderUtils.FindShader(mat.shader.name);
 
             if (shader != null)
                 mat.shader = shader;
@@ -96,7 +96,7 @@ public static class Atlas
         }
     }
 
-    private static void Spawners(GameObject zone)
+    private static void PrepSpawners(GameObject zone)
     {
         foreach (var ss in zone.GetComponentsInChildren<DirectedSlimeSpawner>(true))
             PrepSpawner(ss);
@@ -108,7 +108,7 @@ public static class Atlas
     /// The '.' NEEDS to be there.
     /// </summary>
     /// <param name="zone">The zone.</param>
-    private static void CreateWaterSources(GameObject zone)
+    private static void PrepWaterSources(GameObject zone)
     {
         foreach (var source in zone.GetComponentsInChildren<LiquidSource>())
         {
@@ -178,33 +178,45 @@ public static class Atlas
         context.AmbianceDirector.zoneSettings =
             context.AmbianceDirector.zoneSettings.AddToArray(amb);
 
-        var prefab =  Inventory.GetPrefab("zoneSWIRLPOOL");
-        prefab.SetActive(false);
+        PrepSwirlpoolPrefab();
 
-        context.AmbianceDirector.zoneSettings.AddItem(amb);
-        prefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL_ISLAND;
+        SwirlpoolObject = SwirlpoolPrefab.Instantiate();
 
-        CreateWaterSources(prefab);
-        Spawners(prefab);
+        var enterPortal = Inventory.GetPrefab("TeleporterDevEntrance").Instantiate(GameObject.Find("zoneRANCH/cellRanch_Home/Sector/Ranch Features/").transform);
+        enterPortal.transform.eulerAngles = Vector3.up * 137f;
+        PrepTeleporter(context, enterPortal.gameObject, new Vector3(62.4343f, 15.83f, -137.3158f));
+        PrepMaterials(enterPortal.GetComponent<MeshRenderer>());
 
-        foreach (var cell in prefab.GetComponentsInChildren<CellDirector>())
+        foreach (var tp in SwirlpoolObject.GetComponentsInChildren<TeleportDestination>())
+            PrepTeleporter(context, tp.gameObject, Vector3.zero);
+
+        SwirlpoolObject.SetActive(true);
+    }
+
+    private static bool Prepped;
+    public static GameObject SwirlpoolPrefab;
+
+    private static void PrepSwirlpoolPrefab()
+    {
+        if (Prepped)
+            return;
+
+        SwirlpoolPrefab = Inventory.GetPrefab("zoneSWIRLPOOL");
+        SwirlpoolPrefab.SetActive(false);
+
+        SwirlpoolPrefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL_ISLAND;
+
+        PrepWaterSources(SwirlpoolPrefab);
+        PrepSpawners(SwirlpoolPrefab);
+
+        foreach (var cell in SwirlpoolPrefab.GetComponentsInChildren<CellDirector>())
         {
             var reg = cell.GetComponent<Region>();
             cell.ambianceZone = Ids.SWIRLPOOL_ISLAND_AMBIANCE;
             reg.bounds.center += cell.transform.position;
         }
 
-        foreach (var tp in prefab.GetComponentsInChildren<TeleportDestination>())
-            PrepTeleporter(context, tp.gameObject, Vector3.zero);
-
-        PrepMaterials(prefab.GetComponentsInChildren<Renderer>());
-
-        var enterPortal = UObject.Instantiate(Inventory.GetPrefab("TeleporterDevEntrance"), GameObject.Find("zoneRANCH/cellRanch_Home/Sector/Ranch Features/").transform);
-        PrepTeleporter(context, enterPortal.gameObject, new Vector3(62.4343f, 15.83f, -137.3158f));
-        enterPortal.transform.eulerAngles = Vector3.up * 137f;
-        PrepMaterials([enterPortal.GetComponent<MeshRenderer>()]);
-        SwirlpoolObject = prefab.Instantiate();
-
-        SwirlpoolObject.SetActive(true);
+        PrepMaterials(SwirlpoolPrefab.GetComponentsInChildren<Renderer>());
+        Prepped = true;
     }
 }
