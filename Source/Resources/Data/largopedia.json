@@ -128,8 +128,8 @@
         "bodyMesh": 
         { 
             "colorsOrigin": "COCO_SLIME",
-            "invert": "true",
-            "matOrigin": "QUANTUM_SLIME" 
+            "matOrigin": "QUANTUM_SLIME",
+            "invert": "true" 
         },
         "slime1Meshes": 
         [
@@ -141,27 +141,37 @@
     },
     {
         "name": "Coco Honey",
-        "props": ["CustomBody", "CustomSlime1Structures"],
+        "props": ["CustomBody", "CustomSlime2Structures"],
         "bodyMesh":
         { 
-            "colorsOrigin": "HONEY_SLIME",
-            "matOrigin": "COCO_SLIME",
-            "invert": "true" 
+            "colorsOrigin": "COCO_SLIME",
+            "matOrigin": "HONEY_SLIME"
         },
-        "slime1Meshes": 
+        "slime2Meshes": 
         [
             { 
-                "colorsOrigin": "HONEY_SLIME"
+                "colorsOrigin": "COCO_SLIME"
             }
         ]
     },
     {
         "name": "Coco Phosphor",
-        "props": ["CustomSlime1Structures"],
+        "props": ["CustomBody", "CustomSlime1Structures"],
+        "bodyMesh": 
+        {
+            "colorsOrigin": "PHOSPHOR_SLIME",
+            "matOrigin": "COCO_SLIME",
+            "invert": "true"
+        },
         "slime1Meshes": 
         [
             { "colorsOrigin": "PHOSPHOR_SLIME" }
         ]
+    },
+    {
+        "name": "Coco Mosaic",
+        "props": ["CustomBody"],
+        "bodyMesh": { "matOrigin": "COCO_SLIME" }
     },
     {
         "name": "Coco Tangle",
@@ -207,18 +217,13 @@
     {
         "name": "Coco Rock",
         "props": ["CustomBody", "CustomSlime1Structures"],
-        "bodyMesh":
-        { 
+        "bodyMesh": 
+        {
             "colorsOrigin": "ROCK_SLIME",
             "matOrigin": "COCO_SLIME",
-            "invert": "true" 
+            "invert": "true"
         },
-        "slime1Meshes": 
-        [
-            { 
-                "colorsOrigin": "ROCK_SLIME"
-            }
-        ]
+        "slime1Meshes": [ { "colorsOrigin": "ROCK_SLIME" } ]
     },
     {
         "name": "Coco Tabby",
@@ -241,30 +246,18 @@
     {
         "name": "Coco Crystal",
         "props": ["CustomBody", "CustomSlime1Structures"],
-        "bodyMesh":
-        { 
+        "bodyMesh": 
+        {
             "colorsOrigin": "CRYSTAL_SLIME",
             "matOrigin": "COCO_SLIME",
-            "invert": "true" 
+            "invert": "true"
         },
-        "slime1Meshes": 
-        [
-            { "colorsOrigin": "CRYSTAL_SLIME" }
-        ]
+        "slime1Meshes": [ { "colorsOrigin": "CRYSTAL_SLIME" } ]
     },
     {
         "name": "Coco Dervish",
-        "props": ["CustomBody", "CustomSlime1Structures"],
-        "bodyMesh":
-        { 
-            "colorsOrigin": "DERVISH_SLIME",
-            "matOrigin": "COCO_SLIME",
-            "invert": "true" 
-        },
-        "slime1Meshes": 
-        [
-            { "colorsOrigin": "DERVISH_SLIME" }
-        ]
+        "props": ["CustomSlime2Structures"],
+        "slime2Meshes": [ { "colorsOrigin": "COCO_SLIME" } ]
     },
     {
         "name": "Coco Mesmer",
