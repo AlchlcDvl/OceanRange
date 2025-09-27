@@ -33,7 +33,7 @@ public static class Helpers
         return obj;
     }
 
-    public static string ReplaceAll(this string @string, string newValue, params string[] valuesToReplace)
+    public static string ReplaceAll(this string @string, string newValue, string[] valuesToReplace)
     {
         valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
         return @string;
@@ -277,6 +277,10 @@ public static class Helpers
         }
 
         var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
+
+        if (Atlas.ZoneToDataMap.ContainsKey(zoneId)) // The prefabs are already set for these
+            return false;
+
         return zoneId == Zone.NONE || zones.Contains(zoneId);
     }
 

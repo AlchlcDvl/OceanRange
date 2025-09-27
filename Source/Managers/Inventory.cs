@@ -38,7 +38,7 @@ public static class Inventory
         ]
     };
 
-    private static readonly Dictionary<RuntimePlatform, string> Platforms = new()
+    private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
     {
         [RuntimePlatform.OSXPlayer] = "mac",
         [RuntimePlatform.LinuxPlayer] = "lin",
@@ -55,7 +55,7 @@ public static class Inventory
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
     /// </summary>
-    public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
+    public static readonly SoftTypeDictionary<(string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         // Embedded resources
         [typeof(Json)] = (["json"], LoadJson),
@@ -88,7 +88,7 @@ public static class Inventory
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
 
-    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).ToHashSet(), .. Platforms.Select(x => "bundle_" + x)];
+    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).Union(Platforms.Select(x => "bundle_" + x))];
 
 #if DEBUG
     /// <summary>
@@ -195,27 +195,50 @@ public static class Inventory
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Shader GetShader(string name) => Get<Shader>(name);
 
-    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<ScriptableObject>(name.ToLowerInvariant()) as T;
+    /// <summary>
+    /// Gets a ScriptableObject instance associated with the provided type and name.
+    /// </summary>
+    /// <typeparam name="T">The type of the data.</typeparam>
+    /// <inheritdoc cref="Get{T}(string)"/>
+    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
 
     public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
-    private static T Get<T>(string name) where T : UObject => Get<T>(name, true);
+    // /// <summary>
+    // /// Attempts to fetch an asset of type <typeparamref name="T"/> associated with the provided name.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the asset.</typeparam>
+    // /// <param name="name">The name of the asset.</param>
+    // /// <param name="result">The fetched asset, if any.</param>
+    // /// <returns>true if an asset was found with the name.</returns>
+    // private static bool TryGet<T>(string name, out T result) where T : UObject
+    // {
+    //     try
+    //     {
+    //         result = Get<T>(name);
+    //         return true;
+    //     }
+    //     catch
+    //     {
+    //         result = null;
+    //         return false;
+    //     }
+    // }
 
     /// <summary>
     /// Gets a(n) <typeparamref name="T"/> associated with the provided name.
     /// </summary>
     /// <param name="name">The name of the asset.</param>
-    /// <param name="throwError">Flag indicating whether errors should be thrown or not.</param>
     /// <inheritdoc cref="AssetHandle.Load{T}"/>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
-    private static T Get<T>(string name, bool throwError) where T : UObject
+    private static T Get<T>(string name) where T : UObject
     {
         if (!Assets.TryGetValue(name, out var handle))
-            return throwError ? throw new FileNotFoundException($"{name}, {typeof(T).Name}") : null;
+            throw new FileNotFoundException($"{name}, {typeof(T).Name}");
 
-        return handle.Load<T>(throwError);
+        return handle.Load<T>();
     }
 
     // Legacy code, it's being kept around in case it's needed for more precise control

@@ -14,6 +14,9 @@ public sealed class ZoneData : JsonData
     [JsonProperty("pediaName"), JsonRequired]
     public string PediaName;
 
+    [JsonProperty("region"), JsonRequired]
+    public RegionId Region;
+
     [JsonIgnore]
     public Zone Zone;
 
@@ -23,6 +26,7 @@ public sealed class ZoneData : JsonData
     [JsonIgnore]
     public Ambiance Ambiance;
 
+    [OnDeserialized]
     public void PopulateValues(StreamingContext _)
     {
         var upper = Name.ToUpperInvariant();
@@ -50,6 +54,7 @@ public sealed class RegionData : JsonData
     [JsonIgnore]
     public RegionId Region;
 
+    [OnDeserialized]
     public void PopulateValues(StreamingContext _)
     {
         var upper = Name.ToUpperInvariant();

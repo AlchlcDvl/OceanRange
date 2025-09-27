@@ -38,8 +38,9 @@ public static class SlimepediaCreation
 
         PediaUI.WORLD_ENTRIES = PediaUI.WORLD_ENTRIES.AddToArray(slimePediaId);
 
-        var id = slimePediaId.ToString().ToLowerInvariant();
         Director.RICH_PRESENCE_ZONE_LOOKUP.Add(lNameId, name);
+
+        var id = slimePediaId.ToString().ToLowerInvariant();
         TranslationPatcher.AddGlobalTranslation("l.presence." + lNameId.ToString().ToLowerInvariant(), presence);
         TranslationPatcher.AddPediaTranslation("t." + id, fullName);
         TranslationPatcher.AddPediaTranslation("m.intro." + id, intro);
