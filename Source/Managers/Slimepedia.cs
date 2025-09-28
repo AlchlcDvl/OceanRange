@@ -273,6 +273,9 @@ public static class Slimepedia
 
         if (slimeData.CanBeRefined)
             AmmoRegistry.RegisterRefineryResource(slimeData.PlortId);
+
+        if (!slimeData.Vaccable)
+            PediaRegistry.RegisterIdentifiableMapping(Helpers.ParseEnum<PediaId>(slimeData.Name.ToUpperInvariant() + "_SLIME_ENTRY"), slimeData.PlortId);
     }
 
 #if DEBUG

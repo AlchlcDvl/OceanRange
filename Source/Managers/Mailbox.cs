@@ -14,9 +14,6 @@ public static class Mailbox
     }
 
     private static void PreloadMail(MailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id)
-        .SetSubjectTranslation(mailData.Title)
-        .SetFromTranslation(mailData.From)
-        .SetBodyTranslation(mailData.Body)
         .SetReadCallback((_, _) => mailData.Read = true));
 
     [UsedImplicitly]

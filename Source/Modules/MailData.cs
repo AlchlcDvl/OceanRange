@@ -18,15 +18,6 @@ public sealed class MailData : JsonData
     [JsonProperty("id"), JsonRequired]
     public string Id;
 
-    [JsonProperty("title"), JsonRequired]
-    public string Title;
-
-    [JsonProperty("from"), JsonRequired]
-    public string From;
-
-    [JsonProperty("body"), JsonRequired]
-    public string Body;
-
     [JsonProperty("unlockAfter")]
     public double? UnlockAfter;
 

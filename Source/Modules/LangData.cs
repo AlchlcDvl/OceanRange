@@ -42,11 +42,14 @@ public sealed class LangHolder : JsonData
     [JsonProperty("zones"), JsonRequired]
     public ZoneLangData[] Zones;
 
+    [JsonProperty("mail"), JsonRequired]
+    public MailLangData[] Mail;
+
     [JsonIgnore]
     public LangData[] LangDatas;
 
     [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _) => LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Zones, .. Plorts/*, .. Crafts, .. EdibleCrafts */];
+    public void PopulateRemainingValues(StreamingContext _) => LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Zones, .. Plorts, .. Mail/*, .. Crafts, .. EdibleCrafts */];
 
     public void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -74,6 +77,26 @@ public abstract class LangData : JsonData
     protected virtual void OnDeserialisedEvent() { }
 
     public abstract void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations);
+}
+
+public sealed class MailLangData : LangData
+{
+    [JsonProperty("subjects"), JsonRequired]
+    public Dictionary<string, string> Subjects;
+
+    [JsonProperty("bodies"), JsonRequired]
+    public Dictionary<string, string> Bodies;
+
+    [JsonProperty("mailKey"), JsonRequired]
+    public string MailKey;
+
+    public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
+    {
+        var bundle = translations.GetBundle("mail");
+        bundle["m.from." + MailKey] = Names.GetText(langName);
+        bundle["m.subj." + MailKey] = Subjects.GetText(langName);
+        bundle["m.body." + MailKey] = Bodies.GetText(langName);
+    }
 }
 
 public sealed class ExchangeLangData : LangData
@@ -194,10 +217,10 @@ public sealed class ZoneLangData() : PediaLangData("", PediaCategory.WORLD)
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
+        base.AddTranslations(langName, translations);
+
         translations.GetBundle("global")["l.presence." + ZoneId.ToString().ToLowerInvariant()] = Presences.GetText(langName);
         translations.GetBundle("pedia")["m.desc." + PediaKey] = Descriptions.GetText(langName);
-
-        PediaUI.WORLD_ENTRIES = PediaUI.WORLD_ENTRIES.AddToArray(PediaId);
     }
 }
 
