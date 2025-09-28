@@ -174,14 +174,11 @@ public static class Atlas
 
     private static void LoadSwirlPool(SceneContext context)
     {
-        var amb = Inventory.GetScriptable<AmbianceDirectorZoneSetting>("SWIRLPOOLAmb");
-        amb.zone = Ids.SWIRLPOOL_ISLAND_AMBIANCE;
-
-        context.AmbianceDirector.zoneDict.Add(Ids.SWIRLPOOL_ISLAND_AMBIANCE, amb);
-        context.AmbianceDirector.zoneSettings =
-            context.AmbianceDirector.zoneSettings.AddToArray(amb);
-
         PrepSwirlpoolPrefab();
+
+        context.AmbianceDirector.zoneDict.Add(Ids.SWIRLPOOL_ISLAND_AMBIANCE, SwirlpoolSettings);
+        context.AmbianceDirector.zoneSettings =
+            context.AmbianceDirector.zoneSettings.AddToArray(SwirlpoolSettings);
 
         SwirlpoolObject = SwirlpoolPrefab.Instantiate();
 
@@ -198,11 +195,15 @@ public static class Atlas
 
     private static bool Prepped;
     public static GameObject SwirlpoolPrefab;
+    private static AmbianceDirectorZoneSetting SwirlpoolSettings;
 
     private static void PrepSwirlpoolPrefab()
     {
         if (Prepped)
             return;
+
+        SwirlpoolSettings = Inventory.GetScriptable<AmbianceDirectorZoneSetting>("SWIRLPOOLAmb");
+        SwirlpoolSettings.zone = Ids.SWIRLPOOL_ISLAND_AMBIANCE;
 
         SwirlpoolPrefab = Inventory.GetPrefab("zoneSWIRLPOOL");
         SwirlpoolPrefab.SetActive(false);
