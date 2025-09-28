@@ -479,13 +479,6 @@
             }
         },
         {
-            "name": "Sand",
-            "names":
-            {
-                "EN": "Sand Gordo"
-            }
-        },
-        {
             "name": "Mesmer",
             "names":
             {
@@ -504,6 +497,13 @@
             "names":
             {
                 "EN": "Goldfish Gordo"
+            }
+        },
+        {
+            "name": "Sand",
+            "names":
+            {
+                "EN": "Sand Gordo"
             }
         }
     ],

@@ -158,7 +158,19 @@ public sealed class PlortLangData() : IdentifiableLangData("PLORT");
 
 public sealed class LargoLangData() : IdentifiableLangData("LARGO");
 
-public sealed class GordoLangData() : IdentifiableLangData("GORDO");
+public sealed class GordoLangData() : IdentifiableLangData("GORDO")
+{
+    [JsonIgnore]
+    public bool Exists;
+
+    protected override void OnDeserialisedEvent() => Exists = Enum.TryParse(Name.ToUpperInvariant() + "_GORDO", out IdentId);
+
+    public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
+    {
+        if (Exists)
+            base.AddTranslations(langName, translations);
+    }
+}
 
 // Other pairs of (string, string) are Lang -> Translation
 
