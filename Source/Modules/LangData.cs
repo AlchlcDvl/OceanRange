@@ -91,7 +91,7 @@ public sealed class ExchangeLangData : LangData
     {
         base.OnDeserialisedEvent();
 
-        Rancher = Helpers.ParseEnum<RancherName>("Name".ToUpperInvariant());
+        Rancher = Helpers.ParseEnum<RancherName>(Name.ToUpperInvariant());
 
         var array = Offers["EN"];
         var data = Contacts.RancherMap[Rancher];
