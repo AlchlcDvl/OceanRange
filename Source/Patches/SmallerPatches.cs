@@ -86,7 +86,7 @@ public static class Type1ToMurderErrorSpams // TODO: Remove when the error is fi
     public static Exception Finalizer() => null;
 }
 
-[HarmonyPatch(typeof(ResourceBundle), nameof(ResourceBundle.LoadFromText))]
+//[HarmonyPatch(typeof(ResourceBundle), nameof(ResourceBundle.LoadFromText))]
 public static class LatchCustomTranslations
 {
     public static void Postfix(string path, Dictionary<string, string> __result)

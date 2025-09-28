@@ -67,10 +67,10 @@ public sealed class AssetHandle(string name) : IDisposable
         var extension = Path.GetExtension(path).Replace(".", "");
 
         if (Inventory.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other))
-            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing!");
+            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing! (path: {path}, step: TryGetValue/ContainsKey)");
 
         if (!Paths.TryAdd(extension, path))
-            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing!");
+            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing! (path: {path}, step: TryAdd)");
     }
 
     // /// <summary>

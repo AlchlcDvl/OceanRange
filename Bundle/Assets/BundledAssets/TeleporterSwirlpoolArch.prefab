@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7632088304298942857}
   - component: {fileID: 6341091660973726627}
   - component: {fileID: 6426440183140500809}
+  - component: {fileID: -3297272530711011864}
   m_Layer: 0
   m_Name: TeleporterSwirlpoolArch
   m_TagString: Untagged
@@ -138,6 +139,24 @@ MonoBehaviour:
     type: 3}
   teleportDestinationName: SwirlpoolArch
   reorient: 1
+--- !u!114 &-3297272530711011864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4964294922054560353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef265322d659b6243806cb56c258dba4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: 1
+  pitch: 1
+  Cue: {fileID: 11400000, guid: c78a2b2117819f940ac30f6b8511f779, type: 2}
+  Loop: 0
+  PlayOnStart: 0
+  RestartLoopsOnEnabled: 0
 --- !u!1 &5984568556126553403
 GameObject:
   m_ObjectHideFlags: 0

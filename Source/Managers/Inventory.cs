@@ -68,6 +68,7 @@ public static class Inventory
         // Bundle resources
         [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
         [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
+        [typeof(Material)] = (["mat"], GetBundleAsset<Material>),
         [typeof(ScriptableObject)] = (["asset"], GetBundleAsset<ScriptableObject>),
 
         // AudioClip is not currently in use

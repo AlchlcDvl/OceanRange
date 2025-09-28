@@ -59,6 +59,7 @@ public static class Atlas
         if (!zoneData.PrefabsPrepped)
         {
             PrepWaterSources(zoneData.Prefab);
+            PrepFoodSpawners(zoneData.Prefab);
             PrepSpawners(zoneData.Prefab);
             PrepMaterials(zoneData.Prefab.GetComponentsInChildren<Renderer>());
 
@@ -204,5 +205,16 @@ public static class Atlas
 
         if (position != Vector3.zero)
             teleporter.transform.position = position;
+    }
+    private static void PrepFoodSpawners(GameObject zone)
+    {
+        foreach (var spawnResource in zone.GetComponentsInChildren<SpawnResource>())
+        {
+            for (var i = 0; i < spawnResource.ObjectsToSpawn.Length; i++)
+            {
+                spawnResource.ObjectsToSpawn[i] = 
+                    Helpers.ParseEnum<IdentifiableId>(spawnResource.ObjectsToSpawn[i].name).GetPrefab();
+            }
+        }
     }
 }

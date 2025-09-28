@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TeleporterPrototype
-  m_Shader: {fileID: 4800000, guid: ed81dfbc10b613948a6f645a0399cec6, type: 3}
+  m_Name: UnderwaterSea
+  m_Shader: {fileID: 4800000, guid: 6d9efd82160c63049aa0401d263299b6, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -24,19 +24,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ColorRamp:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _CubemapOverride:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DecalTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Depth:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a5771c09eba96754ab1a87fb76543b05, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -51,7 +39,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Dirt:
+        m_Texture: {fileID: 2800000, guid: e5a04a22f821bcd4fba00f36dc8021d2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Foam:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -63,14 +59,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Noise:
-        m_Texture: {fileID: 2800000, guid: 72ce118a9752d4d4aaa0ce0b25bb797c, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Normal:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -79,59 +67,58 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Refraction:
+    - _SurfacePattern:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Stripes:
-        m_Texture: {fileID: 0}
+    - _WavesHeight:
+        m_Texture: {fileID: 2800000, guid: f289dc115642ee44c8b77f43fbe3ff29, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _texcoord:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texcoord2:
-        m_Texture: {fileID: 0}
+    - _WavesNormal:
+        m_Texture: {fileID: 2800000, guid: f3ccfa94b780fbc43a68cd467a124832, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _Alpha: 0.9
+    - _BlurAmount: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Density: 3
     - _DetailNormalMapScale: 1
+    - _DirtFade: 1
+    - _DirtOffset: 1
     - _DstBlend: 0
-    - _Gloss: 0
+    - _EdgeClipDistance: 1
+    - _EdgeFade: 1
+    - _EdgeHardness: 0.904
+    - _EdgeSpeed: 1
+    - _EdgeWidth: 1
+    - _FallScale: 1
+    - _FallSpeed: 1
     - _GlossMapScale: 1
-    - _GlossPower: 0
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _GlowMax: 1
-    - _GlowMin: 0
-    - _GlowSpeed: 0.8
-    - _HitFlash: 0
-    - _LightingUVContribution: 1
-    - _LightingUVHorizontalAdjust: 0
     - _Metallic: 0
     - _Mode: 0
-    - _NormalSmoothTop: 0
-    - _NormalUV1: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RadExoticCore: 0
+    - _ReflectionDistortionIntensity: 1
+    - _ReflectionFade: 1
+    - _RefractedLightFade: 1
+    - _RefractionAmount: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StripesInvert: 0
-    - _ToggleOverride: 0
+    - _SurfacePataternFade: 1
     - _UVSec: 0
-    - _UnscaledTime: 0
+    - _WaveFade: 1
+    - _WaveHeight: 0.33
+    - _WaveNoise: 0.983
+    - _WaveOffset: 0.5
+    - _WaveSpeed: 0.5
     - _ZWrite: 1
-    - __dirty: 1
     m_Colors:
-    - _BottomColor: {r: 0.068396226, g: 0.1879017, b: 0.2735849, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorMultiply: {r: 0, g: 4, b: 2, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlowTop: {r: 1, g: 1, b: 0, a: 1}
-    - _MiddleColor: {r: 0.2672659, g: 0.5182925, b: 0.735849, a: 1}
-    - _NormalPanSpeed: {r: 0, g: 0, b: 0, a: 0}
-    - _TopColor: {r: 0.33490568, g: 0.81497383, b: 1, a: 1}
