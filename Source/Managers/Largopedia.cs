@@ -257,7 +257,6 @@ public static class Largopedia
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterAppearance(definition, appearance);
         SlimeRegistry.RegisterSlimeDefinition(definition);
-        TranslationPatcher.AddActorTranslation("l." + largoData.MainId.ToString().ToLowerInvariant(), SlimeRegistry.GenerateLargoName(largoData.MainId));
     }
 
     private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, LargoProps props, LargoProps custom, LargoProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure body,

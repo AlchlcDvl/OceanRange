@@ -1,3 +1,5 @@
+using RichPresence;
+
 namespace OceanRange.Managers;
 
 public static class Atlas
@@ -16,10 +18,10 @@ public static class Atlas
 #endif
     public static void PreloadMapData()
     {
-        var map = Inventory.GetJson<World>("map");
+        var world = Inventory.GetJson<World>("atlas");
 
-        Regions = map.Regions;
-        Zones = map.Zones;
+        Regions = world.Regions;
+        Zones = world.Zones;
 
         ZoneToDataMap = Zones.ToDictionary(x => x.Zone, ZoneDirector.zoneComparer);
 
@@ -66,7 +68,8 @@ public static class Atlas
 
     private static void LoadZoneData(ZoneData zone)
     {
-        SlimepediaCreation.CreateZoneSlimePedia(zone.PediaId, zone.Zone, "ranch", zone.Presence, zone.PediaName, zone.Intro, zone.Description);
+        PediaRegistry.RegisterIdEntry(zone.PediaId, null);
+        Director.RICH_PRESENCE_ZONE_LOOKUP.Add(zone.Zone, "ranch");
     }
 
     private static void PrepMaterials(params Renderer[] renderers)

@@ -211,8 +211,6 @@ public static class Slimepedia
 
         slimeData.InitGordoDetails?.Invoke(null, [prefab, gordoDefinition]);
 
-        TranslationPatcher.AddPediaTranslation("t." + gordoDefinition.name, name);
-        TranslationPatcher.AddActorTranslation("l." + slimeData.GordoId.ToString().ToLowerInvariant(), name);
         LookupRegistry.RegisterGordo(prefab);
         SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);
     }
@@ -260,7 +258,6 @@ public static class Slimepedia
         var icon = Inventory.GetSprite($"{slimeData.Name.ToLowerInvariant()}_plort");
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
-        TranslationPatcher.AddActorTranslation("l." + slimeData.PlortId.ToString().ToLowerInvariant(), $"{slimeData.Name} {slimeData.PlortType}");
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
         LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor!.Value, icon);
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
@@ -412,9 +409,7 @@ public static class Slimepedia
             LookupRegistry.RegisterVacEntry(slimeData.MainId, appearance.ColorPalette.Ammo, appearance.Icon);
         }
 
-        SlimepediaCreation.PreloadSlimePediaConnection(slimeData.MainEntry, slimeData.MainId, PediaCategory.SLIMES);
-        SlimepediaCreation.CreatePediaForSlime(slimeData.MainEntry, slimeData.MainId, slimeData.Name + " Slime", slimeData.MainIntro, slimeData.PediaDiet, slimeData.Fav, slimeData.Slimeology, slimeData.Risks, slimeData.Plortonomics);
-        PediaRegistry.RegisterIdEntry(slimeData.MainEntry, appearance.Icon);
+        PediaRegistry.RegisterIdEntry(Helpers.ParseEnum<PediaId>(slimeData.Name.ToUpperInvariant() + "_SLIME_ENTRY"), appearance.Icon);
 
         if (Main.ClsExists)
             Main.AddIconBypass(appearance.Icon);

@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace OceanRange.Patches;
 
 // This patch exists because the assembly publicizer has issues trying to publicize events, why???
@@ -82,4 +84,17 @@ public static class EnsureAutoSaveDirectorData
 public static class Type1ToMurderErrorSpams // TODO: Remove when the error is fixed
 {
     public static Exception Finalizer() => null;
+}
+
+[HarmonyPatch(typeof(ResourceBundle), nameof(ResourceBundle.LoadFromText))]
+public static class LatchCustomTranslations
+{
+    public static void Postfix(string path, Dictionary<string, string> __result)
+    {
+        if (!Translator.GetTranslations(MessageDirector.GetLang(CultureInfo.CurrentCulture)).TryGetValue(path, out var translations))
+            return;
+
+        foreach (var (id, text) in translations)
+            __result[id] = text;
+    }
 }

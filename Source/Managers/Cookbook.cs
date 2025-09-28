@@ -35,9 +35,6 @@ public static class Cookbook
         Plants = food.Plants;
 
         Ids.DIRT.RegisterId(IdentifiableId.SILKY_SAND_CRAFT);
-        TranslationPatcher.AddUITranslation("m.foodgroup.dirt", "Dirt");
-
-        TranslationPatcher.AddPediaTranslation("m.favored_by.silky_sand_craft", "Sand Slime");
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
@@ -123,10 +120,6 @@ public static class Cookbook
         Array.ForEach(Plants, BaseCreatePlant);
     }
 
-    private const string CommonHenRanchPedia = "%type% hens in close proximity to roostros will periodically lay eggs that produce %type% chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.";
-    private const string CommonChickAboutPedia = "%type% chickadoos are baby chickens that will eventually grow into a %type% hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.";
-    private const string CommonChickRanchPedia = "Keep %type% Chickadoos in a safe place and they'll eventually grow into a %type% Hen or Roostro.";
-
 #if DEBUG
     [TimeDiagnostic]
 #endif
@@ -150,14 +143,10 @@ public static class Cookbook
 
         // Register both chicks and hens
         var chickIcon = Inventory.GetSprite($"{lower}_chick");
-        RegisterFood(chickPrefab, chickIcon, chimkenData.MainAmmoColor, chimkenData.ChickId, chimkenData.ChickEntry, -1, chimkenData.Progress, StorageType.NON_SLIMES);
-        SlimepediaCreation.CreatePediaForFood(chimkenData.ChickEntry, chimkenData.ChickId, chimkenData.Name + " Chick", chimkenData.ChickIntro, "Future Meat", "(not a slime food)",
-            CommonChickAboutPedia.Replace("%type%", chimkenData.Name), CommonChickRanchPedia.Replace("%type%", chimkenData.Name));
+        RegisterFood(chickPrefab, chickIcon, chimkenData.MainAmmoColor, chimkenData.ChickId, -1, chimkenData.Progress, StorageType.NON_SLIMES);
 
         var henIcon = Inventory.GetSprite($"{lower}_hen");
-        RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor, chimkenData.MainId, chimkenData.MainEntry, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
-        SlimepediaCreation.CreatePediaForFood(chimkenData.MainEntry, chimkenData.MainId, chimkenData.Name + " Hen", chimkenData.MainIntro, "Meat", chimkenData.PediaFavouredBy, chimkenData.About,
-            CommonHenRanchPedia.Replace("%type%", chimkenData.Name));
+        RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor, chimkenData.MainId, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
         if (Main.ClsExists)
         {
@@ -200,20 +189,17 @@ public static class Cookbook
         return prefab;
     }
 
-    private static void RegisterFood(GameObject prefab, Sprite icon, Color ammo, IdentifiableId id, PediaId pediaId, int exchangeWeight, ProgressType[] progress, params StorageType[] siloStorage)
+    private static void RegisterFood(GameObject prefab, Sprite icon, Color ammo, IdentifiableId id, int exchangeWeight, ProgressType[] progress, params StorageType[] siloStorage)
     {
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, id);
         LookupRegistry.RegisterVacEntry(id, ammo, icon);
-        SlimepediaCreation.PreloadSlimePediaConnection(pediaId, id, PediaCategory.RESOURCES);
-        PediaRegistry.RegisterIdEntry(pediaId, icon);
+        PediaRegistry.RegisterIdEntry(Helpers.ParseEnum<PediaId>(id.ToString() + "_ENTRY"), icon);
         AmmoRegistry.RegisterSiloAmmo(siloStorage.Contains, id);
 
         if (exchangeWeight != -1)
             Helpers.CreateRanchExchangeOffer(id, exchangeWeight, progress);
     }
-
-    private const string CommonPlantPedia = "Deposit a %type% into a garden's depositor and you'll have a large %type% %food% of your very own.";
 
 #if DEBUG
     [TimeDiagnostic]
@@ -252,9 +238,7 @@ public static class Cookbook
         material2.SetTexture(RampBlack, black);
 
         var icon = Inventory.GetSprite(lower);
-        RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.MainEntry, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
-        SlimepediaCreation.CreatePediaForFood(plantData.MainEntry, plantData.MainId, plantData.Name, plantData.MainIntro, plantData.Type, plantData.PediaFavouredBy, plantData.About,
-            CommonPlantPedia.Replace("%type%", plantData.Name).Replace("%food%", plantData.Garden));
+        RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
         var resource = CreateFarmSetup(plantData.IsVeggie ? SpawnResourceId.CARROT_PATCH : SpawnResourceId.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
         var resourceDlx = CreateFarmSetup(plantData.IsVeggie ? SpawnResourceId.CARROT_PATCH_DLX : SpawnResourceId.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, lower);

@@ -81,21 +81,6 @@ public sealed class SlimeData : SpawnedActorData
     [JsonProperty("plortAmmoColor")]
     public Color? PlortAmmoColor;
 
-    [JsonProperty("pediaDiet"), JsonRequired]
-    public string PediaDiet;
-
-    [JsonProperty("fav"), JsonRequired]
-    public string Fav;
-
-    [JsonProperty("slimeology"), JsonRequired]
-    public string Slimeology;
-
-    [JsonProperty("risks"), JsonRequired]
-    public string Risks;
-
-    [JsonProperty("plortonomics"), JsonRequired]
-    public string Plortonomics;
-
     [JsonProperty("plortType")]
     public string PlortType = "Pearl";
 
@@ -169,7 +154,6 @@ public sealed class SlimeData : SpawnedActorData
 
         MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_SLIME");
         PlortId = Helpers.AddEnumValue<IdentifiableId>(upper + "_PLORT");
-        MainEntry = Helpers.AddEnumValue<PediaId>(upper + "_SLIME_ENTRY");
 
         var init = "Init" + Name;
         Methods.TryGetValue(init + "SlimeDetails", out InitSlimeDetails);
@@ -205,8 +189,13 @@ public sealed class SlimeData : SpawnedActorData
 
         Progress ??= [];
 
-        PlortFeatures ??= [.. SlimeFeatures.Select(x => new ModelData(x, false))];
-        GordoFeatures ??= [.. SlimeFeatures.Select(x => new ModelData(x, false))];
+        if (PlortFeatures == null || GordoFeatures == null)
+        {
+            var copy = SlimeFeatures.Select(x => new ModelData(x, false)).ToArray();
+
+            PlortFeatures ??= copy;
+            GordoFeatures ??= copy;
+        }
 
         Vaccable |= Slimepedia.MvExists;
     }

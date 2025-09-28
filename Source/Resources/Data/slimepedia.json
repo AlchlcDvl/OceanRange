@@ -66,13 +66,7 @@
         "gordoOri": "f 17.2751,13.3003,-36.969,0,30,0",
         "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
         "gordoZone": "REEF",
-        "gordoLoc": "Reef_Intro",
-        "intro": "The pink pearl of the sea. Believed to be the cousin of the pink slime.",
-        "pediaDiet": "Everything",
-        "fav": "No favorite food. The Rosi slime loves everything equally.",
-        "slimeology": "The rosi slime is the most common slime found in The Great Reef. They are often seen as cheerful, friendly and mischievous, often pranking other slimes and even humans. Rosi slimes have a deep bond with one another and are very rarely seen alone, As long as they have a partner to play with, they will be happy forever, rarely showing any sadness. And when they are sad it's often at the expense of others. Trying their best to cheer the slime or human back to their happy selves.",
-        "risks": "There is not much to worry about the rosi slime. They are very easy to ranch, only needing food and companionship. A lonely rosi slime is a sad rosi slime. So it's recommended for ranchers to have more than one if they want a healthy production of pearls.",
-        "plortonomics": "Rosi pearls are often called the \"Aphrodite Pearl\" for their rejuvenating properties on human skin. Beauty companies frequently market their products as the key to a youthful glow, claiming that rosi pearls help rewind aging skin by 20-50 years. This wouldn't be a problem if their frills were also believed to have abilities to cure internal organs, even rare cancers when consumed. While their frills can slowly regenerate constant tearing causes smaller gills to grow. However, new research shows that these healing properties are temporary. The resulting constant consumption and usage of the pearl cause rapid aging, making rosi pearls an unreliable anti-aging solution."
+        "gordoLoc": "Reef_Intro"
     },
     {
         "name": "Coco",
@@ -96,9 +90,6 @@
         "gordoZone": "REEF",
         "gordoLoc": "Reef_RingIsland",
         "zones": ["REEF", "MOSS"],
-        "intro": "The concussion slime, wear helmets!",
-        "pediaDiet": "Meat",
-        "fav": "Sandy Hens",
         "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange"],
         "slimeFeatures":
         [
@@ -127,10 +118,7 @@
                     "_BottomColor": "#ada08e"
                 }
             }
-        ],
-        "slimeology": "Coco slimes are commonly found hanging from the palm trees of the island. Being natives to SwirlPool Island, the coco slimes have natural adapted a higher jump in order to climb trees and escape predators. Due to them being grown from palm trees, they have plant like attributes which causes them to require constant sunlight and also tend to avoid eating fruits and vegetables as it would be cannibalism.",
-        "risks": "Be cautious while walking under palm trees as coco slimes are very territorial and if they sense you underneath, they will harden their soft, squishy bodies to a hard coconut-like shell and crash down onto their targets. Tourists in the past who got hit in the head by a coco slime have reported blurred vision and dizziness afterwards with some even being knocked out cold. This is also how they hunt in the wild. Despite their hard skin and agility, they are quite easy to ranch as long as they are well feed and have enough exposure to sunlight.",
-        "plortonomics": "Coco plorts, unlike their producer, are very soft and silky as well as being an excellent source of calcium when condensed to liquid. Despite being very similar to earth's milk in properties, they can still be consumed by people who are lactose intolerant, making them extremely popular for creating lactose intolerance options for dairy products. And due to their incredibly soft and silky texture, they are also very good for skin care and used often in spas as substitutes to milk baths."
+        ]
     },
     {
         "name": "Mine",
@@ -160,9 +148,6 @@
         "gordoLoc": "Quarry_VolcanoTransition",
         "progress": ["UNLOCK_QUARRY", "UNLOCK_RUINS"],
         "zones": ["QUARRY", "RUINS"],
-        "intro": "The touch-me-not of slimes!",
-        "pediaDiet": "Veggie",
-        "fav": "Blowtato",
         "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange"],
         "toRemove": ["BoomSlimeExplode, Assembly-CSharp", "BoomMaterialAnimator, Assembly-CSharp"],
         "slimeFeatures":
@@ -201,10 +186,7 @@
                 "mesh": "mine_exterior_gordo",
                 "sameAs": 1
             }
-        ],
-        "slimeology": "The mine slime, a distant and more... prickly cousin to the boom slime, has a unique take on volatility. Unlike their explosive kin, a mine slime's detonations are triggered only by direct contact with another slime or an unwary rancher. To deter accidental bumps, their bodies are adorned with sharp, crystalline spikes; a clear warning sign. Despite their fiery tendencies, these slimes prefer a milder diet of vegetables, with the blowtato being their ultimate delight. This root's highly volatile compounds provide the perfect internal spark for their constant energetic needs and powerful bursts. If a mine slime goes too long without popping, however, their internal pressure builds to uncomfortable levels, driving them to seek relief by finding water, or joining in an explosive embrace with fellow boom or mine slimes.",
-        "risks": "Approach mine slimes with caution, for their spikes aren't just for show! Any direct contact will result in a localized eruption. While other slimes will be boomed clear of the danger zone, only fellow mine slimes and their boom cousins possess a natural immunity to these contact explosions. This peculiar trait makes co-habitation an active (and often loud) affair, as they'll seek out their explosive kin for regular, relieving bursts. Keeping them together helps manage their volatile nature, preventing an otherwise grumpy slime.",
-        "plortonomics": "Mine plorts are curious, resilient gems, forged into a pearl-like shape under the immense internal pressures of the mine slime. These unique pearls retain a fragment of their progenitor's explosive nature, though a considerably firmer thwack is required to unleash their contained energy. Their peculiar, controlled detonations make them highly prized in industrial applications, particularly when refined into a fine powder. From powering small, controlled bursts in excavation to adding a spectacular sparkle to interstellar fireworks displays, mine pearls certainly make an impact on the galactic exchange."
+        ]
     },
     {
         "name": "Lantern",
@@ -222,9 +204,6 @@
         "nightSpawn": true,
         "progress": ["UNLOCK_MOSS", "UNLOCK_RUINS"],
         "zones": ["MOSS", "RUINS"],
-        "intro": "It lights up your life!",
-        "pediaDiet": "Meat",
-        "fav": "Radiant Hen",
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
         "gordoOri": "f -166.2659,27.229,657.1914,0,0,0",
         "gordoZone": "MOSS",
@@ -298,10 +277,7 @@
                 "mesh": "lantern_lure",
                 "sameAs": 3
             }
-        ],
-        "slimeology": "The lantern slime is a distant cousin of the phosphor slime. At one point in its evolution, the phosphor slimes expelled their inner core, using it to attract prey underwater. Slime nature is indeed peculiar. Much like its cousins, the lantern slimes can be found at night in the deepest parts of the Moss Blanket and the Great Reef. They are often seen alone and rarely in groups, as they prefer an isolated lifestyle and little interest in socializing. However, when it comes to humans, lantern slimes often aid divers in finding their way back to land.",
-        "risks": "Lantern slimes aren't the most social compared to other slime species. During the day, they can be found sleeping in dark caves. When disturbed from their nap, they emit a bright flash to startle any diver or slime that dares to interrupt their beauty sleep. However, at night, they become very docile and can be found swimming across the coral reef in search of food.",
-        "plortonomics": "Lantern pearls are a key ingredient in many beauty products due to their natural moisturizing properties. These pearls not only hydrate the skin but also impart a radiant, plum-like glow, making them ideal for night creams. However, it's important to note that their protective barrier against bacteria diminishes rapidly when exposed to sunlight. Therefore, products containing a high concentration of lantern pearls are best applied before bedtime for their benefits."
+        ]
     },
     {
         "name": "Sand",
@@ -313,9 +289,6 @@
         "basePrice": 8,
         "saturation": 40,
         "diet": "DIRT",
-        "intro": "You can find it between your toes!",
-        "pediaDiet": "Dirt",
-        "fav": "Silky Sand",
         "zones": ["REEF", "DESERT"],
         "spawnAmount": 0.15,
         "jiggle": 0.125,
@@ -355,10 +328,7 @@
                 "mesh": "puddle_body_gordo",
                 "sameAs": 0
             }
-        ],
-        "slimeology": "The sand slime, a curious terrestrial cousin to both the puddle and fire slimes, makes its home along the shallow, sun-drenched shores of the Far, Far Range. Much like its elemental kin, these intriguing slimes require no typical sustenance from a rancher's feeder; instead, they subsist entirely on good old dirt. After sifting through the gritty soil, sand slimes process the minerals within, producing glimmering plorts that bear a striking resemblance to Earth's precious pearls. Their calm demeanor and unique diet make them a rather low-maintenance addition to any ranch.",
-        "risks": "Rest easy, ranchers! The sand slime is one of the most delightfully docile slimes you'll encounter. These mellow blobs pose virtually no risk to the ranch, thriving peacefully in any populated corral without inciting a single outbreak. However, despite their beach-dwelling nature, sand slimes are surprisingly delicate when it comes to deep water; prolonged submersion will cause them to slowly dissolve! Even their valuable pearl plorts are safe from hungry mouths; it seems no other slime has a taste for a glistening pearl that began its life as common dirt. Their laid-back nature and inability to cause a ruckus make them perfect companions for even the most timid slimes, just keep them away from the deep end!",
-        "plortonomics": "Sand plorts are true marvels of natural refinement. Though the sand slime itself is soft and yielding, the pearls it produces are remarkably tougher than their Earth counterparts, defying their humble origins. These pristine, spherical treasures, born from nothing more than processed soil, fetch an exceptional price on the Plort Market. Their iridescent sheen and superior durability make them highly sought-after for crafting exquisite jewelry and other luxury adornments across the galaxy, proving that true beauty can indeed come from the ground up!"
+        ]
     },
     {
         "name": "Mesmer",
@@ -369,9 +339,6 @@
         "ammoColor": "#0a094f",
         "basePrice": 20,
         "saturation": 30,
-        "intro": "ooooooooooooooooooo pretty",
-        "pediaDiet": "Fruit",
-        "fav": "Pogo Fruit",
         "jiggle": 0.25,
         "toAdd": ["StalkConsumable, Assembly-CSharp"],
         "slimeFeatures":
@@ -473,9 +440,6 @@
         "gordoOri": "f -328.2128,14.33913,462.0742,0,270,0",
         "gordoZone": "MOSS",
         "gordoLoc": "Moss_Forest",
-        "slimeology": "The perplexing, dangerous-looking, yet friendly mesmer slime emits very obvious pulsating colors on its body. It’s somewhat debatable what the true purpose of these displays are, but most slime scientists agree that it is to try and appeal to and be the favorite friend of as many slimes as possible, even with their scorpion-like appearances. Interestingly, they seem to be very sociable. Mesmer slimes spend most of their time inside lush jungles and caverns on the island, where you could easily spot their glows.",
-        "risks": "Mesmer slimes may be a risk to the ranch, as the patterns they produce enact a hypnotic effect on slimes that gaze upon them, which can leave them bundled up together for hours—especially during the dark, where their glow is most visible. When a mesmer slime is left alone without the company of others, its mood will also fall. During agitation, mesmer slimes exhibit a feral-like state, seemingly unhappy due to the gut feeling that no one wants to be friends with them. They channel this disappointment by exhibiting eye and mouth patterns similar to the tarr, which only scares off other slimes even more. They will also pounce and mindlessly attack ranchers and slimes with their bug-like appendages. Otherwise they’re quite simple to take care of.",
-        "plortonomics": "Mesmer plorts contain bioluminescent bacteria, which seem to be the source of their radiant colors. These bacteria may display a wide range of hues, though they usually have to be artificially mutated using complex chemical compounds to show specific shades. Products made with mesmer plorts are often luxurious, imperious, and flashy alternatives to renewable light, favored by the wealthy for their novelty. Despite the lavish presentation, their true market value remains surprisingly modest.",
         "plortType": "Plort",
         "zones": ["MOSS"]
     },
@@ -489,9 +453,6 @@
         "plortAmmoColor": "#e0945e",
         "basePrice": 30,
         "saturation": 25,
-        "intro": "The ever reclusive shell wanderer!",
-        "pediaDiet": "Fruit",
-        "fav": "Pogo Fruit",
         "jiggle": 0.25,
         "slimeFeatures":
         [
@@ -540,9 +501,6 @@
         "gordoLoc": "Reef_CliffCaves",
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
         "toAdd": ["OceanRange.Slimes.HermitBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
-        "slimeology": "The hermit slime is a fascinating creature that lives in coastal and rocky areas. This slime is characterized by always carrying a shell on its back, which it uses as a shelter and storage for the valuable objects it collects. The hermit slime has the unique characteristic of being able to shed its shell and adapt to its environment, being able to enter shells, coconuts, stones, and even garbage like boxes. Its favorite food is coral fruit, a delicious fruit that grows from an exotic plant that grows in the crevices of rocks and near the sea, this food can help the rancher gain the trust of the slime and thus facilitate its collection.",
-        "risks": "The hermit plorts are as unique as the slimes are. Thanks to the slimes' constant collection of materials in their environment, their plorts contain microfragments of shells and minerals. Hermit plorts are incredibly durable and are used to craft durable building materials and marine decorations. Additionally, they are famous for their ability to glow in the dark when rubbed against a hard surface! Some ranchers use them to decorate their ranches with natural underwater lights.",
-        "plortonomics": "Hermit slimes are naturally suspicious and can quickly hide when detecting sudden movement or loud noise. This can make it difficult to collect parcels and stored items. If it does not feel safe, it may spend long periods hidden in its shell, making it difficult to handle and collect its plorts. When trying to get items out of their shell, you need to do it carefully and patiently. Rough methods can make the slime even more reluctant to come out of its shell in the future. It is recommended to keep the hermit slimes happy and prevent them from becoming even more distrustful, it is advisable to use the coral fruit and other peaceful strategies to interact with them.",
         "plortType": "Plort",
         "zones": ["REEF"]
     },
@@ -564,7 +522,7 @@
             { "matOrigin": "GOLD_SLIME" },
             {
                 "mesh": "goldfish_fins",
-                "matOrigin": "PINK_SLIME",
+                "matOrigin": "PUDDLE_SLIME",
                 "colorProps": { "_TopColor": "#dbc777" }
             }
         ],
@@ -585,12 +543,6 @@
         ],
         "natGordoSpawn": false,
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_REEF_01", "CRATE_RUINS_01", "CRATE_QUARRY_01", "CRATE_DESERT_01"],
-        "intro": "The slippery slime!",
-        "pediaDiet": "Gilded Ginger",
-        "fav": "Gilded Ginger",
-        "slimeology": "Goldfish slimes are an exceptionally rare aquatic variant of the ever elusive gold slime. Unlike their land-loving cousin, these shimmering slimes have adapted to life beneath the waves, gracefully darting through underwater currents with their flowing tails and luminous scales. Their movement mimics that of koi or ornamental goldfish, and they leave behind glittering trails in the water when startled. While they share the same skittish nature as gold slimes, goldfish slimes are slightly easier to observe — if only for a moment longer. They often appear in deep reef trenches or near ancient underwater ruins, surfacing briefly before vanishing in a blink.",
-        "risks": "Goldfish slimes cannot be captured or contained in traditional corrals, and like gold slimes, they vanish shortly after being discovered. Attempting to corral one will only result in it slipping away with a splash. However, quick-thinking ranchers may be able to feed it its favorite food in time to earn a precious plort.",
-        "plortonomics": "Goldfish plorts are even rarer than gold plorts and twice as valuable, making them a highly sought-after resource. Their underwater origin gives them unique energetic properties, often used in cutting-edge aquatic tech and luxury hologlass manufacturing. Due to their rarity, the Slime Science Lab recommends handling with extreme care, and counting yourself lucky to have found one at all.",
         "zones": ["REEF", "QUARRY", "DESERT", "MOSS", "RUINS", "WILDS"],
         "vaccable": false
     }

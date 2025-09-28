@@ -3,6 +3,7 @@ global using Zone = ZoneDirector.Zone;
 global using PediaId = PediaDirector.Id;
 global using UObject = UnityEngine.Object;
 global using FoodGroup = SlimeEat.FoodGroup;
+global using Language = MessageDirector.Lang;
 global using IdentifiableId = Identifiable.Id;
 global using Ambiance = AmbianceDirector.Zone;
 global using SpawnResourceId = SpawnResource.Id;

@@ -14,9 +14,6 @@ public abstract class ActorData : JsonData
 
 public abstract class SpawnedActorData : ActorData
 {
-    [JsonIgnore]
-    public PediaId MainEntry;
-
     [JsonProperty("progress")]
     public ProgressType[] Progress;
 
@@ -28,9 +25,6 @@ public abstract class SpawnedActorData : ActorData
 
     [JsonProperty("exchangeWeight")]
     public int ExchangeWeight = 20;
-
-    [JsonProperty("intro"), JsonRequired]
-    public string MainIntro;
 
     [JsonProperty("ammoColor"), JsonRequired]
     public Color MainAmmoColor;

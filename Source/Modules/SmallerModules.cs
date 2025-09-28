@@ -178,3 +178,19 @@ public sealed class PlatformComparer : IEqualityComparer<RuntimePlatform>
 
     public int GetHashCode(RuntimePlatform id) => (int)id;
 }
+
+public sealed class RancherNameComparer : IEqualityComparer<RancherName>
+{
+    public static readonly RancherNameComparer Instance = new();
+
+    public bool Equals(RancherName id1, RancherName id2) => id1 == id2;
+
+    public int GetHashCode(RancherName id) => (int)id;
+}
+
+public sealed class PediaOnomicsHandler : MonoBehaviour
+{
+    public XlateText Text;
+
+    public void Awake() => Text = gameObject.FindChild("PlortLabel", true).GetComponent<XlateText>();
+}

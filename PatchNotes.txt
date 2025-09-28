@@ -11,6 +11,7 @@ New!
 - Largos: The modded slimes can become largos!
 - Sand gordos now have a proper body shape!
 - Coral Fruit*: The oceanic fruit found rarely in the dry reef!
+- Translations*: The mod now supports the following languages: TBD
 
 Changes!
 - Change: Moved the lantern gordo to a new location, good luck finding it this time!

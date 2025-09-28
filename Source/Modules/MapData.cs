@@ -2,18 +2,6 @@ namespace OceanRange.Modules;
 
 public sealed class ZoneData : JsonData
 {
-    [JsonProperty("intro"), JsonRequired]
-    public string Intro;
-
-    [JsonProperty("description"), JsonRequired]
-    public string Description;
-
-    [JsonProperty("presence"), JsonRequired]
-    public string Presence;
-
-    [JsonProperty("pediaName"), JsonRequired]
-    public string PediaName;
-
     [JsonProperty("region"), JsonRequired]
     public RegionId Region;
 
