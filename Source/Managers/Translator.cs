@@ -5,7 +5,7 @@ public static class Translator
     public static Dictionary<string, string> SlimeToOnomicsMap;
     public static ExchangeLangData[] Ranchers;
 
-    private static readonly Dictionary<Language, Dictionary<string, Dictionary<string, string>>> Translations = [];
+    private static readonly Dictionary<Language, Dictionary<string, Dictionary<string, string>>> Translations = new(LanguageComparer.Instance);
 
     private static LangHolder LangHolder;
 

@@ -16,12 +16,7 @@ public static class Ids
 
     public static readonly Category OCEAN;
 
-    public static readonly Zone SWIRLPOOL_ISLAND;
     // public static readonly Zone GREAT_REEF;
     // public static readonly Zone LISA_RANCH;
     // public static readonly Zone BLUE_DEPTHS;
-
-    public static readonly Ambiance SWIRLPOOL_ISLAND_AMBIANCE;
-
-    public static readonly RegionId UNDERWATER;
 }

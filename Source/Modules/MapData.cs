@@ -5,6 +5,15 @@ public sealed class ZoneData : JsonData
     [JsonProperty("region"), JsonRequired]
     public RegionId Region;
 
+    [JsonProperty("teleporterOri"), JsonRequired]
+    public Orientation TeleporterOrientation;
+
+    [JsonProperty("teleporterLoc"), JsonRequired]
+    public string TeleporterLocation;
+
+    [JsonProperty("prefab"), JsonRequired]
+    public string AssetName;
+
     [JsonIgnore]
     public Zone Zone;
 
@@ -13,6 +22,15 @@ public sealed class ZoneData : JsonData
 
     [JsonIgnore]
     public Ambiance Ambiance;
+
+    [JsonIgnore]
+    public bool PrefabsPrepped;
+
+    [JsonIgnore]
+    public GameObject Prefab;
+
+    [JsonIgnore]
+    public AmbianceDirectorZoneSetting AmbianceSetting;
 
     [OnDeserialized]
     public void PopulateValues(StreamingContext _)
@@ -43,12 +61,7 @@ public sealed class RegionData : JsonData
     public RegionId Region;
 
     [OnDeserialized]
-    public void PopulateValues(StreamingContext _)
-    {
-        var upper = Name.ToUpperInvariant();
-
-        Region = Helpers.AddEnumValue<RegionId>(upper);
-    }
+    public void PopulateValues(StreamingContext _) => Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
 }
 
 public sealed class World

@@ -14,7 +14,10 @@
     [
         {
             "name": "Swirlpool_Island",
-            "region": "UNDERWATER"
+            "region": "UNDERWATER",
+            "prefab": "SWIRLPOOL",
+            "teleporterOri": "f 62.4343,15.83,-137.3158,0,137,0",
+            "teleporterLoc": "zoneRANCH/cellRanch_Home/Sector/Ranch Features"
         }
     ]
 }

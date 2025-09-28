@@ -9,9 +9,8 @@ public static class Atlas
     private static ZoneData[] Zones;
     private static RegionData[] Regions;
 
-    public static GameObject SwirlpoolObject;
-
     private static GameObject WaterSourceBase;
+    private static GameObject TeleporterPrefab;
 
 #if DEBUG
     [TimeDiagnostic("Atlas Preload")]
@@ -36,15 +35,15 @@ public static class Atlas
         // Load regions before the zones or the game implodes
 
         if (!WaterSourceBase)
-            WaterSourceBase = GameObject.Find("/zoneREEF/cellReef_Hub/Sector/Resources/waterFountain01/");
+            WaterSourceBase = GameObject.Find("/zoneREEF/cellReef_Hub/Sector/Resources/waterFountain01");
 
         foreach (var region in Regions)
             PreLoadRegion(context, region);
 
-        LoadSwirlPool(context);
+        foreach (var zone in Zones)
+            PreLoadZone(context, zone);
 
-        // foreach (var zone in Zones)
-        //     PreLoadZone(context, zone);
+        context.AmbianceDirector.zoneSettings = [.. context.AmbianceDirector.zoneSettings, .. Zones.Select(x => x.AmbianceSetting)];
     }
 
     private static void PreLoadRegion(SceneContext context, RegionData region)
@@ -53,23 +52,60 @@ public static class Atlas
         context.RegionRegistry.regionsTrees.Add(region.Region, new(region.InitialWorldSize, region.InitialWorldPos, region.MinNodeSize, region.LoosenessVal));
     }
 
-    // private static void PreLoadZone(SceneContext context, ZoneData zone)
-    // {
+    private static void PreLoadZone(SceneContext context, ZoneData zoneData)
+    {
+        context.AmbianceDirector.zoneDict.Add(zoneData.Ambiance, zoneData.AmbianceSetting);
 
-    // }
+        if (!zoneData.PrefabsPrepped)
+        {
+            PrepWaterSources(zoneData.Prefab);
+            PrepSpawners(zoneData.Prefab);
+            PrepMaterials(zoneData.Prefab.GetComponentsInChildren<Renderer>());
+
+            zoneData.PrefabsPrepped = true;
+        }
+
+        var enterPortal = TeleporterPrefab.Instantiate(GameObject.Find(zoneData.TeleporterLocation).transform);
+        enterPortal.transform.eulerAngles = zoneData.TeleporterOrientation.Rotation;
+        PrepTeleporter(context, enterPortal.GetComponent<TeleportDestination>(), zoneData.TeleporterOrientation.Position);
+        PrepMaterials(enterPortal.GetComponent<MeshRenderer>());
+
+        var zoneObject = zoneData.Prefab.Instantiate();
+
+        foreach (var tp in zoneObject.GetComponentsInChildren<TeleportDestination>())
+            PrepTeleporter(context, tp, Vector3.zero);
+
+        zoneObject.SetActive(true);
+    }
 
 #if DEBUG
     [TimeDiagnostic("Atlas Load")]
 #endif
     public static void LoadMap()
     {
+        TeleporterPrefab = Inventory.GetPrefab("TeleporterDevEntrance");
+
         Array.ForEach(Zones, LoadZoneData);
     }
 
-    private static void LoadZoneData(ZoneData zone)
+    private static void LoadZoneData(ZoneData zoneData)
     {
-        PediaRegistry.RegisterIdEntry(zone.PediaId, null);
-        Director.RICH_PRESENCE_ZONE_LOOKUP.Add(zone.Zone, "ranch");
+        PediaRegistry.RegisterIdEntry(zoneData.PediaId, null);
+        Director.RICH_PRESENCE_ZONE_LOOKUP.Add(zoneData.Zone, "ranch");
+
+        zoneData.AmbianceSetting = Inventory.GetScriptable<AmbianceDirectorZoneSetting>(zoneData.AssetName + "Amb");
+        zoneData.AmbianceSetting.zone = zoneData.Ambiance;
+
+        zoneData.Prefab = Inventory.GetPrefab("zone" + zoneData.AssetName);
+        zoneData.Prefab.SetActive(false);
+
+        zoneData.Prefab.GetComponent<ZoneDirector>().zone = zoneData.Zone;
+
+        foreach (var cell in zoneData.Prefab.GetComponentsInChildren<CellDirector>())
+        {
+            cell.ambianceZone = zoneData.Ambiance;
+            cell.GetComponent<Region>().bounds.center += cell.transform.position;
+        }
     }
 
     private static void PrepMaterials(params Renderer[] renderers)
@@ -147,11 +183,9 @@ public static class Atlas
         }
     }
 
-    private static void PrepTeleporter(SceneContext context, GameObject teleporter, Vector3 position)
+    private static void PrepTeleporter(SceneContext context, TeleportDestination teleporter, Vector3 position)
     {
-        var dest = teleporter.GetComponent<TeleportDestination>();
-
-        if (dest.transform.childCount < 2)
+        if (teleporter.transform.childCount < 2)
         {
             Main.Console.LogError($"Failed to register teleport destination {teleporter.name}. (Invalid Teleporter Child Count)");
             return;
@@ -165,62 +199,10 @@ public static class Atlas
             return;
         }
 
-        dest.regionSetId = Helpers.ParseEnum<RegionId>(region.name.Replace("_", ""));
-        context.TeleportNetwork.Register(dest);
+        teleporter.regionSetId = Helpers.ParseEnum<RegionId>(region.name.Replace("_", ""));
+        context.TeleportNetwork.Register(teleporter);
 
         if (position != Vector3.zero)
-            dest.transform.position = position;
-    }
-
-    private static void LoadSwirlPool(SceneContext context)
-    {
-        PrepSwirlpoolPrefab();
-
-        context.AmbianceDirector.zoneDict.Add(Ids.SWIRLPOOL_ISLAND_AMBIANCE, SwirlpoolSettings);
-        context.AmbianceDirector.zoneSettings =
-            context.AmbianceDirector.zoneSettings.AddToArray(SwirlpoolSettings);
-
-        SwirlpoolObject = SwirlpoolPrefab.Instantiate();
-
-        var enterPortal = Inventory.GetPrefab("TeleporterDevEntrance").Instantiate(GameObject.Find("zoneRANCH/cellRanch_Home/Sector/Ranch Features/").transform);
-        enterPortal.transform.eulerAngles = Vector3.up * 137f;
-        PrepTeleporter(context, enterPortal.gameObject, new Vector3(62.4343f, 15.83f, -137.3158f));
-        PrepMaterials(enterPortal.GetComponent<MeshRenderer>());
-
-        foreach (var tp in SwirlpoolObject.GetComponentsInChildren<TeleportDestination>())
-            PrepTeleporter(context, tp.gameObject, Vector3.zero);
-
-        SwirlpoolObject.SetActive(true);
-    }
-
-    private static bool Prepped;
-    public static GameObject SwirlpoolPrefab;
-    private static AmbianceDirectorZoneSetting SwirlpoolSettings;
-
-    private static void PrepSwirlpoolPrefab()
-    {
-        if (Prepped)
-            return;
-
-        SwirlpoolSettings = Inventory.GetScriptable<AmbianceDirectorZoneSetting>("SWIRLPOOLAmb");
-        SwirlpoolSettings.zone = Ids.SWIRLPOOL_ISLAND_AMBIANCE;
-
-        SwirlpoolPrefab = Inventory.GetPrefab("zoneSWIRLPOOL");
-        SwirlpoolPrefab.SetActive(false);
-
-        SwirlpoolPrefab.GetComponent<ZoneDirector>().zone = Ids.SWIRLPOOL_ISLAND;
-
-        PrepWaterSources(SwirlpoolPrefab);
-        PrepSpawners(SwirlpoolPrefab);
-
-        foreach (var cell in SwirlpoolPrefab.GetComponentsInChildren<CellDirector>())
-        {
-            var reg = cell.GetComponent<Region>();
-            cell.ambianceZone = Ids.SWIRLPOOL_ISLAND_AMBIANCE;
-            reg.bounds.center += cell.transform.position;
-        }
-
-        PrepMaterials(SwirlpoolPrefab.GetComponentsInChildren<Renderer>());
-        Prepped = true;
+            teleporter.transform.position = position;
     }
 }

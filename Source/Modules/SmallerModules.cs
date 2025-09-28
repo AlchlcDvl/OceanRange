@@ -188,6 +188,15 @@ public sealed class RancherNameComparer : IEqualityComparer<RancherName>
     public int GetHashCode(RancherName id) => (int)id;
 }
 
+public sealed class LanguageComparer : IEqualityComparer<Language>
+{
+    public static readonly LanguageComparer Instance = new();
+
+    public bool Equals(Language id1, Language id2) => id1 == id2;
+
+    public int GetHashCode(Language id) => (int)id;
+}
+
 public sealed class PediaOnomicsHandler : MonoBehaviour
 {
     public XlateText Text;
