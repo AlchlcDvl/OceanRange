@@ -208,13 +208,43 @@ public static class Atlas
     }
     private static void PrepFoodSpawners(GameObject zone)
     {
+        Main.Console.Log("1");
         foreach (var spawnResource in zone.GetComponentsInChildren<SpawnResource>())
         {
+            Main.Console.Log("2");
             for (var i = 0; i < spawnResource.ObjectsToSpawn.Length; i++)
             {
+                Main.Console.Log($"3.{i}.1");
+                var food = spawnResource.ObjectsToSpawn[i];
+                Main.Console.Log($"3.{i}.2");
+                if (!food)
+                {
+                    Main.Console.Log($"3.{i} error - Null Object");
+                    continue;
+                }
+                var name = food.name;
+                Main.Console.Log($"3.{i}.3");
                 spawnResource.ObjectsToSpawn[i] = 
-                    Helpers.ParseEnum<IdentifiableId>(spawnResource.ObjectsToSpawn[i].name).GetPrefab();
+                    Helpers.ParseEnum<IdentifiableId>(name).GetPrefab();
+            }
+            Main.Console.Log("4");
+            for (var i = 0; i < spawnResource.BonusObjectsToSpawn.Length; i++)
+            {
+                Main.Console.Log($"5.{i}.1");
+                var food = spawnResource.BonusObjectsToSpawn[i];
+                Main.Console.Log($"5.{i}.2");
+                if (!food)
+                {
+                    Main.Console.Log($"5.{i} error - Null Object");
+                    continue;
+                }
+                var name = food.name;
+                Main.Console.Log($"5.{i}.3");
+                spawnResource.BonusObjectsToSpawn[i] = 
+                    Helpers.ParseEnum<IdentifiableId>(name).GetPrefab();
             }
         }
+        
+        Main.Console.Log("6");
     }
 }
