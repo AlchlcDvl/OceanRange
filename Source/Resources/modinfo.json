@@ -2,8 +2,8 @@
     "id": "ocean.range",
     "name": "Ocean Range",
     "version": "0.0.2",
-    "author": "AlchlcSystm, LoyalRancher, JackZ, Miramation, DiegoBA, Sir.UWU, Ghostly, GielDBL, AmorphousSystem, PinkTarr",
-    "description": "Explore the slime sea!",
+    "author": "TheRanchExchange",
+    "description": "Explore the slime sea!\n\nThe Team:\nProgrammers - AlchlcSystm, GielDBL, AmorphousSystem, PinkTarr\nArtists - LoyalRancher, DiegoBA, Sir.UWU, Ghostly\nModelers - JackZ, Miramation",
     "load_after": ["slimesandmarket", "sellthingsmod", "custom.loading", "luckygordo"],
     "load_before": ["more_vaccing"],
     "download_link": "https://www.nexusmods.com/slimerancher/mods/722"

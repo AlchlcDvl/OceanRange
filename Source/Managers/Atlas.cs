@@ -206,45 +206,36 @@ public static class Atlas
         if (position != Vector3.zero)
             teleporter.transform.position = position;
     }
+
     private static void PrepFoodSpawners(GameObject zone)
     {
-        Main.Console.Log("1");
         foreach (var spawnResource in zone.GetComponentsInChildren<SpawnResource>())
         {
-            Main.Console.Log("2");
             for (var i = 0; i < spawnResource.ObjectsToSpawn.Length; i++)
             {
-                Main.Console.Log($"3.{i}.1");
                 var food = spawnResource.ObjectsToSpawn[i];
-                Main.Console.Log($"3.{i}.2");
+
                 if (!food)
                 {
-                    Main.Console.Log($"3.{i} error - Null Object");
+                    Main.Console.Log("Error - Null Object in ObjectsToSpawn");
                     continue;
                 }
-                var name = food.name;
-                Main.Console.Log($"3.{i}.3");
-                spawnResource.ObjectsToSpawn[i] = 
-                    Helpers.ParseEnum<IdentifiableId>(name).GetPrefab();
+
+                spawnResource.ObjectsToSpawn[i] = Helpers.ParseEnum<IdentifiableId>(food.name).GetPrefab();
             }
-            Main.Console.Log("4");
+
             for (var i = 0; i < spawnResource.BonusObjectsToSpawn.Length; i++)
             {
-                Main.Console.Log($"5.{i}.1");
                 var food = spawnResource.BonusObjectsToSpawn[i];
-                Main.Console.Log($"5.{i}.2");
+
                 if (!food)
                 {
-                    Main.Console.Log($"5.{i} error - Null Object");
+                    Main.Console.Log("Error - Null Object in BonusObjectsToSpawn");
                     continue;
                 }
-                var name = food.name;
-                Main.Console.Log($"5.{i}.3");
-                spawnResource.BonusObjectsToSpawn[i] = 
-                    Helpers.ParseEnum<IdentifiableId>(name).GetPrefab();
+
+                spawnResource.BonusObjectsToSpawn[i] = Helpers.ParseEnum<IdentifiableId>(food.name).GetPrefab();
             }
         }
-        
-        Main.Console.Log("6");
     }
 }

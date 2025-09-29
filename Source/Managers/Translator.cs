@@ -24,7 +24,7 @@ public static class Translator
 
     public static string[] GetTexts(this Dictionary<string, string[]> dict, string lang) => dict.TryGetValue(lang, out var texts) ? texts : dict["EN"]; // English is guaranteed to exist here
 
-    public static Dictionary<string, Dictionary<string, string>> GetTranslations(Language lang)
+    public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
         if (!Translations.TryGetValue(lang, out var translations))
             Translations[lang] = translations = GenerateTranslations(lang.ToString());
