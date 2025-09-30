@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SwirlpoolMat1
+  m_Name: SwirlpoolMat2
   m_Shader: {fileID: 4800000, guid: 33982523088c7cd49916d88353b36e8d, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -67,10 +67,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _PerlinNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _PrimaryLowerTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -92,7 +88,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Topper_MainTex:
-        m_Texture: {fileID: 2800000, guid: e5a04a22f821bcd4fba00f36dc8021d2, type: 3}
+        m_Texture: {fileID: 2800000, guid: a09f07ff5b785914c95ae6035a85d5a0, type: 3}
         m_Scale: {x: 0.25, y: 0.25}
         m_Offset: {x: 0, y: 0}
     - _VerticalRamp:
@@ -100,28 +96,24 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Alpha: 5
-    - _AlphaCut: 0.01
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _Dayness: 1
-    - _Density: -0.25
-    - _DepthBlendMul: 1
-    - _DepthIntensity: 0.5
     - _DetailNormalMapScale: 1
     - _DifContrast: 1
     - _DifHue: 0.982
     - _DifSat: 0.003
     - _DifVal: -0.3
     - _DstBlend: 0
-    - _EdgeBlend: 2
     - _EnableDetailTex: 0
     - _Gloss: 0
-    - _GlossPower: 0.3
-    - _InvFade: 1
+    - _GlossMapScale: 1
+    - _GlossPower: 0
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _PaintRim: 0
+    - _PaintRim: 1
     - _Parallax: 0.02
     - _PrimeLowerOffset: 30
     - _PrimeLowerScale: 1
@@ -136,10 +128,10 @@ Material:
     - _TopRampOffset: 30
     - _TopRampScale: 1
     - _ToporBottom: 0
-    - _TopperCoverage: 1.26
+    - _TopperCoverage: 2
     - _TopperDepthStrength: 1
     - _TopperEnableDetailTex: 0
-    - _TopperSides: 0.087
+    - _TopperSides: 0
     - _TopperSpecularNoiseAdjust: 0.52
     - _UVSec: 0
     - _UseMeshUVs: 0
@@ -148,9 +140,8 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DifOverlay: {r: 0.5, g: 0.5, b: 0.5, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissiveColor: {r: 1, g: 1, b: -1, a: 0}
+    - _EmissiveColor: {r: 1, g: 0, b: 0, a: 0}
     - _RampTop: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _RampUpper: {r: 0.44313726, g: 0.39215687, b: 0.5686274, a: 0}
+    - _RampUpper: {r: 0.44313726, g: 0.39215687, b: 0.5686274, a: 1}
     - _SeaLevelRampLower: {r: 0.30980387, g: 0.40784308, b: 0.39215687, a: 1}
-    - _SpecularColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
-    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _SpecularColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

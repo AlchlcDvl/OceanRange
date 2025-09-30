@@ -217,7 +217,7 @@ public static class Atlas
 
                 if (!food)
                 {
-                    Main.Console.Log("Error - Null Object in ObjectsToSpawn");
+                    Main.Console.Log($"Error - Null Object in ObjectsToSpawn[{i}]");
                     continue;
                 }
 
@@ -230,7 +230,7 @@ public static class Atlas
 
                 if (!food)
                 {
-                    Main.Console.Log("Error - Null Object in BonusObjectsToSpawn");
+                    Main.Console.Log($"Error - Null Object in BonusObjectsToSpawn[{i}]");
                     continue;
                 }
 

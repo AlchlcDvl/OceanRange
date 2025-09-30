@@ -79,6 +79,12 @@ internal sealed class Main : ModEntryPoint
         Largopedia.LoadAllLargos();
         Contacts.LoadAllRanchers();
 
+        
+#if DEBUG
+        RegisterCommand(new TesterUnlockProgressCommand());
+#endif
+        
+        
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
             AddSplashesBypass(Inventory.GetSprites("loading_1", "loading_2", "loading_3", "loading_4"));
     }
