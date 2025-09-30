@@ -3,7 +3,6 @@ namespace OceanRange.Managers;
 public static class Translator
 {
     public static Dictionary<string, string> SlimeToOnomicsMap;
-    public static ExchangeLangData[] Ranchers;
 
     private static readonly Dictionary<Language, Dictionary<string, Dictionary<string, string>>> Translations = new(LanguageComparer.Instance);
 
@@ -16,7 +15,6 @@ public static class Translator
     {
         LangHolder = Inventory.GetJson<LangHolder>("pedia");
 
-        Ranchers = LangHolder.Ranchers;
         SlimeToOnomicsMap = LangHolder.Slimes.ToDictionary(x => x.PediaKey, x => x.OnomicsType);
     }
 
@@ -26,9 +24,12 @@ public static class Translator
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
-        if (!Translations.TryGetValue(lang, out var translations))
-            Translations[lang] = translations = GenerateTranslations(lang.ToString());
+        var langName = lang.ToString();
 
+        if (!Translations.TryGetValue(lang, out var translations))
+            Translations[lang] = translations = GenerateTranslations(langName);
+
+        LangHolder.OnLanguageChanged(langName);
         return translations;
     }
 

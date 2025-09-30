@@ -64,6 +64,12 @@ public sealed class LangHolder : JsonData
         foreach (var LangData in LangDatas)
             LangData.AddTranslations(langName, translations);
     }
+
+    public void OnLanguageChanged(string langName)
+    {
+        foreach (var LangData in Ranchers)
+            LangData.OnLanguageChanged(langName);
+    }
 }
 
 public abstract class LangData : JsonData
@@ -116,12 +122,10 @@ public sealed class ExchangeLangData : LangData
 
         Rancher = Helpers.ParseEnum<RancherName>(Name.ToUpperInvariant());
 
-        var array = Offers["EN"];
-        var data = Contacts.RancherMap[Rancher];
-        data.Rancher.numBlurbs = array.Length;
-        var rancherId = data.RancherId;
+        var length = Offers["EN"].Length;
+        var rancherId = Contacts.RancherMap[Rancher].RancherId;
 
-        for (var i = 0; i < data.Rancher.numBlurbs; i++)
+        for (var i = 0; i < length; i++)
             ExchangeOfferRegistry.RegisterOfferID($"m.offer_{i + 1}.{rancherId}");
 
         ExchangeOfferRegistry.RegisterOfferID($"m.bonusoffer.{rancherId}");
@@ -139,6 +143,8 @@ public sealed class ExchangeLangData : LangData
         bundle[$"m.bonusoffer.{rancherId}"] = SpecialOffers.GetText(langName);
         bundle[$"m.rancher.{rancherId}"] = Names.GetText(langName);
     }
+
+    public void OnLanguageChanged(string langName) => Contacts.RancherMap[Rancher].Rancher.numBlurbs = Offers.GetTexts(langName).Length;
 }
 
 public abstract class IdentifiableLangData(string suffix) : LangData
@@ -149,14 +155,17 @@ public abstract class IdentifiableLangData(string suffix) : LangData
     [JsonIgnore]
     public IdentifiableId IdentId;
 
-    protected override void OnDeserialisedEvent() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant().Replace(" ", "_") + "_" + Suffix);
+    protected override void OnDeserialisedEvent() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant() + "_" + Suffix);
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations) => translations.GetBundle("actor")["l." + IdentId.ToString().ToLowerInvariant()] = Names.GetText(langName);
 }
 
 public sealed class PlortLangData() : IdentifiableLangData("PLORT");
 
-public sealed class LargoLangData() : IdentifiableLangData("LARGO");
+public sealed class LargoLangData() : IdentifiableLangData("LARGO")
+{
+    protected override void OnDeserialisedEvent() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant().Replace(" ", "_") + "_LARGO");
+}
 
 public sealed class GordoLangData() : IdentifiableLangData("GORDO")
 {
