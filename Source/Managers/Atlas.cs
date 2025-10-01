@@ -77,6 +77,26 @@ public static class Atlas
             PrepTeleporter(context, tp, Vector3.zero);
 
         zoneObject.SetActive(true);
+
+        foreach (var reqPair in zoneData.Requirements)
+        {
+            var reqType = Helpers.ParseEnum<ZoneRequirementData.RequirementType>(reqPair.Key);
+
+            var obj = GameObject.Find(reqPair.Value.PathToGameObject);
+
+            switch (reqType)
+            {
+                case ZoneRequirementData.RequirementType.CorporateLevel:
+                    var progress = obj.AddComponent<ActivateOnProgressRange>();
+                    
+                    progress.progressType = ProgressType.CORPORATE_PARTNER;
+                    progress.maxProgress = reqPair.Value.CorporateLevelMax;
+                    progress.minProgress = reqPair.Value.CorporateLevelMin;
+                    
+                    break;
+                // TODO: Do other requirements.
+            }
+        }
     }
 
 #if DEBUG
@@ -94,6 +114,8 @@ public static class Atlas
         PediaRegistry.RegisterIdEntry(zoneData.PediaId, null);
         Director.RICH_PRESENCE_ZONE_LOOKUP.Add(zoneData.Zone, "ranch");
 
+        ZoneDirector.zonePediaIdLookup.Add(zoneData.Zone, zoneData.PediaId);
+        
         zoneData.AmbianceSetting = Inventory.GetScriptable<AmbianceDirectorZoneSetting>(zoneData.AssetName + "Amb");
         zoneData.AmbianceSetting.zone = zoneData.Ambiance;
 

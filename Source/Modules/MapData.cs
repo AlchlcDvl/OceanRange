@@ -1,4 +1,30 @@
+using Newtonsoft.Json.Converters;
+
 namespace OceanRange.Modules;
+
+public sealed class ZoneRequirementData : JsonData
+{
+    [JsonProperty("minLevel")]
+    public int CorporateLevelMin = 0;
+    
+    [JsonProperty("maxLevel")]
+    public int CorporateLevelMax = int.MaxValue;
+    
+    [JsonProperty("rancherProgress")]
+    public int ExchangeProgress;
+    
+    [JsonProperty("modifyPath"), JsonRequired]
+    public string PathToGameObject;
+    
+    public enum RequirementType
+    {
+        CorporateLevel,
+        ExchangeProgress,
+        DevCommand,
+        
+        // add more?
+    }
+}
 
 public sealed class ZoneData : JsonData
 {
@@ -11,6 +37,11 @@ public sealed class ZoneData : JsonData
     [JsonProperty("teleporterLoc"), JsonRequired]
     public string TeleporterLocation;
 
+    
+    [JsonProperty("requirements")] 
+    // The key for the dictionary is the public ZoneRequirementData.RequirementType enum.
+    public Dictionary<string, ZoneRequirementData> Requirements = new();
+    
     [JsonProperty("prefab"), JsonRequired]
     public string AssetName;
 

@@ -16,8 +16,16 @@
             "name": "Swirlpool_Island",
             "region": "UNDERWATER",
             "prefab": "SWIRLPOOL",
-            "teleporterOri": "f -98.1397,-2.1325,-353.1075,0,211,0",
-            "teleporterLoc": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/docks_lv1/"
+            "teleporterOri": "f -119.7111,-0.0307,-260.243,0,234.398,0",
+            "teleporterLoc": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/",
+            "requirements":
+            {
+                "CorporateLevel":
+                {
+                    "modifyPath": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)",
+                    "minLevel": 15
+                }
+            }
         }
     ]
 }

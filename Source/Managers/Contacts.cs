@@ -21,7 +21,7 @@ public static class Contacts
     }
 
 #if DEBUG
-    [TimeDiagnostic("Contacts OnSavePreload")]
+    [TimeDiagnostic("Contacts PreOnSaveLoad")]
 #endif
     private static void PreOnSaveLoad(SceneContext context)
     {
