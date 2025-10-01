@@ -28,7 +28,7 @@ public sealed class LangHolder : JsonData
     // public EdibleCraftLangData[] EdibleCrafts;
 
     [JsonProperty("ranchers"), JsonRequired]
-    public ExchangeLangData[] Ranchers;
+    public RancherLangData[] Ranchers;
 
     [JsonProperty("plorts"), JsonRequired]
     public PlortLangData[] Plorts;
@@ -105,7 +105,7 @@ public sealed class MailLangData : LangData
     }
 }
 
-public sealed class ExchangeLangData : LangData
+public sealed class RancherLangData : LangData
 {
     [JsonProperty("offers"), JsonRequired]
     public Dictionary<string, string[]> Offers;
@@ -113,27 +113,41 @@ public sealed class ExchangeLangData : LangData
     [JsonProperty("specOffers"), JsonRequired]
     public Dictionary<string, string> SpecialOffers;
 
+    [JsonProperty("loading"), JsonRequired]
+    public Dictionary<string, string[]> LoadingTexts;
+
     [JsonIgnore]
-    public RancherName Rancher;
+    public RancherData Rancher;
 
     protected override void OnDeserialisedEvent()
     {
         base.OnDeserialisedEvent();
 
-        Rancher = Helpers.ParseEnum<RancherName>(Name.ToUpperInvariant());
+        Rancher = Contacts.RancherMap[Helpers.ParseEnum<RancherName>(Name.ToUpperInvariant())];
 
-        var length = Offers["EN"].Length;
-        var rancherId = Contacts.RancherMap[Rancher].RancherId;
+        var rancherId = Rancher.RancherId;
+        var set = new HashSet<string>();
 
-        for (var i = 0; i < length; i++)
-            ExchangeOfferRegistry.RegisterOfferID($"m.offer_{i + 1}.{rancherId}");
+        foreach (var array in Offers.Values)
+        {
+            for (var i = 0; i < array.Length; i++)
+            {
+                var id = $"m.offer_{i + 1}.{rancherId}";
+
+                if (set.Contains(id))
+                    continue;
+
+                ExchangeOfferRegistry.RegisterOfferID(id);
+                set.Add(id);
+            }
+        }
 
         ExchangeOfferRegistry.RegisterOfferID($"m.bonusoffer.{rancherId}");
     }
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
-        var rancherId = Contacts.RancherMap[Rancher].RancherId;
+        var rancherId = Rancher.RancherId;
         var array = Offers.GetTexts(langName);
         var bundle = translations.GetBundle("exchange");
 
@@ -144,7 +158,7 @@ public sealed class ExchangeLangData : LangData
         bundle[$"m.rancher.{rancherId}"] = Names.GetText(langName);
     }
 
-    public void OnLanguageChanged(string langName) => Contacts.RancherMap[Rancher].Rancher.numBlurbs = Offers.GetTexts(langName).Length;
+    public void OnLanguageChanged(string langName) => Rancher.Rancher.numBlurbs = Offers.GetTexts(langName).Length;
 }
 
 public abstract class IdentifiableLangData(string suffix) : LangData

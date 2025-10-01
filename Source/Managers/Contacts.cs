@@ -40,8 +40,5 @@ public static class Contacts
     {
         ExchangeOfferRegistry.RegisterRancher(rancher.Rancher);
         ExchangeOfferRegistry.RegisterRancherID(rancher.RancherId);
-
-        if (Main.ClsExists)
-            Main.AddTipTextBypass(rancher.LoadingText);
     }
 }

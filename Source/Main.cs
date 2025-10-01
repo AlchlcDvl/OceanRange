@@ -137,12 +137,15 @@ internal sealed class Main : ModEntryPoint
         catch { }
     }
 
-    public static void AddTipTextBypass(string tipText)
+    public static string GetNextLoadingIdBypass()
     {
         try
         {
-            CLS.AddToLoading.AddTipText(tipText);
+            return CLS.AddToLoading.GetNextLoadingId();
         }
-        catch { }
+        catch
+        {
+            return null;
+        }
     }
 }

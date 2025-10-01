@@ -1,8 +1,6 @@
 [
     {
-        "id": "lisa",
         "name": "Lisa",
-        "loadingText": "Lisa tried to show a mesmer slime its own reflection once. It stood there at the mirror for hours.",
         "requests": ["OCEAN"],
         "rewards": ["PLORTS", "MEAT"],
         "rareRewards": ["CRAFT_MATS"]

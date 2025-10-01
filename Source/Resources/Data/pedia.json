@@ -442,11 +442,355 @@
             "specOffers":
             {
                 "EN": "When I need a burst of energy, I just keep calm and grab a cuppa coffee."
+            },
+            "loading":
+            {
+                "EN":
+                [
+                    "Lisa tried to show a mesmer slime its own reflection once. It stood there at the mirror for hours.",
+                    "Lisa often gets into scientific disputes with Viktor."
+                ]
             }
         }
     ],
     "largos":
     [
+        {
+            "name": "Rosi Mine",
+            "names":
+            {
+                "EN": "Rosi Mine Largo"
+            }
+        },
+        {
+            "name": "Rosi Lantern",
+            "names":
+            {
+                "EN": "Rosi Lantern Largo"
+            }
+        },
+        {
+            "name": "Mine Lantern",
+            "names":
+            {
+                "EN": "Mine Lantern Largo"
+            }
+        },
+        {
+            "name": "Pink Coco",
+            "names":
+            {
+                "EN": "Pink Coco Largo"
+            }
+        },
+        {
+            "name": "Coco Saber",
+            "names":
+            {
+                "EN": "Coco Saber Largo"
+            }
+        },
+        {
+            "name": "Coco Quantum",
+            "names":
+            {
+                "EN": "Coco Quantum Largo"
+            }
+        },
+        {
+            "name": "Coco Honey",
+            "names":
+            {
+                "EN": "Coco Honey Largo"
+            }
+        },
+        {
+            "name": "Coco Phosphor",
+            "names":
+            {
+                "EN": "Coco Phosphor Largo"
+            }
+        },
+        {
+            "name": "Coco Mosaic",
+            "names":
+            {
+                "EN": "Coco Mosaic Largo"
+            }
+        },
+        {
+            "name": "Coco Tangle",
+            "names":
+            {
+                "EN": "Coco Tangle Largo"
+            }
+        },
+        {
+            "name": "Coco Boom",
+            "names":
+            {
+                "EN": "Coco Boom Largo"
+            }
+        },
+        {
+            "name": "Coco Rad",
+            "names":
+            {
+                "EN": "Coco Rad Largo"
+            }
+        },
+        {
+            "name": "Coco Rock",
+            "names":
+            {
+                "EN": "Coco Rock Largo"
+            }
+        },
+        {
+            "name": "Coco Tabby",
+            "names":
+            {
+                "EN": "Coco Tabby Largo"
+            }
+        },
+        {
+            "name": "Coco Hunter",
+            "names":
+            {
+                "EN": "Coco Hunter Largo"
+            }
+        },
+        {
+            "name": "Coco Crystal",
+            "names":
+            {
+                "EN": "Coco Crystal Largo"
+            }
+        },
+        {
+            "name": "Coco Dervish",
+            "names":
+            {
+                "EN": "Coco Dervish Largo"
+            }
+        },
+        {
+            "name": "Coco Mesmer",
+            "names":
+            {
+                "EN": "Coco Mesmer Largo"
+            }
+        },
+        {
+            "name": "Coco Hermit",
+            "names":
+            {
+                "EN": "Coco Hermit Largo"
+            }
+        },
+        {
+            "name": "Pink Mesmer",
+            "names":
+            {
+                "EN": "Pink Mesmer Largo"
+            }
+        },
+        {
+            "name": "Saber Mesmer",
+            "names":
+            {
+                "EN": "Saber Mesmer Largo"
+            }
+        },
+        {
+            "name": "Quantum Mesmer",
+            "names":
+            {
+                "EN": "Quantum Mesmer Largo"
+            }
+        },
+        {
+            "name": "Honey Mesmer",
+            "names":
+            {
+                "EN": "Honey Mesmer Largo"
+            }
+        },
+        {
+            "name": "Phosphor Mesmer",
+            "names":
+            {
+                "EN": "Phosphor Mesmer Largo"
+            }
+        },
+        {
+            "name": "Mosaic Mesmer",
+            "names":
+            {
+                "EN": "Mosaic Mesmer Largo"
+            }
+        },
+        {
+            "name": "Tangle Mesmer",
+            "names":
+            {
+                "EN": "Tangle Mesmer Largo"
+            }
+        },
+        {
+            "name": "Boom Mesmer",
+            "names":
+            {
+                "EN": "Boom Mesmer Largo"
+            }
+        },
+        {
+            "name": "Rad Mesmer",
+            "names":
+            {
+                "EN": "Rad Mesmer Largo"
+            }
+        },
+        {
+            "name": "Rock Mesmer",
+            "names":
+            {
+                "EN": "Rock Mesmer Largo"
+            }
+        },
+        {
+            "name": "Tabby Mesmer",
+            "names":
+            {
+                "EN": "Tabby Mesmer Largo"
+            }
+        },
+        {
+            "name": "Hunter Mesmer",
+            "names":
+            {
+                "EN": "Hunter Mesmer Largo"
+            }
+        },
+        {
+            "name": "Crystal Mesmer",
+            "names":
+            {
+                "EN": "Crystal Mesmer Largo"
+            }
+        },
+        {
+            "name": "Dervish Mesmer",
+            "names":
+            {
+                "EN": "Dervish Mesmer Largo"
+            }
+        },
+        {
+            "name": "Mesmer Hermit",
+            "names":
+            {
+                "EN": "Mesmer Hermit Largo"
+            }
+        },
+        {
+            "name": "Pink Hermit",
+            "names":
+            {
+                "EN": "Pink Hermit Largo"
+            }
+        },
+        {
+            "name": "Saber Hermit",
+            "names":
+            {
+                "EN": "Saber Hermit Largo"
+            }
+        },
+        {
+            "name": "Quantum Hermit",
+            "names":
+            {
+                "EN": "Quantum Hermit Largo"
+            }
+        },
+        {
+            "name": "Honey Hermit",
+            "names":
+            {
+                "EN": "Honey Hermit Largo"
+            }
+        },
+        {
+            "name": "Phosphor Hermit",
+            "names":
+            {
+                "EN": "Phosphor Hermit Largo"
+            }
+        },
+        {
+            "name": "Mosaic Hermit",
+            "names":
+            {
+                "EN": "Mosaic Hermit Largo"
+            }
+        },
+        {
+            "name": "Tangle Hermit",
+            "names":
+            {
+                "EN": "Tangle Hermit Largo"
+            }
+        },
+        {
+            "name": "Boom Hermit",
+            "names":
+            {
+                "EN": "Boom Hermit Largo"
+            }
+        },
+        {
+            "name": "Rad Hermit",
+            "names":
+            {
+                "EN": "Rad Hermit Largo"
+            }
+        },
+        {
+            "name": "Rock Hermit",
+            "names":
+            {
+                "EN": "Rock Hermit Largo"
+            }
+        },
+        {
+            "name": "Tabby Hermit",
+            "names":
+            {
+                "EN": "Tabby Hermit Largo"
+            }
+        },
+        {
+            "name": "Hunter Hermit",
+            "names":
+            {
+                "EN": "Hunter Hermit Largo"
+            }
+        },
+        {
+            "name": "Crystal Hermit",
+            "names":
+            {
+                "EN": "Crystal Hermit Largo"
+            }
+        },
+        {
+            "name": "Dervish Hermit",
+            "names":
+            {
+                "EN": "Dervish Hermit Largo"
+            }
+        }
     ],
     "gordos":
     [

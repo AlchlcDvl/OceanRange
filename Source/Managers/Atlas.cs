@@ -125,22 +125,19 @@ public static class Atlas
     {
         foreach (var constraint in ss.constraints)
         {
-            foreach (var member in constraint.slimeset.members)
+            for (var i = 0; i < constraint.slimeset.members.Length; i++)
             {
-                try
-                {
-                    member.prefab = Helpers.ParseEnum<IdentifiableId>(member.prefab.name).GetPrefab();
-                }
-                catch { }
+                var prefab = constraint.slimeset.members[i];
+
+                if (!prefab.prefab)
+                    Main.Console.Log($"Error - Null Object in constraint.slimeset.members[{i}]");
+                else
+                    prefab.prefab = Helpers.ParseEnum<IdentifiableId>(prefab.prefab.name).GetPrefab();
             }
         }
     }
 
-    private static void PrepSpawners(GameObject zone)
-    {
-        foreach (var ss in zone.GetComponentsInChildren<DirectedSlimeSpawner>(true))
-            PrepSpawner(ss);
-    }
+    private static void PrepSpawners(GameObject zone) => Array.ForEach(zone.GetComponentsInChildren<DirectedSlimeSpawner>(true), PrepSpawner);
 
     /// <summary>
     /// Make sure all water sources in your zone have a number at the end!
@@ -211,31 +208,21 @@ public static class Atlas
     {
         foreach (var spawnResource in zone.GetComponentsInChildren<SpawnResource>())
         {
-            for (var i = 0; i < spawnResource.ObjectsToSpawn.Length; i++)
-            {
-                var food = spawnResource.ObjectsToSpawn[i];
+            PrepFoodPrefabs(spawnResource.ObjectsToSpawn, "ObjectsToSpawn");
+            PrepFoodPrefabs(spawnResource.BonusObjectsToSpawn, "BonusObjectsToSpawn");
+        }
+    }
 
-                if (!food)
-                {
-                    Main.Console.Log($"Error - Null Object in ObjectsToSpawn[{i}]");
-                    continue;
-                }
+    private static void PrepFoodPrefabs(GameObject[] array, string arrayName)
+    {
+        for (var i = 0; i < array.Length; i++)
+        {
+            var food = array[i];
 
-                spawnResource.ObjectsToSpawn[i] = Helpers.ParseEnum<IdentifiableId>(food.name).GetPrefab();
-            }
-
-            for (var i = 0; i < spawnResource.BonusObjectsToSpawn.Length; i++)
-            {
-                var food = spawnResource.BonusObjectsToSpawn[i];
-
-                if (!food)
-                {
-                    Main.Console.Log($"Error - Null Object in BonusObjectsToSpawn[{i}]");
-                    continue;
-                }
-
-                spawnResource.BonusObjectsToSpawn[i] = Helpers.ParseEnum<IdentifiableId>(food.name).GetPrefab();
-            }
+            if (!food)
+                Main.Console.Log($"Error - Null Object in {arrayName}[{i}]");
+            else
+                array[i] = Helpers.ParseEnum<IdentifiableId>(food.name).GetPrefab();
         }
     }
 }
