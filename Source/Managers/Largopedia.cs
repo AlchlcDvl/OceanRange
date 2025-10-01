@@ -41,7 +41,7 @@ public static class Largopedia
     private static Material QuantumMat;
     private static float DefaultRadius;
 
-    private static LargoData[] Largos;
+    public static LargoData[] Largos;
     private static readonly int GhostToggle = ShaderUtils.GetOrSet("_GhostToggle");
 
 #if DEBUG

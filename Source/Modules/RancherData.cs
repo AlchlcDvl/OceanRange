@@ -2,9 +2,6 @@ namespace OceanRange.Managers;
 
 public sealed class RancherData : JsonData
 {
-    [JsonProperty("loadingText"), JsonRequired]
-    public string LoadingText;
-
     [JsonProperty("requests"), JsonRequired]
     public Category[] Requests;
 
@@ -41,8 +38,8 @@ public sealed class RancherData : JsonData
         Rancher = new()
         {
             name = RancherId,
-            defaultImg = Inventory.GetSprite("lisa_default"),
-            icon = Inventory.GetSprite("lisa"),
+            defaultImg = Inventory.GetSprite(RancherId + "_default"),
+            icon = Inventory.GetSprite(RancherId),
             requestCategories = Requests,
             rewardCategories = Rewards,
             rareRewardCategories = RareRewards,
