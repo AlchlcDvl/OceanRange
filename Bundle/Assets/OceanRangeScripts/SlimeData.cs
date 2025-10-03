@@ -1,19 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 using System;
-using UnityEngine;
 using OceanRange.Unity;
-
-[CreateAssetMenu(menuName = "OceanRange/Holder/Slimepedia")]
-public sealed class Slimepedia : JsonData
-{
-    public SlimeData[] Slimes;
-
-    public override void SerialiseTo(BinaryWriter writer)
-    {
-
-    }
-}
 
 [CreateAssetMenu(menuName = "OceanRange/Data/Slime")]
 public sealed class SlimeData : SpawnedActorData

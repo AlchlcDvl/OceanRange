@@ -6,7 +6,7 @@
         <Version>0.0.2</Version>
         <DebugType>none</DebugType>
         <DebugSymbols>true</DebugSymbols>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>preview</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Authors>TheRanchExchange</Authors>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
@@ -14,7 +14,7 @@
         <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
         <Description>Dive into the slime sea!</Description>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
-        <Configurations>Debug;Release</Configurations>
+        <Configurations>Debug;Release;Unity</Configurations>
         <PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
     </PropertyGroup>
 

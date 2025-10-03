@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEditor;
 using System.Text;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 /*=============================================================================
  |	    Project:  Unity3D Scene OBJ Exporter
@@ -158,11 +159,11 @@ public class OBJExporter : ScriptableWizard
                 }
             }
         }
-        
+
         //work on export
         StringBuilder sb = new StringBuilder();
         StringBuilder sbMaterials = new StringBuilder();
-        sb.AppendLine("# Export of " + Application.loadedLevelName);
+        sb.AppendLine("# Export of " + SceneManager.GetActiveScene().name);
         sb.AppendLine("# from Aaro4130 OBJ Exporter " + versionString);
         if (generateMaterials)
         {
@@ -205,7 +206,7 @@ public class OBJExporter : ScriptableWizard
             //export the meshhh :3
             Mesh msh = mf.sharedMesh;
             int faceOrder = (int)Mathf.Clamp((mf.gameObject.transform.lossyScale.x * mf.gameObject.transform.lossyScale.z), -1, 1);
-            
+
             //export vector data (FUN :D)!
             foreach (Vector3 vx in msh.vertices)
             {
@@ -214,10 +215,10 @@ public class OBJExporter : ScriptableWizard
                 {
                     v = MultiplyVec3s(v, mf.gameObject.transform.lossyScale);
                 }
-                
+
                 if (applyRotation)
                 {
-  
+
                     v = RotateAroundPoint(v, Vector3.zero, mf.gameObject.transform.rotation);
                 }
 
@@ -231,7 +232,7 @@ public class OBJExporter : ScriptableWizard
             foreach (Vector3 vx in msh.normals)
             {
                 Vector3 v = vx;
-                
+
                 if (applyScale)
                 {
                     v = MultiplyVec3s(v, mf.gameObject.transform.lossyScale.normalized);
@@ -275,7 +276,7 @@ public class OBJExporter : ScriptableWizard
                     {
                         sb.AppendLine("f " + ConstructOBJString(idx0) + " " + ConstructOBJString(idx1) + " " + ConstructOBJString(idx2));
                     }
-                    
+
                 }
             }
 
@@ -334,7 +335,7 @@ public class OBJExporter : ScriptableWizard
         }
         catch (System.Exception ex)
         {
-            Debug.Log("Could not export texture : " + t.name + ". is it readable?");
+            Debug.Log("Could not export texture : " + t.name + ". is it readable?\n" + ex);
             return "null";
         }
 
