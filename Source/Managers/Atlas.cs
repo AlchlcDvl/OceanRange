@@ -78,21 +78,19 @@ public static class Atlas
 
         zoneObject.SetActive(true);
 
-        foreach (var reqPair in zoneData.Requirements)
+        foreach (var (key, value) in zoneData.Requirements)
         {
-            var reqType = Helpers.ParseEnum<ZoneRequirementData.RequirementType>(reqPair.Key);
+            var obj = GameObject.Find(value.PathToGameObject);
 
-            var obj = GameObject.Find(reqPair.Value.PathToGameObject);
-
-            switch (reqType)
+            switch (key)
             {
                 case ZoneRequirementData.RequirementType.CorporateLevel:
                     var progress = obj.AddComponent<ActivateOnProgressRange>();
-                    
+
                     progress.progressType = ProgressType.CORPORATE_PARTNER;
-                    progress.maxProgress = reqPair.Value.CorporateLevelMax;
-                    progress.minProgress = reqPair.Value.CorporateLevelMin;
-                    
+                    progress.maxProgress = value.CorporateLevelMax;
+                    progress.minProgress = value.CorporateLevelMin;
+
                     break;
                 // TODO: Do other requirements.
             }
@@ -115,7 +113,7 @@ public static class Atlas
         Director.RICH_PRESENCE_ZONE_LOOKUP.Add(zoneData.Zone, "ranch");
 
         ZoneDirector.zonePediaIdLookup.Add(zoneData.Zone, zoneData.PediaId);
-        
+
         zoneData.AmbianceSetting = Inventory.GetScriptable<AmbianceDirectorZoneSetting>(zoneData.AssetName + "Amb");
         zoneData.AmbianceSetting.zone = zoneData.Ambiance;
 

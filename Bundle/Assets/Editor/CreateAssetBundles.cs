@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 class CreateAssetBundles
 {
-    
+
     static readonly List<(string, string, BuildTarget)> _targets = new List<(string, string, BuildTarget)>()
     {
         ("Mac", "mac", BuildTarget.StandaloneOSX),
@@ -14,9 +14,11 @@ class CreateAssetBundles
         ("Lin", "lin", BuildTarget.StandaloneLinux64),
     };
 
-    [MenuItem("AssetBundle/Build")]
+    [MenuItem("Ocean Range/Build Bundles")]
     static void BuildBundles()
     {
+        Debug.Log("Bundles building...");
+
         string assetBundleDirectory = Path.Combine("Assets", "StreamingAssets");
         PrepDirectory(assetBundleDirectory);
 
