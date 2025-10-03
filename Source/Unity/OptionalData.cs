@@ -1,4 +1,7 @@
-#if DEBUG
+#if UNITY
+using System;
+using UnityEngine;
+
 namespace OceanRange.Unity;
 
 public abstract class OptionalData<T> where T : struct

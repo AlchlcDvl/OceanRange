@@ -18,7 +18,15 @@
         <PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
     </PropertyGroup>
 
-    <ItemGroup>
+    <PropertyGroup Condition="$(Configuration)==Unity">
+        <DefineConstants>UNITY</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(Configuration)==Release">
+        <Optimize>true</Optimize>
+    </PropertyGroup>
+
+    <ItemGroup Condition="$(Configuration)!=Unity">
         <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" />
         <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" />
         <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" />
@@ -32,9 +40,11 @@
         <Publicize Include="UnityEngine.CoreModule" />
     </ItemGroup>
 
-    <PropertyGroup Condition="$(Configuration)==Release">
-        <Optimize>true</Optimize>
-    </PropertyGroup>
+    <ItemGroup Condition="$(Configuration)==Unity">
+        <Compile Remove="**\*.cs" />
 
-    <Import Project="../SlimeRancher.props" /> <!-- This will error if there's no SLimeRancher.props file, delete this line if you don't use it -->
+        <Compile Include="Unity\*.cs" />
+    </ItemGroup>
+
+    <Import Project="../SlimeRancher.props" />
 </Project>

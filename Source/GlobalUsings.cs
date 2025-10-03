@@ -1,3 +1,4 @@
+#if !UNITY
 // global using GadgetId = Gadget.Id;
 global using Zone = ZoneDirector.Zone;
 global using PediaId = PediaDirector.Id;
@@ -38,3 +39,4 @@ global using System.Collections.Generic;
 global using System.Runtime.Serialization;
 
 global using JetBrains.Annotations;
+#endif
