@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 class CreateAssetBundles
 {
-
     static readonly List<(string, string, BuildTarget)> _targets = new List<(string, string, BuildTarget)>()
     {
         ("Mac", "mac", BuildTarget.StandaloneOSX),
