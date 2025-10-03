@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
+using OceanRange.Unity;
 
 [CreateAssetMenu(menuName = "OceanRange/Data/Model")]
 public sealed class ModelData : JsonData

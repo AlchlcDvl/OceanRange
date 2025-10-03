@@ -1,10 +1,7 @@
 using UnityEditor;
 using UnityEngine;
+using OceanRange.Unity;
 
-[CustomPropertyDrawer(typeof(OptionalInt))]
-[CustomPropertyDrawer(typeof(OptionalColor))]
-[CustomPropertyDrawer(typeof(OptionalFloat))]
-[CustomPropertyDrawer(typeof(OptionalDouble))]
 public class OptionalDataDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -31,3 +28,15 @@ public class OptionalDataDrawer : PropertyDrawer
         EditorGUI.EndProperty();
     }
 }
+
+[CustomPropertyDrawer(typeof(OptionalInt))]
+public class OptionalIntDrawer : OptionalDataDrawer {}
+
+[CustomPropertyDrawer(typeof(OptionalColor))]
+public class OptionalColorDrawer : OptionalDataDrawer {}
+
+[CustomPropertyDrawer(typeof(OptionalFloat))]
+public class OptionalFloatDrawer : OptionalDataDrawer {}
+
+[CustomPropertyDrawer(typeof(OptionalDouble))]
+public class OptionalDoubleDrawer : OptionalDataDrawer {}

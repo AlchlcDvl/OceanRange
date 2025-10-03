@@ -2,6 +2,7 @@
 using System.IO;
 using System;
 using UnityEngine;
+using OceanRange.Unity;
 
 [CreateAssetMenu(menuName = "OceanRange/Holder/Slimepedia")]
 public sealed class Slimepedia : JsonData

@@ -1,5 +1,5 @@
-using System;
-using UnityEngine;
+#if DEBUG
+namespace OceanRange.Unity;
 
 public abstract class OptionalData<T> where T : struct
 {
@@ -18,3 +18,4 @@ public sealed class OptionalFloat : OptionalData<float> { }
 
 [Serializable]
 public sealed class OptionalDouble : OptionalData<double> { }
+#endif
