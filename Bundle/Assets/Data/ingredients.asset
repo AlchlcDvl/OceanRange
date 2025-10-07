@@ -9,10 +9,78 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: d42729e5bcc35384e8da87e8a898f325, type: 3}
   m_Name: ingredients
-  m_EditorClassIdentifier: Assembly-CSharp::Ingredients
-  Name: Ingredients
-  Plants:
-  - {fileID: 0}
-  Chimkens: []
+  m_EditorClassIdentifier: 
+  Value:
+    Name: 
+    Plants:
+    - Name: Blowtato
+      Progress: []
+      BasePrice: 4
+      Saturation: 10
+      ExchangeWeight: 20
+      MainAmmoColor: {r: 0.67058825, g: 0.61960787, b: 0.49411765, a: 1}
+      Type: Veggie
+      ResourceIdSuffix: Patch
+      SpawnLocations:
+      - Key: QUARRY
+        Value:
+        - Key: Quarry_MirrorIsland
+          Value:
+          - {x: 423.2861, y: 4.848886, z: 392.4289}
+          - {x: 398.6912, y: 8.63, z: 390.1494}
+        - Key: Quarry_Onsen
+          Value:
+          - {x: 384.0858, y: 1.008888, z: 258.0397}
+          - {x: 400.0062, y: -0.5811567, z: 261.5384}
+        - Key: Quarry_DonutHole
+          Value:
+          - {x: 409.2976, y: 12.62, z: 193.0241}
+        - Key: Quarry_VolcanoTransition
+          Value:
+          - {x: 469.5546, y: 4.458002, z: 128.3277}
+          - {x: 480.3177, y: 3.615353, z: 149.0407}
+          - {x: 499.3664, y: 5.596132, z: 148.8661}
+          - {x: 520.5997, y: 5.340591, z: 188.349}
+          - {x: 484.1953, y: 4.196061, z: 168.518}
+        - Key: Quarry_CaveHub
+          Value:
+          - {x: 261.6261, y: 4.459999, z: 205.8598}
+        - Key: Quarry_Entrance
+          Value:
+          - {x: 99.69785, y: 8.319999, z: 170.9015}
+          - {x: 83.5009, y: 8.319999, z: 224.7288}
+      - Key: MOSS
+        Value:
+        - Key: Moss_GreenPillars
+          Value:
+          - {x: -86.40589, y: -0.8014534, z: 429.1247}
+          - {x: -78.69493, y: -3.737685, z: 418.1225}
+          - {x: -58.34876, y: 5.090622, z: 395.8648}
+      IsVeggie: 1
+    Chimkens:
+    - Name: Sandy
+      Progress: []
+      BasePrice: 20
+      Saturation: 10
+      ExchangeWeight: 20
+      MainAmmoColor: {r: 0.7607843, g: 0.69803923, b: 0.5019608, a: 1}
+      Zones:
+      - REEF
+      - RUINS
+      - MOSS
+      SpawnAmount: 1
+      ChickSpawnAmount: 1
+    - Name: Radiant
+      Progress: []
+      BasePrice: 30
+      Saturation: 15
+      ExchangeWeight: 20
+      MainAmmoColor: {r: 0.015686275, g: 0.015686275, b: 0.32941177, a: 1}
+      Zones:
+      - RUINS
+      - QUARRY
+      - MOSS
+      SpawnAmount: 1
+      ChickSpawnAmount: 1

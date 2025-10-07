@@ -9,8 +9,2553 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 1fc659b718046624d837af72b3c3ac4e, type: 3}
   m_Name: largopedia
-  m_EditorClassIdentifier: Assembly-CSharp::LargoHolder
-  Name: 
-  Largos: []
+  m_EditorClassIdentifier: 
+  Value:
+  - Name: Rosi Mine
+    Props:
+    - UseSlime2ForFace
+    - CustomStructures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: PINK_SLIME
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.26666668, g: 0.3372549, b: 0.3764706, a: 1}
+      Mesh: rosi_body
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.26666668, g: 0.3372549, b: 0.3764706, a: 1}
+      Mesh: rosi_mine_stalk
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 0
+      CloneFallback: 1
+      MatOrigin: MINE_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: rosi_mine_frills
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: MINE_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: rosi_mine_exterior
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Rosi Lantern
+    Props:
+    - CustomStructures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: LANTERN_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: rosi_body
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: LANTERN_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: rosi_mine_stalk
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: PINK_SLIME
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.45882353, g: 0.17254902, b: 0.5254902, a: 1}
+      Mesh: rosi_mine_frills
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: rosi_lantern_fins
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: lantern_stalk
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: lantern_lure
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Mine Lantern
+    Props:
+    - CustomStructures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: ROSI_MINE_LARGO
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: MINE_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: mine_lantern_exterior
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.12941177, g: 0.16470589, b: 0.18431373, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.26666668, g: 0.3372549, b: 0.3764706, a: 1}
+      Mesh: lantern_fins
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: MINE_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: lantern_stalk
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.61960787, g: 0.6313726, b: 0.43529412, a: 1}
+      Mesh: lantern_lure
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Pink Coco
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: PINK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 1
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: PINK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Coco Saber
+    Props:
+    - CustomBody
+    - UseSlime2ForBody
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData: []
+  - Name: Coco Quantum
+    Props:
+    - CustomBody
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 1
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Coco Honey
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HONEY_SLIME
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Coco Phosphor
+    Props:
+    - CustomBody
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: PHOSPHOR_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 1
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: PHOSPHOR_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Coco Mosaic
+    Props:
+    - CustomBody
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData: []
+  - Name: Coco Tangle
+    Props:
+    - CustomBody
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: TANGLE_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 1
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: TANGLE_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Coco Boom
+    Props:
+    - CustomBody
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: BOOM_SLIME
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData: []
+  - Name: Coco Rad
+    Props:
+    - CustomBody
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: RAD_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 1
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: RAD_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Coco Rock
+    Props:
+    - CustomBody
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: ROCK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 1
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: ROCK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Coco Tabby
+    Props:
+    - UseSlime2ForMouth
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Coco Hunter
+    Props:
+    - UseSlime2ForFace
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Coco Crystal
+    Props:
+    - CustomBody
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: COCO_SLIME
+      ColorsOrigin: CRYSTAL_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 1
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: CRYSTAL_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Coco Dervish
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Coco Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: MESMER_SLIME
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.85490197, g: 0.99607843, b: 0.47843137, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.8784314, g: 0.20392157, b: 0.7882353, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Coco Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: COCO_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Pink Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    - UseSlime2ForBody
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: PINK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: PINK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: PINK_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Saber Mesmer
+    Props:
+    - UseSlime2ForBodyMaterial
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData: []
+  - Name: Quantum Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.20392157, g: 0.047058824, b: 0.6313726, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.19607843, g: 0, b: 0.2784314, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.2, g: 0.08627451, b: 0.6039216, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.19607843, g: 0, b: 0.2784314, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.50980395, g: 0.11764706, b: 0.8392157, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.2, g: 0.08627451, b: 0.6039216, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.8784314, g: 0.20392157, b: 0.7882353, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.50980395, g: 0.11764706, b: 0.8392157, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.85490197, g: 0.99607843, b: 0.47843137, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.8784314, g: 0.20392157, b: 0.7882353, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Honey Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HONEY_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.85490197, g: 0.99607843, b: 0.47843137, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HONEY_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HONEY_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HONEY_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HONEY_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HONEY_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Phosphor Mesmer
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: mesmer_pincer_pattern
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: TABBY_SLIME
+      ColorsOrigin: PHOSPHOR_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: PINK_SLIME
+      ColorsOrigin: PHOSPHOR_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: PHOSPHOR_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Mosaic Mesmer
+    Props:
+    - UseSlime2ForBodyMaterial
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData: []
+  - Name: Tangle Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: MESMER_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.8784314, g: 0.20392157, b: 0.7882353, a: 1}
+      - Key: _MiddleColor
+        Value: {r: 0.20392157, g: 0.047058824, b: 0.6313726, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.19607843, g: 0, b: 0.2784314, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Boom Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: BOOM_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: BOOM_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: BOOM_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: BOOM_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: BOOM_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: BOOM_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Rad Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: RAD_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: RAD_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: RAD_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: RAD_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: RAD_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: RAD_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Rock Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: mesmer_pattern
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: TABBY_SLIME
+      ColorsOrigin: ROCK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: mesmer_pincer_pattern
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: TABBY_SLIME
+      ColorsOrigin: ROCK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: PINK_SLIME
+      ColorsOrigin: ROCK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: PINK_SLIME
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.85490197, g: 0.99607843, b: 0.47843137, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.8784314, g: 0.20392157, b: 0.7882353, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Tabby Mesmer
+    Props:
+    - UseSlime2ForBodyMaterial
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: TABBY_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: tabby_ears
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Hunter Mesmer
+    Props:
+    - UseSlime2ForBodyMaterial
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HUNTER_SLIME
+      ColorsOrigin: MESMER_SLIME
+      ColorPropsJson: []
+      Mesh: hunter_ears
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Crystal Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: mesmer_pattern
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: TABBY_SLIME
+      ColorsOrigin: CRYSTAL_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: mesmer_pincer_pattern
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: TABBY_SLIME
+      ColorsOrigin: CRYSTAL_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: PINK_SLIME
+      ColorsOrigin: CRYSTAL_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: CRYSTAL_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Dervish Mesmer
+    Props:
+    - CustomBody
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: MESMER_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.20392157, g: 0.047058824, b: 0.6313726, a: 1}
+      - Key: _BottomColor
+        Value: {r: 0.19607843, g: 0, b: 0.2784314, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData: []
+  - Name: Mesmer Hermit
+    Props:
+    - CustomSlime1Structures
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: mesmer_pincers
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 1
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 1
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 1
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 1
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 1
+      InvertColorOriginColors: 0
+  - Name: Pink Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: PINK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Saber Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: SABER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Quantum Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: 
+      ColorPropsJson:
+      - Key: _TopColor
+        Value: {r: 0.9647059, g: 0.8352941, b: 0.6, a: 1}
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: QUANTUM_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Honey Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HONEY_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Phosphor Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: PHOSPHOR_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Mosaic Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: MOSAIC_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Tangle Hermit
+    Props:
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: TANGLE_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: tangle_hermit_flower
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: TANGLE_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Boom Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: BOOM_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Rad Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: RAD_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Rock Hermit
+    Props:
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: ROCK_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: rock_hermit_spine
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 1
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 1
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: ROCK_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Tabby Hermit
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: TABBY_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: TABBY_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: tabby_ears
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 1
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: TABBY_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Hunter Hermit
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HUNTER_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: HUNTER_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: hunter_ears
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 1
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: HUNTER_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Crystal Hermit
+    Props:
+    - CustomBody
+    - CustomSlime2Structures
+    - CustomSlime1Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: CRYSTAL_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 1
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: CRYSTAL_SLIME
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: crystal_hermit_spine
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 1
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: CRYSTAL_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+  - Name: Dervish Hermit
+    Props:
+    - CustomSlime2Structures
+    BodyStructData:
+      Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    Slime1StructData: []
+    Slime2StructData:
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 0
+      MatOrigin: 
+      ColorsOrigin: 
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0
+    - Name: 
+      Pattern: 
+      CloneSameAs: 0
+      CloneMatOrigin: 1
+      CloneFallback: 1
+      MatOrigin: 
+      ColorsOrigin: DERVISH_SLIME
+      ColorPropsJson: []
+      Mesh: 
+      SkipNull: 0
+      IgnoreLodIndex: 0
+      Skip: 0
+      InvertColorOriginColors: 0

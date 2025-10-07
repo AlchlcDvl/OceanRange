@@ -9,18 +9,883 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: ee4f539136b62144399f5df984a0e90d, type: 3}
   m_Name: pedia
-  m_EditorClassIdentifier: Assembly-CSharp::LangHolder
-  Name: 
-  Slimes: []
-  Hens: []
-  Chicks: []
-  Fruits: []
-  Veggies: []
-  Ranchers: []
-  Plorts: []
-  Largos: []
-  Gordos: []
-  Zones: []
-  Mail: []
+  m_EditorClassIdentifier: 
+  Value:
+    Name: Pedia Translations
+    Additional:
+    - Key: ui
+      Value:
+      - Key: l.pearls
+        Value:
+        - Key: EN
+          Value: Pearlonomics
+      - Key: m.foodgroup.dirt
+        Value:
+        - Key: EN
+          Value: Dirt
+    - Key: pedia
+      Value:
+      - Key: m.favored_by.silky_sand_craft
+        Value:
+        - Key: EN
+          Value: Sand Slime
+    Slimes:
+    - Name: Rosi
+      Names:
+      - Key: EN
+        Value: Rosi Slime
+      Intros:
+      - Key: EN
+        Value: The pink pearl of the sea. Believed to be the cousin of the pink slime.
+      Risks:
+      - Key: EN
+        Value: There is not much to worry about the rosi slime. They are very easy
+          to ranch, only needing food and companionship. A lonely rosi slime is a
+          sad rosi slime. So it's recommended for ranchers to have more than one
+          if they want a healthy production of pearls.
+      Slimeologies:
+      - Key: EN
+        Value: The rosi slime is the most common slime found in The Great Reef. They
+          are often seen as cheerful, friendly and mischievous, often pranking other
+          slimes and even humans. Rosi slimes have a deep bond with one another and
+          are very rarely seen alone, As long as they have a partner to play with,
+          they will be happy forever, rarely showing any sadness. And when they are
+          sad it's often at the expense of others. Trying their best to cheer the
+          slime or human back to their happy selves.
+      Diets:
+      - Key: EN
+        Value: Everything
+      Favourites:
+      - Key: EN
+        Value: No favorite food. The Rosi slime loves everything equally.
+      Onomics:
+      - Key: EN
+        Value: Rosi pearls are often called the "Aphrodite Pearl" for their rejuvenating
+          properties on human skin. Beauty companies frequently market their products
+          as the key to a youthful glow, claiming that rosi pearls help rewind aging
+          skin by 20-50 years. This wouldn't be a problem if their frills were also
+          believed to have abilities to cure internal organs, even rare cancers when
+          consumed. While their frills can slowly regenerate constant tearing causes
+          smaller gills to grow. However, new research shows that these healing properties
+          are temporary. The resulting constant consumption and usage of the pearl
+          cause rapid aging, making rosi pearls an unreliable anti-aging solution.
+      OnomicsType: pearls
+    - Name: Coco
+      Names:
+      - Key: EN
+        Value: Coco Slime
+      Intros:
+      - Key: EN
+        Value: The concussion slime, wear helmets!
+      Risks:
+      - Key: EN
+        Value: Be cautious while walking under palm trees as coco slimes are very
+          territorial and if they sense you underneath, they will harden their soft,
+          squishy bodies to a hard coconut-like shell and crash down onto their targets.
+          Tourists in the past who got hit in the head by a coco slime have reported
+          blurred vision and dizziness afterwards with some even being knocked out
+          cold. This is also how they hunt in the wild. Despite their hard skin and
+          agility, they are quite easy to ranch as long as they are well feed and
+          have enough exposure to sunlight.
+      Slimeologies:
+      - Key: EN
+        Value: Coco slimes are commonly found hanging from the palm trees of the
+          island. Being natives to SwirlPool Island, the coco slimes have natural
+          adapted a higher jump in order to climb trees and escape predators. Due
+          to them being grown from palm trees, they have plant like attributes which
+          causes them to require constant sunlight and also tend to avoid eating
+          fruits and vegetables as it would be cannibalism.
+      Diets:
+      - Key: EN
+        Value: Meat
+      Favourites:
+      - Key: EN
+        Value: Sandy Hen
+      Onomics:
+      - Key: EN
+        Value: Coco plorts, unlike their producer, are very soft and silky as well
+          as being an excellent source of calcium when condensed to liquid. Despite
+          being very similar to earth's milk in properties, they can still be consumed
+          by people who are lactose intolerant, making them extremely popular for
+          creating lactose intolerance options for dairy products. And due to their
+          incredibly soft and silky texture, they are also very good for skin care
+          and used often in spas as substitutes to milk baths.
+      OnomicsType: plorts
+    - Name: Mine
+      Names:
+      - Key: EN
+        Value: Mine Slime
+      Intros:
+      - Key: EN
+        Value: The touch-me-not of slimes!
+      Risks:
+      - Key: EN
+        Value: Approach mine slimes with caution, for their spikes aren't just for
+          show! Any direct contact will result in a localized eruption. While other
+          slimes will be boomed clear of the danger zone, only fellow mine slimes
+          and their boom cousins possess a natural immunity to these contact explosions.
+          This peculiar trait makes co-habitation an active (and often loud) affair,
+          as they'll seek out their explosive kin for regular, relieving bursts.
+          Keeping them together helps manage their volatile nature, preventing an
+          otherwise grumpy slime.
+      Slimeologies:
+      - Key: EN
+        Value: The mine slime, a distant and more... prickly cousin to the boom slime,
+          has a unique take on volatility. Unlike their explosive kin, a mine slime's
+          detonations are triggered only by direct contact with another slime or
+          an unwary rancher. To deter accidental bumps, their bodies are adorned
+          with sharp, crystalline spikes; a clear warning sign. Despite their fiery
+          tendencies, these slimes prefer a milder diet of vegetables, with the blowtato
+          being their ultimate delight. This root's highly volatile compounds provide
+          the perfect internal spark for their constant energetic needs and powerful
+          bursts. If a mine slime goes too long without popping, however, their internal
+          pressure builds to uncomfortable levels, driving them to seek relief by
+          finding water, or joining in an explosive embrace with fellow boom or mine
+          slimes.
+      Diets:
+      - Key: EN
+        Value: Veggie
+      Favourites:
+      - Key: EN
+        Value: Blowtato
+      Onomics:
+      - Key: EN
+        Value: Mine plorts are curious, resilient gems, forged into a pearl-like
+          shape under the immense internal pressures of the mine slime. These unique
+          pearls retain a fragment of their progenitor's explosive nature, though
+          a considerably firmer thwack is required to unleash their contained energy.
+          Their peculiar, controlled detonations make them highly prized in industrial
+          applications, particularly when refined into a fine powder. From powering
+          small, controlled bursts in excavation to adding a spectacular sparkle
+          to interstellar fireworks displays, mine pearls certainly make an impact
+          on the galactic exchange
+      OnomicsType: pearls
+    - Name: Lantern
+      Names:
+      - Key: EN
+        Value: Lantern Slime
+      Intros:
+      - Key: EN
+        Value: It lights up your life!
+      Risks:
+      - Key: EN
+        Value: Lantern slimes aren't the most social compared to other slime species.
+          During the day, they can be found sleeping. When disturbed from their nap,
+          they emit a bright flash to startle any diver or slime that dares to interrupt
+          their beauty sleep and try to run away. However, at night, they become
+          very docile and can be found swimming across the coral reef in search of
+          food.
+      Slimeologies:
+      - Key: EN
+        Value: The lantern slime is a distant cousin of the phosphor slime. At one
+          point in its evolution, the phosphor slimes expelled their inner core,
+          using it to attract prey underwater. Slime nature is indeed peculiar. Much
+          like its cousins, the lantern slimes can be found at night in the deepest
+          parts of the Moss Blanket and the Great Reef. They are often seen alone
+          and rarely in groups, as they prefer an isolated lifestyle and little interest
+          in socializing. However, when it comes to humans, lantern slimes often
+          aid divers in finding their way back to land.
+      Diets:
+      - Key: EN
+        Value: Meat
+      Favourites:
+      - Key: EN
+        Value: Radiant Hen
+      Onomics:
+      - Key: EN
+        Value: Lantern pearls are a key ingredient in many beauty products due to
+          their natural moisturizing properties. These pearls not only hydrate the
+          skin but also impart a radiant, plum-like glow, making them ideal for night
+          creams. However, it's important to note that their protective barrier against
+          bacteria diminishes rapidly when exposed to sunlight. Therefore, products
+          containing a high concentration of lantern pearls are best applied before
+          bedtime for their benefits.
+      OnomicsType: pearls
+    - Name: Sand
+      Names:
+      - Key: EN
+        Value: Sand Slime
+      Intros:
+      - Key: EN
+        Value: You can find it between your toes!
+      Risks:
+      - Key: EN
+        Value: Rest easy, ranchers! The sand slime is one of the most delightfully
+          docile slimes you'll encounter. These mellow blobs pose virtually no risk
+          to the ranch, thriving peacefully in any populated corral without inciting
+          a single outbreak. However, despite their beach-dwelling nature, sand slimes
+          are surprisingly delicate when it comes to deep water; prolonged submersion
+          will cause them to slowly dissolve! Even their valuable pearl plorts are
+          safe from hungry mouths; it seems no other slime has a taste for a glistening
+          pearl that began its life as common dirt. Their laid-back nature and inability
+          to cause a ruckus make them perfect companions for even the most timid
+          slimes, just keep them away from the deep end!
+      Slimeologies:
+      - Key: EN
+        Value: The sand slime, a curious terrestrial cousin to both the puddle and
+          fire slimes, makes its home along the shallow, sun-drenched shores of the
+          Far, Far Range. Much like its elemental kin, these intriguing slimes require
+          no typical sustenance from a rancher's feeder; instead, they subsist entirely
+          on good old dirt. After sifting through the gritty soil, sand slimes process
+          the minerals within, producing glimmering plorts that bear a striking resemblance
+          to Earth's precious pearls. Their calm demeanor and unique diet make them
+          a rather low-maintenance addition to any ranch.
+      Diets:
+      - Key: EN
+        Value: Dirt
+      Favourites:
+      - Key: EN
+        Value: Silky Sand
+      Onomics:
+      - Key: EN
+        Value: Sand plorts are true marvels of natural refinement. Though the sand
+          slime itself is soft and yielding, the pearls it produces are remarkably
+          tougher than their Earth counterparts, defying their humble origins. These
+          pristine, spherical treasures, born from nothing more than processed soil,
+          fetch an exceptional price on the Plort Market. Their iridescent sheen
+          and superior durability make them highly sought-after for crafting exquisite
+          jewelry and other luxury adornments across the galaxy, proving that true
+          beauty can indeed come from the ground up!
+      OnomicsType: pearls
+    - Name: Mesmer
+      Names:
+      - Key: EN
+        Value: Mesmer Slime
+      Intros:
+      - Key: EN
+        Value: ooooooooooooooooooo pretty
+      Risks:
+      - Key: EN
+        Value: "Mesmer slimes may be a risk to the ranch, as the patterns they produce
+          enact a hypnotic effect on slimes that gaze upon them, which can leave
+          them bundled up together for hours\u2014especially during the dark, where
+          their glow is most visible. When a mesmer slime is left alone without the
+          company of others, its mood will also fall. During agitation, mesmer slimes
+          exhibit a feral-like state, seemingly unhappy due to the gut feeling that
+          no one wants to be friends with them. They channel this disappointment
+          by exhibiting eye and mouth patterns similar to the tarr, which only scares
+          off other slimes even more. They will also pounce and mindlessly attack
+          ranchers and slimes with their bug-like appendages. Otherwise they\u2019re
+          quite simple to take care of."
+      Slimeologies:
+      - Key: EN
+        Value: "The perplexing, dangerous-looking, yet friendly mesmer slime emits
+          very obvious pulsating colors on its body. It\u2019s somewhat debatable
+          what the true purpose of these displays are, but most slime scientists
+          agree that it is to try and appeal to and be the favorite friend of as
+          many slimes as possible, even with their scorpion-like appearances. Interestingly,
+          they seem to be very sociable. Mesmer slimes spend most of their time inside
+          lush jungles and caverns on the island, where you could easily spot their
+          glows."
+      Diets:
+      - Key: EN
+        Value: Fruit
+      Favourites:
+      - Key: EN
+        Value: Pogofruit
+      Onomics:
+      - Key: EN
+        Value: Mesmer plorts contain bioluminescent bacteria, which seem to be the
+          source of their radiant colors. These bacteria may display a wide range
+          of hues, though they usually have to be artificially mutated using complex
+          chemical compounds to show specific shades. Products made with mesmer plorts
+          are often luxurious, imperious, and flashy alternatives to renewable light,
+          favored by the wealthy for their novelty. Despite the lavish presentation,
+          their true market value remains surprisingly modest.
+      OnomicsType: plorts
+    - Name: Hermit
+      Names:
+      - Key: EN
+        Value: Hermit Slime
+      Intros:
+      - Key: EN
+        Value: The ever reclusive shell wanderer!
+      Risks:
+      - Key: EN
+        Value: Hermit slimes are naturally suspicious and can quickly hide when detecting
+          sudden movement or loud noise. This can make it difficult to collect parcels
+          and stored items. If it does not feel safe, it may spend long periods hidden
+          in its shell, making it difficult to handle and collect its plorts. When
+          trying to get items out of their shell, you need to do it carefully and
+          patiently. Rough methods can make the slime even more reluctant to come
+          out of its shell in the future. It is recommended to keep the hermit slimes
+          happy and prevent them from becoming even more distrustful, it is advisable
+          to use the coral fruit and other peaceful strategies to interact with them.
+      Slimeologies:
+      - Key: EN
+        Value: The hermit slime is a fascinating creature that lives in coastal and
+          rocky areas. This slime is characterized by always carrying a shell on
+          its back, which it uses as a shelter and storage for the valuable objects
+          it collects. The hermit slime has the unique characteristic of being able
+          to shed its shell and adapt to its environment, being able to enter shells,
+          coconuts, stones, and even garbage like boxes. Its favorite food is coral
+          fruit, a delicious fruit that grows from an exotic plant that grows in
+          the crevices of rocks and near the sea, this food can help the rancher
+          gain the trust of the slime and thus facilitate its collection.
+      Diets:
+      - Key: EN
+        Value: Fruit
+      Favourites:
+      - Key: EN
+        Value: Coralfruit
+      Onomics:
+      - Key: EN
+        Value: The hermit plorts are as unique as the slimes are. Thanks to the slimes'
+          constant collection of materials in their environment, their plorts contain
+          microfragments of shells and minerals. Hermit plorts are incredibly durable
+          and are used to craft durable building materials and marine decorations.
+          Additionally, they are famous for their ability to glow in the dark when
+          rubbed against a hard surface! Some ranchers use them to decorate their
+          ranches with natural underwater lights.
+      OnomicsType: plorts
+    - Name: Goldfish
+      Names:
+      - Key: EN
+        Value: Goldfish Slime
+      Intros:
+      - Key: EN
+        Value: The slippery slime with a luxurious shine!
+      Risks:
+      - Key: EN
+        Value: Goldfish slimes cannot be captured or contained in traditional corrals,
+          and like gold slimes, they vanish shortly after being discovered. Attempting
+          to corral one will only result in it slipping away with a splash. However,
+          quick-thinking ranchers may be able to feed it its favorite food in time
+          to earn a precious plort.
+      Slimeologies:
+      - Key: EN
+        Value: "Goldfish slimes are an exceptionally rare aquatic variant of the
+          ever elusive gold slime. Unlike their land-loving cousin, these shimmering
+          slimes have adapted to life beneath the waves, gracefully darting through
+          underwater currents with their flowing tails and luminous scales. Their
+          movement mimics that of koi or ornamental goldfish, and they leave behind
+          glittering trails in the water when startled. While they share the same
+          skittish nature as gold slimes, goldfish slimes are slightly easier to
+          observe \u2014 if only for a moment longer. They often appear in deep reef
+          trenches or near ancient underwater ruins, surfacing briefly before vanishing
+          in a blink."
+      Diets:
+      - Key: EN
+        Value: Gilded Ginger
+      Favourites:
+      - Key: EN
+        Value: Gilded Ginger
+      Onomics:
+      - Key: EN
+        Value: Goldfish plorts are even rarer than gold plorts and twice as valuable,
+          making them a highly sought-after resource. Their underwater origin gives
+          them unique energetic properties, often used in cutting-edge aquatic tech
+          and luxury hologlass manufacturing. Due to their rarity, the Slime Science
+          Lab recommends handling with extreme care, and counting yourself lucky
+          to have found one at all.
+      OnomicsType: pearls
+    Hens:
+    - Name: Sandy
+      Names:
+      - Key: EN
+        Value: Sandy Hen
+      Intros:
+      - Key: EN
+        Value: The beach side camouflage master!
+      Ranch:
+      - Key: EN
+        Value: Sandy hens in close proximity to roostros will periodically lay eggs
+          that produce Sandy chickadoos. However, keeping too many hens or roostros
+          in close proximity makes them anxious and egg production will come to a
+          halt. Savvy ranchers with an understanding of the complex nature of chicken
+          romance always keep their coops from exceeding 12 grown chickens.
+      Types:
+      - Key: EN
+        Value: Meat
+      About:
+      - Key: EN
+        Value: A sun-baked cousin to the familiar stony hen, Sandy Hens are masters
+          of coastal concealment. Their feathers have evolved into a remarkable mimicry
+          of the dry, shifting sands of the beaches they call home, making them incredibly
+          difficult to spot. Unfortunately for the sandy hen, their superb camouflage
+          is no match for the keen eyes of a coco slime. Perched high in their swaying
+          palm trees, these predators have a particular fondness for the sandy hen's
+          uniquely dry meat, which perfectly balances their own juicy, tropical insides.
+          For a rancher looking for a tasty, albeit a bit parched, bite, the sandy
+          hen offers a familiar flavor with an undeniably arid finish.
+      FavouredBy:
+      - Key: EN
+        Value: Coco Slime
+    - Name: Radiant
+      Names:
+      - Key: EN
+        Value: Radiant Hen
+      Intros:
+      - Key: EN
+        Value: Always out of place!
+      Ranch:
+      - Key: EN
+        Value: Radiant hens in close proximity to roostros will periodically lay
+          eggs that produce Radiant chickadoos. However, keeping too many hens or
+          roostros in close proximity makes them anxious and egg production will
+          come to a halt. Savvy ranchers with an understanding of the complex nature
+          of chicken romance always keep their coops from exceeding 12 grown chickens.
+      Types:
+      - Key: EN
+        Value: Meat
+      About:
+      - Key: EN
+        Value: A peculiar hen among its kind, the radiant hen stands out, literally.
+          Unlike most chickens that try to blend in with their surroundings, the
+          radiant hen has evolved feathers that glow with a soft, ethereal light.
+          This makes them incredibly easy to spot, a trait that would typically be
+          a disadvantage. However, for the nocturnal lantern slimes, this luminosity
+          is irresistible. They are often found clustered around these hens, seemingly
+          mesmerized by their unique radiance. It's believed the hens' constant,
+          gentle light helps to regulate the lantern slimes' internal bioluminescence,
+          which can sometimes become unstable. For ranchers, the radiant hen is a
+          beacon, making them surprisingly easy to locate in the dark corners of
+          the Far, Far Range. Their meat, however, tastes just like a regular chicken.
+      FavouredBy:
+      - Key: EN
+        Value: Lantern Slime
+    Chicks:
+    - Name: Sandy
+      Names:
+      - Key: EN
+        Value: Sandy Chickadoo
+      Intros:
+      - Key: EN
+        Value: A budding camouflager!
+      Ranch:
+      - Key: EN
+        Value: Keep Sandy Chickadoos in a safe place and they'll eventually grow
+          into a Sandy Hen or Roostro.
+      Types:
+      - Key: EN
+        Value: Future Meat
+      About:
+      - Key: EN
+        Value: 'Sandy chickadoos are baby chickens that will eventually grow into
+          a Sandy hen or more rarely, a roostro.
+
+
+          Chickadoos of all varieties
+          will never be eaten by slimes. Some believe this is because slimes are
+          too kind-hearted to do such a thing. Others believe it''s because chickadoos
+          don''t yet have enough meat on their bones.'
+      FavouredBy:
+      - Key: EN
+        Value: (not a slime food)
+    - Name: Radiant
+      Names:
+      - Key: EN
+        Value: Radiant Chickadoo
+      Intros:
+      - Key: EN
+        Value: Doesn't fit right in yet...
+      Ranch:
+      - Key: EN
+        Value: Keep Radiant Chickadoos in a safe place and they'll eventually grow
+          into a Radiant Hen or Roostro.
+      Types:
+      - Key: EN
+        Value: Future Meat
+      About:
+      - Key: EN
+        Value: 'Radiant chickadoos are baby chickens that will eventually grow into
+          a Radiant hen or more rarely, a roostro.
+
+
+          Chickadoos of all
+          varieties will never be eaten by slimes. Some believe this is because slimes
+          are too kind-hearted to do such a thing. Others believe it''s because chickadoos
+          don''t yet have enough meat on their bones.'
+      FavouredBy:
+      - Key: EN
+        Value: (not a slime food)
+    Fruits: []
+    Veggies:
+    - Name: Blowtato
+      Names:
+      - Key: EN
+        Value: Blowtato
+      Intros:
+      - Key: EN
+        Value: The explosive veggie!
+      Ranch:
+      - Key: EN
+        Value: Deposit a Blowtato into a garden's depositor and you'll have a large
+          Blowtato crop of your very own.
+      Types:
+      - Key: EN
+        Value: Veggie
+      About:
+      - Key: EN
+        Value: The blowtato is a peculiar, highly reactive root vegetable, mostly
+          found sprouting from the cracked earth of the Indigo Quarry. Much like
+          the mine slimes that adore them, these spuds have a natural propensity
+          for explosive flair due to a volatile compound within. Ranchers must handle
+          them with extreme care, as a small puncture or "burp" is recommended before
+          cooking to prevent a startling bang! For mine slimes, this explosive nature
+          is pure delight, fueling their rock-shattering abilities and making the
+          blowtato their favorite snack. Clever miners even use them to loosen stubborn
+          rock formations, though caution is always advised.
+      FavouredBy:
+      - Key: EN
+        Value: Mine Slime
+    Ranchers:
+    - Name: Lisa
+      Names:
+      - Key: EN
+        Value: Lisa Erwin
+      Offers:
+      - Key: EN
+        Value:
+        - "...Oops! Did I click that? Ah, sorry, mate... well, while you\u2019re
+          here, could ya lend me a hand?"
+        - Zzzz... huh?! What was I doin' again?
+        - "Rise 'n shine! We\u2019ve got work to crack on with."
+      SpecialOffers:
+      - Key: EN
+        Value: When I need a burst of energy, I just keep calm and grab a cuppa coffee.
+      LoadingTexts:
+      - Key: EN
+        Value:
+        - Lisa tried to show a mesmer slime its own reflection once. It stood there
+          at the mirror for hours.
+        - Lisa often gets into scientific disputes with Viktor.
+    Plorts:
+    - Name: Rosi
+      Names:
+      - Key: EN
+        Value: Rosi Plort
+    - Name: Coco
+      Names:
+      - Key: EN
+        Value: Coco Plort
+    - Name: Mine
+      Names:
+      - Key: EN
+        Value: Mine Plort
+    - Name: Lantern
+      Names:
+      - Key: EN
+        Value: Lantern Plort
+    - Name: Sand
+      Names:
+      - Key: EN
+        Value: Sand Plort
+    - Name: Mesmer
+      Names:
+      - Key: EN
+        Value: Mesmer Plort
+    - Name: Hermit
+      Names:
+      - Key: EN
+        Value: Hermit Plort
+    - Name: Goldfish
+      Names:
+      - Key: EN
+        Value: Goldfish Plort
+    Largos:
+    - Name: Rosi Mine
+      Names:
+      - Key: EN
+        Value: Rosi Mine Largo
+    - Name: Rosi Lantern
+      Names:
+      - Key: EN
+        Value: Rosi Lantern Largo
+    - Name: Mine Lantern
+      Names:
+      - Key: EN
+        Value: Mine Lantern Largo
+    - Name: Pink Coco
+      Names:
+      - Key: EN
+        Value: Pink Coco Largo
+    - Name: Coco Saber
+      Names:
+      - Key: EN
+        Value: Coco Saber Largo
+    - Name: Coco Quantum
+      Names:
+      - Key: EN
+        Value: Coco Quantum Largo
+    - Name: Coco Honey
+      Names:
+      - Key: EN
+        Value: Coco Honey Largo
+    - Name: Coco Phosphor
+      Names:
+      - Key: EN
+        Value: Coco Phosphor Largo
+    - Name: Coco Mosaic
+      Names:
+      - Key: EN
+        Value: Coco Mosaic Largo
+    - Name: Coco Tangle
+      Names:
+      - Key: EN
+        Value: Coco Tangle Largo
+    - Name: Coco Boom
+      Names:
+      - Key: EN
+        Value: Coco Boom Largo
+    - Name: Coco Rad
+      Names:
+      - Key: EN
+        Value: Coco Rad Largo
+    - Name: Coco Rock
+      Names:
+      - Key: EN
+        Value: Coco Rock Largo
+    - Name: Coco Tabby
+      Names:
+      - Key: EN
+        Value: Coco Tabby Largo
+    - Name: Coco Hunter
+      Names:
+      - Key: EN
+        Value: Coco Hunter Largo
+    - Name: Coco Crystal
+      Names:
+      - Key: EN
+        Value: Coco Crystal Largo
+    - Name: Coco Dervish
+      Names:
+      - Key: EN
+        Value: Coco Dervish Largo
+    - Name: Coco Mesmer
+      Names:
+      - Key: EN
+        Value: Coco Mesmer Largo
+    - Name: Coco Hermit
+      Names:
+      - Key: EN
+        Value: Coco Hermit Largo
+    - Name: Pink Mesmer
+      Names:
+      - Key: EN
+        Value: Pink Mesmer Largo
+    - Name: Saber Mesmer
+      Names:
+      - Key: EN
+        Value: Saber Mesmer Largo
+    - Name: Quantum Mesmer
+      Names:
+      - Key: EN
+        Value: Quantum Mesmer Largo
+    - Name: Honey Mesmer
+      Names:
+      - Key: EN
+        Value: Honey Mesmer Largo
+    - Name: Phosphor Mesmer
+      Names:
+      - Key: EN
+        Value: Phosphor Mesmer Largo
+    - Name: Mosaic Mesmer
+      Names:
+      - Key: EN
+        Value: Mosaic Mesmer Largo
+    - Name: Tangle Mesmer
+      Names:
+      - Key: EN
+        Value: Tangle Mesmer Largo
+    - Name: Boom Mesmer
+      Names:
+      - Key: EN
+        Value: Boom Mesmer Largo
+    - Name: Rad Mesmer
+      Names:
+      - Key: EN
+        Value: Rad Mesmer Largo
+    - Name: Rock Mesmer
+      Names:
+      - Key: EN
+        Value: Rock Mesmer Largo
+    - Name: Tabby Mesmer
+      Names:
+      - Key: EN
+        Value: Tabby Mesmer Largo
+    - Name: Hunter Mesmer
+      Names:
+      - Key: EN
+        Value: Hunter Mesmer Largo
+    - Name: Crystal Mesmer
+      Names:
+      - Key: EN
+        Value: Crystal Mesmer Largo
+    - Name: Dervish Mesmer
+      Names:
+      - Key: EN
+        Value: Dervish Mesmer Largo
+    - Name: Mesmer Hermit
+      Names:
+      - Key: EN
+        Value: Mesmer Hermit Largo
+    - Name: Pink Hermit
+      Names:
+      - Key: EN
+        Value: Pink Hermit Largo
+    - Name: Saber Hermit
+      Names:
+      - Key: EN
+        Value: Saber Hermit Largo
+    - Name: Quantum Hermit
+      Names:
+      - Key: EN
+        Value: Quantum Hermit Largo
+    - Name: Honey Hermit
+      Names:
+      - Key: EN
+        Value: Honey Hermit Largo
+    - Name: Phosphor Hermit
+      Names:
+      - Key: EN
+        Value: Phosphor Hermit Largo
+    - Name: Mosaic Hermit
+      Names:
+      - Key: EN
+        Value: Mosaic Hermit Largo
+    - Name: Tangle Hermit
+      Names:
+      - Key: EN
+        Value: Tangle Hermit Largo
+    - Name: Boom Hermit
+      Names:
+      - Key: EN
+        Value: Boom Hermit Largo
+    - Name: Rad Hermit
+      Names:
+      - Key: EN
+        Value: Rad Hermit Largo
+    - Name: Rock Hermit
+      Names:
+      - Key: EN
+        Value: Rock Hermit Largo
+    - Name: Tabby Hermit
+      Names:
+      - Key: EN
+        Value: Tabby Hermit Largo
+    - Name: Hunter Hermit
+      Names:
+      - Key: EN
+        Value: Hunter Hermit Largo
+    - Name: Crystal Hermit
+      Names:
+      - Key: EN
+        Value: Crystal Hermit Largo
+    - Name: Dervish Hermit
+      Names:
+      - Key: EN
+        Value: Dervish Hermit Largo
+    Gordos:
+    - Name: Rosi
+      Names:
+      - Key: EN
+        Value: Rosi Gordo
+    - Name: Coco
+      Names:
+      - Key: EN
+        Value: Coco Gordo
+    - Name: Mine
+      Names:
+      - Key: EN
+        Value: Mine Gordo
+    - Name: Lantern
+      Names:
+      - Key: EN
+        Value: Lantern Gordo
+    - Name: Mesmer
+      Names:
+      - Key: EN
+        Value: Mesmer Gordo
+    - Name: Hermit
+      Names:
+      - Key: EN
+        Value: Hermit Gordo
+    - Name: Goldfish
+      Names:
+      - Key: EN
+        Value: Goldfish Gordo
+    - Name: Sand
+      Names:
+      - Key: EN
+        Value: Sand Gordo
+    Zones:
+    - Name: Swirlpool_Island
+      Names:
+      - Key: EN
+        Value: Swirlpool Island
+      Intros:
+      - Key: EN
+        Value: A distant land of wonder for those who are curious!
+      Descriptions:
+      - Key: EN
+        Value: 
+      Presences:
+      - Key: EN
+        Value: Traversing the island...
+    Mail:
+    - Name: Splash Intro
+      Names:
+      - Key: EN
+        Value: S.P.L.A.S.H
+      Subjects:
+      - Key: EN
+        Value: Notice from the S.P.L.A.S.H. Foundation
+      Bodies:
+      - Key: EN
+        Value: 'Greetings, Rancher.
+
+
+          The 7Zee Corporation, in partnership
+          with the S.P.L.A.S.H. Foundation (Slime Preservation, Learning, Assistance,
+          Sanctuary & Harmony), would like to inform you of unusual phenomena occurring
+          across the region.
+
+
+          Reports indicate that non-native slimes,
+          creatures not previously known to inhabit these ecosystems, are beginning
+          to appear in unexpected locations. The cause of these disturbances is currently
+          unknown, but rest assured: our teams are on it.
+
+
+          A certified
+          Slimeologist will be reaching out to you shortly with further information
+          and guidance. In the meantime, proceed with caution and report any unusual
+          slime behavior through your Starmail terminal.
+
+
+          Stay safe, stay
+          curious.
+
+
+          Sincerely,
+
+          The Board of S.P.L.A.S.H.'
+      MailKey: ocean_intro
+    - Name: Lisa Intro
+      Names:
+      - Key: EN
+        Value: Lisa Erwin
+      Subjects:
+      - Key: EN
+        Value: G'day from S.P.L.A.S.H. HQ!
+      Bodies:
+      - Key: EN
+        Value: "Name's Lisa Erwin! Slimeologist, field researcher, and proud member
+          of S.P.L.A.S.H. (that's Slime Preservation, Learning, Assistance, Sanctuary
+          & Harmony for the uninitiated). You could say I'm a bit of a slime whisperer.
+          Been studyin' their behaviors, quirks, and oddities since I first touched
+          down on the Far, Far Range. If it jiggles, hops, or purrs, chances are
+          I've logged a dozen pages on it.\n\nLately, reports have been floodin'
+          in about some strange slime activity happenin' right near your patch of
+          land. Can't say I've seen anything quite like it in the data \u2014 and
+          trust me, that's sayin' something.\n\nSo! I'll be reachin' out through
+          the Range Exchange in a couple o' days. Nothin' too formal \u2014 just
+          a quick chat, maybe get your eyes on a few of these peculiar slime friends,
+          if you're willin'. Could be nothin'... or it might just be the biggest
+          slime mystery this dusty ol' rock's ever seen.\n\nKeep an eye on those
+          corrals, yeah?\n\nCheers,\n- Lisa.\nFar, Far Range S.P.L.A.S.H.\n\nP.S.
+          If a slime starts hummin' at ya... don't panic. Just write it down."
+      MailKey: exchangeintro_lisa

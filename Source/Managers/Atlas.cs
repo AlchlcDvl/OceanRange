@@ -17,7 +17,7 @@ public static class Atlas
 #endif
     public static void PreloadMapData()
     {
-        var world = Inventory.GetJson<World>("atlas");
+        var world = Inventory.GetModData<World>("world");
 
         Regions = world.Regions;
         Zones = world.Zones;
@@ -84,7 +84,7 @@ public static class Atlas
 
             switch (key)
             {
-                case ZoneRequirementData.RequirementType.CorporateLevel:
+                case RequirementType.CorporateLevel:
                     var progress = obj.AddComponent<ActivateOnProgressRange>();
 
                     progress.progressType = ProgressType.CORPORATE_PARTNER;

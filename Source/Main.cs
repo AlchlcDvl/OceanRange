@@ -1,4 +1,5 @@
-﻿using SRML;
+﻿using System.Text;
+using SRML;
 using static SRML.Console.Console;
 
 namespace OceanRange;
@@ -92,7 +93,7 @@ internal sealed class Main : ModEntryPoint
     {
         Slimepedia.PostLoadSlimes();
         Inventory.Bundle.Unload(false);
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", "pedia", "ocean_range"); // Release handles
+        Inventory.ReleaseHandles("ingredients", "mailbox", "slimepedia", "modinfo", "largopedia", "world", "contacts", "pedia", "ocean_range"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");
@@ -105,7 +106,12 @@ internal sealed class Main : ModEntryPoint
     [TimeDiagnostic("Mod Unload")]
     public override void Unload()
     {
-        File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePos.SavedPositions, Inventory.JsonSettings));
+        var builder = new StringBuilder();
+
+        foreach (var (loc, array) in SavePos.SavedPositions)
+            builder.AppendLine($"\"{loc}\":[{string.Join(",", array.Select(x => $""))}]");
+
+        File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.txt"), builder.ToString());
 
 #else
     public override void Unload()

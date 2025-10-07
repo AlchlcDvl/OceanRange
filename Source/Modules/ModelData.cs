@@ -1,6 +1,6 @@
 namespace OceanRange.Modules;
 
-public sealed class ModelData : JsonData
+public sealed class ModelData : ModData
 {
     public ModelData() { }
 
@@ -13,7 +13,7 @@ public sealed class ModelData : JsonData
         MatSameAs = data?.MatSameAs;
         ColorsOrigin = data?.ColorsOrigin;
         ColorsSameAs = data?.ColorsSameAs;
-        MatOriginSlime = data?.MatOriginSlime;
+        MatOrigin = data?.MatOrigin;
         CachedMaterial = data?.CachedMaterial;
         ColorPropsJson = data?.ColorPropsJson;
 
@@ -35,74 +35,67 @@ public sealed class ModelData : JsonData
             }
         }
 
-        PopulateRemainingValues(default);
+        OnDeserialise();
     }
 
-    [JsonProperty("gloss")]
     public float? Gloss;
-
-    [JsonProperty("pattern")]
     public string Pattern;
 
-    [JsonProperty("sameAs")]
     public int? SameAs;
-
-    [JsonProperty("matSameAs")]
     public int? MatSameAs;
-
-    [JsonProperty("colorsSameAs")]
     public int? ColorsSameAs;
 
-    [JsonProperty("cloneSameAs")]
     public bool CloneSameAs;
-
-    [JsonProperty("cloneMatOrigin")]
     public bool CloneMatOrigin = true;
-
-    [JsonProperty("cloneBase")]
     public bool CloneFallback = true;
 
-    [JsonProperty("matOrigin")]
-    public IdentifiableId? MatOriginSlime;
-
-    [JsonProperty("colorsOrigin")]
+    public IdentifiableId? MatOrigin;
     public IdentifiableId? ColorsOrigin;
 
-    // [JsonProperty("shader")]
     // public string Shader;
 
-    [JsonProperty("colorProps")]
     private Dictionary<string, Color> ColorPropsJson;
 
-    [JsonProperty("mesh")]
     public string Mesh;
 
-    [JsonProperty("skipNull")]
     public bool SkipNull;
-
-    [JsonProperty("ignoreLodIndex")]
     public bool IgnoreLodIndex;
-
-    [JsonProperty("skip")]
     public bool Skip;
 
-    [JsonProperty("invert")]
     public bool InvertColorOriginColors;
 
-    [JsonIgnore]
     public bool IsBody;
 
-    [JsonIgnore]
     public readonly Dictionary<int, Color> ColorProps = [];
 
-    [JsonIgnore]
     public Material CachedMaterial;
 
     private const string Top = "TopColor";
     private static readonly int TopLength = Top.Length;
 
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _)
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+        Gloss = reader.ReadNullable(Helpers.ReadFloat);
+        Pattern = reader.ReadNullableString();
+        SameAs = reader.ReadNullable(Helpers.ReadInt);
+        MatSameAs = reader.ReadNullable(Helpers.ReadInt);
+        ColorsSameAs = reader.ReadNullable(Helpers.ReadInt);
+        CloneSameAs = reader.ReadBoolean();
+        CloneMatOrigin = reader.ReadBoolean();
+        CloneFallback = reader.ReadBoolean();
+        MatOrigin = reader.ReadNullable(Helpers.ReadEnum<IdentifiableId>);
+        ColorsOrigin = reader.ReadNullable(Helpers.ReadEnum<IdentifiableId>);
+        // Shader = reader.ReadNullableString();
+        ColorPropsJson = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadColor);
+        Mesh = reader.ReadNullableString();
+        SkipNull = reader.ReadBoolean();
+        IgnoreLodIndex = reader.ReadBoolean();
+        Skip = reader.ReadBoolean();
+        InvertColorOriginColors = reader.ReadBoolean();
+    }
+
+    public override void OnDeserialise()
     {
         if (ColorPropsJson == null)
             return;

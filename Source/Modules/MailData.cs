@@ -2,7 +2,18 @@ using System.Reflection;
 
 namespace OceanRange.Modules;
 
-public sealed class MailData : JsonData
+public sealed class Starmail(BinaryReader reader) : Holder(reader)
+{
+    public MailData[] Mail;
+
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+        Mail = reader.ReadArray(Helpers.ReadModData<MailData>);
+    }
+}
+
+public sealed class MailData : ModData
 {
     private static readonly Dictionary<string, MethodInfo> Methods = [];
 
@@ -15,16 +26,10 @@ public sealed class MailData : JsonData
         }
     }
 
-    [JsonProperty("id"), JsonRequired]
     public string Id;
-
-    [JsonProperty("unlockAfter")]
     public double? UnlockAfter;
 
-    [JsonIgnore]
     public bool Sent;
-
-    [JsonIgnore]
     public bool Read;
 
     public event Func<double, bool> UnlockFuncAnd;
@@ -32,8 +37,15 @@ public sealed class MailData : JsonData
 
     private Func<double, bool>[] Subscribers;
 
-    [OnDeserialized]
-    public void PopulateData(StreamingContext _)
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+
+        Id = reader.ReadString();
+        UnlockAfter = reader.ReadNullable(Helpers.ReadDouble2);
+    }
+
+    public override void OnDeserialise()
     {
         if (Methods.TryGetValue("Init" + Name.Replace(" ", "") + "Details", out var method))
             method.Invoke(null, [this]);

@@ -1,55 +1,48 @@
 namespace OceanRange.Modules;
 
-public sealed class LangHolder : JsonData
+public sealed class LangHolder(BinaryReader reader) : Holder(reader)
 {
-    [JsonProperty("additional"), JsonRequired]
+    public SlimeLangData[] Slimes;
+    public HenLangData[] Hens;
+    public ChickLangData[] Chicks;
+    public FruitLangData[] Fruits;
+    public VeggieLangData[] Veggies;
+    // public CraftLangData[] Crafts;
+    // public EdibleCraftLangData[] EdibleCrafts;
+    public RancherLangData[] Ranchers;
+    public PlortLangData[] Plorts;
+    public LargoLangData[] Largos;
+    public GordoLangData[] Gordos;
+    public ZoneLangData[] Zones;
+    public MailLangData[] Mail;
+
     public Dictionary<string, Dictionary<string, Dictionary<string, string>>> Additional;
     //                ^ Bundle           ^ Translation Id   ^ Lang  ^ Translated Text
 
-    [JsonProperty("slimes"), JsonRequired]
-    public SlimeLangData[] Slimes;
-
-    [JsonProperty("hens"), JsonRequired]
-    public HenLangData[] Hens;
-
-    [JsonProperty("chicks"), JsonRequired]
-    public ChickLangData[] Chicks;
-
-    [JsonProperty("fruits"), JsonRequired]
-    public FruitLangData[] Fruits;
-
-    [JsonProperty("veggies"), JsonRequired]
-    public VeggieLangData[] Veggies;
-
-    // [JsonProperty("crafts"), JsonRequired]
-    // public CraftLangData[] Crafts;
-
-    // [JsonProperty("edibleCrafts"), JsonRequired]
-    // public EdibleCraftLangData[] EdibleCrafts;
-
-    [JsonProperty("ranchers"), JsonRequired]
-    public RancherLangData[] Ranchers;
-
-    [JsonProperty("plorts"), JsonRequired]
-    public PlortLangData[] Plorts;
-
-    [JsonProperty("largos"), JsonRequired]
-    public LargoLangData[] Largos;
-
-    [JsonProperty("gordos"), JsonRequired]
-    public GordoLangData[] Gordos;
-
-    [JsonProperty("zones"), JsonRequired]
-    public ZoneLangData[] Zones;
-
-    [JsonProperty("mail"), JsonRequired]
-    public MailLangData[] Mail;
-
-    [JsonIgnore]
     public LangData[] LangDatas;
 
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _) => LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Zones, .. Plorts, .. Mail/*, .. Crafts, .. EdibleCrafts */];
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+
+        Slimes = reader.ReadArray(Helpers.ReadModData<SlimeLangData>);
+        Hens = reader.ReadArray(Helpers.ReadModData<HenLangData>);
+        Chicks = reader.ReadArray(Helpers.ReadModData<ChickLangData>);
+        Fruits = reader.ReadArray(Helpers.ReadModData<FruitLangData>);
+        Veggies = reader.ReadArray(Helpers.ReadModData<VeggieLangData>);
+        // Crafts = reader.ReadArray(Helpers.ReadModData<CraftLangData>);
+        // EdibleCrafts = reader.ReadArray(Helpers.ReadModData<EdibleCraftLangData>);
+        Ranchers = reader.ReadArray(Helpers.ReadModData<RancherLangData>);
+        Plorts = reader.ReadArray(Helpers.ReadModData<PlortLangData>);
+        Largos = reader.ReadArray(Helpers.ReadModData<LargoLangData>);
+        Gordos = reader.ReadArray(Helpers.ReadModData<GordoLangData>);
+        Zones = reader.ReadArray(Helpers.ReadModData<ZoneLangData>);
+        Mail = reader.ReadArray(Helpers.ReadModData<MailLangData>);
+
+        Additional = reader.ReadDictionary(Helpers.ReadString2, r => r.ReadDictionary(Helpers.ReadString2, r2 => r2.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2)));
+    }
+
+    public override void OnDeserialise() => LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Zones, .. Plorts, .. Mail/*, .. Crafts, .. EdibleCrafts */];
 
     public void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -72,29 +65,33 @@ public sealed class LangHolder : JsonData
     }
 }
 
-public abstract class LangData : JsonData
+public abstract class LangData : ModData
 {
-    [JsonProperty("names"), JsonRequired]
     public Dictionary<string, string> Names;
 
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _) => OnDeserialisedEvent();
-
-    protected virtual void OnDeserialisedEvent() { }
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+        Names = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+    }
 
     public abstract void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations);
 }
 
 public sealed class MailLangData : LangData
 {
-    [JsonProperty("subjects"), JsonRequired]
     public Dictionary<string, string> Subjects;
-
-    [JsonProperty("bodies"), JsonRequired]
     public Dictionary<string, string> Bodies;
 
-    [JsonProperty("mailKey"), JsonRequired]
     public string MailKey;
+
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+        MailKey = reader.ReadString();
+        Subjects = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        Bodies = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+    }
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -107,22 +104,26 @@ public sealed class MailLangData : LangData
 
 public sealed class RancherLangData : LangData
 {
-    [JsonProperty("offers"), JsonRequired]
-    public Dictionary<string, string[]> Offers;
-
-    [JsonProperty("specOffers"), JsonRequired]
     public Dictionary<string, string> SpecialOffers;
 
-    [JsonProperty("loading"), JsonRequired]
+    public Dictionary<string, string[]> Offers;
     public Dictionary<string, string[]> LoadingTexts;
 
-    [JsonIgnore]
     public RancherData Rancher;
 
-    protected override void OnDeserialisedEvent()
-    {
-        base.OnDeserialisedEvent();
+    private readonly List<string> LoadingIds = [];
 
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+
+        SpecialOffers = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        Offers = reader.ReadDictionary(Helpers.ReadString2, r => r.ReadArray(Helpers.ReadString2));
+        LoadingTexts = reader.ReadDictionary(Helpers.ReadString2, r => r.ReadArray(Helpers.ReadString2));
+    }
+
+    public override void OnDeserialise()
+    {
         Rancher = Contacts.RancherMap[Helpers.ParseEnum<RancherName>(Name.ToUpperInvariant())];
 
         var rancherId = Rancher.RancherId;
@@ -143,6 +144,23 @@ public sealed class RancherLangData : LangData
         }
 
         ExchangeOfferRegistry.RegisterOfferID($"m.bonusoffer.{rancherId}");
+
+        if (!Main.ClsExists)
+            return;
+
+        var set2 = new HashSet<int>();
+
+        foreach (var array in LoadingTexts.Values)
+        {
+            for (var i = 0; i < array.Length; i++)
+            {
+                if (set2.Contains(i))
+                    continue;
+
+                LoadingIds.Add(Main.GetNextLoadingIdBypass());
+                set2.Add(i);
+            }
+        }
     }
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
@@ -156,6 +174,14 @@ public sealed class RancherLangData : LangData
 
         bundle[$"m.bonusoffer.{rancherId}"] = SpecialOffers.GetText(langName);
         bundle[$"m.rancher.{rancherId}"] = Names.GetText(langName);
+
+        if (!Main.ClsExists)
+            return;
+
+        var array2 = LoadingTexts.GetTexts(langName);
+
+        for (var i = 0; i < array2.Length; i++)
+            bundle[LoadingIds[i]] = array2[i];
     }
 
     public void OnLanguageChanged(string langName) => Rancher.Rancher.numBlurbs = Offers.GetTexts(langName).Length;
@@ -163,13 +189,11 @@ public sealed class RancherLangData : LangData
 
 public abstract class IdentifiableLangData(string suffix) : LangData
 {
-    [JsonIgnore]
     private readonly string Suffix = suffix;
 
-    [JsonIgnore]
     public IdentifiableId IdentId;
 
-    protected override void OnDeserialisedEvent() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant() + "_" + Suffix);
+    public override void OnDeserialise() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant() + "_" + Suffix);
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations) => translations.GetBundle("actor")["l." + IdentId.ToString().ToLowerInvariant()] = Names.GetText(langName);
 }
@@ -178,15 +202,14 @@ public sealed class PlortLangData() : IdentifiableLangData("PLORT");
 
 public sealed class LargoLangData() : IdentifiableLangData("LARGO")
 {
-    protected override void OnDeserialisedEvent() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant().Replace(" ", "_") + "_LARGO");
+    public override void OnDeserialise() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant().Replace(" ", "_") + "_LARGO");
 }
 
 public sealed class GordoLangData() : IdentifiableLangData("GORDO")
 {
-    [JsonIgnore]
     public bool Exists;
 
-    protected override void OnDeserialisedEvent() => Exists = Enum.TryParse(Name.ToUpperInvariant() + "_GORDO", out IdentId);
+    public override void OnDeserialise() => Exists = Enum.TryParse(Name.ToUpperInvariant() + "_GORDO", out IdentId);
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -199,22 +222,21 @@ public sealed class GordoLangData() : IdentifiableLangData("GORDO")
 
 public abstract class PediaLangData(string suffix, PediaCategory category) : LangData
 {
-    [JsonIgnore]
     private readonly string Suffix = suffix;
-
-    [JsonIgnore]
     public readonly PediaCategory Category = category;
 
-    [JsonIgnore]
     public PediaId PediaId;
-
-    [JsonIgnore]
     public string PediaKey;
 
-    [JsonProperty("intros"), JsonRequired]
     public Dictionary<string, string> Intros;
 
-    protected sealed override void OnDeserialisedEvent()
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+        Intros = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+    }
+
+    public override void OnDeserialise()
     {
         var mainPart = Name.ToUpperInvariant() + (Suffix.Length > 0 ? ("_" + Suffix) : "");
 
@@ -222,10 +244,10 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
         PediaId = Helpers.AddEnumValue<PediaId>(key);
         PediaKey = key.ToLowerInvariant();
 
-        OnDeserialisedEvent(mainPart);
+        OnDeserialised(mainPart);
     }
 
-    protected virtual void OnDeserialisedEvent(string mainPart) { }
+    protected virtual void OnDeserialised(string mainPart) { }
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -239,16 +261,19 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
 
 public sealed class ZoneLangData() : PediaLangData("", PediaCategory.WORLD)
 {
-    [JsonProperty("descriptions"), JsonRequired]
     public Dictionary<string, string> Descriptions;
-
-    [JsonProperty("presences"), JsonRequired]
     public Dictionary<string, string> Presences;
 
-    [JsonIgnore]
     public Zone ZoneId;
 
-    protected override void OnDeserialisedEvent(string mainPart) => ZoneId = Helpers.ParseEnum<Zone>(mainPart);
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+        Descriptions = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        Presences = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+    }
+
+    protected override void OnDeserialised(string mainPart) => ZoneId = Helpers.ParseEnum<Zone>(mainPart);
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -261,10 +286,9 @@ public sealed class ZoneLangData() : PediaLangData("", PediaCategory.WORLD)
 
 public abstract class ActorLangData(string suffix, PediaCategory category) : PediaLangData(suffix, category)
 {
-    [JsonIgnore]
     public IdentifiableId ActorId;
 
-    protected sealed override void OnDeserialisedEvent(string mainPart) => ActorId = Helpers.ParseEnum<IdentifiableId>(mainPart);
+    protected sealed override void OnDeserialised(string mainPart) => ActorId = Helpers.ParseEnum<IdentifiableId>(mainPart);
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -277,23 +301,25 @@ public abstract class ActorLangData(string suffix, PediaCategory category) : Ped
 
 public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIMES)
 {
-    [JsonProperty("risks"), JsonRequired]
     public Dictionary<string, string> Risks;
-
-    [JsonProperty("slimeologies"), JsonRequired]
     public Dictionary<string, string> Slimeologies;
-
-    [JsonProperty("diets"), JsonRequired]
     public Dictionary<string, string> Diets;
-
-    [JsonProperty("favs"), JsonRequired]
     public Dictionary<string, string> Favourites;
-
-    [JsonProperty("onomics"), JsonRequired]
     public Dictionary<string, string> Onomics;
 
-    [JsonProperty("onomicsType")]
     public string OnomicsType = "pearls";
+
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+
+        Risks = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        Slimeologies = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        Diets = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        Favourites = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        Onomics = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        OnomicsType = reader.ReadString();
+    }
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -310,14 +336,18 @@ public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIME
 
 public abstract class ResourceLangData(string suffix) : ActorLangData(suffix, PediaCategory.RESOURCES)
 {
-    [JsonProperty("ranch"), JsonRequired]
     public Dictionary<string, string> Ranch;
-
-    [JsonProperty("types"), JsonRequired]
     public Dictionary<string, string> Types;
-
-    [JsonProperty("about"), JsonRequired]
     public Dictionary<string, string> About;
+
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+
+        Ranch = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        Types = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+        About = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+    }
 
     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -334,8 +364,13 @@ public abstract class ResourceLangData(string suffix) : ActorLangData(suffix, Pe
 
 public abstract class FoodLangData(string suffix) : ResourceLangData(suffix)
 {
-    [JsonProperty("favouredBy"), JsonRequired]
     public Dictionary<string, string> FavouredBy;
+
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+        FavouredBy = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadString2);
+    }
 
     public sealed override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {

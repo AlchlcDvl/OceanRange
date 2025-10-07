@@ -49,8 +49,11 @@ public sealed class AssetHandle(string name) : IDisposable
 
         foreach (var asset in Assets.Values)
         {
-            if (asset)
+            try
+            {
                 asset.Destroy();
+            }
+            catch { }
         }
 
         Assets.Clear();
@@ -106,23 +109,40 @@ public sealed class AssetHandle(string name) : IDisposable
         if (Assets.TryGetValue(tType, out var asset)) // Try to fetch the asset if it's already loaded
             return (T)asset;
 
-        if (!Inventory.AssetTypeExtensions.TryGetEquivalentValue(tType, out var generator)) // Check if the requested type is valid
+        string[] extensions;
+        Func<string, UObject> generator1 = null;
+        Func<string, Type, UObject> generator2 = null;
+
+        // Check if the requested type is valid
+        if (Inventory.AssetTypeExtensions.TryGetEquivalentValue(tType, out var simpleGenerator))
+        {
+            extensions = simpleGenerator.Extensions;
+            generator1 = simpleGenerator.LoadAsset;
+        }
+        else if (Inventory.ComplexAssetTypeExtensions.TryGetEquivalentValue(tType, out var complexGenerator))
+        {
+            extensions = complexGenerator.Extensions;
+            generator2 = complexGenerator.LoadAsset;
+        }
+        else
             throw new NotSupportedException($"{tType.Name} is not a valid asset type to load");
 
-        if (!Paths.TryGetValue(generator.Extensions, out var path)) // Check if there's an asset path that maps to the relevant file extension
+        if (!Paths.TryGetValue(extensions, out var path)) // Check if there's an asset path that maps to the relevant file extension
             throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}");
 
-        asset = generator.LoadAsset(path); // Create the asset
-
-        // Save the asset if not null, otherwise throw an error
-        if (!asset)
-            throw new InvalidOperationException($"The load function for asset '{Name}' of type '{tType.Name}' returned null. Path: {path}");
-
+        asset = generator1 == null ? generator2(path, tType) : generator1(path); // Create the asset
         Assets.Add(tType, asset);
 
         // Set name and allow persistence
-        asset.name = Name;
-        return (T)asset.DontDestroy();
+
+        try
+        {
+            asset.name = Name;
+            asset.DontDestroy();
+        }
+        catch { }
+
+        return (T)asset;
     }
 
     // Legacy code, retained for potential future use

@@ -13,31 +13,51 @@ static class ExportMeshes
     {
         Debug.Log("Exporting...");
 
-        string exportDirectory = Path.Combine("Assets", "..", "..", "Source", "Resources", "Models");
+        AssetDatabase.StartAssetEditing();
 
-        if (!Directory.Exists(exportDirectory))
-            Directory.CreateDirectory(exportDirectory);
-        else
-            Directory.EnumerateFiles(exportDirectory, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
-
-        foreach (string guid in AssetDatabase.FindAssets("t:Mesh"))
+        try
         {
-            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            string exportDirectory = Path.Combine("Assets", "..", "..", "Source", "Resources", "Models");
 
-            if (!assetPath.Contains("ModelAssets") || (!assetPath.EndsWith(".obj", System.StringComparison.Ordinal) && !assetPath.EndsWith(".fbx", System.StringComparison.Ordinal)))
-                continue;
+            if (!Directory.Exists(exportDirectory))
+                Directory.CreateDirectory(exportDirectory);
+            else
+                Directory.EnumerateFiles(exportDirectory, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
 
-            Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
+            foreach (string guid in AssetDatabase.FindAssets("t:Mesh"))
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 
-            if (!mesh)
-                continue;
+                if (!assetPath.Contains("ModelAssets") || (!assetPath.EndsWith(".obj", System.StringComparison.Ordinal) && !assetPath.EndsWith(".fbx", System.StringComparison.Ordinal)))
+                    continue;
 
-            string filePath = Path.Combine(exportDirectory, Path.GetFileNameWithoutExtension(assetPath) + ".cmesh");
-            Stream stream = File.OpenWrite(filePath);
-            GZipStream compressor = new GZipStream(stream, System.IO.Compression.CompressionLevel.Optimal);
-            BinaryWriter writer = new BinaryWriter(compressor);
-            WriteMesh(writer, mesh);
+                Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
+
+                if (!mesh)
+                    continue;
+
+                string filePath = Path.Combine(exportDirectory, Path.GetFileNameWithoutExtension(assetPath) + ".cmesh");
+
+                using (Stream stream = File.OpenWrite(filePath))
+                {
+                    using (GZipStream compressor = new GZipStream(stream, System.IO.Compression.CompressionLevel.Optimal))
+                    {
+                        using (BinaryWriter writer = new BinaryWriter(compressor))
+                        {
+                            WriteMesh(writer, mesh);
+                        }
+                    }
+                }
+            }
         }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+        }
+
+        AssetDatabase.StopAssetEditing();
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
 
         Debug.Log("Export process complete.");
     }

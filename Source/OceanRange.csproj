@@ -26,24 +26,33 @@
         <Optimize>true</Optimize>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Publicize Include="UnityEngine.CoreModule" />
+        <Publicize Include="Assembly-CSharp" />
+    </ItemGroup>
+
     <ItemGroup Condition="$(Configuration)!=Unity">
-        <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" />
-        <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" />
-        <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" />
         <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="all" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" />
+        <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" />
+        <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" />
 
         <EmbeddedResource Include="Resources\*" />
         <EmbeddedResource Include="Resources\*\*" />
+    </ItemGroup>
 
-        <Publicize Include="Assembly-CSharp" />
-        <Publicize Include="UnityEngine.CoreModule" />
+    <ItemGroup Condition="$(Configuration)!=Unity">
+        <Compile Remove="Unity\*.cs" />
+        <Compile Remove="Unity\Json\*.cs" />
     </ItemGroup>
 
     <ItemGroup Condition="$(Configuration)==Unity">
         <Compile Remove="**\*.cs" />
 
         <Compile Include="Unity\*.cs" />
+        <Compile Include="Unity\Json\*.cs" />
+        <Compile Include="GlobalUsings.cs" />
+        <Compile Include="System\AllowNull.cs" />
     </ItemGroup>
 
     <Import Project="../SlimeRancher.props" />

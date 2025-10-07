@@ -2,6 +2,17 @@ using System.Reflection;
 
 namespace OceanRange.Modules;
 
+public sealed class LargoHolder(BinaryReader reader) : Holder(reader)
+{
+    public LargoData[] Largos;
+
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+        Largos = reader.ReadArray(Helpers.ReadModData<LargoData>);
+    }
+}
+
 public sealed class LargoData : ActorData
 {
     private static readonly Dictionary<string, MethodInfo> Methods = [];
@@ -15,50 +26,41 @@ public sealed class LargoData : ActorData
         }
     }
 
-    [JsonProperty("props"), JsonRequired]
     public LargoProps Props;
 
-    [JsonIgnore]
-    public string Slime1;
-
-    [JsonIgnore]
-    public string Slime2;
-
-    [JsonProperty("bodyMesh")]
     public ModelData BodyStructData;
-
-    [JsonProperty("slime1Meshes")]
     public ModelData[] Slime1StructData;
-
-    [JsonProperty("slime2Meshes")]
     public ModelData[] Slime2StructData;
 
-    [JsonProperty("jiggle")]
     public float? Jiggle;
 
-    [JsonIgnore]
-    public IdentifiableId Slime1Id;
+    public string Slime1;
+    public string Slime2;
 
-    [JsonIgnore]
+    public IdentifiableId Slime1Id;
     public IdentifiableId Slime2Id;
 
-    [JsonIgnore]
     public SlimeData Slime1Data;
-
-    [JsonIgnore]
     public SlimeData Slime2Data;
 
-    [JsonIgnore]
     public MethodInfo InitSlime1Details;
-
-    [JsonIgnore]
     public MethodInfo InitSlime2Details;
-
-    [JsonIgnore]
     public MethodInfo InitLargoDetails;
 
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _)
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+
+        Props = reader.ReadArray(Helpers.ReadEnum<LargoProps>).Combine();
+
+        BodyStructData = reader.ReadModData<ModelData>();
+        Slime1StructData = reader.ReadArray(Helpers.ReadModData<ModelData>);
+        Slime2StructData = reader.ReadArray(Helpers.ReadModData<ModelData>);
+
+        Jiggle = reader.ReadNullable(Helpers.ReadFloat);
+    }
+
+    public override void OnDeserialise()
     {
         var parts = Name.TrueSplit(' ');
 
@@ -68,7 +70,7 @@ public sealed class LargoData : ActorData
         var slime1Upper = Slime1.ToUpperInvariant();
         var slime2Upper = Slime2.ToUpperInvariant();
 
-        MainId = Helpers.AddEnumValue<IdentifiableId>(slime1Upper + "_" + slime2Upper + "_LARGO");
+        MainId = Helpers.AddEnumValue<IdentifiableId>(slime1Upper + '_' + slime2Upper + "_LARGO");
         Slime1Id = Helpers.ParseEnum<IdentifiableId>(slime1Upper + "_SLIME");
         Slime2Id = Helpers.ParseEnum<IdentifiableId>(slime2Upper + "_SLIME");
 

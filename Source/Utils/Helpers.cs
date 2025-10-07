@@ -108,7 +108,7 @@ public static class Helpers
 
     public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value, true);
 
-    // public static T ToEnum<T>(object value) where T : struct, Enum => (T)Enum.ToObject(typeof(T), value);
+    public static T ToEnum<T>(object value) where T : struct, Enum => (T)Enum.ToObject(typeof(T), value);
 
     public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
@@ -237,8 +237,6 @@ public static class Helpers
         // GadgetIds.Do(GadgetRegistry.CategorizeId);
     }
 
-    // public static string ToHexRGBA(this Color32 color) => $"#{color.r.ToString(InvariantCulture):X2}{color.g.ToString(InvariantCulture):X2}{color.b.ToString(InvariantCulture):X2}{color.a.ToString(InvariantCulture):X2}";
-
     public static Vector3 ToPower(this Vector3 vector, int power)
     {
         if (power == 0)
@@ -282,24 +280,6 @@ public static class Helpers
             return false;
 
         return zoneId == Zone.NONE || zones.Contains(zoneId);
-    }
-
-    private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
-
-    public static Vector3 ParseVector(string value) => Vector3Converter.Instance.Parse(value);
-
-    public static bool TryParseVector(string value, NumberStyles _1, CultureInfo _2, out Vector3 result)
-    {
-        try
-        {
-            result = ParseVector(value);
-            return true;
-        }
-        catch
-        {
-            result = default;
-            return false;
-        }
     }
 
     public static void CreateRanchExchangeOffer(IdentifiableId id, int weight, ProgressType[] progress)
@@ -348,10 +328,6 @@ public static class Helpers
 
     //     return false;
     // }
-
-    public static string ToVectorString(this Vector3 value) => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
-
-    public static string ToColorString(this Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
 
     public static bool IsNullableOf<T>(this Type type)
     {
@@ -507,5 +483,68 @@ public static class Helpers
         var result = index < array.Length && index >= 0;
         value = result ? array[index] : default;
         return result;
+    }
+
+    public static string ReadNullableString(this BinaryReader reader) => reader.ReadBoolean() ? reader.ReadString() : null;
+
+    public static T? ReadNullable<T>(this BinaryReader reader, Func<BinaryReader, T> read) where T : struct => reader.ReadBoolean() ? read(reader) : null;
+
+    public static Dictionary<TKey, TValue> ReadDictionary<TKey, TValue>(this BinaryReader reader, Func<BinaryReader, TKey> keyRead, Func<BinaryReader, TValue> valueRead)
+    {
+        var count = reader.ReadInt32();
+        var dict = new Dictionary<TKey, TValue>(count);
+
+        while (count-- > 0)
+            dict[keyRead(reader)] = valueRead(reader);
+
+        return dict;
+    }
+
+    public static T ReadEnum<T>(this BinaryReader reader) where T : struct, Enum => ParseEnum<T>(reader.ReadString());
+
+    public static T ReadModData<T>(this BinaryReader reader) where T : ModData, new()
+    {
+        var result = new T();
+        result.DeserialiseFrom(reader);
+        result.OnDeserialise();
+        return result;
+    }
+
+    public static string ReadString2(this BinaryReader reader) => reader.ReadString();
+
+    public static int ReadInt(this BinaryReader reader) => reader.ReadInt32();
+
+    public static float ReadFloat(this BinaryReader reader) => reader.ReadSingle();
+
+    public static double ReadDouble2(this BinaryReader reader) => reader.ReadDouble();
+
+    public static Orientation ReadOrientation(this BinaryReader reader) => new(reader.ReadVector3(), reader.ReadVector3(), reader.ReadVector3());
+
+    public static Vector3 ReadVector3(this BinaryReader reader) => BinaryUtils.ReadVector3(reader);
+
+    public static Color ReadColor(this BinaryReader reader) => new(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+
+    public static T[] ReadArray<T>(this BinaryReader reader, Func<BinaryReader, T> read) => BinaryUtils.ReadArray(reader, read);
+
+    public static T Combine<T>(this T[] array) where T : struct, Enum
+    {
+        var result = 0UL;
+
+        foreach (var value in array)
+            result |= Convert.ToUInt64(value);
+
+        return ToEnum<T>(result);
+    }
+
+    private static readonly Dictionary<string, Type> CachedTypes = [];
+
+    public static Type ReadType(this BinaryReader reader)
+    {
+        var name = reader.ReadString();
+
+        if (!CachedTypes.TryGetValue(name!, out var type)) // Try to find if a type was already deserialised
+            CachedTypes[name] = type = Type.GetType(name!) ?? throw new ArgumentException($"Cannot find type {name}!"); // Find type or throw if not found
+
+        return type;
     }
 }

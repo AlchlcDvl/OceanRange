@@ -47,7 +47,7 @@ public static class Largopedia
 #if DEBUG
     [TimeDiagnostic("Largos Preload")]
 #endif
-    public static void PreloadLargoData() => Largos = Inventory.GetJsonArray<LargoData>("largopedia");
+    public static void PreloadLargoData() => Largos = Inventory.GetModData<LargoHolder>("largopedia").Largos;
 
 #if DEBUG
     [TimeDiagnostic("Largos Load")]

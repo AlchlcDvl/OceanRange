@@ -13,7 +13,7 @@ public static class Translator
 #endif
     public static void PreloadLangData()
     {
-        LangHolder = Inventory.GetJson<LangHolder>("pedia");
+        LangHolder = Inventory.GetModData<LangHolder>("pedia");
 
         SlimeToOnomicsMap = LangHolder.Slimes.ToDictionary(x => x.PediaKey, x => x.OnomicsType);
     }

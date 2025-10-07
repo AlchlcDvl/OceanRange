@@ -1,4 +1,5 @@
 #if DEBUG
+using System.Globalization;
 using UnityEngine.SceneManagement;
 
 namespace OceanRange.Utils;
@@ -33,6 +34,23 @@ public static class DebugUtils
         }
 
         return closest;
+    }
+
+    private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
+
+    public static Vector3 ParseVector(string value)
+    {
+        var parts = value.TrueSplit(',');
+
+        if (parts.Count is not (2 or 3))
+            throw new FormatException("Incorrect vector format! Expected x,y or x,y,z");
+
+        return new
+        (
+            float.Parse(parts[0], NumberStyles.Float | NumberStyles.AllowThousands, InvariantCulture),
+            float.Parse(parts[1], NumberStyles.Float | NumberStyles.AllowThousands, InvariantCulture),
+            parts.Count == 3 ? float.Parse(parts[2], NumberStyles.Float | NumberStyles.AllowThousands, InvariantCulture) : 0f
+        );
     }
 }
 #endif

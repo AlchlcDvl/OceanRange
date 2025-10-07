@@ -1,14 +1,9 @@
 using System.IO;
 using UnityEngine;
-using OceanRange.Unity;
+using OceanRange.Unity.Json;
 
 [CreateAssetMenu(menuName = "OceanRange/Holder/Mailbox")]
-public sealed class Mailbox : JsonData
+public sealed class Mailbox : ArrayHolder<MailData>
 {
-    public MailData[] Mail;
-
-    public override void SerialiseTo(BinaryWriter writer)
-    {
-
-    }
+    public override string Name => "Mailbox";
 }

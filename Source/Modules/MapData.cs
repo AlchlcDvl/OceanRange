@@ -1,67 +1,58 @@
 namespace OceanRange.Modules;
 
-public sealed class ZoneRequirementData : JsonData
+public sealed class ZoneRequirementData : ModData
 {
-    [JsonProperty("minLevel")]
     public int CorporateLevelMin = 0;
-
-    [JsonProperty("maxLevel")]
     public int CorporateLevelMax = int.MaxValue;
-
-    [JsonProperty("rancherProgress")]
     public int ExchangeProgress;
-
-    [JsonProperty("modifyPath"), JsonRequired]
     public string PathToGameObject;
 
-    public enum RequirementType
+    public override void DeserialiseFrom(BinaryReader reader)
     {
-        CorporateLevel,
-        ExchangeProgress,
-        DevCommand,
-
-        // add more?
+        base.DeserialiseFrom(reader);
+        CorporateLevelMin = reader.ReadInt();
+        CorporateLevelMax = reader.ReadInt();
+        ExchangeProgress = reader.ReadInt();
+        PathToGameObject = reader.ReadString();
     }
 }
 
-public sealed class ZoneData : JsonData
+public enum RequirementType
 {
-    [JsonProperty("region"), JsonRequired]
+    CorporateLevel,
+    ExchangeProgress,
+    DevCommand,
+
+    // add more?
+}
+
+public sealed class ZoneData : ModData
+{
     public RegionId Region;
-
-    [JsonProperty("teleporterOri"), JsonRequired]
     public Orientation TeleporterOrientation;
-
-    [JsonProperty("teleporterLoc"), JsonRequired]
     public string TeleporterLocation;
-
-    [JsonProperty("requirements")]
-    // The key for the dictionary is the public ZoneRequirementData.RequirementType enum.
-    public Dictionary<ZoneRequirementData.RequirementType, ZoneRequirementData> Requirements = [];
-
-    [JsonProperty("prefab"), JsonRequired]
     public string AssetName;
+    public Dictionary<RequirementType, ZoneRequirementData> Requirements = [];
 
-    [JsonIgnore]
     public Zone Zone;
-
-    [JsonIgnore]
     public PediaId PediaId;
-
-    [JsonIgnore]
     public Ambiance Ambiance;
-
-    [JsonIgnore]
     public bool PrefabsPrepped;
-
-    [JsonIgnore]
     public GameObject Prefab;
-
-    [JsonIgnore]
     public AmbianceDirectorZoneSetting AmbianceSetting;
 
-    [OnDeserialized]
-    public void PopulateValues(StreamingContext _)
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+
+        Region = reader.ReadEnum<RegionId>();
+        TeleporterOrientation = reader.ReadOrientation();
+        TeleporterLocation = reader.ReadString();
+        Requirements = reader.ReadDictionary(Helpers.ReadEnum<RequirementType>, Helpers.ReadModData<ZoneRequirementData>);
+        AssetName = reader.ReadString();
+    }
+
+    public override void OnDeserialise()
     {
         var upper = Name.ToUpperInvariant();
 
@@ -71,32 +62,37 @@ public sealed class ZoneData : JsonData
     }
 }
 
-public sealed class RegionData : JsonData
+public sealed class RegionData : ModData
 {
-    [JsonProperty("initialWorldSize"), JsonRequired]
     public float InitialWorldSize;
-
-    [JsonProperty("initialWorldPos"), JsonRequired]
     public Vector3 InitialWorldPos;
-
-    [JsonProperty("minNodeSize"), JsonRequired]
     public float MinNodeSize;
-
-    [JsonProperty("loosenessVal"), JsonRequired]
     public float LoosenessVal;
 
-    [JsonIgnore]
     public RegionId Region;
 
-    [OnDeserialized]
-    public void PopulateValues(StreamingContext _) => Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+        InitialWorldSize = reader.ReadSingle();
+        InitialWorldPos = reader.ReadVector3();
+        MinNodeSize = reader.ReadSingle();
+        LoosenessVal = reader.ReadSingle();
+    }
+
+    public override void OnDeserialise() => Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
 }
 
-public sealed class World
+public sealed class World(BinaryReader reader) : Holder(reader)
 {
-    [JsonProperty("zones")]
     public ZoneData[] Zones;
-
-    [JsonProperty("regions")]
     public RegionData[] Regions;
+
+    public override void DeserialiseFrom(BinaryReader reader)
+    {
+        base.DeserialiseFrom(reader);
+
+        Regions = reader.ReadArray(Helpers.ReadModData<RegionData>);
+        Zones = reader.ReadArray(Helpers.ReadModData<ZoneData>);
+    }
 }

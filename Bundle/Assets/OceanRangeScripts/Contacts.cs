@@ -1,13 +1,9 @@
 using System.IO;
 using UnityEngine;
+using OceanRange.Unity.Json;
 
 [CreateAssetMenu(menuName = "OceanRange/Holder/Contacts")]
-public sealed class Contacts : JsonData
+public sealed class Contacts : ArrayHolder<RancherData>
 {
-    public RancherData[] Ranchers;
-
-    public override void SerialiseTo(BinaryWriter writer)
-    {
-
-    }
+    public override string Name => "Contacts";
 }

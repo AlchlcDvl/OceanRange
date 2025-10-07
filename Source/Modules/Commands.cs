@@ -62,7 +62,7 @@ public sealed class TeleportCommand : ConsoleCommand
         }
 
         var vector = string.Join(",", args);
-        SceneContext.Instance.Player.transform.position = Helpers.ParseVector(vector);
+        SceneContext.Instance.Player.transform.position = DebugUtils.ParseVector(vector);
         Main.Console.Log("Teleported to " + vector);
         return true;
     }

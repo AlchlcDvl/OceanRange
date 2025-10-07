@@ -29,7 +29,7 @@ public static class Cookbook
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
 
-        var food = Inventory.GetJson<Ingredients>("cookbook");
+        var food = Inventory.GetModData<Ingredients>("ingredients");
 
         Chimkens = food.Chimkens;
         Plants = food.Plants;
