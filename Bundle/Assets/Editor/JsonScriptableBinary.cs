@@ -7,6 +7,7 @@ using OceanRange.Unity.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO.Compression;
+using OceanRange.Common;
 
 class JsonScriptableBinary
 {
@@ -81,7 +82,8 @@ class JsonScriptableBinary
 
             try
             {
-                asset.ReadJson(LoadJson(jsonPath, asset.DataType));
+                if (File.Exists(jsonPath))
+                    asset.ReadJson(LoadJson(jsonPath, asset.DataType));
             }
             catch (Exception ex)
             {

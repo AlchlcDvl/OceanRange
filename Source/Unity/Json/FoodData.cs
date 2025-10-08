@@ -3,10 +3,10 @@ namespace OceanRange.Unity.Json;
 [Serializable]
 public sealed class Ingredients : JsonData
 {
-    [JsonProperty("plants")]
+    [JsonProperty("plants"), JsonRequired]
     public PlantData[] Plants;
 
-    [JsonProperty("chimkens")]
+    [JsonProperty("chimkens"), JsonRequired]
     public ChimkenData[] Chimkens;
 
     public override void SerialiseTo(BinaryWriter writer)

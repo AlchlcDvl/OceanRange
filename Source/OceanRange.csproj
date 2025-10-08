@@ -50,6 +50,7 @@
         <Compile Remove="**\*.cs" />
 
         <Compile Include="Unity\*.cs" />
+        <Compile Include="Common\*.cs" />
         <Compile Include="Unity\Json\*.cs" />
         <Compile Include="GlobalUsings.cs" />
         <Compile Include="System\AllowNull.cs" />
