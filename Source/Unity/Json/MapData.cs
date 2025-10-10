@@ -21,7 +21,7 @@ public sealed class ZoneRequirementData : JsonData
         writer.Write(CorporateLevelMin);
         writer.Write(CorporateLevelMax);
         writer.Write(ExchangeProgress);
-        writer.Write(PathToGameObject);
+        writer.WriteString(PathToGameObject);
     }
 }
 
@@ -46,11 +46,11 @@ public sealed class ZoneData : JsonData
     public override void SerialiseTo(BinaryWriter writer)
     {
         base.SerialiseTo(writer);
-        writer.Write(Region);
+        writer.WriteString(Region);
         writer.WriteOrientation(TeleporterOrientation);
-        writer.Write(TeleporterLocation);
+        writer.WriteString(TeleporterLocation);
         writer.WriteDictionary(Requirements, Helpers.WriteString, Helpers.WriteJsonData);
-        writer.Write(AssetName);
+        writer.WriteString(AssetName);
     }
 }
 

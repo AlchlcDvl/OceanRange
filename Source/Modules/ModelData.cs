@@ -76,30 +76,45 @@ public sealed class ModelData : ModData
     public override void DeserialiseFrom(BinaryReader reader)
     {
         base.DeserialiseFrom(reader);
+        2.DoLog();
         Gloss = reader.ReadNullable(Helpers.ReadFloat);
-        Pattern = reader.ReadNullableString();
+        2.DoLog();
+        Pattern = reader.ReadString();
+        2.DoLog();
         SameAs = reader.ReadNullable(Helpers.ReadInt);
+        2.DoLog();
         MatSameAs = reader.ReadNullable(Helpers.ReadInt);
+        2.DoLog();
         ColorsSameAs = reader.ReadNullable(Helpers.ReadInt);
+        2.DoLog();
         CloneSameAs = reader.ReadBoolean();
+        2.DoLog();
         CloneMatOrigin = reader.ReadBoolean();
+        2.DoLog();
         CloneFallback = reader.ReadBoolean();
-        MatOrigin = reader.ReadNullable(Helpers.ReadEnum<IdentifiableId>);
-        ColorsOrigin = reader.ReadNullable(Helpers.ReadEnum<IdentifiableId>);
-        // Shader = reader.ReadNullableString();
+        2.DoLog();
+        MatOrigin = reader.ReadNullableEnum<IdentifiableId>();
+        2.DoLog();
+        ColorsOrigin = reader.ReadNullableEnum<IdentifiableId>();
+        2.DoLog();
+        // Shader = reader.ReadString();
+        2.DoLog();
         ColorPropsJson = reader.ReadDictionary(Helpers.ReadString2, Helpers.ReadColor);
-        Mesh = reader.ReadNullableString();
+        2.DoLog();
+        Mesh = reader.ReadString();
+        2.DoLog();
         SkipNull = reader.ReadBoolean();
+        2.DoLog();
         IgnoreLodIndex = reader.ReadBoolean();
+        2.DoLog();
         Skip = reader.ReadBoolean();
+        2.DoLog();
         InvertColorOriginColors = reader.ReadBoolean();
+        2.DoLog();
     }
 
     public override void OnDeserialise()
     {
-        if (ColorPropsJson == null)
-            return;
-
         foreach (var (prop, color) in ColorPropsJson.ToArray())
         {
             if (!prop.EndsWith(Top, StringComparison.Ordinal))

@@ -191,13 +191,13 @@ public sealed class SlimeData : SpawnedActorData
     {
         base.SerialiseTo(writer);
 
-        writer.WriteNullableString(FavFood);
-        writer.Write(FavToy);
+        writer.WriteString(FavFood);
+        writer.WriteString(FavToy);
         writer.Write(NightSpawn);
-        writer.WriteNullableString(Diet);
-        writer.Write(BaseSlime);
-        writer.Write(BasePlort);
-        writer.Write(BaseGordo);
+        writer.WriteString(Diet);
+        writer.WriteString(BaseSlime);
+        writer.WriteString(BasePlort);
+        writer.WriteString(BaseGordo);
         writer.WriteNullable(TopMouthColorJson, Helpers.WriteColor);
         writer.WriteNullable(MiddleMouthColorJson, Helpers.WriteColor);
         writer.WriteNullable(BottomMouthColorJson, Helpers.WriteColor);
@@ -208,15 +208,15 @@ public sealed class SlimeData : SpawnedActorData
         writer.WriteNullable(MiddlePaletteColorJson, Helpers.WriteColor);
         writer.WriteNullable(BottomPaletteColorJson, Helpers.WriteColor);
         writer.WriteNullable(PlortAmmoColorJson, Helpers.WriteColor);
-        writer.Write(PlortType);
+        writer.WriteString(PlortType);
         writer.Write(CanBeRefined);
         writer.WriteArray(Zones, Helpers.WriteString);
-        writer.WriteNullableString(GordoZone);
+        writer.WriteString(GordoZone);
         writer.Write(SpawnAmount);
         writer.Write(HasGordo);
         writer.WriteArray(GordoRewards, Helpers.WriteString);
         writer.WriteOrientation(GordoOrientation);
-        writer.WriteNullableString(GordoCell);
+        writer.WriteString(GordoCell);
         writer.Write(NaturalGordoSpawn);
         writer.Write(PlortExchangeWeight);
         writer.Write(JiggleAmount);
@@ -228,6 +228,6 @@ public sealed class SlimeData : SpawnedActorData
         writer.WriteArray(ExcludedSpawners, Helpers.WriteString);
         writer.Write(Vaccable);
         writer.Write(GordoEatAmount);
-        writer.WriteNullableString(ComponentBase);
+        writer.WriteString(ComponentBase);
     }
 }

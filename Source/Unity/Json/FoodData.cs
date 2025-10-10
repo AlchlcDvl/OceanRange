@@ -59,8 +59,8 @@ public sealed class PlantData : SpawnedActorData
     {
         base.SerialiseTo(writer);
 
-        writer.Write(Type);
-        writer.Write(ResourceIdSuffix);
+        writer.WriteString(Type);
+        writer.WriteString(ResourceIdSuffix);
         writer.Write(IsVeggie);
 
         // Cursed, I know

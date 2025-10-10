@@ -6,7 +6,7 @@ public abstract class JsonData
     [JsonProperty("name")]
     public string Name;
 
-    public virtual void SerialiseTo(BinaryWriter writer) => writer.WriteNullableString(Name);
+    public virtual void SerialiseTo(BinaryWriter writer) => writer.WriteString(Name);
 }
 
 [Serializable]

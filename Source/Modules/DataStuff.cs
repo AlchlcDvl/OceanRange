@@ -4,7 +4,7 @@ public abstract class ModData : UObject
 {
     public string Name;
 
-    public virtual void DeserialiseFrom(BinaryReader reader) => Name = reader.ReadNullableString();
+    public virtual void DeserialiseFrom(BinaryReader reader) => Name = reader.ReadString();
 
     public virtual void OnDeserialise() { }
 }
@@ -26,7 +26,7 @@ public abstract class SpawnedActorData : ActorData
     {
         base.DeserialiseFrom(reader);
 
-        Progress = reader.ReadArray(Helpers.ReadEnum<ProgressType>) ?? [];
+        Progress = reader.ReadArray(Helpers.ReadEnum<ProgressType>);
         BasePrice = reader.ReadSingle();
         Saturation = reader.ReadSingle();
         ExchangeWeight = reader.ReadInt32();

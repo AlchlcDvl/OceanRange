@@ -94,10 +94,10 @@ public sealed class SlimeData : SpawnedActorData
     {
         base.DeserialiseFrom(reader);
 
-        FavFood = reader.ReadNullable(Helpers.ReadEnum<IdentifiableId>);
+        FavFood = reader.ReadNullableEnum<IdentifiableId>();
         FavToy = reader.ReadEnum<IdentifiableId>();
         NightSpawn = reader.ReadBoolean();
-        Diet = reader.ReadNullable(Helpers.ReadEnum<FoodGroup>);
+        Diet = reader.ReadNullableEnum<FoodGroup>();
         BaseSlime = reader.ReadEnum<IdentifiableId>();
         BasePlort = reader.ReadEnum<IdentifiableId>();
         BaseGordo = reader.ReadEnum<IdentifiableId>();
@@ -123,7 +123,7 @@ public sealed class SlimeData : SpawnedActorData
         HasGordo = reader.ReadBoolean();
         GordoRewards = reader.ReadArray(Helpers.ReadEnum<IdentifiableId>);
         GordoOrientation = reader.ReadOrientation();
-        GordoCell = reader.ReadNullableString();
+        GordoCell = reader.ReadString();
         NaturalGordoSpawn = reader.ReadBoolean();
         PlortExchangeWeight = reader.ReadInt32();
         JiggleAmount = reader.ReadSingle();
@@ -136,7 +136,7 @@ public sealed class SlimeData : SpawnedActorData
 
         Vaccable = reader.ReadBoolean();
         GordoEatAmount = reader.ReadInt32();
-        ComponentBase = reader.ReadNullable(Helpers.ReadEnum<IdentifiableId>);
+        ComponentBase = reader.ReadNullableEnum<IdentifiableId>();
     }
 
     public override void OnDeserialise()
