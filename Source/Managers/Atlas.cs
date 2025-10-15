@@ -4,8 +4,6 @@ namespace OceanRange.Managers;
 
 public static class Atlas
 {
-    public static Dictionary<Zone, ZoneData> ZoneToDataMap;
-
     private static ZoneData[] Zones;
     private static RegionData[] Regions;
 
@@ -17,14 +15,12 @@ public static class Atlas
 #endif
     public static void PreloadMapData()
     {
-        var world = Inventory.GetJson<World>("atlas");
+        // var world = Inventory.GetJson<World>("atlas");
 
-        Regions = world.Regions;
-        Zones = world.Zones;
+        // Regions = world.Regions;
+        // Zones = world.Zones;
 
-        ZoneToDataMap = Zones.ToDictionary(x => x.Zone, ZoneDirector.zoneComparer);
-
-        SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
+        // SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
     }
 
 #if DEBUG
@@ -105,9 +101,9 @@ public static class Atlas
 #endif
     public static void LoadMap()
     {
-        TeleporterPrefab = Inventory.GetPrefab("TeleporterDevEntrance");
+        // TeleporterPrefab = Inventory.GetPrefab("TeleporterDevEntrance");
 
-        Array.ForEach(Zones, LoadZoneData);
+        // Array.ForEach(Zones, LoadZoneData);
     }
 
     private static void LoadZoneData(ZoneData zoneData)

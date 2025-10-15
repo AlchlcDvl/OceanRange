@@ -370,7 +370,6 @@ public static class Inventory
     private static void CreateAssetHandle(string path)
     {
         var name = path.SanitisePath();
-        $"{name}:{path}".DoLog();
 
         if (!Assets.TryGetValue(name, out var handle))
             Assets[name] = handle = new(name);

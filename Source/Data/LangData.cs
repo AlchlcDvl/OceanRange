@@ -2,7 +2,8 @@ namespace OceanRange.Modules;
 
 public sealed class LangHolder : JsonData
 {
-    [JsonRequired] public Dictionary<string, Dictionary<string, Dictionary<string, string>>> Additional;
+    [JsonRequired]
+    public Dictionary<string, Dictionary<string, Dictionary<string, string>>> Additional;
     //                ^ Bundle           ^ Translation Id   ^ Lang  ^ Translated Text
 
     [JsonRequired] public SlimeLangData[] Slimes;
@@ -16,14 +17,14 @@ public sealed class LangHolder : JsonData
     [JsonRequired] public PlortLangData[] Plorts;
     [JsonRequired] public LargoLangData[] Largos;
     [JsonRequired] public GordoLangData[] Gordos;
-    [JsonRequired] public ZoneLangData[] Zones;
+    // [JsonRequired] public ZoneLangData[] Zones;
     [JsonRequired] public MailLangData[] Mail;
 
     [JsonRequired] public string Fallback = "EN";
 
     [JsonIgnore] public LangData[] LangDatas;
 
-    protected override void OnDeserialise() => LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Zones, .. Plorts, .. Mail/*, .. Crafts, .. EdibleCrafts */];
+    protected override void OnDeserialise() => LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Plorts, .. Mail/*, .. Zones, .. Crafts, .. EdibleCrafts */];
 
     public void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -184,22 +185,22 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
     }
 }
 
-public sealed class ZoneLangData() : PediaLangData("", PediaCategory.WORLD)
-{
-    [JsonRequired] public Dictionary<string, string> Descriptions;
-    [JsonRequired] public Dictionary<string, string> Presences;
-    [JsonIgnore] public Zone ZoneId;
+// public sealed class ZoneLangData() : PediaLangData("", PediaCategory.WORLD)
+// {
+//     [JsonRequired] public Dictionary<string, string> Descriptions;
+//     [JsonRequired] public Dictionary<string, string> Presences;
+//     [JsonIgnore] public Zone ZoneId;
 
-    protected override void OnDeserialisedEvent(string mainPart) => ZoneId = Helpers.ParseEnum<Zone>(mainPart);
+//     protected override void OnDeserialisedEvent(string mainPart) => ZoneId = Helpers.ParseEnum<Zone>(mainPart);
 
-    public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
-    {
-        base.AddTranslations(langName, translations);
+//     public override void AddTranslations(string langName, Dictionary<string, Dictionary<string, string>> translations)
+//     {
+//         base.AddTranslations(langName, translations);
 
-        translations.GetBundle("global")["l.presence." + ZoneId.ToString().ToLowerInvariant()] = Presences.GetText(langName);
-        translations.GetBundle("pedia")["m.desc." + PediaKey] = Descriptions.GetText(langName);
-    }
-}
+//         translations.GetBundle("global")["l.presence." + ZoneId.ToString().ToLowerInvariant()] = Presences.GetText(langName);
+//         translations.GetBundle("pedia")["m.desc." + PediaKey] = Descriptions.GetText(langName);
+//     }
+// }
 
 public abstract class ActorLangData(string suffix, PediaCategory category) : PediaLangData(suffix, category)
 {

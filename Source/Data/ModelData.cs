@@ -76,7 +76,7 @@ public sealed class ModelData : JsonData
         if (ColorPropsJson == null)
             return;
 
-        foreach (var (prop, color) in ColorPropsJson)
+        foreach (var (prop, color) in ColorPropsJson.ToArray())
         {
             if (!prop.EndsWith(Top, StringComparison.Ordinal))
                 continue;
@@ -85,15 +85,16 @@ public sealed class ModelData : JsonData
 
             var middle = baseName + "MiddleColor";
 
-            if (ColorPropsJson.TryGetValue(middle, out var middleColor))
-                ColorProps[ShaderUtils.GetOrSet(middle)] = middleColor;
-            else
-                ColorProps[ShaderUtils.GetOrSet(middle)] = middleColor = color;
+            if (!ColorPropsJson.TryGetValue(middle, out var middleColor))
+                ColorPropsJson[middle] = middleColor = color;
 
             var bottom = baseName + "BottomColor";
 
             if (!ColorPropsJson.ContainsKey(bottom))
-                ColorProps[ShaderUtils.GetOrSet(bottom)] = middleColor;
+                ColorPropsJson[bottom] = middleColor;
         }
+
+        foreach (var (prop, value) in ColorPropsJson)
+            ColorProps[ShaderUtils.GetOrSet(prop)] = value;
     }
 }

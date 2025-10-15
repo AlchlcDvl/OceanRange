@@ -277,10 +277,6 @@ public static class Helpers
         }
 
         var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
-
-        if (Atlas.ZoneToDataMap.ContainsKey(zoneId)) // The prefabs are already set for these
-            return false;
-
         return zoneId == Zone.NONE || zones.Contains(zoneId);
     }
 

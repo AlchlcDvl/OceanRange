@@ -1,7 +1,7 @@
 [
     {
         "name": "Rosi",
-        "zones": ["REEF", "SWIRLPOOL_ISLAND"],
+        "zones": ["REEF"],
         "favToy": "OCTO_BUDDY_TOY",
         "slimeFeatures":
         [
