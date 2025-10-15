@@ -28,7 +28,7 @@ public sealed class SavePositionCommand : ConsoleCommand
             return false;
 
         var pos = SceneContext.Instance.Player.transform.position;
-        var name = DebugUtils.GetClosestCell(pos).name.Replace("cell", "");
+        var name = Helpers.GetClosestCell(pos).name.Replace("cell", "");
 
         if (!SavedPositions.TryGetValue(name, out var positions))
             SavedPositions[name] = positions = [];
@@ -62,7 +62,7 @@ public sealed class TeleportCommand : ConsoleCommand
         }
 
         var vector = string.Join(",", args);
-        SceneContext.Instance.Player.transform.position = DebugUtils.ParseVector(vector);
+        SceneContext.Instance.Player.transform.position = Helpers.ParseVector(vector);
         Main.Console.Log("Teleported to " + vector);
         return true;
     }

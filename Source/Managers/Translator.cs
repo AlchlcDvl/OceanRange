@@ -18,9 +18,9 @@ public static class Translator
         SlimeToOnomicsMap = LangHolder.Slimes.ToDictionary(x => x.PediaKey, x => x.OnomicsType);
     }
 
-    public static string GetText(this Dictionary<string, string> dict, string lang) => dict.TryGetValue(lang, out var text) ? text : dict["EN"]; // English is guaranteed to exist here
+    public static string GetText(this Dictionary<string, string> dict, string lang) => dict.TryGetValue(lang, out var text) ? text : dict[LangHolder.Fallback]; // The fallback is guaranteed to exist here
 
-    public static string[] GetTexts(this Dictionary<string, string[]> dict, string lang) => dict.TryGetValue(lang, out var texts) ? texts : dict["EN"]; // English is guaranteed to exist here
+    public static string[] GetTexts(this Dictionary<string, string[]> dict, string lang) => dict.TryGetValue(lang, out var texts) ? texts : dict[LangHolder.Fallback]; // The fallback is guaranteed to exist here
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {

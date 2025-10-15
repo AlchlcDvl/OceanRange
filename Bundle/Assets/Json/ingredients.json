@@ -6,7 +6,7 @@
             "group": "VEGGIES",
             "ammoColor": "#AB9E7E",
             "type": "Veggie",
-            "resource": "Patch",
+            "resourceSuffix": "Patch",
             "isVeggie": true,
             "basePrice": 4,
             "saturation": 10,

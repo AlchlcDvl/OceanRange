@@ -11,7 +11,7 @@ public static class Contacts
 #endif
     public static void PreloadRancherData()
     {
-        Ranchers = Inventory.GetModData<Contactsbook>("contacts").Ranchers;
+        Ranchers = Inventory.GetModData<Contactsbook>("contacts").ValueArray;
 
         RancherMap = Ranchers.ToDictionary(x => x.RancherName, RancherNameComparer.Instance);
 

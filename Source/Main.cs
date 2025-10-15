@@ -6,9 +6,9 @@ namespace OceanRange;
 
 internal sealed class Main : ModEntryPoint
 {
-    public static ConsoleInstance Console;
     public static bool ClsExists;
     public static Transform PrefabParent;
+    public static ConsoleInstance Console;
 
 #if DEBUG
     private static readonly SavePositionCommand SavePos = new(); // Keeping the instance of the command because it stores saved positions
@@ -109,7 +109,7 @@ internal sealed class Main : ModEntryPoint
         var builder = new StringBuilder();
 
         foreach (var (loc, array) in SavePos.SavedPositions)
-            builder.AppendLine($"\"{loc}\":[{string.Join(",", array.Select(x => $""))}]");
+            builder.AppendLine($"\"{loc}\":[{string.Join(",", array.Select(x => $"\"{x.ToVectorString()}\""))}],");
 
         File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.txt"), builder.ToString());
 

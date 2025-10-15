@@ -889,3 +889,4 @@ MonoBehaviour:
           corrals, yeah?\n\nCheers,\n- Lisa.\nFar, Far Range S.P.L.A.S.H.\n\nP.S.
           If a slime starts hummin' at ya... don't panic. Just write it down."
       MailKey: exchangeintro_lisa
+    Fallback: EN

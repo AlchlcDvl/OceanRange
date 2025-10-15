@@ -59,7 +59,7 @@ public static class Slimepedia
         MgExists = SRModLoader.IsModPresent("luckygordo");
         MvExists = SRModLoader.IsModPresent("more_vaccing");
 
-        Slimes = Inventory.GetModData<SlimeHolder>("slimepedia").Slimes;
+        Slimes = Inventory.GetModData<SlimeHolder>("slimepedia").ValueArray;
         SlimeDataMap = Slimes.ToDictionary(x => x.MainId, Identifiable.idComparer);
 
         GordoSaveData.Lookup = Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId, Identifiable.idComparer);
@@ -287,15 +287,19 @@ public static class Slimepedia
         // Create a copy for our slimes and populate with info
         var definition = baseDefinition.DeepCopy();
         definition.Diet.Produces = [slimeData.PlortId];
-        definition.Diet.MajorFoodGroups = [slimeData.Diet ?? default];
         definition.Diet.AdditionalFoods = [IdentifiableId.SPICY_TOFU];
-        definition.Diet.Favorites = [slimeData.FavFood ?? default];
         definition.Diet.EatMap?.Clear();
-        definition.CanLargofy = Identifiable.LARGO_CLASS.Any(x => x.ToString().ToLowerInvariant().Contains(lower));
+        definition.CanLargofy = Identifiable.LARGO_CLASS.Any(x => x.ToString().ToLowerInvariant().IndexOf(lower, StringComparison.Ordinal) >= 0);
         definition.FavoriteToys = [slimeData.FavToy];
         definition.Name = slimeData.Name + " Slime";
         definition.IdentifiableId = slimeData.MainId;
         definition.name = slimeData.Name;
+
+        if (slimeData.Diet.HasValue)
+            definition.Diet.MajorFoodGroups = [slimeData.Diet.Value];
+
+        if (slimeData.FavFood.HasValue)
+            definition.Diet.Favorites = [slimeData.FavFood.Value];
 
         // Finding the base prefab, copying it and setting our own component values
         var prefab = slimeData.BaseSlime.GetPrefab().CreatePrefab();
@@ -436,7 +440,7 @@ public static class Slimepedia
         for (var i = 0; i < slimeData.SlimeFeatures.Length; i++)
             appearance.Structures[i] = GenerateStructure(baseStruct, slimeData.SlimeFeatures[i], slimeData.SlimeFeatures);
 
-        applicator.GenerateSlimeBones(appearance.Structures, slimeData.JiggleAmount);
+        applicator.GenerateSlimeBones(appearance.Structures, slimeData.Jiggle);
     }
 
     public static SlimeAppearanceStructure GenerateStructure(SlimeAppearanceStructure baseStruct, ModelData modelData, ModelData[] modelDatas)

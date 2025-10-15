@@ -1,0 +1,14 @@
+<Project>
+    <ItemGroup>
+        <Reference Include="$(MSBuildThisFileDirectory)/Libs/Shared/*.dll" />
+        <Reference Include="$(MSBuildThisFileDirectory)/Libs/Mod/*.dll" Condition="$(Configuration)!=Unity" />
+        <Reference Include="$(MSBuildThisFileDirectory)/Libs/Unity/*.dll" Condition="$(Configuration)==Unity" />
+    </ItemGroup>
+
+    <!-- This will create new directories if you don't have them made already -->
+
+    <Target Name="Copy" AfterTargets="Build">
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Bundle/Assets/Plugins/" Condition="$(Configuration)==Unity" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" Condition="$(Configuration)!=Unity" />
+    </Target>
+</Project>
