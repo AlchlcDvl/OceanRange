@@ -1,11 +1,12 @@
 using SRML;
+using System.Globalization;
 using SRML.Utils;
 using System.Collections;
 using System.Reflection;
 
-namespace OceanRange.Common;
+namespace OceanRange.Utils;
 
-public static partial class Helpers
+public static class Helpers
 {
     // private static readonly Dictionary<string, Color32> HexToColor32s = [];
     private static readonly Dictionary<string, Color> HexToColors = [];
@@ -36,6 +37,41 @@ public static partial class Helpers
     {
         valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
         return @string;
+    }
+
+    public static List<string> TrueSplit(this string @string, params char[] separators)
+    {
+        var separatorSet = separators.ToHashSet();
+        var separatorCount = @string.Count(separatorSet.Contains);
+
+        var list = new List<string>(separatorCount + 1);
+        var start = 0;
+
+        for (var i = 0; i < @string.Length; i++)
+        {
+            if (!separatorSet.Contains(@string[i]))
+                continue;
+
+            if (i > start)
+            {
+                var part = @string.Substring(start, i - start).Trim();
+
+                if (!string.IsNullOrWhiteSpace(part))
+                    list.Add(part);
+            }
+
+            start = i + 1;
+        }
+
+        if (start < @string.Length)
+        {
+            var lastPart = @string.Substring(start).Trim();
+
+            if (!string.IsNullOrWhiteSpace(lastPart))
+                list.Add(lastPart);
+        }
+
+        return list;
     }
 
     // private static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x));
@@ -256,6 +292,20 @@ public static partial class Helpers
 
     // public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used, but it's better to be safe than sorry
 
+    public static bool TryParseEnum(Type enumType, string name, bool ignoreCase, out object result)
+    {
+        try
+        {
+            result = Enum.Parse(enumType, name, ignoreCase);
+            return true;
+        }
+        catch
+        {
+            result = null;
+            return false;
+        }
+    }
+
     public static bool TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey[] keys, out TValue result)
     {
         foreach (var key in keys)
@@ -376,6 +426,32 @@ public static partial class Helpers
 
     public static T EnsureComponent<T>(this Component component) where T : Component => component.gameObject.EnsureComponent<T>();
 
+    public static bool StartsWith(this string @string, char character) => @string[0] == character;
+
+    public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => member.IsDefined(typeof(T), false);
+
+    public static IEnumerable<(T1, T2)> Zip<T1, T2>(this IEnumerable<T1> source1, IEnumerable<T2> source2)
+    {
+        using var e1 = source1.GetEnumerator();
+        using var e2 = source2.GetEnumerator();
+
+        while (true)
+        {
+            var has1 = e1.MoveNext();
+            var has2 = e2.MoveNext();
+
+            if (!has1 || !has2)
+            {
+                if (has1 != has2)
+                    throw new ArgumentException("Sequences have different lengths.");
+
+                yield break;
+            }
+
+            yield return (e1.Current, e2.Current);
+        }
+    }
+
     // public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TKey, TValue> func)
     // {
     //     if (!dict.TryGetValue(key, out var value))
@@ -426,13 +502,8 @@ public static partial class Helpers
 
     public static T ReadEnum<T>(this BinaryReader reader) where T : struct, Enum => ParseEnum<T>(reader.ReadString());
 
-    // public static object ReadEnum(this BinaryReader reader) => Enum.Parse(reader.ReadType(), reader.ReadString());
-
     public static T ReadModData<T>(this BinaryReader reader) where T : ModData, new()
     {
-        if (reader.ReadBoolean())
-            return null;
-
         var result = new T();
         result.DeserialiseFrom(reader);
         result.OnDeserialise();

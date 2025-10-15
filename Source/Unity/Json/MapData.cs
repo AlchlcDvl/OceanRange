@@ -38,7 +38,8 @@ public sealed class ZoneData : JsonData
     public string TeleporterLocation;
 
     [JsonProperty("requirements")]
-    public List<SerializableStringZoneRequirementDataPair> Requirements;
+    // The key for the dictionary is the public ZoneRequirementData.RequirementType enum.
+    public List<SerializableStringZoneRequirementDataPair> Requirements = [];
 
     [JsonProperty("prefab"), JsonRequired]
     public string AssetName;
@@ -82,10 +83,10 @@ public sealed class RegionData : JsonData
 [Serializable]
 public sealed class World : JsonData
 {
-    [JsonProperty("zones"), JsonRequired]
+    [JsonProperty("zones")]
     public ZoneData[] Zones;
 
-    [JsonProperty("regions"), JsonRequired]
+    [JsonProperty("regions")]
     public RegionData[] Regions;
 
     public override void SerialiseTo(BinaryWriter writer)

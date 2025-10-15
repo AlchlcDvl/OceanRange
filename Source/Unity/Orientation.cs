@@ -1,4 +1,4 @@
-namespace OceanRange.Common;
+namespace OceanRange.Unity;
 
 [Serializable]
 public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<Orientation>
