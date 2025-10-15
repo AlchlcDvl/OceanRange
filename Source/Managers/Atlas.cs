@@ -19,8 +19,8 @@ public static class Atlas
     {
         var world = Inventory.GetModData<World>("world");
 
-        Regions = world.ValueArray1;
-        Zones = world.ValueArray2;
+        Regions = world.Regions;
+        Zones = world.Zones;
 
         ZoneToDataMap = Zones.ToDictionary(x => x.Zone, ZoneDirector.zoneComparer);
 
@@ -114,10 +114,10 @@ public static class Atlas
 
         ZoneDirector.zonePediaIdLookup.Add(zoneData.Zone, zoneData.PediaId);
 
-        zoneData.AmbianceSetting = Inventory.GetScriptable<AmbianceDirectorZoneSetting>(zoneData.PrefabNamePart + "Amb");
+        zoneData.AmbianceSetting = Inventory.GetScriptable<AmbianceDirectorZoneSetting>(zoneData.AssetName + "Amb");
         zoneData.AmbianceSetting.zone = zoneData.Ambiance;
 
-        zoneData.Prefab = Inventory.GetPrefab("zone" + zoneData.PrefabNamePart);
+        zoneData.Prefab = Inventory.GetPrefab("zone" + zoneData.AssetName);
         zoneData.Prefab.SetActive(false);
 
         zoneData.Prefab.GetComponent<ZoneDirector>().zone = zoneData.Zone;

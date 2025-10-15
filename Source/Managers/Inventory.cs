@@ -59,7 +59,7 @@ public static class Inventory
     public static readonly SoftTypeDictionary<(string[] Extensions, Func<string, Type, UObject> LoadAsset)> ComplexAssetTypeExtensions = new()
     {
         // Embedded resources
-        [typeof(Data.Holder)] = (["data"], LoadData),
+        [typeof(Holder)] = (["data"], LoadData),
     };
 
     /// <summary>
@@ -233,16 +233,16 @@ public static class Inventory
     // }
 
     /// <summary>
-    /// Loads a data file from the provided path.
+    /// Loads a json file from the provided path.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
-    /// <returns>The data asset loaded from the path.</returns>
+    /// <returns>The json asset loaded from the path.</returns>
     private static Holder LoadData(string path, Type dataType)
     {
         using var stream = Core.GetManifestResourceStream(path)!;
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
         using var reader = new BinaryReader(decompressor);
-        return (Holder)((Holder)Activator.CreateInstance(dataType)).Deserialise(reader);
+        return (Holder)Activator.CreateInstance(dataType, reader);
     }
 
     /// <summary>

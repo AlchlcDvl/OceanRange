@@ -66,7 +66,7 @@
         "gordoOri": "f 17.2751,13.3003,-36.969,0,30,0",
         "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
         "gordoZone": "REEF",
-        "gordoCell": "Reef_Intro"
+        "gordoLoc": "Reef_Intro"
     },
     {
         "name": "Coco",
@@ -88,7 +88,7 @@
         "gordoOri": "f -494.6969,-2.37,-241.9137,0,200,0",
         "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
         "gordoZone": "REEF",
-        "gordoCell": "Reef_RingIsland",
+        "gordoLoc": "Reef_RingIsland",
         "zones": ["REEF", "MOSS"],
         "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange"],
         "slimeFeatures":
@@ -145,7 +145,7 @@
         "gordoOri": "f 506.8365,5.61915,145.7047,0,320,0",
         "gordoRewards": ["CRATE_QUARRY_01", "CRATE_QUARRY_01", "CRATE_QUARRY_01"],
         "gordoZone": "QUARRY",
-        "gordoCell": "Quarry_VolcanoTransition",
+        "gordoLoc": "Quarry_VolcanoTransition",
         "progress": ["UNLOCK_QUARRY", "UNLOCK_RUINS"],
         "zones": ["QUARRY", "RUINS"],
         "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange"],
@@ -207,7 +207,7 @@
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
         "gordoOri": "f -166.2659,27.229,657.1914,0,0,0",
         "gordoZone": "MOSS",
-        "gordoCell": "Moss_NorthPass",
+        "gordoLoc": "Moss_NorthPass",
         "jiggle": 0.25,
         "spawnAmount": 1,
         "toAdd": ["OceanRange.Slimes.LanternBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
@@ -439,7 +439,7 @@
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
         "gordoOri": "f -328.2128,14.33913,462.0742,0,270,0",
         "gordoZone": "MOSS",
-        "gordoCell": "Moss_Forest",
+        "gordoLoc": "Moss_Forest",
         "plortType": "Plort",
         "zones": ["MOSS"]
     },
@@ -498,7 +498,7 @@
         ],
         "gordoOri": "f 101.948,-3.4949,40.8476,0,57,0",
         "gordoZone": "REEF",
-        "gordoCell": "Reef_CliffCaves",
+        "gordoLoc": "Reef_CliffCaves",
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
         "toAdd": ["OceanRange.Slimes.HermitBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
         "plortType": "Plort",

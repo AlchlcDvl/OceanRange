@@ -3,7 +3,7 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
-using OceanRange.Data;
+using OceanRange.Unity.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO.Compression;
@@ -14,7 +14,6 @@ class JsonScriptableBinary
     private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
     {
         Formatting = Formatting.Indented,
-        ContractResolver = new OceanJsonContract(),
         Converters = new List<JsonConverter>()
         {
             new ColorConverter(),
@@ -32,7 +31,7 @@ class JsonScriptableBinary
         }
     };
 
-    private static readonly Type[] ScriptableTypes = new[] { typeof(Contacts), typeof(Ingredients), typeof(LangHolder), typeof(Largopedia), typeof(Mailbox), typeof(Slimepedia), typeof(World) };
+    private static readonly Type[] ScriptableTypes = new[] { typeof(Contacts), typeof(IngredientsUnity), typeof(LangHolderUnity), typeof(Largopedia), typeof(Mailbox), typeof(Slimepedia), typeof(WorldUnity) };
 
     [MenuItem("Ocean Range/Convert JSON To Scriptable")]
     static void JsonToScriptable()
@@ -65,18 +64,18 @@ class JsonScriptableBinary
         foreach (var type in ScriptableTypes)
         {
             string assetGuid = AssetDatabase.FindAssets("t:" + type.Name)?.FirstOrDefault();
-            ScriptableObject asset;
+            Holder asset;
 
             if (assetGuid == null)
             {
-                asset = ScriptableObject.CreateInstance(type);
+                asset = ScriptableObject.CreateInstance(type) as Holder;
                 var name = asset.name = asset.GetFileName();
                 AssetDatabase.CreateAsset(asset, Path.Combine(assetDirectory, name + ".asset"));
             }
             else
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(assetGuid);
-                asset = AssetDatabase.LoadAssetAtPath(assetPath, type);
+                asset = AssetDatabase.LoadAssetAtPath(assetPath, type) as Holder;
             }
 
             string jsonPath = Path.Combine(jsonDirectory, asset.name + ".json");
@@ -84,7 +83,7 @@ class JsonScriptableBinary
             try
             {
                 if (File.Exists(jsonPath))
-                    JsonConvert.PopulateObject(File.ReadAllText(jsonPath), asset, JsonSettings);
+                    asset.ReadJson(LoadJson(jsonPath, asset.DataType));
             }
             catch (Exception ex)
             {
@@ -94,6 +93,8 @@ class JsonScriptableBinary
             EditorUtility.SetDirty(asset);
         }
     }
+
+    public static object LoadJson(string path, Type type) => JsonConvert.DeserializeObject(File.ReadAllText(path), type, JsonSettings);
 
     [MenuItem("Ocean Range/Convert Scriptable To Binary")]
     static void ScriptableToBinary()

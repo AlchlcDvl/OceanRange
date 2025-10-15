@@ -12,42 +12,40 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
     public Orientation(float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, float xScale, float yScale, float zScale)
         : this(new Vector3(xPos, yPos, zPos), new Vector3(ClampAngle(xRot), ClampAngle(yRot), ClampAngle(zRot)), new Vector3(xScale, yScale, zScale)) { }
 
-#if UNITY
     // To maintain parity with Unity's indexers for structs like Vectors, Quaternions and Colors
-    public Vector3 this[int index]
-    {
-        readonly get => index switch
-        {
-            0 => Position,
-            1 => Rotation,
-            2 => Scale,
-            _ => throw new ArgumentOutOfRangeException(nameof(index))
-        };
-        set
-        {
-            switch (index)
-            {
-                case 0:
-                {
-                    Position = value;
-                    break;
-                }
-                case 1:
-                {
-                    Rotation = value;
-                    break;
-                }
-                case 2:
-                {
-                    Scale = value;
-                    break;
-                }
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(index));
-            }
-        }
-    }
-#endif
+    // public Vector3 this[int index]
+    // {
+    //     readonly get => index switch
+    //     {
+    //         0 => Position,
+    //         1 => Rotation,
+    //         2 => Scale,
+    //         _ => throw new ArgumentOutOfRangeException(nameof(index))
+    //     };
+    //     set
+    //     {
+    //         switch (index)
+    //         {
+    //             case 0:
+    //             {
+    //                 Position = value;
+    //                 break;
+    //             }
+    //             case 1:
+    //             {
+    //                 Rotation = value;
+    //                 break;
+    //             }
+    //             case 2:
+    //             {
+    //                 Scale = value;
+    //                 break;
+    //             }
+    //             default:
+    //                 throw new ArgumentOutOfRangeException(nameof(index));
+    //         }
+    //     }
+    // }
 
     public override bool Equals(object obj) => obj is Orientation orientation && Equals(orientation);
 

@@ -15,7 +15,7 @@
         {
             "name": "Swirlpool_Island",
             "region": "UNDERWATER",
-            "prefabNamePart": "SWIRLPOOL",
+            "prefab": "SWIRLPOOL",
             "teleporterOri": "f -119.7111,-0.0307,-260.243,0,234.398,0",
             "teleporterLoc": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/",
             "requirements":

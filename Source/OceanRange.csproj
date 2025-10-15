@@ -27,35 +27,32 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="all" />
-        <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" />
-        <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" />
-        <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" />
-
         <Publicize Include="UnityEngine.CoreModule" />
         <Publicize Include="Assembly-CSharp" />
     </ItemGroup>
 
     <ItemGroup Condition="$(Configuration)!=Unity">
+        <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="all" />
+        <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" />
+        <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" />
+        <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" />
+
         <EmbeddedResource Include="Resources\*" />
         <EmbeddedResource Include="Resources\*\*" />
     </ItemGroup>
 
     <ItemGroup Condition="$(Configuration)!=Unity">
-        <Compile Remove="Data\Unity\*.cs" />
-        <Compile Remove="Utils\Unity\*.cs" />
-        <Compile Remove="System\AllowNull.cs" />
+        <Compile Remove="Unity\*.cs" />
+        <Compile Remove="Unity\Json\*.cs" />
     </ItemGroup>
 
     <ItemGroup Condition="$(Configuration)==Unity">
         <Compile Remove="**\*.cs" />
 
+        <Compile Include="Unity\*.cs" />
         <Compile Include="Common\*.cs" />
+        <Compile Include="Unity\Json\*.cs" />
         <Compile Include="GlobalUsings.cs" />
-        <Compile Include="Data\Unity\*.cs" />
-        <Compile Include="Data\Common\*.cs" />
-        <Compile Include="Utils\Unity\*.cs" />
-        <Compile Include="Utils\Common\*.cs" />
         <Compile Include="System\AllowNull.cs" />
     </ItemGroup>
 

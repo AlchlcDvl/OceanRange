@@ -31,8 +31,8 @@ public static class Cookbook
 
         var food = Inventory.GetModData<Ingredients>("ingredients");
 
-        Plants = food.ValueArray1;
-        Chimkens = food.ValueArray2;
+        Chimkens = food.Chimkens;
+        Plants = food.Plants;
 
         Ids.DIRT.RegisterId(IdentifiableId.SILKY_SAND_CRAFT);
 
