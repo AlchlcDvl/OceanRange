@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c1f8df534ca6414bbbcb75fbfab4d62, type: 3}
+  m_Script: {fileID: 0}
   m_Name: mailbox
-  m_EditorClassIdentifier: 
-  Value:
-  - Name: Splash Intro
-    Id: ocean_intro
-  - Name: Lisa Intro
-    Id: exchangeintro_lisa
+  m_EditorClassIdentifier: Assembly-CSharp::Mailbox
+  Name: Mailbox
+  Mail:
+  - {fileID: 11400000, guid: 8e1f876366cc8534585d9ecd832d9d58, type: 2}
+  - {fileID: 11400000, guid: 928002d3641116a4da0f25dcd5832a6c, type: 2}

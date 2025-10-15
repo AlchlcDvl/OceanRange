@@ -3,7 +3,6 @@ using UnityEditor;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using System;
 
 class CreateAssetBundles
 {
@@ -19,41 +18,28 @@ class CreateAssetBundles
     {
         Debug.Log("Bundles building...");
 
-        AssetDatabase.StartAssetEditing();
+        string assetBundleDirectory = Path.Combine("Assets", "StreamingAssets");
+        PrepDirectory(assetBundleDirectory);
 
-        try
+        string bundles = Path.Combine("Assets", "..", "..", "Source", "Resources", "Bundles");
+        PrepDirectory(bundles);
+
+        foreach ((string dir, string suffix, BuildTarget target) in _targets)
         {
-            string assetBundleDirectory = Path.Combine("Assets", "StreamingAssets");
-            PrepDirectory(assetBundleDirectory);
+            string directory = Path.Combine(assetBundleDirectory, dir);
+            PrepDirectory(directory);
 
-            string bundles = Path.Combine("Assets", "..", "..", "Source", "Resources", "Bundles");
-            PrepDirectory(bundles);
+            BuildPipeline.BuildAssetBundles(directory, BuildAssetBundleOptions.None, target);
 
-            foreach ((string dir, string suffix, BuildTarget target) in _targets)
-            {
-                string directory = Path.Combine(assetBundleDirectory, dir);
-                PrepDirectory(directory);
-
-                BuildPipeline.BuildAssetBundles(directory, BuildAssetBundleOptions.None, target);
-
-                MoveAndRenameSpecificBundle(directory, bundles, suffix);
-            }
-
-            Directory.Delete(assetBundleDirectory, true);
-
-            string metaPath = assetBundleDirectory + ".meta";
-
-            if (File.Exists(metaPath))
-                File.Delete(metaPath);
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError(ex);
+            MoveAndRenameSpecificBundle(directory, bundles, suffix);
         }
 
-        AssetDatabase.StopAssetEditing();
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        Directory.Delete(assetBundleDirectory, true);
+
+        string metaPath = assetBundleDirectory + ".meta";
+
+        if (File.Exists(metaPath))
+            File.Delete(metaPath);
 
         Debug.Log("Bundles built!");
     }

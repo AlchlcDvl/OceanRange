@@ -2,17 +2,6 @@
 
 namespace OceanRange.Modules;
 
-public sealed class SlimeHolder(BinaryReader reader) : Holder(reader)
-{
-    public SlimeData[] Slimes;
-
-    public override void DeserialiseFrom(BinaryReader reader)
-    {
-        base.DeserialiseFrom(reader);
-        Slimes = reader.ReadArray(Helpers.ReadModData<SlimeData>);
-    }
-}
-
 public sealed class SlimeData : SpawnedActorData
 {
     private static readonly Dictionary<string, MethodInfo> Methods = [];
@@ -26,120 +15,140 @@ public sealed class SlimeData : SpawnedActorData
         }
     }
 
+    [JsonIgnore]
     public IdentifiableId GordoId;
+
+    [JsonIgnore]
     public IdentifiableId PlortId;
 
-    public IdentifiableId? FavFood;
+    [JsonProperty("favFood")]
+    public IdentifiableId FavFood;
+
+    [JsonProperty("favToy"), JsonRequired]
     public IdentifiableId FavToy;
 
+    [JsonProperty("nightSpawn")]
     public bool NightSpawn;
 
-    public FoodGroup? Diet;
+    [JsonProperty("diet")]
+    public FoodGroup Diet;
 
+    [JsonProperty("baseSlime")]
     public IdentifiableId BaseSlime = IdentifiableId.PINK_SLIME;
+
+    [JsonProperty("basePlort")]
     public IdentifiableId BasePlort = IdentifiableId.PINK_PLORT;
+
+    [JsonProperty("baseGordo")]
     public IdentifiableId BaseGordo = IdentifiableId.PINK_GORDO;
 
+    [JsonIgnore]
     public MethodInfo InitSlimeDetails;
+
+    [JsonIgnore]
     public MethodInfo InitPlortDetails;
+
+    [JsonIgnore]
     public MethodInfo InitGordoDetails;
 
+    [JsonProperty("topMouthColor")]
     public Color? TopMouthColor;
+
+    [JsonProperty("middleMouthColor")]
     public Color? MiddleMouthColor;
+
+    [JsonProperty("bottomMouthColor")]
     public Color? BottomMouthColor;
 
+    [JsonProperty("redEyeColor")]
     public Color? RedEyeColor;
+
+    [JsonProperty("greenEyeColor")]
     public Color? GreenEyeColor;
+
+    [JsonProperty("blueEyeColor")]
     public Color? BlueEyeColor;
 
+    [JsonProperty("topPaletteColor")]
     public Color? TopPaletteColor;
+
+    [JsonProperty("middlePaletteColor")]
     public Color? MiddlePaletteColor;
+
+    [JsonProperty("bottomPaletteColor")]
     public Color? BottomPaletteColor;
 
+    [JsonProperty("plortAmmoColor")]
     public Color? PlortAmmoColor;
 
+    [JsonProperty("plortType")]
     public string PlortType = "Pearl";
 
+    [JsonProperty("canBeRefined")]
     public bool CanBeRefined;
 
-    public Zone GordoZone;
-    public bool HasGordo = true;
-    public IdentifiableId[] GordoRewards;
-    public Orientation GordoOrientation;
-    public string GordoCell;
-    public bool NaturalGordoSpawn = true;
-
-    public int PlortExchangeWeight = 16;
-    public float JiggleAmount = 1f;
-
-    public ModelData[] SlimeFeatures;
-    public ModelData[] GordoFeatures;
-    public ModelData[] PlortFeatures;
-
-    public Type[] ComponentsToAdd;
-    public Type[] ComponentsToRemove;
-
+    [JsonProperty("zones"), JsonRequired]
     public Zone[] Zones;
-    public string[] ExcludedSpawners;
+
+    [JsonProperty("gordoZone")]
+    public Zone GordoZone;
+
+    [JsonProperty("spawnAmount")]
     public float SpawnAmount = 0.25f;
 
-    public bool Vaccable = true;
-    public int GordoEatAmount = 25;
+    [JsonProperty("hasGordo")]
+    public bool HasGordo = true;
 
-    public IdentifiableId? ComponentBase;
+    [JsonProperty("gordoRewards")]
+    public IdentifiableId[] GordoRewards;
 
+    [JsonProperty("gordoOri")]
+    public Orientation GordoOrientation;
+
+    [JsonProperty("gordoLoc")]
+    public string GordoCell;
+
+    [JsonProperty("natGordoSpawn")]
+    public bool NaturalGordoSpawn = true;
+
+    [JsonProperty("plortExchangeWeight")]
+    public int PlortExchangeWeight = 16;
+
+    [JsonProperty("jiggle")]
+    public float JiggleAmount = 1f;
+
+    [JsonIgnore]
     public bool IsPopped;
 
-    public override void DeserialiseFrom(BinaryReader reader)
-    {
-        base.DeserialiseFrom(reader);
+    [JsonProperty("slimeFeatures"), JsonRequired]
+    public ModelData[] SlimeFeatures;
 
-        FavFood = reader.ReadNullable(Helpers.ReadEnum<IdentifiableId>);
-        FavToy = reader.ReadEnum<IdentifiableId>();
-        NightSpawn = reader.ReadBoolean();
-        Diet = reader.ReadNullable(Helpers.ReadEnum<FoodGroup>);
-        BaseSlime = reader.ReadEnum<IdentifiableId>();
-        BasePlort = reader.ReadEnum<IdentifiableId>();
-        BaseGordo = reader.ReadEnum<IdentifiableId>();
+    [JsonProperty("gordoFeatures")]
+    public ModelData[] GordoFeatures;
 
-        TopMouthColor = reader.ReadNullable(Helpers.ReadColor);
-        MiddleMouthColor = reader.ReadNullable(Helpers.ReadColor);
-        BottomMouthColor = reader.ReadNullable(Helpers.ReadColor);
-        RedEyeColor = reader.ReadNullable(Helpers.ReadColor);
-        GreenEyeColor = reader.ReadNullable(Helpers.ReadColor);
-        BlueEyeColor = reader.ReadNullable(Helpers.ReadColor);
-        TopPaletteColor = reader.ReadNullable(Helpers.ReadColor);
-        MiddlePaletteColor = reader.ReadNullable(Helpers.ReadColor);
-        BottomPaletteColor = reader.ReadNullable(Helpers.ReadColor);
-        PlortAmmoColor = reader.ReadNullable(Helpers.ReadColor);
+    [JsonProperty("plortFeatures")]
+    public ModelData[] PlortFeatures;
 
-        PlortType = reader.ReadString();
-        CanBeRefined = reader.ReadBoolean();
-        Zones = reader.ReadArray(Helpers.ReadEnum<Zone>);
+    [JsonProperty("toAdd")]
+    public Type[] ComponentsToAdd;
 
-        GordoZone = reader.ReadEnum<Zone>();
+    [JsonProperty("toRemove")]
+    public Type[] ComponentsToRemove;
 
-        SpawnAmount = reader.ReadSingle();
-        HasGordo = reader.ReadBoolean();
-        GordoRewards = reader.ReadArray(Helpers.ReadEnum<IdentifiableId>);
-        GordoOrientation = reader.ReadOrientation();
-        GordoCell = reader.ReadNullableString();
-        NaturalGordoSpawn = reader.ReadBoolean();
-        PlortExchangeWeight = reader.ReadInt32();
-        JiggleAmount = reader.ReadSingle();
-        SlimeFeatures = reader.ReadArray(Helpers.ReadModData<ModelData>);
-        GordoFeatures = reader.ReadArray(Helpers.ReadModData<ModelData>);
-        PlortFeatures = reader.ReadArray(Helpers.ReadModData<ModelData>);
-        ComponentsToAdd = reader.ReadArray(Helpers.ReadType);
-        ComponentsToRemove = reader.ReadArray(Helpers.ReadType);
-        ExcludedSpawners = reader.ReadArray(Helpers.ReadString2);
+    [JsonProperty("spawners")]
+    public string[] ExcludedSpawners;
 
-        Vaccable = reader.ReadBoolean();
-        GordoEatAmount = reader.ReadInt32();
-        ComponentBase = reader.ReadNullable(Helpers.ReadEnum<IdentifiableId>);
-    }
+    [JsonProperty("vaccable")]
+    public bool Vaccable = true;
 
-    public override void OnDeserialise()
+    [JsonProperty("gordoEat")]
+    public int GordoEatAmount = 25;
+
+    [JsonProperty("componentBase")]
+    public IdentifiableId? ComponentBase;
+
+    [OnDeserialized]
+    public void PopulateRemainingValues(StreamingContext _)
     {
         var upper = Name.ToUpperInvariant();
 
@@ -180,15 +189,12 @@ public sealed class SlimeData : SpawnedActorData
 
         Progress ??= [];
 
-        if (PlortFeatures?.Length is null or 0 || GordoFeatures?.Length is null or 0)
+        if (PlortFeatures == null || GordoFeatures == null)
         {
             var copy = SlimeFeatures.Select(x => new ModelData(x, false)).ToArray();
 
-            if (PlortFeatures?.Length is null or 0)
-                PlortFeatures = copy;
-
-            if (GordoFeatures?.Length is null or 0)
-                GordoFeatures = copy;
+            PlortFeatures ??= copy;
+            GordoFeatures ??= copy;
         }
 
         Vaccable |= Slimepedia.MvExists;

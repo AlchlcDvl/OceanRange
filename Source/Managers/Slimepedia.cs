@@ -59,7 +59,7 @@ public static class Slimepedia
         MgExists = SRModLoader.IsModPresent("luckygordo");
         MvExists = SRModLoader.IsModPresent("more_vaccing");
 
-        Slimes = Inventory.GetModData<SlimeHolder>("slimepedia").Slimes;
+        Slimes = Inventory.GetJsonArray<SlimeData>("slimepedia");
         SlimeDataMap = Slimes.ToDictionary(x => x.MainId, Identifiable.idComparer);
 
         GordoSaveData.Lookup = Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId, Identifiable.idComparer);
@@ -170,9 +170,11 @@ public static class Slimepedia
         markerPrefab.GetComponent<Image>().sprite = icon;
         gordoDisplay.markerPrefab = markerPrefab;
 
+        var isSand = lower == "sand";
+
         var identifiable = prefab.GetComponent<GordoIdentifiable>();
         identifiable.id = slimeData.GordoId;
-        identifiable.nativeZones = !slimeData.NaturalGordoSpawn ? Helpers.GetEnumValues<Zone>() : [slimeData.GordoZone];
+        identifiable.nativeZones = isSand ? Helpers.GetEnumValues<Zone>() : [slimeData.GordoZone];
 
         var gordoEat = prefab.GetComponent<GordoEat>();
         var gordoDefinition = gordoEat.slimeDefinition.DeepCopy();
@@ -187,7 +189,7 @@ public static class Slimepedia
         var appearance = definition.AppearancesDefault[0];
         var material = appearance.Structures[0].DefaultMaterials[0].Clone();
 
-        if (lower == "sand")
+        if (isSand)
         {
             material.SetFloat(VertexOffset, 0f);
 
@@ -287,9 +289,9 @@ public static class Slimepedia
         // Create a copy for our slimes and populate with info
         var definition = baseDefinition.DeepCopy();
         definition.Diet.Produces = [slimeData.PlortId];
-        definition.Diet.MajorFoodGroups = [slimeData.Diet ?? default];
+        definition.Diet.MajorFoodGroups = [slimeData.Diet];
         definition.Diet.AdditionalFoods = [IdentifiableId.SPICY_TOFU];
-        definition.Diet.Favorites = [slimeData.FavFood ?? default];
+        definition.Diet.Favorites = [slimeData.FavFood];
         definition.Diet.EatMap?.Clear();
         definition.CanLargofy = Identifiable.LARGO_CLASS.Any(x => x.ToString().ToLowerInvariant().Contains(lower));
         definition.FavoriteToys = [slimeData.FavToy];
@@ -509,9 +511,9 @@ public static class Slimepedia
         }
         // else if (matData.Shader != null)
         //     material = new(Inventory.GetShader(matData.Shader));
-        else if (matData.MatOrigin.HasValue)
+        else if (matData.MatOriginSlime.HasValue)
         {
-            material = GetMat(matData.MatOrigin.Value, matData.MatSameAs);
+            material = GetMat(matData.MatOriginSlime.Value, matData.MatSameAs);
             setProps = cloneMat = matData.CloneMatOrigin;
         }
         else if (matData.SameAs.HasValue && mainMatData?.Length is > 0)

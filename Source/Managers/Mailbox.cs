@@ -9,7 +9,7 @@ public static class Mailbox
 #endif
     public static void PreloadMailData()
     {
-        Mail = Inventory.GetModData<Starmail>("mailbox").Mail;
+        Mail = Inventory.GetJsonArray<MailData>("mailbox");
         Array.ForEach(Mail, PreloadMail);
     }
 

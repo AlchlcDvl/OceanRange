@@ -1,12 +1,3 @@
-global using UnityEngine;
-
-global using System;
-global using System.IO;
-global using System.Linq;
-global using System.Collections.Generic;
-
-global using JetBrains.Annotations;
-
 #if !UNITY
 // global using GadgetId = Gadget.Id;
 global using Zone = ZoneDirector.Zone;
@@ -28,6 +19,8 @@ global using RegionId = MonomiPark.SlimeRancher.Regions.RegionRegistry.RegionSet
 
 global using SRML.SR;
 
+global using UnityEngine;
+
 global using HarmonyLib;
 
 global using OceanRange.Managers;
@@ -37,6 +30,13 @@ global using OceanRange.Utils;
 
 global using MonomiPark.SlimeRancher.Regions;
 
-#else
 global using Newtonsoft.Json;
+
+global using System;
+global using System.IO;
+global using System.Linq;
+global using System.Collections.Generic;
+global using System.Runtime.Serialization;
+
+global using JetBrains.Annotations;
 #endif

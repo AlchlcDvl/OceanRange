@@ -17,6 +17,27 @@ public static class Inventory
     /// </summary>
     public static readonly Assembly Core = typeof(Main).Assembly;
 
+    /// <summary>
+    /// Common json serialisation settings to avoid creating a new json settings instance for each json file.
+    /// </summary>
+    public static readonly JsonSerializerSettings JsonSettings = new()
+    {
+#if DEBUG
+        // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
+        Formatting = Formatting.Indented,
+#endif
+        // Adding the json converters
+        Converters =
+        [
+            new EnumConverter(),
+            new TypeConverter(),
+            new ColorConverter(),
+            // new Color32Converter(), // Unused at the moment, but kept around if needed
+            new Vector3Converter(),
+            new OrientationConverter(),
+        ]
+    };
+
     private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
     {
         [RuntimePlatform.OSXPlayer] = "mac",
@@ -37,6 +58,7 @@ public static class Inventory
     public static readonly SoftTypeDictionary<(string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         // Embedded resources
+        [typeof(Json)] = (["json"], LoadJson),
         [typeof(Mesh)] = (["cmesh"], LoadMesh),
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
@@ -54,15 +76,6 @@ public static class Inventory
     };
 
     /// <summary>
-    /// Same as the regular one, except with an added parameter for more complex asset types..
-    /// </summary>
-    public static readonly SoftTypeDictionary<(string[] Extensions, Func<string, Type, UObject> LoadAsset)> ComplexAssetTypeExtensions = new()
-    {
-        // Embedded resources
-        [typeof(Holder)] = (["data"], LoadData),
-    };
-
-    /// <summary>
     /// Handles the mapping of extensions that essentially mean the same thing.
     /// </summary>
     public static readonly Dictionary<string, string> ExclusiveExtensions = new()
@@ -76,7 +89,7 @@ public static class Inventory
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
 
-    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).Union(Platforms.Select(x => "bundle_" + x)).Union(ComplexAssetTypeExtensions.Values.SelectMany(x => x.Extensions))];
+    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).Union(Platforms.Select(x => "bundle_" + x))];
 
 #if DEBUG
     /// <summary>
@@ -126,6 +139,13 @@ public static class Inventory
     private static string SanitisePath(this string path) => path
         .ReplaceAll("", Extensions) // Removing the file extension first
         .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux/AssetBundle/Urls, \ for Mac, . for Embedded) and get the last entry which should be the asset name
+    /// <summary>
+    /// Gets and serialise json data from the asset associated with the provided name.
+    /// </summary>
+    /// <typeparam name="T">The type to deserialise to.</typeparam>
+    /// <param name="path">The name of the asset.</param>
+    /// <returns>The read and converted json data.</returns>
+    public static T[] GetJsonArray<T>(string path) => GetJson<T[]>(path);
 
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.
@@ -133,7 +153,13 @@ public static class Inventory
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted json data.</returns>
-    public static T GetModData<T>(string path) where T : Holder => Get<T>(path);
+    public static T GetJson<T>(string path)
+    {
+        var jsoncText = Get<Json>(path).text;
+        using var stringReader = new StringReader(jsoncText);
+        using var jsonTextReader = new JsonTextReader(stringReader);
+        return JsonSerializer.Create(JsonSettings).Deserialize<T>(jsonTextReader);
+    }
 
     /// <summary>
     /// Gets a Texture2D from the assets associated with the provided name.
@@ -237,12 +263,11 @@ public static class Inventory
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     /// <returns>The json asset loaded from the path.</returns>
-    private static Holder LoadData(string path, Type dataType)
+    private static Json LoadJson(string path)
     {
         using var stream = Core.GetManifestResourceStream(path)!;
-        using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
-        using var reader = new BinaryReader(decompressor);
-        return (Holder)Activator.CreateInstance(dataType, reader);
+        using var reader = new StreamReader(stream, Encoding.UTF8, false);
+        return new(reader.ReadToEnd());
     }
 
     /// <summary>
@@ -260,12 +285,14 @@ public static class Inventory
 
         return new()
         {
-            vertices = reader.ReadArray(Helpers.ReadVector3),
-            triangles = reader.ReadArray(Helpers.ReadInt),
-            uv = reader.ReadArray(BinaryUtils.ReadVector2),
+            vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
+            triangles = BinaryUtils.ReadArray(reader, ReadInt),
+            uv = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2),
             bindposes = []
         };
     }
+
+    private static int ReadInt(BinaryReader reader) => reader.ReadInt32();
 
     /// <summary>
     /// Loads a texture from the provided path.

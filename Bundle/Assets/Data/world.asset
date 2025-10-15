@@ -9,31 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4034e4f67a9a71341b0d9b53c2f505b7, type: 3}
+  m_Script: {fileID: 0}
   m_Name: world
-  m_EditorClassIdentifier: 
-  Value:
-    Name: Ocean Range
-    Zones:
-    - Name: Swirlpool_Island
-      Region: UNDERWATER
-      TeleporterOrientation:
-        Position: {x: -119.7111, y: -0.0307, z: -260.243}
-        Rotation: {x: 0, y: 234.398, z: 0}
-        Scale: {x: 1, y: 1, z: 1}
-      TeleporterLocation: zoneRANCH/cellRanch_Docks/Sector/Upgrades/
-      Requirements:
-      - Key: CorporateLevel
-        Value:
-          Name: 
-          CorporateLevelMin: 15
-          CorporateLevelMax: 2147483647
-          ExchangeProgress: 0
-          PathToGameObject: zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)
-      AssetName: SWIRLPOOL
-    Regions:
-    - Name: Underwater
-      InitialWorldSize: 2000
-      InitialWorldPos: {x: 0, y: 0, z: 0}
-      MinNodeSize: 250
-      LoosenessVal: 1.2
+  m_EditorClassIdentifier: Assembly-CSharp::World
+  Name: 
+  Zones: []
+  Regions: []

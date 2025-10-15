@@ -1,42 +1,36 @@
-namespace OceanRange.Modules;
+namespace OceanRange.Managers;
 
-public sealed class Contactsbook(BinaryReader reader) : Holder(reader)
+public sealed class RancherData : JsonData
 {
-    public RancherData[] Ranchers;
-
-    public override void DeserialiseFrom(BinaryReader reader)
-    {
-        base.DeserialiseFrom(reader);
-        Ranchers = reader.ReadArray(Helpers.ReadModData<RancherData>);
-    }
-}
-
-public sealed class RancherData : ModData
-{
+    [JsonProperty("requests"), JsonRequired]
     public Category[] Requests;
+
+    [JsonProperty("rewards"), JsonRequired]
     public Category[] Rewards;
+
+    [JsonProperty("rareRewards"), JsonRequired]
     public Category[] RareRewards;
 
+    [JsonProperty("indivRequests")]
     public IdentifiableId[] IndivRequests;
+
+    [JsonProperty("indivRewards")]
     public IdentifiableId[] IndivReward;
+
+    [JsonProperty("indivRareRewards")]
     public IdentifiableId[] IndivRareRewards;
 
-    public string RancherId;
+    [JsonIgnore]
     public RancherName RancherName;
+
+    [JsonIgnore]
     public ExchangeDirector.Rancher Rancher;
 
-    public override void DeserialiseFrom(BinaryReader reader)
-    {
-        base.DeserialiseFrom(reader);
-        Requests = reader.ReadArray(Helpers.ReadEnum<Category>);
-        Rewards = reader.ReadArray(Helpers.ReadEnum<Category>);
-        RareRewards = reader.ReadArray(Helpers.ReadEnum<Category>);
-        IndivRequests = reader.ReadArray(Helpers.ReadEnum<IdentifiableId>);
-        IndivReward = reader.ReadArray(Helpers.ReadEnum<IdentifiableId>);
-        IndivRareRewards = reader.ReadArray(Helpers.ReadEnum<IdentifiableId>);
-    }
+    [JsonIgnore]
+    public string RancherId;
 
-    public override void OnDeserialise()
+    [OnDeserialized]
+    public void PopulateData(StreamingContext _)
     {
         RancherId = Name.ToLowerInvariant();
         RancherName = Helpers.AddEnumValue<RancherName>(Name.ToUpperInvariant());

@@ -9,18 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d778d435711fca64eb5ad99f9dd9c25e, type: 3}
+  m_Script: {fileID: 0}
   m_Name: contacts
-  m_EditorClassIdentifier: 
-  Value:
-  - Name: Lisa
-    Requests:
-    - OCEAN
-    Rewards:
-    - PLORTS
-    - MEAT
-    RareRewards:
-    - CRAFT_MATS
-    IndivRequests: []
-    IndivReward: []
-    IndivRareRewards: []
+  m_EditorClassIdentifier: Assembly-CSharp::Contacts
+  Name: Contacts
+  Ranchers:
+  - {fileID: 11400000, guid: 1c2b0a05a4c869e43b2ad0e89961dde9, type: 2}
