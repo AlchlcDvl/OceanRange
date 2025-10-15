@@ -29,7 +29,7 @@ public static class Inventory
 #endif
         ContractResolver = new DefaultContractResolver()
         {
-            NamingStrategy = new CamelCaseNamingStrategy()
+            NamingStrategy = new CamelCaseNamingStrategy(false, false)
         },
         // Adding the json converters
         Converters =
@@ -96,12 +96,10 @@ public static class Inventory
 
     private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).Union(Platforms.Select(x => "bundle_" + x))];
 
-#if DEBUG
     /// <summary>
     /// Debug string path for the mod to dump assets.
     /// </summary>
-    public static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath)!, "SRML");
-#endif
+    public static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath)!, "OceanRange");
 
     /// <summary>
     /// Initialises the asset handling by creating relevant handles.
@@ -115,6 +113,9 @@ public static class Inventory
 
         Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
         Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
+
+        if (!Directory.Exists(DumpPath))
+            Directory.CreateDirectory(DumpPath);
     }
 
     /// <summary>
@@ -158,12 +159,44 @@ public static class Inventory
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted json data.</returns>
-    public static T GetJson<T>(string path)
+    public static T GetJson<T>(string path) => ToJson<T>(TryReadJson(path, out var contents) ? contents : Get<Json>(path).text);
+
+    public static bool TryGetJson<T>(string path, out T json, bool writeJson = false)
     {
-        var jsoncText = Get<Json>(path).text;
-        using var stringReader = new StringReader(jsoncText);
+        if (!TryGet<Json>(path, out var jsonText))
+        {
+            json = default;
+            return false;
+        }
+
+        var raw = jsonText.text;
+        json = ToJson<T>(raw);
+
+        if (writeJson)
+            File.WriteAllText(Path.Combine(DumpPath, path + ".json"), raw);
+
+        return true;
+    }
+
+    public static T ToJson<T>(string jsonText)
+    {
+        using var stringReader = new StringReader(jsonText);
         using var jsonTextReader = new JsonTextReader(stringReader);
         return JsonSerializer.Create(JsonSettings).Deserialize<T>(jsonTextReader);
+    }
+
+    private static bool TryReadJson(string fileName, out string contents)
+    {
+        var path = Path.Combine(DumpPath, fileName + ".json");
+
+        if (!File.Exists(path))
+        {
+            contents = null;
+            return false;
+        }
+
+        contents = File.ReadAllText(path);
+        return true;
     }
 
     /// <summary>
@@ -212,26 +245,26 @@ public static class Inventory
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
-    // /// <summary>
-    // /// Attempts to fetch an asset of type <typeparamref name="T"/> associated with the provided name.
-    // /// </summary>
-    // /// <typeparam name="T">The type of the asset.</typeparam>
-    // /// <param name="name">The name of the asset.</param>
-    // /// <param name="result">The fetched asset, if any.</param>
-    // /// <returns>true if an asset was found with the name.</returns>
-    // private static bool TryGet<T>(string name, out T result) where T : UObject
-    // {
-    //     try
-    //     {
-    //         result = Get<T>(name);
-    //         return true;
-    //     }
-    //     catch
-    //     {
-    //         result = null;
-    //         return false;
-    //     }
-    // }
+    /// <summary>
+    /// Attempts to fetch an asset of type <typeparamref name="T"/> associated with the provided name.
+    /// </summary>
+    /// <typeparam name="T">The type of the asset.</typeparam>
+    /// <param name="name">The name of the asset.</param>
+    /// <param name="result">The fetched asset, if any.</param>
+    /// <returns>true if an asset was found with the name.</returns>
+    private static bool TryGet<T>(string name, out T result) where T : UObject
+    {
+        try
+        {
+            result = Get<T>(name);
+            return true;
+        }
+        catch
+        {
+            result = null;
+            return false;
+        }
+    }
 
     /// <summary>
     /// Gets a(n) <typeparamref name="T"/> associated with the provided name.
