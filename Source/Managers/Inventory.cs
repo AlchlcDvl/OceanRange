@@ -2,6 +2,7 @@ using System.Reflection;
 using SRML.Utils;
 using System.IO.Compression;
 using System.Text;
+using Newtonsoft.Json.Serialization;
 
 namespace OceanRange.Managers;
 
@@ -26,6 +27,10 @@ public static class Inventory
         // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
         Formatting = Formatting.Indented,
 #endif
+        ContractResolver = new DefaultContractResolver()
+        {
+            NamingStrategy = new CamelCaseNamingStrategy()
+        },
         // Adding the json converters
         Converters =
         [
@@ -365,6 +370,7 @@ public static class Inventory
     private static void CreateAssetHandle(string path)
     {
         var name = path.SanitisePath();
+        $"{name}:{path}".DoLog();
 
         if (!Assets.TryGetValue(name, out var handle))
             Assets[name] = handle = new(name);

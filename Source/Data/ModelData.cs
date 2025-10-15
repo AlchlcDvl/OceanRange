@@ -1,4 +1,4 @@
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
 public sealed class ModelData : JsonData
 {
@@ -13,7 +13,7 @@ public sealed class ModelData : JsonData
         MatSameAs = data?.MatSameAs;
         ColorsOrigin = data?.ColorsOrigin;
         ColorsSameAs = data?.ColorsSameAs;
-        MatOriginSlime = data?.MatOriginSlime;
+        MatOrigin = data?.MatOrigin;
         CachedMaterial = data?.CachedMaterial;
         ColorPropsJson = data?.ColorPropsJson;
 
@@ -35,79 +35,48 @@ public sealed class ModelData : JsonData
             }
         }
 
-        PopulateRemainingValues(default);
+        OnDeserialise();
     }
 
-    [JsonProperty("gloss")]
     public float? Gloss;
 
-    [JsonProperty("pattern")]
     public string Pattern;
 
-    [JsonProperty("sameAs")]
     public int? SameAs;
-
-    [JsonProperty("matSameAs")]
     public int? MatSameAs;
-
-    [JsonProperty("colorsSameAs")]
     public int? ColorsSameAs;
 
-    [JsonProperty("cloneSameAs")]
     public bool CloneSameAs;
-
-    [JsonProperty("cloneMatOrigin")]
     public bool CloneMatOrigin = true;
-
-    [JsonProperty("cloneBase")]
     public bool CloneFallback = true;
 
-    [JsonProperty("matOrigin")]
-    public IdentifiableId? MatOriginSlime;
-
-    [JsonProperty("colorsOrigin")]
+    public IdentifiableId? MatOrigin;
     public IdentifiableId? ColorsOrigin;
 
-    // [JsonProperty("shader")]
     // public string Shader;
 
-    [JsonProperty("colorProps")]
-    private Dictionary<string, Color> ColorPropsJson;
-
-    [JsonProperty("mesh")]
     public string Mesh;
-
-    [JsonProperty("skipNull")]
-    public bool SkipNull;
-
-    [JsonProperty("ignoreLodIndex")]
     public bool IgnoreLodIndex;
 
-    [JsonProperty("skip")]
     public bool Skip;
+    public bool SkipNull;
 
-    [JsonProperty("invert")]
-    public bool InvertColorOriginColors;
+    [JsonProperty("invert")] public bool InvertColorOriginColors;
+    [JsonProperty("colorProps")] private Dictionary<string, Color> ColorPropsJson;
 
-    [JsonIgnore]
-    public bool IsBody;
-
-    [JsonIgnore]
-    public readonly Dictionary<int, Color> ColorProps = [];
-
-    [JsonIgnore]
-    public Material CachedMaterial;
+    [JsonIgnore] public bool IsBody;
+    [JsonIgnore] public readonly Dictionary<int, Color> ColorProps = [];
+    [JsonIgnore] public Material CachedMaterial;
 
     private const string Top = "TopColor";
     private static readonly int TopLength = Top.Length;
 
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _)
+    protected override void OnDeserialise()
     {
         if (ColorPropsJson == null)
             return;
 
-        foreach (var (prop, color) in ColorPropsJson.ToArray())
+        foreach (var (prop, color) in ColorPropsJson)
         {
             if (!prop.EndsWith(Top, StringComparison.Ordinal))
                 continue;
@@ -116,16 +85,15 @@ public sealed class ModelData : JsonData
 
             var middle = baseName + "MiddleColor";
 
-            if (!ColorPropsJson.TryGetValue(middle, out var middleColor))
-                ColorPropsJson[middle] = middleColor = color;
+            if (ColorPropsJson.TryGetValue(middle, out var middleColor))
+                ColorProps[ShaderUtils.GetOrSet(middle)] = middleColor;
+            else
+                ColorProps[ShaderUtils.GetOrSet(middle)] = middleColor = color;
 
             var bottom = baseName + "BottomColor";
 
             if (!ColorPropsJson.ContainsKey(bottom))
-                ColorPropsJson[bottom] = middleColor;
+                ColorProps[ShaderUtils.GetOrSet(bottom)] = middleColor;
         }
-
-        foreach (var (prop, value) in ColorPropsJson)
-            ColorProps[ShaderUtils.GetOrSet(prop)] = value;
     }
 }

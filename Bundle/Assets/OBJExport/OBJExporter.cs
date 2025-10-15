@@ -184,7 +184,7 @@ public class OBJExporter : ScriptableWizard
                 string exportName = meshName;
                 if (objNameAddIdNum)
                 {
-                    exportName += "_" + i;
+                    exportName += '_' + i;
                 }
                 sb.AppendLine("g " + exportName);
             }
@@ -227,7 +227,7 @@ public class OBJExporter : ScriptableWizard
                     v += mf.gameObject.transform.position;
                 }
                 v.x *= -1;
-                sb.AppendLine("v " + v.x + " " + v.y + " " + v.z);
+                sb.AppendLine("v " + v.x + ' ' + v.y + ' ' + v.z);
             }
             foreach (Vector3 vx in msh.normals)
             {
@@ -242,12 +242,12 @@ public class OBJExporter : ScriptableWizard
                     v = RotateAroundPoint(v, Vector3.zero, mf.gameObject.transform.rotation);
                 }
                 v.x *= -1;
-                sb.AppendLine("vn " + v.x + " " + v.y + " " + v.z);
+                sb.AppendLine("vn " + v.x + ' ' + v.y + ' ' + v.z);
 
             }
             foreach (Vector2 v in msh.uv)
             {
-                sb.AppendLine("vt " + v.x + " " + v.y);
+                sb.AppendLine("vt " + v.x + ' ' + v.y);
             }
 
             for (int j=0; j < msh.subMeshCount; j++)
@@ -270,11 +270,11 @@ public class OBJExporter : ScriptableWizard
                     int idx0 = tris[t + 2] + 1 + lastIndex;
                     if(faceOrder < 0)
                     {
-                        sb.AppendLine("f " + ConstructOBJString(idx2) + " " + ConstructOBJString(idx1) + " " + ConstructOBJString(idx0));
+                        sb.AppendLine("f " + ConstructOBJString(idx2) + ' ' + ConstructOBJString(idx1) + ' ' + ConstructOBJString(idx0));
                     }
                     else
                     {
-                        sb.AppendLine("f " + ConstructOBJString(idx0) + " " + ConstructOBJString(idx1) + " " + ConstructOBJString(idx2));
+                        sb.AppendLine("f " + ConstructOBJString(idx0) + ' ' + ConstructOBJString(idx1) + ' ' + ConstructOBJString(idx2));
                     }
 
                 }
@@ -287,7 +287,7 @@ public class OBJExporter : ScriptableWizard
         System.IO.File.WriteAllText(exportPath, sb.ToString());
         if (generateMaterials)
         {
-            System.IO.File.WriteAllText(exportFileInfo.Directory.FullName + "\\" + baseFileName + ".mtl", sbMaterials.ToString());
+            System.IO.File.WriteAllText(exportFileInfo.Directory.FullName + '\\' + baseFileName + ".mtl", sbMaterials.ToString());
         }
 
         //export complete, close progress dialog
@@ -327,7 +327,7 @@ public class OBJExporter : ScriptableWizard
                     }
                 }
             }
-            string exportName = lastExportFolder + "\\" + t.name + ".png";
+            string exportName = lastExportFolder + '\\' + t.name + ".png";
             Texture2D exTexture = new Texture2D(t.width, t.height, TextureFormat.ARGB32, false);
             exTexture.SetPixels(t.GetPixels());
             System.IO.File.WriteAllBytes(exportName, exTexture.EncodeToPNG());
@@ -344,7 +344,7 @@ public class OBJExporter : ScriptableWizard
     private string ConstructOBJString(int index)
     {
         string idxString = index.ToString();
-        return idxString + "/" + idxString + "/" + idxString;
+        return idxString + '/' + idxString + '/' + idxString;
     }
     string MaterialToString(Material m)
     {
@@ -356,7 +356,7 @@ public class OBJExporter : ScriptableWizard
         //add properties
         if (m.HasProperty("_Color"))
         {
-            sb.AppendLine("Kd " + m.color.r.ToString() + " " + m.color.g.ToString() + " " + m.color.b.ToString());
+            sb.AppendLine("Kd " + m.color.r.ToString() + ' ' + m.color.g.ToString() + ' ' + m.color.b.ToString());
             if (m.color.a < 1.0f)
             {
                 //use both implementations of OBJ transparency
@@ -367,7 +367,7 @@ public class OBJExporter : ScriptableWizard
         if (m.HasProperty("_SpecColor"))
         {
             Color sc = m.GetColor("_SpecColor");
-            sb.AppendLine("Ks " + sc.r.ToString() + " " + sc.g.ToString() + " " + sc.b.ToString());
+            sb.AppendLine("Ks " + sc.r.ToString() + ' ' + sc.g.ToString() + ' ' + sc.b.ToString());
         }
         if (exportTextures) {
             //diffuse

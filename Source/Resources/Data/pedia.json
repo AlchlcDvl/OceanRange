@@ -42,7 +42,7 @@
             {
                 "EN": "Everything"
             },
-            "favs":
+            "favourites":
             {
                 "EN": "No favorite food. The Rosi slime loves everything equally."
             },
@@ -73,7 +73,7 @@
             {
                 "EN": "Meat"
             },
-            "favs":
+            "favourites":
             {
                 "EN": "Sandy Hen"
             },
@@ -105,7 +105,7 @@
             {
                 "EN": "Veggie"
             },
-            "favs":
+            "favourites":
             {
                 "EN": "Blowtato"
             },
@@ -136,7 +136,7 @@
             {
                 "EN": "Meat"
             },
-            "favs":
+            "favourites":
             {
                 "EN": "Radiant Hen"
             },
@@ -167,7 +167,7 @@
             {
                 "EN": "Dirt"
             },
-            "favs":
+            "favourites":
             {
                 "EN": "Silky Sand"
             },
@@ -198,7 +198,7 @@
             {
                 "EN": "Fruit"
             },
-            "favs":
+            "favourites":
             {
                 "EN": "Pogofruit"
             },
@@ -230,7 +230,7 @@
             {
                 "EN": "Fruit"
             },
-            "favs":
+            "favourites":
             {
                 "EN": "Coralfruit"
             },
@@ -262,7 +262,7 @@
             {
                 "EN": "Gilded Ginger"
             },
-            "favs":
+            "favourites":
             {
                 "EN": "Gilded Ginger"
             },
@@ -440,11 +440,11 @@
                     "Rise 'n shine! We’ve got work to crack on with."
                 ]
             },
-            "specOffers":
+            "specialOffers":
             {
                 "EN": "When I need a burst of energy, I just keep calm and grab a cuppa coffee."
             },
-            "loading":
+            "loadingTexts":
             {
                 "EN":
                 [

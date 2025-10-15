@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
 public sealed class LargoData : ActorData
 {
@@ -15,50 +15,29 @@ public sealed class LargoData : ActorData
         }
     }
 
-    [JsonProperty("props"), JsonRequired]
-    public LargoProps Props;
+    [JsonRequired] public LargoProps Props;
 
-    [JsonIgnore]
-    public string Slime1;
+    public ModelData BodyStruct;
 
-    [JsonIgnore]
-    public string Slime2;
+    public ModelData[] Slime1Structs;
+    public ModelData[] Slime2Structs;
 
-    [JsonProperty("bodyMesh")]
-    public ModelData BodyStructData;
-
-    [JsonProperty("slime1Meshes")]
-    public ModelData[] Slime1StructData;
-
-    [JsonProperty("slime2Meshes")]
-    public ModelData[] Slime2StructData;
-
-    [JsonProperty("jiggle")]
     public float? Jiggle;
 
-    [JsonIgnore]
-    public IdentifiableId Slime1Id;
+    [JsonIgnore] public string Slime1;
+    [JsonIgnore] public string Slime2;
 
-    [JsonIgnore]
-    public IdentifiableId Slime2Id;
+    [JsonIgnore] public IdentifiableId Slime1Id;
+    [JsonIgnore] public IdentifiableId Slime2Id;
 
-    [JsonIgnore]
-    public SlimeData Slime1Data;
+    [JsonIgnore] public SlimeData Slime1Data;
+    [JsonIgnore] public SlimeData Slime2Data;
 
-    [JsonIgnore]
-    public SlimeData Slime2Data;
+    [JsonIgnore] public MethodInfo InitSlime1Details;
+    [JsonIgnore] public MethodInfo InitSlime2Details;
+    [JsonIgnore] public MethodInfo InitLargoDetails;
 
-    [JsonIgnore]
-    public MethodInfo InitSlime1Details;
-
-    [JsonIgnore]
-    public MethodInfo InitSlime2Details;
-
-    [JsonIgnore]
-    public MethodInfo InitLargoDetails;
-
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _)
+    protected override void OnDeserialise()
     {
         var parts = Name.TrueSplit(' ');
 
@@ -68,7 +47,7 @@ public sealed class LargoData : ActorData
         var slime1Upper = Slime1.ToUpperInvariant();
         var slime2Upper = Slime2.ToUpperInvariant();
 
-        MainId = Helpers.AddEnumValue<IdentifiableId>(slime1Upper + "_" + slime2Upper + "_LARGO");
+        MainId = Helpers.AddEnumValue<IdentifiableId>(slime1Upper + '_' + slime2Upper + "_LARGO");
         Slime1Id = Helpers.ParseEnum<IdentifiableId>(slime1Upper + "_SLIME");
         Slime2Id = Helpers.ParseEnum<IdentifiableId>(slime2Upper + "_SLIME");
 
@@ -79,9 +58,9 @@ public sealed class LargoData : ActorData
         Slimepedia.SlimeDataMap.TryGetValue(Slime1Id, out Slime1Data);
         Slimepedia.SlimeDataMap.TryGetValue(Slime2Id, out Slime2Data);
 
-        Jiggle ??= ((Slime1Data?.JiggleAmount ?? 1f) + (Slime2Data?.JiggleAmount ?? 1f)) / 2f;
+        Jiggle ??= ((Slime1Data?.Jiggle ?? 1f) + (Slime2Data?.Jiggle ?? 1f)) / 2f;
 
-        if (BodyStructData != null)
-            BodyStructData.IsBody = true;
+        if (BodyStruct != null)
+            BodyStruct.IsBody = true;
     }
 }

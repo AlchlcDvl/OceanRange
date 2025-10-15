@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
 public sealed class SlimeData : SpawnedActorData
 {
@@ -15,140 +15,70 @@ public sealed class SlimeData : SpawnedActorData
         }
     }
 
-    [JsonIgnore]
-    public IdentifiableId GordoId;
+    [JsonRequired] public IdentifiableId FavToy;
+    [JsonRequired] public Zone[] Zones;
+    [JsonRequired] public ModelData[] SlimeFeatures;
 
-    [JsonIgnore]
-    public IdentifiableId PlortId;
-
-    [JsonProperty("favFood")]
-    public IdentifiableId FavFood;
-
-    [JsonProperty("favToy"), JsonRequired]
-    public IdentifiableId FavToy;
-
-    [JsonProperty("nightSpawn")]
-    public bool NightSpawn;
-
-    [JsonProperty("diet")]
-    public FoodGroup Diet;
-
-    [JsonProperty("baseSlime")]
-    public IdentifiableId BaseSlime = IdentifiableId.PINK_SLIME;
-
-    [JsonProperty("basePlort")]
-    public IdentifiableId BasePlort = IdentifiableId.PINK_PLORT;
-
-    [JsonProperty("baseGordo")]
-    public IdentifiableId BaseGordo = IdentifiableId.PINK_GORDO;
-
-    [JsonIgnore]
-    public MethodInfo InitSlimeDetails;
-
-    [JsonIgnore]
-    public MethodInfo InitPlortDetails;
-
-    [JsonIgnore]
-    public MethodInfo InitGordoDetails;
-
-    [JsonProperty("topMouthColor")]
-    public Color? TopMouthColor;
-
-    [JsonProperty("middleMouthColor")]
-    public Color? MiddleMouthColor;
-
-    [JsonProperty("bottomMouthColor")]
-    public Color? BottomMouthColor;
-
-    [JsonProperty("redEyeColor")]
-    public Color? RedEyeColor;
-
-    [JsonProperty("greenEyeColor")]
-    public Color? GreenEyeColor;
-
-    [JsonProperty("blueEyeColor")]
-    public Color? BlueEyeColor;
-
-    [JsonProperty("topPaletteColor")]
-    public Color? TopPaletteColor;
-
-    [JsonProperty("middlePaletteColor")]
-    public Color? MiddlePaletteColor;
-
-    [JsonProperty("bottomPaletteColor")]
-    public Color? BottomPaletteColor;
-
-    [JsonProperty("plortAmmoColor")]
-    public Color? PlortAmmoColor;
-
-    [JsonProperty("plortType")]
-    public string PlortType = "Pearl";
-
-    [JsonProperty("canBeRefined")]
-    public bool CanBeRefined;
-
-    [JsonProperty("zones"), JsonRequired]
-    public Zone[] Zones;
-
-    [JsonProperty("gordoZone")]
-    public Zone GordoZone;
-
-    [JsonProperty("spawnAmount")]
-    public float SpawnAmount = 0.25f;
-
-    [JsonProperty("hasGordo")]
-    public bool HasGordo = true;
-
-    [JsonProperty("gordoRewards")]
-    public IdentifiableId[] GordoRewards;
-
-    [JsonProperty("gordoOri")]
-    public Orientation GordoOrientation;
-
-    [JsonProperty("gordoLoc")]
-    public string GordoCell;
-
-    [JsonProperty("natGordoSpawn")]
-    public bool NaturalGordoSpawn = true;
-
-    [JsonProperty("plortExchangeWeight")]
-    public int PlortExchangeWeight = 16;
-
-    [JsonProperty("jiggle")]
-    public float JiggleAmount = 1f;
-
-    [JsonIgnore]
-    public bool IsPopped;
-
-    [JsonProperty("slimeFeatures"), JsonRequired]
-    public ModelData[] SlimeFeatures;
-
-    [JsonProperty("gordoFeatures")]
     public ModelData[] GordoFeatures;
-
-    [JsonProperty("plortFeatures")]
     public ModelData[] PlortFeatures;
 
-    [JsonProperty("toAdd")]
-    public Type[] ComponentsToAdd;
+    public bool NightSpawn;
 
-    [JsonProperty("toRemove")]
-    public Type[] ComponentsToRemove;
+    public IdentifiableId? FavFood;
+    public FoodGroup? Diet;
 
-    [JsonProperty("spawners")]
-    public string[] ExcludedSpawners;
+    public IdentifiableId BaseSlime = IdentifiableId.PINK_SLIME;
+    public IdentifiableId BasePlort = IdentifiableId.PINK_PLORT;
+    public IdentifiableId BaseGordo = IdentifiableId.PINK_GORDO;
 
-    [JsonProperty("vaccable")]
-    public bool Vaccable = true;
+    public Color? TopMouthColor;
+    public Color? MiddleMouthColor;
+    public Color? BottomMouthColor;
 
-    [JsonProperty("gordoEat")]
-    public int GordoEatAmount = 25;
+    public Color? RedEyeColor;
+    public Color? GreenEyeColor;
+    public Color? BlueEyeColor;
 
-    [JsonProperty("componentBase")]
+    public Color? TopPaletteColor;
+    public Color? MiddlePaletteColor;
+    public Color? BottomPaletteColor;
+
+    public Color? PlortAmmoColor;
+    public string PlortType = "Pearl";
+    public bool CanBeRefined;
+
     public IdentifiableId? ComponentBase;
+    public Zone GordoZone;
+    public float SpawnAmount = 0.25f;
+    public bool HasGordo = true;
+    public IdentifiableId[] GordoRewards;
 
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _)
+    public bool Vaccable = true;
+    public string GordoCell;
+
+    [JsonProperty("gordoOri")] public Orientation GordoOrientation;
+    [JsonProperty("natGordoSpawn")] public bool NaturalGordoSpawn = true;
+
+    public int PlortExchangeWeight = 16;
+    public float Jiggle = 1f;
+
+    [JsonProperty("toAdd")] public Type[] ComponentsToAdd;
+    [JsonProperty("toRemove")] public Type[] ComponentsToRemove;
+
+    [JsonProperty("spawners")] public string[] ExcludedSpawners;
+
+    [JsonProperty("gordoEat")] public int GordoEatAmount = 25;
+
+    [JsonIgnore] public bool IsPopped;
+
+    [JsonIgnore] public IdentifiableId GordoId;
+    [JsonIgnore] public IdentifiableId PlortId;
+
+    [JsonIgnore] public MethodInfo InitSlimeDetails;
+    [JsonIgnore] public MethodInfo InitPlortDetails;
+    [JsonIgnore] public MethodInfo InitGordoDetails;
+
+    protected override void OnDeserialise()
     {
         var upper = Name.ToUpperInvariant();
 
@@ -189,7 +119,7 @@ public sealed class SlimeData : SpawnedActorData
 
         Progress ??= [];
 
-        if (PlortFeatures == null || GordoFeatures == null)
+        if (PlortFeatures?.Length is null or 0 || GordoFeatures?.Length is null or 0)
         {
             var copy = SlimeFeatures.Select(x => new ModelData(x, false)).ToArray();
 

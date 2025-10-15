@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
 public sealed class MailData : JsonData
 {
@@ -15,25 +15,19 @@ public sealed class MailData : JsonData
         }
     }
 
-    [JsonProperty("id"), JsonRequired]
-    public string Id;
+    [JsonRequired] public string Id;
 
-    [JsonProperty("unlockAfter")]
     public double? UnlockAfter;
 
-    [JsonIgnore]
-    public bool Sent;
-
-    [JsonIgnore]
-    public bool Read;
+    [JsonIgnore] public bool Sent;
+    [JsonIgnore] public bool Read;
 
     public event Func<double, bool> UnlockFuncAnd;
     // public event Func<double, bool> UnlockFuncOr;
 
     private Func<double, bool>[] Subscribers;
 
-    [OnDeserialized]
-    public void PopulateData(StreamingContext _)
+    protected override void OnDeserialise()
     {
         if (Methods.TryGetValue("Init" + Name.Replace(" ", "") + "Details", out var method))
             method.Invoke(null, [this]);

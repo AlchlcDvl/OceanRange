@@ -68,6 +68,12 @@ class CreateAssetBundles
             File.Delete(destBundlePath);
 
         File.Move(sourceBundlePath, destBundlePath);
-        Directory.EnumerateFiles(sourceDir, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
+
+        Directory.Delete(sourceDir, true);
+
+        string metaPath = sourceDir + ".meta";
+
+        if (File.Exists(metaPath))
+            File.Delete(metaPath);
     }
 }

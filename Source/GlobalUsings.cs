@@ -27,6 +27,7 @@ global using OceanRange.Managers;
 global using OceanRange.Modules;
 global using OceanRange.Slimes;
 global using OceanRange.Utils;
+global using OceanRange.Data;
 
 global using MonomiPark.SlimeRancher.Regions;
 

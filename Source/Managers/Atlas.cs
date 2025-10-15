@@ -78,13 +78,16 @@ public static class Atlas
 
         zoneObject.SetActive(true);
 
+        if (zoneData.Requirements == null)
+            return;
+
         foreach (var (key, value) in zoneData.Requirements)
         {
             var obj = GameObject.Find(value.PathToGameObject);
 
             switch (key)
             {
-                case ZoneRequirementData.RequirementType.CorporateLevel:
+                case RequirementType.CorporateLevel:
                     var progress = obj.AddComponent<ActivateOnProgressRange>();
 
                     progress.progressType = ProgressType.CORPORATE_PARTNER;
@@ -92,7 +95,7 @@ public static class Atlas
                     progress.minProgress = value.CorporateLevelMin;
 
                     break;
-                // TODO: Do other requirements.
+                    // TODO: Do other requirements.
             }
         }
     }

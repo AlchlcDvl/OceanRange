@@ -1,33 +1,30 @@
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
 public abstract class JsonData
 {
-    [JsonProperty("name")]
     public string Name;
+
+    protected virtual void OnDeserialise() { }
+
+    [OnDeserialized]
+    public void PopulateRemainingValues(StreamingContext _) => OnDeserialise();
 }
 
 public abstract class ActorData : JsonData
 {
-    [JsonIgnore]
-    public IdentifiableId MainId;
+    [JsonIgnore] public IdentifiableId MainId;
 }
 
 public abstract class SpawnedActorData : ActorData
 {
-    [JsonProperty("progress")]
     public ProgressType[] Progress;
 
-    [JsonProperty("basePrice"), JsonRequired]
-    public float BasePrice;
-
-    [JsonProperty("saturation"), JsonRequired]
-    public float Saturation;
-
-    [JsonProperty("exchangeWeight")]
     public int ExchangeWeight = 20;
 
-    [JsonProperty("ammoColor"), JsonRequired]
-    public Color MainAmmoColor;
+    [JsonRequired] public float BasePrice;
+    [JsonRequired] public float Saturation;
+
+    [JsonRequired] public Color MainAmmoColor;
 }
 
 public sealed class Json(string text) : TextAsset(text);

@@ -1,0 +1,11 @@
+<Project>
+    <ItemGroup>
+        <Reference Include="$(MSBuildThisFileDirectory)/Libs/*.dll" />
+    </ItemGroup>
+
+    <!-- This will create new directories if you don't have them made already -->
+
+    <Target Name="Copy" AfterTargets="Build">
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" Condition="$(Configuration)!=Unity" />
+    </Target>
+</Project>

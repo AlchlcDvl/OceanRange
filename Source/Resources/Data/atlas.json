@@ -22,7 +22,7 @@
             {
                 "CorporateLevel":
                 {
-                    "modifyPath": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)",
+                    "pathToGameObject": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)",
                     "minLevel": 15
                 }
             }

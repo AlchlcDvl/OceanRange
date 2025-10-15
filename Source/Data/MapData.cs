@@ -1,67 +1,42 @@
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
 public sealed class ZoneRequirementData : JsonData
 {
-    [JsonProperty("minLevel")]
-    public int CorporateLevelMin = 0;
+    [JsonProperty("minLevel")] public int CorporateLevelMin = 0;
+    [JsonProperty("maxLevel")] public int CorporateLevelMax = int.MaxValue;
 
-    [JsonProperty("maxLevel")]
-    public int CorporateLevelMax = int.MaxValue;
+    [JsonProperty("rancherProgress")] public int ExchangeProgress;
 
-    [JsonProperty("rancherProgress")]
-    public int ExchangeProgress;
+    [JsonRequired] public string PathToGameObject;
+}
 
-    [JsonProperty("modifyPath"), JsonRequired]
-    public string PathToGameObject;
+public enum RequirementType
+{
+    CorporateLevel,
+    ExchangeProgress,
+    DevCommand,
 
-    public enum RequirementType
-    {
-        CorporateLevel,
-        ExchangeProgress,
-        DevCommand,
-
-        // add more?
-    }
+    // add more?
 }
 
 public sealed class ZoneData : JsonData
 {
-    [JsonProperty("region"), JsonRequired]
-    public RegionId Region;
+    [JsonRequired] public RegionId Region;
 
-    [JsonProperty("teleporterOri"), JsonRequired]
-    public Orientation TeleporterOrientation;
+    [JsonProperty("teleporterOri"), JsonRequired] public Orientation TeleporterOrientation;
+    [JsonProperty("teleporterLoc"), JsonRequired] public string TeleporterLocation;
+    [JsonProperty("prefab"), JsonRequired] public string AssetName;
 
-    [JsonProperty("teleporterLoc"), JsonRequired]
-    public string TeleporterLocation;
+    [JsonProperty("requirements")] public Dictionary<RequirementType, ZoneRequirementData> Requirements;
 
-    [JsonProperty("requirements")]
-    // The key for the dictionary is the public ZoneRequirementData.RequirementType enum.
-    public Dictionary<ZoneRequirementData.RequirementType, ZoneRequirementData> Requirements = [];
+    [JsonIgnore] public Zone Zone;
+    [JsonIgnore] public PediaId PediaId;
+    [JsonIgnore] public Ambiance Ambiance;
+    [JsonIgnore] public bool PrefabsPrepped;
+    [JsonIgnore] public GameObject Prefab;
+    [JsonIgnore] public AmbianceDirectorZoneSetting AmbianceSetting;
 
-    [JsonProperty("prefab"), JsonRequired]
-    public string AssetName;
-
-    [JsonIgnore]
-    public Zone Zone;
-
-    [JsonIgnore]
-    public PediaId PediaId;
-
-    [JsonIgnore]
-    public Ambiance Ambiance;
-
-    [JsonIgnore]
-    public bool PrefabsPrepped;
-
-    [JsonIgnore]
-    public GameObject Prefab;
-
-    [JsonIgnore]
-    public AmbianceDirectorZoneSetting AmbianceSetting;
-
-    [OnDeserialized]
-    public void PopulateValues(StreamingContext _)
+    protected override void OnDeserialise()
     {
         var upper = Name.ToUpperInvariant();
 
@@ -73,30 +48,19 @@ public sealed class ZoneData : JsonData
 
 public sealed class RegionData : JsonData
 {
-    [JsonProperty("initialWorldSize"), JsonRequired]
-    public float InitialWorldSize;
+    [JsonRequired] public float MinNodeSize;
+    [JsonRequired] public float LoosenessVal;
+    [JsonRequired] public float InitialWorldSize;
 
-    [JsonProperty("initialWorldPos"), JsonRequired]
-    public Vector3 InitialWorldPos;
+    [JsonRequired] public Vector3 InitialWorldPos;
 
-    [JsonProperty("minNodeSize"), JsonRequired]
-    public float MinNodeSize;
+    [JsonIgnore] public RegionId Region;
 
-    [JsonProperty("loosenessVal"), JsonRequired]
-    public float LoosenessVal;
-
-    [JsonIgnore]
-    public RegionId Region;
-
-    [OnDeserialized]
-    public void PopulateValues(StreamingContext _) => Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
+    protected override void OnDeserialise() => Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
 }
 
-public sealed class World
+public sealed class World : JsonData
 {
-    [JsonProperty("zones")]
-    public ZoneData[] Zones;
-
-    [JsonProperty("regions")]
-    public RegionData[] Regions;
+    [JsonRequired] public RegionData[] Regions;
+    [JsonRequired] public ZoneData[] Zones;
 }

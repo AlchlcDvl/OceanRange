@@ -170,11 +170,9 @@ public static class Slimepedia
         markerPrefab.GetComponent<Image>().sprite = icon;
         gordoDisplay.markerPrefab = markerPrefab;
 
-        var isSand = lower == "sand";
-
         var identifiable = prefab.GetComponent<GordoIdentifiable>();
         identifiable.id = slimeData.GordoId;
-        identifiable.nativeZones = isSand ? Helpers.GetEnumValues<Zone>() : [slimeData.GordoZone];
+        identifiable.nativeZones = !slimeData.NaturalGordoSpawn ? Helpers.GetEnumValues<Zone>() : [slimeData.GordoZone];
 
         var gordoEat = prefab.GetComponent<GordoEat>();
         var gordoDefinition = gordoEat.slimeDefinition.DeepCopy();
@@ -189,7 +187,7 @@ public static class Slimepedia
         var appearance = definition.AppearancesDefault[0];
         var material = appearance.Structures[0].DefaultMaterials[0].Clone();
 
-        if (isSand)
+        if (lower == "sand")
         {
             material.SetFloat(VertexOffset, 0f);
 
@@ -289,15 +287,19 @@ public static class Slimepedia
         // Create a copy for our slimes and populate with info
         var definition = baseDefinition.DeepCopy();
         definition.Diet.Produces = [slimeData.PlortId];
-        definition.Diet.MajorFoodGroups = [slimeData.Diet];
         definition.Diet.AdditionalFoods = [IdentifiableId.SPICY_TOFU];
-        definition.Diet.Favorites = [slimeData.FavFood];
         definition.Diet.EatMap?.Clear();
-        definition.CanLargofy = Identifiable.LARGO_CLASS.Any(x => x.ToString().ToLowerInvariant().Contains(lower));
+        definition.CanLargofy = Identifiable.LARGO_CLASS.Any(x => x.ToString().ToLowerInvariant().IndexOf(lower, StringComparison.Ordinal) >= 0);
         definition.FavoriteToys = [slimeData.FavToy];
         definition.Name = slimeData.Name + " Slime";
         definition.IdentifiableId = slimeData.MainId;
         definition.name = slimeData.Name;
+
+        if (slimeData.Diet.HasValue)
+            definition.Diet.MajorFoodGroups = [slimeData.Diet.Value];
+
+        if (slimeData.FavFood.HasValue)
+            definition.Diet.Favorites = [slimeData.FavFood.Value];
 
         // Finding the base prefab, copying it and setting our own component values
         var prefab = slimeData.BaseSlime.GetPrefab().CreatePrefab();
@@ -438,7 +440,7 @@ public static class Slimepedia
         for (var i = 0; i < slimeData.SlimeFeatures.Length; i++)
             appearance.Structures[i] = GenerateStructure(baseStruct, slimeData.SlimeFeatures[i], slimeData.SlimeFeatures);
 
-        applicator.GenerateSlimeBones(appearance.Structures, slimeData.JiggleAmount);
+        applicator.GenerateSlimeBones(appearance.Structures, slimeData.Jiggle);
     }
 
     public static SlimeAppearanceStructure GenerateStructure(SlimeAppearanceStructure baseStruct, ModelData modelData, ModelData[] modelDatas)
@@ -511,9 +513,9 @@ public static class Slimepedia
         }
         // else if (matData.Shader != null)
         //     material = new(Inventory.GetShader(matData.Shader));
-        else if (matData.MatOriginSlime.HasValue)
+        else if (matData.MatOrigin.HasValue)
         {
-            material = GetMat(matData.MatOriginSlime.Value, matData.MatSameAs);
+            material = GetMat(matData.MatOrigin.Value, matData.MatSameAs);
             setProps = cloneMat = matData.CloneMatOrigin;
         }
         else if (matData.SameAs.HasValue && mainMatData?.Length is > 0)

@@ -1,36 +1,20 @@
-namespace OceanRange.Managers;
+namespace OceanRange.Data;
 
 public sealed class RancherData : JsonData
 {
-    [JsonProperty("requests"), JsonRequired]
-    public Category[] Requests;
+    [JsonRequired] public Category[] Rewards;
+    [JsonRequired] public Category[] Requests;
+    [JsonRequired] public Category[] RareRewards;
 
-    [JsonProperty("rewards"), JsonRequired]
-    public Category[] Rewards;
-
-    [JsonProperty("rareRewards"), JsonRequired]
-    public Category[] RareRewards;
-
-    [JsonProperty("indivRequests")]
+    public IdentifiableId[] IndivRewards;
     public IdentifiableId[] IndivRequests;
-
-    [JsonProperty("indivRewards")]
-    public IdentifiableId[] IndivReward;
-
-    [JsonProperty("indivRareRewards")]
     public IdentifiableId[] IndivRareRewards;
 
-    [JsonIgnore]
-    public RancherName RancherName;
+    [JsonIgnore] public string RancherId;
+    [JsonIgnore] public RancherName RancherName;
+    [JsonIgnore] public ExchangeDirector.Rancher Rancher;
 
-    [JsonIgnore]
-    public ExchangeDirector.Rancher Rancher;
-
-    [JsonIgnore]
-    public string RancherId;
-
-    [OnDeserialized]
-    public void PopulateData(StreamingContext _)
+    protected override void OnDeserialise()
     {
         RancherId = Name.ToLowerInvariant();
         RancherName = Helpers.AddEnumValue<RancherName>(Name.ToUpperInvariant());

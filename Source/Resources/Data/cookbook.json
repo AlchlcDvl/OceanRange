@@ -4,11 +4,12 @@
         {
             "name": "Blowtato",
             "group": "VEGGIES",
-            "ammoColor": "#AB9E7E",
+            "mainAmmoColor": "#AB9E7E",
             "type": "Veggie",
-            "resource": "Patch",
+            "resourceIdSuffix": "Patch",
             "basePrice": 4,
             "saturation": 10,
+            "isVeggie": true,
             "spawnLocations":
             {
                 "QUARRY":
@@ -28,14 +29,14 @@
     [
         {
             "name": "Sandy",
-            "ammoColor": "#C2B280",
+            "mainAmmoColor": "#C2B280",
             "zones": ["REEF", "RUINS", "MOSS"],
             "basePrice": 20,
             "saturation": 10
         },
         {
             "name": "Radiant",
-            "ammoColor": "#040454",
+            "mainAmmoColor": "#040454",
             "zones": ["RUINS", "QUARRY", "MOSS"],
             "basePrice": 30,
             "saturation": 15

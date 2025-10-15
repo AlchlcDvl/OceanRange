@@ -1,80 +1,53 @@
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
-public sealed class Ingredients
+public sealed class Ingredients : JsonData
 {
-    [JsonProperty("plants")]
     public PlantData[] Plants;
-
-    [JsonProperty("chimkens")]
     public ChimkenData[] Chimkens;
 }
 
-public abstract class FoodData : SpawnedActorData
+public sealed class ChimkenData : SpawnedActorData
 {
-    [JsonProperty("group")]
-    public FoodGroup Group;
-}
+    [JsonRequired] public Zone[] Zones;
 
-public sealed class ChimkenData : FoodData
-{
-    [JsonProperty("zones"), JsonRequired]
-    public Zone[] Zones;
-
-    [JsonProperty("spawnAmount")]
     public float SpawnAmount = 1f;
-
-    [JsonProperty("chickSpawnAmount")]
     public float ChickSpawnAmount = 1f;
 
-    [JsonIgnore]
-    public IdentifiableId ChickId;
+    [JsonIgnore] public IdentifiableId ChickId;
 
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _)
+    protected override void OnDeserialise()
     {
         var upper = Name.ToUpperInvariant();
 
         MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_HEN");
         ChickId = Helpers.AddEnumValue<IdentifiableId>(upper + "_CHICK");
 
-        Group = FoodGroup.MEAT;
         Progress ??= [];
     }
 }
 
-public sealed class PlantData : FoodData
+public sealed class PlantData : SpawnedActorData
 {
-    [JsonProperty("type"), JsonRequired]
-    public string Type;
+    [JsonRequired] public bool IsVeggie;
 
-    [JsonProperty("resource"), JsonRequired]
-    public string ResourceIdSuffix;
+    [JsonRequired] public string Type;
+    [JsonRequired] public string ResourceIdSuffix;
 
-    [JsonProperty("spawnLocations"), JsonRequired]
-    public Dictionary<string, Dictionary<string, Vector3[]>> SpawnLocations;
+    [JsonRequired] public Dictionary<string, Dictionary<string, Vector3[]>> SpawnLocations;
 
-    [JsonIgnore]
-    public bool IsVeggie;
+    [JsonIgnore] public SpawnResourceId ResourceId;
+    [JsonIgnore] public SpawnResourceId DlxResourceId;
 
-    [JsonIgnore]
-    public SpawnResourceId ResourceId;
-
-    [JsonIgnore]
-    public SpawnResourceId DlxResourceId;
-
-    [OnDeserialized]
-    public void PopulateRemainingValues(StreamingContext _)
+    protected override void OnDeserialise()
     {
         var upper = Name.ToUpperInvariant();
 
         var typeUpper = Type.ToUpperInvariant();
-        MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_" + typeUpper);
+        MainId = Helpers.AddEnumValue<IdentifiableId>(upper + '_' + typeUpper);
 
-        var resource = upper + "_" + ResourceIdSuffix.ToUpperInvariant();
+        var resource = upper + '_' + ResourceIdSuffix.ToUpperInvariant();
         ResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource);
         DlxResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource + "_DLX");
-
-        IsVeggie = Group == FoodGroup.VEGGIES;
 
         Progress ??= [];
     }
