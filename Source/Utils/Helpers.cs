@@ -409,6 +409,8 @@ public static partial class Helpers
         return result;
     }
 
+    public static string ReadNullableString(this BinaryReader reader) => reader.ReadBoolean() ? reader.ReadString() : null;
+
     public static T? ReadNullable<T>(this BinaryReader reader, Func<BinaryReader, T> read) where T : struct => reader.ReadBoolean() ? read(reader) : null;
 
     public static Dictionary<TKey, TValue> ReadDictionary<TKey, TValue>(this BinaryReader reader, Func<BinaryReader, TKey> keyRead, Func<BinaryReader, TValue> valueRead)
@@ -422,23 +424,15 @@ public static partial class Helpers
         return dict;
     }
 
-    public static T ReadEnum<T>(this BinaryReader reader) where T : struct, Enum
-    {
-        var name = reader.ReadString();
-        name.DoLog();
-        return ParseEnum<T>(name);
-    }
-
-    public static T? ReadNullableEnum<T>(this BinaryReader reader) where T : struct, Enum
-    {
-        var name = reader.ReadString();
-        return string.IsNullOrWhiteSpace(name) ? null : ParseEnum<T>(name);
-    }
+    public static T ReadEnum<T>(this BinaryReader reader) where T : struct, Enum => ParseEnum<T>(reader.ReadString());
 
     // public static object ReadEnum(this BinaryReader reader) => Enum.Parse(reader.ReadType(), reader.ReadString());
 
     public static T ReadModData<T>(this BinaryReader reader) where T : ModData, new()
     {
+        if (reader.ReadBoolean())
+            return null;
+
         var result = new T();
         result.DeserialiseFrom(reader);
         result.OnDeserialise();

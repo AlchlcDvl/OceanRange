@@ -86,18 +86,18 @@ public sealed class ModelData : JsonData
     {
         base.SerialiseTo(writer);
         writer.WriteNullable(GlossJson, Helpers.WriteFloat);
-        writer.WriteString(Pattern);
+        writer.WriteNullableString(Pattern);
         writer.WriteNullable(SameAsJson, Helpers.WriteInt);
         writer.WriteNullable(MatSameAsJson, Helpers.WriteInt);
         writer.WriteNullable(ColorsSameAsJson, Helpers.WriteInt);
         writer.Write(CloneSameAs);
         writer.Write(CloneMatOrigin);
         writer.Write(CloneFallback);
-        writer.WriteString(MatOrigin);
-        writer.WriteString(ColorsOrigin);
-        // writer.WriteString(Shader);
+        writer.WriteNullableString(MatOrigin);
+        writer.WriteNullableString(ColorsOrigin);
+        // writer.WriteNullableString(Shader);
         writer.WriteDictionary(ColorPropsJson, Helpers.WriteString, Helpers.WriteColor);
-        writer.WriteString(Mesh);
+        writer.WriteNullableString(Mesh);
         writer.Write(SkipNull);
         writer.Write(IgnoreLodIndex);
         writer.Write(Skip);

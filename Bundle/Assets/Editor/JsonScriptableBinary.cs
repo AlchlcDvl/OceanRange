@@ -128,38 +128,54 @@ class JsonScriptableBinary
 
         foreach (var type in ScriptableTypes)
         {
-            string assetGuid = AssetDatabase.FindAssets("t:" + type.Name)?.FirstOrDefault();
-
-            if (assetGuid == null)
-                continue;
-
-            string assetPath = AssetDatabase.GUIDToAssetPath(assetGuid);
-            Holder asset = AssetDatabase.LoadAssetAtPath(assetPath, type) as Holder;
-
-            string filePath = Path.Combine(exportDirectory, asset.name + ".data");
-
-            using (Stream stream = File.OpenWrite(filePath))
+            try
             {
-                using (GZipStream compressor = new GZipStream(stream, System.IO.Compression.CompressionLevel.Optimal))
+                string assetGuid = AssetDatabase.FindAssets("t:" + type.Name)?.FirstOrDefault();
+
+                if (assetGuid == null)
+                    continue;
+
+                string assetPath = AssetDatabase.GUIDToAssetPath(assetGuid);
+                Holder asset = AssetDatabase.LoadAssetAtPath(assetPath, type) as Holder;
+
+                string filePath = Path.Combine(exportDirectory, asset.name + ".data");
+
+                using (Stream stream = File.OpenWrite(filePath))
                 {
-                    using (BinaryWriter writer = new BinaryWriter(compressor))
+                    using (GZipStream compressor = new GZipStream(stream, System.IO.Compression.CompressionLevel.Optimal))
                     {
-                        try
+                        using (BinaryWriter writer = new BinaryWriter(compressor))
                         {
                             asset.SerialiseTo(writer);
+                            writer.Flush();
                         }
-                        catch (Exception ex)
-                        {
-                            Debug.LogError(type.Name + ":\n" + ex);
-                        }
-
-                        writer.Flush();
                     }
                 }
-            }
 
-            EditorUtility.SetDirty(asset);
+                EditorUtility.SetDirty(asset);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(type.Name + ":\n" + ex);
+            }
         }
+    }
+
+    [MenuItem("Ocean Range/Convert JSON To Binary")]
+    static void JsonToBinary()
+    {
+        Debug.Log("Starting conversion...");
+
+        AssetDatabase.StartAssetEditing();
+
+        JsonToScriptableInternal();
+        ScriptableToBinaryInternal();
+
+        AssetDatabase.StopAssetEditing();
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        Debug.Log("Conversion finished!");
     }
 
     [MenuItem("Ocean Range/Convert Scriptable To JSON")]

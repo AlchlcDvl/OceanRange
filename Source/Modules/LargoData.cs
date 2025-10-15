@@ -50,21 +50,14 @@ public sealed class LargoData : ActorData
     public override void DeserialiseFrom(BinaryReader reader)
     {
         base.DeserialiseFrom(reader);
-        Name.DoLog();
 
-        1.DoLog();
         Props = reader.ReadArray(Helpers.ReadEnum<LargoProps>).Combine();
 
-        1.DoLog();
         BodyStructData = reader.ReadModData<ModelData>();
-        1.DoLog();
         Slime1StructData = reader.ReadArray(Helpers.ReadModData<ModelData>);
-        1.DoLog();
         Slime2StructData = reader.ReadArray(Helpers.ReadModData<ModelData>);
 
-        1.DoLog();
         Jiggle = reader.ReadNullable(Helpers.ReadFloat);
-        1.DoLog();
     }
 
     public override void OnDeserialise()

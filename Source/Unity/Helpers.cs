@@ -118,13 +118,22 @@ public static partial class Helpers
 
     public static void WriteJsonData(this BinaryWriter writer, JsonData value) => value.SerialiseTo(writer);
 
-    public static void WriteString(this BinaryWriter writer, string value) => writer.Write((value ?? "").Trim());
+    public static void WriteString(this BinaryWriter writer, string value) => writer.Write(value);
 
     public static void WriteFloat(this BinaryWriter writer, float value) => writer.Write(value);
 
     public static void WriteDouble(this BinaryWriter writer, double value) => writer.Write(value);
 
     public static void WriteInt(this BinaryWriter writer, int value) => writer.Write(value);
+
+    public static void WriteNullableString(this BinaryWriter writer, string value)
+    {
+        var hasValue = !string.IsNullOrEmpty(value);
+        writer.Write(hasValue);
+
+        if (hasValue)
+            writer.Write(value);
+    }
 
     public static void WriteVector3(this BinaryWriter writer, Vector3 value)
     {
@@ -149,6 +158,14 @@ public static partial class Helpers
     }
 
     public static void WriteNullable<T>(this BinaryWriter writer, T? value, Action<BinaryWriter, T> write) where T : struct
+    {
+        writer.Write(value.HasValue);
+
+        if (value.HasValue)
+            write(writer, value.Value);
+    }
+
+    public static void WriteNullable<T>(this BinaryWriter writer, OptionalData<T> value, Action<BinaryWriter, T> write) where T : struct
     {
         writer.Write(value.HasValue);
 

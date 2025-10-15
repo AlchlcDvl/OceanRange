@@ -100,7 +100,7 @@ public sealed class MailLangData : LangData
     public override void SerialiseTo(BinaryWriter writer)
     {
         base.SerialiseTo(writer);
-        writer.WriteString(MailKey);
+        writer.Write(MailKey);
         writer.WriteDictionary(Subjects, Helpers.WriteString, Helpers.WriteString);
         writer.WriteDictionary(Bodies, Helpers.WriteString, Helpers.WriteString);
     }
@@ -188,7 +188,7 @@ public sealed class SlimeLangData : PediaLangData
         writer.WriteDictionary(Diets, Helpers.WriteString, Helpers.WriteString);
         writer.WriteDictionary(Favourites, Helpers.WriteString, Helpers.WriteString);
         writer.WriteDictionary(Onomics, Helpers.WriteString, Helpers.WriteString);
-        writer.WriteString(OnomicsType);
+        writer.Write(OnomicsType);
     }
 }
 

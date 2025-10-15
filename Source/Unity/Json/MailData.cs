@@ -19,7 +19,7 @@ public sealed class MailData : JsonData
     public override void SerialiseTo(BinaryWriter writer)
     {
         base.SerialiseTo(writer);
-        writer.WriteString(Id);
+        writer.Write(Id);
         writer.WriteNullable(UnlockAfterJson, Helpers.WriteDouble);
     }
 }
