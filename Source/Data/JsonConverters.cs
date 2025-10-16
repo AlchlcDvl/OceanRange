@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq.Expressions;
 
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
 // Parsing validation delegate for byte, float etc
 public delegate bool TryParseDelegate<T>(string value, NumberStyles style, CultureInfo culture, out T component) where T : struct;

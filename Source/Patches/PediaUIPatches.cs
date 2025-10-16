@@ -1,4 +1,4 @@
-namespace OceanRange.Modules;
+namespace OceanRange.Patches;
 
 [HarmonyPatch(typeof(PediaUI))]
 public static class PediaUIPatches

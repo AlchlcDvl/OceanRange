@@ -1,4 +1,4 @@
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
 [Flags]
 public enum LargoProps : ushort
