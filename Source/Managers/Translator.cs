@@ -33,7 +33,7 @@ public static class Translator
         var langName = lang.ToString();
 
         if (!Inventory.TryGetJson<Translations>(langName, out var translations, true))
-            return Fallback ?? throw new Exception("Fallback was null");
+            return Fallback ?? throw new("Fallback was null");
 
         Inventory.ReleaseHandles(langName);
         return translations;

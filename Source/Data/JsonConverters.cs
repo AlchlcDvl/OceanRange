@@ -21,7 +21,7 @@ public abstract class OceanJsonConverter : JsonConverter
     public override sealed object ReadJson(JsonReader reader, Type objectType, [AllowNull] object _1, JsonSerializer _2)
     {
         if (reader.TokenType == JsonToken.Null)
-            return default;
+            return null;
 
         try
         {
@@ -138,7 +138,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     private readonly int MinLength = minLength; // Minimum possible values needed
     private readonly char[] Separators = separators.Length == 0 ? [','] : separators; // Separator for complex formats
     private readonly TComponent Default = defaultValue; // The default values for component indices between min and max counts
-    protected readonly NumberStyles Style = style; // The supported styles of the numbers
+    private readonly NumberStyles Style = style; // The supported styles of the numbers
     private readonly string Format = format; // The expected format in case of parsing error
     private readonly TComponent[] Parsed = new TComponent[maxLength];
 
@@ -234,8 +234,8 @@ public sealed class Vector3Converter() : MultiComponentConverter<Vector3, float>
 /// </summary>
 public sealed class OrientationConverter : OceanJsonConverter<Orientation>
 {
-    private readonly static OrientationConverterFloat FloatHandler = new();
-    private readonly static OrientationConverterVector3 Vector3Handler = new();
+    private static readonly OrientationConverterFloat FloatHandler = new();
+    private static readonly OrientationConverterVector3 Vector3Handler = new();
 
     protected override Orientation ParseFromJson(JsonReader reader)
     {

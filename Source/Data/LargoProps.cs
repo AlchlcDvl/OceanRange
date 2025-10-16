@@ -1,3 +1,5 @@
+// ReSharper disable UnusedMember.Global
+
 namespace OceanRange.Data;
 
 [Flags]

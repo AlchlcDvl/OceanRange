@@ -80,7 +80,7 @@ public static class EnsureAutoSaveDirectorData
     public static void Postfix() => IsAutoSave = false;
 }
 
-[HarmonyPatch(typeof(ResourceBundle), nameof(ResourceBundle.LoadFromText))]
+[HarmonyPatch(typeof(ResourceBundle), nameof(ResourceBundle.LoadFromText)), UsedImplicitly]
 public static class LatchCustomTranslations
 {
     public static void Postfix(string path, Dictionary<string, string> __result)

@@ -1,3 +1,5 @@
+// ReSharper disable UnassignedField.Global
+
 namespace OceanRange.Data;
 
 public abstract class JsonData

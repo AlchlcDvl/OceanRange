@@ -18,7 +18,6 @@ public static class Slimepedia
     private static bool SamExists;
     private static Transform RocksPrefab;
     private static SlimeExpressionFace Sleeping;
-    private static SlimeAppearanceObject FilterPrefab;
     private static SlimeAppearanceObject SkinnedPrefab;
 
     public static readonly int TopColor = ShaderUtils.GetOrSet("_TopColor");
@@ -132,7 +131,6 @@ public static class Slimepedia
 
         var pinkPrefabs = pinkAppearance.Structures[0].Element.Prefabs;
         SkinnedPrefab = pinkPrefabs[0];
-        FilterPrefab = pinkPrefabs[1];
 
         Array.ForEach(Slimes, BaseLoadSlime);
     }
@@ -497,11 +495,12 @@ public static class Slimepedia
         return structure;
     }
 
-    public static Material GenerateMaterial(ModelData matData, ModelData[] mainMatData, Material fallback)
+    private static Material GenerateMaterial(ModelData matData, ModelData[] mainMatData, Material fallback)
     {
         if (matData == null)
             return fallback.Clone();
 
+        // ReSharper disable once RedundantAssignment
         var setProps = true;
         var cloneMat = false;
         Material material;

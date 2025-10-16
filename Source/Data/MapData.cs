@@ -1,8 +1,11 @@
+// ReSharper disable UnassignedField.Global
+// ReSharper disable UnusedMember.Global
+
 namespace OceanRange.Data;
 
 public sealed class ZoneRequirementData : JsonData
 {
-    [JsonProperty("minLevel")] public int CorporateLevelMin = 0;
+    [JsonProperty("minLevel")] public int CorporateLevelMin;
     [JsonProperty("maxLevel")] public int CorporateLevelMax = int.MaxValue;
 
     [JsonProperty("rancherProgress")] public int ExchangeProgress;
@@ -10,7 +13,7 @@ public sealed class ZoneRequirementData : JsonData
     [JsonRequired] public string PathToGameObject;
 }
 
-public enum RequirementType
+public enum RequirementType : byte
 {
     CorporateLevel,
     ExchangeProgress,

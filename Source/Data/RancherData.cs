@@ -1,3 +1,5 @@
+// ReSharper disable UnassignedField.Global
+
 namespace OceanRange.Data;
 
 public sealed class RancherData : JsonData
@@ -28,8 +30,8 @@ public sealed class RancherData : JsonData
             rewardCategories = Rewards,
             rareRewardCategories = RareRewards,
             indivRequests = IndivRequests ?? [],
-            indivRewards = IndivRequests ?? [],
-            indivRareRewards = IndivRequests ?? []
+            indivRewards = IndivRewards ?? [],
+            indivRareRewards = IndivRareRewards ?? []
         };
     }
 }

@@ -13,7 +13,7 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
     public Vector3 Rotation = rot;
     public Vector3 Scale = scale;
 
-    public Orientation(Vector3 pos, Vector3 rot) : this(pos, rot, Vector3.one) { }
+    // public Orientation(Vector3 pos, Vector3 rot) : this(pos, rot, Vector3.one) { }
 
     public Orientation(float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, float xScale, float yScale, float zScale)
         : this(new(xPos, yPos, zPos), new(ClampAngle(xRot), ClampAngle(yRot), ClampAngle(zRot)), new(xScale, yScale, zScale)) { }
@@ -132,10 +132,7 @@ public sealed class SoftTypeDictionary<T> : IDictionary<Type, T>
         if (AllPairs.TryGetValue(key, out value))
             return true;
 
-        if (!TryGetEquivalentValue(key, out value))
-            return false;
-
-        return AllPairs.TryAdd(key, value);
+        return TryGetEquivalentValue(key, out value) && AllPairs.TryAdd(key, value);
     }
 
     public bool TryGetEquivalentValue(Type type, out T result)

@@ -200,7 +200,7 @@ public static class Helpers
 
     public static T AddEnumValue<T>(string name) where T : struct, Enum => (T)AddEnumValue(name, typeof(T));
 
-    public static object AddEnumValue(string name, Type enumType)
+    private static object AddEnumValue(string name, Type enumType)
     {
         if (TryParseEnum(enumType, name, true, out var result))
             return result;

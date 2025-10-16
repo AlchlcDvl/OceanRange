@@ -178,7 +178,7 @@ public static class Inventory
         return true;
     }
 
-    public static T ToJson<T>(string jsonText)
+    private static T ToJson<T>(string jsonText)
     {
         using var stringReader = new StringReader(jsonText);
         using var jsonTextReader = new JsonTextReader(stringReader);

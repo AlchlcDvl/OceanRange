@@ -1,3 +1,6 @@
+// ReSharper disable UnassignedField.Global
+// ReSharper disable CollectionNeverUpdated.Global
+
 namespace OceanRange.Data;
 
 public sealed class LangHolder : JsonData
@@ -24,12 +27,12 @@ public sealed class Translations : JsonData
     // [JsonRequired] public ZoneLangData[] Zones;
     [JsonRequired] public MailLangData[] Mail;
 
-    [JsonIgnore] public LangData[] LangDatas;
+    [JsonIgnore] private LangData[] LangDatas;
 
     protected override void OnDeserialise()
     {
         LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Plorts, .. Mail/*, .. Zones, .. Crafts, .. EdibleCrafts */];
-        SlimeToOnomicsMap = Slimes.ToDictionary(x => x.PediaKey, x => x.Onomics);
+        SlimeToOnomicsMap = Slimes.ToDictionary(x => x.PediaKey, x => x.OnomicsType);
     }
 
     [JsonIgnore] private Dictionary<string, Dictionary<string, string>> TranslatedTexts;
@@ -50,16 +53,16 @@ public sealed class Translations : JsonData
                 keyValues[id] = translatedTexts;
         }
 
-        foreach (var LangData in LangDatas)
-            LangData.AddTranslations(TranslatedTexts);
+        foreach (var langData in LangDatas)
+            langData.AddTranslations(TranslatedTexts);
 
         return TranslatedTexts;
     }
 
     public void OnLanguageChanged()
     {
-        foreach (var LangData in Ranchers)
-            LangData.OnLanguageChanged();
+        foreach (var rancher in Ranchers)
+            rancher.OnLanguageChanged();
     }
 }
 
@@ -93,7 +96,7 @@ public sealed class RancherLangData : LangData
 
     [JsonRequired] public string SpecialOffer;
 
-    [JsonIgnore] public RancherData Rancher;
+    [JsonIgnore] private RancherData Rancher;
 
     protected override void OnDeserialise()
     {
@@ -153,25 +156,25 @@ public sealed class RancherLangData : LangData
 
 public abstract class IdentifiableLangData : LangData
 {
-    [JsonIgnore] public IdentifiableId IdentId;
+    [JsonIgnore] protected IdentifiableId IdentId;
 
     public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations)
         => translations.GetBundle("actor")["l." + IdentId.ToString().ToLowerInvariant()] = TranslatedName;
 }
 
-public sealed class PlortLangData() : IdentifiableLangData
+public sealed class PlortLangData : IdentifiableLangData
 {
     protected override void OnDeserialise() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant() + "_PLORT");
 }
 
-public sealed class LargoLangData() : IdentifiableLangData
+public sealed class LargoLangData : IdentifiableLangData
 {
     protected override void OnDeserialise() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant().Replace(' ', '_') + "_LARGO");
 }
 
-public sealed class GordoLangData() : IdentifiableLangData
+public sealed class GordoLangData : IdentifiableLangData
 {
-    [JsonIgnore] public bool Exists;
+    [JsonIgnore] private bool Exists;
 
     protected override void OnDeserialise() => Exists = Enum.TryParse(Name.ToUpperInvariant() + "_GORDO", out IdentId);
 
@@ -187,14 +190,14 @@ public sealed class GordoLangData() : IdentifiableLangData
 public abstract class PediaLangData(string suffix, PediaCategory category) : LangData
 {
     [JsonIgnore] private readonly string Suffix = suffix;
-    [JsonIgnore] public readonly PediaCategory Category = category;
+    [JsonIgnore] private readonly PediaCategory Category = category;
 
-    [JsonIgnore] public PediaId PediaId;
+    [JsonIgnore] protected PediaId PediaId;
     [JsonIgnore] public string PediaKey;
 
     [JsonRequired] public string Intro;
 
-    protected sealed override void OnDeserialise()
+    protected override sealed void OnDeserialise()
     {
         var mainPart = Name.ToUpperInvariant() + (Suffix.Length > 0 ? ('_' + Suffix) : "");
 
@@ -237,9 +240,9 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
 
 public abstract class ActorLangData(string suffix, PediaCategory category) : PediaLangData(suffix, category)
 {
-    [JsonIgnore] public IdentifiableId ActorId;
+    [JsonIgnore] private IdentifiableId ActorId;
 
-    protected sealed override void OnDeserialisedEvent(string mainPart) => ActorId = Helpers.ParseEnum<IdentifiableId>(mainPart);
+    protected override sealed void OnDeserialisedEvent(string mainPart) => ActorId = Helpers.ParseEnum<IdentifiableId>(mainPart);
 
     public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -296,7 +299,7 @@ public abstract class FoodLangData(string suffix) : ResourceLangData(suffix)
 {
     [JsonRequired] public string FavouredBy;
 
-    public sealed override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations)
+    public override sealed void AddTranslations(Dictionary<string, Dictionary<string, string>> translations)
     {
         base.AddTranslations(translations);
 

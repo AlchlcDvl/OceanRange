@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿// ReSharper disable UnassignedField.Global
+
+using System.Reflection;
 
 namespace OceanRange.Data;
 

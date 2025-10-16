@@ -41,7 +41,7 @@ public static class Largopedia
     private static Material QuantumMat;
     private static float DefaultRadius;
 
-    public static LargoData[] Largos;
+    private static LargoData[] Largos;
     private static readonly int GhostToggle = ShaderUtils.GetOrSet("_GhostToggle");
 
 #if DEBUG
@@ -149,6 +149,7 @@ public static class Largopedia
         }
         else
         {
+            // ReSharper disable once UseObjectOrCollectionInitializer
             body = new(baseBody);
             body.DefaultMaterials[0] = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone();
         }

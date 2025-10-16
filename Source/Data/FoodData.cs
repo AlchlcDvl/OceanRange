@@ -1,3 +1,5 @@
+// ReSharper disable UnassignedField.Global
+
 namespace OceanRange.Data;
 
 public sealed class Ingredients : JsonData
@@ -33,6 +35,7 @@ public sealed class PlantData : SpawnedActorData
     [JsonRequired] public string Type;
     [JsonRequired] public string ResourceIdSuffix;
 
+    // ReSharper disable once CollectionNeverUpdated.Global
     [JsonRequired] public Dictionary<string, Dictionary<string, Vector3[]>> SpawnLocations;
 
     [JsonIgnore] public SpawnResourceId ResourceId;

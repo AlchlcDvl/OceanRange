@@ -62,7 +62,7 @@ public static class FloppyDisk
     /// <summary>
     /// Writes the save data to a compounded data piece.
     /// </summary>
-    /// <param name="piece">The piece to be write to.</param>
+    /// <param name="piece">The piece to be written to.</param>
 #if DEBUG
     [TimeDiagnostic]
 #endif
