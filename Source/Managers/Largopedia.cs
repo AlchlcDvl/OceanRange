@@ -73,7 +73,7 @@ public static class Largopedia
         definition.CanLargofy = false;
         definition.IdentifiableId = largoData.MainId;
         definition.IsLargo = true;
-        definition.Name = slime1.Name + ' ' + slime2.Name;
+        definition.Name = slime1.Name + " " + slime2.Name;
         definition.PrefabScale = 2f;
         definition.Sounds = largoData.Props.HasFlag(LargoProps.UseSlime2ForSound) ? slime2.Sounds : slime1.Sounds;
         definition.LoadLargoDiet();
@@ -293,8 +293,28 @@ public static class Largopedia
         {
             for (var i = 0; i < baseStructs.Length; i++)
             {
-                if (i != avoid)
-                    list.Add(new(baseStructs[i]));
+                if (i == avoid)
+                    continue;
+
+                var newStruct = new SlimeAppearanceStructure(baseStructs[i]);
+                var formerPrefabs = newStruct.Element.Prefabs;
+                var formerName = newStruct.Element.Name;
+                newStruct.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
+                newStruct.Element.Prefabs = new SlimeAppearanceObject[formerPrefabs.Length];
+                newStruct.Element.name = newStruct.Element.Name = formerName;
+
+                for (var j = 0; j < formerPrefabs.Length; j++)
+                {
+                    var prefab = formerPrefabs[j].CreatePrefab();
+
+                    if (prefab.TryGetComponent<SkinnedMeshRenderer>(out var rend))
+                        rend.sharedMesh = rend.sharedMesh.Clone();
+
+                    prefab.LODIndex = j;
+                    newStruct.Element.Prefabs[j] = prefab;
+                }
+
+                list.Add(newStruct);
             }
         }
     }

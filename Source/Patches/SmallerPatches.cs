@@ -92,3 +92,13 @@ public static class LatchCustomTranslations
             __result[id] = text;
     }
 }
+
+[HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake))]
+public static class FilterValues
+{
+    public static void Postfix(ExchangeDirector __instance)
+    {
+        __instance.catDict[Category.PLORTS] = [..__instance.catDict[Category.PLORTS].Exclude(Ids.GOLDFISH_PLORT)];
+        __instance.catDict[Category.SLIMES] = [..__instance.catDict[Category.SLIMES].Exclude(Ids.GOLDFISH_SLIME)];
+    }
+}

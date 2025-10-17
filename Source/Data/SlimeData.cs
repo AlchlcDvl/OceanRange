@@ -56,6 +56,7 @@ public sealed class SlimeData : SpawnedActorData
     public IdentifiableId[] GordoRewards;
 
     public bool Vaccable = true;
+    public bool Exchangeable = true;
     public string GordoCell;
 
     [JsonProperty("gordoOri")] public Orientation GordoOrientation;

@@ -15,7 +15,7 @@ public static class Contacts
 
         RancherMap = Ranchers.ToDictionary(x => x.RancherName, RancherNameComparer.Instance);
 
-        ExchangeOfferRegistry.RegisterCategory(Ids.OCEAN, [.. Slimepedia.Slimes.SelectMany(x => new[] { x.MainId, x.PlortId })]);
+        ExchangeOfferRegistry.RegisterCategory(Ids.OCEAN, [.. Slimepedia.Slimes.Where(x => x.Exchangeable).SelectMany(x => new[] { x.MainId, x.PlortId })]);
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
     }

@@ -38,7 +38,7 @@ public static class TimeDiagnosticPatch
         var sb = new StringBuilder(isNull ? __originalMethod.Name : stage, 20);
 
         if (hasJsonParam)
-            sb.Insert(0, (((JsonData)__args[0]).Name ?? "Blank") + ' ');
+            sb.Insert(0, (((JsonData)__args[0]).Name ?? "Blank") + " ");
 
         if (hasParams)
             sb.Append(" Execut"); // Execut because the ed is added in the postfix so no need to have it here lol

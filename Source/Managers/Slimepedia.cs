@@ -17,6 +17,7 @@ public static class Slimepedia
 
     private static bool SamExists;
     private static Transform RocksPrefab;
+    private static SlimeDefinition TarrDef;
     private static SlimeExpressionFace Sleeping;
     private static SlimeAppearanceObject SkinnedPrefab;
 
@@ -129,8 +130,9 @@ public static class Slimepedia
         };
         Sleeping.Eyes?.SetTexture(FaceAtlas, Inventory.GetTexture2D("sleeping_eyes"));
 
-        var pinkPrefabs = pinkAppearance.Structures[0].Element.Prefabs;
-        SkinnedPrefab = pinkPrefabs[0];
+        SkinnedPrefab = pinkAppearance.Structures[0].Element.Prefabs[0];
+
+        TarrDef = IdentifiableId.TARR_SLIME.GetSlimeDefinition();
 
         Array.ForEach(Slimes, BaseLoadSlime);
     }
@@ -393,7 +395,7 @@ public static class Slimepedia
         definition.AppearancesDefault = [appearance];
 
         // Tarrs should love these guys
-        IdentifiableId.TARR_SLIME.GetSlimeDefinition().Diet.EatMap.Add(new()
+        TarrDef.Diet.EatMap.Add(new()
         {
             eats = slimeData.MainId,
             becomesId = IdentifiableId.TARR_SLIME,

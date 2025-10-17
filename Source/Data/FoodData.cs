@@ -46,9 +46,9 @@ public sealed class PlantData : SpawnedActorData
         var upper = Name.ToUpperInvariant();
 
         var typeUpper = Type.ToUpperInvariant();
-        MainId = Helpers.AddEnumValue<IdentifiableId>(upper + '_' + typeUpper);
+        MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_" + typeUpper);
 
-        var resource = upper + '_' + ResourceIdSuffix.ToUpperInvariant();
+        var resource = upper + "_" + ResourceIdSuffix.ToUpperInvariant();
         ResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource);
         DlxResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource + "_DLX");
 

@@ -83,7 +83,7 @@
         "plortAmmoColor": "#DCDADD",
         "basePrice": 20,
         "saturation": 26,
-        "jiggle": 0.125,
+        "jiggle": 0.1,
         "plortType": "Plort",
         "gordoOri": "f -494.6969,-2.37,-241.9137,0,200,0",
         "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
@@ -544,6 +544,7 @@
         "natGordoSpawn": false,
         "gordoRewards": ["CRATE_MOSS_01", "CRATE_REEF_01", "CRATE_RUINS_01", "CRATE_QUARRY_01", "CRATE_DESERT_01"],
         "zones": ["REEF", "QUARRY", "DESERT", "MOSS", "RUINS", "WILDS"],
-        "vaccable": false
+        "vaccable": false,
+        "exchangeable": false
     }
 ]

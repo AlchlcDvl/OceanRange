@@ -102,7 +102,7 @@ public static class Cookbook
                         var pos = positions[i];
                         var resource = prefab.Instantiate(parent);
                         resource.transform.position = pos;
-                        resource.name = lower + plantData.Name + '0' + i;
+                        resource.name = lower + plantData.Name + "0" + i;
                         resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
                         context.GameModel.RegisterResourceSpawner(pos, resource);
                     }
@@ -213,7 +213,7 @@ public static class Cookbook
 
         var meshModel = prefab.FindChildWithPartialName("model_");
         var lower = plantData.Name.ToLowerInvariant();
-        meshModel.GetComponent<MeshFilter>().sharedMesh = Inventory.GetMesh(lower + '_' + plantData.Type.ToLowerInvariant());
+        meshModel.GetComponent<MeshFilter>().sharedMesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();
         var material = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
