@@ -12,6 +12,17 @@ public static class Translator
     private static readonly Dictionary<Language, Translations> TranslationsHolder = new(LanguageComparer.Instance);
 
     private static Translations Fallback;
+    private static Dictionary<string, Dictionary<string, string>> FallbackTranslations;
+
+#if DEBUG
+    [TimeDiagnostic("Pedia Preload")]
+#endif
+    public static void PreloadLangData()
+    {
+        Fallback = GenerateTranslations(Config.FALLBACK_LANGUAGE);
+        FallbackTranslations = Fallback.GetTranslations();
+        TranslationsHolder[Config.FALLBACK_LANGUAGE] = Fallback;
+    }
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
@@ -30,6 +41,10 @@ public static class Translator
         if (Inventory.TryGetJson<Translations>(langName, out var translations, Config.DUMP_TRANSLATIONS))
         {
             Inventory.TryReleaseHandles(langName);
+
+            if (lang == Config.FALLBACK_LANGUAGE)
+                Fallback = translations;
+
             return translations;
         }
 
@@ -46,4 +61,6 @@ public static class Translator
 
         return bundle;
     }
+
+    public static void AddTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName) => bundle[id] = text ?? FallbackTranslations[bundleName][id];
 }
