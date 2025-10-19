@@ -47,7 +47,6 @@ internal sealed class Main : ModEntryPoint
         Largopedia.PreloadLargoData();
         Mailbox.PreloadMailData();
         Contacts.PreloadRancherData();
-        Translator.PreloadLangData();
 
         Helpers.CategoriseIds();
 
@@ -92,7 +91,7 @@ internal sealed class Main : ModEntryPoint
     {
         Slimepedia.PostLoadSlimes();
         Inventory.Bundle.Unload(false);
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", "pedia", "ocean_range", "contacts"); // Release handles
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", "ocean_range", "contacts"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");

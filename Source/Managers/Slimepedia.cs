@@ -800,13 +800,6 @@ public static class Slimepedia
     }
 
     [UsedImplicitly]
-    public static void InitRosiSlimeDetails(GameObject _1, SlimeDefinition definition, SlimeAppearance _2)
-    {
-        definition.Diet.MajorFoodGroups = IdentifiableId.PINK_SLIME.GetSlimeDefinition().Diet.MajorFoodGroups;
-        definition.Diet.Favorites = [];
-    }
-
-    [UsedImplicitly]
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition) => GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, definition.IdentifiableId];
 
     [UsedImplicitly]

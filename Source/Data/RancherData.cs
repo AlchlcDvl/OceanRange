@@ -34,4 +34,42 @@ public sealed class RancherData : JsonData
             indivRareRewards = IndivRareRewards ?? []
         };
     }
+
+    [JsonIgnore] private bool Handled;
+
+    public void HandleTranslationData(RancherLangData langData)
+    {
+        if (Handled)
+            return;
+
+        for (var i = 0; i < langData.Offers.Length; i++)
+        {
+            var id = $"m.offer_{i + 1}.{RancherId}";
+
+            if (Translator.OfferIds.Contains(id))
+                continue;
+
+            ExchangeOfferRegistry.RegisterOfferID(id);
+            Translator.OfferIds.Add(id);
+        }
+
+        var specId = $"m.bonusoffer.{RancherId}";
+
+        if (!Translator.OfferIds.Contains(specId))
+            ExchangeOfferRegistry.RegisterOfferID(specId);
+
+        if (!Main.ClsExists)
+            return;
+
+        for (var i = 0; i < langData.LoadingTexts.Length; i++)
+        {
+            if (Translator.LoadingIndices.Contains(i))
+                continue;
+
+            Translator.LoadingIds.Add(Main.GetNextLoadingIdBypass());
+            Translator.LoadingIndices.Add(i);
+        }
+
+        Handled = true;
+    }
 }

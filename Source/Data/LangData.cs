@@ -3,11 +3,6 @@
 
 namespace OceanRange.Data;
 
-public sealed class LangHolder : JsonData
-{
-    [JsonRequired] public Language Fallback = Language.EN;
-}
-
 public sealed class Translations : JsonData
 {
     [JsonRequired] public Dictionary<string, Dictionary<string, string>> Additional;
@@ -101,36 +96,7 @@ public sealed class RancherLangData : LangData
     protected override void OnDeserialise()
     {
         Rancher = Contacts.RancherMap[Helpers.ParseEnum<RancherName>(Name.ToUpperInvariant())];
-
-        var rancherId = Rancher.RancherId;
-
-        for (var i = 0; i < Offers.Length; i++)
-        {
-            var id = $"m.offer_{i + 1}.{rancherId}";
-
-            if (Translator.OfferIds.Contains(id))
-                continue;
-
-            ExchangeOfferRegistry.RegisterOfferID(id);
-            Translator.OfferIds.Add(id);
-        }
-
-        var specId = $"m.bonusoffer.{rancherId}";
-
-        if (!Translator.OfferIds.Contains(specId))
-            ExchangeOfferRegistry.RegisterOfferID(specId);
-
-        if (!Main.ClsExists)
-            return;
-
-        for (var i = 0; i < LoadingTexts.Length; i++)
-        {
-            if (Translator.LoadingIndices.Contains(i))
-                continue;
-
-            Translator.LoadingIds.Add(Main.GetNextLoadingIdBypass());
-            Translator.LoadingIndices.Add(i);
-        }
+        Rancher.HandleTranslationData(this);
     }
 
     public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations)

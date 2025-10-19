@@ -118,6 +118,15 @@ public static class Inventory
             Directory.CreateDirectory(DumpPath);
     }
 
+    public static void TryReleaseHandles(params string[] handles)
+    {
+        try
+        {
+            ReleaseHandles(handles);
+        }
+        catch { }
+    }
+
     /// <summary>
     /// Frees up memory by releasing handles of certain assets.
     /// </summary>
@@ -161,9 +170,17 @@ public static class Inventory
     /// <returns>The read and converted json data.</returns>
     public static T GetJson<T>(string path) => ToJson<T>(TryReadJson(path, out var contents) ? contents : Get<Json>(path).text);
 
-    public static bool TryGetJson<T>(string path, out T json, bool writeJson = false)
+    public static bool TryGetJson<T>(string name, out T json, bool writeJson)
     {
-        if (!TryGet<Json>(path, out var jsonText))
+        var path = Path.Combine(DumpPath, name + ".json");
+
+        if (File.Exists(path))
+        {
+            json = ToJson<T>(File.ReadAllText(path));
+            return true;
+        }
+
+        if (!TryGet<Json>(name, out var jsonText))
         {
             json = default;
             return false;
@@ -173,7 +190,7 @@ public static class Inventory
         json = ToJson<T>(raw);
 
         if (writeJson)
-            File.WriteAllText(Path.Combine(DumpPath, path + ".json"), raw);
+            File.WriteAllText(path, raw);
 
         return true;
     }

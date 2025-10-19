@@ -85,7 +85,7 @@ public static class LatchCustomTranslations
 {
     public static void Postfix(string path, Dictionary<string, string> __result)
     {
-        if (!MessageDirector.GetLang(CultureInfo.CurrentCulture).GetTranslations().TryGetValue(path, out var translations))
+        if (!MessageDirector.GetLang(GameContext.Instance.MessageDirector.GetCurrentLanguageCode()).GetTranslations().TryGetValue(path, out var translations))
             return;
 
         foreach (var (id, text) in translations)

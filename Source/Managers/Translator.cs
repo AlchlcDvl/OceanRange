@@ -13,11 +13,6 @@ public static class Translator
 
     private static Translations Fallback;
 
-#if DEBUG
-    [TimeDiagnostic("Pedia Preload")]
-#endif
-    public static void PreloadLangData() => Fallback = GenerateTranslations(Inventory.GetJson<LangHolder>("pedia").Fallback);
-
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
         if (!TranslationsHolder.TryGetValue(lang, out var holder))
@@ -32,11 +27,16 @@ public static class Translator
     {
         var langName = lang.ToString();
 
-        if (!Inventory.TryGetJson<Translations>(langName, out var translations, true))
-            return Fallback ?? throw new("Fallback was null");
+        if (Inventory.TryGetJson<Translations>(langName, out var translations, Config.DUMP_TRANSLATIONS))
+        {
+            Inventory.TryReleaseHandles(langName);
+            return translations;
+        }
 
-        Inventory.ReleaseHandles(langName);
-        return translations;
+        if (lang == Config.FALLBACK_LANGUAGE)
+            throw new("Fallback was null");
+
+        return Fallback ?? GenerateTranslations(Config.FALLBACK_LANGUAGE) ?? throw new("Fallback was null");
     }
 
     public static Dictionary<string, string> GetBundle(this Dictionary<string, Dictionary<string, string>> translations, string key)
