@@ -78,7 +78,6 @@ public sealed class MailLangData : LangData
     public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations)
     {
         var bundle = translations.GetBundle("mail");
-
         bundle.AddTranslation("m.from." + MailKey, TranslatedName, "mail");
         bundle.AddTranslation("m.body." + MailKey, Body, "mail");
         bundle.AddTranslation("m.subj." + MailKey, Subject, "mail");
@@ -166,7 +165,7 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
 
     protected override sealed void OnDeserialise()
     {
-        var mainPart = Name.ToUpperInvariant() + (Suffix.Length > 0 ? ("_" + Suffix) : "");
+        var mainPart = Name.ToUpperInvariant() + (Suffix?.Length is > 0 ? ("_" + Suffix) : "");
 
         var key = mainPart + "_ENTRY";
         PediaId = Helpers.AddEnumValue<PediaId>(key);
@@ -187,7 +186,7 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
     }
 }
 
-// public sealed class ZoneLangData() : PediaLangData("", PediaCategory.WORLD)
+// public sealed class ZoneLangData() : PediaLangData(null, PediaCategory.WORLD)
 // {
 //     [JsonRequired] public string Description;
 //     [JsonRequired] public string Presence;
@@ -216,6 +215,7 @@ public abstract class ActorLangData(string suffix, PediaCategory category) : Ped
         base.AddTranslations(translations);
 
         PediaRegistry.RegisterIdentifiableMapping(PediaId, ActorId);
+
         translations.GetBundle("actor").AddTranslation("l." + ActorId.ToString().ToLowerInvariant(), TranslatedName, "actor");
     }
 }

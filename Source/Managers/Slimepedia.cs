@@ -261,7 +261,6 @@ public static class Slimepedia
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
-        Helpers.CreateRanchExchangeOffer(slimeData.PlortId, slimeData.PlortExchangeWeight, slimeData.Progress);
         var silo = new List<StorageType> { StorageType.NON_SLIMES, StorageType.PLORT };
 
         if (slimeData.CanBeRefined)
@@ -274,6 +273,9 @@ public static class Slimepedia
 
         if (!slimeData.Vaccable)
             PediaRegistry.RegisterIdentifiableMapping(Helpers.ParseEnum<PediaId>(slimeData.Name.ToUpperInvariant() + "_SLIME_ENTRY"), slimeData.PlortId);
+
+        if (slimeData.Exchangeable)
+            Helpers.CreateRanchExchangeOffer(slimeData.PlortId, slimeData.PlortExchangeWeight, slimeData.Progress);
     }
 
 #if DEBUG
@@ -406,7 +408,9 @@ public static class Slimepedia
         // Register everything
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterSlimeDefinition(definition);
-        Helpers.CreateRanchExchangeOffer(slimeData.MainId, slimeData.ExchangeWeight, slimeData.Progress);
+
+        if (slimeData.Exchangeable)
+            Helpers.CreateRanchExchangeOffer(slimeData.MainId, slimeData.ExchangeWeight, slimeData.Progress);
 
         if (slimeData.Vaccable)
         {

@@ -43,6 +43,8 @@ public static class Inventory
         ]
     };
 
+    private static readonly JsonSerializer JsonSerializer = JsonSerializer.Create(JsonSettings);
+
     private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
     {
         [RuntimePlatform.OSXPlayer] = "mac",
@@ -199,7 +201,7 @@ public static class Inventory
     {
         using var stringReader = new StringReader(jsonText);
         using var jsonTextReader = new JsonTextReader(stringReader);
-        return JsonSerializer.Create(JsonSettings).Deserialize<T>(jsonTextReader);
+        return JsonSerializer.Deserialize<T>(jsonTextReader);
     }
 
     private static bool TryReadJson(string fileName, out string contents)

@@ -41,17 +41,13 @@ public static class Translator
         if (Inventory.TryGetJson<Translations>(langName, out var translations, Config.DUMP_TRANSLATIONS))
         {
             Inventory.TryReleaseHandles(langName);
-
-            if (lang == Config.FALLBACK_LANGUAGE)
-                Fallback = translations;
-
             return translations;
         }
 
         if (lang == Config.FALLBACK_LANGUAGE)
             throw new("Fallback was null");
 
-        return Fallback ?? GenerateTranslations(Config.FALLBACK_LANGUAGE) ?? throw new("Fallback was null");
+        return Fallback ?? GenerateTranslations(Config.FALLBACK_LANGUAGE);
     }
 
     public static Dictionary<string, string> GetBundle(this Dictionary<string, Dictionary<string, string>> translations, string key)

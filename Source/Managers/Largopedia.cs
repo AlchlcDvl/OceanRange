@@ -248,9 +248,6 @@ public static class Largopedia
                 prefab.RemoveComponent(component);
         }
 
-        if (prefab.TryGetComponent<MineBehaviour>(out var mine))
-            mine.IsLargo = true;
-
         largoData.InitLargoDetails?.Invoke(null, [prefab, definition, appearance]);
         largoData.InitSlime1Details?.Invoke(null, [prefab, definition, appearance]);
         largoData.InitSlime2Details?.Invoke(null, [prefab, definition, appearance]);
@@ -320,5 +317,18 @@ public static class Largopedia
     }
 
     [UsedImplicitly]
+    public static void InitMineSlimeDetails(GameObject prefab, SlimeDefinition _1, SlimeAppearance _2) => prefab.GetComponent<MineBehaviour>().IsLargo = true;
+
+    [UsedImplicitly]
     public static void InitMesmerSlimeDetails(GameObject _1, SlimeDefinition definition, SlimeAppearance _2) => Mesmers.Add(definition.IdentifiableId);
+
+    [UsedImplicitly]
+    public static void InitHunterSlimeDetails(GameObject prefab, SlimeDefinition _1, SlimeAppearance _2)
+    {
+        prefab.RemoveComponent<SlimeStealth>();
+        prefab.RemoveComponent<DeactivateWhileStealthed>();
+
+        prefab.AddComponent<StealthFixer>();
+        prefab.AddComponent<DeactivateWhileStealthedOR>();
+    }
 }

@@ -8,8 +8,14 @@ public static class MineSlimeAppearanceFix
 {
     public static void Postfix(SlimeAppearanceApplicator __instance)
     {
-        if (__instance.Appearance && __instance.TryGetComponent<MineBehaviour>(out var mine))
+        if (!__instance.Appearance)
+            return;
+
+        if (__instance.TryGetComponent<MineBehaviour>(out var mine))
             mine.ExplodeFX = __instance.Appearance.ExplosionAppearance.explodeFx;
+
+        if (__instance.TryGetComponent<StealthFixer>(out var fixer))
+            fixer.UpdateMaterialStealthController();
     }
 }
 
@@ -98,7 +104,7 @@ public static class FilterValues
 {
     public static void Postfix(ExchangeDirector __instance)
     {
-        __instance.catDict[Category.PLORTS] = [..__instance.catDict[Category.PLORTS].Exclude(Ids.GOLDFISH_PLORT)];
-        __instance.catDict[Category.SLIMES] = [..__instance.catDict[Category.SLIMES].Exclude(Ids.GOLDFISH_SLIME)];
+        __instance.catDict[Category.PLORTS] = [.. __instance.catDict[Category.PLORTS].Exclude(Ids.GOLDFISH_PLORT)];
+        __instance.catDict[Category.SLIMES] = [.. __instance.catDict[Category.SLIMES].Exclude(Ids.GOLDFISH_SLIME)];
     }
 }

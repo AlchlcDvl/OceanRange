@@ -47,6 +47,7 @@ internal sealed class Main : ModEntryPoint
         Largopedia.PreloadLargoData();
         Mailbox.PreloadMailData();
         Contacts.PreloadRancherData();
+        Translator.PreloadLangData();
 
         Helpers.CategoriseIds();
 
