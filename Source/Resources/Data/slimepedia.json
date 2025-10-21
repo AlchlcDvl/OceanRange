@@ -350,8 +350,8 @@
                 "colorProps":
                 {
                     "_TopColor": "#e034c9",
-                    "_MiddleColor": "#320047",
-                    "_BottomColor": "#340ca1"
+                    "_MiddleColor": "#dafe7a",
+                    "_BottomColor": "#0a094f"
                 }
             },
             {
@@ -361,7 +361,7 @@
                 "colorProps":
                 {
                     "_TopColor": "#340ca1",
-                    "_BottomColor": "#320047"
+                    "_BottomColor": "#431158"
                 }
             },
             {
@@ -370,7 +370,7 @@
                 "colorProps":
                 {
                     "_TopColor": "#33169a",
-                    "_BottomColor": "#320047"
+                    "_BottomColor": "#431158"
                 }
             },
             {

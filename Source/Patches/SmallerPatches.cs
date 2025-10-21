@@ -108,3 +108,33 @@ public static class FilterValues
         __instance.catDict[Category.SLIMES] = [.. __instance.catDict[Category.SLIMES].Exclude(Ids.GOLDFISH_SLIME)];
     }
 }
+
+[HarmonyPatch(typeof(StalkConsumable))]
+public static class StalkConsumablePatch
+{
+    [HarmonyPatch(nameof(StalkConsumable.SetStealth))]
+    public static void Postfix(StalkConsumable __instance, bool isStealthed)
+    {
+        if (__instance.TryGetComponent<StealthFixer>(out var fixer))
+            fixer.SetStealth(isStealthed);
+    }
+
+    [HarmonyPatch(nameof(StalkConsumable.ProcessCollisionEnter))]
+    public static bool Prefix(StalkConsumable __instance, Collision col)
+    {
+        if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.GetComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player)
+        {
+            var vector = col.gameObject.transform.InverseTransformPoint(col.contacts[0].point);
+
+            if (vector.z > 0.2f && vector.y > 1f)
+                SceneContext.Instance.AchievementsDirector.AddToStat(AchievementsDirector.IntStat.TABBY_HEADBUTT, 1);
+        }
+        else if (__instance.feinting)
+        {
+            __instance.pivotNow = true;
+            __instance.feinting = false;
+        }
+
+        return false;
+    }
+}

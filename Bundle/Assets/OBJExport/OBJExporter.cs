@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 /*=============================================================================
- |	    Project:  Unity3D Scene OBJ Exporter
+ |        Project:  Unity3D Scene OBJ Exporter
  |
- |		  Notes: Only works with meshes + meshRenderers. No terrain yet
+ |          Notes: Only works with meshes + meshRenderers. No terrain yet
  |
  |       Author:  aaro4130
  |

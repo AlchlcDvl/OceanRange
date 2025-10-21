@@ -146,7 +146,7 @@ public static class Slimepedia
             CreateGordo(slimeData);
 
         if (SamExists)
-            TypeLoadExceptionBypass(slimeData);
+            RegisterSlimeBypass(slimeData);
     }
 
 #if DEBUG
@@ -424,17 +424,7 @@ public static class Slimepedia
             Main.AddIconBypass(appearance.Icon);
     }
 
-    private static void TypeLoadExceptionBypass(SlimeData slimeData)
-    {
-        try
-        {
-            SlimesAndMarket.MarketRegistry.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress); // Since it's a soft dependency but still requires the code from the mod to work, this method was made
-        }
-        catch (Exception e)
-        {
-            Main.Console.LogError(e);
-        }
-    }
+    private static void RegisterSlimeBypass(SlimeData slimeData) => SlimesAndMarket.MarketRegistry.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress);
 
     private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeData slimeData)
     {

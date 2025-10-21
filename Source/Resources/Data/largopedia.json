@@ -237,8 +237,10 @@
         "props": ["UseSlime2ForFace", "CustomSlime2Structures"],
         "slime2Structs":
         [
-            { "matOrigin": "COCO_SLIME" },
-            { "matOrigin": "COCO_SLIME" }
+            {
+                "colorsOrigin": "COCO_SLIME",
+                "invert": true
+            }
         ],
         "jiggle": 0.1
     },

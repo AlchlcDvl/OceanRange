@@ -43,7 +43,7 @@ public static class Inventory
         ]
     };
 
-    private static readonly JsonSerializer JsonSerializer = JsonSerializer.Create(JsonSettings);
+    private static readonly JsonSerializer OrJsonSerializer = JsonSerializer.Create(JsonSettings);
 
     private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
     {
@@ -201,7 +201,7 @@ public static class Inventory
     {
         using var stringReader = new StringReader(jsonText);
         using var jsonTextReader = new JsonTextReader(stringReader);
-        return JsonSerializer.Deserialize<T>(jsonTextReader);
+        return OrJsonSerializer.Deserialize<T>(jsonTextReader);
     }
 
     private static bool TryReadJson(string fileName, out string contents)

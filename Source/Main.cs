@@ -119,33 +119,9 @@ internal sealed class Main : ModEntryPoint
         Helpers.ClonedMeshes.Clear();
     }
 
-    public static void AddIconBypass(Sprite icon)
-    {
-        try
-        {
-            CLS.AddToLoading.AddIcon(icon);
-        }
-        catch { }
-    }
+    public static void AddIconBypass(Sprite icon) => CLS.AddToLoading.AddIcon(icon);
 
-    private static void AddSplashesBypass(IEnumerable<Sprite> splashes)
-    {
-        try
-        {
-            CLS.AddToLoading.AddSplashes(splashes);
-        }
-        catch { }
-    }
+    public static string GetNextLoadingIdBypass() => CLS.AddToLoading.GetNextLoadingId();
 
-    public static string GetNextLoadingIdBypass()
-    {
-        try
-        {
-            return CLS.AddToLoading.GetNextLoadingId();
-        }
-        catch
-        {
-            return null;
-        }
-    }
+    private static void AddSplashesBypass(IEnumerable<Sprite> splashes) => CLS.AddToLoading.AddSplashes(splashes);
 }

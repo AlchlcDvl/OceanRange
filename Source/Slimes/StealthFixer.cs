@@ -3,22 +3,20 @@ namespace OceanRange.Slimes;
 // Had to copy paste base game code because there's too many entry points to worry about otherwise
 public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable, SpawnListener
 {
-    public Vacuumable vacuumable;
-    public SlimeAudio slimeAudio;
-    public StealthFixerController stealthController;
+    private Vacuumable Vacuumable;
+    private SlimeAudio SlimeAudio;
 
-    public float initStealthUntil;
-    public float currentOpacity = 1f;
-    public float targetOpacity = 1f;
-    public float lastOpacity = 1f;
+    private float InitStealthUntil;
+    private float CurrentOpacity = 1f;
+    private float TargetOpacity = 1f;
+    private float LastOpacity = 1f;
 
-    public bool IsStealthed => currentOpacity < 1f;
+    private StealthFixerController StealthController => field ?? new(gameObject);
 
     public void Awake()
     {
-        stealthController = new StealthFixerController(gameObject);
-        vacuumable = GetComponent<Vacuumable>();
-        slimeAudio = GetComponent<SlimeAudio>();
+        Vacuumable = GetComponent<Vacuumable>();
+        SlimeAudio = GetComponent<SlimeAudio>();
 
         if (TryGetComponent<SlimeAppearanceApplicator>(out var slimeAppearanceApplicator) && slimeAppearanceApplicator.Appearance)
             UpdateMaterialStealthController();
@@ -28,40 +26,40 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
 
     public void DidSpawn()
     {
-        currentOpacity = 0f;
-        initStealthUntil = Time.time + 5f;
+        CurrentOpacity = 0f;
+        InitStealthUntil = Time.time + 5f;
     }
 
     public void SetStealth(bool stealth)
     {
-        targetOpacity = stealth ? 0f : 1f;
-        slimeAudio.Play(stealth ? slimeAudio.slimeSounds.cloakCue : slimeAudio.slimeSounds.decloakCue);
+        TargetOpacity = stealth ? 0f : 1f;
+        SlimeAudio.Play(stealth ? SlimeAudio.slimeSounds.cloakCue : SlimeAudio.slimeSounds.decloakCue);
     }
 
     public void SetOpacity(float opacity)
     {
-        stealthController.SetOpacity(opacity);
-        lastOpacity = opacity;
+        StealthController.SetOpacity(opacity);
+        LastOpacity = opacity;
     }
 
     public void UpdateMaterialStealthController()
     {
-        stealthController.UpdateMaterials(gameObject);
-        lastOpacity = 1f;
+        StealthController.UpdateMaterials(gameObject);
+        LastOpacity = 1f;
     }
 
     public void UpdateStealthOpacity()
     {
-        var num = Time.time < initStealthUntil ? 0f : targetOpacity;
+        var num = Time.time < InitStealthUntil ? 0f : TargetOpacity;
 
-        if (num > currentOpacity)
-            currentOpacity = Mathf.Min(num, currentOpacity + (2f * Time.deltaTime));
-        else if (targetOpacity < currentOpacity)
-            currentOpacity = Mathf.Max(num, currentOpacity - (2f * Time.deltaTime));
+        if (num > CurrentOpacity)
+            CurrentOpacity = Mathf.Min(num, CurrentOpacity + (2f * Time.deltaTime));
+        else if (TargetOpacity < CurrentOpacity)
+            CurrentOpacity = Mathf.Max(num, CurrentOpacity - (2f * Time.deltaTime));
 
-        var num2 = vacuumable.isHeld() ? 1f : currentOpacity;
+        var num2 = Vacuumable.isHeld() ? 1f : CurrentOpacity;
 
-        if (Math.Abs(num2 - lastOpacity) > 0.001f)
+        if (Math.Abs(num2 - LastOpacity) > 0.001f)
             SetOpacity(num2);
     }
 }
@@ -70,19 +68,21 @@ public sealed class StealthFixerController
 {
     private static readonly int Alpha = ShaderUtils.GetOrSet("_Alpha");
 
-    public readonly Material CloakMaterial;
-    private readonly HashSet<Shader> CloakableShaders;
-    public readonly HashSet<Material> CloakingMats = [];
-    public readonly List<Renderer> Renderers = [];
-    public readonly Dictionary<Renderer, (Material[], List<MaterialPropertyBlock>)> RendererOriginalMaterials = [];
+    private static readonly Material CloakMaterial;
+    private static readonly HashSet<Shader> CloakableShaders;
 
-    public StealthFixerController(GameObject gameObject)
+    private readonly List<Renderer> Renderers = [];
+    private readonly HashSet<Material> CloakingMats = [];
+    private readonly Dictionary<Renderer, (Material[], MaterialPropertyBlock[])> RendererOriginalMaterials = [];
+
+    static StealthFixerController()
     {
-        var slimeShaders = SRSingleton<GameContext>.Instance.SlimeShaders;
+        var slimeShaders = GameContext.Instance.SlimeShaders;
         CloakMaterial = slimeShaders.cloakMaterial;
         CloakableShaders = slimeShaders.cloakableShaders;
-        UpdateMaterials(gameObject);
     }
+
+    public StealthFixerController(GameObject gameObject) => UpdateMaterials(gameObject);
 
     public void UpdateMaterials(GameObject gameObject)
     {
@@ -92,12 +92,18 @@ public sealed class StealthFixerController
 
         foreach (var renderer in gameObject.GetComponentsInChildren<Renderer>())
         {
+            if (!renderer)
+                continue;
+
             var blocks = new List<MaterialPropertyBlock>();
 
             foreach (var material in renderer.sharedMaterials)
             {
                 if (!material || !CloakableShaders.Contains(material.shader))
+                {
+                    blocks.Add(null);
                     continue;
+                }
 
                 CloakingMats.Add(material);
 
@@ -115,7 +121,7 @@ public sealed class StealthFixerController
             }
 
             Renderers.Add(renderer);
-            RendererOriginalMaterials[renderer] = ([.. renderer.sharedMaterials], blocks);
+            RendererOriginalMaterials[renderer] = ([.. renderer.sharedMaterials], [.. blocks]);
         }
 
         CloakingMats.Add(CloakMaterial);
@@ -145,17 +151,22 @@ public sealed class StealthFixerController
                     continue;
 
                 if (!isOpaque && material != CloakMaterial)
-                    sharedMaterials[j] = CloakMaterial;
-                else if (isOpaque && material == CloakMaterial)
+                    sharedMaterials[j] = CloakMaterial.Clone();
+                else if (isOpaque)
                     sharedMaterials[j] = originalNats[j];
 
                 var materialPropertyBlock = new MaterialPropertyBlock();
-                var colorsPropertyBlock = colorsPropertyBlocks[j];
                 renderer.GetPropertyBlock(materialPropertyBlock, j);
                 materialPropertyBlock.SetFloat(Alpha, isOpaque ? 1f : opacity);
-                materialPropertyBlock.SetColor(Slimepedia.TopColor, colorsPropertyBlock.GetColor(Slimepedia.TopColor));
-                materialPropertyBlock.SetColor(Slimepedia.MiddleColor, colorsPropertyBlock.GetColor(Slimepedia.MiddleColor));
-                materialPropertyBlock.SetColor(Slimepedia.BottomColor, colorsPropertyBlock.GetColor(Slimepedia.BottomColor));
+                var colorsPropertyBlock = colorsPropertyBlocks[j];
+
+                if (colorsPropertyBlock != null)
+                {
+                    materialPropertyBlock.SetColor(Slimepedia.TopColor, colorsPropertyBlock.GetColor(Slimepedia.TopColor));
+                    materialPropertyBlock.SetColor(Slimepedia.MiddleColor, colorsPropertyBlock.GetColor(Slimepedia.MiddleColor));
+                    materialPropertyBlock.SetColor(Slimepedia.BottomColor, colorsPropertyBlock.GetColor(Slimepedia.BottomColor));
+                }
+
                 renderer.SetPropertyBlock(materialPropertyBlock, j);
             }
 
@@ -164,25 +175,5 @@ public sealed class StealthFixerController
 
         if (anyNull)
             Renderers.RemoveAll(renderer => !renderer);
-    }
-}
-
-public sealed class DeactivateWhileStealthedOR : MonoBehaviour
-{
-    public ParticleSystem particleSys;
-    public StealthFixer stealth;
-
-    public void Start()
-    {
-        particleSys = GetComponent<ParticleSystem>();
-        stealth = GetComponentInParent<StealthFixer>();
-    }
-
-    public void Update()
-    {
-        if (stealth != null)
-#pragma warning disable CS0618 // Type or member is obsolete
-            particleSys.enableEmission = !stealth.IsStealthed;
-#pragma warning restore CS0618 // Type or member is obsolete
     }
 }
