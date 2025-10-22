@@ -66,10 +66,12 @@ public sealed class RancherData : JsonData
             if (Translator.LoadingIndices.Contains(i))
                 continue;
 
-            Translator.LoadingIds.Add(Main.GetNextLoadingIdBypass());
+            Translator.LoadingIds.Add(GetNextLoadingIdBypass());
             Translator.LoadingIndices.Add(i);
         }
 
         Handled = true;
     }
+
+    private static string GetNextLoadingIdBypass() => CLS.AddToLoading.GetNextLoadingId();
 }

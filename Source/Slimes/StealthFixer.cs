@@ -11,7 +11,7 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
     private float TargetOpacity = 1f;
     private float LastOpacity = 1f;
 
-    private StealthFixerController StealthController => field ?? new(gameObject);
+    private readonly StealthFixerController StealthController = new();
 
     public void Awake()
     {
@@ -72,8 +72,8 @@ public sealed class StealthFixerController
     private static readonly HashSet<Shader> CloakableShaders;
 
     private readonly List<Renderer> Renderers = [];
-    private readonly HashSet<Material> CloakingMats = [];
-    private readonly Dictionary<Renderer, (Material[], MaterialPropertyBlock[])> RendererOriginalMaterials = [];
+    private readonly Dictionary<Renderer, Material[]> RendererCloakMaterials = [];
+    private readonly Dictionary<Renderer, Material[]> RendererOriginalMaterials = [];
 
     static StealthFixerController()
     {
@@ -82,12 +82,12 @@ public sealed class StealthFixerController
         CloakableShaders = slimeShaders.cloakableShaders;
     }
 
-    public StealthFixerController(GameObject gameObject) => UpdateMaterials(gameObject);
-
     public void UpdateMaterials(GameObject gameObject)
     {
-        CloakingMats.Clear();
+        RendererCloakMaterials.Values.Do(x => x.Do(y => y.Destroy()));
+
         Renderers.Clear();
+        RendererCloakMaterials.Clear();
         RendererOriginalMaterials.Clear();
 
         foreach (var renderer in gameObject.GetComponentsInChildren<Renderer>())
@@ -95,36 +95,37 @@ public sealed class StealthFixerController
             if (!renderer)
                 continue;
 
-            var blocks = new List<MaterialPropertyBlock>();
+            var cloaks = new List<Material>();
 
             foreach (var material in renderer.sharedMaterials)
             {
-                if (!material || !CloakableShaders.Contains(material.shader))
+                if (!material)
                 {
-                    blocks.Add(null);
+                    cloaks.Add(null);
                     continue;
                 }
 
-                CloakingMats.Add(material);
+                if (!CloakableShaders.Contains(material.shader))
+                {
+                    cloaks.Add(material);
+                    continue;
+                }
+
+                var cloak = CloakMaterial.Clone();
+                cloaks.Add(cloak);
 
                 if (!material.HasProperty(Slimepedia.TopColor))
-                {
-                    blocks.Add(null);
                     continue;
-                }
 
-                var colorsPropertyBlock = new MaterialPropertyBlock();
-                colorsPropertyBlock.SetColor(Slimepedia.TopColor, material.GetColor(Slimepedia.TopColor));
-                colorsPropertyBlock.SetColor(Slimepedia.MiddleColor, material.GetColor(Slimepedia.MiddleColor));
-                colorsPropertyBlock.SetColor(Slimepedia.BottomColor, material.GetColor(Slimepedia.BottomColor));
-                blocks.Add(colorsPropertyBlock);
+                cloak.SetColor(Slimepedia.TopColor, material.GetColor(Slimepedia.TopColor));
+                cloak.SetColor(Slimepedia.MiddleColor, material.GetColor(Slimepedia.MiddleColor));
+                cloak.SetColor(Slimepedia.BottomColor, material.GetColor(Slimepedia.BottomColor));
             }
 
             Renderers.Add(renderer);
-            RendererOriginalMaterials[renderer] = ([.. renderer.sharedMaterials], [.. blocks]);
+            RendererCloakMaterials[renderer] = [.. cloaks];
+            RendererOriginalMaterials[renderer] = [.. renderer.sharedMaterials];
         }
-
-        CloakingMats.Add(CloakMaterial);
     }
 
     public void SetOpacity(float opacity)
@@ -140,37 +141,15 @@ public sealed class StealthFixerController
                 continue;
             }
 
-            var sharedMaterials = renderer.sharedMaterials;
-            var (originalNats, colorsPropertyBlocks) = RendererOriginalMaterials[renderer];
+            var materials = (isOpaque ? RendererOriginalMaterials : RendererCloakMaterials)[renderer];
 
-            for (var j = 0; j < sharedMaterials.Length; j++)
+            foreach (var material in materials)
             {
-                var material = sharedMaterials[j];
-
-                if (!CloakingMats.Contains(material))
-                    continue;
-
-                if (!isOpaque && material != CloakMaterial)
-                    sharedMaterials[j] = CloakMaterial.Clone();
-                else if (isOpaque)
-                    sharedMaterials[j] = originalNats[j];
-
-                var materialPropertyBlock = new MaterialPropertyBlock();
-                renderer.GetPropertyBlock(materialPropertyBlock, j);
-                materialPropertyBlock.SetFloat(Alpha, isOpaque ? 1f : opacity);
-                var colorsPropertyBlock = colorsPropertyBlocks[j];
-
-                if (colorsPropertyBlock != null)
-                {
-                    materialPropertyBlock.SetColor(Slimepedia.TopColor, colorsPropertyBlock.GetColor(Slimepedia.TopColor));
-                    materialPropertyBlock.SetColor(Slimepedia.MiddleColor, colorsPropertyBlock.GetColor(Slimepedia.MiddleColor));
-                    materialPropertyBlock.SetColor(Slimepedia.BottomColor, colorsPropertyBlock.GetColor(Slimepedia.BottomColor));
-                }
-
-                renderer.SetPropertyBlock(materialPropertyBlock, j);
+                if (material && material.HasProperty(Alpha))
+                    material.SetFloat(Alpha, isOpaque ? 1f : opacity);
             }
 
-            renderer.sharedMaterials = sharedMaterials;
+            renderer.sharedMaterials = materials;
         }
 
         if (anyNull)

@@ -121,7 +121,5 @@ internal sealed class Main : ModEntryPoint
 
     public static void AddIconBypass(Sprite icon) => CLS.AddToLoading.AddIcon(icon);
 
-    public static string GetNextLoadingIdBypass() => CLS.AddToLoading.GetNextLoadingId();
-
     private static void AddSplashesBypass(IEnumerable<Sprite> splashes) => CLS.AddToLoading.AddSplashes(splashes);
 }
