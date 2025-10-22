@@ -202,12 +202,7 @@
             "matOrigin": "COCO_SLIME",
             "invert": "true"
         },
-        "slime1Structs":
-        [
-            {
-                "colorsOrigin": "RAD_SLIME"
-            }
-        ],
+        "slime1Structs": [ { "colorsOrigin": "RAD_SLIME" } ],
         "jiggle": 0.1
     },
     {
