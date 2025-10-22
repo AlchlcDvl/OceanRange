@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace OceanRange.Patches;
 
 // This patch exists because the assembly publicizer has issues trying to publicize events, why???

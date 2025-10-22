@@ -68,19 +68,11 @@ public sealed class StealthFixerController
 {
     private static readonly int Alpha = ShaderUtils.GetOrSet("_Alpha");
 
-    private static readonly Material CloakMaterial;
-    private static readonly HashSet<Shader> CloakableShaders;
+    private readonly Material CloakMaterial = GameContext.Instance.SlimeShaders.cloakMaterial;
 
     private readonly List<Renderer> Renderers = [];
     private readonly Dictionary<Renderer, Material[]> RendererCloakMaterials = [];
     private readonly Dictionary<Renderer, Material[]> RendererOriginalMaterials = [];
-
-    static StealthFixerController()
-    {
-        var slimeShaders = GameContext.Instance.SlimeShaders;
-        CloakMaterial = slimeShaders.cloakMaterial;
-        CloakableShaders = slimeShaders.cloakableShaders;
-    }
 
     public void UpdateMaterials(GameObject gameObject)
     {
@@ -95,35 +87,8 @@ public sealed class StealthFixerController
             if (!renderer)
                 continue;
 
-            var cloaks = new List<Material>();
-
-            foreach (var material in renderer.sharedMaterials)
-            {
-                if (!material)
-                {
-                    cloaks.Add(null);
-                    continue;
-                }
-
-                if (!CloakableShaders.Contains(material.shader))
-                {
-                    cloaks.Add(material);
-                    continue;
-                }
-
-                var cloak = CloakMaterial.Clone();
-                cloaks.Add(cloak);
-
-                if (!material.HasProperty(Slimepedia.TopColor))
-                    continue;
-
-                cloak.SetColor(Slimepedia.TopColor, material.GetColor(Slimepedia.TopColor));
-                cloak.SetColor(Slimepedia.MiddleColor, material.GetColor(Slimepedia.MiddleColor));
-                cloak.SetColor(Slimepedia.BottomColor, material.GetColor(Slimepedia.BottomColor));
-            }
-
             Renderers.Add(renderer);
-            RendererCloakMaterials[renderer] = [.. cloaks];
+            RendererCloakMaterials[renderer] = [CloakMaterial.Clone()];
             RendererOriginalMaterials[renderer] = [.. renderer.sharedMaterials];
         }
     }
@@ -133,23 +98,35 @@ public sealed class StealthFixerController
         var isOpaque = opacity >= 0.99f;
         var anyNull = false;
 
-        foreach (var renderer in Renderers)
+        if (isOpaque)
         {
-            if (!renderer)
+            foreach (var renderer in Renderers)
             {
-                anyNull = true;
-                continue;
+                if (!renderer)
+                {
+                    anyNull = true;
+                    continue;
+                }
+
+                renderer.sharedMaterials = RendererOriginalMaterials[renderer];
             }
+        }
+        else
+        {
+            var alpha = isOpaque ? 1f : opacity;
 
-            var materials = (isOpaque ? RendererOriginalMaterials : RendererCloakMaterials)[renderer];
-
-            foreach (var material in materials)
+            foreach (var renderer in Renderers)
             {
-                if (material && material.HasProperty(Alpha))
-                    material.SetFloat(Alpha, isOpaque ? 1f : opacity);
-            }
+                if (!renderer)
+                {
+                    anyNull = true;
+                    continue;
+                }
 
-            renderer.sharedMaterials = materials;
+                var materials = RendererCloakMaterials[renderer];
+                renderer.sharedMaterials = RendererCloakMaterials[renderer];
+                materials[0].SetFloat(Alpha, alpha);
+            }
         }
 
         if (anyNull)
