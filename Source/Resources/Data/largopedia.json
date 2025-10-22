@@ -238,8 +238,11 @@
         "slime2Structs":
         [
             {
-                "colorsOrigin": "COCO_SLIME",
-                "invert": true
+                "colorProps":
+                {
+                    "_TopColor": "#966F33",
+                    "_BottomColor": "#744D11"
+                }
             }
         ],
         "jiggle": 0.1
@@ -702,7 +705,7 @@
     },
     {
         "name": "Tangle Hermit",
-        "props": "CustomSlime1Structures",
+        "props": ["CustomSlime1Structures", "CustomSlime2Structures"],
         "slime1Structs":
         [
             {
@@ -737,7 +740,7 @@
     },
     {
         "name": "Rock Hermit",
-        "props": "CustomSlime1Structures",
+        "props": ["CustomSlime1Structures", "CustomSlime2Structures"],
         "slime1Structs":
         [
             {

@@ -89,7 +89,7 @@ public sealed class StealthFixerController
 
             Renderers.Add(renderer);
             RendererCloakMaterials[renderer] = [CloakMaterial.Clone()];
-            RendererOriginalMaterials[renderer] = [.. renderer.sharedMaterials];
+            RendererOriginalMaterials[renderer] = renderer.sharedMaterials;
         }
     }
 

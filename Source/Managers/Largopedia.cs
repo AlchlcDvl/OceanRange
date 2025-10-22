@@ -112,7 +112,7 @@ public static class Largopedia
         appearance.DependentAppearances = [appearance1, appearance2];
         appearance.Face = appearance1.Face.DeepCopy();
         appearance.Face._expressionToFaceLookup.Clear();
-        appearance.name = largoData.Slime1 + largoData.Slime2;
+        appearance.name = largoData.Slime1 + largoData.Slime2 + "Normal";
 
         var eyes = props.HasFlag(LargoProps.UseSlime2ForEyes) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
         var mouth = props.HasFlag(LargoProps.UseSlime2ForMouth) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
