@@ -205,7 +205,7 @@ public static class Slimepedia
         prefabRend.sharedMaterial = material;
         gordoObj.GenerateGordoBones(slimeData, prefabRend);
 
-        prefab.AddComponent<PersistentId>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
+        prefab.AddComponent<PersistentIdHandler>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
 
         slimeData.InitGordoDetails?.Invoke(null, [prefab, gordoDefinition]);
 
@@ -458,6 +458,7 @@ public static class Slimepedia
         {
             var prefab = SkinnedPrefab.CreatePrefab();
             prefab.IgnoreLODIndex = true;
+            prefab.gameObject.AddComponent<ModelDataHandler>().Jiggle = modelData.Jiggle;
             var rend = prefab.GetComponent<SkinnedMeshRenderer>();
             rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(modelData.Mesh);
             elem.Prefabs = [prefab];
@@ -472,7 +473,9 @@ public static class Slimepedia
                 if (!baseStruct.Element.Prefabs.TryGetItem(j, out var prefab))
                     break;
 
-                if (j == 0 || !isNull)
+                var isFirst = j == 0;
+
+                if (isFirst || !isNull)
                     prefab = prefab.CreatePrefab();
 
                 if (prefab.TryGetComponent<SkinnedMeshRenderer>(out var rend))
@@ -486,6 +489,9 @@ public static class Slimepedia
                     prefab.transform.localPosition = Vector3.zero;
                     prefab.transform.localEulerAngles = Vector3.zero;
                 }
+
+                if (isFirst)
+                    prefab.gameObject.AddComponent<ModelDataHandler>().Jiggle = modelData.Jiggle;
 
                 prefab.LODIndex = j;
                 elem.Prefabs[j] = prefab;
@@ -637,7 +643,7 @@ public static class Slimepedia
             var weights = new BoneWeight[vertices2.Length];
 
             for (var n = 0; n < vertices2.Length; n++)
-                weights[n] = HandleBoneWeight(vertices2[n] - zero, num);
+                weights[n] = HandleBoneWeight(vertices2[n] - zero, num, meshName.Jiggle ?? 1f);
 
             mesh.boneWeights = weights;
             mesh.bindposes = poses;
@@ -664,9 +670,9 @@ public static class Slimepedia
         }
     }
 
-    private static BoneWeight HandleBoneWeight(Vector3 diff, float num)
+    private static BoneWeight HandleBoneWeight(Vector3 diff, float num, float jiggleFactor)
     {
-        var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f));
+        var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleFactor);
         var weight = new BoneWeight
         {
             m_Weight0 = 1f - jiggle,
@@ -698,22 +704,26 @@ public static class Slimepedia
     public static void GenerateSlimeBones(this SlimeAppearanceApplicator applicator, SlimeAppearanceStructure[] structures, float jiggleAmount)
     {
         Mesh sharedMesh = null;
-        var list = new List<(SkinnedMeshRenderer, Mesh)>(structures.Length);
+        var list = new List<(SkinnedMeshRenderer, Mesh, float?)>(structures.Length);
 
         foreach (var structure in structures)
         {
+            var rendHandled = false;
+
             foreach (var appearanceObject in structure.Element.Prefabs)
             {
-                if (!appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
+                if (!appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend) || rendHandled)
                     continue;
 
                 appearanceObject.AttachedBones = AttachedBones;
 
                 var mesh = rend.sharedMesh;
-                list.Add((rend, mesh));
+                list.Add((rend, mesh, appearanceObject.GetComponent<ModelDataHandler>()?.Jiggle));
 
                 if (structure.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0 && !sharedMesh)
                     sharedMesh = mesh;
+
+                rendHandled = true;
             }
         }
 
@@ -743,7 +753,7 @@ public static class Slimepedia
 
         num /= vertices.Length;
 
-        foreach (var (rend, mesh) in list)
+        foreach (var (rend, mesh, jiggleFactor) in list)
         {
             if (!mesh || !rend)
             {
@@ -757,7 +767,7 @@ public static class Slimepedia
             for (var n = 0; n < vertices2.Length; n++)
             {
                 var diff = vertices2[n] - zero;
-                var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * jiggleAmount);
+                var jiggle = Mathf.Clamp01((diff.magnitude - (num / 4f)) / (num / 2f) * (jiggleFactor ?? jiggleAmount));
                 var weight = new BoneWeight
                 {
                     m_Weight0 = 1f - jiggle,

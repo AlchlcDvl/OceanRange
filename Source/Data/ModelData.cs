@@ -6,38 +6,39 @@ public sealed class ModelData : JsonData
 {
     public ModelData() { }
 
-    public ModelData(ModelData data, bool includeMeshData) : this()
+    private ModelData(ModelData data, bool includeMeshData) : this()
     {
         Gloss = data?.Gloss;
         SameAs = data?.SameAs;
         // Shader = data?.Shader;
         Pattern = data?.Pattern;
         MatSameAs = data?.MatSameAs;
+        MatOrigin = data?.MatOrigin;
         ColorsOrigin = data?.ColorsOrigin;
         ColorsSameAs = data?.ColorsSameAs;
-        MatOrigin = data?.MatOrigin;
         CachedMaterial = data?.CachedMaterial;
         ColorPropsJson = data?.ColorPropsJson;
 
         if (includeMeshData)
-            Mesh = data?.Mesh;
-
-        if (data != null)
         {
-            IsBody = data.IsBody;
-            CloneSameAs = data.CloneSameAs;
-            CloneFallback = data.CloneFallback;
-            CloneMatOrigin = data.CloneMatOrigin;
-
-            if (includeMeshData)
-            {
-                Skip = data.Skip;
-                SkipNull = data.SkipNull;
-                IgnoreLodIndex = data.IgnoreLodIndex;
-            }
+            Mesh = data?.Mesh;
+            Jiggle = data?.Jiggle;
         }
 
-        OnDeserialise();
+        if (data == null)
+            return;
+
+        IsBody = data.IsBody;
+        CloneSameAs = data.CloneSameAs;
+        CloneFallback = data.CloneFallback;
+        CloneMatOrigin = data.CloneMatOrigin;
+
+        if (!includeMeshData)
+            return;
+
+        Skip = data.Skip;
+        SkipNull = data.SkipNull;
+        IgnoreLodIndex = data.IgnoreLodIndex;
     }
 
     public float? Gloss;
@@ -62,6 +63,8 @@ public sealed class ModelData : JsonData
 
     public bool Skip;
     public bool SkipNull;
+
+    public float? Jiggle;
 
     [JsonProperty("invert")] public bool InvertColorOriginColors;
     [JsonProperty("colorProps")] private Dictionary<string, Color> ColorPropsJson;
@@ -98,5 +101,12 @@ public sealed class ModelData : JsonData
 
         foreach (var (prop, value) in ColorPropsJson)
             ColorProps[ShaderUtils.GetOrSet(prop)] = value;
+    }
+
+    public ModelData Clone(bool includeMeshData)
+    {
+        var result = new ModelData(this, includeMeshData);
+        result.OnDeserialise();
+        return result;
     }
 }

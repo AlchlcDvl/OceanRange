@@ -124,7 +124,7 @@ public sealed class SlimeData : SpawnedActorData
 
         if (PlortFeatures?.Length is null or 0 || GordoFeatures?.Length is null or 0)
         {
-            var copy = SlimeFeatures.Select(x => new ModelData(x, false)).ToArray();
+            var copy = SlimeFeatures.Select(x => x.Clone(false)).ToArray();
 
             PlortFeatures ??= copy;
             GordoFeatures ??= copy;

@@ -328,4 +328,7 @@ public static class Largopedia
         prefab.RemoveComponent<SlimeStealth>();
         prefab.AddComponent<StealthFixer>();
     }
+
+    [UsedImplicitly]
+    public static void InitTangleHermitDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance) => appearance.Structures[1].Element.Prefabs[0].transform.localPosition -= new Vector3(0f, 0.2f, 0f);
 }
