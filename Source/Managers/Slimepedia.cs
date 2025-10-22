@@ -481,7 +481,11 @@ public static class Slimepedia
                     filter.sharedMesh = Inventory.GetMesh(modelData.Mesh + "_LOD" + j);
 
                 if (!isNull)
+                {
                     prefab.name = modelData.Mesh + "_LOD" + j;
+                    prefab.transform.localPosition = Vector3.zero;
+                    prefab.transform.localEulerAngles = Vector3.zero;
+                }
 
                 prefab.LODIndex = j;
                 elem.Prefabs[j] = prefab;
