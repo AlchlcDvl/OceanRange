@@ -450,7 +450,17 @@ public static class Slimepedia
         var isNull = modelData.Mesh == null;
 
         if (isNull && modelData.SkipNull)
+        {
+            if (modelData.InstantiatePrefabs)
+            {
+                var elemInner = structure.Element = structure.Element.DeepCopy();
+
+                for (var i = 0; i < structure.Element.Prefabs.Length; i++)
+                    elemInner.Prefabs[i] = elemInner.Prefabs[i].DeepCopy();
+            }
+
             return structure;
+        }
 
         var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
         elem.name = elem.Name = modelData.Name?.Replace("(Clone)", "") ?? (modelData.IsBody ? "Body" : "Structure");

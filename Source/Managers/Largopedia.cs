@@ -333,10 +333,5 @@ public static class Largopedia
     public static void InitTangleHermitDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance) => appearance.Structures[1].Element.Prefabs[0].transform.localPosition -= new Vector3(0f, 0.2f, 0f);
 
     [UsedImplicitly]
-    public static void InitPhosphorHermitDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
-    {
-        var prefabs = appearance.Structures[2].Element.Prefabs;
-        prefabs[0].transform.localPosition += new Vector3(0.2f, 0f, 0f);
-        prefabs[1].transform.localPosition += new Vector3(0.2f, 0f, 0f);
-    }
+    public static void InitPhosphorHermitDetails(GameObject prefab, SlimeDefinition _1, SlimeAppearance _2) => prefab.AddComponent<PhosphorHermitAppearanceFixer>();
 }
