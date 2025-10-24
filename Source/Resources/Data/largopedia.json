@@ -682,7 +682,19 @@
     },
     {
         "name": "Phosphor Hermit",
-        "props": ["CustomSlime2Structures"],
+        "props": ["CustomSlime2Structures", "CustomSlime1Structures"],
+        "slime1Structs":
+        [
+            { "mesh": "hermit_phosphor_anten" },
+            {
+                "skipNull": true,
+                "instantiatePrefabs": true
+            },
+            {
+                "skipNull": true,
+                "instantiatePrefabs": true
+            }
+        ],
         "slime2Structs":
         [
             { "cloneFallback": false },

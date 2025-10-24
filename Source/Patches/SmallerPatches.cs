@@ -97,7 +97,7 @@ public static class LatchCustomTranslations
     }
 }
 
-[HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake))]
+[HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake)), UsedImplicitly]
 public static class FilterValues
 {
     public static void Postfix(ExchangeDirector __instance)
@@ -107,7 +107,7 @@ public static class FilterValues
     }
 }
 
-[HarmonyPatch(typeof(StalkConsumable))]
+[HarmonyPatch(typeof(StalkConsumable)), UsedImplicitly]
 public static class StalkConsumablePatch
 {
     [HarmonyPatch(nameof(StalkConsumable.SetStealth))]

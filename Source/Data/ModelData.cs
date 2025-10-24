@@ -63,6 +63,7 @@ public sealed class ModelData : JsonData
 
     public bool Skip;
     public bool SkipNull;
+    public bool InstantiatePrefabs;
 
     public float? Jiggle;
 
