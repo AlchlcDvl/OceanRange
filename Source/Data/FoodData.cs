@@ -35,8 +35,13 @@ public sealed class PlantData : SpawnedActorData
     [JsonRequired] public string Type;
     [JsonRequired] public string ResourceIdSuffix;
 
+    [JsonRequired] public IdentifiableId BasePlant;
+    [JsonRequired] public SpawnResourceId BaseResource;
+
     // ReSharper disable once CollectionNeverUpdated.Global
-    [JsonRequired] public Dictionary<string, Dictionary<string, Vector3[]>> SpawnLocations;
+    [JsonRequired] public Dictionary<string, Dictionary<string, Orientation[]>> SpawnLocations;
+
+    [JsonIgnore] public SpawnResourceId BaseResourceDlx;
 
     [JsonIgnore] public SpawnResourceId ResourceId;
     [JsonIgnore] public SpawnResourceId DlxResourceId;
@@ -51,6 +56,8 @@ public sealed class PlantData : SpawnedActorData
         var resource = upper + "_" + ResourceIdSuffix.ToUpperInvariant();
         ResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource);
         DlxResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource + "_DLX");
+
+        BaseResourceDlx = Helpers.ParseEnum<SpawnResourceId>(BaseResource.ToString() + "_DLX");
 
         Progress ??= [];
     }

@@ -300,7 +300,7 @@ public static class Helpers
 
     public static void CreateRanchExchangeOffer(IdentifiableId id, int weight, ProgressType[] progress)
     {
-        if (progress.Length == 0)
+        if (progress?.Length is null or 0)
             ExchangeOfferRegistry.RegisterInitialItem(id, weight);
         else
             ExchangeOfferRegistry.RegisterUnlockableItem(id, progress[0], weight);

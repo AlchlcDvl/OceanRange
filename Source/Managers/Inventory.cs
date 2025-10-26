@@ -27,10 +27,12 @@ public static class Inventory
         // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
         Formatting = Formatting.Indented,
 #endif
+
         ContractResolver = new DefaultContractResolver()
         {
             NamingStrategy = new CamelCaseNamingStrategy(false, false)
         },
+
         // Adding the json converters
         Converters =
         [
@@ -223,6 +225,8 @@ public static class Inventory
     /// </summary>
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Texture2D GetTexture2D(string name) => Get<Texture2D>(name);
+
+    public static bool TryGetTexture2D(string name, out Texture2D asset) => TryGet(name, out asset);
 
     /// <summary>
     /// Gets a Sprite from the assets associated with the provided name.
@@ -529,13 +533,13 @@ public static class Inventory
 #if DEBUG
     // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use
 
-    // public static void Dump(this Texture texture, string path = null, string fileName = null)
+    // public static void Dump(this Texture texture, string fileName = null, string path = null)
     // {
     //     if (texture)
     //         File.WriteAllBytes(Path.Combine(path ?? DumpPath, (fileName ?? texture.name) + ".png"), texture.Decompress().EncodeToPNG());
     // }
 
-    // public static void Dump(this Sprite sprite, string path = null, string fileName = null) => sprite.texture.Dump(path, fileName);
+    // public static void Dump(this Sprite sprite, string fileName = null, string path = null) => sprite.texture.Dump(fileName, path);
 
     // public static Texture2D Decompress(this Texture source)
     // {

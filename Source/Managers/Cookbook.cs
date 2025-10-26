@@ -21,6 +21,7 @@ public static class Cookbook
     private static readonly int RampGreen = ShaderUtils.GetOrSet("_RampGreen");
     private static readonly int RampBlue = ShaderUtils.GetOrSet("_RampBlue");
     private static readonly int RampBlack = ShaderUtils.GetOrSet("_RampBlack");
+    private static readonly int SwayStrength = ShaderUtils.GetOrSet("_SwayStrength");
 
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
@@ -83,6 +84,7 @@ public static class Cookbook
         var resources = UObject.FindObjectsOfType<SpawnResource>();
         var veggiePrefab = Array.Find(resources, x => x.name == "patchCarrot02" && x.transform.parent?.name == "Resources");
         var fruitPrefab = Array.Find(resources, x => x.name == "treePogo02" && x.transform.parent?.name == "Resources");
+        var dirt = Inventory.GetMesh("dirt");
 
         // FIXME: Dirt in veggie patches are invisible for some reason
         foreach (var plantData in Plants)
@@ -93,18 +95,23 @@ public static class Cookbook
 
             foreach (var (zone, spawnLocations) in plantData.SpawnLocations)
             {
-                foreach (var (cell, positions) in spawnLocations)
+                foreach (var (cell, orientations) in spawnLocations)
                 {
                     var parent = GameObject.Find("zone" + zone + "/cell" + cell + "/Sector/Resources").transform;
 
-                    for (var i = 0; i < positions.Length; i++)
+                    for (var i = 0; i < orientations.Length; i++)
                     {
-                        var pos = positions[i];
+                        var pos = orientations[i];
                         var resource = prefab.Instantiate(parent);
-                        resource.transform.position = pos;
+                        resource.transform.position = pos.Position;
+                        resource.transform.localEulerAngles = pos.Rotation;
                         resource.name = lower + plantData.Name + "0" + i;
                         resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
-                        context.GameModel.RegisterResourceSpawner(pos, resource);
+
+                        if (plantData.IsVeggie)
+                            resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = dirt;
+
+                        context.GameModel.RegisterResourceSpawner(pos.Position, resource);
                     }
                 }
             }
@@ -206,42 +213,51 @@ public static class Cookbook
 #endif
     private static void BaseCreatePlant(PlantData plantData)
     {
-        var prefab = (plantData.IsVeggie ? IdentifiableId.CARROT_VEGGIE : IdentifiableId.POGO_FRUIT).GetPrefab().CreatePrefab();
+        var prefab = plantData.BasePlant.GetPrefab().CreatePrefab();
         prefab.name = plantData.Type.ToLowerInvariant() + plantData.Name;
         prefab.GetComponent<Identifiable>().id = plantData.MainId;
         prefab.GetComponent<Vacuumable>().size = 0;
 
         var meshModel = prefab.FindChildWithPartialName("model_");
+
         var lower = plantData.Name.ToLowerInvariant();
         meshModel.GetComponent<MeshFilter>().sharedMesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();
-        var material = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
+        var cycle = prefab.GetComponent<ResourceCycle>();
+
+        var materials = new Material[2];
+        materials[0] = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
+        materials[1] = cycle.rottenMat = cycle.rottenMat.Clone();
 
         var ramp = $"{lower}_ramp_";
-        var red = Inventory.GetTexture2D($"{ramp}red");
-        var green = Inventory.GetTexture2D($"{ramp}green");
-        var blue = Inventory.GetTexture2D($"{ramp}blue");
-        var black = Inventory.GetTexture2D($"{ramp}black");
+        var redExists = Inventory.TryGetTexture2D($"{ramp}red", out var red);
+        var greenExists = Inventory.TryGetTexture2D($"{ramp}green", out var green);
+        var blueExists = Inventory.TryGetTexture2D($"{ramp}blue", out var blue);
+        var blackExists = Inventory.TryGetTexture2D($"{ramp}black", out var black);
 
-        material.SetTexture(RampRed, red);
-        material.SetTexture(RampGreen, green);
-        material.SetTexture(RampBlue, blue);
-        material.SetTexture(RampBlack, black);
+        foreach (var material in materials)
+        {
+            material.SetFloat(SwayStrength, 0.01f);
 
-        var cycle = prefab.GetComponent<ResourceCycle>();
-        var material2 = cycle.rottenMat = cycle.rottenMat.Clone();
+            if (redExists)
+                material.SetTexture(RampRed, red);
 
-        material2.SetTexture(RampRed, red);
-        material2.SetTexture(RampGreen, green);
-        material2.SetTexture(RampBlue, blue);
-        material2.SetTexture(RampBlack, black);
+            if (greenExists)
+                material.SetTexture(RampGreen, green);
+
+            if (blueExists)
+                material.SetTexture(RampBlue, blue);
+
+            if (blackExists)
+                material.SetTexture(RampBlack, black);
+        }
 
         var icon = Inventory.GetSprite(lower);
         RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
-        var resource = CreateFarmSetup(plantData.IsVeggie ? SpawnResourceId.CARROT_PATCH : SpawnResourceId.POGO_TREE, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
-        var resourceDlx = CreateFarmSetup(plantData.IsVeggie ? SpawnResourceId.CARROT_PATCH_DLX : SpawnResourceId.POGO_TREE_DLX, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, lower);
+        var resource = CreateFarmSetup(plantData.BaseResource, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
+        var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, lower);
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
         PlantSlotRegistry.RegisterPlantSlot(new()

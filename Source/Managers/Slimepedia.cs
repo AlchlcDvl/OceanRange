@@ -83,7 +83,7 @@ public static class Slimepedia
             {
                 foreach (var constraint in slimeSpawner.constraints)
                 {
-                    if (slimeData.NightSpawn && constraint.window.timeMode != TimeMode.NIGHT)
+                    if (constraint.feral || (slimeData.NightSpawn && constraint.window.timeMode != TimeMode.NIGHT))
                         continue;
 
                     constraint.slimeset.members =
