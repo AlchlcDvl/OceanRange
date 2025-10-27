@@ -1,14 +1,40 @@
 // ReSharper disable UnassignedField.Global
 
+using System.Reflection;
+
 namespace OceanRange.Data;
 
 public sealed class Ingredients : JsonData
 {
-    public PlantData[] Plants;
-    public ChimkenData[] Chimkens;
+    [JsonRequired] public FruitData[] Fruits;
+    [JsonRequired] public VeggieData[] Veggies;
+    [JsonRequired] public ChimkenData[] Chimkens;
 }
 
-public sealed class ChimkenData : SpawnedActorData
+public abstract class FoodData : SpawnedActorData
+{
+    protected static readonly Dictionary<string, MethodInfo> Methods = [];
+
+    static FoodData()
+    {
+        foreach (var method in AccessTools.GetDeclaredMethods(typeof(Cookbook)))
+        {
+            if (method.Name.EndsWith("Details", StringComparison.Ordinal))
+                Methods[method.Name] = method;
+        }
+    }
+
+    [JsonIgnore] public MethodInfo InitFoodDetails;
+
+    protected override void OnDeserialise()
+    {
+        Methods.TryGetValue("Init" + Name + "FoodDetails", out InitFoodDetails);
+
+        Progress ??= [];
+    }
+}
+
+public sealed class ChimkenData : FoodData
 {
     [JsonRequired] public Zone[] Zones;
 
@@ -17,29 +43,36 @@ public sealed class ChimkenData : SpawnedActorData
 
     [JsonIgnore] public IdentifiableId ChickId;
 
+    [JsonIgnore] public MethodInfo InitChickDetails;
+
     protected override void OnDeserialise()
     {
+        base.OnDeserialise();
+
         var upper = Name.ToUpperInvariant();
 
         MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_HEN");
         ChickId = Helpers.AddEnumValue<IdentifiableId>(upper + "_CHICK");
 
-        Progress ??= [];
+        Methods.TryGetValue("Init" + Name + "ChickDetails", out InitFoodDetails);
     }
 }
 
-public sealed class PlantData : SpawnedActorData
+public abstract class PlantData : FoodData
 {
-    [JsonRequired] public bool IsVeggie;
+    protected abstract IdentifiableId DefaultPlant { get; }
+    protected abstract SpawnResourceId DefaultResource { get; }
 
     [JsonRequired] public string Type;
     [JsonRequired] public string ResourceIdSuffix;
 
-    [JsonRequired] public IdentifiableId BasePlant;
-    [JsonRequired] public SpawnResourceId BaseResource;
+    // public bool HasOriginalSpawners = true; // TODO: Implement this in the future
 
     // ReSharper disable once CollectionNeverUpdated.Global
-    [JsonRequired] public Dictionary<string, Dictionary<string, Orientation[]>> SpawnLocations;
+    public Dictionary<string, Dictionary<string, Orientation[]>> SpawnLocations;
+
+    public IdentifiableId? BasePlant;
+    public SpawnResourceId? BaseResource;
 
     [JsonIgnore] public SpawnResourceId BaseResourceDlx;
 
@@ -48,6 +81,8 @@ public sealed class PlantData : SpawnedActorData
 
     protected override void OnDeserialise()
     {
+        base.OnDeserialise();
+
         var upper = Name.ToUpperInvariant();
 
         var typeUpper = Type.ToUpperInvariant();
@@ -57,8 +92,21 @@ public sealed class PlantData : SpawnedActorData
         ResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource);
         DlxResourceId = Helpers.AddEnumValue<SpawnResourceId>(resource + "_DLX");
 
-        BaseResourceDlx = Helpers.ParseEnum<SpawnResourceId>(BaseResource.ToString() + "_DLX");
+        BasePlant ??= DefaultPlant;
+        BaseResource ??= DefaultResource;
 
-        Progress ??= [];
+        BaseResourceDlx = Helpers.ParseEnum<SpawnResourceId>(BaseResource.ToString() + "_DLX");
     }
+}
+
+public sealed class VeggieData : PlantData
+{
+    protected override IdentifiableId DefaultPlant => IdentifiableId.CARROT_VEGGIE;
+    protected override SpawnResourceId DefaultResource => SpawnResourceId.CARROT_PATCH;
+}
+
+public sealed class FruitData : PlantData
+{
+    protected override IdentifiableId DefaultPlant => IdentifiableId.POGO_FRUIT;
+    protected override SpawnResourceId DefaultResource => SpawnResourceId.POGO_TREE;
 }

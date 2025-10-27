@@ -10,9 +10,14 @@ public static class Cookbook
     private static ChimkenData[] Chimkens;
 
     /// <summary>
-    /// The array containing all plant related data.
+    /// The array containing all fruit related data.
     /// </summary>
-    private static PlantData[] Plants;
+    private static PlantData[] Fruits;
+
+    /// <summary>
+    /// The array containing all veggie related data.
+    /// </summary>
+    private static PlantData[] Veggies;
 
     private static bool StmExists; // Mod check flag
 
@@ -32,8 +37,9 @@ public static class Cookbook
 
         var food = Inventory.GetJson<Ingredients>("cookbook");
 
+        Fruits = food.Fruits;
+        Veggies = food.Veggies;
         Chimkens = food.Chimkens;
-        Plants = food.Plants;
 
         Ids.DIRT.RegisterId(IdentifiableId.SILKY_SAND_CRAFT);
 
@@ -82,18 +88,16 @@ public static class Cookbook
     private static void OnSaveLoaded(SceneContext context)
     {
         var resources = UObject.FindObjectsOfType<SpawnResource>();
+
         var veggiePrefab = Array.Find(resources, x => x.name == "patchCarrot02" && x.transform.parent?.name == "Resources");
-        var fruitPrefab = Array.Find(resources, x => x.name == "treePogo02" && x.transform.parent?.name == "Resources");
         var dirt = Inventory.GetMesh("dirt");
 
-        // FIXME: Dirt in veggie patches are invisible for some reason
-        foreach (var plantData in Plants)
+        foreach (var veggieData in Veggies)
         {
-            var prefab = plantData.IsVeggie ? veggiePrefab : fruitPrefab;
-            var lower = plantData.ResourceIdSuffix.ToLowerInvariant();
-            var array = new[] { plantData.MainId.GetPrefab() };
+            var lower = veggieData.ResourceIdSuffix.ToLowerInvariant();
+            var array = new[] { veggieData.MainId.GetPrefab() };
 
-            foreach (var (zone, spawnLocations) in plantData.SpawnLocations)
+            foreach (var (zone, spawnLocations) in veggieData.SpawnLocations)
             {
                 foreach (var (cell, orientations) in spawnLocations)
                 {
@@ -101,21 +105,44 @@ public static class Cookbook
 
                     for (var i = 0; i < orientations.Length; i++)
                     {
-                        var pos = orientations[i];
-                        var resource = prefab.Instantiate(parent);
-                        resource.transform.position = pos.Position;
-                        resource.transform.localEulerAngles = pos.Rotation;
-                        resource.name = lower + plantData.Name + "0" + i;
-                        resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
-
-                        if (plantData.IsVeggie)
-                            resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = dirt;
-
-                        context.GameModel.RegisterResourceSpawner(pos.Position, resource);
+                        var resource = CreateSpawner(orientations[i], veggiePrefab, parent, context, array, lower + veggieData.Name + "0" + i);
+                        resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = dirt;
                     }
                 }
             }
         }
+
+        var fruitPrefab = Array.Find(resources, x => x.name == "treePogo02" && x.transform.parent?.name == "Resources");
+
+        foreach (var fruitData in Fruits)
+        {
+            var lower = fruitData.ResourceIdSuffix.ToLowerInvariant();
+            var array = new[] { fruitData.MainId.GetPrefab() };
+
+            foreach (var (zone, spawnLocations) in fruitData.SpawnLocations)
+            {
+                foreach (var (cell, orientations) in spawnLocations)
+                {
+                    var parent = GameObject.Find("zone" + zone + "/cell" + cell + "/Sector/Resources").transform;
+
+                    for (var i = 0; i < orientations.Length; i++)
+                    {
+                        CreateSpawner(orientations[i], fruitPrefab, parent, context, array, lower + fruitData.Name + "0" + i);
+                    }
+                }
+            }
+        }
+    }
+
+    private static SpawnResource CreateSpawner(Orientation orientation, SpawnResource prefab, Transform parent, SceneContext context, GameObject[] array, string name)
+    {
+        var resource = prefab.Instantiate(parent);
+        resource.transform.position = orientation.Position;
+        resource.transform.localEulerAngles = orientation.Rotation;
+        resource.name = name;
+        resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
+        context.GameModel.RegisterResourceSpawner(orientation.Position, resource);
+        return resource;
     }
 
 #if DEBUG
@@ -123,8 +150,9 @@ public static class Cookbook
 #endif
     public static void LoadAllFoods()
     {
+        Array.ForEach(Fruits, BaseCreatePlant);
+        Array.ForEach(Veggies, BaseCreatePlant);
         Array.ForEach(Chimkens, BaseCreateChimken);
-        Array.ForEach(Plants, BaseCreatePlant);
     }
 
 #if DEBUG
@@ -134,19 +162,23 @@ public static class Cookbook
     {
         // Fetch ramps and caching values because reusing them is tedious
         var lower = chimkenData.Name.ToLowerInvariant();
+
         var ramp = $"{lower}_ramp_";
-        var red = Inventory.GetTexture2D($"{ramp}red");
-        var green = Inventory.GetTexture2D($"{ramp}green");
-        var blue = Inventory.GetTexture2D($"{ramp}blue");
-        var black = Inventory.GetTexture2D($"{ramp}black");
+        var redExists = Inventory.TryGetTexture2D($"{ramp}red", out var red);
+        var greenExists = Inventory.TryGetTexture2D($"{ramp}green", out var green);
+        var blueExists = Inventory.TryGetTexture2D($"{ramp}blue", out var blue);
+        var blackExists = Inventory.TryGetTexture2D($"{ramp}black", out var black);
 
         // Find and create the prefab for chicks and set values
-        var chickPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
-        var henPrefab = CreateChimken(chimkenData.Name, red, green, blue, black, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
+        var chickPrefab = CreateChimken(chimkenData.Name, red, redExists, green, greenExists, blue, blueExists, black, blackExists, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
+        var henPrefab = CreateChimken(chimkenData.Name, red, redExists, green, greenExists, blue, blueExists, black, blackExists, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
 
         // Set specific data for each prefab
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
         chickPrefab.GetComponent<TransformAfterTime>().options[0].targetPrefab = henPrefab;
+
+        chimkenData.InitFoodDetails?.Invoke(null, [henPrefab]);
+        chimkenData.InitChickDetails?.Invoke(null, [chickPrefab]);
 
         // Register both chicks and hens
         var chickIcon = Inventory.GetSprite($"{lower}_chick");
@@ -169,7 +201,8 @@ public static class Cookbook
         PlortRegistry.AddPlortEntry(chimkenData.MainId, chimkenData.Progress);
     }
 
-    private static GameObject CreateChimken(string name, Texture red, Texture green, Texture blue, Texture black, IdentifiableId id, IdentifiableId baseId, string modelName, string type)
+    private static GameObject CreateChimken(string name, Texture2D red, bool redExists, Texture2D green, bool greenExists, Texture2D blue, bool blueExists, Texture2D black, bool blackExists, IdentifiableId id, IdentifiableId baseId,
+        string modelName, string type)
     {
         var prefab = baseId.GetPrefab().CreatePrefab();
         prefab.name = $"bird{type}{name}";
@@ -187,10 +220,17 @@ public static class Cookbook
 
         foreach (var material in materials)
         {
-            material.SetTexture(RampRed, red);
-            material.SetTexture(RampGreen, green);
-            material.SetTexture(RampBlue, blue);
-            material.SetTexture(RampBlack, black);
+            if (redExists)
+                material.SetTexture(RampRed, red);
+
+            if (greenExists)
+                material.SetTexture(RampGreen, green);
+
+            if (blueExists)
+                material.SetTexture(RampBlue, blue);
+
+            if (blackExists)
+                material.SetTexture(RampBlack, black);
         }
 
         return prefab;
@@ -213,7 +253,7 @@ public static class Cookbook
 #endif
     private static void BaseCreatePlant(PlantData plantData)
     {
-        var prefab = plantData.BasePlant.GetPrefab().CreatePrefab();
+        var prefab = plantData.BasePlant.Value.GetPrefab().CreatePrefab();
         prefab.name = plantData.Type.ToLowerInvariant() + plantData.Name;
         prefab.GetComponent<Identifiable>().id = plantData.MainId;
         prefab.GetComponent<Vacuumable>().size = 0;
@@ -253,10 +293,12 @@ public static class Cookbook
                 material.SetTexture(RampBlack, black);
         }
 
+        plantData.InitFoodDetails?.Invoke(null, [prefab]);
+
         var icon = Inventory.GetSprite(lower);
         RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
-        var resource = CreateFarmSetup(plantData.BaseResource, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
+        var resource = CreateFarmSetup(plantData.BaseResource.Value, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
         var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, lower);
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);

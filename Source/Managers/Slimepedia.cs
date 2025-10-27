@@ -7,7 +7,6 @@ using UnityEngine.UI;
 namespace OceanRange.Managers;
 
 // Manager class to handle the commonality of a bunch of slime handling code
-// FIXME: Coco mesh doesn't work atm
 public static class Slimepedia
 {
     public static Dictionary<IdentifiableId, SlimeData> SlimeDataMap;

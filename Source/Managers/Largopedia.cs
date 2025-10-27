@@ -3,7 +3,6 @@ using SRML.SR.Utils;
 namespace OceanRange.Managers;
 
 // All hail the json gods, for they look upon me favourably
-// TODO: Finish largo setup
 public static class Largopedia
 {
     /*

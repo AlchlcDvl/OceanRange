@@ -4,12 +4,13 @@
 0.0.2
 Discord:
 New!
-- Mesmer Slimes*: Hypnotic and awe inducing slimes that are actually playful pacifists!
+- Mesmer Slimes: Hypnotic and awe inducing slimes that are actually playful pacifists!
 - Hermit Slimes*: Reclusive and shy slimes that like to nibble on fruits in their shells!
 - Goldfish Slimes: The rare, timid and beautiful slimes adapted to the sea!
 - Lisa Erwin: The SPLASH foundation's resident slimeologist, ready to teach you interesting things about slimes!
 - Largos: The modded slimes can become largos!
 - Sand gordos now have a proper body shape!
+- 
 - Coral Fruit*: The oceanic fruit found rarely in the dry reef!
 - Translations*: The mod now supports the following languages: TBD
 
@@ -29,9 +30,12 @@ Fixes!
 - Gameplay: Fixed the pink gordo appearing more times than it should
 - Visual: Fixed a couple typos
 - Visual: Fixed lantern slime fins appearing detached from the main body
+- Visual: Fixed blowtato dirt patches missing their dirt
+- Visual: Fixed blowtatoes swaying
+- Visual: Fixed the inconsistent aspect ratio and scale of the chick and hen icons
 
 Nexus:
-- New slimes: Mesmer*, Hermit*
+- New slimes: Mesmer, Goldfish, Hermit*
 - New Fruit: Coral*
 - Added Lisa Erwin, a new rancher! She will try to first contact you by day 7 at noon!
 - Added modded slime largos

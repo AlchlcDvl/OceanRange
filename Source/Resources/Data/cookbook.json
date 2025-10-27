@@ -1,10 +1,8 @@
 {
-    "plants":
+    "veggies":
     [
         {
             "name": "Blowtato",
-            "basePlant": "CARROT_VEGGIE",
-            "baseResource": "CARROT_PATCH",
             "mainAmmoColor": "#AB9E7E",
             "type": "Veggie",
             "resourceIdSuffix": "Patch",
@@ -25,6 +23,9 @@
                 "MOSS": { "Moss_GreenPillars": ["f -86.40589,-0.8014534,429.1247,0,0,0", "f -78.69493,-3.737685,418.1225,0,0,0", "f -58.34876,5.090622,395.8648,0,0,0"] }
             }
         }
+    ],
+    "fruits":
+    [
     ],
     "chimkens":
     [
