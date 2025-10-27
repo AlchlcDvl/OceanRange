@@ -142,6 +142,15 @@
     ],
     "fruits":
     [
+        {
+            "name": "Sticky",
+            "translatedName": "Sticky Fingers",
+            "about": "A sweet treat that tends to stick to your teeth, or even your fingers. Once prized as the key ingredient in many of the Far, Far Range’s candies, this fruit balances its gooey stickiness with a surprisingly rich creaminess and a satisfying crunch.",
+            "favouredBy": "Mesmer Slime",
+            "ranch": "Deposit a Sticky Finger into a garden's depositor and you'll have a large Sticky Finger tree of your very own.",
+            "type": "Fruit",
+            "intro": "The sticky fruit!"
+        }
     ],
     "veggies":
     [

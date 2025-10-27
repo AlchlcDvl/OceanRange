@@ -60,11 +60,10 @@ public sealed class ChimkenData : FoodData
 
 public abstract class PlantData : FoodData
 {
+    public abstract string Type { get; }
+    public abstract string ResourceIdSuffix { get; }
     protected abstract IdentifiableId DefaultPlant { get; }
     protected abstract SpawnResourceId DefaultResource { get; }
-
-    [JsonRequired] public string Type;
-    [JsonRequired] public string ResourceIdSuffix;
 
     // public bool HasOriginalSpawners = true; // TODO: Implement this in the future
 
@@ -101,12 +100,16 @@ public abstract class PlantData : FoodData
 
 public sealed class VeggieData : PlantData
 {
+    public override string Type => "Veggie";
+    public override string ResourceIdSuffix => "Patch";
     protected override IdentifiableId DefaultPlant => IdentifiableId.CARROT_VEGGIE;
     protected override SpawnResourceId DefaultResource => SpawnResourceId.CARROT_PATCH;
 }
 
 public sealed class FruitData : PlantData
 {
+    public override string Type => "Fruit";
+    public override string ResourceIdSuffix => "Tree";
     protected override IdentifiableId DefaultPlant => IdentifiableId.POGO_FRUIT;
     protected override SpawnResourceId DefaultResource => SpawnResourceId.POGO_TREE;
 }

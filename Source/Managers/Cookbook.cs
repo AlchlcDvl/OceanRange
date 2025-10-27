@@ -127,7 +127,8 @@ public static class Cookbook
 
                     for (var i = 0; i < orientations.Length; i++)
                     {
-                        CreateSpawner(orientations[i], fruitPrefab, parent, context, array, lower + fruitData.Name + "0" + i);
+                        var resource = CreateSpawner(orientations[i], fruitPrefab, parent, context, array, lower + fruitData.Name + "0" + i);
+                        resource.gameObject.FindChild("tree_pogo", true).GetComponent<MeshFilter>().sharedMesh = Inventory.GetMesh(fruitData.Name.ToLowerInvariant() + "_tree");
                     }
                 }
             }
@@ -261,7 +262,34 @@ public static class Cookbook
         var meshModel = prefab.FindChildWithPartialName("model_");
 
         var lower = plantData.Name.ToLowerInvariant();
-        meshModel.GetComponent<MeshFilter>().sharedMesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
+
+        var mesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
+
+        mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+        mesh.RecalculateTangents();
+
+        meshModel.GetComponent<MeshFilter>().sharedMesh = mesh;
+        prefab.GetComponent<MeshFilter>().sharedMesh = mesh;
+
+        var bounds = mesh.bounds;
+        var size = bounds.size;
+        var center = bounds.center;
+
+        if (prefab.TryGetComponent<SphereCollider>(out var sphere))
+        {
+            sphere.center = center;
+            sphere.radius = Mathf.Max(size.x, size.y, size.z) / 2f;
+        }
+
+        if (prefab.TryGetComponent<CapsuleCollider>(out var capsule))
+        {
+            capsule.center = center;
+            capsule.height = size.y;
+            capsule.radius = Mathf.Max(size.x, size.z) / 2f;
+        }
+
+        prefab.GetComponent<Rigidbody>().WakeUp();
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();
         var cycle = prefab.GetComponent<ResourceCycle>();
@@ -282,15 +310,23 @@ public static class Cookbook
 
             if (redExists)
                 material.SetTexture(RampRed, red);
+            else
+                material.GetTexture(RampRed).Dump($"{plantData.BasePlant}RampRed");
 
             if (greenExists)
                 material.SetTexture(RampGreen, green);
+            else
+                material.GetTexture(RampGreen).Dump($"{plantData.BasePlant}RampGreen");
 
             if (blueExists)
                 material.SetTexture(RampBlue, blue);
+            else
+                material.GetTexture(RampBlue).Dump($"{plantData.BasePlant}RampBlue");
 
             if (blackExists)
                 material.SetTexture(RampBlack, black);
+            else
+                material.GetTexture(RampBlack).Dump($"{plantData.BasePlant}RampBlack");
         }
 
         plantData.InitFoodDetails?.Invoke(null, [prefab]);
@@ -324,9 +360,10 @@ public static class Cookbook
         component.id = spawnResource;
         component.ObjectsToSpawn = [plant];
         component.BonusObjectsToSpawn = [];
-        TranslateModel(prefab.FindChildren("Sprout"), Inventory.GetMesh(lowerName + "_sprout"), null);
         var partial = plant.FindChildWithPartialName("model_");
-        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), partial.GetComponent<MeshFilter>().sharedMesh, partial.GetComponent<MeshRenderer>().sharedMaterial);
+        var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
+        TranslateModel(prefab.FindChildren("Sprout"), mesh, null);
+        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), mesh, partial.GetComponent<MeshRenderer>().sharedMaterial);
         return prefab;
     }
 

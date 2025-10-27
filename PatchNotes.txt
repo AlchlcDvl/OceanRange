@@ -10,9 +10,9 @@ New!
 - Lisa Erwin: The SPLASH foundation's resident slimeologist, ready to teach you interesting things about slimes!
 - Largos: The modded slimes can become largos!
 - Sand gordos now have a proper body shape!
-- 
+- Sticky Fingers*: The ooy gooey goodness that stick to your fingers!
 - Coral Fruit*: The oceanic fruit found rarely in the dry reef!
-- Translations*: The mod now supports the following languages: TBD
+- Translations*: The mod now supports the following languages: Turkish, French, Spanish, Russian
 
 Changes!
 - Change: Moved the lantern gordo to a new location, good luck finding it this time!
