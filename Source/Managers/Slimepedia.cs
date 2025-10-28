@@ -388,10 +388,13 @@ public static class Slimepedia
             }
         }
 
-        BasicInitSlimeAppearance(appearance, applicator, slimeData);
-        SlimeRegistry.RegisterAppearance(definition, appearance);
+        BasicInitSlimeAppearance(appearance, slimeData);
 
         slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance]); // Slime specific details being put here
+
+        applicator.GenerateSlimeBones(appearance.Structures, slimeData.Jiggle);
+
+        SlimeRegistry.RegisterAppearance(definition, appearance);
 
         definition.AppearancesDefault = [appearance];
 
@@ -425,15 +428,13 @@ public static class Slimepedia
 
     private static void RegisterSlimeBypass(SlimeData slimeData) => SlimesAndMarket.MarketRegistry.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress);
 
-    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceApplicator applicator, SlimeData slimeData)
+    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeData slimeData)
     {
         var baseStruct = appearance.Structures[0];
         appearance.Structures = new SlimeAppearanceStructure[slimeData.SlimeFeatures.Length];
 
         for (var i = 0; i < slimeData.SlimeFeatures.Length; i++)
             appearance.Structures[i] = GenerateStructure(baseStruct, slimeData.SlimeFeatures[i], slimeData.SlimeFeatures);
-
-        applicator.GenerateSlimeBones(appearance.Structures, slimeData.Jiggle);
     }
 
     public static SlimeAppearanceStructure GenerateStructure(SlimeAppearanceStructure baseStruct, ModelData modelData, ModelData[] modelDatas)
@@ -476,7 +477,7 @@ public static class Slimepedia
         }
         else
         {
-            var length = modelData.IsBody ? 4 : 2;
+            var length = modelData.PrefabLength ?? (modelData.IsBody ? 4 : 2);
             elem.Prefabs = new SlimeAppearanceObject[length];
 
             for (var j = 0; j < length; j++)
@@ -820,6 +821,21 @@ public static class Slimepedia
 
     [UsedImplicitly]
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition) => GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, definition.IdentifiableId];
+
+    [UsedImplicitly]
+    public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
+    {
+        var structure = GenerateStructure(IdentifiableId.PHOSPHOR_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[3], new()
+        {
+            SkipNull = true,
+            InstantiatePrefabs = true
+        }, null);
+        appearance.Structures = [.. appearance.Structures, structure];
+
+        var prefab = structure.Element.Prefabs[0];
+        prefab.transform.localScale /= 2f;
+        prefab.transform.localPosition = new Vector3(0f, 0.3f, 1f);
+    }
 
     [UsedImplicitly]
     public static void InitSandSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3) => SandBehaviour.ProduceFX = IdentifiableId.PUDDLE_SLIME.GetPrefab().GetComponent<SlimeEatWater>().produceFX;

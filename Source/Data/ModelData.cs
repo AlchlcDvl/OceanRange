@@ -66,6 +66,7 @@ public sealed class ModelData : JsonData
     public bool InstantiatePrefabs;
 
     public float? Jiggle;
+    public int? PrefabLength;
 
     [JsonProperty("invert")] public bool InvertColorOriginColors;
     [JsonProperty("colorProps")] private Dictionary<string, Color> ColorPropsJson;

@@ -65,6 +65,10 @@
             {
                 "mesh": "lantern_lure",
                 "cloneFallback": false
+            },
+            {
+                "skipNull": true,
+                "instantiatePrefabs": true
             }
         ]
     },
@@ -98,6 +102,10 @@
             {
                 "mesh": "lantern_lure",
                 "colorProps": { "_TopColor": "#9EA16F" }
+            },
+            {
+                "skipNull": true,
+                "instantiatePrefabs": true
             }
         ]
     },
