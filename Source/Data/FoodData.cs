@@ -43,6 +43,7 @@ public sealed class ChimkenData : FoodData
 
     [JsonIgnore] public IdentifiableId ChickId;
 
+    [JsonIgnore] public MethodInfo InitHenDetails;
     [JsonIgnore] public MethodInfo InitChickDetails;
 
     protected override void OnDeserialise()
@@ -54,7 +55,8 @@ public sealed class ChimkenData : FoodData
         MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_HEN");
         ChickId = Helpers.AddEnumValue<IdentifiableId>(upper + "_CHICK");
 
-        Methods.TryGetValue("Init" + Name + "ChickDetails", out InitFoodDetails);
+        Methods.TryGetValue("Init" + Name + "HenDetails", out InitHenDetails);
+        Methods.TryGetValue("Init" + Name + "ChickDetails", out InitChickDetails);
     }
 }
 

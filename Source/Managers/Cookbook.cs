@@ -1,3 +1,4 @@
+using OceanRange.Food;
 using SRML;
 
 namespace OceanRange.Managers;
@@ -178,8 +179,11 @@ public static class Cookbook
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
         chickPrefab.GetComponent<TransformAfterTime>().options[0].targetPrefab = henPrefab;
 
-        chimkenData.InitFoodDetails?.Invoke(null, [henPrefab]);
+        chimkenData.InitHenDetails?.Invoke(null, [henPrefab]);
         chimkenData.InitChickDetails?.Invoke(null, [chickPrefab]);
+
+        chimkenData.InitFoodDetails?.Invoke(null, [henPrefab]);
+        chimkenData.InitFoodDetails?.Invoke(null, [chickPrefab]);
 
         // Register both chicks and hens
         var chickIcon = Inventory.GetSprite($"{lower}_chick");
@@ -285,8 +289,25 @@ public static class Cookbook
         if (prefab.TryGetComponent<CapsuleCollider>(out var capsule))
         {
             capsule.center = center;
-            capsule.height = size.y;
-            capsule.radius = Mathf.Max(size.x, size.z) / 2f;
+
+            var max = Mathf.Max(size.x, size.y, size.z);
+            capsule.height = max;
+
+            if (max == size.x)
+            {
+                capsule.direction = 0;
+                capsule.radius = Mathf.Max(size.y, size.z) / 2f;
+            }
+            else if (max == size.y)
+            {
+                capsule.direction = 1;
+                capsule.radius = Mathf.Max(size.x, size.z) / 2f;
+            }
+            else if (max == size.z)
+            {
+                capsule.direction = 0;
+                capsule.radius = Mathf.Max(size.y, size.x) / 2f;
+            }
         }
 
         prefab.GetComponent<Rigidbody>().WakeUp();
@@ -308,6 +329,7 @@ public static class Cookbook
         {
             material.SetFloat(SwayStrength, 0.01f);
 
+#if DEBUG
             if (redExists)
                 material.SetTexture(RampRed, red);
             else
@@ -327,6 +349,19 @@ public static class Cookbook
                 material.SetTexture(RampBlack, black);
             else
                 material.GetTexture(RampBlack).Dump($"{plantData.BasePlant}RampBlack");
+#else
+            if (redExists)
+                material.SetTexture(RampRed, red);
+
+            if (greenExists)
+                material.SetTexture(RampGreen, green);
+
+            if (blueExists)
+                material.SetTexture(RampBlue, blue);
+
+            if (blackExists)
+                material.SetTexture(RampBlack, black);
+#endif
         }
 
         plantData.InitFoodDetails?.Invoke(null, [prefab]);
@@ -334,8 +369,9 @@ public static class Cookbook
         var icon = Inventory.GetSprite(lower);
         RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
-        var resource = CreateFarmSetup(plantData.BaseResource.Value, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab, lower);
-        var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, lower);
+        var resource = CreateFarmSetup(plantData.BaseResource.Value, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
+        var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
+
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
         PlantSlotRegistry.RegisterPlantSlot(new()
@@ -352,7 +388,7 @@ public static class Cookbook
         PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress);
     }
 
-    private static GameObject CreateFarmSetup(SpawnResourceId baseFarm, string patchName, SpawnResourceId spawnResource, GameObject plant, string lowerName)
+    private static GameObject CreateFarmSetup(SpawnResourceId baseFarm, string patchName, SpawnResourceId spawnResource, GameObject plant)
     {
         var prefab = baseFarm.GetResourcePrefab().CreatePrefab();
         prefab.name = patchName;
@@ -377,4 +413,25 @@ public static class Cookbook
                 gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
         }
     }
+
+    [UsedImplicitly]
+    public static void InitBlowtatoFoodDetails(GameObject prefab)
+    {
+        prefab.AddComponent<BlowtatoBehaviour>();
+        BlowtatoBehaviour.ExplodeFX = IdentifiableId.BOOM_SLIME.GetSlimeDefinition().AppearancesDefault[0].ExplosionAppearance.explodeFx.CreatePrefab();
+        BlowtatoBehaviour.ExplodeFX.transform.localScale /= 6f;
+    }
+
+    [UsedImplicitly]
+    public static void InitStickyFoodDetails(GameObject prefab)
+    {
+        foreach (var collider in prefab.GetComponents<Collider>())
+        {
+            collider.material.staticFriction *= 2f;
+            collider.material.dynamicFriction *= 2f;
+        }
+    }
+
+    [UsedImplicitly]
+    public static void InitRadiantFoodDetails(GameObject prefab) => IdentifiableId.PHOSPHOR_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[3].Element.Prefabs[0].Instantiate(prefab.transform);
 }
