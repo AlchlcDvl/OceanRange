@@ -91,10 +91,7 @@ public sealed class ModelData : JsonData
 
             var baseName = prop.Substring(0, prop.Length - TopLength);
 
-            var middle = baseName + "MiddleColor";
-
-            if (!ColorPropsJson.TryGetValue(middle, out var middleColor))
-                ColorPropsJson[middle] = middleColor = color;
+            var middleColor = ColorPropsJson.GetOrAdd(baseName + "MiddleColor", color);
 
             var bottom = baseName + "BottomColor";
 

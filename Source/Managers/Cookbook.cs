@@ -1,4 +1,4 @@
-using OceanRange.Food;
+using OceanRange.Foods;
 using SRML;
 
 namespace OceanRange.Managers;
@@ -179,11 +179,11 @@ public static class Cookbook
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
         chickPrefab.GetComponent<TransformAfterTime>().options[0].targetPrefab = henPrefab;
 
-        chimkenData.InitHenDetails?.Invoke(null, [henPrefab]);
-        chimkenData.InitChickDetails?.Invoke(null, [chickPrefab]);
-
         chimkenData.InitFoodDetails?.Invoke(null, [henPrefab]);
         chimkenData.InitFoodDetails?.Invoke(null, [chickPrefab]);
+
+        chimkenData.InitHenDetails?.Invoke(null, [henPrefab]);
+        chimkenData.InitChickDetails?.Invoke(null, [chickPrefab]);
 
         // Register both chicks and hens
         var chickIcon = Inventory.GetSprite($"{lower}_chick");
@@ -434,4 +434,15 @@ public static class Cookbook
 
     [UsedImplicitly]
     public static void InitRadiantFoodDetails(GameObject prefab) => IdentifiableId.PHOSPHOR_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[3].Element.Prefabs[0].Instantiate(prefab.transform);
+
+    [UsedImplicitly]
+    public static void InitRadiantHenDetails(GameObject prefab) => prefab.transform.GetChild(3).localPosition = new(0f, -0.3f, 0f);
+
+    [UsedImplicitly]
+    public static void InitRadiantChickDetails(GameObject prefab)
+    {
+        var glow = prefab.transform.GetChild(4);
+        glow.localPosition = new(0f, -0.3f, 0f);
+        glow.localScale = Vector3.one / 2f;
+    }
 }

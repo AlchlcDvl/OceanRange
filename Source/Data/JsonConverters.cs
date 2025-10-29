@@ -507,10 +507,8 @@ public sealed class TypeConverter : OceanJsonConverter<Type>
 
         var name = reader.Value as string; // Convert to string
 
-        if (!CachedTypes.TryGetValue(name!, out var type)) // Try to find if a type was already deserialised
-            CachedTypes[name] = type = Type.GetType(name!) ?? throw new ArgumentException($"Cannot find type {name}!"); // Find type or throw if not found
-
-        return type;
+        // Try to find the type, throw if not found
+        return CachedTypes.GetOrAdd(name, Type.GetType) ?? throw new ArgumentException($"Cannot find type {name}!");
     }
 
     /// <inheritdoc/>

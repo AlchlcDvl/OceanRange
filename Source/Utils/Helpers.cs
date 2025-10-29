@@ -472,21 +472,29 @@ public static class Helpers
         }
     }
 
-    // public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TKey, TValue> func)
-    // {
-    //     if (!dict.TryGetValue(key, out var value))
-    //         dict[key] = value = func(key);
+    public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TKey, TValue> func)
+    {
+        if (!dict.TryGetValue(key, out var value))
+            dict[key] = value = func(key);
 
-    //     return value;
-    // }
+        return value;
+    }
 
-    // public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue defaultValue)
-    // {
-    //     if (!dict.TryGetValue(key, out var value))
-    //         dict[key] = value = defaultValue;
+    public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TValue> func)
+    {
+        if (!dict.TryGetValue(key, out var value))
+            dict[key] = value = func();
 
-    //     return value;
-    // }
+        return value;
+    }
+
+    public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue defaultValue)
+    {
+        if (!dict.TryGetValue(key, out var value))
+            dict[key] = value = defaultValue;
+
+        return value;
+    }
 
     public static T[] GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
 

@@ -19,9 +19,8 @@ public static class Translator
 #endif
     public static void PreloadLangData()
     {
-        Fallback = GenerateTranslations(Config.FALLBACK_LANGUAGE);
+        Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslations);
         FallbackTranslations = Fallback.GetTranslations();
-        TranslationsHolder[Config.FALLBACK_LANGUAGE] = Fallback;
     }
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)

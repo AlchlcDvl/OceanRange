@@ -423,15 +423,9 @@ public static class Inventory
     /// Creates an asset handle for the provided asset.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
-    private static void CreateAssetHandle(string path)
-    {
-        var name = path.SanitisePath();
+    private static void CreateAssetHandle(string path) => Assets.GetOrAdd(path.SanitisePath(), Create).AddPath(path);
 
-        if (!Assets.TryGetValue(name, out var handle))
-            Assets[name] = handle = new(name);
-
-        handle.AddPath(path);
-    }
+    private static AssetHandle Create(string name) => new(name);
 
     // /// <summary>
     // /// Creates an asset handle for the provided asset.
@@ -441,11 +435,7 @@ public static class Inventory
     // /// <param name="asset">The asset to automatically add to the handle.</param>
     // private static void CreateAssetHandle<T>(string path, T asset) where T : UObject
     // {
-    //     var name = path.SanitisePath();
-
-    //     if (!Assets.TryGetValue(name, out var handle))
-    //         Assets[name] = handle = new(name);
-
+    //     var handle = Assets.GetOrAdd(path.SanitisePath(), Create);
     //     handle.AddPath(path);
     //     handle.AddAsset(asset);
     // }

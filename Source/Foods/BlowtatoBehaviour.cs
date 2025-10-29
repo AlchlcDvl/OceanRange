@@ -1,4 +1,4 @@
-namespace OceanRange.Food;
+namespace OceanRange.Foods;
 
 public sealed class BlowtatoBehaviour : CollidableActorBehaviour, Collidable
 {

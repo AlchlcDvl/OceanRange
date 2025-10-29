@@ -197,14 +197,8 @@ public static class Largopedia
 
         definition.AppearancesDefault = [appearance];
 
-        if (!LargoMaps.TryGetValue(largoData.Slime1Id, out var slime1Values))
-            LargoMaps[largoData.Slime1Id] = slime1Values = [];
-
-        if (!LargoMaps.TryGetValue(largoData.Slime2Id, out var slime2Values))
-            LargoMaps[largoData.Slime2Id] = slime2Values = [];
-
-        slime1Values.Add((largoData.MainId, largoData.Slime2Id));
-        slime2Values.Add((largoData.MainId, largoData.Slime1Id));
+        LargoMaps.GetOrAdd(largoData.Slime1Id, Create).Add((largoData.MainId, largoData.Slime2Id));
+        LargoMaps.GetOrAdd(largoData.Slime2Id, Create).Add((largoData.MainId, largoData.Slime1Id));
 
         if (prefab.TryGetComponent<PlayWithToys>(out var toys))
             toys.slimeDefinition = definition;
@@ -256,6 +250,8 @@ public static class Largopedia
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterSlimeDefinition(definition);
     }
+
+    private static List<(IdentifiableId, IdentifiableId)> Create() => [];
 
     private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, LargoProps props, LargoProps custom, LargoProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure body,
         Dictionary<int, ModelData> modelMap)
