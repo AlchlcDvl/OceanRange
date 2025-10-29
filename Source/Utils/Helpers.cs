@@ -480,6 +480,14 @@ public static class Helpers
     //     return value;
     // }
 
+    // public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue defaultValue)
+    // {
+    //     if (!dict.TryGetValue(key, out var value))
+    //         dict[key] = value = defaultValue;
+
+    //     return value;
+    // }
+
     public static T[] GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
 
     public static string[] GetEnumNames<T>() where T : struct, Enum => Enum.GetNames(typeof(T));

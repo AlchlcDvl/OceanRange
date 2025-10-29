@@ -388,7 +388,7 @@ public static class Slimepedia
             }
         }
 
-        BasicInitSlimeAppearance(appearance, slimeData);
+        BasicInitSlimeAppearance(appearance, slimeData, baseAppearance);
 
         slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance]); // Slime specific details being put here
 
@@ -428,13 +428,16 @@ public static class Slimepedia
 
     private static void RegisterSlimeBypass(SlimeData slimeData) => SlimesAndMarket.MarketRegistry.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress);
 
-    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeData slimeData)
+    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeData slimeData, SlimeAppearance baseAppearance)
     {
         var baseStruct = appearance.Structures[0];
         appearance.Structures = new SlimeAppearanceStructure[slimeData.SlimeFeatures.Length];
 
         for (var i = 0; i < slimeData.SlimeFeatures.Length; i++)
-            appearance.Structures[i] = GenerateStructure(baseStruct, slimeData.SlimeFeatures[i], slimeData.SlimeFeatures);
+        {
+            var modelData = slimeData.SlimeFeatures[i];
+            appearance.Structures[i] = GenerateStructure(modelData.UseBaseStruct && baseAppearance.Structures.TryGetItem(i, out var structure) ? structure : baseStruct, modelData, slimeData.SlimeFeatures);
+        }
     }
 
     public static SlimeAppearanceStructure GenerateStructure(SlimeAppearanceStructure baseStruct, ModelData modelData, ModelData[] modelDatas)
@@ -825,14 +828,7 @@ public static class Slimepedia
     [UsedImplicitly]
     public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
     {
-        var structure = GenerateStructure(IdentifiableId.PHOSPHOR_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[3], new()
-        {
-            SkipNull = true,
-            InstantiatePrefabs = true
-        }, null);
-        appearance.Structures = [.. appearance.Structures, structure];
-
-        var prefab = structure.Element.Prefabs[0];
+        var prefab = appearance.Structures[3].Element.Prefabs[0];
         prefab.transform.localScale /= 2f;
         prefab.transform.localPosition = new Vector3(0f, 0.3f, 1f);
     }

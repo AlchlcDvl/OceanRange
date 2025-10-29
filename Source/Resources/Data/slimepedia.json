@@ -193,6 +193,7 @@
         "favFood": "RADIANT_HEN",
         "favToy": "NIGHT_LIGHT_TOY",
         "diet": "MEAT",
+        "baseSlime": "PHOSPHOR_SLIME",
         "basePlort": "PHOSPHOR_PLORT",
         "topPaletteColor": "#752C86",
         "middlePaletteColor": "#EBDB6A",
@@ -211,9 +212,11 @@
         "jiggle": 0.25,
         "spawnAmount": 1,
         "toAdd": ["OceanRange.Slimes.LanternBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
+        "toRemove": ["SlimeHover, Assembly-CSharp", "DestroyOutsideHoursOfDay, Assembly-CSharp"],
         "slimeFeatures":
         [
             {
+                "matOrigin": "PINK_SLIME",
                 "colorProps":
                 {
                     "_TopColor": "#752C86",
@@ -234,6 +237,11 @@
             {
                 "mesh": "lantern_stalk",
                 "sameAs": 0
+            },
+            {
+                "skipNull": true,
+                "useBaseStruct": true,
+                "instantiatePrefabs": true
             },
             {
                 "mesh": "lantern_lure",
@@ -333,7 +341,7 @@
     {
         "name": "Mesmer",
         "favToy": "DISCO_BALL_TOY",
-        "favFood": "POGO_FRUIT",
+        "favFood": "STICKY_FRUIT",
         "diet": "FRUIT",
         "basePlort": "TABBY_PLORT",
         "mainAmmoColor": "#0a094f",

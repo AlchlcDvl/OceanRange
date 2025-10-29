@@ -5,7 +5,7 @@ public sealed class PersistentIdHandler : MonoBehaviour
     public string ID;
 }
 
-// public sealed class BlankBehaviour : MonoBehaviour; // Blank class to be used as a persistent check, similar to PersistentId class
+// public sealed class BlankBehaviour : MonoBehaviour; // Blank class to be used as a persistent check
 
 public sealed class PediaOnomicsHandler : MonoBehaviour
 {

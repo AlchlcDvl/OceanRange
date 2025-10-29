@@ -251,8 +251,9 @@ public static class Largopedia
         largoData.InitSlime1Details?.Invoke(null, [prefab, definition, appearance]);
         largoData.InitSlime2Details?.Invoke(null, [prefab, definition, appearance]);
 
-        LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterAppearance(definition, appearance);
+
+        LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterSlimeDefinition(definition);
     }
 
