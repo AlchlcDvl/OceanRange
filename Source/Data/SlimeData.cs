@@ -135,7 +135,7 @@ public sealed class SlimeData : SpawnedActorData
         Vaccable |= Slimepedia.MvExists;
     }
 
-    private bool Handled;
+    [JsonIgnore] private bool Handled;
 
     public void HandleTranslationData(SlimeLangData data)
     {
