@@ -81,6 +81,8 @@ public sealed class SlimeData : SpawnedActorData
     [JsonIgnore] public MethodInfo InitPlortDetails;
     [JsonIgnore] public MethodInfo InitGordoDetails;
 
+    public string OnomicsType = "pearls";
+
     protected override void OnDeserialise()
     {
         var upper = Name.ToUpperInvariant();
@@ -131,5 +133,16 @@ public sealed class SlimeData : SpawnedActorData
         }
 
         Vaccable |= Slimepedia.MvExists;
+    }
+
+    private bool Handled;
+
+    public void HandleTranslationData(SlimeLangData data)
+    {
+        if (Handled)
+            return;
+
+        Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;
+        Handled = true;
     }
 }

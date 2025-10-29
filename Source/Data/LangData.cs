@@ -24,14 +24,9 @@ public sealed class Translations : JsonData
 
     [JsonIgnore] private LangData[] LangDatas;
 
-    protected override void OnDeserialise()
-    {
-        LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Plorts, .. Mail/*, .. Zones, .. Crafts, .. EdibleCrafts */];
-        SlimeToOnomicsMap = Slimes.ToDictionary(x => x.PediaKey, x => x.OnomicsType);
-    }
+    protected override void OnDeserialise() => LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Plorts, .. Mail/*, .. Zones, .. Crafts, .. EdibleCrafts */];
 
     [JsonIgnore] private Dictionary<string, Dictionary<string, string>> TranslatedTexts;
-    [JsonIgnore] public Dictionary<string, string> SlimeToOnomicsMap;
 
     public Dictionary<string, Dictionary<string, string>> GetTranslations()
     {
@@ -206,9 +201,9 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
 
 public abstract class ActorLangData(string suffix, PediaCategory category) : PediaLangData(suffix, category)
 {
-    [JsonIgnore] private IdentifiableId ActorId;
+    [JsonIgnore] protected IdentifiableId ActorId;
 
-    protected override sealed void OnDeserialisedEvent(string mainPart) => ActorId = Helpers.ParseEnum<IdentifiableId>(mainPart);
+    protected override void OnDeserialisedEvent(string mainPart) => ActorId = Helpers.ParseEnum<IdentifiableId>(mainPart);
 
     public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations)
     {
@@ -228,7 +223,11 @@ public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIME
     [JsonRequired] public string Favourite;
     [JsonRequired] public string Onomics;
 
-    public string OnomicsType = "pearls";
+    protected override void OnDeserialisedEvent(string mainPart)
+    {
+        base.OnDeserialisedEvent(mainPart);
+        Slimepedia.SlimeDataMap[ActorId].HandleTranslationData(this);
+    }
 
     public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations)
     {

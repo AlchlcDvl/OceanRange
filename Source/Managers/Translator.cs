@@ -2,7 +2,7 @@ namespace OceanRange.Managers;
 
 public static class Translator
 {
-    public static Dictionary<string, string> SlimeToOnomicsMap;
+    public static readonly Dictionary<string, string> SlimeToOnomicsMap = [];
 
     public static readonly HashSet<string> OfferIds = [];
 
@@ -25,11 +25,8 @@ public static class Translator
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
-        if (!TranslationsHolder.TryGetValue(lang, out var holder))
-            TranslationsHolder[lang] = holder = GenerateTranslations(lang);
-
+        var holder = TranslationsHolder.GetOrAdd(lang, GenerateTranslations);
         holder.OnLanguageChanged();
-        SlimeToOnomicsMap = holder.SlimeToOnomicsMap;
         return holder.GetTranslations();
     }
 
