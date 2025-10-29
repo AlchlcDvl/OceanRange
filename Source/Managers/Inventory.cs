@@ -523,27 +523,27 @@ public static class Inventory
 #if DEBUG
     // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use
 
-    public static void Dump(this Texture texture, string fileName = null, string path = null)
-    {
-        if (texture)
-            File.WriteAllBytes(Path.Combine(path ?? DumpPath, (fileName ?? texture.name) + ".png"), texture.Decompress().EncodeToPNG());
-    }
-
-    public static void Dump(this Sprite sprite, string fileName = null, string path = null) => sprite.texture.Dump(fileName, path);
-
-    public static Texture2D Decompress(this Texture source)
-    {
-        var renderTex = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
-        Graphics.Blit(source, renderTex);
-        var previous = RenderTexture.active;
-        RenderTexture.active = renderTex;
-        var readableText = new Texture2D(source.width, source.height);
-        readableText.ReadPixels(new(0, 0, renderTex.width, renderTex.height), 0, 0);
-        readableText.Apply();
-        RenderTexture.active = previous;
-        RenderTexture.ReleaseTemporary(renderTex);
-        readableText.name = source.name;
-        return readableText;
-    }
+    // public static void Dump(this Texture texture, string fileName = null, string path = null)
+    // {
+    //     if (texture)
+    //         File.WriteAllBytes(Path.Combine(path ?? DumpPath, (fileName ?? texture.name) + ".png"), texture.Decompress().EncodeToPNG());
+    // }
+    //
+    // public static void Dump(this Sprite sprite, string fileName = null, string path = null) => sprite.texture.Dump(fileName, path);
+    //
+    // private static Texture2D Decompress(this Texture source)
+    // {
+    //     var renderTex = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
+    //     Graphics.Blit(source, renderTex);
+    //     var previous = RenderTexture.active;
+    //     RenderTexture.active = renderTex;
+    //     var readableText = new Texture2D(source.width, source.height);
+    //     readableText.ReadPixels(new(0, 0, renderTex.width, renderTex.height), 0, 0);
+    //     readableText.Apply();
+    //     RenderTexture.active = previous;
+    //     RenderTexture.ReleaseTemporary(renderTex);
+    //     readableText.name = source.name;
+    //     return readableText;
+    // }
 #endif
 }

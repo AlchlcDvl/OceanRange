@@ -454,13 +454,12 @@ public static class Slimepedia
 
         if (isNull && modelData.SkipNull)
         {
-            if (modelData.InstantiatePrefabs)
-            {
-                var elemInner = structure.Element = structure.Element.DeepCopy();
+            if (!modelData.InstantiatePrefabs)
+                return structure;
+            var elemInner = structure.Element = structure.Element.DeepCopy();
 
-                for (var i = 0; i < structure.Element.Prefabs.Length; i++)
-                    elemInner.Prefabs[i] = elemInner.Prefabs[i].DeepCopy();
-            }
+            for (var i = 0; i < structure.Element.Prefabs.Length; i++)
+                elemInner.Prefabs[i] = elemInner.Prefabs[i].DeepCopy();
 
             return structure;
         }
@@ -830,7 +829,7 @@ public static class Slimepedia
     {
         var prefab = appearance.Structures[3].Element.Prefabs[0];
         prefab.transform.localScale /= 2f;
-        prefab.transform.localPosition = new Vector3(0f, 0.3f, 1f);
+        prefab.transform.localPosition = new(0f, 0.3f, 1f);
     }
 
     [UsedImplicitly]

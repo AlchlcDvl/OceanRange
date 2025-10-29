@@ -6,6 +6,7 @@ public static class GordoSnarePatch
 {
     public static IdentifiableId[] Pinks;
 
+    [UsedImplicitly]
     public static bool Prefix(GordoSnare __instance, ref IdentifiableId __result)
     {
         var dictionary = new Dictionary<IdentifiableId, float>(Identifiable.idComparer);

@@ -498,7 +498,7 @@ public static class Helpers
 
     public static T[] GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
 
-    public static string[] GetEnumNames<T>() where T : struct, Enum => Enum.GetNames(typeof(T));
+    // public static string[] GetEnumNames<T>() where T : struct, Enum => Enum.GetNames(typeof(T));
 
     public static Material Clone(this Material material) => new(material);
 

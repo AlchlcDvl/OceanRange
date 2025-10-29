@@ -96,7 +96,7 @@ public abstract class PlantData : FoodData
         BasePlant ??= DefaultPlant;
         BaseResource ??= DefaultResource;
 
-        BaseResourceDlx = Helpers.ParseEnum<SpawnResourceId>(BaseResource.ToString() + "_DLX");
+        BaseResourceDlx = Helpers.ParseEnum<SpawnResourceId>(BaseResource + "_DLX");
     }
 }
 

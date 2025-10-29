@@ -46,7 +46,6 @@ public sealed class SlimeData : SpawnedActorData
     public Color? BottomPaletteColor;
 
     public Color? PlortAmmoColor;
-    public string PlortType = "Pearl";
     public bool CanBeRefined;
 
     public IdentifiableId? ComponentBase;
@@ -65,6 +64,8 @@ public sealed class SlimeData : SpawnedActorData
     public int PlortExchangeWeight = 16;
     public float Jiggle = 1f;
 
+    [JsonProperty] private string OnomicsType = "pearls";
+
     [JsonProperty("toAdd")] public Type[] ComponentsToAdd;
     [JsonProperty("toRemove")] public Type[] ComponentsToRemove;
 
@@ -81,7 +82,7 @@ public sealed class SlimeData : SpawnedActorData
     [JsonIgnore] public MethodInfo InitPlortDetails;
     [JsonIgnore] public MethodInfo InitGordoDetails;
 
-    public string OnomicsType = "pearls";
+    [JsonIgnore] private bool Handled;
 
     protected override void OnDeserialise()
     {
@@ -134,8 +135,6 @@ public sealed class SlimeData : SpawnedActorData
 
         Vaccable |= Slimepedia.MvExists;
     }
-
-    [JsonIgnore] private bool Handled;
 
     public void HandleTranslationData(SlimeLangData data)
     {

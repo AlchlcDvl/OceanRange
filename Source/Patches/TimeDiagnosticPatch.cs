@@ -10,6 +10,7 @@ public static class TimeDiagnosticPatch
 {
     private static readonly Dictionary<MethodBase, (string Stage, bool StageIsNull, Stopwatch Watch, bool HasJsonParam, bool HasParams)> Watches = [];
 
+    [UsedImplicitly]
     public static IEnumerable<MethodBase> TargetMethods()
     {
         var jsonType = typeof(JsonData);
@@ -30,6 +31,7 @@ public static class TimeDiagnosticPatch
         }
     }
 
+    [UsedImplicitly]
     public static void Prefix(MethodBase __originalMethod, object[] __args, ref string __state)
     {
         var (stage, isNull, watch, hasJsonParam, hasParams) = Watches[__originalMethod];
@@ -46,6 +48,7 @@ public static class TimeDiagnosticPatch
         __state = sb.ToString();
     }
 
+    [UsedImplicitly]
     public static void Postfix(MethodBase __originalMethod, ref string __state)
     {
         var (_, _, watch, _, _) = Watches[__originalMethod];

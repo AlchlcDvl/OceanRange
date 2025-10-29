@@ -258,7 +258,7 @@ public static class Cookbook
 #endif
     private static void BaseCreatePlant(PlantData plantData)
     {
-        var prefab = plantData.BasePlant.Value.GetPrefab().CreatePrefab();
+        var prefab = plantData.BasePlant!.Value.GetPrefab().CreatePrefab();
         prefab.name = plantData.Type.ToLowerInvariant() + plantData.Name;
         prefab.GetComponent<Identifiable>().id = plantData.MainId;
         prefab.GetComponent<Vacuumable>().size = 0;
@@ -329,39 +329,37 @@ public static class Cookbook
         {
             material.SetFloat(SwayStrength, 0.01f);
 
-#if DEBUG
+            // if (redExists)
+            //     material.SetTexture(RampRed, red);
+            // else
+            //     material.GetTexture(RampRed).Dump($"{plantData.BasePlant}RampRed");
+            //
+            // if (greenExists)
+            //     material.SetTexture(RampGreen, green);
+            // else
+            //     material.GetTexture(RampGreen).Dump($"{plantData.BasePlant}RampGreen");
+            //
+            // if (blueExists)
+            //     material.SetTexture(RampBlue, blue);
+            // else
+            //     material.GetTexture(RampBlue).Dump($"{plantData.BasePlant}RampBlue");
+            //
+            // if (blackExists)
+            //     material.SetTexture(RampBlack, black);
+            // else
+            //     material.GetTexture(RampBlack).Dump($"{plantData.BasePlant}RampBlack");
+
             if (redExists)
                 material.SetTexture(RampRed, red);
-            else
-                material.GetTexture(RampRed).Dump($"{plantData.BasePlant}RampRed");
 
             if (greenExists)
                 material.SetTexture(RampGreen, green);
-            else
-                material.GetTexture(RampGreen).Dump($"{plantData.BasePlant}RampGreen");
-
-            if (blueExists)
-                material.SetTexture(RampBlue, blue);
-            else
-                material.GetTexture(RampBlue).Dump($"{plantData.BasePlant}RampBlue");
-
-            if (blackExists)
-                material.SetTexture(RampBlack, black);
-            else
-                material.GetTexture(RampBlack).Dump($"{plantData.BasePlant}RampBlack");
-#else
-            if (redExists)
-                material.SetTexture(RampRed, red);
-
-            if (greenExists)
-                material.SetTexture(RampGreen, green);
 
             if (blueExists)
                 material.SetTexture(RampBlue, blue);
 
             if (blackExists)
                 material.SetTexture(RampBlack, black);
-#endif
         }
 
         plantData.InitFoodDetails?.Invoke(null, [prefab]);
@@ -369,7 +367,7 @@ public static class Cookbook
         var icon = Inventory.GetSprite(lower);
         RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
-        var resource = CreateFarmSetup(plantData.BaseResource.Value, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
+        var resource = CreateFarmSetup(plantData.BaseResource!.Value, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
         var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
 
         LookupRegistry.RegisterSpawnResource(resource);

@@ -3,6 +3,7 @@ namespace OceanRange.Patches;
 [HarmonyPatch(typeof(WeaponVacuum), nameof(WeaponVacuum.ExpelHeld)), UsedImplicitly]
 public static class CocoDamageRegisterPatch
 {
+    [UsedImplicitly]
     public static bool Prefix(WeaponVacuum __instance)
     {
         var ray = new Ray(__instance.vacOrigin.transform.position, __instance.vacOrigin.transform.up);

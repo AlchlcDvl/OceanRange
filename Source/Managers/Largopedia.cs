@@ -148,9 +148,13 @@ public static class Largopedia
         }
         else
         {
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            body = new(baseBody);
-            body.DefaultMaterials[0] = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone();
+            body = new(baseBody)
+            {
+                DefaultMaterials =
+                {
+                    [0] = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone()
+                }
+            };
         }
 
         var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };

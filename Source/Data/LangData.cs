@@ -146,8 +146,6 @@ public sealed class GordoLangData : IdentifiableLangData
     }
 }
 
-// Other pairs of (string, string) are Lang -> Translation
-
 public abstract class PediaLangData(string suffix, PediaCategory category) : LangData
 {
     [JsonIgnore] private readonly string Suffix = suffix;

@@ -106,3 +106,8 @@ Plugins/
 Plugins.meta
 CS.meta
 Mesh.meta
+
+OBJExport/
+OBJExport.meta
+ShaderForge/
+ShaderForge.meta

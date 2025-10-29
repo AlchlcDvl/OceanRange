@@ -473,21 +473,31 @@ public sealed class EnumConverter : OceanJsonConverter
 
         var leftoverBits = underlying & ~matchedBits;
 
-        if (setFlags.Count == 0 && leftoverBits != 0)
-            writer.WriteValue(underlying);
-        else if (setFlags.Count == 1 && leftoverBits == 0)
-            writer.WriteValue(setFlags[0]);
-        else
+        switch (setFlags.Count)
         {
-            writer.WriteStartArray();
+            case 0 when leftoverBits != 0:
+            {
+                writer.WriteValue(underlying);
+                break;
+            }
+            case 1 when leftoverBits == 0:
+            {
+                writer.WriteValue(setFlags[0]);
+                break;
+            }
+            default:
+            {
+                writer.WriteStartArray();
 
-            foreach (var flag in setFlags)
-                writer.WriteValue(flag);
+                foreach (var flag in setFlags)
+                    writer.WriteValue(flag);
 
-            if (leftoverBits != 0)
-                writer.WriteValue(leftoverBits);
+                if (leftoverBits != 0)
+                    writer.WriteValue(leftoverBits);
 
-            writer.WriteEndArray();
+                writer.WriteEndArray();
+                break;
+            }
         }
     }
 }

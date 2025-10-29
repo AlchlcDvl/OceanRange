@@ -1,6 +1,6 @@
 namespace OceanRange.Slimes;
 
-// Had to copy paste base game code because there's too many entry points to worry about otherwise
+// Had to copy and paste base game code because there's too many entry points to worry about otherwise
 public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable, SpawnListener
 {
     private Vacuumable Vacuumable;
@@ -71,16 +71,16 @@ public sealed class StealthFixerController
     private readonly Material CloakMaterial = GameContext.Instance.SlimeShaders.cloakMaterial;
 
     private readonly List<Renderer> Renderers = [];
-    private readonly Dictionary<Renderer, Material[]> RendererCloakMaterials = [];
-    private readonly Dictionary<Renderer, Material[]> RendererOriginalMaterials = [];
+    private readonly Dictionary<Renderer, Material> RendererCloakMaterial = [];
+    private readonly Dictionary<Renderer, Material> RendererOriginalMaterial = [];
 
     public void UpdateMaterials(GameObject gameObject)
     {
-        RendererCloakMaterials.Values.Do(x => x.Do(y => y.Destroy()));
+        RendererCloakMaterial.Values.Do(x => x.Destroy());
 
         Renderers.Clear();
-        RendererCloakMaterials.Clear();
-        RendererOriginalMaterials.Clear();
+        RendererCloakMaterial.Clear();
+        RendererOriginalMaterial.Clear();
 
         foreach (var renderer in gameObject.GetComponentsInChildren<Renderer>())
         {
@@ -88,8 +88,8 @@ public sealed class StealthFixerController
                 continue;
 
             Renderers.Add(renderer);
-            RendererCloakMaterials[renderer] = [CloakMaterial.Clone()];
-            RendererOriginalMaterials[renderer] = renderer.sharedMaterials;
+            RendererCloakMaterial[renderer] = CloakMaterial.Clone();
+            RendererOriginalMaterial[renderer] = renderer.sharedMaterial;
         }
     }
 
@@ -108,13 +108,11 @@ public sealed class StealthFixerController
                     continue;
                 }
 
-                renderer.sharedMaterials = RendererOriginalMaterials[renderer];
+                renderer.sharedMaterial = RendererOriginalMaterial[renderer];
             }
         }
         else
         {
-            var alpha = isOpaque ? 1f : opacity;
-
             foreach (var renderer in Renderers)
             {
                 if (!renderer)
@@ -123,9 +121,9 @@ public sealed class StealthFixerController
                     continue;
                 }
 
-                var materials = RendererCloakMaterials[renderer];
-                renderer.sharedMaterials = RendererCloakMaterials[renderer];
-                materials[0].SetFloat(Alpha, alpha);
+                var material = RendererCloakMaterial[renderer];
+                material.SetFloat(Alpha, opacity);
+                renderer.sharedMaterial = material;
             }
         }
 

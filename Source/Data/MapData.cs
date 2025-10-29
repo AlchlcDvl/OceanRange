@@ -30,7 +30,7 @@ public sealed class ZoneData : JsonData
     [JsonProperty("teleporterLoc"), JsonRequired] public string TeleporterLocation;
     [JsonProperty("prefab"), JsonRequired] public string AssetName;
 
-    [JsonProperty("requirements")] public Dictionary<RequirementType, ZoneRequirementData> Requirements;
+    public Dictionary<RequirementType, ZoneRequirementData> Requirements;
 
     [JsonIgnore] public Zone Zone;
     [JsonIgnore] public PediaId PediaId;

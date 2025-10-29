@@ -21,7 +21,7 @@ public sealed class BlowtatoBehaviour : CollidableActorBehaviour, Collidable
         if (col.relativeVelocity.magnitude < MinimumExplosionVelocity)
             return;
 
-        if (ExplodeFX != null)
+        if (ExplodeFX)
             SpawnAndPlayFX(ExplodeFX, transform.position, transform.rotation);
 
         PhysicsUtil.Explode(gameObject, ExplodeRadius, ExplodePower, MinPlayerDamage, MaxPlayerDamage);

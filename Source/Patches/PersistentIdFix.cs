@@ -5,6 +5,7 @@ namespace OceanRange.Patches;
 [HarmonyPatch(typeof(IdHandler), nameof(IdHandler.id), MethodType.Getter), UsedImplicitly]
 public static class PersistentIdFix
 {
+    [UsedImplicitly]
     public static bool Prefix(IdHandler __instance, ref string __result)
     {
         if (__instance.director || !__instance.TryGetComponent<PersistentIdHandler>(out var id))

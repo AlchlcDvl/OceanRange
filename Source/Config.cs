@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 using SRML.Config.Attributes;
 
 namespace OceanRange;

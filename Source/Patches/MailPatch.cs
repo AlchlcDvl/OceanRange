@@ -5,6 +5,7 @@ public static class FixAndProperlyShowMailPatch
 {
     public static bool IsLoaded;
 
+    [UsedImplicitly]
     public static void Postfix(TimeDirector __instance)
     {
         if (!IsLoaded)

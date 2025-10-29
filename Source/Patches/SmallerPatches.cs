@@ -4,6 +4,7 @@ namespace OceanRange.Patches;
 [HarmonyPatch(typeof(SlimeAppearanceApplicator), nameof(SlimeAppearanceApplicator.ApplyAppearance)), UsedImplicitly]
 public static class MineSlimeAppearanceFix
 {
+    [UsedImplicitly]
     public static void Postfix(SlimeAppearanceApplicator __instance)
     {
         if (!__instance.Appearance)
@@ -20,6 +21,7 @@ public static class MineSlimeAppearanceFix
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap)), UsedImplicitly]
 public static class EatMapFix
 {
+    [UsedImplicitly]
     public static void Postfix(SlimeDiet __instance, SlimeDefinitions definitions, SlimeDefinition definition)
     {
         // This is such a goofy oversight lmao, SRML used Identifiable.IsAnimal instead of directly comparing with the Identifiable.MEAT_CLASS, leading to chicks being eaten as well lol
@@ -65,6 +67,7 @@ public static class EatMapFix
 [HarmonyPatch(typeof(GordoEat), nameof(GordoEat.ImmediateReachedTarget)), UsedImplicitly]
 public static class EnsureGordoStaysPopped
 {
+    [UsedImplicitly]
     public static void Postfix(GordoEat __instance)
     {
         if (__instance.TryGetComponent<GordoPop>(out var pop))
@@ -77,16 +80,17 @@ public static class EnsureAutoSaveDirectorData
 {
     public static bool IsAutoSave;
 
-    [HarmonyPatch(nameof(AutoSaveDirector.SaveAllNow))]
+    [HarmonyPatch(nameof(AutoSaveDirector.SaveAllNow)), UsedImplicitly]
     public static void Prefix() => IsAutoSave = true;
 
-    [HarmonyPatch(nameof(AutoSaveDirector.SaveGame))]
+    [HarmonyPatch(nameof(AutoSaveDirector.SaveGame)), UsedImplicitly]
     public static void Postfix() => IsAutoSave = false;
 }
 
 [HarmonyPatch(typeof(ResourceBundle), nameof(ResourceBundle.LoadFromText)), UsedImplicitly]
 public static class LatchCustomTranslations
 {
+    [UsedImplicitly]
     public static void Postfix(string path, Dictionary<string, string> __result)
     {
         if (!MessageDirector.GetLang(GameContext.Instance.MessageDirector.GetCurrentLanguageCode()).GetTranslations().TryGetValue(path, out var translations))
@@ -100,6 +104,7 @@ public static class LatchCustomTranslations
 [HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake)), UsedImplicitly]
 public static class FilterValues
 {
+    [UsedImplicitly]
     public static void Postfix(ExchangeDirector __instance)
     {
         __instance.catDict[Category.PLORTS] = [.. __instance.catDict[Category.PLORTS].Exclude(Ids.GOLDFISH_PLORT)];
@@ -110,21 +115,21 @@ public static class FilterValues
 [HarmonyPatch(typeof(StalkConsumable)), UsedImplicitly]
 public static class StalkConsumablePatch
 {
-    [HarmonyPatch(nameof(StalkConsumable.SetStealth))]
+    [HarmonyPatch(nameof(StalkConsumable.SetStealth)), UsedImplicitly]
     public static void Postfix(StalkConsumable __instance, bool isStealthed)
     {
         if (__instance.TryGetComponent<StealthFixer>(out var fixer))
             fixer.SetStealth(isStealthed);
     }
 
-    [HarmonyPatch(nameof(StalkConsumable.ProcessCollisionEnter))]
+    [HarmonyPatch(nameof(StalkConsumable.ProcessCollisionEnter)), UsedImplicitly]
     public static bool Prefix(StalkConsumable __instance, Collision col)
     {
         if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.GetComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player)
         {
             var vector = col.gameObject.transform.InverseTransformPoint(col.contacts[0].point);
 
-            if (vector.z > 0.2f && vector.y > 1f)
+            if (vector is { z: > 0.2f, y: > 1f })
                 SceneContext.Instance.AchievementsDirector.AddToStat(AchievementsDirector.IntStat.TABBY_HEADBUTT, 1);
         }
         else if (__instance.feinting)
