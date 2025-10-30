@@ -90,7 +90,7 @@
         "gordoZone": "REEF",
         "gordoCell": "Reef_RingIsland",
         "zones": ["REEF", "MOSS"],
-        "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange"],
+        "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange", "DamagePlayerOnTouch, Assembly-CSharp"],
         "onomicsType": "plorts",
         "slimeFeatures":
         [

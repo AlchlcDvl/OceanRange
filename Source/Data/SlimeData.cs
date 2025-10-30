@@ -69,8 +69,6 @@ public sealed class SlimeData : SpawnedActorData
     [JsonProperty("toAdd")] public Type[] ComponentsToAdd;
     [JsonProperty("toRemove")] public Type[] ComponentsToRemove;
 
-    [JsonProperty("spawners")] public string[] ExcludedSpawners;
-
     [JsonProperty("gordoEat")] public int GordoEatAmount = 25;
 
     [JsonIgnore] public bool IsPopped;

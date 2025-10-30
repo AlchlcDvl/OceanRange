@@ -78,7 +78,7 @@ public static class Slimepedia
         {
             var prefab = slimeData.MainId.GetPrefab();
 
-            foreach (var slimeSpawner in spawners.Where(spawner => Helpers.IsValidZone(spawner, slimeData.Zones, slimeData.ExcludedSpawners)))
+            foreach (var slimeSpawner in spawners.Where(spawner => Helpers.IsValidZone(spawner, slimeData.Zones)))
             {
                 foreach (var constraint in slimeSpawner.constraints)
                 {

@@ -68,7 +68,7 @@ public sealed class StealthFixerController
 {
     private static readonly int Alpha = ShaderUtils.GetOrSet("_Alpha");
 
-    private readonly Material CloakMaterial = GameContext.Instance.SlimeShaders.cloakMaterial;
+    private static readonly Material CloakMaterial = GameContext.Instance.SlimeShaders.cloakMaterial;
 
     private readonly List<Renderer> Renderers = [];
     private readonly Dictionary<Renderer, Material> RendererCloakMaterial = [];
@@ -88,8 +88,19 @@ public sealed class StealthFixerController
                 continue;
 
             Renderers.Add(renderer);
-            RendererCloakMaterial[renderer] = CloakMaterial.Clone();
-            RendererOriginalMaterial[renderer] = renderer.sharedMaterial;
+
+            var cloakMat = CloakMaterial.Clone();
+            var regularMat = renderer.sharedMaterial;
+
+            if (regularMat.HasProperty(Slimepedia.TopColor))
+            {
+                cloakMat.SetColor(Slimepedia.TopColor, regularMat.GetColor(Slimepedia.TopColor));
+                cloakMat.SetColor(Slimepedia.MiddleColor, regularMat.GetColor(Slimepedia.MiddleColor));
+                cloakMat.SetColor(Slimepedia.BottomColor, regularMat.GetColor(Slimepedia.BottomColor));
+            }
+
+            RendererCloakMaterial[renderer] = cloakMat;
+            RendererOriginalMaterial[renderer] = regularMat;
         }
     }
 
