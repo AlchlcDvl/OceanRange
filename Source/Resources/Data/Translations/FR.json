@@ -1,473 +1,473 @@
 {
-    "name": "FR",
-    "additional":
+  "name": "FR",
+  "additional":
+  {
+    "ui":
     {
-        "ui":
-        {
-            "l.pearls": "Perlonomie",
-            "m.foodgroup.dirt": "Terre"
-        },
-        "pedia":
-        {
-            "m.favored_by.silky_sand_craft": "Slime Sablonneux"
-        }
+      "l.pearls": "Perlonomie",
+      "m.foodgroup.dirt": "Terre"
     },
-    "slimes":
-    [
-        {
-            "translatedName": "Slime rosi",
-            "name": "Rosi",
-            "risks": "Le slime rosi ne mérite aucune inquiétude. Ils sont très faciles à élever, ne demandant que de la nourriture et de la compagnie. Un slime rosi isolé est un slime rosi triste. Il est recommandé d'en garder plus d'un pour une pour une production de perles stable.",
-            "slimeology": "Le slime rosi est le slime le plus commun trouvé dans le Récif Aride. Ils sont décrits comme joyeux, amicaux et sournois, et jouent parfois des tours aux autres slimes et humains. Les slimes rosi ont des liens très forts entre eux and sont très rarement observés seuls. Tant qu'ils ont un partenaire avec qui jouer, ils seront heureux pour toujours, ne montrant aucun signe de tristesse. Et lorsqu'ils sont tristes, c'est souvent lorsqu'ils essaient de remonter le moral à un slime ou humain.",
-            "diet": "Tout",
-            "favourite": "Aucun nourriture préférée. Le slime rosi aime tout de manière égale.",
-            "onomics": "Les perles rosi sont souvent surnommées \"Perle d'Aphrodite\" pour leurs propriétés rajeunissantes sur la peau humaine. Les marques de beauté en font la promotion comme clé d'une lueur de jeunesse, affirmant que les perles rosi permettent de rajeunir la peau de 20 à 50 ans. Ce ne serait pas problématique si leurs excroissances n'avaient pas le potentiel de guérir les organes internes, et même éliminer les cancers. Ces excroissances peuvent se régénérer, mais repoussent de plus en plus petites. Les recherches les plus récentes concluent que les effets guérisseurs sont temporaires, causant la perle à s'user rapidement. Les perles rosi ne sont donc pas une solution anti-vieillisement permanente.",
-            "intro": "La perle rose de la mer. Ce slime est soupçonné d'être un cousin du slime rose."
-        },
-        {
-            "translatedName":"Slime coco",
-            "name": "Coco",
-            "risks": "Attention en marchant sous les palmiers ! Les slimes coco sont très territoriaux, s'ils vous détectent en dessous, ils durçiront leur corps visqueux en une coquille dure comme une noix de coco avant de s'écraser sur leur cible. Les malchanceux ayatnt déjà reçu un slime coco sur la tête expliquent avoir eu la vision floue et être déboussolés, certains se sont même évanouis. Les slimes coco utilisent aussi cette technique pour chasser dans la nature. Malgré leur peau dure et leur agilité, ils sont assez simples à élever tant qu'ils sont bien nourris et ont assez d'accès à la lumière du soleil.",
-            "slimeology": "Les slimes coco se trouvent souvent accrochés aux palmiers de l'île. Endémiques de l'île SwirlPool, les slimes coco ont naturellement développé un saut bien plus puissant afin de grimper aux arbres et échapper aux prédateurs. Comme ils poussent des palmiers, ils ont des particularités végétales, nécéssitant un accès constant à la lumière du soleil. Ils ne mangent pas de fruits ou légumes, car ce serait du cannibalisme.",
-            "diet": "Viande",
-            "favourite": "Poule sableuse",
-            "onomics": "Les plortes coco, à la différence de leurs producteurs, sont très doux et mous, en plus d'être une excellente source de calcium une fois transformés en liquide ! Même si cette substance est très similaire au lait Terrien, elle peut être consommée par les personnes ayant une intolérance au lactose, la rendant extrêmement populaire pour la fabrication de produits laitiers sans lactose. Grâce à leur texture douce et molle, ils sont aussi souvent utilisés pour les soins de peau et dans les spas en remplacement des bains de lait.",
-            "intro": "Vous feriez mieux de porter un casque !"
-        },
-        {
-            "translatedName": "Slime mine",
-            "name": "Mine",
-            "risks": "Soyez précautieux autour d'un slime mine, leurs pointes ne sont pas là juste pour faire joli ! Un contact direct déclenchera une explosion immédiate. Les slimes seront projetés hors de la zone de danger, sauf les autres slimes mine et leurs cousins slimes boum qui y sont naturellement immunisés. Cette particularité rend la cohabitation assez mouvementée (et bruyante), car ils chercheront leurs amis explosifs pour provoquer des explosions régulières, ayant pour effet de les soulager. Gardez-les ensemble pour gérer leur nature volatile, ou bien risquez un slime grognon.",
-            "slimeology": "Le slime mine, cousin éloigné du slime boum, a bien plus de piquant. La détonation d'un slime mine n'est déclenchée que par un contact direct avec un autre slime ou éleveur inattentif. Pour décourager de les approcher, ces derniers sont recouverts de pointes aiguisées en cristal qui servent d'avertissement. Malgré leurs tendances peu tendres, ces slimes préfèrent un doux régime de légumes, et surtout de pam-tate. Ce tubercule contient des vitamines volatiles qui permettent de garder leur énergie au max et de produire des explosions encore plus parfaites. Si un slime mine n'explose pas pendant trop longtemps, sa pression interne monte jusqu'à le rendre inconfortable, il cherchera alors de l'eau pour se refroidir ou un autre slime explosif à qui faire un câlin.",
-            "diet": "Légumes",
-            "favourite": "Pam-tate",
-            "onomics": "Les plortes mine sont des gemmes résistantes et intriguantes, ayant pris la forme d'une perle sous l'immense pression interne du slime mine. Ces perles uniques conservent une partie de nature explosive, mais un choc bien plus brutal est nécéssaire pour qu'ils libèrent leur énergie. Ces détonations contrôlées sont très utiles dans le domaine industriel, particulèrement une fois réduit en poudre. Des petites explosions d'excavation aux feux d'artifice interstellaires, les perles mine ont marqué leur impact sur le marché galactique.",
-            "intro": "Le slime à ne toucher qu'avec les yeux !"
-        },
-        {
-            "translatedName": " Slime lanterne",
-            "name": "Lantern",
-            "risks": "Les slimes lanterne ne sont pas les plus sociaux. Ils passent leurs journées à dormir, mais lorsqu'ils sont dérangés, ils produisent un flash lumineux afin de désorienter le slime ou plongeur les ayant réveillé le temps de fuir. Cependant, la nuit, ils sont très paisibles et nagent dans le Récif de corail à la recherche de nourriture.",
-            "slimeology": "Le slime lanterne est un cousin éloigné du slime phosphorescent. Ils ont évolué pour sortir leur noyau lumineux dans l'objectif d'attirer des proies sous l'eau. Comme son cousin, le slime lanterne apparaît la nuit dans les coins les plus reculés du Grand récif et du Tapis de mousse. Ils sont souvent seuls, préférent un style de vie isolé et très peu social. Cependant, les slimes lanterne aiment aider les plongeurs à retrouver leur chemin jusqu'à la terre ferme.",
-            "diet": "Viande",
-            "favourite": "Poule radiante",
-            "onomics": "Les perles lanterne sont un composant essentiel de nombreux produits de beauté pour leurs propriété hydratantes. Ces perles hydratent la peau et offrent une douce luminescence, parfaite pour des crèmes de nuit. Cependant, leur barrière naturelle contre les bactéries se dégrade rapidement si exposée au soleil. Les produits à base de perles lanterne sont donc plus efficaces lorsqu'ils sont appliqués la nuit.",
-            "intro": "Le rayon de lumière dans votre vie !"
-        },
-        {
-            "translatedName": "Slime sablonneux",
-            "name": "Sand",
-            "risks": "Pas de panique ! Le slime sablonneux est l'un des slimes les plus paisibles. Ces gentils blobs ne présentent aucun danger sur le ranch, se prélassant tranquillement dans un enclos sans jamais se plaindre. Cependant, malgré leur habitat naturel à la plage, les slimes sablonneux ne supportent pas l'eau ; s'ils resent trop longtemps submergés, ils disparaîtront ! Leurs plortes perles ne sont pas convoités par les autres slimes, qui ne semblent pas apprécier les humbles origines de cette perle brillante dans la terre. Leur nature relaxée et leur incapacité à s'énerver font d'eux les parfaits companions pour les slimes timides, tant qu'ils n'ont pas à se mouiller !",
-            "slimeology": "Le slime sablonneux, étrange cousin terrestre du slime aqueux et slime ardent, est chez lui sur les côtes ensoleillées du Far, Far Ouest. Comme ses cousins élémentaux, ce slime n'apprécie pas les régimes habituels ; à la place, ils se contentent entièrement de bonne vielle terre. Après avoir filtré une poignée de terre, les slimes sablonneux en tirent les minéraux pour produire des plortes brillants qui ressemblent fortement aux précieuses perles terrestres. Leur comportement calme et leur régime unique en font un ajout très facile sur le ranch.",
-            "diet": "Terre",
-            "favourite": "Sable soyeux",
-            "onomics": "Les plortes sablonneux sont de vraies merveilles de raffinement naturel. Bien que les slimes sablonneux soient calmes et tranquilles, les perles qu'ils produisent sont bien plus solides que celles sur Terre, malgré leur origine. Ces fabuleux trésors sphériques, nés d'une poignée de terre, sont très prisés dans le marché de plortes. Leur magnifique brillance et impressionnante durabilité se prête parfaitement à la bijouterie et autres accessoires de luxe dans toute la galaxie, prouvant que la beauté peut venir de n'importe où !",
-            "intro": "Ce slime s'infiltre partout !"
-        },
-        {
-            "translatedName": "Slime mesmeur",
-            "name": "Mesmer",
-            "risks": "Les slimes mesmeur présentent un risque aux slimes sur le ranch, car ils produisent des motifs hypnotisants qui ont pour effet de regrouper les autres slimes pendant des heures, surtout la nuit où ils brillent pleinement. Si un slime mesmeur est laissé seul, son humeur va s'aggraver. Agité, les slimes mesmeur deviennent presque sauvages, anxieux à l'idée que personne ne veuille être leur ami. Ils produisent alors des formes similaires aux yeux et bouches du Goudrron, ce qui ne fait qu'éloigner les autres slimes encore plus. Ils attaqueront aussi les éleveurs et slimes avec leurs membres insectoïdes. À part ça, ils sont plutôt simples à élever.",
-            "slimeology": "Un slime étrange, aux airs dangereux mais en réalité plutôt amical, le slime mesmeur produit des spectacles de couleur sur son corps. L'objectif de ces motifs fait encore débat, mais la plupart des scientifiques de slimes expliquent que c'est pour devenir le meilleur ami du plus de slimes possible, même avec leur apparence semblable à un scorpion. En effet, ces slimes sont très sociaux. Les slimes mesmeur passent beaucoup de temps dans les jungles et cavernes de l'île, où il est plus facile d'admirer leur brillance.",
-            "diet": "Fruits",
-            "favourite": "Colle-aux-doigts",
-            "onomics": "Les plortes mesmeur contiennent des bactéries bioluminescentes, qui semblent être la source de leurs superbes couleurs. Ces bactéries sont capables de manifester un ensemble de couleurs, mais il faut souvent utiliser des substances chimiques afin de les faire muter pour obtenir des teintes spécifiques. Les produits à base de plortes mesmeur sont souvent des alternatives de luxe aux lumières renouvelables, appréciés par les plus fortunés pour leur originalité. Malgré leur popularité extravagante, leur valeur sur le marché reste étonnamment modeste.",
-            "intro": "ooooooooooooooooooo joliiii"
-        },
-        {
-            "translatedName": "Slime hermite",
-            "name": "Hermit",
-            "risks": "Les slimes hermite sont naturellement peureux et se cachent rapidement au moindre mouvement ou bruit. Cela rend difficile la tâche de récupérer les objets stockés. S'il ne se sent pas en sécurité, il peut se cacher dans sa coquille pendant de longues périodes, ce qui empêche la collecte de plortes. Pour extraire des objets de sa coquille, il faut de la patience : des méthodes plus dures peuvent rendre le slime encore moins confiant à l'avenir. Il est recommandé de garder les slimes hermite heureux pour les mettre en confiance ; utiliser le fruit-corail est une bonne méthode.",
-            "slimeology": "Le slime hermite est une créature fascinante qui se trouve sur les côtes et dans les zones rocheuses. Ce slime ne va nulle part sans sa coquille, qu'il utilise en tant qu'abri et entrepôt pour les objets de valeur qu'il collectionne. Le slime hermite possède la capacité de se détacher de sa coquille afin de mieux s'adapater à son environnement, en adoptant par exemple d'autres coquilles, des noix de coco, pierres, ou même des poubelles. Sa nourriture préférée est le fruit-corail, un fruit délicieux produit par une plante exotique poussant entre les rochers et près de la mer. Un éleveur peut gagner en confiance auprès du slime avec ce fruit.",
-            "diet": "Fruits",
-            "favourite": "Coralfruit",
-            "onomics": "Les plortes hermite sont aussi uniques que le slime. Grâce aux habitudes de collectionneur du slime, le plorte contient des micro-fragments de coquilles et minéraux divers. Les plortes hermite sont très solides, ainsi utilisés pour fabriquer des matériaux de construction durables et des décorations marines. De plus, ils sont célèbres pour leur capacité à briller dans le noir en les frottant contre une surface dure ! Certains éleveurs s'en servent pour décorer leurs ranchs avec des lumières sous-marines naturelles.",
-            "intro": "The ever reclusive shell wanderer!"
-        },
-        {
-            "translatedName": "Slime poisson doré",
-            "name": "Goldfish",
-            "risks": "Les slimes poisson doré ne peuvent pas être capturés traditionnellement ; tout comme les slimes doré, ils disparaissent rapidement après avoir été découverts. Tout essai de capture sera couronné d'un échec, car ce slime vous glissera entre les doigts. Cependant, les éleveurs les plus rapides peuvent lui donner sa nourriture préférée à temps pour obtenir un précieux plorte.",
-            "slimeology": "Les slimes poisson doré sont une variante exceptionnellement rare du slime doré. Contrairement à leur cousin terrestre, ces slimes étincelants se sont adaptés à la vie sous les vagues, se déplaçant gracieusement entre les courants marins avec leurs nageoires et écailles brillantes. Leurs mouvements sont semblables à ceux des poissons koï ou du poisson rouge, et laissent derrière eux une traînée scintillante dans l'eau lorsqu'ils sont effrayés. Bien qu'ils partagent la même nature peureuse que le slime doré, les slimes poisson doré sont un peu plus faciles à observer - même si le moment ne dure pas. Ils apparaissent souvent dans les récifs profonds ou près d'anciennes ruines aquatiques, faisant surfaçe et disparaissant à nouveau en un clin d'oeil.",
-            "diet": "Gingembre ambré",
-            "favourite": "Gingembre ambré",
-            "onomics": "Les plortes poisson doré sont encore plus rares que les plortes doré et ainsi doublement précieux, faisant d'eux une resource extrêmement convoitée. Leur origine aquatique leur donne des propriétés énergétiques unique, souvent utilisées dans des technologies sous-marines dernier cri ou dans la fabrication d'holo-montres de luxe. Le comité de Science Slime recommande de manier cet objet suprêmement rare avec précaution, et de vous considérer chanceux d'en avoir obtenu ne serait-ce qu'un.",
-            "intro": "Ce slime vous glissera des doigts avec brillance !"
-        }
-    ],
-    "hens":
-    [
-        {
-            "name": "Sandy",
-            "translatedName": "Poule sableuse",
-            "about": "La cousine beaucoup plus bronzée de la poule rocailleuse, les poules sableuses sont les maîtres du camouflage à la plage. Leurs plumes ont une apparence presque identique au sable aride des plages où elles font leur nid, les rendant plus dures à repérer. Malheuresement pour elles, leur superbe camouflage ne vaut rien face aux yeux du slime coco. Du haut de leurs palmiers, ces prédateurs apprécient particulièrement la viande sèche des poules sableuses, ce qui se marie parfaitement à leur propre aspect plus tropical. Pour les éleveurs à la recherche d'un repas savoureux et un peu sec, la poule sablonneuse offre une saveur familière avec un arrière-goût du désert.",
-            "favouredBy": "Slime coco",
-            "ranch": "Les poules sableuses à proximité des Cocqo déposeront périodiquement des œufs qui produiront des poussidoux sableux. Mais mettre trop de poules ou de Cocqos à proximité génère du stress, et la production d’œufs stoppera. Les éleveurs malins qui comprennent la nature complexe de l'amour entre poulets éviteront de mettre plus de 12 oiseaux dans un poulailler.",
-            "type": "Meat",
-            "intro": "Le maître du camouflage à la plage !"
-        },
-        {
-            "name": "Radiant",
-            "translatedName": "Poule radiante",
-            "about": "Une poule unique parmi ses cousines, elle se démarque... littéralement. Contrairement aux autres poules qui cherchent à se fondre dans le décor, la poule radiante a adopté des plumes qui brillent d'une lumière sublime. Cela les rend incroyablement faciles à repérer, ce qui est normalement considéré comme un désavantage - cependant, pour les slimes lanterne, cette lumière est irrésistible. Ils se trouvent souvent en groupe à admirer ces poules, entièrement absorbés par leur brillance unique. Les scientifiques pensent que la lumière douce et constante de la poule aide à réguler la bioluminescence des slimes lanterne, qui peut parfois devenir instable. Pour les éleveurs, les poules radiantes peuvent servir de phares dans les coins les plus sombres du Far, Far Ouest - leur viande, quant à elle, a juste de le goût de poule normale.",
-            "favouredBy": "Slime lanterne",
-            "ranch": "Les poules radiantes à proximité des Cocqo déposeront périodiquement des œufs qui produiront des poussidoux radiants. Mais mettre trop de poules ou de Cocqos à proximité génère du stress, et la production d’œufs stoppera. Les éleveurs malins qui comprennent la nature complexe de l'amour entre poulets éviteront de mettre plus de 12 oiseaux dans un poulailler.",
-            "type": "Meat",
-            "intro": "Toujours à faire les choses différemment !"
-        }
-    ],
-    "chicks":
-    [
-        {
-            "name": "Sandy",
-            "translatedName": "Poussidou sableux",
-            "about": "Les poussidous sableux sont des bébés poulets qui deviennent par la suite une poule sableuse ou, plus rarement, un Cocqo.\n\nLes poussidous de toutes les variétés ne seront jamais mangés par les Slimes. Certains croient que les Slimes sont trop gentils pour faire une telle chose. D'autres pensent que les Poussidous n'ont pas encore assez de viande à leur goût.",
-            "favouredBy": "(n'est pas un aliment pour slime)",
-            "ranch": "Mettez vos poussidous sableux dans un endroit sécurisé, et ils deviendront une poule radiante ou, plus rarement, un Cocqo.",
-            "type": "Future viande",
-            "intro": "Un camoufleur en herbe (ou plutôt en sable) !"
-        },
-        {
-            "name": "Radiant",
-            "translatedName": "Poussidou radiant",
-            "about": "Les poussidous radiants sont des bébés poulets qui deviennent par la suite une poule radiante ou, plus rarement, un Cocqo.\n\nLes poussidous de toutes les variétés ne seront jamais mangés par les Slimes. Certains croient que les Slimes sont trop gentils pour faire une telle chose. D'autres pensent que les Poussidous n'ont pas encore assez de viande à leur goût.",
-            "favouredBy": "(n'est pas un aliment pour slime)",
-            "ranch": "Mettez vos poussidous radiants dans un endroit sécurisé, et ils deviendront une poule radiante ou, plus rarement, un Cocqo.",
-            "type": "Future viande",
-            "intro": "N'a pas encore exactement trouvé sa place..."
-        }
-    ],
-    "fruits":
-    [
-        {
-            "name": "Sticky",
-            "translatedName": "Colle-aux-doigts",
-            "about": "Une friandise sucrée qui à tendance à coller aux dents, et souvent aux doigts. Jadis un ingrédient principal des bonbons du Far, Far Ouest, ce fruit associe sa viscosité gluante avec une coquille croustillante et un intérieur surprennamment onctueux.",
-            "favouredBy": "Slime mesmeur",
-            "ranch": "Déposez un colle-aux-doigts dans le réceptacle d'un jardin, et vous obtiendrez un grand arbre sucré, rien qu'à vous.",
-            "type": "Fruit",
-            "intro": "Tout est dans le nom !"
-        }
-    ],
-    "veggies":
-    [
-        {
-            "name": "Blowtato",
-            "translatedName": "Pam-tate",
-            "about": "La pam-tate est un légume surprenant à haut potentiel réactif, souvent trouvé dans les roches brisées de la Carrière Indigo. Tout comme le slime mine qui les adores, ces patates ont une tendance à la combustion causée par les minéraux volatiles qui se trouvent à l'intérieur. Les éleveurs doivent faire excès de précaution, une petite incision est fortemment recommandée avant des les cuisiner afin d'éviter de réduire la cuisine en miettes ! Pour les slimes mine, cette particularité explosive est un vrai délice, renforçant leurs capacités de brise-roches. Certains mineurs malins s'en servent même pour creuser certains petits tunnels, même si cela n'est pas vraiment recommandé.",
-            "favouredBy": "Slime mine",
-            "ranch": "Déposez une pamtate dans le réceptacle d'un jardin, et vous obtiendrez une grande récolte, rien qu'à vous.",
-            "type": "Légume",
-            "intro": "Un légume explosif !"
-        }
-    ],
-    "ranchers":
-    [
-        {
-            "name": "Lisa",
-            "translatedName": "Lisa Erwin",
-            "offers":
-            [
-                "...Oups! Je voulais pas clicker là, désolé, l'ami... Bon, tant que t'es là, tu me prêtes un coup de main ?",
-                "Zzzz... hein ?! Qu'est-ce que je faisais, déjà ?...",
-                "Debout, et de bonne heure ! On a du boulot, alors on s'y met !"
-            ],
-            "specialOffer": "Quand j'ai besoin d'énergie, je respire un grand coup... Et j'bois une grande tasse de café.",
-            "loadingTexts":
-            [
-                "Lisa a essayé de montrer sa réflection à un slime mesmeur dans un miroir, une fois. Le slime est resté devant le miroir pendant des heures.",
-                "Lisa et Viktor se retrouvent souvent dans des disputes autour de sujets scientifiques."
-            ]
-        }
-    ],
-    "largos":
-    [
-        {
-            "translatedName": "Largo rosi mine",
-            "name": "Rosi Mine"
-        },
-        {
-            "translatedName": "Largo rosi lanterne",
-            "name": "Rosi Lantern"
-        },
-        {
-            "translatedName": "Largo mine lantern",
-            "name": "Mine Lantern"
-        },
-        {
-            "translatedName": "Largo rose coco",
-            "name": "Pink Coco"
-        },
-        {
-            "translatedName": "Largo coco sabre",
-            "name": "Coco Saber"
-        },
-        {
-            "translatedName": "Largo coco quantique",
-            "name": "Coco Quantum"
-        },
-        {
-            "translatedName": "Largo coco mielleux",
-            "name": "Coco Honey"
-        },
-        {
-            "translatedName": "Largo coco phosphorescent",
-            "name": "Coco Phosphor"
-        },
-        {
-            "translatedName": "Largo coco mosaïque",
-            "name": "Coco Mosaic"
-        },
-        {
-            "translatedName": "Largo coco vrillé",
-            "name": "Coco Tangle"
-        },
-        {
-            "translatedName": "Largo coco boum",
-            "name": "Coco Boom"
-        },
-        {
-            "translatedName": "Largo coco rad",
-            "name": "Coco Rad"
-        },
-        {
-            "translatedName": "Largo coco rocheux",
-            "name": "Coco Rock"
-        },
-        {
-            "translatedName": "Largo coco tigré",
-            "name": "Coco Tabby"
-        },
-        {
-            "translatedName": "Largo coco chasseur",
-            "name": "Coco Hunter"
-        },
-        {
-            "translatedName": "Largo coco cristal",
-            "name": "Coco Crystal"
-        },
-        {
-            "translatedName": "Largo coco derviche",
-            "name": "Coco Dervish"
-        },
-        {
-            "translatedName": "Largo coco mesmeur",
-            "name": "Coco Mesmer"
-        },
-        {
-            "translatedName": "Largo coco hermite",
-            "name": "Coco Hermit"
-        },
-        {
-            "translatedName": "Largo rose mesmeur",
-            "name": "Pink Mesmer"
-        },
-        {
-            "translatedName": "Largo sabre mesmeur",
-            "name": "Saber Mesmer"
-        },
-        {
-            "translatedName": "Largo quantique mesmeur",
-            "name": "Quantum Mesmer"
-        },
-        {
-            "translatedName": "Largo mielleux mesmeur",
-            "name": "Honey Mesmer"
-        },
-        {
-            "translatedName": "Largo phosphorescent mesmeur",
-            "name": "Phosphor Mesmer"
-        },
-        {
-            "translatedName": "Largo mosaïque mesmeur",
-            "name": "Mosaic Mesmer"
-        },
-        {
-            "translatedName": "Largo vrillé mesmeur",
-            "name": "Tangle Mesmer"
-        },
-        {
-            "translatedName": "Largo boum mesmeur",
-            "name": "Boom Mesmer"
-        },
-        {
-            "translatedName": "Largo rad mesmeur",
-            "name": "Rad Mesmer"
-        },
-        {
-            "translatedName": "Largo rocheux mesmeur",
-            "name": "Rock Mesmer"
-        },
-        {
-            "translatedName": "Largo tigré mesmeur",
-            "name": "Tabby Mesmer"
-        },
-        {
-            "translatedName": "Largo chasseur mesmeur",
-            "name": "Hunter Mesmer"
-        },
-        {
-            "translatedName": "Largo cristal mesmeur",
-            "name": "Crystal Mesmer"
-        },
-        {
-            "translatedName": "Largo derviche mesmeur",
-            "name": "Dervish Mesmer"
-        },
-        {
-            "translatedName": "Largo mesmeur hermite",
-            "name": "Mesmer Hermit"
-        },
-        {
-            "translatedName": "Largo rose hermite",
-            "name": "Pink Hermit"
-        },
-        {
-            "translatedName": "Largo sabre hermite",
-            "name": "Saber Hermit"
-        },
-        {
-            "translatedName": "Largo quantique hermite",
-            "name": "Quantum Hermit"
-        },
-        {
-            "translatedName": "Largo mielleux hermite",
-            "name": "Honey Hermit"
-        },
-        {
-            "translatedName": "Largo phosphorescent hermite",
-            "name": "Phosphor Hermit"
-        },
-        {
-            "translatedName": "Largo mosaïque hermite",
-            "name": "Mosaic Hermit"
-        },
-        {
-            "translatedName": "Largo vrillé hermite",
-            "name": "Tangle Hermit"
-        },
-        {
-            "translatedName": "Largo boum hermite",
-            "name": "Boom Hermit"
-        },
-        {
-            "translatedName": "Largo rad hermite",
-            "name": "Rad Hermit"
-        },
-        {
-            "translatedName": "Largo rocheux hermite",
-            "name": "Rock Hermit"
-        },
-        {
-            "translatedName": "Largo tigré hermite",
-            "name": "Tabby Hermit"
-        },
-        {
-            "translatedName": "Largo chasseur hermite",
-            "name": "Hunter Hermit"
-        },
-        {
-            "translatedName": "Largo cristal hermite",
-            "name": "Crystal Hermit"
-        },
-        {
-            "translatedName": "Largo derviche hermite",
-            "name": "Dervish Hermit"
-        }
-    ],
-    "gordos":
-    [
-        {
-            "translatedName": "Gordo rosi",
-            "name": "Rosi"
-        },
-        {
-            "translatedName": "Gordo coco",
-            "name": "Coco"
-        },
-        {
-            "translatedName": "Gordo mine",
-            "name": "Mine"
-        },
-        {
-            "translatedName": "Gordo lanterne",
-            "name": "Lantern"
-        },
-        {
-            "translatedName": "Gordo mesmeur",
-            "name": "Mesmer"
-        },
-        {
-            "translatedName": "Gordo hermite",
-            "name": "Hermit"
-        },
-        {
-            "translatedName": "Gordo poisson doré",
-            "name": "Goldfish"
-        },
-        {
-            "translatedName": "Gordo sablonneux",
-            "name": "Sand"
-        }
-    ],
-    "plorts":
-    [
-        {
-            "translatedName": "Perle rosi",
-            "name": "Rosi"
-        },
-        {
-            "translatedName": "Plorte coco",
-            "name": "Coco"
-        },
-        {
-            "translatedName": "Perle mine",
-            "name": "Mine"
-        },
-        {
-            "translatedName": "Perle lanterne",
-            "name": "Lantern"
-        },
-        {
-            "translatedName": "Perle sablonneuse",
-            "name": "Sand"
-        },
-        {
-            "translatedName": "Plorte mesmeur",
-            "name": "Mesmer"
-        },
-        {
-            "translatedName": "Plorte hermite",
-            "name": "Hermit"
-        },
-        {
-            "translatedName": "Perle poisson doré",
-            "name": "Goldfish"
-        }
-    ],
-    "zones":
-    [
-        {
-            "name": "Swirlpool Island",
-            "translatedName": "Île Swirlpool",
-            "intro": "Une terre lointaine qui saura satisfaire les curieux !",
-            "presence": "Traverse l'île...",
-            "description": ""
-        }
-    ],
-    "mail":
-    [
-        {
-            "mailKey": "ocean_intro",
-            "translatedName": "S.P.L.A.S.H",
-            "subject": "Lettre de la fondation S.P.L.A.S.H.",
-            "body": "Salutations, éleveur.\n\nLa corporation 7Zee, en collaboration avec la fondation S.P.L.A.S.H. (Sanctuaire de Préservation, Logement et Assistance aux Slimes pour l'Harmonie), aimerait vous informer de phénomènes inhabituels dans la région.\n\nLes rapports indiquent que des espèces de slimes étrangères à cette région commencent à apparaître à plusieurs endroits. La cause de ce phénomène est encore inconnue, mais ne paniquez pas : nos meilleurs équipes y travaillent.\n\nUne experte slimeologiste vous contactera très bientôt avec plus d'informations. En attendant, restez vigilants et avertissez-vous de toute rencontre de slimes inhabituels depuis votre terminal de StarMail.\n\nRestez sur vos gardes, restez curieux.\n\nSincèrement,\nLe comité de S.P.L.A.S.H."
-        },
-        {
-            "mailKey": "exchangeintro_lisa",
-            "translatedName": "Lisa Erwin",
-            "subject": "Bien le bonjour du QG de S.P.L.A.S.H. !",
-            "body": "Moi, c'est Lisa Erwin! Slimeologiste, scientifique de terrain, et membre de S.P.L.A.S.H. (ce qui veut dire \"Sanctuaire de Préservation, Logement et Assistance aux Slimes pour l'Harmonie\", retenez-le !). Certains disent que je peux murmurer à l'oreille des slimes... C'est vrai que j'étudie leurs comportements, spécificités et étrangetés depuis que j'ai atterri au Far, Far Ouest. Si ça jigote, bondit, ou ronronne, j'ai sûrement des dizaines de pages à son sujet.\n\nRécemment, on a une tonne d'avertissements à propos de slimes étranges, tout près de chez vous ! J'avoue que j'avais jamais vu ça avant - et croyez-moi, si c'est moi qui vous le dis, c'est que c'est grave.\n\nAlors ! Je vais vous contacter à travers le Troc dans quelques jours. Rien de trop sérieux, juste une petite pause café, parler des ces nouveaux amis slimes, si vous en aperçevez, bien sûr... Ah, c'est peut-être rien. Ou peut-être que c'est le PLUS GRAND MYSTÈRE SLIME SUR CETTE PLANÈTE !!\n\nGardez l'oeil ouvert, ok ?\n\nÀ plus,\n- Lisa.\nS.P.L.A.S.H. au Far, Far, Ouest\n\nP.S. Si un slime se met à chantonner... ne paniquez surtout pas. Écrivez tout."
-        }
-    ]
+    "pedia":
+    {
+      "m.favored_by.silky_sand_craft": "Slime Sablonneux"
+    }
+  },
+  "slimes":
+  [
+    {
+      "translatedName": "Slime rosi",
+      "name": "Rosi",
+      "risks": "Le slime rosi ne mérite aucune inquiétude. Ils sont très faciles à élever, ne demandant que de la nourriture et de la compagnie. Un slime rosi isolé est un slime rosi triste. Il est recommandé d'en garder plus d'un pour une pour une production de perles stable.",
+      "slimeology": "Le slime rosi est le slime le plus commun trouvé dans le Récif Aride. Ils sont décrits comme joyeux, amicaux et sournois, et jouent parfois des tours aux autres slimes et humains. Les slimes rosi ont des liens très forts entre eux and sont très rarement observés seuls. Tant qu'ils ont un partenaire avec qui jouer, ils seront heureux pour toujours, ne montrant aucun signe de tristesse. Et lorsqu'ils sont tristes, c'est souvent lorsqu'ils essaient de remonter le moral à un slime ou humain.",
+      "diet": "Tout",
+      "favourite": "Aucun nourriture préférée. Le slime rosi aime tout de manière égale.",
+      "onomics": "Les perles rosi sont souvent surnommées \"Perle d'Aphrodite\" pour leurs propriétés rajeunissantes sur la peau humaine. Les marques de beauté en font la promotion comme clé d'une lueur de jeunesse, affirmant que les perles rosi permettent de rajeunir la peau de 20 à 50 ans. Ce ne serait pas problématique si leurs excroissances n'avaient pas le potentiel de guérir les organes internes, et même éliminer les cancers. Ces excroissances peuvent se régénérer, mais repoussent de plus en plus petites. Les recherches les plus récentes concluent que les effets guérisseurs sont temporaires, causant la perle à s'user rapidement. Les perles rosi ne sont donc pas une solution anti-vieillisement permanente.",
+      "intro": "La perle rose de la mer. Ce slime est soupçonné d'être un cousin du slime rose."
+    },
+    {
+      "translatedName":"Slime coco",
+      "name": "Coco",
+      "risks": "Attention en marchant sous les palmiers ! Les slimes coco sont très territoriaux, s'ils vous détectent en dessous, ils durçiront leur corps visqueux en une coquille dure comme une noix de coco avant de s'écraser sur leur cible. Les malchanceux ayatnt déjà reçu un slime coco sur la tête expliquent avoir eu la vision floue et être déboussolés, certains se sont même évanouis. Les slimes coco utilisent aussi cette technique pour chasser dans la nature. Malgré leur peau dure et leur agilité, ils sont assez simples à élever tant qu'ils sont bien nourris et ont assez d'accès à la lumière du soleil.",
+      "slimeology": "Les slimes coco se trouvent souvent accrochés aux palmiers de l'île. Endémiques de l'île SwirlPool, les slimes coco ont naturellement développé un saut bien plus puissant afin de grimper aux arbres et échapper aux prédateurs. Comme ils poussent des palmiers, ils ont des particularités végétales, nécéssitant un accès constant à la lumière du soleil. Ils ne mangent pas de fruits ou légumes, car ce serait du cannibalisme.",
+      "diet": "Viande",
+      "favourite": "Poule sableuse",
+      "onomics": "Les plortes coco, à la différence de leurs producteurs, sont très doux et mous, en plus d'être une excellente source de calcium une fois transformés en liquide ! Même si cette substance est très similaire au lait Terrien, elle peut être consommée par les personnes ayant une intolérance au lactose, la rendant extrêmement populaire pour la fabrication de produits laitiers sans lactose. Grâce à leur texture douce et molle, ils sont aussi souvent utilisés pour les soins de peau et dans les spas en remplacement des bains de lait.",
+      "intro": "Vous feriez mieux de porter un casque !"
+    },
+    {
+      "translatedName": "Slime mine",
+      "name": "Mine",
+      "risks": "Soyez précautieux autour d'un slime mine, leurs pointes ne sont pas là juste pour faire joli ! Un contact direct déclenchera une explosion immédiate. Les slimes seront projetés hors de la zone de danger, sauf les autres slimes mine et leurs cousins slimes boum qui y sont naturellement immunisés. Cette particularité rend la cohabitation assez mouvementée (et bruyante), car ils chercheront leurs amis explosifs pour provoquer des explosions régulières, ayant pour effet de les soulager. Gardez-les ensemble pour gérer leur nature volatile, ou bien risquez un slime grognon.",
+      "slimeology": "Le slime mine, cousin éloigné du slime boum, a bien plus de piquant. La détonation d'un slime mine n'est déclenchée que par un contact direct avec un autre slime ou éleveur inattentif. Pour décourager de les approcher, ces derniers sont recouverts de pointes aiguisées en cristal qui servent d'avertissement. Malgré leurs tendances peu tendres, ces slimes préfèrent un doux régime de légumes, et surtout de pam-tate. Ce tubercule contient des vitamines volatiles qui permettent de garder leur énergie au max et de produire des explosions encore plus parfaites. Si un slime mine n'explose pas pendant trop longtemps, sa pression interne monte jusqu'à le rendre inconfortable, il cherchera alors de l'eau pour se refroidir ou un autre slime explosif à qui faire un câlin.",
+      "diet": "Légumes",
+      "favourite": "Pam-tate",
+      "onomics": "Les plortes mine sont des gemmes résistantes et intriguantes, ayant pris la forme d'une perle sous l'immense pression interne du slime mine. Ces perles uniques conservent une partie de nature explosive, mais un choc bien plus brutal est nécéssaire pour qu'ils libèrent leur énergie. Ces détonations contrôlées sont très utiles dans le domaine industriel, particulèrement une fois réduit en poudre. Des petites explosions d'excavation aux feux d'artifice interstellaires, les perles mine ont marqué leur impact sur le marché galactique.",
+      "intro": "Le slime à ne toucher qu'avec les yeux !"
+    },
+    {
+      "translatedName": " Slime lanterne",
+      "name": "Lantern",
+      "risks": "Les slimes lanterne ne sont pas les plus sociaux. Ils passent leurs journées à dormir, mais lorsqu'ils sont dérangés, ils produisent un flash lumineux afin de désorienter le slime ou plongeur les ayant réveillé le temps de fuir. Cependant, la nuit, ils sont très paisibles et nagent dans le Récif de corail à la recherche de nourriture.",
+      "slimeology": "Le slime lanterne est un cousin éloigné du slime phosphorescent. Ils ont évolué pour sortir leur noyau lumineux dans l'objectif d'attirer des proies sous l'eau. Comme son cousin, le slime lanterne apparaît la nuit dans les coins les plus reculés du Grand récif et du Tapis de mousse. Ils sont souvent seuls, préférent un style de vie isolé et très peu social. Cependant, les slimes lanterne aiment aider les plongeurs à retrouver leur chemin jusqu'à la terre ferme.",
+      "diet": "Viande",
+      "favourite": "Poule radiante",
+      "onomics": "Les perles lanterne sont un composant essentiel de nombreux produits de beauté pour leurs propriété hydratantes. Ces perles hydratent la peau et offrent une douce luminescence, parfaite pour des crèmes de nuit. Cependant, leur barrière naturelle contre les bactéries se dégrade rapidement si exposée au soleil. Les produits à base de perles lanterne sont donc plus efficaces lorsqu'ils sont appliqués la nuit.",
+      "intro": "Le rayon de lumière dans votre vie !"
+    },
+    {
+      "translatedName": "Slime sablonneux",
+      "name": "Sand",
+      "risks": "Pas de panique ! Le slime sablonneux est l'un des slimes les plus paisibles. Ces gentils blobs ne présentent aucun danger sur le ranch, se prélassant tranquillement dans un enclos sans jamais se plaindre. Cependant, malgré leur habitat naturel à la plage, les slimes sablonneux ne supportent pas l'eau ; s'ils resent trop longtemps submergés, ils disparaîtront ! Leurs plortes perles ne sont pas convoités par les autres slimes, qui ne semblent pas apprécier les humbles origines de cette perle brillante dans la terre. Leur nature relaxée et leur incapacité à s'énerver font d'eux les parfaits companions pour les slimes timides, tant qu'ils n'ont pas à se mouiller !",
+      "slimeology": "Le slime sablonneux, étrange cousin terrestre du slime aqueux et slime ardent, est chez lui sur les côtes ensoleillées du Far, Far Ouest. Comme ses cousins élémentaux, ce slime n'apprécie pas les régimes habituels ; à la place, ils se contentent entièrement de bonne vielle terre. Après avoir filtré une poignée de terre, les slimes sablonneux en tirent les minéraux pour produire des plortes brillants qui ressemblent fortement aux précieuses perles terrestres. Leur comportement calme et leur régime unique en font un ajout très facile sur le ranch.",
+      "diet": "Terre",
+      "favourite": "Sable soyeux",
+      "onomics": "Les plortes sablonneux sont de vraies merveilles de raffinement naturel. Bien que les slimes sablonneux soient calmes et tranquilles, les perles qu'ils produisent sont bien plus solides que celles sur Terre, malgré leur origine. Ces fabuleux trésors sphériques, nés d'une poignée de terre, sont très prisés dans le marché de plortes. Leur magnifique brillance et impressionnante durabilité se prête parfaitement à la bijouterie et autres accessoires de luxe dans toute la galaxie, prouvant que la beauté peut venir de n'importe où !",
+      "intro": "Ce slime s'infiltre partout !"
+    },
+    {
+      "translatedName": "Slime mesmeur",
+      "name": "Mesmer",
+      "risks": "Les slimes mesmeur présentent un risque aux slimes sur le ranch, car ils produisent des motifs hypnotisants qui ont pour effet de regrouper les autres slimes pendant des heures, surtout la nuit où ils brillent pleinement. Si un slime mesmeur est laissé seul, son humeur va s'aggraver. Agité, les slimes mesmeur deviennent presque sauvages, anxieux à l'idée que personne ne veuille être leur ami. Ils produisent alors des formes similaires aux yeux et bouches du Goudrron, ce qui ne fait qu'éloigner les autres slimes encore plus. Ils attaqueront aussi les éleveurs et slimes avec leurs membres insectoïdes. À part ça, ils sont plutôt simples à élever.",
+      "slimeology": "Un slime étrange, aux airs dangereux mais en réalité plutôt amical, le slime mesmeur produit des spectacles de couleur sur son corps. L'objectif de ces motifs fait encore débat, mais la plupart des scientifiques de slimes expliquent que c'est pour devenir le meilleur ami du plus de slimes possible, même avec leur apparence semblable à un scorpion. En effet, ces slimes sont très sociaux. Les slimes mesmeur passent beaucoup de temps dans les jungles et cavernes de l'île, où il est plus facile d'admirer leur brillance.",
+      "diet": "Fruits",
+      "favourite": "Colle-aux-doigts",
+      "onomics": "Les plortes mesmeur contiennent des bactéries bioluminescentes, qui semblent être la source de leurs superbes couleurs. Ces bactéries sont capables de manifester un ensemble de couleurs, mais il faut souvent utiliser des substances chimiques afin de les faire muter pour obtenir des teintes spécifiques. Les produits à base de plortes mesmeur sont souvent des alternatives de luxe aux lumières renouvelables, appréciés par les plus fortunés pour leur originalité. Malgré leur popularité extravagante, leur valeur sur le marché reste étonnamment modeste.",
+      "intro": "ooooooooooooooooooo joliiii"
+    },
+    {
+      "translatedName": "Slime hermite",
+      "name": "Hermit",
+      "risks": "Les slimes hermite sont naturellement peureux et se cachent rapidement au moindre mouvement ou bruit. Cela rend difficile la tâche de récupérer les objets stockés. S'il ne se sent pas en sécurité, il peut se cacher dans sa coquille pendant de longues périodes, ce qui empêche la collecte de plortes. Pour extraire des objets de sa coquille, il faut de la patience : des méthodes plus dures peuvent rendre le slime encore moins confiant à l'avenir. Il est recommandé de garder les slimes hermite heureux pour les mettre en confiance ; utiliser le fruit-corail est une bonne méthode.",
+      "slimeology": "Le slime hermite est une créature fascinante qui se trouve sur les côtes et dans les zones rocheuses. Ce slime ne va nulle part sans sa coquille, qu'il utilise en tant qu'abri et entrepôt pour les objets de valeur qu'il collectionne. Le slime hermite possède la capacité de se détacher de sa coquille afin de mieux s'adapater à son environnement, en adoptant par exemple d'autres coquilles, des noix de coco, pierres, ou même des poubelles. Sa nourriture préférée est le fruit-corail, un fruit délicieux produit par une plante exotique poussant entre les rochers et près de la mer. Un éleveur peut gagner en confiance auprès du slime avec ce fruit.",
+      "diet": "Fruits",
+      "favourite": "Coralfruit",
+      "onomics": "Les plortes hermite sont aussi uniques que le slime. Grâce aux habitudes de collectionneur du slime, le plorte contient des micro-fragments de coquilles et minéraux divers. Les plortes hermite sont très solides, ainsi utilisés pour fabriquer des matériaux de construction durables et des décorations marines. De plus, ils sont célèbres pour leur capacité à briller dans le noir en les frottant contre une surface dure ! Certains éleveurs s'en servent pour décorer leurs ranchs avec des lumières sous-marines naturelles.",
+      "intro": "The ever reclusive shell wanderer!"
+    },
+    {
+      "translatedName": "Slime poisson doré",
+      "name": "Goldfish",
+      "risks": "Les slimes poisson doré ne peuvent pas être capturés traditionnellement ; tout comme les slimes doré, ils disparaissent rapidement après avoir été découverts. Tout essai de capture sera couronné d'un échec, car ce slime vous glissera entre les doigts. Cependant, les éleveurs les plus rapides peuvent lui donner sa nourriture préférée à temps pour obtenir un précieux plorte.",
+      "slimeology": "Les slimes poisson doré sont une variante exceptionnellement rare du slime doré. Contrairement à leur cousin terrestre, ces slimes étincelants se sont adaptés à la vie sous les vagues, se déplaçant gracieusement entre les courants marins avec leurs nageoires et écailles brillantes. Leurs mouvements sont semblables à ceux des poissons koï ou du poisson rouge, et laissent derrière eux une traînée scintillante dans l'eau lorsqu'ils sont effrayés. Bien qu'ils partagent la même nature peureuse que le slime doré, les slimes poisson doré sont un peu plus faciles à observer - même si le moment ne dure pas. Ils apparaissent souvent dans les récifs profonds ou près d'anciennes ruines aquatiques, faisant surfaçe et disparaissant à nouveau en un clin d'oeil.",
+      "diet": "Gingembre ambré",
+      "favourite": "Gingembre ambré",
+      "onomics": "Les plortes poisson doré sont encore plus rares que les plortes doré et ainsi doublement précieux, faisant d'eux une resource extrêmement convoitée. Leur origine aquatique leur donne des propriétés énergétiques unique, souvent utilisées dans des technologies sous-marines dernier cri ou dans la fabrication d'holo-montres de luxe. Le comité de Science Slime recommande de manier cet objet suprêmement rare avec précaution, et de vous considérer chanceux d'en avoir obtenu ne serait-ce qu'un.",
+      "intro": "Ce slime vous glissera des doigts avec brillance !"
+    }
+  ],
+  "hens":
+  [
+    {
+      "name": "Sandy",
+      "translatedName": "Poule sableuse",
+      "about": "La cousine beaucoup plus bronzée de la poule rocailleuse, les poules sableuses sont les maîtres du camouflage à la plage. Leurs plumes ont une apparence presque identique au sable aride des plages où elles font leur nid, les rendant plus dures à repérer. Malheuresement pour elles, leur superbe camouflage ne vaut rien face aux yeux du slime coco. Du haut de leurs palmiers, ces prédateurs apprécient particulièrement la viande sèche des poules sableuses, ce qui se marie parfaitement à leur propre aspect plus tropical. Pour les éleveurs à la recherche d'un repas savoureux et un peu sec, la poule sablonneuse offre une saveur familière avec un arrière-goût du désert.",
+      "favouredBy": "Slime coco",
+      "ranch": "Les poules sableuses à proximité des Cocqo déposeront périodiquement des œufs qui produiront des poussidoux sableux. Mais mettre trop de poules ou de Cocqos à proximité génère du stress, et la production d’œufs stoppera. Les éleveurs malins qui comprennent la nature complexe de l'amour entre poulets éviteront de mettre plus de 12 oiseaux dans un poulailler.",
+      "type": "Meat",
+      "intro": "Le maître du camouflage à la plage !"
+    },
+    {
+      "name": "Radiant",
+      "translatedName": "Poule radiante",
+      "about": "Une poule unique parmi ses cousines, elle se démarque... littéralement. Contrairement aux autres poules qui cherchent à se fondre dans le décor, la poule radiante a adopté des plumes qui brillent d'une lumière sublime. Cela les rend incroyablement faciles à repérer, ce qui est normalement considéré comme un désavantage - cependant, pour les slimes lanterne, cette lumière est irrésistible. Ils se trouvent souvent en groupe à admirer ces poules, entièrement absorbés par leur brillance unique. Les scientifiques pensent que la lumière douce et constante de la poule aide à réguler la bioluminescence des slimes lanterne, qui peut parfois devenir instable. Pour les éleveurs, les poules radiantes peuvent servir de phares dans les coins les plus sombres du Far, Far Ouest - leur viande, quant à elle, a juste de le goût de poule normale.",
+      "favouredBy": "Slime lanterne",
+      "ranch": "Les poules radiantes à proximité des Cocqo déposeront périodiquement des œufs qui produiront des poussidoux radiants. Mais mettre trop de poules ou de Cocqos à proximité génère du stress, et la production d’œufs stoppera. Les éleveurs malins qui comprennent la nature complexe de l'amour entre poulets éviteront de mettre plus de 12 oiseaux dans un poulailler.",
+      "type": "Meat",
+      "intro": "Toujours à faire les choses différemment !"
+    }
+  ],
+  "chicks":
+  [
+    {
+      "name": "Sandy",
+      "translatedName": "Poussidou sableux",
+      "about": "Les poussidous sableux sont des bébés poulets qui deviennent par la suite une poule sableuse ou, plus rarement, un Cocqo.\n\nLes poussidous de toutes les variétés ne seront jamais mangés par les Slimes. Certains croient que les Slimes sont trop gentils pour faire une telle chose. D'autres pensent que les Poussidous n'ont pas encore assez de viande à leur goût.",
+      "favouredBy": "(n'est pas un aliment pour slime)",
+      "ranch": "Mettez vos poussidous sableux dans un endroit sécurisé, et ils deviendront une poule radiante ou, plus rarement, un Cocqo.",
+      "type": "Future viande",
+      "intro": "Un camoufleur en herbe (ou plutôt en sable) !"
+    },
+    {
+      "name": "Radiant",
+      "translatedName": "Poussidou radiant",
+      "about": "Les poussidous radiants sont des bébés poulets qui deviennent par la suite une poule radiante ou, plus rarement, un Cocqo.\n\nLes poussidous de toutes les variétés ne seront jamais mangés par les Slimes. Certains croient que les Slimes sont trop gentils pour faire une telle chose. D'autres pensent que les Poussidous n'ont pas encore assez de viande à leur goût.",
+      "favouredBy": "(n'est pas un aliment pour slime)",
+      "ranch": "Mettez vos poussidous radiants dans un endroit sécurisé, et ils deviendront une poule radiante ou, plus rarement, un Cocqo.",
+      "type": "Future viande",
+      "intro": "N'a pas encore exactement trouvé sa place..."
+    }
+  ],
+  "fruits":
+  [
+    {
+      "name": "Sticky",
+      "translatedName": "Colle-aux-doigts",
+      "about": "Une friandise sucrée qui à tendance à coller aux dents, et souvent aux doigts. Jadis un ingrédient principal des bonbons du Far, Far Ouest, ce fruit associe sa viscosité gluante avec une coquille croustillante et un intérieur surprennamment onctueux.",
+      "favouredBy": "Slime mesmeur",
+      "ranch": "Déposez un colle-aux-doigts dans le réceptacle d'un jardin, et vous obtiendrez un grand arbre sucré, rien qu'à vous.",
+      "type": "Fruit",
+      "intro": "Tout est dans le nom !"
+    }
+  ],
+  "veggies":
+  [
+    {
+      "name": "Blowtato",
+      "translatedName": "Pam-tate",
+      "about": "La pam-tate est un légume surprenant à haut potentiel réactif, souvent trouvé dans les roches brisées de la Carrière Indigo. Tout comme le slime mine qui les adores, ces patates ont une tendance à la combustion causée par les minéraux volatiles qui se trouvent à l'intérieur. Les éleveurs doivent faire excès de précaution, une petite incision est fortemment recommandée avant des les cuisiner afin d'éviter de réduire la cuisine en miettes ! Pour les slimes mine, cette particularité explosive est un vrai délice, renforçant leurs capacités de brise-roches. Certains mineurs malins s'en servent même pour creuser certains petits tunnels, même si cela n'est pas vraiment recommandé.",
+      "favouredBy": "Slime mine",
+      "ranch": "Déposez une pamtate dans le réceptacle d'un jardin, et vous obtiendrez une grande récolte, rien qu'à vous.",
+      "type": "Légume",
+      "intro": "Un légume explosif !"
+    }
+  ],
+  "ranchers":
+  [
+    {
+      "name": "Lisa",
+      "translatedName": "Lisa Erwin",
+      "offers":
+      [
+        "...Oups! Je voulais pas clicker là, désolé, l'ami... Bon, tant que t'es là, tu me prêtes un coup de main ?",
+        "Zzzz... hein ?! Qu'est-ce que je faisais, déjà ?...",
+        "Debout, et de bonne heure ! On a du boulot, alors on s'y met !"
+      ],
+      "specialOffer": "Quand j'ai besoin d'énergie, je respire un grand coup... Et j'bois une grande tasse de café.",
+      "loadingTexts":
+      [
+        "Lisa a essayé de montrer sa réflection à un slime mesmeur dans un miroir, une fois. Le slime est resté devant le miroir pendant des heures.",
+        "Lisa et Viktor se retrouvent souvent dans des disputes autour de sujets scientifiques."
+      ]
+    }
+  ],
+  "largos":
+  [
+    {
+      "translatedName": "Largo rosi mine",
+      "name": "Rosi Mine"
+    },
+    {
+      "translatedName": "Largo rosi lanterne",
+      "name": "Rosi Lantern"
+    },
+    {
+      "translatedName": "Largo mine lantern",
+      "name": "Mine Lantern"
+    },
+    {
+      "translatedName": "Largo rose coco",
+      "name": "Pink Coco"
+    },
+    {
+      "translatedName": "Largo coco sabre",
+      "name": "Coco Saber"
+    },
+    {
+      "translatedName": "Largo coco quantique",
+      "name": "Coco Quantum"
+    },
+    {
+      "translatedName": "Largo coco mielleux",
+      "name": "Coco Honey"
+    },
+    {
+      "translatedName": "Largo coco phosphorescent",
+      "name": "Coco Phosphor"
+    },
+    {
+      "translatedName": "Largo coco mosaïque",
+      "name": "Coco Mosaic"
+    },
+    {
+      "translatedName": "Largo coco vrillé",
+      "name": "Coco Tangle"
+    },
+    {
+      "translatedName": "Largo coco boum",
+      "name": "Coco Boom"
+    },
+    {
+      "translatedName": "Largo coco rad",
+      "name": "Coco Rad"
+    },
+    {
+      "translatedName": "Largo coco rocheux",
+      "name": "Coco Rock"
+    },
+    {
+      "translatedName": "Largo coco tigré",
+      "name": "Coco Tabby"
+    },
+    {
+      "translatedName": "Largo coco chasseur",
+      "name": "Coco Hunter"
+    },
+    {
+      "translatedName": "Largo coco cristal",
+      "name": "Coco Crystal"
+    },
+    {
+      "translatedName": "Largo coco derviche",
+      "name": "Coco Dervish"
+    },
+    {
+      "translatedName": "Largo coco mesmeur",
+      "name": "Coco Mesmer"
+    },
+    {
+      "translatedName": "Largo coco hermite",
+      "name": "Coco Hermit"
+    },
+    {
+      "translatedName": "Largo rose mesmeur",
+      "name": "Pink Mesmer"
+    },
+    {
+      "translatedName": "Largo sabre mesmeur",
+      "name": "Saber Mesmer"
+    },
+    {
+      "translatedName": "Largo quantique mesmeur",
+      "name": "Quantum Mesmer"
+    },
+    {
+      "translatedName": "Largo mielleux mesmeur",
+      "name": "Honey Mesmer"
+    },
+    {
+      "translatedName": "Largo phosphorescent mesmeur",
+      "name": "Phosphor Mesmer"
+    },
+    {
+      "translatedName": "Largo mosaïque mesmeur",
+      "name": "Mosaic Mesmer"
+    },
+    {
+      "translatedName": "Largo vrillé mesmeur",
+      "name": "Tangle Mesmer"
+    },
+    {
+      "translatedName": "Largo boum mesmeur",
+      "name": "Boom Mesmer"
+    },
+    {
+      "translatedName": "Largo rad mesmeur",
+      "name": "Rad Mesmer"
+    },
+    {
+      "translatedName": "Largo rocheux mesmeur",
+      "name": "Rock Mesmer"
+    },
+    {
+      "translatedName": "Largo tigré mesmeur",
+      "name": "Tabby Mesmer"
+    },
+    {
+      "translatedName": "Largo chasseur mesmeur",
+      "name": "Hunter Mesmer"
+    },
+    {
+      "translatedName": "Largo cristal mesmeur",
+      "name": "Crystal Mesmer"
+    },
+    {
+      "translatedName": "Largo derviche mesmeur",
+      "name": "Dervish Mesmer"
+    },
+    {
+      "translatedName": "Largo mesmeur hermite",
+      "name": "Mesmer Hermit"
+    },
+    {
+      "translatedName": "Largo rose hermite",
+      "name": "Pink Hermit"
+    },
+    {
+      "translatedName": "Largo sabre hermite",
+      "name": "Saber Hermit"
+    },
+    {
+      "translatedName": "Largo quantique hermite",
+      "name": "Quantum Hermit"
+    },
+    {
+      "translatedName": "Largo mielleux hermite",
+      "name": "Honey Hermit"
+    },
+    {
+      "translatedName": "Largo phosphorescent hermite",
+      "name": "Phosphor Hermit"
+    },
+    {
+      "translatedName": "Largo mosaïque hermite",
+      "name": "Mosaic Hermit"
+    },
+    {
+      "translatedName": "Largo vrillé hermite",
+      "name": "Tangle Hermit"
+    },
+    {
+      "translatedName": "Largo boum hermite",
+      "name": "Boom Hermit"
+    },
+    {
+      "translatedName": "Largo rad hermite",
+      "name": "Rad Hermit"
+    },
+    {
+      "translatedName": "Largo rocheux hermite",
+      "name": "Rock Hermit"
+    },
+    {
+      "translatedName": "Largo tigré hermite",
+      "name": "Tabby Hermit"
+    },
+    {
+      "translatedName": "Largo chasseur hermite",
+      "name": "Hunter Hermit"
+    },
+    {
+      "translatedName": "Largo cristal hermite",
+      "name": "Crystal Hermit"
+    },
+    {
+      "translatedName": "Largo derviche hermite",
+      "name": "Dervish Hermit"
+    }
+  ],
+  "gordos":
+  [
+    {
+      "translatedName": "Gordo rosi",
+      "name": "Rosi"
+    },
+    {
+      "translatedName": "Gordo coco",
+      "name": "Coco"
+    },
+    {
+      "translatedName": "Gordo mine",
+      "name": "Mine"
+    },
+    {
+      "translatedName": "Gordo lanterne",
+      "name": "Lantern"
+    },
+    {
+      "translatedName": "Gordo mesmeur",
+      "name": "Mesmer"
+    },
+    {
+      "translatedName": "Gordo hermite",
+      "name": "Hermit"
+    },
+    {
+      "translatedName": "Gordo poisson doré",
+      "name": "Goldfish"
+    },
+    {
+      "translatedName": "Gordo sablonneux",
+      "name": "Sand"
+    }
+  ],
+  "plorts":
+  [
+    {
+      "translatedName": "Perle rosi",
+      "name": "Rosi"
+    },
+    {
+      "translatedName": "Plorte coco",
+      "name": "Coco"
+    },
+    {
+      "translatedName": "Perle mine",
+      "name": "Mine"
+    },
+    {
+      "translatedName": "Perle lanterne",
+      "name": "Lantern"
+    },
+    {
+      "translatedName": "Perle sablonneuse",
+      "name": "Sand"
+    },
+    {
+      "translatedName": "Plorte mesmeur",
+      "name": "Mesmer"
+    },
+    {
+      "translatedName": "Plorte hermite",
+      "name": "Hermit"
+    },
+    {
+      "translatedName": "Perle poisson doré",
+      "name": "Goldfish"
+    }
+  ],
+  "zones":
+  [
+    {
+      "name": "Swirlpool Island",
+      "translatedName": "Île Swirlpool",
+      "intro": "Une terre lointaine qui saura satisfaire les curieux !",
+      "presence": "Traverse l'île...",
+      "description": ""
+    }
+  ],
+  "mail":
+  [
+    {
+      "mailKey": "ocean_intro",
+      "translatedName": "S.P.L.A.S.H",
+      "subject": "Lettre de la fondation S.P.L.A.S.H.",
+      "body": "Salutations, éleveur.\n\nLa corporation 7Zee, en collaboration avec la fondation S.P.L.A.S.H. (Sanctuaire de Préservation, Logement et Assistance aux Slimes pour l'Harmonie), aimerait vous informer de phénomènes inhabituels dans la région.\n\nLes rapports indiquent que des espèces de slimes étrangères à cette région commencent à apparaître à plusieurs endroits. La cause de ce phénomène est encore inconnue, mais ne paniquez pas : nos meilleurs équipes y travaillent.\n\nUne experte slimeologiste vous contactera très bientôt avec plus d'informations. En attendant, restez vigilants et avertissez-vous de toute rencontre de slimes inhabituels depuis votre terminal de StarMail.\n\nRestez sur vos gardes, restez curieux.\n\nSincèrement,\nLe comité de S.P.L.A.S.H."
+    },
+    {
+      "mailKey": "exchangeintro_lisa",
+      "translatedName": "Lisa Erwin",
+      "subject": "Bien le bonjour du QG de S.P.L.A.S.H. !",
+      "body": "Moi, c'est Lisa Erwin! Slimeologiste, scientifique de terrain, et membre de S.P.L.A.S.H. (ce qui veut dire \"Sanctuaire de Préservation, Logement et Assistance aux Slimes pour l'Harmonie\", retenez-le !). Certains disent que je peux murmurer à l'oreille des slimes... C'est vrai que j'étudie leurs comportements, spécificités et étrangetés depuis que j'ai atterri au Far, Far Ouest. Si ça jigote, bondit, ou ronronne, j'ai sûrement des dizaines de pages à son sujet.\n\nRécemment, on a une tonne d'avertissements à propos de slimes étranges, tout près de chez vous ! J'avoue que j'avais jamais vu ça avant - et croyez-moi, si c'est moi qui vous le dis, c'est que c'est grave.\n\nAlors ! Je vais vous contacter à travers le Troc dans quelques jours. Rien de trop sérieux, juste une petite pause café, parler des ces nouveaux amis slimes, si vous en aperçevez, bien sûr... Ah, c'est peut-être rien. Ou peut-être que c'est le PLUS GRAND MYSTÈRE SLIME SUR CETTE PLANÈTE !!\n\nGardez l'oeil ouvert, ok ?\n\nÀ plus,\n- Lisa.\nS.P.L.A.S.H. au Far, Far, Ouest\n\nP.S. Si un slime se met à chantonner... ne paniquez surtout pas. Écrivez tout."
+    }
+  ]
 }

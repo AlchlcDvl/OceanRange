@@ -42,32 +42,36 @@ public sealed class RancherData : JsonData
         if (Handled)
             return;
 
+        var offerIds = new HashSet<string>();
+
         for (var i = 0; i < langData.Offers.Length; i++)
         {
             var id = $"m.offer_{i + 1}.{RancherId}";
 
-            if (Translator.OfferIds.Contains(id))
+            if (offerIds.Contains(id))
                 continue;
 
             ExchangeOfferRegistry.RegisterOfferID(id);
-            Translator.OfferIds.Add(id);
+            offerIds.Add(id);
         }
 
         var specId = $"m.bonusoffer.{RancherId}";
 
-        if (!Translator.OfferIds.Contains(specId))
+        if (!offerIds.Contains(specId))
             ExchangeOfferRegistry.RegisterOfferID(specId);
 
         if (!Main.ClsExists)
             return;
 
+        var loadingIndices = new HashSet<int>();
+
         for (var i = 0; i < langData.LoadingTexts.Length; i++)
         {
-            if (Translator.LoadingIndices.Contains(i))
+            if (loadingIndices.Contains(i))
                 continue;
 
             Translator.LoadingIds.Add(GetNextLoadingIdBypass());
-            Translator.LoadingIndices.Add(i);
+            loadingIndices.Add(i);
         }
 
         Handled = true;

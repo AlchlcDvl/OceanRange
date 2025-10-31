@@ -23,9 +23,10 @@ public static class Cookbook
     private static bool StmExists; // Mod check flag
 
     // Shader properties
+    private static readonly int Mask = ShaderUtils.GetOrSet("_Mask");
     private static readonly int RampRed = ShaderUtils.GetOrSet("_RampRed");
-    private static readonly int RampGreen = ShaderUtils.GetOrSet("_RampGreen");
     private static readonly int RampBlue = ShaderUtils.GetOrSet("_RampBlue");
+    private static readonly int RampGreen = ShaderUtils.GetOrSet("_RampGreen");
     private static readonly int RampBlack = ShaderUtils.GetOrSet("_RampBlack");
     private static readonly int SwayStrength = ShaderUtils.GetOrSet("_SwayStrength");
 
@@ -324,6 +325,7 @@ public static class Cookbook
         var greenExists = Inventory.TryGetTexture2D($"{ramp}green", out var green);
         var blueExists = Inventory.TryGetTexture2D($"{ramp}blue", out var blue);
         var blackExists = Inventory.TryGetTexture2D($"{ramp}black", out var black);
+        var maskExists = Inventory.TryGetTexture2D($"{ramp}mask", out var mask);
 
         foreach (var material in materials)
         {
@@ -348,6 +350,11 @@ public static class Cookbook
             //     material.SetTexture(RampBlack, black);
             // else
             //     material.GetTexture(RampBlack).Dump($"{plantData.BasePlant}RampBlack");
+            //
+            // if (maskExists)
+            //     material.SetTexture(Mask, mask);
+            // else
+            //     material.GetTexture(Mask).Dump($"{plantData.BasePlant}Mask");
 
             if (redExists)
                 material.SetTexture(RampRed, red);
@@ -360,6 +367,9 @@ public static class Cookbook
 
             if (blackExists)
                 material.SetTexture(RampBlack, black);
+
+            if (maskExists)
+                material.SetTexture(Mask, mask);
         }
 
         plantData.InitFoodDetails?.Invoke(null, [prefab]);

@@ -1,8 +1,8 @@
 [
-    {
-        "name": "Lisa",
-        "requests": ["OCEAN"],
-        "rewards": ["PLORTS", "MEAT"],
-        "rareRewards": ["CRAFT_MATS"]
-    }
+  {
+    "name": "Lisa",
+    "requests": ["OCEAN"],
+    "rewards": ["PLORTS", "MEAT"],
+    "rareRewards": ["CRAFT_MATS"]
+  }
 ]

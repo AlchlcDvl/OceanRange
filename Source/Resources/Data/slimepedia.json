@@ -1,561 +1,561 @@
 [
-    {
-        "name": "Rosi",
-        "zones": ["REEF"],
-        "favToy": "OCTO_BUDDY_TOY",
-        "slimeFeatures":
-        [
-            {
-                "mesh": "rosi_body",
-                "colorProps":
-                {
-                    "_TopColor": "#F9E5F0",
-                    "_MiddleColor": "#E6C7D2",
-                    "_BottomColor": "#F68ED9"
-                }
-            },
-            {
-                "mesh": "rosi_stalk",
-                "sameAs": 0
-            },
-            {
-                "mesh": "rosi_frills",
-                "colorProps": { "_TopColor": "#F46CB7" }
-            }
-        ],
-        "mainAmmoColor": "#F9E5F0",
-        "plortFeatures":
-        [
-            {
-                "mesh": "pearl",
-                "colorProps":
-                {
-                    "_TopColor": "#F46CB7",
-                    "_MiddleColor": "#E6C7D2",
-                    "_BottomColor": "#F9E5F0"
-                }
-            },
-            {
-                "mesh": "rosi_stalk_pearl",
-                "sameAs": 1
-            },
-            {
-                "mesh": "rosi_frills_pearl",
-                "sameAs": 2
-            }
-        ],
-        "gordoFeatures":
-        [
-            {
-                "mesh": "rosi_body_gordo",
-                "sameAs": 0
-            },
-            {
-                "mesh": "rosi_stalk_gordo",
-                "sameAs": 1
-            },
-            {
-                "mesh": "rosi_frills_gordo",
-                "sameAs": 2
-            }
-        ],
-        "basePrice": 7,
-        "saturation": 40,
-        "jiggle": 0.75,
-        "toAdd": ["OceanRange.Slimes.RosiBehaviour, OceanRange"],
-        "gordoOri": "f 17.2751,13.3003,-36.969,0,30,0",
-        "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
-        "gordoZone": "REEF",
-        "gordoCell": "Reef_Intro"
-    },
-    {
-        "name": "Coco",
-        "favFood": "SANDY_HEN",
-        "favToy": "BEACH_BALL_TOY",
-        "diet": "MEAT",
-        "topMouthColor": "#FFFFFF",
-        "middleMouthColor": "#888888",
-        "bottomMouthColor": "#FEFCFF",
-        "redEyeColor": "#888888",
-        "greenEyeColor": "#000000",
-        "blueEyeColor": "#FFFFFF",
-        "mainAmmoColor": "#966F33",
-        "plortAmmoColor": "#DCDADD",
-        "basePrice": 20,
-        "saturation": 26,
-        "jiggle": 0.1,
-        "plortType": "Plort",
-        "gordoOri": "f -494.6969,-2.37,-241.9137,0,200,0",
-        "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
-        "gordoZone": "REEF",
-        "gordoCell": "Reef_RingIsland",
-        "zones": ["REEF", "MOSS"],
-        "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange", "DamagePlayerOnTouch, Assembly-CSharp"],
-        "onomicsType": "plorts",
-        "slimeFeatures":
-        [
-            {
-                "pattern": "coco_pattern",
-                "matOrigin": "TABBY_SLIME",
-                "gloss": 1,
-                "colorProps":
-                {
-                    "_TopColor": "#744D11",
-                    "_BottomColor": "#966F33"
-                }
-            },
-            {
-                "mesh": "coco_brows",
-                "colorProps": { "_TopColor": "#744D11" }
-            }
-        ],
-        "plortFeatures":
-        [
-            {
-                "colorProps":
-                {
-                    "_TopColor": "#FEFCFF",
-                    "_MiddleColor": "#DCDADD",
-                    "_BottomColor": "#ada08e"
-                }
-            }
-        ]
-    },
-    {
-        "name": "Mine",
-        "favFood": "BLOWTATO_VEGGIE",
-        "favToy": "BOMB_BALL_TOY",
-        "diet": "VEGGIES",
-        "baseSlime": "BOOM_SLIME",
-        "basePlort": "BOOM_PLORT",
-        "baseGordo": "BOOM_GORDO",
-        "topMouthColor": "#FFFFFF",
-        "middleMouthColor": "#888888",
-        "bottomMouthColor": "#FFFFFF",
-        "redEyeColor": "#888888",
-        "greenEyeColor": "#000000",
-        "blueEyeColor": "#FFFFFF",
-        "topPaletteColor": "#9EA16f",
-        "middlePaletteColor": "#445660",
-        "bottomPaletteColor": "#212A2F",
-        "mainAmmoColor": "#445660",
-        "plortAmmoColor": "#9EA16f",
-        "basePrice": 30,
-        "saturation": 20,
-        "jiggle": 0.125,
-        "gordoOri": "f 506.8365,5.61915,145.7047,0,320,0",
-        "gordoRewards": ["CRATE_QUARRY_01", "CRATE_QUARRY_01", "CRATE_QUARRY_01"],
-        "gordoZone": "QUARRY",
-        "gordoCell": "Quarry_VolcanoTransition",
-        "progress": ["UNLOCK_QUARRY", "UNLOCK_RUINS"],
-        "zones": ["QUARRY", "RUINS"],
-        "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange"],
-        "toRemove": ["BoomSlimeExplode, Assembly-CSharp", "BoomMaterialAnimator, Assembly-CSharp"],
-        "slimeFeatures":
-        [
-            {
-                "pattern": "mine_pattern",
-                "matOrigin": "TABBY_SLIME",
-                "gloss": 1,
-                "colorProps":
-                {
-                    "_TopColor": "#9EA16F",
-                    "_BottomColor": "#445660"
-                }
-            },
-            {
-                "mesh": "mine_exterior",
-                "matOrigin": "PINK_SLIME",
-                "colorProps": { "_TopColor": "#212A2F" }
-            }
-        ],
-        "plortFeatures":
-        [
-            {
-                "mesh": "pearl",
-                "colorProps": { "_TopColor": "#445660" }
-            },
-            {
-                "mesh": "mine_pearl",
-                "sameAs": 1
-            }
-        ],
-        "gordoFeatures":
-        [
-            { "colorProps": { "_TopColor": "#445660" } },
-            {
-                "mesh": "mine_exterior_gordo",
-                "sameAs": 1
-            }
-        ]
-    },
-    {
-        "name": "Lantern",
-        "favFood": "RADIANT_HEN",
-        "favToy": "NIGHT_LIGHT_TOY",
-        "diet": "MEAT",
-        "baseSlime": "PHOSPHOR_SLIME",
-        "basePlort": "PHOSPHOR_PLORT",
-        "topPaletteColor": "#752C86",
-        "middlePaletteColor": "#EBDB6A",
-        "bottomPaletteColor": "#B15EC8",
-        "mainAmmoColor": "#B15EC8",
-        "basePrice": 25,
-        "saturation": 24,
-        "plortAmmoColor": "#752C86",
-        "nightSpawn": true,
-        "progress": ["UNLOCK_MOSS", "UNLOCK_RUINS"],
-        "zones": ["MOSS", "RUINS"],
-        "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
-        "gordoOri": "f -166.2659,27.229,657.1914,0,0,0",
-        "gordoZone": "MOSS",
-        "gordoCell": "Moss_NorthPass",
-        "jiggle": 0.25,
-        "spawnAmount": 1,
-        "toAdd": ["OceanRange.Slimes.LanternBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
-        "toRemove": ["SlimeHover, Assembly-CSharp", "DestroyOutsideHoursOfDay, Assembly-CSharp"],
-        "slimeFeatures":
-        [
-            {
-                "matOrigin": "PINK_SLIME",
-                "colorProps":
-                {
-                    "_TopColor": "#752C86",
-                    "_MiddleColor": "#9445A7",
-                    "_BottomColor": "#B15EC8"
-                }
-            },
-            {
-                "mesh": "lantern_fins",
-                "pattern": "lantern_pattern",
-                "matOrigin": "TABBY_SLIME",
-                "colorProps":
-                {
-                    "_TopColor": "#752C86",
-                    "_BottomColor": "#B15EC8"
-                }
-            },
-            {
-                "mesh": "lantern_stalk",
-                "sameAs": 0
-            },
-            {
-                "skipNull": true,
-                "useBaseStruct": true,
-                "instantiatePrefabs": true
-            },
-            {
-                "mesh": "lantern_lure",
-                "matOrigin": "PHOSPHOR_SLIME",
-                "colorProps": { "_TopColor": "#EBDB6A" }
-            }
-        ],
-        "plortFeatures":
-        [
-            {
-                "mesh": "pearl",
-                "gloss": 1,
-                "colorProps":
-                {
-                    "_TopColor": "#B15EC8",
-                    "_MiddleColor": "#EBDB6A",
-                    "_BottomColor": "#752C86"
-                }
-            },
-            {
-                "mesh": "lantern_stalk_pearl",
-                "sameAs": 2
-            },
-            {
-                "mesh": "lantern_lure_pearl",
-                "sameAs": 3
-            }
-        ],
-        "gordoFeatures":
-        [
-            { "sameAs": 0 },
-            {
-                "mesh": "lantern_fins_gordo",
-                "sameAs": 1
-            },
-            {
-                "mesh": "lantern_stalk",
-                "sameAs": 2
-            },
-            {
-                "mesh": "lantern_lure",
-                "sameAs": 3
-            }
-        ]
-    },
-    {
-        "name": "Sand",
-        "favToy": "BEACH_BALL_TOY",
-        "favFood": "SILKY_SAND_CRAFT",
-        "baseSlime": "PUDDLE_SLIME",
-        "mainAmmoColor": "#EDA960",
-        "plortAmmoColor": "#E8C499",
-        "basePrice": 8,
-        "saturation": 40,
-        "diet": "DIRT",
-        "zones": ["REEF", "DESERT"],
-        "spawnAmount": 0.15,
-        "jiggle": 0.125,
-        "hasGordo": false,
-        "gordoRewards": ["SILKY_SAND_CRAFT", "SILKY_SAND_CRAFT", "SILKY_SAND_CRAFT"],
-        "gordoZone": "RANCH",
-        "toAdd": ["OceanRange.Slimes.SandBehaviour, OceanRange"],
-        "toRemove": ["GotoWater, Assembly-CSharp", "GotoConsumable, Assembly-CSharp", "DestroyOnTouching, Assembly-CSharp", "SlimeEatWater, Assembly-CSharp"],
-        "natGordoSpawn": false,
-        "slimeFeatures":
-        [
-            {
-                "skipNull": true,
-                "colorProps":
-                {
-                    "_TopColor": "#E2DFD2",
-                    "_MiddleColor": "#E8C499",
-                    "_BottomColor": "#EDA960"
-                }
-            },
-            {
-                "mesh": "sand_shells",
-                "gloss": 1,
-                "colorProps": { "_TopColor": "#E8C499" }
-            }
-        ],
-        "plortFeatures":
-        [
-            {
-                "mesh": "pearl",
-                "colorProps": { "_TopColor": "#E2DFD2" }
-            }
-        ],
-        "gordoFeatures":
-        [
-            {
-                "mesh": "puddle_body_gordo",
-                "sameAs": 0
-            }
-        ]
-    },
-    {
-        "name": "Mesmer",
-        "favToy": "DISCO_BALL_TOY",
-        "favFood": "STICKY_FRUIT",
-        "diet": "FRUIT",
-        "basePlort": "TABBY_PLORT",
-        "mainAmmoColor": "#0a094f",
-        "basePrice": 20,
-        "saturation": 30,
-        "jiggle": 0.25,
-        "toAdd": ["StalkConsumable, Assembly-CSharp"],
-        "slimeFeatures":
-        [
-            {
-                "pattern": "mesmer_pattern",
-                "matOrigin": "TABBY_SLIME",
-                "gloss": 0.11,
-                "colorProps":
-                {
-                    "_TopColor": "#e034c9",
-                    "_MiddleColor": "#dafe7a",
-                    "_BottomColor": "#0a094f"
-                }
-            },
-            {
-                "mesh": "mesmer_pincers",
-                "matOrigin": "TABBY_SLIME",
-                "pattern": "mesmer_pincer_pattern",
-                "colorProps":
-                {
-                    "_TopColor": "#340ca1",
-                    "_BottomColor": "#431158"
-                }
-            },
-            {
-                "mesh": "mesmer_tail_base",
-                "matOrigin": "PINK_SLIME",
-                "colorProps":
-                {
-                    "_TopColor": "#33169a",
-                    "_BottomColor": "#431158"
-                }
-            },
-            {
-                "mesh": "mesmer_tail_stem_1",
-                "matOrigin": "PINK_SLIME",
-                "colorProps":
-                {
-                    "_TopColor": "#821ed6",
-                    "_BottomColor": "#33169a"
-                }
-            },
-            {
-                "mesh": "mesmer_tail_stem_2",
-                "matOrigin": "PINK_SLIME",
-                "colorProps":
-                {
-                    "_TopColor": "#e034c9",
-                    "_BottomColor": "#821ed6"
-                }
-            },
-            {
-                "mesh": "mesmer_tail_tip",
-                "matOrigin": "PINK_SLIME",
-                "colorProps":
-                {
-                    "_TopColor": "#dafe7a",
-                    "_BottomColor": "#e034c9"
-                }
-            }
-        ],
-        "gordoFeatures":
-        [
-            { "sameAs": 0 },
-            {
-                "mesh": "mesmer_pincers_gordo",
-                "sameAs": 1
-            },
-            {
-                "mesh": "mesmer_tail_base_gordo",
-                "sameAs": 2
-            },
-            {
-                "mesh": "mesmer_tail_stem_1_gordo",
-                "sameAs": 3
-            },
-            {
-                "mesh": "mesmer_tail_stem_2_gordo",
-                "sameAs": 4
-            },
-            {
-                "mesh": "mesmer_tail_tip_gordo",
-                "sameAs": 5
-            }
-        ],
-        "plortFeatures":
-        [
-            {
-                "colorProps":
-                {
-                    "_TopColor": "#0a094f",
-                    "_MiddleColor": "#2F2251",
-                    "_BottomColor": "#1e1140"
-                }
-            }
-        ],
-        "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
-        "gordoOri": "f -328.2128,14.33913,462.0742,0,270,0",
-        "gordoZone": "MOSS",
-        "gordoCell": "Moss_Forest",
-        "plortType": "Plort",
-        "onomicsType": "plorts",
-        "zones": ["MOSS"]
-    },
-    {
-        "name": "Hermit",
-        "favToy": "BEACH_BALL_TOY",
-        "favFood": "POGO_FRUIT",
-        "diet": "FRUIT",
-        "basePlort": "TABBY_PLORT",
-        "mainAmmoColor": "#e75651",
-        "plortAmmoColor": "#e0945e",
-        "basePrice": 30,
-        "saturation": 25,
-        "jiggle": 0.25,
-        "slimeFeatures":
-        [
-            {
-                "pattern": "hermit_pattern",
-                "matOrigin": "TABBY_SLIME",
-                "gloss": 0.11,
-                "colorProps":
-                {
-                    "_TopColor": "#f09695",
-                    "_BottomColor": "#e65954"
-                }
-            },
-            {
-                "mesh": "hermit_shell",
-                "matOrigin": "PINK_SLIME",
-                "colorProps": { "_TopColor": "#f6d599" }
-            },
-            {
-                "mesh": "hermit_claws",
-                "colorProps": { "_TopColor": "#b53a35" }
-            }
-        ],
-        "plortFeatures":
-        [
-            { "sameAs": 0 },
-            {
-                "mesh": "hermit_shell_plort",
-                "sameAs": 1
-            }
-        ],
-        "gordoFeatures":
-        [
-            { "sameAs": 0 },
-            {
-                "mesh": "hermit_shell_gordo",
-                "sameAs": 1
-            },
-            {
-                "mesh": "hermit_claws",
-                "sameAs": 2
-            }
-        ],
-        "gordoOri": "f 101.948,-3.4949,40.8476,0,57,0",
-        "gordoZone": "REEF",
-        "gordoCell": "Reef_CliffCaves",
-        "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
-        "toAdd": ["OceanRange.Slimes.HermitBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
-        "plortType": "Plort",
-        "onomicsType": "plorts",
-        "zones": ["REEF"]
-    },
-    {
-        "name": "Goldfish",
-        "favToy": "BEACH_BALL_TOY",
-        "favFood": "GINGER_VEGGIE",
-        "diet": "GINGER",
-        "componentBase": "GOLD_SLIME",
-        "basePlort": "GOLD_PLORT",
-        "baseGordo": "GOLD_GORDO",
-        "mainAmmoColor": "#ffdf00",
-        "basePrice": 400,
-        "saturation": 50000,
-        "spawnAmount": 0.00125,
-        "jiggle": 0.5,
-        "slimeFeatures":
-        [
-            { "matOrigin": "GOLD_SLIME" },
-            {
-                "mesh": "goldfish_fins",
-                "matOrigin": "PUDDLE_SLIME",
-                "colorProps": { "_TopColor": "#dbc777" }
-            }
-        ],
-        "plortFeatures":
-        [
-            {
-                "mesh": "pearl",
-                "cloneFallback": false
-            }
-        ],
-        "gordoFeatures":
-        [
-            { "sameAs": 0 },
-            {
-                "mesh": "goldfish_fins_gordo",
-                "sameAs": 1
-            }
-        ],
-        "natGordoSpawn": false,
-        "gordoRewards": ["CRATE_MOSS_01", "CRATE_REEF_01", "CRATE_RUINS_01", "CRATE_QUARRY_01", "CRATE_DESERT_01"],
-        "zones": ["REEF", "QUARRY", "DESERT", "MOSS", "RUINS", "WILDS"],
-        "vaccable": false,
-        "exchangeable": false
-    }
+  {
+    "name": "Rosi",
+    "zones": ["REEF"],
+    "favToy": "OCTO_BUDDY_TOY",
+    "slimeFeatures":
+    [
+      {
+        "mesh": "rosi_body",
+        "colorProps":
+        {
+          "_TopColor": "#F9E5F0",
+          "_MiddleColor": "#E6C7D2",
+          "_BottomColor": "#F68ED9"
+        }
+      },
+      {
+        "mesh": "rosi_stalk",
+        "sameAs": 0
+      },
+      {
+        "mesh": "rosi_frills",
+        "colorProps": { "_TopColor": "#F46CB7" }
+      }
+    ],
+    "mainAmmoColor": "#F9E5F0",
+    "plortFeatures":
+    [
+      {
+        "mesh": "pearl",
+        "colorProps":
+        {
+          "_TopColor": "#F46CB7",
+          "_MiddleColor": "#E6C7D2",
+          "_BottomColor": "#F9E5F0"
+        }
+      },
+      {
+        "mesh": "rosi_stalk_pearl",
+        "sameAs": 1
+      },
+      {
+        "mesh": "rosi_frills_pearl",
+        "sameAs": 2
+      }
+    ],
+    "gordoFeatures":
+    [
+      {
+        "mesh": "rosi_body_gordo",
+        "sameAs": 0
+      },
+      {
+        "mesh": "rosi_stalk_gordo",
+        "sameAs": 1
+      },
+      {
+        "mesh": "rosi_frills_gordo",
+        "sameAs": 2
+      }
+    ],
+    "basePrice": 7,
+    "saturation": 40,
+    "jiggle": 0.75,
+    "toAdd": ["OceanRange.Slimes.RosiBehaviour, OceanRange"],
+    "gordoOri": "f 17.2751,13.3003,-36.969,0,30,0",
+    "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
+    "gordoZone": "REEF",
+    "gordoCell": "Reef_Intro"
+  },
+  {
+    "name": "Coco",
+    "favFood": "SANDY_HEN",
+    "favToy": "BEACH_BALL_TOY",
+    "diet": "MEAT",
+    "topMouthColor": "#FFFFFF",
+    "middleMouthColor": "#888888",
+    "bottomMouthColor": "#FEFCFF",
+    "redEyeColor": "#888888",
+    "greenEyeColor": "#000000",
+    "blueEyeColor": "#FFFFFF",
+    "mainAmmoColor": "#966F33",
+    "plortAmmoColor": "#DCDADD",
+    "basePrice": 20,
+    "saturation": 26,
+    "jiggle": 0.1,
+    "plortType": "Plort",
+    "gordoOri": "f -494.6969,-2.37,-241.9137,0,200,0",
+    "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
+    "gordoZone": "REEF",
+    "gordoCell": "Reef_RingIsland",
+    "zones": ["REEF", "MOSS"],
+    "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange", "DamagePlayerOnTouch, Assembly-CSharp"],
+    "onomicsType": "plorts",
+    "slimeFeatures":
+    [
+      {
+        "pattern": "coco_pattern",
+        "matOrigin": "TABBY_SLIME",
+        "gloss": 1,
+        "colorProps":
+        {
+          "_TopColor": "#744D11",
+          "_BottomColor": "#966F33"
+        }
+      },
+      {
+        "mesh": "coco_brows",
+        "colorProps": { "_TopColor": "#744D11" }
+      }
+    ],
+    "plortFeatures":
+    [
+      {
+        "colorProps":
+        {
+          "_TopColor": "#FEFCFF",
+          "_MiddleColor": "#DCDADD",
+          "_BottomColor": "#ada08e"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Mine",
+    "favFood": "BLOWTATO_VEGGIE",
+    "favToy": "BOMB_BALL_TOY",
+    "diet": "VEGGIES",
+    "baseSlime": "BOOM_SLIME",
+    "basePlort": "BOOM_PLORT",
+    "baseGordo": "BOOM_GORDO",
+    "topMouthColor": "#FFFFFF",
+    "middleMouthColor": "#888888",
+    "bottomMouthColor": "#FFFFFF",
+    "redEyeColor": "#888888",
+    "greenEyeColor": "#000000",
+    "blueEyeColor": "#FFFFFF",
+    "topPaletteColor": "#9EA16f",
+    "middlePaletteColor": "#445660",
+    "bottomPaletteColor": "#212A2F",
+    "mainAmmoColor": "#445660",
+    "plortAmmoColor": "#9EA16f",
+    "basePrice": 30,
+    "saturation": 20,
+    "jiggle": 0.125,
+    "gordoOri": "f 506.8365,5.61915,145.7047,0,320,0",
+    "gordoRewards": ["CRATE_QUARRY_01", "CRATE_QUARRY_01", "CRATE_QUARRY_01"],
+    "gordoZone": "QUARRY",
+    "gordoCell": "Quarry_VolcanoTransition",
+    "progress": ["UNLOCK_QUARRY", "UNLOCK_RUINS"],
+    "zones": ["QUARRY", "RUINS"],
+    "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange"],
+    "toRemove": ["BoomSlimeExplode, Assembly-CSharp", "BoomMaterialAnimator, Assembly-CSharp"],
+    "slimeFeatures":
+    [
+      {
+        "pattern": "mine_pattern",
+        "matOrigin": "TABBY_SLIME",
+        "gloss": 1,
+        "colorProps":
+        {
+          "_TopColor": "#9EA16F",
+          "_BottomColor": "#445660"
+        }
+      },
+      {
+        "mesh": "mine_exterior",
+        "matOrigin": "PINK_SLIME",
+        "colorProps": { "_TopColor": "#212A2F" }
+      }
+    ],
+    "plortFeatures":
+    [
+      {
+        "mesh": "pearl",
+        "colorProps": { "_TopColor": "#445660" }
+      },
+      {
+        "mesh": "mine_pearl",
+        "sameAs": 1
+      }
+    ],
+    "gordoFeatures":
+    [
+      { "colorProps": { "_TopColor": "#445660" } },
+      {
+        "mesh": "mine_exterior_gordo",
+        "sameAs": 1
+      }
+    ]
+  },
+  {
+    "name": "Lantern",
+    "favFood": "RADIANT_HEN",
+    "favToy": "NIGHT_LIGHT_TOY",
+    "diet": "MEAT",
+    "baseSlime": "PHOSPHOR_SLIME",
+    "basePlort": "PHOSPHOR_PLORT",
+    "topPaletteColor": "#752C86",
+    "middlePaletteColor": "#EBDB6A",
+    "bottomPaletteColor": "#B15EC8",
+    "mainAmmoColor": "#B15EC8",
+    "basePrice": 25,
+    "saturation": 24,
+    "plortAmmoColor": "#752C86",
+    "nightSpawn": true,
+    "progress": ["UNLOCK_MOSS", "UNLOCK_RUINS"],
+    "zones": ["MOSS", "RUINS"],
+    "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
+    "gordoOri": "f -166.2659,27.229,657.1914,0,0,0",
+    "gordoZone": "MOSS",
+    "gordoCell": "Moss_NorthPass",
+    "jiggle": 0.25,
+    "spawnAmount": 1,
+    "toAdd": ["OceanRange.Slimes.LanternBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
+    "toRemove": ["SlimeHover, Assembly-CSharp", "DestroyOutsideHoursOfDay, Assembly-CSharp"],
+    "slimeFeatures":
+    [
+      {
+        "matOrigin": "PINK_SLIME",
+        "colorProps":
+        {
+          "_TopColor": "#752C86",
+          "_MiddleColor": "#9445A7",
+          "_BottomColor": "#B15EC8"
+        }
+      },
+      {
+        "mesh": "lantern_fins",
+        "pattern": "lantern_pattern",
+        "matOrigin": "TABBY_SLIME",
+        "colorProps":
+        {
+          "_TopColor": "#752C86",
+          "_BottomColor": "#B15EC8"
+        }
+      },
+      {
+        "mesh": "lantern_stalk",
+        "sameAs": 0
+      },
+      {
+        "skipNull": true,
+        "useBaseStruct": true,
+        "instantiatePrefabs": true
+      },
+      {
+        "mesh": "lantern_lure",
+        "matOrigin": "PHOSPHOR_SLIME",
+        "colorProps": { "_TopColor": "#EBDB6A" }
+      }
+    ],
+    "plortFeatures":
+    [
+      {
+        "mesh": "pearl",
+        "gloss": 1,
+        "colorProps":
+        {
+          "_TopColor": "#B15EC8",
+          "_MiddleColor": "#EBDB6A",
+          "_BottomColor": "#752C86"
+        }
+      },
+      {
+        "mesh": "lantern_stalk_pearl",
+        "sameAs": 2
+      },
+      {
+        "mesh": "lantern_lure_pearl",
+        "sameAs": 3
+      }
+    ],
+    "gordoFeatures":
+    [
+      { "sameAs": 0 },
+      {
+        "mesh": "lantern_fins_gordo",
+        "sameAs": 1
+      },
+      {
+        "mesh": "lantern_stalk",
+        "sameAs": 2
+      },
+      {
+        "mesh": "lantern_lure",
+        "sameAs": 3
+      }
+    ]
+  },
+  {
+    "name": "Sand",
+    "favToy": "BEACH_BALL_TOY",
+    "favFood": "SILKY_SAND_CRAFT",
+    "baseSlime": "PUDDLE_SLIME",
+    "mainAmmoColor": "#EDA960",
+    "plortAmmoColor": "#E8C499",
+    "basePrice": 8,
+    "saturation": 40,
+    "diet": "DIRT",
+    "zones": ["REEF", "DESERT"],
+    "spawnAmount": 0.15,
+    "jiggle": 0.125,
+    "hasGordo": false,
+    "gordoRewards": ["SILKY_SAND_CRAFT", "SILKY_SAND_CRAFT", "SILKY_SAND_CRAFT"],
+    "gordoZone": "RANCH",
+    "toAdd": ["OceanRange.Slimes.SandBehaviour, OceanRange"],
+    "toRemove": ["GotoWater, Assembly-CSharp", "GotoConsumable, Assembly-CSharp", "DestroyOnTouching, Assembly-CSharp", "SlimeEatWater, Assembly-CSharp"],
+    "natGordoSpawn": false,
+    "slimeFeatures":
+    [
+      {
+        "skipNull": true,
+        "colorProps":
+        {
+          "_TopColor": "#E2DFD2",
+          "_MiddleColor": "#E8C499",
+          "_BottomColor": "#EDA960"
+        }
+      },
+      {
+        "mesh": "sand_shells",
+        "gloss": 1,
+        "colorProps": { "_TopColor": "#E8C499" }
+      }
+    ],
+    "plortFeatures":
+    [
+      {
+        "mesh": "pearl",
+        "colorProps": { "_TopColor": "#E2DFD2" }
+      }
+    ],
+    "gordoFeatures":
+    [
+      {
+        "mesh": "puddle_body_gordo",
+        "sameAs": 0
+      }
+    ]
+  },
+  {
+    "name": "Mesmer",
+    "favToy": "DISCO_BALL_TOY",
+    "favFood": "STICKY_FRUIT",
+    "diet": "FRUIT",
+    "basePlort": "TABBY_PLORT",
+    "mainAmmoColor": "#0a094f",
+    "basePrice": 20,
+    "saturation": 30,
+    "jiggle": 0.25,
+    "toAdd": ["StalkConsumable, Assembly-CSharp"],
+    "slimeFeatures":
+    [
+      {
+        "pattern": "mesmer_pattern",
+        "matOrigin": "TABBY_SLIME",
+        "gloss": 0.11,
+        "colorProps":
+        {
+          "_TopColor": "#e034c9",
+          "_MiddleColor": "#dafe7a",
+          "_BottomColor": "#0a094f"
+        }
+      },
+      {
+        "mesh": "mesmer_pincers",
+        "matOrigin": "TABBY_SLIME",
+        "pattern": "mesmer_pincer_pattern",
+        "colorProps":
+        {
+          "_TopColor": "#340ca1",
+          "_BottomColor": "#431158"
+        }
+      },
+      {
+        "mesh": "mesmer_tail_base",
+        "matOrigin": "PINK_SLIME",
+        "colorProps":
+        {
+          "_TopColor": "#33169a",
+          "_BottomColor": "#431158"
+        }
+      },
+      {
+        "mesh": "mesmer_tail_stem_1",
+        "matOrigin": "PINK_SLIME",
+        "colorProps":
+        {
+          "_TopColor": "#821ed6",
+          "_BottomColor": "#33169a"
+        }
+      },
+      {
+        "mesh": "mesmer_tail_stem_2",
+        "matOrigin": "PINK_SLIME",
+        "colorProps":
+        {
+          "_TopColor": "#e034c9",
+          "_BottomColor": "#821ed6"
+        }
+      },
+      {
+        "mesh": "mesmer_tail_tip",
+        "matOrigin": "PINK_SLIME",
+        "colorProps":
+        {
+          "_TopColor": "#dafe7a",
+          "_BottomColor": "#e034c9"
+        }
+      }
+    ],
+    "gordoFeatures":
+    [
+      { "sameAs": 0 },
+      {
+        "mesh": "mesmer_pincers_gordo",
+        "sameAs": 1
+      },
+      {
+        "mesh": "mesmer_tail_base_gordo",
+        "sameAs": 2
+      },
+      {
+        "mesh": "mesmer_tail_stem_1_gordo",
+        "sameAs": 3
+      },
+      {
+        "mesh": "mesmer_tail_stem_2_gordo",
+        "sameAs": 4
+      },
+      {
+        "mesh": "mesmer_tail_tip_gordo",
+        "sameAs": 5
+      }
+    ],
+    "plortFeatures":
+    [
+      {
+        "colorProps":
+        {
+          "_TopColor": "#0a094f",
+          "_MiddleColor": "#2F2251",
+          "_BottomColor": "#1e1140"
+        }
+      }
+    ],
+    "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
+    "gordoOri": "f -328.2128,14.33913,462.0742,0,270,0",
+    "gordoZone": "MOSS",
+    "gordoCell": "Moss_Forest",
+    "plortType": "Plort",
+    "onomicsType": "plorts",
+    "zones": ["MOSS"]
+  },
+  {
+    "name": "Hermit",
+    "favToy": "BEACH_BALL_TOY",
+    "favFood": "POGO_FRUIT",
+    "diet": "FRUIT",
+    "basePlort": "TABBY_PLORT",
+    "mainAmmoColor": "#e75651",
+    "plortAmmoColor": "#e0945e",
+    "basePrice": 30,
+    "saturation": 25,
+    "jiggle": 0.25,
+    "slimeFeatures":
+    [
+      {
+        "pattern": "hermit_pattern",
+        "matOrigin": "TABBY_SLIME",
+        "gloss": 0.11,
+        "colorProps":
+        {
+          "_TopColor": "#f09695",
+          "_BottomColor": "#e65954"
+        }
+      },
+      {
+        "mesh": "hermit_shell",
+        "matOrigin": "PINK_SLIME",
+        "colorProps": { "_TopColor": "#f6d599" }
+      },
+      {
+        "mesh": "hermit_claws",
+        "colorProps": { "_TopColor": "#b53a35" }
+      }
+    ],
+    "plortFeatures":
+    [
+      { "sameAs": 0 },
+      {
+        "mesh": "hermit_shell_plort",
+        "sameAs": 1
+      }
+    ],
+    "gordoFeatures":
+    [
+      { "sameAs": 0 },
+      {
+        "mesh": "hermit_shell_gordo",
+        "sameAs": 1
+      },
+      {
+        "mesh": "hermit_claws",
+        "sameAs": 2
+      }
+    ],
+    "gordoOri": "f 101.948,-3.4949,40.8476,0,57,0",
+    "gordoZone": "REEF",
+    "gordoCell": "Reef_CliffCaves",
+    "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
+    "toAdd": ["OceanRange.Slimes.HermitBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
+    "plortType": "Plort",
+    "onomicsType": "plorts",
+    "zones": ["REEF"]
+  },
+  {
+    "name": "Goldfish",
+    "favToy": "BEACH_BALL_TOY",
+    "favFood": "GINGER_VEGGIE",
+    "diet": "GINGER",
+    "componentBase": "GOLD_SLIME",
+    "basePlort": "GOLD_PLORT",
+    "baseGordo": "GOLD_GORDO",
+    "mainAmmoColor": "#ffdf00",
+    "basePrice": 400,
+    "saturation": 50000,
+    "spawnAmount": 0.00125,
+    "jiggle": 0.5,
+    "slimeFeatures":
+    [
+      { "matOrigin": "GOLD_SLIME" },
+      {
+        "mesh": "goldfish_fins",
+        "matOrigin": "PUDDLE_SLIME",
+        "colorProps": { "_TopColor": "#dbc777" }
+      }
+    ],
+    "plortFeatures":
+    [
+      {
+        "mesh": "pearl",
+        "cloneFallback": false
+      }
+    ],
+    "gordoFeatures":
+    [
+      { "sameAs": 0 },
+      {
+        "mesh": "goldfish_fins_gordo",
+        "sameAs": 1
+      }
+    ],
+    "natGordoSpawn": false,
+    "gordoRewards": ["CRATE_MOSS_01", "CRATE_REEF_01", "CRATE_RUINS_01", "CRATE_QUARRY_01", "CRATE_DESERT_01"],
+    "zones": ["REEF", "QUARRY", "DESERT", "MOSS", "RUINS", "WILDS"],
+    "vaccable": false,
+    "exchangeable": false
+  }
 ]

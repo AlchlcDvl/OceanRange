@@ -1,31 +1,31 @@
 {
-    "name": "Ocean Range",
-    "regions":
-    [
+  "name": "Ocean Range",
+  "regions":
+  [
+    {
+      "name": "Underwater",
+      "initialWorldSize": 2000,
+      "initialWorldPos": "0,0,0",
+      "minNodeSize": 250,
+      "loosenessVal": 1.2
+    }
+  ],
+  "zones":
+  [
+    {
+      "name": "Swirlpool_Island",
+      "region": "UNDERWATER",
+      "prefab": "SWIRLPOOL",
+      "teleporterOri": "f -119.7111,-0.0307,-260.243,0,234.398,0",
+      "teleporterLoc": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/",
+      "requirements":
+      {
+        "CorporateLevel":
         {
-            "name": "Underwater",
-            "initialWorldSize": 2000,
-            "initialWorldPos": "0,0,0",
-            "minNodeSize": 250,
-            "loosenessVal": 1.2
+          "pathToGameObject": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)",
+          "minLevel": 15
         }
-    ],
-    "zones":
-    [
-        {
-            "name": "Swirlpool_Island",
-            "region": "UNDERWATER",
-            "prefab": "SWIRLPOOL",
-            "teleporterOri": "f -119.7111,-0.0307,-260.243,0,234.398,0",
-            "teleporterLoc": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/",
-            "requirements":
-            {
-                "CorporateLevel":
-                {
-                    "pathToGameObject": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)",
-                    "minLevel": 15
-                }
-            }
-        }
-    ]
+      }
+    }
+  ]
 }

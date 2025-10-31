@@ -4,10 +4,7 @@ public static class Translator
 {
     public static readonly Dictionary<string, string> SlimeToOnomicsMap = [];
 
-    public static readonly HashSet<string> OfferIds = [];
-
     public static readonly List<string> LoadingIds = [];
-    public static readonly HashSet<int> LoadingIndices = [];
 
     private static readonly Dictionary<Language, Translations> TranslationsHolder = new(LanguageComparer.Instance);
 

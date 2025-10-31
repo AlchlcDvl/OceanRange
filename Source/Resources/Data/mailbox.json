@@ -1,12 +1,12 @@
 [
-    {
-        "name": "Splash Intro",
-        "id": "ocean_intro",
-        "unlockAfter": 172800
-    },
-    {
-        "name": "Lisa Intro",
-        "id": "exchangeintro_lisa",
-        "unlockAfter": 561600
-    }
+  {
+    "name": "Splash Intro",
+    "id": "ocean_intro",
+    "unlockAfter": 172800
+  },
+  {
+    "name": "Lisa Intro",
+    "id": "exchangeintro_lisa",
+    "unlockAfter": 561600
+  }
 ]
