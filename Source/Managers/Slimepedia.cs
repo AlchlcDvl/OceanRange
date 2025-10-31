@@ -846,16 +846,6 @@ public static class Slimepedia
     }
 
     [UsedImplicitly]
-    public static void InitHermitSlimeDetails(GameObject prefab, SlimeDefinition _, SlimeAppearance appearance)
-    {
-        var go = new GameObject("Shell");
-        go.SetActive(false);
-        go.transform.SetParent(prefab.transform);
-        go.AddComponent<MeshFilter>().sharedMesh = Inventory.GetMesh("hermit_shell_LOD1");
-        go.AddComponent<MeshRenderer>().sharedMaterials = appearance.Structures[1].DefaultMaterials;
-    }
-
-    [UsedImplicitly]
     public static void InitMesmerSlimeDetails(GameObject _1, SlimeDefinition definition, SlimeAppearance _2) => Largopedia.Mesmers.Add(definition.IdentifiableId);
 
     [UsedImplicitly]
