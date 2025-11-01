@@ -152,11 +152,12 @@ public static class Helpers
         gordo.transform.position = slimeData.GordoOrientation.Position;
         gordo.transform.localEulerAngles = slimeData.GordoOrientation.Rotation;
         gordo.name = gordo.name.Replace("(Clone)", "").Trim();
-        gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs];
-        gordo.AddComponent<GordoPop>().Data = slimeData;
+        gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs, IdentifiableId.KEY.GetPrefab()];
 
         if (slimeData.IsPopped)
             gordo.SetActive(false);
+        else
+            gordo.AddComponent<GordoPop>().Data = slimeData;
     }
 
     public static readonly List<Mesh> ClonedMeshes = [];
