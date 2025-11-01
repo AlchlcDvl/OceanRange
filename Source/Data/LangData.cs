@@ -266,7 +266,7 @@ public abstract class FoodLangData(string suffix) : ResourceLangData(suffix)
     public override sealed void AddTranslations(Dictionary<string, Dictionary<string, string>> translations)
     {
         base.AddTranslations(translations);
-        translations.GetBundle("pedia").AddTranslation("m.resource_type." + PediaKey, FavouredBy, "pedia");
+        translations.GetBundle("pedia").AddTranslation("m.favored_by." + PediaKey, FavouredBy, "pedia");
     }
 }
 

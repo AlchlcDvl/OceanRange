@@ -30,7 +30,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
     public override float Relevancy(bool _)
     {
-        if (Calmed.IsCalmed() || Affection > 1f || Hiding || !CanMove.CanMove)
+        if (Calmed.IsCalmed() || Affection >= 1f || Hiding || !CanMove.CanMove)
             return 0f;
 
         var range = Mathf.Lerp(MaxShyRange, MinShyRange, Affection);

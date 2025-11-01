@@ -64,6 +64,9 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <exception cref="ArgumentException">Thrown if the path contains a file extension that's already been added.</exception>
     public void AddPath(string path)
     {
+        if (Disposed)
+            throw new ObjectDisposedException(Name);
+
         var extension = Path.GetExtension(path).Replace(".", "");
 
         if (Inventory.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other))
@@ -101,6 +104,9 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <exception cref="InvalidOperationException">Thrown if the asset was not loaded properly for reasons unknown.</exception>
     public T Load<T>() where T : UObject
     {
+        if (Disposed)
+            throw new ObjectDisposedException(Name);
+
         var tType = typeof(T);
 
         if (Assets.TryGetValue(tType, out var asset)) // Try to fetch the asset if it's already loaded
@@ -134,9 +140,12 @@ public sealed class AssetHandle(string name) : IDisposable
     // /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided type.</exception>
     // public void Unload<T>(bool throwError = true) where T : UObject
     // {
+    //     if (Disposed)
+    //         throw new ObjectDisposedException(Name);
+
     //     var tType = typeof(T);
-    //
-    //     if (Assets.Remove(tType, out var asset))
+
+    //     if (Assets.TryRemove(tType, out var asset))
     //         asset.Destroy();
     //     else if (throwError)
     //         throw new FileLoadException($"No such asset {Name} of type {tType.Name} was loaded!");

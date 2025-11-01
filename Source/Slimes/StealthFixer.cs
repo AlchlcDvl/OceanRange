@@ -22,6 +22,12 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
             UpdateMaterialStealthController();
     }
 
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        StealthController.DestroyMats();
+    }
+
     public void RegistryUpdate() => UpdateStealthOpacity();
 
     public void DidSpawn()
@@ -74,9 +80,11 @@ public sealed class StealthFixerController
     private readonly Dictionary<Renderer, Material> RendererCloakMaterial = [];
     private readonly Dictionary<Renderer, Material> RendererOriginalMaterial = [];
 
+    public void DestroyMats() => RendererCloakMaterial.Values.Do(x => x.Destroy());
+
     public void UpdateMaterials(GameObject gameObject)
     {
-        RendererCloakMaterial.Values.Do(x => x.Destroy());
+        DestroyMats();
 
         Renderers.Clear();
         RendererCloakMaterial.Clear();

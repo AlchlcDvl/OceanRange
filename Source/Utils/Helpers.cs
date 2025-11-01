@@ -91,7 +91,7 @@ public static class Helpers
     //     return false;
     // }
 
-    public static bool TryHexToColor(string hex, out Color color)
+    public static bool TryHexToColor(this string hex, out Color color)
     {
         if (HexToColors.TryGetValue(hex, out color))
             return true;
@@ -512,4 +512,20 @@ public static class Helpers
         value = result ? array[index] : default;
         return result;
     }
+
+    // public static Texture2D CreateRamp(string name, Color a, Color b)
+    // {
+    //     var texture2D = new Texture2D(128, 32) { name = name };
+
+    //     for (var i = 0; i < 128; i++)
+    //     {
+    //         var color = Color.Lerp(a, b, i / 127f);
+
+    //         for (var j = 0; j < 32; j++)
+    //             texture2D.SetPixel(i, j, color);
+    //     }
+
+    //     texture2D.Apply();
+    //     return texture2D.DontDestroy();
+    // }
 }

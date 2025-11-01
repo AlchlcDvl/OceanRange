@@ -29,6 +29,9 @@ public static class Cookbook
     private static readonly int RampGreen = ShaderUtils.GetOrSet("_RampGreen");
     private static readonly int RampBlack = ShaderUtils.GetOrSet("_RampBlack");
     private static readonly int SwayStrength = ShaderUtils.GetOrSet("_SwayStrength");
+    private static readonly int AmbientOcclusion = ShaderUtils.GetOrSet("_AmbientOcclusion");
+
+    private static Texture2D White;
 
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
@@ -153,6 +156,8 @@ public static class Cookbook
 #endif
     public static void LoadAllFoods()
     {
+        White = Inventory.GetTexture2D("all_white");
+
         Array.ForEach(Fruits, BaseCreatePlant);
         Array.ForEach(Veggies, BaseCreatePlant);
         Array.ForEach(Chimkens, BaseCreateChimken);
@@ -277,41 +282,44 @@ public static class Cookbook
         meshModel.GetComponent<MeshFilter>().sharedMesh = mesh;
         prefab.GetComponent<MeshFilter>().sharedMesh = mesh;
 
-        var bounds = mesh.bounds;
-        var size = bounds.size;
-        var center = bounds.center;
-
-        if (prefab.TryGetComponent<SphereCollider>(out var sphere))
+        if (plantData.AdjustColliders)
         {
-            sphere.center = center;
-            sphere.radius = Mathf.Max(size.x, size.y, size.z) / 2f;
+            var bounds = mesh.bounds;
+            var size = bounds.size;
+            var center = bounds.center;
+
+            if (prefab.TryGetComponent<SphereCollider>(out var sphere))
+            {
+                sphere.center = center;
+                sphere.radius = Mathf.Max(size.x, size.y, size.z) / 2f;
+            }
+
+            if (prefab.TryGetComponent<CapsuleCollider>(out var capsule))
+            {
+                capsule.center = center;
+
+                var max = Mathf.Max(size.x, size.y, size.z);
+                capsule.height = max;
+
+                if (max == size.x)
+                {
+                    capsule.direction = 0;
+                    capsule.radius = Mathf.Max(size.y, size.z) / 2f;
+                }
+                else if (max == size.y)
+                {
+                    capsule.direction = 1;
+                    capsule.radius = Mathf.Max(size.x, size.z) / 2f;
+                }
+                else if (max == size.z)
+                {
+                    capsule.direction = 0;
+                    capsule.radius = Mathf.Max(size.y, size.x) / 2f;
+                }
+            }
+
+            prefab.GetComponent<Rigidbody>().WakeUp();
         }
-
-        if (prefab.TryGetComponent<CapsuleCollider>(out var capsule))
-        {
-            capsule.center = center;
-
-            var max = Mathf.Max(size.x, size.y, size.z);
-            capsule.height = max;
-
-            if (max == size.x)
-            {
-                capsule.direction = 0;
-                capsule.radius = Mathf.Max(size.y, size.z) / 2f;
-            }
-            else if (max == size.y)
-            {
-                capsule.direction = 1;
-                capsule.radius = Mathf.Max(size.x, size.z) / 2f;
-            }
-            else if (max == size.z)
-            {
-                capsule.direction = 0;
-                capsule.radius = Mathf.Max(size.y, size.x) / 2f;
-            }
-        }
-
-        prefab.GetComponent<Rigidbody>().WakeUp();
 
         var meshRend = meshModel.GetComponent<MeshRenderer>();
         var cycle = prefab.GetComponent<ResourceCycle>();
@@ -326,35 +334,11 @@ public static class Cookbook
         var blueExists = Inventory.TryGetTexture2D($"{ramp}blue", out var blue);
         var blackExists = Inventory.TryGetTexture2D($"{ramp}black", out var black);
         var maskExists = Inventory.TryGetTexture2D($"{ramp}mask", out var mask);
+        var ambientExists = Inventory.TryGetTexture2D($"{ramp}ambient", out var ambient);
 
         foreach (var material in materials)
         {
             material.SetFloat(SwayStrength, 0.01f);
-
-            // if (redExists)
-            //     material.SetTexture(RampRed, red);
-            // else
-            //     material.GetTexture(RampRed).Dump($"{plantData.BasePlant}RampRed");
-            //
-            // if (greenExists)
-            //     material.SetTexture(RampGreen, green);
-            // else
-            //     material.GetTexture(RampGreen).Dump($"{plantData.BasePlant}RampGreen");
-            //
-            // if (blueExists)
-            //     material.SetTexture(RampBlue, blue);
-            // else
-            //     material.GetTexture(RampBlue).Dump($"{plantData.BasePlant}RampBlue");
-            //
-            // if (blackExists)
-            //     material.SetTexture(RampBlack, black);
-            // else
-            //     material.GetTexture(RampBlack).Dump($"{plantData.BasePlant}RampBlack");
-            //
-            // if (maskExists)
-            //     material.SetTexture(Mask, mask);
-            // else
-            //     material.GetTexture(Mask).Dump($"{plantData.BasePlant}Mask");
 
             if (redExists)
                 material.SetTexture(RampRed, red);
@@ -370,6 +354,8 @@ public static class Cookbook
 
             if (maskExists)
                 material.SetTexture(Mask, mask);
+
+            material.SetTexture(AmbientOcclusion, ambientExists && maskExists ? ambient : White);
         }
 
         plantData.InitFoodDetails?.Invoke(null, [prefab]);
@@ -427,7 +413,6 @@ public static class Cookbook
     {
         prefab.AddComponent<BlowtatoBehaviour>();
         BlowtatoBehaviour.ExplodeFX = IdentifiableId.BOOM_SLIME.GetSlimeDefinition().AppearancesDefault[0].ExplosionAppearance.explodeFx.CreatePrefab();
-        BlowtatoBehaviour.ExplodeFX.transform.localScale /= 6f;
     }
 
     [UsedImplicitly]

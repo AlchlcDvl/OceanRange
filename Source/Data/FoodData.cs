@@ -75,6 +75,8 @@ public abstract class PlantData : FoodData
     public IdentifiableId? BasePlant;
     public SpawnResourceId? BaseResource;
 
+    public bool AdjustColliders = true;
+
     [JsonIgnore] public SpawnResourceId BaseResourceDlx;
 
     [JsonIgnore] public SpawnResourceId ResourceId;

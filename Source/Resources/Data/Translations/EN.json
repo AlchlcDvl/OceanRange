@@ -147,6 +147,15 @@
       "ranch": "Deposit a Sticky Finger into a garden's depositor and you'll have a large Sticky Finger tree of your very own.",
       "type": "Fruit",
       "intro": "The sticky fruit!"
+    },
+    {
+      "name": "Coral",
+      "translatedName": "Prickly Coral",
+      "about": "A member of the prickly fruit family, uniquely adapted to grow beneath the waves. Unlike its distant cousin, the Prickly Pear, this fruit conceals a subtle sweetness within its inner core. Though still considered an acquired taste, those willing to give it a chance often find its initial bitterness surprisingly tolerable.",
+      "favouredBy": "Hermit Slime",
+      "ranch": "Deposit a Prickly Coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
+      "type": "Fruit",
+      "intro": "Watch for the pointy parts!"
     }
   ],
   "veggies":

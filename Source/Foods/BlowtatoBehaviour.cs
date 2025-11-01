@@ -8,7 +8,7 @@ public sealed class BlowtatoBehaviour : CollidableActorBehaviour, Collidable
     private const float ExplodeRadius = 5f;
     private const float MinPlayerDamage = 5f;
     private const float MaxPlayerDamage = 10f;
-    private const float MinimumExplosionVelocity = 15f;
+    private const float MinimumExplosionVelocity = 17.5f;
 
     public override void Awake()
     {
@@ -22,7 +22,26 @@ public sealed class BlowtatoBehaviour : CollidableActorBehaviour, Collidable
             return;
 
         if (ExplodeFX)
-            SpawnAndPlayFX(ExplodeFX, transform.position, transform.rotation);
+        {
+            var fx = SpawnAndPlayFX(ExplodeFX, transform.position, transform.rotation);
+            fx.transform.localScale /= 6f;
+
+            if (fx.TryGetComponent<ParticleSystem>(out var particleSys))
+            {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+                var main = particleSys.main;
+                main.startSizeMultiplier = 1f / 6f;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+            }
+
+            foreach (var comp in fx.GetComponentsInChildren<ParticleSystem>())
+            {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+                var main = comp.main;
+                main.startSizeMultiplier = 1f / 6f;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+            }
+        }
 
         PhysicsUtil.Explode(gameObject, ExplodeRadius, ExplodePower, MinPlayerDamage, MaxPlayerDamage);
     }

@@ -32,6 +32,16 @@
       "spawnLocations":
       {
       }
+    },
+    {
+      "name": "Coral",
+      "mainAmmoColor": "#833296",
+      "basePrice": 4,
+      "saturation": 10,
+      "adjustColliders": false,
+      "spawnLocations":
+      {
+      }
     }
   ],
   "chimkens":
