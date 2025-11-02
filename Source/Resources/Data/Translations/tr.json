@@ -1,19 +1,15 @@
 {
   "name": "TR",
-  "additional":
-  {
-    "ui":
-    {
+  "additional": {
+    "ui": {
       "l.pearls": "İnci ekonomisi",
       "m.foodgroup.dirt": "Kum"
     },
-    "pedia":
-    {
+    "pedia": {
       "m.favored_by.silky_sand_craft": "Sand Slime"
     }
   },
-  "slimes":
-  [
+  "slimes": [
     {
       "translatedName": "Rosi Slime",
       "name": "Rosi",
@@ -25,7 +21,7 @@
       "intro": "Denizin pembe incisi.Pembe slime'nin kuzeni olduğuna ınanılıyor."
     },
     {
-      "translatedName":"Coco Slime",
+      "translatedName": "Coco Slime",
       "name": "Coco",
       "risks": "Coco slimelar çok bölgeci olduğundan, palmiye ağaçlarının altında yürürken dikkatli olun. Sizi altlarında hissederlerse, yumuşak, süngerimsi vücutlarını sert bir hindistan cevizi kabuğuna dönüştürüp hedeflerine doğru hızla inerler. Geçmişte hindistan cevizi slimenin kafalarına isabet ettiği turistler, sonrasında bulanık görme ve baş dönmesi yaşadıklarını, hatta bazılarının bayıldığını bildirmişlerdir. Vahşi doğada da bu şekilde avlanırlar. Sert derileri ve çevikliklerine rağmen, iyi beslendikleri ve yeterli güneş ışığına maruz kaldıkları sürece çiftliklerde yetiştirilmeleri oldukça kolaydır.",
       "slimeology": "Coco slimelar, adadaki palmiye ağaçlarından sarkarken sıklıkla bulunur. SwirlPool Adası'na özgü olan coco slimeları, ağaçlara tırmanıp yırtıcılardan kaçmak için doğal olarak daha yüksek bir sıçrama yeteneğine sahiptir. Palmiye ağaçlarında yetiştikleri için bitki benzeri özelliklere sahiptirler, bu da sürekli güneş ışığına ihtiyaç duymalarına ve yamyamlık olacağı için meyve ve sebze yemekten kaçınmalarına neden olur.",
@@ -95,8 +91,7 @@
       "intro": "Lüks bir parlaklığa sahip kaygan slime!"
     }
   ],
-  "hens":
-  [
+  "hens": [
     {
       "name": "Sandy",
       "translatedName": "Kumlu Tavuk",
@@ -116,8 +111,7 @@
       "intro": "Daima göze batan parlayan tavuk!"
     }
   ],
-  "chicks":
-  [
+  "chicks": [
     {
       "name": "Sandy",
       "translatedName": "Kumlu Civciv",
@@ -137,11 +131,27 @@
       "intro": "Henüz parıltısına alışamadı..."
     }
   ],
-  "fruits":
-  [
+  "fruits": [
+    {
+      "name": "Sticky",
+      "translatedName": "Sticky Fingers",
+      "about": "A sweet treat that tends to stick to your teeth, or even your fingers. Once prized as the key ingredient in many of the Far, Far Range’s candies, this fruit balances its gooey stickiness with a surprisingly rich creaminess and a satisfying crunch.",
+      "favouredBy": "Mesmer Slime",
+      "ranch": "Deposit a Sticky Finger into a garden's depositor and you'll have a large Sticky Finger tree of your very own.",
+      "type": "Fruit",
+      "intro": "The sticky fruit!"
+    },
+    {
+      "name": "Coral",
+      "translatedName": "Prickly Coral",
+      "about": "A member of the prickly fruit family, uniquely adapted to grow beneath the waves. Unlike its distant cousin, the Prickly Pear, this fruit conceals a subtle sweetness within its inner core. Though still considered an acquired taste, those willing to give it a chance often find its initial bitterness surprisingly tolerable.",
+      "favouredBy": "Hermit Slime",
+      "ranch": "Deposit a Prickly Coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
+      "type": "Fruit",
+      "intro": "Watch for the pointy parts!"
+    }
   ],
-  "veggies":
-  [
+  "veggies": [
     {
       "name": "Blowtato",
       "translatedName": "Blowtato",
@@ -152,27 +162,23 @@
       "intro": "Patlayan sebze!"
     }
   ],
-  "ranchers":
-  [
+  "ranchers": [
     {
       "name": "Lisa",
       "translatedName": "Lisa Erwin",
-      "offers":
-      [
+      "offers": [
         "…Tüh! Buna mı tıkladım? Ah, pardon dostum… Neyse, buradayken bana yardım edebilir misin?",
         "Zzzz… ha?! Ben ne yapıyordum yine?",
         "Haydi uyanın! Üzerine düşeceğimiz işler var."
       ],
       "specialOffer": "Enerjiye ihtiyacım olduğunda sakin kalır ve bir fincan kahve alırım.",
-      "loadingTexts":
-      [
+      "loadingTexts": [
         "Lisa bir kere bir Mesmer Slime’a kendi yansımasını göstermeye çalıştı. Slime saatlerce aynanın karşısında öylece durdu.",
         "Lisa sık sık Viktor'la bilimsel tartışmalara girer."
       ]
     }
   ],
-  "largos":
-  [
+  "largos": [
     {
       "translatedName": "Rosi Mine Largo",
       "name": "Rosi Mine"
@@ -366,8 +372,7 @@
       "name": "Dervish Hermit"
     }
   ],
-  "gordos":
-  [
+  "gordos": [
     {
       "translatedName": "Rosi Gordo",
       "name": "Rosi"
@@ -401,8 +406,7 @@
       "name": "Sand"
     }
   ],
-  "plorts":
-  [
+  "plorts": [
     {
       "translatedName": "Rosi Pearl",
       "name": "Rosi"
@@ -436,8 +440,7 @@
       "name": "Goldfish"
     }
   ],
-  "zones":
-  [
+  "zones": [
     {
       "name": "Swirlpool Island",
       "translatedName": "Swirlpool Adası",
@@ -446,8 +449,7 @@
       "description": ""
     }
   ],
-  "mail":
-  [
+  "mail": [
     {
       "mailKey": "ocean_intro",
       "translatedName": "S.P.L.A.S.H",
