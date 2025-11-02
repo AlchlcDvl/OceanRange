@@ -1,14 +1,9 @@
 {
   "name": "TR",
-<<<<<<< HEAD
   "additional":
   {
     "ui":
     {
-=======
-  "additional": {
-    "ui": {
->>>>>>> e0d4065852b9db065e662d349baa60e1fdeca261
       "l.pearls": "İnci ekonomisi",
       "m.foodgroup.dirt": "Kum"
     },
@@ -162,23 +157,15 @@
     {
       "name": "Lisa",
       "translatedName": "Lisa Erwin",
-<<<<<<< HEAD
       "offers":
       [
-=======
-      "offers": [
->>>>>>> e0d4065852b9db065e662d349baa60e1fdeca261
         "…Tüh! Buna mı tıkladım? Ah, pardon dostum… Neyse, buradayken bana yardım edebilir misin?",
         "Zzzz… ha?! Ben ne yapıyordum yine?",
         "Haydi uyanın! Üzerine düşeceğimiz işler var."
       ],
       "specialOffer": "Enerjiye ihtiyacım olduğunda sakin kalır ve bir fincan kahve alırım.",
-<<<<<<< HEAD
       "loadingTexts":
       [
-=======
-      "loadingTexts": [
->>>>>>> e0d4065852b9db065e662d349baa60e1fdeca261
         "Lisa bir kere bir Mesmer Slime’a kendi yansımasını göstermeye çalıştı. Slime saatlerce aynanın karşısında öylece durdu.",
         "Lisa sık sık Viktor'la bilimsel tartışmalara girer."
       ]
