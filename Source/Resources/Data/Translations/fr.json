@@ -76,7 +76,7 @@
       "risks": "Les slimes hermite sont naturellement peureux et se cachent rapidement au moindre mouvement ou bruit. Cela rend difficile la tâche de récupérer les objets stockés. S'il ne se sent pas en sécurité, il peut se cacher dans sa coquille pendant de longues périodes, ce qui empêche la collecte de plortes. Pour extraire des objets de sa coquille, il faut de la patience : des méthodes plus dures peuvent rendre le slime encore moins confiant à l'avenir. Il est recommandé de garder les slimes hermite heureux pour les mettre en confiance ; utiliser le fruit-corail est une bonne méthode.",
       "slimeology": "Le slime hermite est une créature fascinante qui se trouve sur les côtes et dans les zones rocheuses. Ce slime ne va nulle part sans sa coquille, qu'il utilise en tant qu'abri et entrepôt pour les objets de valeur qu'il collectionne. Le slime hermite possède la capacité de se détacher de sa coquille afin de mieux s'adapater à son environnement, en adoptant par exemple d'autres coquilles, des noix de coco, pierres, ou même des poubelles. Sa nourriture préférée est le fruit-corail, un fruit délicieux produit par une plante exotique poussant entre les rochers et près de la mer. Un éleveur peut gagner en confiance auprès du slime avec ce fruit.",
       "diet": "Fruits",
-      "favourite": "Coralfruit",
+      "favourite": "Prickly Coral",
       "onomics": "Les plortes hermite sont aussi uniques que le slime. Grâce aux habitudes de collectionneur du slime, le plorte contient des micro-fragments de coquilles et minéraux divers. Les plortes hermite sont très solides, ainsi utilisés pour fabriquer des matériaux de construction durables et des décorations marines. De plus, ils sont célèbres pour leur capacité à briller dans le noir en les frottant contre une surface dure ! Certains éleveurs s'en servent pour décorer leurs ranchs avec des lumières sous-marines naturelles.",
       "intro": "The ever reclusive shell wanderer!"
     },
@@ -146,7 +146,7 @@
       "translatedName": "Prickly Coral",
       "about": "A member of the prickly fruit family, uniquely adapted to grow beneath the waves. Unlike its distant cousin, the Prickly Pear, this fruit conceals a subtle sweetness within its inner core. Though still considered an acquired taste, those willing to give it a chance often find its initial bitterness surprisingly tolerable.",
       "favouredBy": "Hermit Slime",
-      "ranch": "Deposit a Prickly Coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
+      "ranch": "Deposit a prickly coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
       "type": "Fruit",
       "intro": "Watch for the pointy parts!"
     }
@@ -446,7 +446,7 @@
       "translatedName": "Île Swirlpool",
       "intro": "Une terre lointaine qui saura satisfaire les curieux !",
       "presence": "Traverse l'île...",
-      "description": ""
+      "description": "Placeholder"
     }
   ],
   "mail": [
