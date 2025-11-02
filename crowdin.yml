@@ -4,19 +4,19 @@ files:
     parser: json
     json:
       translate_paths:
-        - /additional/ui/*
-        - /additional/pedia/*
         - /*/*/translatedName
         - /*/*/intro
+        - /*/*/about
+        - /*/*/ranch
+        - /*/*/type
+        - /*/*/favouredBy
+        - /additional/ui/*
+        - /additional/pedia/*
         - /slimes/*/risks
         - /slimes/*/slimeology
         - /slimes/*/diet
         - /slimes/*/favourite
         - /slimes/*/onomics
-        - /*/*/about
-        - /*/*/ranch
-        - /*/*/type
-        - /*/*/favouredBy
         - /ranchers/*/offers/*
         - /ranchers/*/specialOffer
         - /ranchers/*/loadingTexts/*
@@ -24,3 +24,8 @@ files:
         - /zones/*/description
         - /mail/*/subject
         - /mail/*/body
+      excluded_paths:
+        - /*/name
+        - /name
+        - /*/*/name
+        - /mail/*/mailKey
