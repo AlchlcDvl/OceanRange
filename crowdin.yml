@@ -4,7 +4,6 @@ files:
     parser: json
     json:
       translate_paths:
-        - /name
         - /additional/ui/*
         - /additional/pedia/*
         - /*/*/translatedName
