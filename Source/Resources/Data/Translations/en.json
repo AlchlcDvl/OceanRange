@@ -1,15 +1,19 @@
 {
   "name": "EN",
-  "additional": {
-    "ui": {
+  "additional":
+  {
+    "ui":
+    {
       "l.pearls": "Pearlonomics",
       "m.foodgroup.dirt": "Dirt"
     },
-    "pedia": {
+    "pedia":
+    {
       "m.favored_by.silky_sand_craft": "Sand Slime"
     }
   },
-  "slimes": [
+  "slimes":
+  [
     {
       "translatedName": "Rosi Slime",
       "name": "Rosi",
@@ -91,7 +95,8 @@
       "intro": "The slippery slime with a luxurious shine!"
     }
   ],
-  "hens": [
+  "hens":
+  [
     {
       "name": "Sandy",
       "translatedName": "Sandy Hen",
@@ -111,7 +116,8 @@
       "intro": "Always out of place!"
     }
   ],
-  "chicks": [
+  "chicks":
+  [
     {
       "name": "Sandy",
       "translatedName": "Sandy Chickadoo",
@@ -131,7 +137,8 @@
       "intro": "Doesn't fit right in yet..."
     }
   ],
-  "fruits": [
+  "fruits":
+  [
     {
       "name": "Sticky",
       "translatedName": "Sticky Fingers",
@@ -151,7 +158,8 @@
       "intro": "Watch for the pointy parts!"
     }
   ],
-  "veggies": [
+  "veggies":
+  [
     {
       "name": "Blowtato",
       "translatedName": "Blowtato",
@@ -162,23 +170,27 @@
       "intro": "The explosive veggie!"
     }
   ],
-  "ranchers": [
+  "ranchers":
+  [
     {
       "name": "Lisa",
       "translatedName": "Lisa Erwin",
-      "offers": [
+      "offers":
+      [
         "...Oops! Did I click that? Ah, sorry, mate... well, while you're here, could ya lend me a hand?",
         "Zzzz... huh?! What was I doin' again?",
         "Rise 'n shine! We've got work to crack on with."
       ],
       "specialOffer": "When I need a burst of energy, I just keep calm and grab a cuppa coffee.",
-      "loadingTexts": [
+      "loadingTexts":
+      [
         "Lisa tried to show a mesmer slime its own reflection once. It stood there at the mirror for hours.",
         "Lisa often gets into scientific disputes with Viktor."
       ]
     }
   ],
-  "largos": [
+  "largos":
+  [
     {
       "translatedName": "Rosi Mine Largo",
       "name": "Rosi Mine"
@@ -372,7 +384,8 @@
       "name": "Dervish Hermit"
     }
   ],
-  "gordos": [
+  "gordos":
+  [
     {
       "translatedName": "Rosi Gordo",
       "name": "Rosi"
@@ -406,7 +419,8 @@
       "name": "Sand"
     }
   ],
-  "plorts": [
+  "plorts":
+  [
     {
       "translatedName": "Rosi Pearl",
       "name": "Rosi"
@@ -440,7 +454,8 @@
       "name": "Goldfish"
     }
   ],
-  "zones": [
+  "zones":
+  [
     {
       "name": "Swirlpool Island",
       "translatedName": "Swirlpool Island",
@@ -449,7 +464,8 @@
       "description": "Placeholder"
     }
   ],
-  "mail": [
+  "mail":
+  [
     {
       "mailKey": "ocean_intro",
       "translatedName": "S.P.L.A.S.H",
