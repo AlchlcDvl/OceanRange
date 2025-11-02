@@ -66,7 +66,7 @@
       "risks": "Mesmer slimes ranch için bir risk oluşturabilir; ürettikleri desenler, onları gören slimes’lar üzerinde hipnotik bir etki yapar ve bu, slimes’ların saatlerce bir arada toplanmasına neden olabilir—özellikle karanlıkta, parlamaları en belirgin hâle gelir. Bir mesmer slime yalnız bırakıldığında, ruh hali de düşer. Huzursuz olduklarında, mesmer slimes vahşi bir hâl sergiler, kimsenin onlarla arkadaş olmak istemediği hissiyle mutsuz görünürler. Bu hayal kırıklığını, tarr’a benzeyen göz ve ağız desenleri sergileyerek dışa vururlar; bu da diğer slimes’ları daha çok korkutur. Ayrıca, böcek benzeri uzuvlarıyla rancher’lara ve slimes’lara rastgele saldırabilirler. Aksi takdirde bakımları oldukça basittir.",
       "slimeology": "Kafa karıştırıcı, tehlikeli görünümlü ama dost canlısı Mesmer slime, vücudunda çok belirgin şekilde pulsleyen renkler yayar. Bu gösterilerin gerçek amacı tartışmalı olsa da, çoğu slime bilimcisi bunun mümkün olduğunca çok slimes’ın favori arkadaşı olmayı hedeflediğini düşünüyor, hatta akrep benzeri görünümlerine rağmen. İlginç bir şekilde, çok sosyal görünüyorlar. Mesmer slimes çoğu zaman adadaki yemyeşil ormanlar ve mağaralarda bulunur ve parlamalarını kolayca görebilirsiniz.",
       "diet": "Meyve",
-      "favourite": "Pogofruit",
+      "favourite": "Sticky Fingers",
       "onomics": "Mesmer plortları biyolüminesan bakteriler içerir ve bu bakteriler parlak renklerinin kaynağı gibi görünür. Bu bakteriler geniş bir renk yelpazesi gösterebilir, ancak genellikle belirli tonları gösterebilmeleri için karmaşık kimyasal bileşiklerle yapay olarak mutasyona uğratılmaları gerekir. Mesmer plortlarıyla yapılan ürünler, genellikle lüks, gösterişli ve yenilenebilir ışığa alternatif olarak zenginler tarafından tercih edilir. Gösterişli sunumuna rağmen, gerçek piyasa değeri şaşırtıcı derecede mütevazıdır.",
       "intro": "ooooooooooooooooooo güzel"
     },
@@ -76,7 +76,7 @@
       "risks": "Hermit slimes doğal olarak şüpheci olup ani hareket veya yüksek ses algıladıklarında hızla saklanabilirler. Bu, paketleri ve saklanan eşyaları toplarken zorluk yaratabilir. Kendini güvende hissetmezse, uzun süre kabuğunda saklanabilir ve plortlarını toplamak zorlaşır. Eşyaları kabuğundan alırken dikkatli ve sabırlı olmanız gerekir. Sert yöntemler, slimenin gelecekte kabuğundan çıkmayı daha da reddetmesine neden olabilir. Hermit slimes’ları mutlu tutmak ve daha da güvensiz hâle gelmelerini önlemek için, onlarla etkileşimde koral meyvesi ve diğer barışçıl stratejiler kullanılması tavsiye edilir.",
       "slimeology": "Hermit slime, kıyı ve kayalık alanlarda yaşayan büyüleyici bir yaratıktır. Bu slime, her zaman sırtında taşıdığı bir kabuğu ile karakterizedir; kabuğu, topladığı değerli eşyalar için hem sığınak hem de depolama alanı olarak kullanılır. Hermit slime’ın benzersiz özelliği, kabuğunu bırakabilmesi ve çevresine uyum sağlayabilmesidir; kabuklara, hindistan cevizlerine, taşlara ve hatta kutu gibi çöplere girebilir. En sevdiği yiyecek, kayaların çatlaklarında ve deniz kenarında yetişen egzotik bir bitkiden elde edilen lezzetli koral meyvesidir; bu yiyecek, rancher’ın slimenin güvenini kazanmasına yardımcı olur ve toplamasını kolaylaştırır.",
       "diet": "Meyve",
-      "favourite": "Coralfruit",
+      "favourite": "Prickly Coral",
       "onomics": "Hermit plortları, slimes’lar kadar eşsizdir. Slimes’ların çevrelerinde sürekli materyal toplaması sayesinde, plortları kabuk ve mineral mikropartikülleri içerir. Hermit plortları son derece dayanıklıdır ve dayanıklı yapı malzemeleri ve deniz dekorları üretiminde kullanılır. Ayrıca sert bir yüzeye sürtüldüğünde karanlıkta parlayabilme yetenekleriyle ünlüdür! Bazı rancher’lar, bunları ranchlerini doğal su altı ışıklarıyla dekore etmek için kullanır.",
       "intro": "Her zaman içine kapanık kabuk gezgini!"
     },
@@ -137,7 +137,7 @@
       "translatedName": "Sticky Fingers",
       "about": "A sweet treat that tends to stick to your teeth, or even your fingers. Once prized as the key ingredient in many of the Far, Far Range’s candies, this fruit balances its gooey stickiness with a surprisingly rich creaminess and a satisfying crunch.",
       "favouredBy": "Mesmer Slime",
-      "ranch": "Deposit a Sticky Finger into a garden's depositor and you'll have a large Sticky Finger tree of your very own.",
+      "ranch": "Deposit a sticky finger into a garden's depositor and you'll have a large Sticky Finger tree of your very own.",
       "type": "Fruit",
       "intro": "The sticky fruit!"
     },
@@ -146,7 +146,7 @@
       "translatedName": "Prickly Coral",
       "about": "A member of the prickly fruit family, uniquely adapted to grow beneath the waves. Unlike its distant cousin, the Prickly Pear, this fruit conceals a subtle sweetness within its inner core. Though still considered an acquired taste, those willing to give it a chance often find its initial bitterness surprisingly tolerable.",
       "favouredBy": "Hermit Slime",
-      "ranch": "Deposit a Prickly Coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
+      "ranch": "Deposit a prickly coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
       "type": "Fruit",
       "intro": "Watch for the pointy parts!"
     }
@@ -446,7 +446,7 @@
       "translatedName": "Swirlpool Adası",
       "intro": "Merak edenler için uzaklarda bir harikalar diyarı!",
       "presence": "Adayı keşfe çıkıyorum...",
-      "description": ""
+      "description": "Placeholder"
     }
   ],
   "mail": [
