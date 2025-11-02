@@ -1,19 +1,15 @@
 {
   "name": "TR",
-  "additional":
-  {
-    "ui":
-    {
+  "additional": {
+    "ui": {
       "l.pearls": "İnci ekonomisi",
       "m.foodgroup.dirt": "Kum"
     },
-    "pedia":
-    {
+    "pedia": {
       "m.favored_by.silky_sand_craft": "Sand Slime"
     }
   },
-  "slimes":
-  [
+  "slimes": [
     {
       "translatedName": "Rosi Slime",
       "name": "Rosi",
@@ -25,7 +21,7 @@
       "intro": "Denizin pembe incisi.Pembe slime'nin kuzeni olduğuna ınanılıyor."
     },
     {
-      "translatedName":"Coco Slime",
+      "translatedName": "Coco Slime",
       "name": "Coco",
       "risks": "Coco slimelar çok bölgeci olduğundan, palmiye ağaçlarının altında yürürken dikkatli olun. Sizi altlarında hissederlerse, yumuşak, süngerimsi vücutlarını sert bir hindistan cevizi kabuğuna dönüştürüp hedeflerine doğru hızla inerler. Geçmişte hindistan cevizi slimenin kafalarına isabet ettiği turistler, sonrasında bulanık görme ve baş dönmesi yaşadıklarını, hatta bazılarının bayıldığını bildirmişlerdir. Vahşi doğada da bu şekilde avlanırlar. Sert derileri ve çevikliklerine rağmen, iyi beslendikleri ve yeterli güneş ışığına maruz kaldıkları sürece çiftliklerde yetiştirilmeleri oldukça kolaydır.",
       "slimeology": "Coco slimelar, adadaki palmiye ağaçlarından sarkarken sıklıkla bulunur. SwirlPool Adası'na özgü olan coco slimeları, ağaçlara tırmanıp yırtıcılardan kaçmak için doğal olarak daha yüksek bir sıçrama yeteneğine sahiptir. Palmiye ağaçlarında yetiştikleri için bitki benzeri özelliklere sahiptirler, bu da sürekli güneş ışığına ihtiyaç duymalarına ve yamyamlık olacağı için meyve ve sebze yemekten kaçınmalarına neden olur.",
@@ -70,7 +66,7 @@
       "risks": "Mesmer slimes ranch için bir risk oluşturabilir; ürettikleri desenler, onları gören slimes’lar üzerinde hipnotik bir etki yapar ve bu, slimes’ların saatlerce bir arada toplanmasına neden olabilir—özellikle karanlıkta, parlamaları en belirgin hâle gelir. Bir mesmer slime yalnız bırakıldığında, ruh hali de düşer. Huzursuz olduklarında, mesmer slimes vahşi bir hâl sergiler, kimsenin onlarla arkadaş olmak istemediği hissiyle mutsuz görünürler. Bu hayal kırıklığını, tarr’a benzeyen göz ve ağız desenleri sergileyerek dışa vururlar; bu da diğer slimes’ları daha çok korkutur. Ayrıca, böcek benzeri uzuvlarıyla rancher’lara ve slimes’lara rastgele saldırabilirler. Aksi takdirde bakımları oldukça basittir.",
       "slimeology": "Kafa karıştırıcı, tehlikeli görünümlü ama dost canlısı Mesmer slime, vücudunda çok belirgin şekilde pulsleyen renkler yayar. Bu gösterilerin gerçek amacı tartışmalı olsa da, çoğu slime bilimcisi bunun mümkün olduğunca çok slimes’ın favori arkadaşı olmayı hedeflediğini düşünüyor, hatta akrep benzeri görünümlerine rağmen. İlginç bir şekilde, çok sosyal görünüyorlar. Mesmer slimes çoğu zaman adadaki yemyeşil ormanlar ve mağaralarda bulunur ve parlamalarını kolayca görebilirsiniz.",
       "diet": "Meyve",
-      "favourite": "Pogofruit",
+      "favourite": "Sticky Fingers",
       "onomics": "Mesmer plortları biyolüminesan bakteriler içerir ve bu bakteriler parlak renklerinin kaynağı gibi görünür. Bu bakteriler geniş bir renk yelpazesi gösterebilir, ancak genellikle belirli tonları gösterebilmeleri için karmaşık kimyasal bileşiklerle yapay olarak mutasyona uğratılmaları gerekir. Mesmer plortlarıyla yapılan ürünler, genellikle lüks, gösterişli ve yenilenebilir ışığa alternatif olarak zenginler tarafından tercih edilir. Gösterişli sunumuna rağmen, gerçek piyasa değeri şaşırtıcı derecede mütevazıdır.",
       "intro": "ooooooooooooooooooo güzel"
     },
@@ -80,7 +76,7 @@
       "risks": "Hermit slimes doğal olarak şüpheci olup ani hareket veya yüksek ses algıladıklarında hızla saklanabilirler. Bu, paketleri ve saklanan eşyaları toplarken zorluk yaratabilir. Kendini güvende hissetmezse, uzun süre kabuğunda saklanabilir ve plortlarını toplamak zorlaşır. Eşyaları kabuğundan alırken dikkatli ve sabırlı olmanız gerekir. Sert yöntemler, slimenin gelecekte kabuğundan çıkmayı daha da reddetmesine neden olabilir. Hermit slimes’ları mutlu tutmak ve daha da güvensiz hâle gelmelerini önlemek için, onlarla etkileşimde koral meyvesi ve diğer barışçıl stratejiler kullanılması tavsiye edilir.",
       "slimeology": "Hermit slime, kıyı ve kayalık alanlarda yaşayan büyüleyici bir yaratıktır. Bu slime, her zaman sırtında taşıdığı bir kabuğu ile karakterizedir; kabuğu, topladığı değerli eşyalar için hem sığınak hem de depolama alanı olarak kullanılır. Hermit slime’ın benzersiz özelliği, kabuğunu bırakabilmesi ve çevresine uyum sağlayabilmesidir; kabuklara, hindistan cevizlerine, taşlara ve hatta kutu gibi çöplere girebilir. En sevdiği yiyecek, kayaların çatlaklarında ve deniz kenarında yetişen egzotik bir bitkiden elde edilen lezzetli koral meyvesidir; bu yiyecek, rancher’ın slimenin güvenini kazanmasına yardımcı olur ve toplamasını kolaylaştırır.",
       "diet": "Meyve",
-      "favourite": "Coralfruit",
+      "favourite": "Prickly Coral",
       "onomics": "Hermit plortları, slimes’lar kadar eşsizdir. Slimes’ların çevrelerinde sürekli materyal toplaması sayesinde, plortları kabuk ve mineral mikropartikülleri içerir. Hermit plortları son derece dayanıklıdır ve dayanıklı yapı malzemeleri ve deniz dekorları üretiminde kullanılır. Ayrıca sert bir yüzeye sürtüldüğünde karanlıkta parlayabilme yetenekleriyle ünlüdür! Bazı rancher’lar, bunları ranchlerini doğal su altı ışıklarıyla dekore etmek için kullanır.",
       "intro": "Her zaman içine kapanık kabuk gezgini!"
     },
@@ -95,8 +91,7 @@
       "intro": "Lüks bir parlaklığa sahip kaygan slime!"
     }
   ],
-  "hens":
-  [
+  "hens": [
     {
       "name": "Sandy",
       "translatedName": "Kumlu Tavuk",
@@ -116,8 +111,7 @@
       "intro": "Daima göze batan parlayan tavuk!"
     }
   ],
-  "chicks":
-  [
+  "chicks": [
     {
       "name": "Sandy",
       "translatedName": "Kumlu Civciv",
@@ -137,11 +131,27 @@
       "intro": "Henüz parıltısına alışamadı..."
     }
   ],
-  "fruits":
-  [
+  "fruits": [
+    {
+      "name": "Sticky",
+      "translatedName": "Sticky finger",
+      "about": "Dişlerine, hatta bazen parmaklarına yapışma eğiliminde olan tatlı bir atıştırmalık. Bir zamanlar Far, Far Range’in birçok şekerlemesinde ana malzeme olarak değer gören bu meyve, yapışkan dokusunu şaşırtıcı derecede zengin bir kremamsılıkla ve tatmin edici bir çıtırlıkla dengeler.",
+      "favouredBy": "Mesmer Slime",
+      "ranch": "Bir Sticky Finger’ı bir bahçenin deposuna yerleştirirsen, kısa sürede kendi büyük Sticky Finger ağacına sahip olursun.",
+      "type": "Meyve",
+      "intro": "Yapışkan meyve!"
+    },
+    {
+      "name": "Coral",
+      "translatedName": "Pürüzlü mercan",
+      "about": "Dikenli meyve ailesinden olan bu tür, denizin altında büyüyebilecek şekilde uyum sağlamıştır. Uzak akrabası Dikenli İncir’den farklı olarak, iç kısmında hafif bir tatlılık gizler. Tadı alışkanlık gerektirse de, deneyenler ilk acılığının aslında o kadar da kötü olmadığını fark eder.",
+      "favouredBy": "Hermit Slime",
+      "ranch": "Bir Pürüzlü mercanı’ı bir bahçenin deposuna yerleştirirsen, kısa sürede kendi büyük Prickly Coral ağacına sahip olursun.",
+      "type": "Meyve",
+      "intro": "Sivri kısımlara dikkat et!"
+    }
   ],
-  "veggies":
-  [
+  "veggies": [
     {
       "name": "Blowtato",
       "translatedName": "Blowtato",
@@ -152,27 +162,23 @@
       "intro": "Patlayan sebze!"
     }
   ],
-  "ranchers":
-  [
+  "ranchers": [
     {
       "name": "Lisa",
       "translatedName": "Lisa Erwin",
-      "offers":
-      [
+      "offers": [
         "…Tüh! Buna mı tıkladım? Ah, pardon dostum… Neyse, buradayken bana yardım edebilir misin?",
         "Zzzz… ha?! Ben ne yapıyordum yine?",
         "Haydi uyanın! Üzerine düşeceğimiz işler var."
       ],
       "specialOffer": "Enerjiye ihtiyacım olduğunda sakin kalır ve bir fincan kahve alırım.",
-      "loadingTexts":
-      [
+      "loadingTexts": [
         "Lisa bir kere bir Mesmer Slime’a kendi yansımasını göstermeye çalıştı. Slime saatlerce aynanın karşısında öylece durdu.",
         "Lisa sık sık Viktor'la bilimsel tartışmalara girer."
       ]
     }
   ],
-  "largos":
-  [
+  "largos": [
     {
       "translatedName": "Rosi Mine Largo",
       "name": "Rosi Mine"
@@ -366,8 +372,7 @@
       "name": "Dervish Hermit"
     }
   ],
-  "gordos":
-  [
+  "gordos": [
     {
       "translatedName": "Rosi Gordo",
       "name": "Rosi"
@@ -401,8 +406,7 @@
       "name": "Sand"
     }
   ],
-  "plorts":
-  [
+  "plorts": [
     {
       "translatedName": "Rosi Pearl",
       "name": "Rosi"
@@ -436,18 +440,16 @@
       "name": "Goldfish"
     }
   ],
-  "zones":
-  [
+  "zones": [
     {
       "name": "Swirlpool Island",
       "translatedName": "Swirlpool Adası",
       "intro": "Merak edenler için uzaklarda bir harikalar diyarı!",
       "presence": "Adayı keşfe çıkıyorum...",
-      "description": ""
+      "description": "Placeholder"
     }
   ],
-  "mail":
-  [
+  "mail": [
     {
       "mailKey": "ocean_intro",
       "translatedName": "S.P.L.A.S.H",
