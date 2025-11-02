@@ -7,12 +7,7 @@ namespace OceanRange;
 [ConfigFile("OceanRance")]
 public static class Config
 {
-    public static bool DUMP_TRANSLATIONS
-#if DEBUG
-        = true;
-#else
-        ;
-#endif
+    public static bool DUMP_TRANSLATIONS = false;
 
     public static Language FALLBACK_LANGUAGE = Language.EN;
 }

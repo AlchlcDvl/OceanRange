@@ -523,10 +523,13 @@ public static class Inventory
 #if DEBUG
     // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use
 
-    // public static void Dump(this Texture texture, string fileName = null, string path = null)
+    // public static void Dump(this Texture texture, string fileName = null, string path = null, bool png = true)
     // {
-    //     if (texture)
-    //         File.WriteAllBytes(Path.Combine(path ?? DumpPath, (fileName ?? texture.name) + ".png"), texture.Decompress().EncodeToPNG());
+    //     if (!texture)
+    //         return;
+
+    //     var decompress = texture.Decompress();
+    //     File.WriteAllBytes(Path.Combine(path ?? DumpPath, (fileName ?? texture.name) + (png ? ".png" : ".jpg")), png ? decompress.EncodeToPNG() : decompress.EncodeToJPG());
     // }
 
     // public static void Dump(this Sprite sprite, string fileName = null, string path = null) => sprite.texture.Dump(fileName, path);
