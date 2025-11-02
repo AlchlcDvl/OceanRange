@@ -1,9 +1,9 @@
 {
-  "name": "EN",
+  "name": "TR",
   "additional": {
     "ui": {
-      "l.pearls": "Pearlonomics",
-      "m.foodgroup.dirt": "Dirt"
+      "l.pearls": "İnci ekonomisi",
+      "m.foodgroup.dirt": "Kum"
     },
     "pedia": {
       "m.favored_by.silky_sand_craft": "Sand Slime"
@@ -13,122 +13,122 @@
     {
       "translatedName": "Rosi Slime",
       "name": "Rosi",
-      "risks": "There is not much to worry about the rosi slime. They are very easy to ranch, only needing food and companionship. A lonely rosi slime is a sad rosi slime. So it's recommended for ranchers to have more than one if they want a healthy production of pearls.",
-      "slimeology": "The rosi slime is the most common slime found in The Great Reef. They are often seen as cheerful, friendly and mischievous, often pranking other slimes and even humans. Rosi slimes have a deep bond with one another and are very rarely seen alone, As long as they have a partner to play with, they will be happy forever, rarely showing any sadness. And when they are sad it's often at the expense of others. Trying their best to cheer the slime or human back to their happy selves.",
-      "diet": "Everything",
-      "favourite": "No favorite food. The Rosi slime loves everything equally.",
-      "onomics": "Rosi pearls are often called the \"Aphrodite Pearl\" for their rejuvenating properties on human skin. Beauty companies frequently market their products as the key to a youthful glow, claiming that rosi pearls help rewind aging skin by 20-50 years. This wouldn't be a problem if their frills were also believed to have abilities to cure internal organs, even rare cancers when consumed. While their frills can slowly regenerate constant tearing causes smaller gills to grow. However, new research shows that these healing properties are temporary. The resulting constant consumption and usage of the pearl cause rapid aging, making rosi pearls an unreliable anti-aging solution.",
-      "intro": "The pink pearl of the sea. Believed to be the cousin of the pink slime."
+      "risks": "Rosi slime konusunda endişelenecek pek bir şey yok. Çiftlikte yetiştirilmeleri çok kolay, sadece yiyecek ve arkadaşlığa ihtiyaçları var. Yalnız bir rosi slime, hüzünlü bir rosi slime olur. Bu yüzden, sağlıklı bir inci üretimi istiyorlarsanız, çiftçilerin birden fazla slime bulundurmaları önerilir.",
+      "slimeology": "Rosi slime, Büyük Resif'te bulunan en yaygın balçıktır. Genellikle neşeli, arkadaş canlısı ve yaramaz olarak görülürler, sık sık diğer balçıklara ve hatta insanlara şaka yaparlar. Rosi balçıklarının birbirleriyle derin bir bağı vardır ve çok nadiren yalnız görülürler. Oynayacakları bir partnerleri olduğu sürece sonsuza dek mutlu olurlar ve nadiren üzüntü gösterirler. Ve üzgün olduklarında, genellikle başkalarının zararınadırlar. Balçığı veya insanı mutlu hallerine geri döndürmek için ellerinden geleni yaparlar.",
+      "diet": "Herşey",
+      "favourite": "Sevdikleri bir yemek yoktur.Herşeyi eşit değerde sever",
+      "onomics": "Rosi incileri, insan cildi üzerindeki gençleştirici özellikleri nedeniyle sıklıkla \"Afrodit İncisi\" olarak anılır. Güzellik şirketleri, ürünlerini gençlik ışıltısının anahtarı olarak pazarlayarak, rosi incilerinin yaşlanan cildi 20-50 yıl geriye götürdüğünü iddia ederler. Eğer bu incilerin iç organları, hatta tüketildiğinde nadir görülen kanserleri bile iyileştirebildiğine inanılsaydı, bu bir sorun olmazdı. İncileri yavaşça yenilenebilse de, sürekli yırtılma solungaçların daha küçük büyümesine neden olur. Ancak yeni araştırmalar, bu iyileştirici özelliklerin geçici olduğunu gösteriyor. İncinin sürekli tüketilmesi ve kullanılması, hızlı yaşlanmaya neden olarak rosi incilerini güvenilmez bir yaşlanma karşıtı çözüm haline getiriyor.",
+      "intro": "Denizin pembe incisi.Pembe slime'nin kuzeni olduğuna ınanılıyor."
     },
     {
       "translatedName": "Coco Slime",
       "name": "Coco",
-      "risks": "Be cautious while walking under palm trees as coco slimes are very territorial and if they sense you underneath, they will harden their soft, squishy bodies to a hard coconut-like shell and crash down onto their targets. Tourists in the past who got hit in the head by a coco slime have reported blurred vision and dizziness afterwards with some even being knocked out cold. This is also how they hunt in the wild. Despite their hard skin and agility, they are quite easy to ranch as long as they are well feed and have enough exposure to sunlight.",
-      "slimeology": "Coco slimes are commonly found hanging from the palm trees of the island. Being natives to SwirlPool Island, the coco slimes have natural adapted a higher jump in order to climb trees and escape predators. Due to them being grown from palm trees, they have plant like attributes which causes them to require constant sunlight and also tend to avoid eating fruits and vegetables as it would be cannibalism.",
-      "diet": "Meat",
-      "favourite": "Sandy Hen",
-      "onomics": "Coco plorts, unlike their producer, are very soft and silky as well as being an excellent source of calcium when condensed to liquid. Despite being very similar to earth's milk in properties, they can still be consumed by people who are lactose intolerant, making them extremely popular for creating lactose intolerance options for dairy products. And due to their incredibly soft and silky texture, they are also very good for skin care and used often in spas as substitutes to milk baths.",
-      "intro": "The concussion slime, wear helmets!"
+      "risks": "Coco slimelar çok bölgeci olduğundan, palmiye ağaçlarının altında yürürken dikkatli olun. Sizi altlarında hissederlerse, yumuşak, süngerimsi vücutlarını sert bir hindistan cevizi kabuğuna dönüştürüp hedeflerine doğru hızla inerler. Geçmişte hindistan cevizi slimenin kafalarına isabet ettiği turistler, sonrasında bulanık görme ve baş dönmesi yaşadıklarını, hatta bazılarının bayıldığını bildirmişlerdir. Vahşi doğada da bu şekilde avlanırlar. Sert derileri ve çevikliklerine rağmen, iyi beslendikleri ve yeterli güneş ışığına maruz kaldıkları sürece çiftliklerde yetiştirilmeleri oldukça kolaydır.",
+      "slimeology": "Coco slimelar, adadaki palmiye ağaçlarından sarkarken sıklıkla bulunur. SwirlPool Adası'na özgü olan coco slimeları, ağaçlara tırmanıp yırtıcılardan kaçmak için doğal olarak daha yüksek bir sıçrama yeteneğine sahiptir. Palmiye ağaçlarında yetiştikleri için bitki benzeri özelliklere sahiptirler, bu da sürekli güneş ışığına ihtiyaç duymalarına ve yamyamlık olacağı için meyve ve sebze yemekten kaçınmalarına neden olur.",
+      "diet": "Et",
+      "favourite": "Kum tavuğu",
+      "onomics": "Hindistan cevizi sütü, üreticisinin aksine, çok yumuşak ve ipeksi bir yapıya sahiptir ve sıvı hale getirildiğinde mükemmel bir kalsiyum kaynağıdır. Özellikleri bakımından dünya sütüne çok benzemesine rağmen, laktoz intoleransı olan kişiler tarafından tüketilebilir ve bu da onları süt ürünleri için laktoz intoleransı seçenekleri oluşturmakta oldukça popüler hale getirir. İnanılmaz derecede yumuşak ve ipeksi dokusu sayesinde cilt bakımı için de çok faydalıdır ve genellikle spalarda süt banyolarının yerine kullanılır.",
+      "intro": "Beyin sarsıntısı slime'ı , kask takın!"
     },
     {
       "translatedName": "Mine Slime",
       "name": "Mine",
-      "risks": "Approach mine slimes with caution, for their spikes aren't just for show! Any direct contact will result in a localized eruption. While other slimes will be boomed clear of the danger zone, only fellow mine slimes and their boom cousins possess a natural immunity to these contact explosions. This peculiar trait makes co-habitation an active (and often loud) affair, as they'll seek out their explosive kin for regular, relieving bursts. Keeping them together helps manage their volatile nature, preventing an otherwise grumpy slime.",
-      "slimeology": "The mine slime, a distant and more... prickly cousin to the boom slime, has a unique take on volatility. Unlike their explosive kin, a mine slime's detonations are triggered only by direct contact with another slime or an unwary rancher. To deter accidental bumps, their bodies are adorned with sharp, crystalline spikes; a clear warning sign. Despite their fiery tendencies, these slimes prefer a milder diet of vegetables, with the blowtato being their ultimate delight. This root's highly volatile compounds provide the perfect internal spark for their constant energetic needs and powerful bursts. If a mine slime goes too long without popping, however, their internal pressure builds to uncomfortable levels, driving them to seek relief by finding water, or joining in an explosive embrace with fellow boom or mine slimes.",
-      "diet": "Veggie",
+      "risks": "Mine slimes'larına dikkatle yaklaşın, çünkü dikenleri sadece gösteriş için değil! Doğrudan temas, lokal bir patlamaya yol açar. Diğer slimes'lar tehlike alanından uzaklaştırılırken, sadece diğer maden slimes'ları ve onların patlayıcı kuzenleri bu temas patlamalarına doğal bağışıklığa sahiptir. Bu tuhaf özellik, birlikte yaşamayı aktif (ve genellikle gürültülü) bir hâle getirir; çünkü patlayıcı akrabalarını düzenli, rahatlatıcı patlamalar için ararlar. Onları bir arada tutmak, patlayıcı doğalarını yönetmeye yardımcı olur ve aksi hâlde huysuz bir slime ile karşılaşabilirsiniz.",
+      "slimeology": "Mine slime'ı, patlayıcı slime'ların uzak ve biraz daha dikenli bir kuzeni olarak, volatiliteye kendine özgü bir yaklaşım sergiler. Patlayıcı akrabalarından farklı olarak, maden slimes'ının patlamaları yalnızca başka bir slime veya dikkatsiz bir rancher ile doğrudan temasla tetiklenir. Kazara çarpmaları önlemek için, vücutları keskin, kristal dikenlerle kaplıdır; net bir uyarı işareti. Ateşli eğilimlerine rağmen, bu slimes'lar daha hafif bir sebze diyeti tercih eder ve blowtato en sevdikleri yiyecektir. Bu kökün yüksek derecede uçucu bileşenleri, sürekli enerjik ihtiyaçlarını ve güçlü patlamalarını sağlamak için mükemmel bir iç kıvılcım sunar. Ancak bir maden slimes'ı çok uzun süre patlamazsa, iç basıncı rahatsız edici seviyelere yükselir ve su aramak veya diğer patlayıcı ya da maden slimes'larıyla patlayıcı bir sarılma yoluyla rahatlama arar.",
+      "diet": "Sebze",
       "favourite": "Blowtato",
-      "onomics": "Mine plorts are curious, resilient gems, forged into a pearl-like shape under the immense internal pressures of the mine slime. These unique pearls retain a fragment of their progenitor's explosive nature, though a considerably firmer thwack is required to unleash their contained energy. Their peculiar, controlled detonations make them highly prized in industrial applications, particularly when refined into a fine powder. From powering small, controlled bursts in excavation to adding a spectacular sparkle to interstellar fireworks displays, mine pearls certainly make an impact on the galactic exchange",
-      "intro": "The touch-me-not of slimes!"
+      "onomics": "Mine slimes'larının plortları, merak uyandırıcı ve dayanıklı taşlar gibidir; maden slimes'ının iç basıncının etkisiyle inci benzeri bir şekil alır. Bu eşsiz inceler, yaratıcılarının patlayıcı doğasından bir parçayı muhafaza eder, ancak içlerindeki enerjiyi açığa çıkarmak için daha sağlam bir darbe gerektirir. Kontrollü patlamaları, onları endüstriyel uygulamalarda oldukça değerli kılar. Küçük, kontrollü patlamalarla kazı işlerinde enerji sağlamak veya galaktik havai fişeklerde muhteşem bir ışıltı yaratmak gibi kullanımlar için idealdir. Maden incileri kesinlikle galaktik ticarette etkili bir rol oynar.",
+      "intro": "Slime'lara dokunma!"
     },
     {
       "translatedName": "Lantern Slime",
       "name": "Lantern",
-      "risks": "Lantern slimes aren't the most social compared to other slime species. During the day, they can be found sleeping. When disturbed from their nap, they emit a bright flash to startle any diver or slime that dares to interrupt their beauty sleep and try to run away. However, at night, they become very docile and can be found swimming across the coral reef in search of food.",
-      "slimeology": "The lantern slime is a distant cousin of the phosphor slime. At one point in its evolution, the phosphor slimes expelled their inner core, using it to attract prey underwater. Slime nature is indeed peculiar. Much like its cousins, the lantern slimes can be found at night in the deepest parts of the Moss Blanket and the Great Reef. They are often seen alone and rarely in groups, as they prefer an isolated lifestyle and little interest in socializing. However, when it comes to humans, lantern slimes often aid divers in finding their way back to land.",
-      "diet": "Meat",
+      "risks": "Lantern slimes, diğer slime türlerine göre çok sosyal değiller. Gündüzleri uyuyor olabilirler. Uyandırıldıklarında, güzellik uykularını bölen dalgıçları veya slimes’ları korkutmak için parlak bir flaş yayarlar ve kaçmaya çalışırlar. Ancak gece olduğunda oldukça uysal olurlar ve besin aramak için mercan resiflerinde yüzüyor olabilirler.",
+      "slimeology": "Lantern slime, phosphor slime’un uzak bir kuzenidir. Evrimleri sırasında, phosphor slimes’lar iç çekirdeğini su altında av çekmek için kullanmışlardır. Slime doğası gerçekten tuhaftır. Kuzenleri gibi, lantern slimes’lar gece Moss Blanket ve Great Reef’in en derin bölgelerinde bulunabilir. Genellikle yalnızdırlar ve nadiren gruplar hâlinde görülürler; izole bir yaşam tarzını tercih ederler ve sosyal etkileşime çok ilgi göstermezler. Ancak insanlara gelince, lantern slimes dalgıçların karaya geri dönmelerine sıkça yardımcı olur.",
+      "diet": "Et",
       "favourite": "Radiant Hen",
-      "onomics": "Lantern pearls are a key ingredient in many beauty products due to their natural moisturizing properties. These pearls not only hydrate the skin but also impart a radiant, plum-like glow, making them ideal for night creams. However, it's important to note that their protective barrier against bacteria diminishes rapidly when exposed to sunlight. Therefore, products containing a high concentration of lantern pearls are best applied before bedtime for their benefits.",
-      "intro": "It lights up your life!"
+      "onomics": "Lantern incileri, doğal nemlendirici özelliklerinden dolayı birçok güzellik ürününün ana bileşenidir. Bu inciler sadece cildi nemlendirmekle kalmaz, aynı zamanda erik tonlarında parlak bir ışıltı verir ve gece kremleri için idealdir. Ancak, güneşe maruz kaldıklarında bakterilere karşı koruyucu bariyerleri hızla azalır. Bu nedenle, yüksek yoğunlukta lantern incisi içeren ürünler, faydalarını en iyi şekilde göstermek için yatmadan önce uygulanmalıdır.",
+      "intro": "Bu senin hayatını ışıldatacak!"
     },
     {
       "translatedName": "Sand Slime",
       "name": "Sand",
-      "risks": "Rest easy, ranchers! The sand slime is one of the most delightfully docile slimes you'll encounter. These mellow blobs pose virtually no risk to the ranch, thriving peacefully in any populated corral without inciting a single outbreak. However, despite their beach-dwelling nature, sand slimes are surprisingly delicate when it comes to deep water; prolonged submersion will cause them to slowly dissolve! Even their valuable pearl plorts are safe from hungry mouths; it seems no other slime has a taste for a glistening pearl that began its life as common dirt. Their laid-back nature and inability to cause a ruckus make them perfect companions for even the most timid slimes, just keep them away from the deep end!",
-      "slimeology": "The sand slime, a curious terrestrial cousin to both the puddle and fire slimes, makes its home along the shallow, sun-drenched shores of the Far, Far Range. Much like its elemental kin, these intriguing slimes require no typical sustenance from a rancher's feeder; instead, they subsist entirely on good old dirt. After sifting through the gritty soil, sand slimes process the minerals within, producing glimmering plorts that bear a striking resemblance to Earth's precious pearls. Their calm demeanor and unique diet make them a rather low-maintenance addition to any ranch.",
-      "diet": "Dirt",
+      "risks": "Rahat olun, rancher’lar! Sand slime, karşılaşacağınız en uysal slimes’lardan biridir. Bu sakin yapılar, ranch’de neredeyse hiç risk oluşturmaz ve herhangi bir kalabalık koral içinde huzurla yaşar, tek bir patlamaya yol açmaz. Ancak, plaj yaşamına rağmen, sand slimes derin suya karşı şaşırtıcı derecede hassastır; uzun süre su altında kalırlarsa yavaşça çözülürler! Değerli inci plortları bile aç gözlü ağızlardan güvenlidir; başka hiçbir slime, hayatına sıradan toprak olarak başlamış parlayan bir inciyi tatmak istemez. Sakin doğaları ve kargaşa yaratamama yetenekleri, en çekingen slimes’lar için bile mükemmel arkadaş yapar; tek yapmanız gereken derin suya girmelerini engellemek!",
+      "slimeology": "Sand slime, hem puddle hem de fire slimes’a merak uyandırıcı bir kara kuzenidir ve Far, Far Range’in sığ, güneşle yıkanmış kıyılarında yaşar. Elemental akrabaları gibi, bu ilginç slimes’lar rancher’ın besleyicisinden normal gıda gerektirmez; bunun yerine tamamen sıradan toprakla beslenirler. Kumlu toprağı eleyip mineralleri işledikten sonra, Dünya’nın değerli incilerine benzeyen parlayan plortlar üretirler. Sakin tavırları ve benzersiz diyeti, onları ranch’e eklemek için düşük bakım gerektiren bir seçenek yapar.",
+      "diet": "Toprak",
       "favourite": "Silky Sand",
-      "onomics": "Sand plorts are true marvels of natural refinement. Though the sand slime itself is soft and yielding, the pearls it produces are remarkably tougher than their Earth counterparts, defying their humble origins. These pristine, spherical treasures, born from nothing more than processed soil, fetch an exceptional price on the Plort Market. Their iridescent sheen and superior durability make them highly sought-after for crafting exquisite jewelry and other luxury adornments across the galaxy, proving that true beauty can indeed come from the ground up!",
-      "intro": "You can find it between your toes!"
+      "onomics": "Sand plortları, doğal işçiliğin gerçek harikalarıdır. Sand slime yumuşak ve esnek olsa da, ürettikleri inciler Dünya’daki muadillerinden çok daha dayanıklıdır ve mütevazı kökenlerini aşar. Sadece işlenmiş topraktan doğmuş bu kusursuz, küresel hazineler, Plort Market’te olağanüstü bir fiyatla alıcı bulur. Parlaklığı ve üstün dayanıklılığı, onları galakside mükemmel takılar ve diğer lüks süslemeler için oldukça aranan bir hazine yapar; gerçek güzelliğin gerçekten de yerden gelebileceğini kanıtlar!",
+      "intro": "Ayak parmaklarınızın arasında bulabilirsiniz!"
     },
     {
       "translatedName": "Mesmer Slime",
       "name": "Mesmer",
-      "risks": "Mesmer slimes may be a risk to the ranch, as the patterns they produce enact a hypnotic effect on slimes that gaze upon them, which can leave them bundled up together for hours—especially during the dark, where their glow is most visible. When a mesmer slime is left alone without the company of others, its mood will also fall. During agitation, mesmer slimes exhibit a feral-like state, seemingly unhappy due to the gut feeling that no one wants to be friends with them. They channel this disappointment by exhibiting eye and mouth patterns similar to the tarr, which only scares off other slimes even more. They will also pounce and mindlessly attack ranchers and slimes with their bug-like appendages. Otherwise they're quite simple to take care of.",
-      "slimeology": "The perplexing, dangerous-looking, yet friendly mesmer slime emits very obvious pulsating colors on its body. It's somewhat debatable what the true purpose of these displays are, but most slime scientists agree that it is to try and appeal to and be the favorite friend of as many slimes as possible, even with their scorpion-like appearances. Interestingly, they seem to be very sociable. Mesmer slimes spend most of their time inside lush jungles and caverns on the island, where you could easily spot their glows.",
-      "diet": "Fruit",
+      "risks": "Mesmer slimes ranch için bir risk oluşturabilir; ürettikleri desenler, onları gören slimes’lar üzerinde hipnotik bir etki yapar ve bu, slimes’ların saatlerce bir arada toplanmasına neden olabilir—özellikle karanlıkta, parlamaları en belirgin hâle gelir. Bir mesmer slime yalnız bırakıldığında, ruh hali de düşer. Huzursuz olduklarında, mesmer slimes vahşi bir hâl sergiler, kimsenin onlarla arkadaş olmak istemediği hissiyle mutsuz görünürler. Bu hayal kırıklığını, tarr’a benzeyen göz ve ağız desenleri sergileyerek dışa vururlar; bu da diğer slimes’ları daha çok korkutur. Ayrıca, böcek benzeri uzuvlarıyla rancher’lara ve slimes’lara rastgele saldırabilirler. Aksi takdirde bakımları oldukça basittir.",
+      "slimeology": "Kafa karıştırıcı, tehlikeli görünümlü ama dost canlısı Mesmer slime, vücudunda çok belirgin şekilde pulsleyen renkler yayar. Bu gösterilerin gerçek amacı tartışmalı olsa da, çoğu slime bilimcisi bunun mümkün olduğunca çok slimes’ın favori arkadaşı olmayı hedeflediğini düşünüyor, hatta akrep benzeri görünümlerine rağmen. İlginç bir şekilde, çok sosyal görünüyorlar. Mesmer slimes çoğu zaman adadaki yemyeşil ormanlar ve mağaralarda bulunur ve parlamalarını kolayca görebilirsiniz.",
+      "diet": "Meyve",
       "favourite": "Pogofruit",
-      "onomics": "Mesmer plorts contain bioluminescent bacteria, which seem to be the source of their radiant colors. These bacteria may display a wide range of hues, though they usually have to be artificially mutated using complex chemical compounds to show specific shades. Products made with mesmer plorts are often luxurious, imperious, and flashy alternatives to renewable light, favored by the wealthy for their novelty. Despite the lavish presentation, their true market value remains surprisingly modest.",
-      "intro": "ooooooooooooooooooo pretty"
+      "onomics": "Mesmer plortları biyolüminesan bakteriler içerir ve bu bakteriler parlak renklerinin kaynağı gibi görünür. Bu bakteriler geniş bir renk yelpazesi gösterebilir, ancak genellikle belirli tonları gösterebilmeleri için karmaşık kimyasal bileşiklerle yapay olarak mutasyona uğratılmaları gerekir. Mesmer plortlarıyla yapılan ürünler, genellikle lüks, gösterişli ve yenilenebilir ışığa alternatif olarak zenginler tarafından tercih edilir. Gösterişli sunumuna rağmen, gerçek piyasa değeri şaşırtıcı derecede mütevazıdır.",
+      "intro": "ooooooooooooooooooo güzel"
     },
     {
       "translatedName": "Hermit Slime",
       "name": "Hermit",
-      "risks": "Hermit slimes are naturally suspicious and can quickly hide when detecting sudden movement or loud noise. This can make it difficult to collect parcels and stored items. If it does not feel safe, it may spend long periods hidden in its shell, making it difficult to handle and collect its plorts. When trying to get items out of their shell, you need to do it carefully and patiently. Rough methods can make the slime even more reluctant to come out of its shell in the future. It is recommended to keep the hermit slimes happy and prevent them from becoming even more distrustful, it is advisable to use the coral fruit and other peaceful strategies to interact with them.",
-      "slimeology": "The hermit slime is a fascinating creature that lives in coastal and rocky areas. This slime is characterized by always carrying a shell on its back, which it uses as a shelter and storage for the valuable objects it collects. The hermit slime has the unique characteristic of being able to shed its shell and adapt to its environment, being able to enter shells, coconuts, stones, and even garbage like boxes. Its favorite food is coral fruit, a delicious fruit that grows from an exotic plant that grows in the crevices of rocks and near the sea, this food can help the rancher gain the trust of the slime and thus facilitate its collection.",
-      "diet": "Fruit",
+      "risks": "Hermit slimes doğal olarak şüpheci olup ani hareket veya yüksek ses algıladıklarında hızla saklanabilirler. Bu, paketleri ve saklanan eşyaları toplarken zorluk yaratabilir. Kendini güvende hissetmezse, uzun süre kabuğunda saklanabilir ve plortlarını toplamak zorlaşır. Eşyaları kabuğundan alırken dikkatli ve sabırlı olmanız gerekir. Sert yöntemler, slimenin gelecekte kabuğundan çıkmayı daha da reddetmesine neden olabilir. Hermit slimes’ları mutlu tutmak ve daha da güvensiz hâle gelmelerini önlemek için, onlarla etkileşimde koral meyvesi ve diğer barışçıl stratejiler kullanılması tavsiye edilir.",
+      "slimeology": "Hermit slime, kıyı ve kayalık alanlarda yaşayan büyüleyici bir yaratıktır. Bu slime, her zaman sırtında taşıdığı bir kabuğu ile karakterizedir; kabuğu, topladığı değerli eşyalar için hem sığınak hem de depolama alanı olarak kullanılır. Hermit slime’ın benzersiz özelliği, kabuğunu bırakabilmesi ve çevresine uyum sağlayabilmesidir; kabuklara, hindistan cevizlerine, taşlara ve hatta kutu gibi çöplere girebilir. En sevdiği yiyecek, kayaların çatlaklarında ve deniz kenarında yetişen egzotik bir bitkiden elde edilen lezzetli koral meyvesidir; bu yiyecek, rancher’ın slimenin güvenini kazanmasına yardımcı olur ve toplamasını kolaylaştırır.",
+      "diet": "Meyve",
       "favourite": "Coralfruit",
-      "onomics": "The hermit plorts are as unique as the slimes are. Thanks to the slimes' constant collection of materials in their environment, their plorts contain microfragments of shells and minerals. Hermit plorts are incredibly durable and are used to craft durable building materials and marine decorations. Additionally, they are famous for their ability to glow in the dark when rubbed against a hard surface! Some ranchers use them to decorate their ranches with natural underwater lights.",
-      "intro": "The ever reclusive shell wanderer!"
+      "onomics": "Hermit plortları, slimes’lar kadar eşsizdir. Slimes’ların çevrelerinde sürekli materyal toplaması sayesinde, plortları kabuk ve mineral mikropartikülleri içerir. Hermit plortları son derece dayanıklıdır ve dayanıklı yapı malzemeleri ve deniz dekorları üretiminde kullanılır. Ayrıca sert bir yüzeye sürtüldüğünde karanlıkta parlayabilme yetenekleriyle ünlüdür! Bazı rancher’lar, bunları ranchlerini doğal su altı ışıklarıyla dekore etmek için kullanır.",
+      "intro": "Her zaman içine kapanık kabuk gezgini!"
     },
     {
       "translatedName": "Goldfish Slime",
       "name": "Goldfish",
-      "risks": "Goldfish slimes cannot be captured or contained in traditional corrals, and like gold slimes, they vanish shortly after being discovered. Attempting to corral one will only result in it slipping away with a splash. However, quick-thinking ranchers may be able to feed it its favorite food in time to earn a precious plort.",
-      "slimeology": "Goldfish slimes are an exceptionally rare aquatic variant of the ever elusive gold slime. Unlike their land-loving cousin, these shimmering slimes have adapted to life beneath the waves, gracefully darting through underwater currents with their flowing tails and luminous scales. Their movement mimics that of koi or ornamental goldfish, and they leave behind glittering trails in the water when startled. While they share the same skittish nature as gold slimes, goldfish slimes are slightly easier to observe — if only for a moment longer. They often appear in deep reef trenches or near ancient underwater ruins, surfacing briefly before vanishing in a blink.",
+      "risks": "Goldfish slimes, geleneksel korallarda yakalanamaz veya tutulamaz ve tıpkı gold slimes gibi, keşfedildikten kısa bir süre sonra kaybolurlar. Onu korala almaya çalışmak sadece sıçrayarak kaçmasına neden olur. Ancak hızlı düşünen rancher’lar, zamanında en sevdiği yiyeceği vererek değerli bir plort kazanabilir.",
+      "slimeology": "Goldfish slimes, nadir bulunan gold slime’un sucul bir varyantıdır. Kara yaşamını seven kuzenlerinden farklı olarak, bu parlayan slimes’lar dalgaların altındaki hayata uyum sağlamış, zarif bir şekilde su akıntılarında yüzerek hareket ederler; uzun kuyrukları ve ışıldayan pullarıyla. Hareketleri koi veya süs balığı gibidir ve korktuklarında suya parlak izler bırakırlar. Gold slimes gibi ürkek doğalarına sahip olsalar da, goldfish slimes’ları biraz daha uzun süre gözlemlemek mümkündür. Genellikle derin resif çukurlarında veya antik su altı kalıntılarının yakınında görülür, kısa bir süre su yüzeyine çıkar ve göz açıp kapayıncaya kadar kaybolurlar.",
       "diet": "Gilded Ginger",
       "favourite": "Gilded Ginger",
-      "onomics": "Goldfish plorts are even rarer than gold plorts and twice as valuable, making them a highly sought-after resource. Their underwater origin gives them unique energetic properties, often used in cutting-edge aquatic tech and luxury hologlass manufacturing. Due to their rarity, the Slime Science Lab recommends handling with extreme care, and counting yourself lucky to have found one at all.",
-      "intro": "The slippery slime with a luxurious shine!"
+      "onomics": "Goldfish plortları gold plortlardan bile daha nadir ve iki kat daha değerli olduğundan, oldukça aranan bir kaynaktır. Sucul kökenleri onlara benzersiz enerji özellikleri kazandırır; genellikle ileri teknoloji sucul cihazlar ve lüks hologlass üretiminde kullanılır. Nadiren bulunmaları nedeniyle, Slime Science Lab bunların dikkatle ele alınmasını ve bulmuş olmanızı büyük bir şans olarak görmenizi tavsiye eder.",
+      "intro": "Lüks bir parlaklığa sahip kaygan slime!"
     }
   ],
   "hens": [
     {
       "name": "Sandy",
-      "translatedName": "Sandy Hen",
-      "about": "A sun-baked cousin to the familiar stony hen, Sandy Hens are masters of coastal concealment. Their feathers have evolved into a remarkable mimicry of the dry, shifting sands of the beaches they call home, making them incredibly difficult to spot. Unfortunately for the sandy hen, their superb camouflage is no match for the keen eyes of a coco slime. Perched high in their swaying palm trees, these predators have a particular fondness for the sandy hen's uniquely dry meat, which perfectly balances their own juicy, tropical insides. For a rancher looking for a tasty, albeit a bit parched, bite, the sandy hen offers a familiar flavor with an undeniably arid finish.",
+      "translatedName": "Kumlu Tavuk",
+      "about": "Güneşin kavurduğu topraklarda yaşayan, tanıdık Taşlı Tavuk’un çöl kuzeni olan Kumlu Tavuklar, kıyı bölgelerinde saklanma ustalarıdır. Tüyleri, yaşadıkları plajların kuru ve hareketli kumlarını mükemmel şekilde taklit edecek şekilde evrimleşmiştir. Bu yüzden fark edilmeleri neredeyse imkânsızdır. Ancak ne yazık ki, Coco slime’ların keskin gözlerinden kaçamazlar. Palmiyelerin tepesinde pusuya yatmış bu yırtıcılar, Kumlu Tavuk’un kendilerine özgü kuru etine bayılırlar — bu lezzet, onların sulu ve tropikal iç yapısıyla mükemmel bir denge oluşturur. Rancher’lar içinse Kumlu Tavuk, tanıdık ama biraz kuru bir tada sahip doyurucu bir atıştırmalıktır.",
       "favouredBy": "Coco Slime",
-      "ranch": "Sandy hens in close proximity to roostros will periodically lay eggs that produce Sandy chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.",
-      "type": "Meat",
-      "intro": "The beach side camouflage master!"
+      "ranch": "Kumlu Tavuklar, yakınlarında bir Horoz bulunuyorsa düzenli olarak Kumlu Civciv yumurtaları bırakırlar. Ancak çok fazla tavuk ya da horoz bir arada bulundurmak onları huzursuz eder ve yumurtlama tamamen durur. Tavuk romantizmini iyi bilen zeki rancher’lar, kümeste asla 12 yetişkin tavuğu geçmezler.",
+      "type": "Et",
+      "intro": "Kumsalın kamuflaj ustası!"
     },
     {
       "name": "Radiant",
-      "translatedName": "Radiant Hen",
-      "about": "A peculiar hen among its kind, the radiant hen stands out, literally. Unlike most chickens that try to blend in with their surroundings, the radiant hen has evolved feathers that glow with a soft, ethereal light. This makes them incredibly easy to spot, a trait that would typically be a disadvantage. However, for the nocturnal lantern slimes, this luminosity is irresistible. They are often found clustered around these hens, seemingly mesmerized by their unique radiance. It's believed the hens' constant, gentle light helps to regulate the lantern slimes' internal bioluminescence, which can sometimes become unstable. For ranchers, the radiant hen is a beacon, making them surprisingly easy to locate in the dark corners of the Far, Far Range. Their meat, however, tastes just like a regular chicken.",
+      "translatedName": "Işıltılı Tavuk",
+      "about": "Kendi türleri arasında oldukça tuhaf bir tavuk olan ışıltılı tavuk, adeta kelimenin tam anlamıyla 'parlayarak' öne çıkar. Çoğu tavuğun çevresiyle uyum sağlayarak kamufle olmaya çalışmasının aksine, ışıltılı tavuk yumuşak ve mistik bir ışıkla parlayan tüyler geliştirmiştir. Bu durum onları inanılmaz derecede kolay fark edilir hale getirir — normalde bu bir dezavantaj olurdu. Ancak gececi Fener Slimeler için bu ışık adeta karşı konulmazdır. Bu slimelerin, ışıltılı tavukların çevresinde toplanarak onların benzersiz parıltısına büyülenmiş gibi baktıkları sıkça görülür. Araştırmalara göre, bu tavukların sabit ve nazik ışığı Fener Slimeler’in bazen dengesizleşebilen biyolüminesansını düzenlemeye yardımcı olur. Çiftçiler içinse ışıltılı tavuklar birer işarettir; karanlık köşelerde bile kolayca bulunabilirler. Etleri ise, her ne kadar parlasalar da, tıpkı sıradan bir tavuğun eti gibidir.",
       "favouredBy": "Lantern Slime",
-      "ranch": "Radiant hens in close proximity to roostros will periodically lay eggs that produce Radiant chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.",
-      "type": "Meat",
-      "intro": "Always out of place!"
+      "ranch": "Işıltılı tavuklar, yakınlarında bir horoz bulunduğunda düzenli olarak Işıltılı civciv yumurtaları bırakırlar. Ancak çok fazla tavuk veya horozu aynı kümeste tutmak onları huzursuz eder ve yumurtlama tamamen durur. Tavukların karmaşık doğasını iyi bilen usta çiftçiler, kümesteki yetişkin tavuk sayısını 12'yi geçirmemeye özen gösterir.",
+      "type": "Et",
+      "intro": "Daima göze batan parlayan tavuk!"
     }
   ],
   "chicks": [
     {
       "name": "Sandy",
-      "translatedName": "Sandy Chickadoo",
-      "about": "Sandy chickadoos are baby chickens that will eventually grow into a Sandy hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.",
-      "favouredBy": "(not a slime food)",
-      "ranch": "Keep Sandy Chickadoos in a safe place and they'll eventually grow into a Sandy Hen or Roostro.",
-      "type": "Future Meat",
-      "intro": "A budding camouflager!"
+      "translatedName": "Kumlu Civciv",
+      "about": "Kumlu civcivler, zamanla Kumlu Tavuk’a ya da daha nadir olarak bir horoza dönüşen yavru tavuklardır.\n\nTüm civciv türleri slime’lar tarafından asla yenmez. Kimileri bunun slime’ların kalpten iyi olmalarından kaynaklandığını söyler, kimileriyse civcivlerin henüz kemiklerinde yeterince et bulunmadığı için yenmediklerini düşünür.",
+      "favouredBy": "(slime yemeği değildir)",
+      "ranch": "Kumlu civcivleri güvenli bir yerde tutarsan, zamanla Kumlu Tavuk veya Horoz’a dönüşürler.",
+      "type": "Geleceğin Eti",
+      "intro": "Kamuflaj ustası olmaya aday minik!"
     },
     {
       "name": "Radiant",
-      "translatedName": "Radiant Chickadoo",
-      "about": "Radiant chickadoos are baby chickens that will eventually grow into a Radiant hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.",
-      "favouredBy": "(not a slime food)",
-      "ranch": "Keep Radiant Chickadoos in a safe place and they'll eventually grow into a Radiant Hen or Roostro.",
-      "type": "Future Meat",
-      "intro": "Doesn't fit right in yet..."
+      "translatedName": "Parıltılı Civciv",
+      "about": "Parıltılı civcivler, zamanla Parıltılı Tavuk’a ya da daha nadir olarak bir horoza dönüşen yavru tavuklardır.\n\nTüm civciv türleri slime’lar tarafından asla yenmez. Kimileri bunun slime’ların kalpten iyi olmalarından kaynaklandığını söyler, kimileriyse civcivlerin henüz kemiklerinde yeterince et bulunmadığı için yenmediklerini düşünür.",
+      "favouredBy": "(slime yemeği değildir)",
+      "ranch": "Parıltılı civcivleri güvenli bir yerde tutarsan, zamanla Parıltılı Tavuk veya Horoz’a dönüşürler.",
+      "type": "Geleceğin Eti",
+      "intro": "Henüz parıltısına alışamadı..."
     }
   ],
   "fruits": [
@@ -155,11 +155,11 @@
     {
       "name": "Blowtato",
       "translatedName": "Blowtato",
-      "about": "The blowtato is a peculiar, highly reactive root vegetable, mostly found sprouting from the cracked earth of the Indigo Quarry. Much like the mine slimes that adore them, these spuds have a natural propensity for explosive flair due to a volatile compound within. Ranchers must handle them with extreme care, as a small puncture or \"burp\" is recommended before cooking to prevent a startling bang! For mine slimes, this explosive nature is pure delight, fueling their rock-shattering abilities and making the blowtato their favorite snack. Clever miners even use them to loosen stubborn rock formations, though caution is always advised.",
+      "about": "Blowtato, genellikle Indigo Quarry’nin çatlamış topraklarında filizlenen, oldukça tuhaf ve son derece tepkisel bir kök sebzedir. Onlara bayılan Mine Slime’lar gibi, bu patatesimsi sebzeler de içlerinde bulunan uçucu bir bileşik nedeniyle doğal bir patlama eğilimine sahiptir. Çiftçiler onları büyük bir dikkatle ele almalıdır, çünkü küçük bir delik açmak veya pişirmeden önce ‘gazını çıkarmak’ tavsiye edilir—aksi takdirde beklenmedik bir patlama yaşanabilir! Mine Slime’lar içinse bu patlayıcı doğa tam bir zevktir; onların kaya kırma yeteneklerini besler ve Blowtato’yu en sevdikleri atıştırmalık yapar. Zeki madenciler de inatçı kaya oluşumlarını gevşetmek için Blowtato’ları kullanır, ancak dikkatli olmak her zaman şarttır.",
       "favouredBy": "Mine Slime",
-      "ranch": "Deposit a Blowtato into a garden's depositor and you'll have a large Blowtato crop of your very own.",
-      "type": "Veggie",
-      "intro": "The explosive veggie!"
+      "ranch": "Bir Blowtato’yu bahçenin ekim deposuna yerleştirirsen, kısa sürede kendi Blowtato mahsulüne sahip olursun.",
+      "type": "Sebze",
+      "intro": "Patlayan sebze!"
     }
   ],
   "ranchers": [
@@ -167,14 +167,14 @@
       "name": "Lisa",
       "translatedName": "Lisa Erwin",
       "offers": [
-        "...Oops! Did I click that? Ah, sorry, mate... well, while you're here, could ya lend me a hand?",
-        "Zzzz... huh?! What was I doin' again?",
-        "Rise 'n shine! We've got work to crack on with."
+        "…Tüh! Buna mı tıkladım? Ah, pardon dostum… Neyse, buradayken bana yardım edebilir misin?",
+        "Zzzz… ha?! Ben ne yapıyordum yine?",
+        "Haydi uyanın! Üzerine düşeceğimiz işler var."
       ],
-      "specialOffer": "When I need a burst of energy, I just keep calm and grab a cuppa coffee.",
+      "specialOffer": "Enerjiye ihtiyacım olduğunda sakin kalır ve bir fincan kahve alırım.",
       "loadingTexts": [
-        "Lisa tried to show a mesmer slime its own reflection once. It stood there at the mirror for hours.",
-        "Lisa often gets into scientific disputes with Viktor."
+        "Lisa bir kere bir Mesmer Slime’a kendi yansımasını göstermeye çalıştı. Slime saatlerce aynanın karşısında öylece durdu.",
+        "Lisa sık sık Viktor'la bilimsel tartışmalara girer."
       ]
     }
   ],
@@ -443,9 +443,9 @@
   "zones": [
     {
       "name": "Swirlpool Island",
-      "translatedName": "Swirlpool Island",
-      "intro": "A distant land of wonder for those who are curious!",
-      "presence": "Traversing the island...",
+      "translatedName": "Swirlpool Adası",
+      "intro": "Merak edenler için uzaklarda bir harikalar diyarı!",
+      "presence": "Adayı keşfe çıkıyorum...",
       "description": ""
     }
   ],
@@ -453,14 +453,14 @@
     {
       "mailKey": "ocean_intro",
       "translatedName": "S.P.L.A.S.H",
-      "subject": "Notice from the S.P.L.A.S.H. Foundation",
-      "body": "Greetings, Rancher.\n\nThe 7Zee Corporation, in partnership with the S.P.L.A.S.H. Foundation (Slime Preservation, Learning, Assistance, Sanctuary & Harmony), would like to inform you of unusual phenomena occurring across the region.\n\nReports indicate that non-native slimes, creatures not previously known to inhabit these ecosystems, are beginning to appear in unexpected locations. The cause of these disturbances is currently unknown, but rest assured: our teams are on it.\n\nA certified Slimeologist will be reaching out to you shortly with further information and guidance. In the meantime, proceed with caution and report any unusual slime behavior through your Starmail terminal.\n\nStay safe, stay curious.\n\nSincerely,\nThe Board of S.P.L.A.S.H."
+      "subject": "S.P.L.A.S.H. Vakfı’ndan Duyuru",
+      "body": "Merhaba, Rancher.\n\n7Zee Corporation, S.P.L.A.S.H. Vakfı (Slime Koruma, Öğrenme, Yardım, Sığınak & Uyum) iş birliğiyle, bölgede olağan dışı olaylar yaşandığını bildirmek ister.\n\nRaporlara göre, daha önce bu ekosistemlerde bilinmeyen, yerli olmayan slime türleri beklenmedik yerlerde ortaya çıkmaya başlamış. Bu olayların nedeni henüz bilinmiyor; ancak endişelenmeyin, ekiplerimiz konunun üzerine gitmiş durumda.\n\nSertifikalı bir Slimeolog, kısa süre içinde sizinle iletişime geçerek daha fazla bilgi ve rehberlik sağlayacaktır. Bu arada dikkatli olun ve olağan dışı slime davranışlarını Starmail terminaliniz üzerinden rapor edin.\n\nGüvende kalın, merakınızı kaybetmeyin.\n\nSaygılarımızla,\nS.P.L.A.S.H. Yönetim Kurulu"
     },
     {
       "mailKey": "exchangeintro_lisa",
       "translatedName": "Lisa Erwin",
-      "subject": "G'day from S.P.L.A.S.H. HQ!",
-      "body": "translatedName's Lisa Erwin! Slimeologist, field researcher, and proud member of S.P.L.A.S.H. (that's Slime Preservation, Learning, Assistance, Sanctuary & Harmony for the uninitiated). You could say I'm a bit of a slime whisperer. Been studyin' their behaviors, quirks, and oddities since I first touched down on the Far, Far Range. If it jiggles, hops, or purrs, chances are I've logged a dozen pages on it.\n\nLately, reports have been floodin' in about some strange slime activity happenin' right near your patch of land. Can't say I've seen anything quite like it in the data — and trust me, that's sayin' something.\n\nSo! I'll be reachin' out through the Range Exchange in a couple o' days. Nothin' too formal — just a quick chat, maybe get your eyes on a few of these peculiar slime friends, if you're willin'. Could be nothin'... or it might just be the biggest slime mystery this dusty ol' rock's ever seen.\n\nKeep an eye on those corrals, yeah?\n\nCheers,\n- Lisa.\nFar, Far Range S.P.L.A.S.H.\n\nP.S. If a slime starts hummin' at ya... don't panic. Just write it down."
+      "subject": "S.P.L.A.S.H. Merkez’den Selamlar!",
+      "body": "Merhaba, ben Lisa Erwin! Slimeolog, saha araştırmacısı ve S.P.L.A.S.H.’ın gururlu bir üyesiyim (henüz bilmiyorsanız, Slime Koruma, Öğrenme, Yardım, Sığınak & Uyum demek ). Bir bakıma bir slime fısıldayıcısı sayılabilirim. Far, Far Range’e ayak bastığımdan beri onların davranışlarını, tuhaflıklarını ve garip yönlerini inceliyorum. Eğer bir slime zıplıyor, titriyor ya da mırıldanıyorsa, büyük ihtimalle onun hakkında bir düzine sayfa kayıt tutmuşumdur.\n\nSon zamanlarda, senin arazinin yakınlarında garip slime aktiviteleri olduğuna dair raporlar akmaya başladı. Verilerde böyle bir şey görmemiştim — ve inanın, bu bir şey demek.\n\nO yüzden! Önümüzdeki birkaç gün içinde Range Exchange üzerinden seninle iletişime geçeceğim. Çok resmi bir şey değil — sadece kısa bir sohbet, belki bu tuhaf slime arkadaşlardan birkaçını gözlemleme şansı bulursun, eğer istersen. Belki de hiçbir şey değildir… ya da bu kuru taşın gördüğü en büyük slime gizemi olabilir.\n\nKorumaları gözden kaçırma, tamam mı?\n\nSevgiler,\n- Lisa\nFar, Far Range S.P.L.A.S.H.\n\nNot: Eğer bir slime sana mırıldanmaya başlarsa… panik yapma. Sadece kaydet."
     }
   ]
 }
