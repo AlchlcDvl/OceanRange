@@ -1,5 +1,6 @@
 {
   "name": "FR",
+<<<<<<< HEAD
   "additional":
   {
     "ui":
@@ -9,6 +10,14 @@
     },
     "pedia":
     {
+=======
+  "additional": {
+    "ui": {
+      "l.pearls": "Perlonomie",
+      "m.foodgroup.dirt": "Terre"
+    },
+    "pedia": {
+>>>>>>> e0d4065852b9db065e662d349baa60e1fdeca261
       "m.favored_by.silky_sand_craft": "Slime Sablonneux"
     }
   },
@@ -25,7 +34,11 @@
       "intro": "La perle rose de la mer. Ce slime est soupçonné d'être un cousin du slime rose."
     },
     {
+<<<<<<< HEAD
       "translatedName":"Slime coco",
+=======
+      "translatedName": "Slime coco",
+>>>>>>> e0d4065852b9db065e662d349baa60e1fdeca261
       "name": "Coco",
       "risks": "Attention en marchant sous les palmiers ! Les slimes coco sont très territoriaux, s'ils vous détectent en dessous, ils durçiront leur corps visqueux en une coquille dure comme une noix de coco avant de s'écraser sur leur cible. Les malchanceux ayatnt déjà reçu un slime coco sur la tête expliquent avoir eu la vision floue et être déboussolés, certains se sont même évanouis. Les slimes coco utilisent aussi cette technique pour chasser dans la nature. Malgré leur peau dure et leur agilité, ils sont assez simples à élever tant qu'ils sont bien nourris et ont assez d'accès à la lumière du soleil.",
       "slimeology": "Les slimes coco se trouvent souvent accrochés aux palmiers de l'île. Endémiques de l'île SwirlPool, les slimes coco ont naturellement développé un saut bien plus puissant afin de grimper aux arbres et échapper aux prédateurs. Comme ils poussent des palmiers, ils ont des particularités végétales, nécéssitant un accès constant à la lumière du soleil. Ils ne mangent pas de fruits ou légumes, car ce serait du cannibalisme.",
@@ -147,6 +160,18 @@
       "ranch": "Déposez un colle-aux-doigts dans le réceptacle d'un jardin, et vous obtiendrez un grand arbre sucré, rien qu'à vous.",
       "type": "Fruit",
       "intro": "Tout est dans le nom !"
+<<<<<<< HEAD
+=======
+    },
+    {
+      "name": "Coral",
+      "translatedName": "Prickly Coral",
+      "about": "A member of the prickly fruit family, uniquely adapted to grow beneath the waves. Unlike its distant cousin, the Prickly Pear, this fruit conceals a subtle sweetness within its inner core. Though still considered an acquired taste, those willing to give it a chance often find its initial bitterness surprisingly tolerable.",
+      "favouredBy": "Hermit Slime",
+      "ranch": "Deposit a Prickly Coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
+      "type": "Fruit",
+      "intro": "Watch for the pointy parts!"
+>>>>>>> e0d4065852b9db065e662d349baa60e1fdeca261
     }
   ],
   "veggies":
@@ -166,15 +191,23 @@
     {
       "name": "Lisa",
       "translatedName": "Lisa Erwin",
+<<<<<<< HEAD
       "offers":
       [
+=======
+      "offers": [
+>>>>>>> e0d4065852b9db065e662d349baa60e1fdeca261
         "...Oups! Je voulais pas clicker là, désolé, l'ami... Bon, tant que t'es là, tu me prêtes un coup de main ?",
         "Zzzz... hein ?! Qu'est-ce que je faisais, déjà ?...",
         "Debout, et de bonne heure ! On a du boulot, alors on s'y met !"
       ],
       "specialOffer": "Quand j'ai besoin d'énergie, je respire un grand coup... Et j'bois une grande tasse de café.",
+<<<<<<< HEAD
       "loadingTexts":
       [
+=======
+      "loadingTexts": [
+>>>>>>> e0d4065852b9db065e662d349baa60e1fdeca261
         "Lisa a essayé de montrer sa réflection à un slime mesmeur dans un miroir, une fois. Le slime est resté devant le miroir pendant des heures.",
         "Lisa et Viktor se retrouvent souvent dans des disputes autour de sujets scientifiques."
       ]
