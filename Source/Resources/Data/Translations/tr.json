@@ -1,5 +1,4 @@
 {
-  "name": "TR",
   "additional": {
     "ui": {
       "l.pearls": "İnci ekonomisi",
@@ -12,7 +11,6 @@
   "slimes": [
     {
       "translatedName": "Rosi Slime",
-      "name": "Rosi",
       "risks": "Rosi slime konusunda endişelenecek pek bir şey yok. Çiftlikte yetiştirilmeleri çok kolay, sadece yiyecek ve arkadaşlığa ihtiyaçları var. Yalnız bir rosi slime, hüzünlü bir rosi slime olur. Bu yüzden, sağlıklı bir inci üretimi istiyorlarsanız, çiftçilerin birden fazla slime bulundurmaları önerilir.",
       "slimeology": "Rosi slime, Büyük Resif'te bulunan en yaygın balçıktır. Genellikle neşeli, arkadaş canlısı ve yaramaz olarak görülürler, sık sık diğer balçıklara ve hatta insanlara şaka yaparlar. Rosi balçıklarının birbirleriyle derin bir bağı vardır ve çok nadiren yalnız görülürler. Oynayacakları bir partnerleri olduğu sürece sonsuza dek mutlu olurlar ve nadiren üzüntü gösterirler. Ve üzgün olduklarında, genellikle başkalarının zararınadırlar. Balçığı veya insanı mutlu hallerine geri döndürmek için ellerinden geleni yaparlar.",
       "diet": "Herşey",
@@ -22,7 +20,6 @@
     },
     {
       "translatedName": "Coco Slime",
-      "name": "Coco",
       "risks": "Coco slimelar çok bölgeci olduğundan, palmiye ağaçlarının altında yürürken dikkatli olun. Sizi altlarında hissederlerse, yumuşak, süngerimsi vücutlarını sert bir hindistan cevizi kabuğuna dönüştürüp hedeflerine doğru hızla inerler. Geçmişte hindistan cevizi slimenin kafalarına isabet ettiği turistler, sonrasında bulanık görme ve baş dönmesi yaşadıklarını, hatta bazılarının bayıldığını bildirmişlerdir. Vahşi doğada da bu şekilde avlanırlar. Sert derileri ve çevikliklerine rağmen, iyi beslendikleri ve yeterli güneş ışığına maruz kaldıkları sürece çiftliklerde yetiştirilmeleri oldukça kolaydır.",
       "slimeology": "Coco slimelar, adadaki palmiye ağaçlarından sarkarken sıklıkla bulunur. SwirlPool Adası'na özgü olan coco slimeları, ağaçlara tırmanıp yırtıcılardan kaçmak için doğal olarak daha yüksek bir sıçrama yeteneğine sahiptir. Palmiye ağaçlarında yetiştikleri için bitki benzeri özelliklere sahiptirler, bu da sürekli güneş ışığına ihtiyaç duymalarına ve yamyamlık olacağı için meyve ve sebze yemekten kaçınmalarına neden olur.",
       "diet": "Et",
