@@ -139,6 +139,24 @@
   ],
   "fruits":
   [
+    {
+      "name": "Sticky",
+      "translatedName": "Sticky finger",
+      "about": "Dişlerine, hatta bazen parmaklarına yapışma eğiliminde olan tatlı bir atıştırmalık. Bir zamanlar Far, Far Range’in birçok şekerlemesinde ana malzeme olarak değer gören bu meyve, yapışkan dokusunu şaşırtıcı derecede zengin bir kremamsılıkla ve tatmin edici bir çıtırlıkla dengeler.",
+      "favouredBy": "Mesmer Slime",
+      "ranch": "Bir Sticky Finger’ı bir bahçenin deposuna yerleştirirsen, kısa sürede kendi büyük Sticky Finger ağacına sahip olursun.",
+      "type": "Meyve",
+      "intro": "Yapışkan meyve!"
+    },
+    {
+      "name": "Coral",
+      "translatedName": "Pürüzlü mercan",
+      "about": "Dikenli meyve ailesinden olan bu tür, denizin altında büyüyebilecek şekilde uyum sağlamıştır. Uzak akrabası Dikenli İncir’den farklı olarak, iç kısmında hafif bir tatlılık gizler. Tadı alışkanlık gerektirse de, deneyenler ilk acılığının aslında o kadar da kötü olmadığını fark eder.",
+      "favouredBy": "Hermit Slime",
+      "ranch": "Bir Pürüzlü mercanı’ı bir bahçenin deposuna yerleştirirsen, kısa sürede kendi büyük Prickly Coral ağacına sahip olursun.",
+      "type": "Meyve",
+      "intro": "Sivri kısımlara dikkat et!"
+    }
   ],
   "veggies":
   [
