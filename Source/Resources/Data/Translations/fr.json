@@ -76,9 +76,9 @@
       "risks": "Les slimes hermite sont naturellement peureux et se cachent rapidement au moindre mouvement ou bruit. Cela rend difficile la tâche de récupérer les objets stockés. S'il ne se sent pas en sécurité, il peut se cacher dans sa coquille pendant de longues périodes, ce qui empêche la collecte de plortes. Pour extraire des objets de sa coquille, il faut de la patience : des méthodes plus dures peuvent rendre le slime encore moins confiant à l'avenir. Il est recommandé de garder les slimes hermite heureux pour les mettre en confiance ; utiliser le fruit-corail est une bonne méthode.",
       "slimeology": "Le slime hermite est une créature fascinante qui se trouve sur les côtes et dans les zones rocheuses. Ce slime ne va nulle part sans sa coquille, qu'il utilise en tant qu'abri et entrepôt pour les objets de valeur qu'il collectionne. Le slime hermite possède la capacité de se détacher de sa coquille afin de mieux s'adapater à son environnement, en adoptant par exemple d'autres coquilles, des noix de coco, pierres, ou même des poubelles. Sa nourriture préférée est le fruit-corail, un fruit délicieux produit par une plante exotique poussant entre les rochers et près de la mer. Un éleveur peut gagner en confiance auprès du slime avec ce fruit.",
       "diet": "Fruits",
-      "favourite": "Prickly Coral",
+      "favourite": "Corail Cacté",
       "onomics": "Les plortes hermite sont aussi uniques que le slime. Grâce aux habitudes de collectionneur du slime, le plorte contient des micro-fragments de coquilles et minéraux divers. Les plortes hermite sont très solides, ainsi utilisés pour fabriquer des matériaux de construction durables et des décorations marines. De plus, ils sont célèbres pour leur capacité à briller dans le noir en les frottant contre une surface dure ! Certains éleveurs s'en servent pour décorer leurs ranchs avec des lumières sous-marines naturelles.",
-      "intro": "The ever reclusive shell wanderer!"
+      "intro": "Le voyageur de coquille en coquille !"
     },
     {
       "translatedName": "Slime poisson doré",
@@ -98,7 +98,7 @@
       "about": "La cousine beaucoup plus bronzée de la poule rocailleuse, les poules sableuses sont les maîtres du camouflage à la plage. Leurs plumes ont une apparence presque identique au sable aride des plages où elles font leur nid, les rendant plus dures à repérer. Malheuresement pour elles, leur superbe camouflage ne vaut rien face aux yeux du slime coco. Du haut de leurs palmiers, ces prédateurs apprécient particulièrement la viande sèche des poules sableuses, ce qui se marie parfaitement à leur propre aspect plus tropical. Pour les éleveurs à la recherche d'un repas savoureux et un peu sec, la poule sablonneuse offre une saveur familière avec un arrière-goût du désert.",
       "favouredBy": "Slime coco",
       "ranch": "Les poules sableuses à proximité des Cocqo déposeront périodiquement des œufs qui produiront des poussidoux sableux. Mais mettre trop de poules ou de Cocqos à proximité génère du stress, et la production d’œufs stoppera. Les éleveurs malins qui comprennent la nature complexe de l'amour entre poulets éviteront de mettre plus de 12 oiseaux dans un poulailler.",
-      "type": "Meat",
+      "type": "Viande",
       "intro": "Le maître du camouflage à la plage !"
     },
     {
@@ -107,7 +107,7 @@
       "about": "Une poule unique parmi ses cousines, elle se démarque... littéralement. Contrairement aux autres poules qui cherchent à se fondre dans le décor, la poule radiante a adopté des plumes qui brillent d'une lumière sublime. Cela les rend incroyablement faciles à repérer, ce qui est normalement considéré comme un désavantage - cependant, pour les slimes lanterne, cette lumière est irrésistible. Ils se trouvent souvent en groupe à admirer ces poules, entièrement absorbés par leur brillance unique. Les scientifiques pensent que la lumière douce et constante de la poule aide à réguler la bioluminescence des slimes lanterne, qui peut parfois devenir instable. Pour les éleveurs, les poules radiantes peuvent servir de phares dans les coins les plus sombres du Far, Far Ouest - leur viande, quant à elle, a juste de le goût de poule normale.",
       "favouredBy": "Slime lanterne",
       "ranch": "Les poules radiantes à proximité des Cocqo déposeront périodiquement des œufs qui produiront des poussidoux radiants. Mais mettre trop de poules ou de Cocqos à proximité génère du stress, et la production d’œufs stoppera. Les éleveurs malins qui comprennent la nature complexe de l'amour entre poulets éviteront de mettre plus de 12 oiseaux dans un poulailler.",
-      "type": "Meat",
+      "type": "Viande",
       "intro": "Toujours à faire les choses différemment !"
     }
   ],
@@ -143,12 +143,12 @@
     },
     {
       "name": "Coral",
-      "translatedName": "Prickly Coral",
-      "about": "A member of the prickly fruit family, uniquely adapted to grow beneath the waves. Unlike its distant cousin, the Prickly Pear, this fruit conceals a subtle sweetness within its inner core. Though still considered an acquired taste, those willing to give it a chance often find its initial bitterness surprisingly tolerable.",
-      "favouredBy": "Hermit Slime",
-      "ranch": "Deposit a prickly coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
+      "translatedName": "Corail Cacté",
+      "about": "Un membre de la famille des fruits cactés, celui-ci s'est adapté à la vie sous les vagues. A la différence de sa cousine, la poire cactée, ce fruit cache une chair sucrée à l'intérieur. Même s'il reste peu populaire, ceux qui y goûtent finissent par trouver que l'amerturme initiale de ce fruit est surprenamment tolérable.",
+      "favouredBy": "Slime hermite",
+      "ranch": "Déposez un corail cacté dans le réceptacle d'un jardin, et vous obtiendrez un grand arbre de corail cacté, rien qu'à vous.",
       "type": "Fruit",
-      "intro": "Watch for the pointy parts!"
+      "intro": "Attention aux bouts pointus !"
     }
   ],
   "veggies": [
