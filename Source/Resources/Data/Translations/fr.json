@@ -1,5 +1,4 @@
 {
-  "name": "FR",
   "additional": {
     "ui": {
       "l.pearls": "Perlonomie",
@@ -12,7 +11,6 @@
   "slimes": [
     {
       "translatedName": "Slime rosi",
-      "name": "Rosi",
       "risks": "Le slime rosi ne mérite aucune inquiétude. Ils sont très faciles à élever, ne demandant que de la nourriture et de la compagnie. Un slime rosi isolé est un slime rosi triste. Il est recommandé d'en garder plus d'un pour une pour une production de perles stable.",
       "slimeology": "Le slime rosi est le slime le plus commun trouvé dans le Récif Aride. Ils sont décrits comme joyeux, amicaux et sournois, et jouent parfois des tours aux autres slimes et humains. Les slimes rosi ont des liens très forts entre eux and sont très rarement observés seuls. Tant qu'ils ont un partenaire avec qui jouer, ils seront heureux pour toujours, ne montrant aucun signe de tristesse. Et lorsqu'ils sont tristes, c'est souvent lorsqu'ils essaient de remonter le moral à un slime ou humain.",
       "diet": "Tout",
@@ -22,7 +20,6 @@
     },
     {
       "translatedName": "Slime coco",
-      "name": "Coco",
       "risks": "Attention en marchant sous les palmiers ! Les slimes coco sont très territoriaux, s'ils vous détectent en dessous, ils durçiront leur corps visqueux en une coquille dure comme une noix de coco avant de s'écraser sur leur cible. Les malchanceux ayatnt déjà reçu un slime coco sur la tête expliquent avoir eu la vision floue et être déboussolés, certains se sont même évanouis. Les slimes coco utilisent aussi cette technique pour chasser dans la nature. Malgré leur peau dure et leur agilité, ils sont assez simples à élever tant qu'ils sont bien nourris et ont assez d'accès à la lumière du soleil.",
       "slimeology": "Les slimes coco se trouvent souvent accrochés aux palmiers de l'île. Endémiques de l'île SwirlPool, les slimes coco ont naturellement développé un saut bien plus puissant afin de grimper aux arbres et échapper aux prédateurs. Comme ils poussent des palmiers, ils ont des particularités végétales, nécéssitant un accès constant à la lumière du soleil. Ils ne mangent pas de fruits ou légumes, car ce serait du cannibalisme.",
       "diet": "Viande",
