@@ -4,49 +4,24 @@ files:
     parser: json
     json:
       translate_paths:
+        - /name
         - /additional/ui/*
         - /additional/pedia/*
-        - /slimes/*/translatedName
-        - /slimes/*/intro
+        - /*/*/translatedName
+        - /*/*/intro
         - /slimes/*/risks
         - /slimes/*/slimeology
         - /slimes/*/diet
         - /slimes/*/favourite
         - /slimes/*/onomics
-        - /hens/*/translatedName
-        - /hens/*/about
-        - /hens/*/ranch
-        - /hens/*/type
-        - /hens/*/intro
-        - /hens/*/favouredBy
-        - /chicks/*/translatedName
-        - /chicks/*/about
-        - /chicks/*/ranch
-        - /chicks/*/type
-        - /chicks/*/intro
-        - /chicks/*/favouredBy
-        - /fruits/*/translatedName
-        - /fruits/*/about
-        - /fruits/*/type
-        - /fruits/*/intro
-        - /fruits/*/favouredBy
-        - /fruits/*/ranch
-        - /veggies/*/translatedName
-        - /veggies/*/about
-        - /veggies/*/type
-        - /veggies/*/intro
-        - /veggies/*/favouredBy
-        - /veggies/*/ranch
+        - /*/*/about
+        - /*/*/ranch
+        - /*/*/type
+        - /*/*/favouredBy
         - /ranchers/*/offers/*
         - /ranchers/*/specialOffer
         - /ranchers/*/loadingTexts/*
-        - /largos/*/translatedName
-        - /gordos/*/translatedName
-        - /plorts/*/translatedName
-        - /zones/*/translatedName
-        - /zones/*/intro
         - /zones/*/presence
         - /zones/*/description
-        - /mail/*/translatedName
         - /mail/*/subject
         - /mail/*/body
