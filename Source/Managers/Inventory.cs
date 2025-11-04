@@ -47,19 +47,19 @@ public static class Inventory
 
     private static readonly JsonSerializer OrJsonSerializer = JsonSerializer.Create(JsonSettings);
 
-    private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
-    {
-        [RuntimePlatform.OSXPlayer] = "mac",
-        [RuntimePlatform.LinuxPlayer] = "lin",
-        [RuntimePlatform.WindowsPlayer] = "win",
-    };
+    // private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
+    // {
+    //     [RuntimePlatform.OSXPlayer] = "mac",
+    //     [RuntimePlatform.LinuxPlayer] = "lin",
+    //     [RuntimePlatform.WindowsPlayer] = "win",
+    // };
 
-    private static readonly string BundleSuffix = "bundle_" +
-    (
-        Platforms.TryGetValue(Application.platform, out var suffix)
-        ? suffix
-        : throw new PlatformNotSupportedException(Application.platform.ToString())
-    );
+    // private static readonly string BundleSuffix = "bundle_" +
+    // (
+    //     Platforms.TryGetValue(Application.platform, out var suffix)
+    //     ? suffix
+    //     : throw new PlatformNotSupportedException(Application.platform.ToString())
+    // );
 
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
@@ -72,13 +72,13 @@ public static class Inventory
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
 
-        [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
+        // [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
 
         // Bundle resources
-        [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
-        [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
-        [typeof(Material)] = (["mat"], GetBundleAsset<Material>),
-        [typeof(ScriptableObject)] = (["asset"], GetBundleAsset<ScriptableObject>),
+        // [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
+        // [typeof(Material)] = (["mat"], GetBundleAsset<Material>),
+        // [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
+        // [typeof(ScriptableObject)] = (["asset"], GetBundleAsset<ScriptableObject>),
 
         // AudioClip is not currently in use
         // [typeof(AudioClip)] = (["wav"], LoadAudioClip),
@@ -98,7 +98,7 @@ public static class Inventory
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
 
-    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions).Union(Platforms.Select(x => "bundle_" + x))];
+    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions)];//.Union(Platforms.Select(x => "bundle_" + x))];
 
     /// <summary>
     /// Debug string path for the mod to dump assets.
@@ -115,8 +115,8 @@ public static class Inventory
     {
         Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles for embedded resources
 
-        Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
-        Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
+        // Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
+        // Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
 
         if (!Directory.Exists(DumpPath))
             Directory.CreateDirectory(DumpPath);
@@ -156,8 +156,8 @@ public static class Inventory
     /// <param name="path">The original path of the asset.</param>
     /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
     private static string SanitisePath(this string path) => path
-        .ReplaceAll("", Extensions) // Removing the file extension first
-        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux/AssetBundle/Urls, \ for Mac, . for Embedded) and get the last entry which should be the asset name
+        .ReplaceAll(string.Empty, Extensions) // Removing the file extension first
+        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux/AssetBundle/Urls, \ for Mac, . for Embedded/Memory) and get the last entry which should be the asset name
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.
     /// </summary>
@@ -427,18 +427,18 @@ public static class Inventory
 
     private static AssetHandle Create(string name) => new(name);
 
-    // /// <summary>
-    // /// Creates an asset handle for the provided asset.
-    // /// </summary>
-    // /// <typeparam name="T">The type of the asset.</typeparam>
-    // /// <param name="path">The path of the asset.</param>
-    // /// <param name="asset">The asset to automatically add to the handle.</param>
-    // private static void CreateAssetHandle<T>(string path, T asset) where T : UObject
-    // {
-    //     var handle = Assets.GetOrAdd(path.SanitisePath(), Create);
-    //     handle.AddPath(path);
-    //     handle.AddAsset(asset);
-    // }
+    /// <summary>
+    /// Creates an asset handle for the provided asset.
+    /// </summary>
+    /// <typeparam name="T">The type of the asset.</typeparam>
+    /// <param name="path">The path of the asset.</param>
+    /// <param name="asset">The asset to automatically add to the handle.</param>
+    public static void CreateAssetHandle<T>(string path, T asset) where T : UObject
+    {
+        var handle = Assets.GetOrAdd(path.SanitisePath(), Create);
+        handle.AddPath(path);
+        handle.AddAsset(asset);
+    }
 
     // Modified code from here: https://github.com/deadlyfingers/UnityWav/blob/master/WavUtility.cs
 

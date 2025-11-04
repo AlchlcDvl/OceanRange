@@ -28,9 +28,8 @@ public abstract class FoodData : SpawnedActorData
 
     protected override void OnDeserialise()
     {
+        base.OnDeserialise();
         Methods.TryGetValue("Init" + Name + "FoodDetails", out InitFoodDetails);
-
-        Progress ??= [];
     }
 }
 

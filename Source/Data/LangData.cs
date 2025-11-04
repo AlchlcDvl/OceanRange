@@ -158,7 +158,7 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
 
     protected override sealed void OnDeserialise()
     {
-        var mainPart = Name.ToUpperInvariant() + (Suffix?.Length is > 0 ? ("_" + Suffix) : "");
+        var mainPart = Name.ToUpperInvariant() + (Suffix?.Length is > 0 ? ("_" + Suffix) : string.Empty);
 
         var key = mainPart + "_ENTRY";
         PediaId = Helpers.AddEnumValue<PediaId>(key);

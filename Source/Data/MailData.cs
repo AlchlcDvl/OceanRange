@@ -31,7 +31,7 @@ public sealed class MailData : JsonData
 
     protected override void OnDeserialise()
     {
-        if (Methods.TryGetValue("Init" + Name.Replace(" ", "") + "Details", out var method))
+        if (Methods.TryGetValue("Init" + Name.Replace(" ", string.Empty) + "Details", out var method))
             method.Invoke(null, [this]);
 
         if (UnlockAfter.HasValue)

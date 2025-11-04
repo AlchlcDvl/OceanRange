@@ -106,6 +106,8 @@ public static class Helpers
         return false;
     }
 
+    public static Color HexToColor(this string hex) => hex.TryHexToColor(out var color) ? color : default;
+
     public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value, true);
 
     // public static T ToEnum<T>(object value) where T : struct, Enum => (T)Enum.ToObject(typeof(T), value);
@@ -151,7 +153,7 @@ public static class Helpers
         var gordo = slimeData.GordoId.GetPrefab().Instantiate(sectorCategory.transform);
         gordo.transform.position = slimeData.GordoOrientation.Position;
         gordo.transform.localEulerAngles = slimeData.GordoOrientation.Rotation;
-        gordo.name = gordo.name.Replace("(Clone)", "").Trim();
+        gordo.name = gordo.name.Replace("(Clone)", string.Empty).Trim();
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs, IdentifiableId.KEY.GetPrefab()];
 
         if (slimeData.IsPopped)
@@ -193,7 +195,7 @@ public static class Helpers
             mesh.SetTriangles(originalMesh.GetTriangles(i), i);
 
         ClonedMeshes.Add(mesh);
-        return mesh;
+        return mesh.DontDestroy();
     }
 
     private static readonly HashSet<IdentifiableId> IdentifiableIds = new(Identifiable.idComparer);
@@ -543,4 +545,6 @@ public static class Helpers
     //     texture2D.Apply();
     //     return texture2D.DontDestroy();
     // }
+
+    public static T AddComponent<T>(this Component component) where T : Component => component.gameObject.AddComponent<T>();
 }

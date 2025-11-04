@@ -1,69 +1,69 @@
-// ReSharper disable UnassignedField.Global
-// ReSharper disable UnusedMember.Global
+// // ReSharper disable UnassignedField.Global
+// // ReSharper disable UnusedMember.Global
 
-namespace OceanRange.Data;
+// namespace OceanRange.Data;
 
-public sealed class ZoneRequirementData : JsonData
-{
-    [JsonProperty("minLevel")] public int CorporateLevelMin;
-    [JsonProperty("maxLevel")] public int CorporateLevelMax = int.MaxValue;
+// public sealed class ZoneRequirementData : JsonData
+// {
+//     [JsonProperty("minLevel")] public int CorporateLevelMin;
+//     [JsonProperty("maxLevel")] public int CorporateLevelMax = int.MaxValue;
 
-    [JsonProperty("rancherProgress")] public int ExchangeProgress;
+//     [JsonProperty("rancherProgress")] public int ExchangeProgress;
 
-    [JsonRequired] public string PathToGameObject;
-}
+//     [JsonRequired] public string PathToGameObject;
+// }
 
-public enum RequirementType : byte
-{
-    CorporateLevel,
-    ExchangeProgress,
-    DevCommand,
+// public enum RequirementType : byte
+// {
+//     CorporateLevel,
+//     ExchangeProgress,
+//     DevCommand,
 
-    // add more?
-}
+//     // add more?
+// }
 
-public sealed class ZoneData : JsonData
-{
-    [JsonRequired] public RegionId Region;
+// public sealed class ZoneData : JsonData
+// {
+//     [JsonRequired] public RegionId Region;
 
-    [JsonProperty("teleporterOri"), JsonRequired] public Orientation TeleporterOrientation;
-    [JsonProperty("teleporterLoc"), JsonRequired] public string TeleporterLocation;
-    [JsonProperty("prefab"), JsonRequired] public string AssetName;
+//     [JsonProperty("teleporterOri"), JsonRequired] public Orientation TeleporterOrientation;
+//     [JsonProperty("teleporterLoc"), JsonRequired] public string TeleporterLocation;
+//     [JsonProperty("prefab"), JsonRequired] public string AssetName;
 
-    public Dictionary<RequirementType, ZoneRequirementData> Requirements;
+//     public Dictionary<RequirementType, ZoneRequirementData> Requirements;
 
-    [JsonIgnore] public Zone Zone;
-    [JsonIgnore] public PediaId PediaId;
-    [JsonIgnore] public Ambiance Ambiance;
-    [JsonIgnore] public bool PrefabsPrepped;
-    [JsonIgnore] public GameObject Prefab;
-    [JsonIgnore] public AmbianceDirectorZoneSetting AmbianceSetting;
+//     [JsonIgnore] public Zone Zone;
+//     [JsonIgnore] public PediaId PediaId;
+//     [JsonIgnore] public Ambiance Ambiance;
+//     [JsonIgnore] public bool PrefabsPrepped;
+//     [JsonIgnore] public GameObject Prefab;
+//     [JsonIgnore] public AmbianceDirectorZoneSetting AmbianceSetting;
 
-    protected override void OnDeserialise()
-    {
-        var upper = Name.ToUpperInvariant();
+//     protected override void OnDeserialise()
+//     {
+//         var upper = Name.ToUpperInvariant();
 
-        Zone = Helpers.AddEnumValue<Zone>(upper);
-        PediaId = Helpers.AddEnumValue<PediaId>(upper + "_ENTRY");
-        Ambiance = Helpers.AddEnumValue<Ambiance>(upper + "_AMBIANCE");
-    }
-}
+//         Zone = Helpers.AddEnumValue<Zone>(upper);
+//         PediaId = Helpers.AddEnumValue<PediaId>(upper + "_ENTRY");
+//         Ambiance = Helpers.AddEnumValue<Ambiance>(upper + "_AMBIANCE");
+//     }
+// }
 
-public sealed class RegionData : JsonData
-{
-    [JsonRequired] public float MinNodeSize;
-    [JsonRequired] public float LoosenessVal;
-    [JsonRequired] public float InitialWorldSize;
+// public sealed class RegionData : JsonData
+// {
+//     [JsonRequired] public float MinNodeSize;
+//     [JsonRequired] public float LoosenessVal;
+//     [JsonRequired] public float InitialWorldSize;
 
-    [JsonRequired] public Vector3 InitialWorldPos;
+//     [JsonRequired] public Vector3 InitialWorldPos;
 
-    [JsonIgnore] public RegionId Region;
+//     [JsonIgnore] public RegionId Region;
 
-    protected override void OnDeserialise() => Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
-}
+//     protected override void OnDeserialise() => Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
+// }
 
-public sealed class World : JsonData
-{
-    [JsonRequired] public RegionData[] Regions;
-    [JsonRequired] public ZoneData[] Zones;
-}
+// public sealed class World : JsonData
+// {
+//     [JsonRequired] public RegionData[] Regions;
+//     [JsonRequired] public ZoneData[] Zones;
+// }

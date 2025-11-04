@@ -14,29 +14,33 @@ public static class Slimepedia
     public static bool MgExists;
     public static bool MvExists;
 
+    // private static Mesh GordoMesh;
     private static bool SamExists;
     private static Transform RocksPrefab;
     private static SlimeDefinition TarrDef;
     private static SlimeExpressionFace Sleeping;
+    // private static SlimeAppearanceElement BaseElement;
     private static SlimeAppearanceObject SkinnedPrefab;
 
     public static readonly int TopColor = ShaderUtils.GetOrSet("_TopColor");
     public static readonly int MiddleColor = ShaderUtils.GetOrSet("_MiddleColor");
     public static readonly int BottomColor = ShaderUtils.GetOrSet("_BottomColor");
 
+    private static readonly int Color = ShaderUtils.GetOrSet("_Color");
     private static readonly int Gloss = ShaderUtils.GetOrSet("_Gloss");
-    private static readonly int StripeTexture = ShaderUtils.GetOrSet("_StripeTexture");
+    private static readonly int EyeRed = ShaderUtils.GetOrSet("_EyeRed");
+    private static readonly int EyeBlue = ShaderUtils.GetOrSet("_EyeBlue");
+    // private static readonly int MainTex = ShaderUtils.GetOrSet("_MainTex");
+    private static readonly int EyeGreen = ShaderUtils.GetOrSet("_EyeGreen");
     private static readonly int MouthTop = ShaderUtils.GetOrSet("_MouthTop");
+    private static readonly int ColorMask = ShaderUtils.GetOrSet("_ColorMask");
+    private static readonly int FaceAtlas = ShaderUtils.GetOrSet("_FaceAtlas");
     private static readonly int MouthMiddle = ShaderUtils.GetOrSet("_MouthMid");
     private static readonly int MouthBottom = ShaderUtils.GetOrSet("_MouthBot");
-    private static readonly int EyeRed = ShaderUtils.GetOrSet("_EyeRed");
-    private static readonly int EyeGreen = ShaderUtils.GetOrSet("_EyeGreen");
-    private static readonly int EyeBlue = ShaderUtils.GetOrSet("_EyeBlue");
-    private static readonly int FaceAtlas = ShaderUtils.GetOrSet("_FaceAtlas");
     private static readonly int VertexOffset = ShaderUtils.GetOrSet("_VertexOffset");
-    // private static readonly int MainTex = ShaderUtils.GetOrSet("_MainTex");
-    // private static readonly int Color = ShaderUtils.GetOrSet("_Color");
-    private static readonly int ColorMask = ShaderUtils.GetOrSet("_ColorMask");
+    private static readonly int StripeTexture = ShaderUtils.GetOrSet("_StripeTexture");
+
+    // private static readonly Dictionary<string, SlimeAppearanceElement> CachedElements = [];
 
     private static readonly SlimeAppearance.SlimeBone[] AttachedBones =
     [
@@ -129,9 +133,14 @@ public static class Slimepedia
         };
         Sleeping.Eyes?.SetTexture(FaceAtlas, Inventory.GetTexture2D("sleeping_eyes"));
 
+        // CachedElements["slime_default_1.000"] = BaseElement = pinkAppearance.Structures[0].Element;
+
         SkinnedPrefab = pinkAppearance.Structures[0].Element.Prefabs[0];
 
         TarrDef = IdentifiableId.TARR_SLIME.GetSlimeDefinition();
+
+        // GordoMesh = IdentifiableId.PINK_GORDO.GetPrefab().transform.Find("").GetComponent<SkinnedMeshRenderer>().sharedMesh.Clone();
+        // GordoMesh.name = "slime_gordo";
 
         Array.ForEach(Slimes, BaseLoadSlime);
     }
@@ -588,11 +597,13 @@ public static class Slimepedia
 
         if (modelData.Pattern != null)
         {
+            var tex = Inventory.GetTexture2D(modelData.Pattern);
+
             if (material.HasProperty(StripeTexture))
-                material.SetTexture(StripeTexture, Inventory.GetTexture2D(modelData.Pattern));
+                material.SetTexture(StripeTexture, tex);
 
             if (material.HasProperty(ColorMask))
-                material.SetTexture(ColorMask, Inventory.GetTexture2D(modelData.Pattern));
+                material.SetTexture(ColorMask, tex);
         }
 
         foreach (var (prop, value) in modelData.ColorProps)
@@ -649,9 +660,11 @@ public static class Slimepedia
             var isFirst = i == 0;
             var mesh = isNull
                 ? sharedMesh.Clone()
-                : (isFirst || meshName.Mesh.EndsWith("_gordo", StringComparison.Ordinal)
-                    ? Inventory.GetMesh(meshName.Mesh)
-                    : Inventory.GetMesh(meshName.Mesh + "_LOD0"));
+                // : (meshName.Mesh == "slime_gordo"
+                //     ? GordoMesh
+                    : (isFirst || meshName.Mesh.EndsWith("_gordo", StringComparison.Ordinal)
+                        ? Inventory.GetMesh(meshName.Mesh)
+                        : Inventory.GetMesh(meshName.Mesh + "_LOD0"));
 
             var vertices2 = mesh.vertices;
             var weights = new BoneWeight[vertices2.Length];
@@ -828,8 +841,13 @@ public static class Slimepedia
     public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
     {
         var prefab = appearance.Structures[3].Element.Prefabs[0];
-        prefab.transform.localScale /= 2f;
-        prefab.transform.localPosition = new(0f, 0.3f, 1f);
+        prefab.transform.localScale /= 3f;
+        prefab.transform.localPosition = new(0f, 0.4f, 1.03f);
+
+        var rend = prefab.transform.GetComponentInChildren<MeshRenderer>();
+        var material = rend.sharedMaterial.Clone();
+        material.SetColor(Color, "#EBDB6A".HexToColor());
+        rend.sharedMaterial = material;
     }
 
     [UsedImplicitly]

@@ -84,6 +84,8 @@ public sealed class SlimeData : SpawnedActorData
 
     protected override void OnDeserialise()
     {
+        base.OnDeserialise();
+
         var upper = Name.ToUpperInvariant();
 
         MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_SLIME");
@@ -117,19 +119,18 @@ public sealed class SlimeData : SpawnedActorData
 
             if (!BottomPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.BottomColor, out var bottomColor))
                 BottomPaletteColor = bottomColor;
+
+            // foreach (var feature in SlimeFeatures)
+            // {
+            //     feature.Mesh ??= "slime_default";
+            //     feature.Jiggle ??= Jiggle;
+            // }
         }
 
         PlortAmmoColor ??= MainAmmoColor;
 
-        Progress ??= [];
-
-        if (PlortFeatures?.Length is null or 0 || GordoFeatures?.Length is null or 0)
-        {
-            var copy = SlimeFeatures.Select(x => x.Clone(false)).ToArray();
-
-            PlortFeatures ??= copy;
-            GordoFeatures ??= copy;
-        }
+        PlortFeatures ??= [.. SlimeFeatures.Select(x => x.Clone(false, "plort"))];
+        GordoFeatures ??= [.. SlimeFeatures.Select(x => x.Clone(false, "slime_gordo"))];
 
         Vaccable |= Slimepedia.MvExists;
     }

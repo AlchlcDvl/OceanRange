@@ -27,6 +27,8 @@ public abstract class SpawnedActorData : ActorData
     [JsonRequired] public float Saturation;
 
     [JsonRequired] public Color MainAmmoColor;
+
+    protected override void OnDeserialise() => Progress ??= [];
 }
 
 public sealed class Json(string text) : TextAsset(text);

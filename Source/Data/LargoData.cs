@@ -63,6 +63,22 @@ public sealed class LargoData : ActorData
         Jiggle ??= ((Slime1Data?.Jiggle ?? 1f) + (Slime2Data?.Jiggle ?? 1f)) / 2f;
 
         if (BodyStruct != null)
+        {
             BodyStruct.IsBody = true;
+            // BodyStruct.Jiggle ??= Jiggle;
+            // BodyStruct.Mesh ??= "slime_default";
+        }
+
+        // if (Slime1Structs != null)
+        // {
+        //     foreach (var feature in Slime1Structs)
+        //         feature.Jiggle ??= Jiggle;
+        // }
+
+        // if (Slime2Structs != null)
+        // {
+        //     foreach (var feature in Slime2Structs)
+        //         feature.Jiggle ??= Jiggle;
+        // }
     }
 }

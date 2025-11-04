@@ -103,9 +103,10 @@ public sealed class ModelData : JsonData
             ColorProps[ShaderUtils.GetOrSet(prop)] = value;
     }
 
-    public ModelData Clone(bool includeMeshData)
+    public ModelData Clone(bool includeMeshData, string defaultMeshName)
     {
         var result = new ModelData(this, includeMeshData);
+        // result.Mesh ??= defaultMeshName;
         result.OnDeserialise();
         return result;
     }

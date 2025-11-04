@@ -40,7 +40,7 @@ internal sealed class Main : ModEntryPoint
         Inventory.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
 
         // Preloads the various forms of data the mod uses
-        Atlas.PreloadMapData();
+        // Atlas.PreloadMapData();
         FloppyDisk.PreloadSaveData();
         Cookbook.PreloadFoodData();
         Slimepedia.PreloadSlimeData();
@@ -74,7 +74,7 @@ internal sealed class Main : ModEntryPoint
     public override void Load()
     {
         // Loads the various forms of data the mod uses
-        Atlas.LoadMap();
+        // Atlas.LoadMap();
         Cookbook.LoadAllFoods();
         Slimepedia.LoadAllSlimes();
         Largopedia.LoadAllLargos();
@@ -91,8 +91,9 @@ internal sealed class Main : ModEntryPoint
     public override void PostLoad()
     {
         Slimepedia.PostLoadSlimes();
-        Inventory.Bundle.Unload(false);
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", "ocean_range", "contacts"); // Release handles
+
+        // Inventory.Bundle.Unload(false);
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", /*"ocean_range",*/ "contacts"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");
@@ -111,12 +112,11 @@ internal sealed class Main : ModEntryPoint
     public override void Unload()
     {
 #endif
-        Inventory.ReleaseHandles();
-
         foreach (var mesh in Helpers.ClonedMeshes)
             mesh.Destroy();
 
         Helpers.ClonedMeshes.Clear();
+        Inventory.ReleaseHandles();
     }
 
     public static void AddIconBypass(Sprite icon) => CLS.AddToLoading.AddIcon(icon);
