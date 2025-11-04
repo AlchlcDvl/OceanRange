@@ -174,7 +174,7 @@ public static class Inventory
     /// <returns>The read and converted json data.</returns>
     public static T GetJson<T>(string path) => ToJson<T>(TryReadJson(path, out var contents) ? contents : Get<Json>(path).text);
 
-    public static bool TryGetJson<T>(string name, out T json, bool writeJson)
+    public static bool TryGetJson<T>(string name, bool writeJson, out T json)
     {
         var path = Path.Combine(DumpPath, name + ".json");
 
@@ -396,9 +396,9 @@ public static class Inventory
         return tex ? Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
     }
 
-    private static T GetBundleAsset<T>(string path) where T : UObject => Bundle.LoadAsset<T>(path);
+    // private static T GetBundleAsset<T>(string path) where T : UObject => Bundle.LoadAsset<T>(path);
 
-    private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
+    // private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
 
     /// <summary>
     /// Reads all the bytes from the provided stream.
@@ -427,18 +427,18 @@ public static class Inventory
 
     private static AssetHandle Create(string name) => new(name);
 
-    /// <summary>
-    /// Creates an asset handle for the provided asset.
-    /// </summary>
-    /// <typeparam name="T">The type of the asset.</typeparam>
-    /// <param name="path">The path of the asset.</param>
-    /// <param name="asset">The asset to automatically add to the handle.</param>
-    public static void CreateAssetHandle<T>(string path, T asset) where T : UObject
-    {
-        var handle = Assets.GetOrAdd(path.SanitisePath(), Create);
-        handle.AddPath(path);
-        handle.AddAsset(asset);
-    }
+    // /// <summary>
+    // /// Creates an asset handle for the provided asset.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the asset.</typeparam>
+    // /// <param name="path">The path of the asset.</param>
+    // /// <param name="asset">The asset to automatically add to the handle.</param>
+    // public static void CreateAssetHandle<T>(string path, T asset) where T : UObject
+    // {
+    //     var handle = Assets.GetOrAdd(path.SanitisePath(), Create);
+    //     handle.AddPath(path);
+    //     handle.AddAsset(asset);
+    // }
 
     // Modified code from here: https://github.com/deadlyfingers/UnityWav/blob/master/WavUtility.cs
 

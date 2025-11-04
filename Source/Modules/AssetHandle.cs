@@ -76,23 +76,23 @@ public sealed class AssetHandle(string name) : IDisposable
             throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing! (path: {path}, step: TryAdd)");
     }
 
-    /// <summary>
-    /// Adds an asset to the handle.
-    /// </summary>
-    /// <typeparam name="T">The type of the asset.</typeparam>
-    /// <param name="asset">The asset to add.</param>
-    public void AddAsset<T>(T asset) where T : UObject
-    {
-        var tType = typeof(T);
+    // /// <summary>
+    // /// Adds an asset to the handle.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the asset.</typeparam>
+    // /// <param name="asset">The asset to add.</param>
+    // public void AddAsset<T>(T asset) where T : UObject
+    // {
+    //     var tType = typeof(T);
 
-        if (Assets.TryRemove(tType, out var tAsset))
-        {
-            Main.Console.LogWarning($"Replacing existing asset! {tType.Name}:{tAsset.name}");
-            tAsset.Destroy();
-        }
+    //     if (Assets.TryRemove(tType, out var tAsset))
+    //     {
+    //         Main.Console.LogWarning($"Replacing existing asset! {tType.Name}:{tAsset.name}");
+    //         tAsset.Destroy();
+    //     }
 
-        Assets[tType] = asset;
-    }
+    //     Assets[tType] = asset;
+    // }
 
     /// <summary>
     /// Loads and returns an asset handled by this handle.
