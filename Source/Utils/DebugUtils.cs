@@ -34,5 +34,7 @@ public static class DebugUtils
 
         return closest;
     }
+
+    public static string FormatOrientation(Orientation orientation) => $"f {orientation.Position.ToVectorString()},0,0,0";
 }
 #endif

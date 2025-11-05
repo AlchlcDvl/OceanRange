@@ -27,24 +27,22 @@ public sealed class BlowtatoBehaviour : CollidableActorBehaviour, Collidable
             fx.transform.localScale /= 6f;
 
             if (fx.TryGetComponent<ParticleSystem>(out var particleSys))
-            {
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-                var main = particleSys.main;
-                main.startSizeMultiplier = 1f / 6f;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-            }
+                SetScale(particleSys);
 
             foreach (var comp in fx.GetComponentsInChildren<ParticleSystem>())
-            {
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-                var main = comp.main;
-                main.startSizeMultiplier = 1f / 6f;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-            }
+                SetScale(comp);
         }
 
         PhysicsUtil.Explode(gameObject, ExplodeRadius, ExplodePower, MinPlayerDamage, MaxPlayerDamage);
     }
 
     public void ProcessCollisionExit(Collision col) { }
+
+    private static void SetScale(ParticleSystem particleSystem)
+    {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+        var main = particleSystem.main;
+        main.startSizeMultiplier = 1f / 6f;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+    }
 }

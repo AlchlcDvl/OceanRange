@@ -1,7 +1,5 @@
 {
-  "name": "Ocean Range",
-  "regions":
-  [
+  "regions": [
     {
       "name": "Underwater",
       "initialWorldSize": 2000,
@@ -10,18 +8,15 @@
       "loosenessVal": 1.2
     }
   ],
-  "zones":
-  [
+  "zones": [
     {
       "name": "Swirlpool_Island",
       "region": "UNDERWATER",
       "prefab": "SWIRLPOOL",
       "teleporterOri": "f -119.7111,-0.0307,-260.243,0,234.398,0",
       "teleporterLoc": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/",
-      "requirements":
-      {
-        "CorporateLevel":
-        {
+      "requirements":  {
+        "CorporateLevel":  {
           "pathToGameObject": "zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)",
           "minLevel": 15
         }

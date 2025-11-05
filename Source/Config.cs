@@ -4,7 +4,7 @@ using SRML.Config.Attributes;
 
 namespace OceanRange;
 
-[ConfigFile("OceanRance")]
+[ConfigFile("OceanRange")]
 public static class Config
 {
     public static bool DUMP_TRANSLATIONS = false;

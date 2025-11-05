@@ -123,6 +123,9 @@ public static class Cookbook
         {
             var lower = fruitData.ResourceIdSuffix.ToLowerInvariant();
             var array = new[] { fruitData.MainId.GetPrefab() };
+            var lowerName = fruitData.Name.ToLowerInvariant();
+            var trunkExists = Inventory.TryGetMesh(lowerName + "_trunk", out var trunk);
+            var leavesExist = Inventory.TryGetMesh(lowerName + "_leaves", out var leaves);
 
             foreach (var (zone, spawnLocations) in fruitData.SpawnLocations)
             {
@@ -133,7 +136,12 @@ public static class Cookbook
                     for (var i = 0; i < orientations.Length; i++)
                     {
                         var resource = CreateSpawner(orientations[i], fruitPrefab, parent, context, array, lower + fruitData.Name + "0" + i);
-                        resource.gameObject.FindChild("tree_pogo", true).GetComponent<MeshFilter>().sharedMesh = Inventory.GetMesh(fruitData.Name.ToLowerInvariant() + "_tree");
+
+                        if (trunkExists)
+                            resource.gameObject.FindChild("tree_pogo", true).GetComponent<MeshFilter>().sharedMesh = trunk;
+
+                        if (leavesExist)
+                            resource.gameObject.FindChild("leaves_pogo", true).GetComponent<MeshFilter>().sharedMesh = leaves;
                     }
                 }
             }
@@ -147,6 +155,7 @@ public static class Cookbook
         resource.transform.localEulerAngles = orientation.Rotation;
         resource.name = name;
         resource.ObjectsToSpawn = resource.BonusObjectsToSpawn = array;
+        resource.BonusChance = 0f;
         context.GameModel.RegisterResourceSpawner(orientation.Position, resource);
         return resource;
     }
@@ -363,8 +372,35 @@ public static class Cookbook
         var icon = Inventory.GetSprite(lower);
         RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
-        var resource = CreateFarmSetup(plantData.BaseResource!.Value, plantData.Name + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
-        var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, plantData.Name + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
+        var resource = CreateFarmSetup(plantData.BaseResource!.Value, lower + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
+        var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, lower + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
+
+        if (plantData is FruitData)
+        {
+            var partName = plantData.BaseResource.Value.ToString();
+
+            if (partName.EndsWith("_tree", StringComparison.OrdinalIgnoreCase))
+                partName = partName.Replace("_tree", string.Empty);
+            else
+                partName = "pogo";
+
+            var trunkExists = Inventory.TryGetMesh(lower + "_trunk", out var trunk);
+            var leavesExist = Inventory.TryGetMesh(lower + "_leaves", out var leaves);
+
+            if (trunkExists)
+            {
+                var name = "tree_" + partName;
+                SetTreeMeshes(resource.FindChildren(name).Select(x => x.GetComponent<MeshFilter>()), trunk);
+                SetTreeMeshes(resourceDlx.FindChildren(name).Select(x => x.GetComponent<MeshFilter>()), trunk);
+            }
+
+            if (leavesExist)
+            {
+                var name = "leaves_" + partName;
+                SetTreeMeshes(resource.FindChildren(name).Select(x => x.GetComponent<MeshFilter>()), leaves);
+                SetTreeMeshes(resourceDlx.FindChildren(name).Select(x => x.GetComponent<MeshFilter>()), leaves);
+            }
+        }
 
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
@@ -382,6 +418,8 @@ public static class Cookbook
         PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress);
     }
 
+    private static void SetTreeMeshes(IEnumerable<MeshFilter> filters, Mesh mesh) => filters.Do(x => x.sharedMesh = mesh);
+
     private static GameObject CreateFarmSetup(SpawnResourceId baseFarm, string patchName, SpawnResourceId spawnResource, GameObject plant)
     {
         var prefab = baseFarm.GetResourcePrefab().CreatePrefab();
@@ -390,6 +428,7 @@ public static class Cookbook
         component.id = spawnResource;
         component.ObjectsToSpawn = [plant];
         component.BonusObjectsToSpawn = [];
+        component.BonusChance = 0f;
         var partial = plant.FindChildWithPartialName("model_");
         var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
         TranslateModel(prefab.FindChildren("Sprout"), mesh, null);

@@ -2,15 +2,13 @@
   {
     "name": "Rosi Mine",
     "props": ["UseSlime2ForFace", "CustomStructures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "mesh": "rosi_body",
       "matOrigin": "PINK_SLIME",
       "gloss": 1,
       "colorProps": { "_TopColor": "#445660" }
     },
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "mesh": "rosi_mine_stalk",
         "gloss": 1,
@@ -23,8 +21,7 @@
         "cloneMatOrigin": false
       }
     ],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "mesh": "rosi_mine_exterior",
         "matSameAs": 1,
@@ -35,13 +32,11 @@
   {
     "name": "Rosi Lantern",
     "props": "CustomStructures",
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "mesh": "rosi_body",
       "matOrigin": "LANTERN_SLIME"
     },
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "mesh": "rosi_mine_stalk",
         "matOrigin": "LANTERN_SLIME"
@@ -52,8 +47,7 @@
         "colorProps": { "_TopColor": "#752C86" }
       }
     ],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "mesh": "rosi_lantern_fins",
         "cloneFallback": false
@@ -76,20 +70,17 @@
     "name": "Mine Lantern",
     "props": "CustomStructures",
     "bodyStruct": { "matOrigin": "ROSI_MINE_LARGO" },
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "mesh": "mine_lantern_exterior",
         "matSameAs": 1,
         "matOrigin": "MINE_SLIME"
       }
     ],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "mesh": "lantern_fins",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#212A2F",
           "_BottomColor": "#445660"
         }
@@ -112,14 +103,12 @@
   {
     "name": "Pink Coco",
     "props": ["CustomBody", "CustomSlime2Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "PINK_SLIME",
       "matOrigin": "COCO_SLIME",
       "invert": "true"
     },
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "colorsOrigin": "PINK_SLIME",
         "colorProps": { "_BottomColor": "#E75480" }
@@ -135,14 +124,12 @@
   {
     "name": "Coco Quantum",
     "props": ["CustomBody", "CustomSlime1Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "COCO_SLIME",
       "matOrigin": "QUANTUM_SLIME",
       "invert": "true"
     },
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "colorsOrigin": "COCO_SLIME",
         "matOrigin": "QUANTUM_SLIME"
@@ -153,8 +140,7 @@
   {
     "name": "Coco Honey",
     "props": ["CustomBody", "CustomSlime2Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "COCO_SLIME",
       "matOrigin": "HONEY_SLIME"
     },
@@ -164,8 +150,7 @@
   {
     "name": "Coco Phosphor",
     "props": ["CustomBody", "CustomSlime1Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "PHOSPHOR_SLIME",
       "matOrigin": "COCO_SLIME",
       "invert": "true"
@@ -182,8 +167,7 @@
   {
     "name": "Coco Tangle",
     "props": ["CustomBody", "CustomSlime1Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "TANGLE_SLIME",
       "matOrigin": "COCO_SLIME",
       "invert": "true"
@@ -194,8 +178,7 @@
   {
     "name": "Coco Boom",
     "props": ["CustomBody"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "COCO_SLIME",
       "matOrigin": "BOOM_SLIME"
     },
@@ -204,8 +187,7 @@
   {
     "name": "Coco Rad",
     "props": ["CustomBody", "CustomSlime1Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "RAD_SLIME",
       "matOrigin": "COCO_SLIME",
       "invert": "true"
@@ -216,8 +198,7 @@
   {
     "name": "Coco Rock",
     "props": ["CustomBody", "CustomSlime1Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "ROCK_SLIME",
       "matOrigin": "COCO_SLIME",
       "invert": "true"
@@ -228,8 +209,7 @@
   {
     "name": "Coco Tabby",
     "props": ["UseSlime2ForMouth", "CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "matOrigin": "COCO_SLIME" },
       { "matOrigin": "COCO_SLIME" }
     ],
@@ -238,11 +218,9 @@
   {
     "name": "Coco Hunter",
     "props": ["UseSlime2ForFace", "CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#966F33",
           "_BottomColor": "#744D11"
         }
@@ -253,8 +231,7 @@
   {
     "name": "Coco Crystal",
     "props": ["CustomBody", "CustomSlime1Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "CRYSTAL_SLIME",
       "matOrigin": "COCO_SLIME",
       "invert": "true"
@@ -271,28 +248,17 @@
   {
     "name": "Coco Mesmer",
     "props": ["CustomBody", "CustomSlime2Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "matOrigin": "MESMER_SLIME",
       "colorsOrigin": "COCO_SLIME"
     },
-    "slime2Structs":
-    [
+    "slime2Structs": [
+      { "colorsOrigin": "COCO_SLIME" },
+      { "colorsOrigin": "COCO_SLIME" },
+      { "colorsOrigin": "COCO_SLIME" },
+      { "colorsOrigin": "COCO_SLIME" },
       {
-        "colorsOrigin": "COCO_SLIME"
-      },
-      {
-        "colorsOrigin": "COCO_SLIME"
-      },
-      {
-        "colorsOrigin": "COCO_SLIME"
-      },
-      {
-        "colorsOrigin": "COCO_SLIME"
-      },
-      {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#dafe7a",
           "_BottomColor": "#e034c9"
         }
@@ -303,8 +269,7 @@
   {
     "name": "Coco Hermit",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "colorsOrigin": "COCO_SLIME" }
     ],
@@ -314,8 +279,7 @@
     "name": "Pink Mesmer",
     "props": ["CustomBody", "CustomSlime2Structures", "UseSlime2ForBody"],
     "bodyStruct": { "colorsOrigin": "PINK_SLIME" },
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "colorsOrigin": "PINK_SLIME" },
       { "matOrigin": "PINK_SLIME" },
       { "sameAs": 1 },
@@ -330,48 +294,41 @@
   {
     "name": "Quantum Mesmer",
     "props": ["CustomBody", "CustomSlime2Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "matOrigin": "QUANTUM_SLIME",
       "colorsOrigin": "MESMER_SLIME"
     },
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#340ca1",
           "_BottomColor": "#320047"
         },
         "matOrigin": "QUANTUM_SLIME"
       },
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#33169a",
           "_BottomColor": "#320047"
         },
         "matOrigin": "QUANTUM_SLIME"
       },
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#821ed6",
           "_BottomColor": "#33169a"
         },
         "matOrigin": "QUANTUM_SLIME"
       },
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#e034c9",
           "_BottomColor": "#821ed6"
         },
         "matOrigin": "QUANTUM_SLIME"
       },
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#dafe7a",
           "_BottomColor": "#e034c9"
         },
@@ -382,14 +339,12 @@
   {
     "name": "Honey Mesmer",
     "props": ["CustomBody", "CustomSlime2Structures", "CustomSlime1Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "MESMER_SLIME",
       "matOrigin": "HONEY_SLIME"
     },
-    "slime1Structs": [{ "colorProps": { "_TopColor": "#dafe7a" } }],
-    "slime2Structs":
-    [
+    "slime1Structs": [ { "colorProps": { "_TopColor": "#dafe7a" } } ],
+    "slime2Structs": [
       {
         "colorsOrigin": "MESMER_SLIME",
         "colorsSameAs": 1,
@@ -420,8 +375,7 @@
   {
     "name": "Phosphor Mesmer",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "colorsOrigin": "PHOSPHOR_SLIME",
         "matOrigin": "TABBY_SLIME",
@@ -444,11 +398,9 @@
     "name": "Tangle Mesmer",
     "props": ["CustomBody", "CustomSlime1Structures"],
     "bodyStruct": { "matOrigin": "MESMER_SLIME" },
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#e034c9",
           "_MiddleColor": "#340ca1",
           "_BottomColor": "#320047"
@@ -459,14 +411,12 @@
   {
     "name": "Boom Mesmer",
     "props": ["CustomBody", "CustomSlime2Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "MESMER_SLIME",
       "matOrigin": "BOOM_SLIME",
       "gloss": 0.11
     },
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "colorsOrigin": "MESMER_SLIME",
         "colorsSameAs": 1,
@@ -497,14 +447,12 @@
   {
     "name": "Rad Mesmer",
     "props": ["CustomBody", "CustomSlime2Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "MESMER_SLIME",
       "matOrigin": "RAD_SLIME",
       "gloss": 0.11
     },
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "colorsOrigin": "MESMER_SLIME",
         "colorsSameAs": 1,
@@ -535,15 +483,13 @@
   {
     "name": "Rock Mesmer",
     "props": ["CustomBody", "CustomSlime2Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "ROCK_SLIME",
       "pattern": "mesmer_pattern",
       "matOrigin": "TABBY_SLIME",
       "gloss": 0.11
     },
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "colorsOrigin": "ROCK_SLIME",
         "matOrigin": "TABBY_SLIME",
@@ -557,8 +503,7 @@
       { "sameAs": 1 },
       {
         "matOrigin": "PINK_SLIME",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#dafe7a",
           "_BottomColor": "#e034c9"
         }
@@ -568,8 +513,7 @@
   {
     "name": "Tabby Mesmer",
     "props": ["UseSlime2ForBodyMaterial", "CustomSlime1Structures"],
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "mesh": "tabby_ears",
         "sameAs": 1,
@@ -581,8 +525,7 @@
   {
     "name": "Hunter Mesmer",
     "props": ["UseSlime2ForBodyMaterial", "CustomSlime1Structures"],
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "mesh": "hunter_ears",
         "sameAs": 1,
@@ -594,15 +537,13 @@
   {
     "name": "Crystal Mesmer",
     "props": ["CustomBody", "CustomSlime2Structures"],
-    "bodyStruct":
-    {
+    "bodyStruct": {
       "colorsOrigin": "CRYSTAL_SLIME",
       "pattern": "mesmer_pattern",
       "matOrigin": "TABBY_SLIME",
       "gloss": 0.11
     },
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "colorsOrigin": "CRYSTAL_SLIME",
         "matOrigin": "TABBY_SLIME",
@@ -621,11 +562,9 @@
     "name": "Dervish Mesmer",
     "props": ["CustomBody", "CustomSlime1Structures"],
     "bodyStruct": { "matOrigin": "MESMER_SLIME" },
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#340ca1",
           "_BottomColor": "#320047"
         }
@@ -635,16 +574,14 @@
   {
     "name": "Mesmer Hermit",
     "props": ["CustomSlime1Structures", "CustomSlime2Structures"],
-    "slime1Structs":
-    [
+    "slime1Structs": [
       { "mesh": "mesmer_pincers" },
       { "skip": true },
       { "skip": true },
       { "skip": true },
       { "skip": true }
     ],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "skip": true }
     ]
@@ -652,8 +589,7 @@
   {
     "name": "Pink Hermit",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "colorsOrigin": "PINK_SLIME" }
     ]
@@ -661,8 +597,7 @@
   {
     "name": "Saber Hermit",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "colorsOrigin": "SABER_SLIME" }
     ]
@@ -670,8 +605,7 @@
   {
     "name": "Quantum Hermit",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       {
         "matOrigin": "QUANTUM_SLIME",
         "colorProps": { "_TopColor": "#f6d599" }
@@ -682,8 +616,7 @@
   {
     "name": "Honey Hermit",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "matOrigin": "HONEY_SLIME"  }
     ]
@@ -691,8 +624,7 @@
   {
     "name": "Phosphor Hermit",
     "props": ["CustomSlime2Structures", "CustomSlime1Structures"],
-    "slime1Structs":
-    [
+    "slime1Structs": [
       { "mesh": "hermit_phosphor_anten" },
       {
         "skipNull": true,
@@ -703,8 +635,7 @@
         "instantiatePrefabs": true
       }
     ],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "colorsOrigin": "PHOSPHOR_SLIME" }
     ]
@@ -712,8 +643,7 @@
   {
     "name": "Mosaic Hermit",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "colorsOrigin": "MOSAIC_SLIME" }
     ]
@@ -721,16 +651,14 @@
   {
     "name": "Tangle Hermit",
     "props": ["CustomSlime1Structures", "CustomSlime2Structures"],
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "mesh": "tangle_hermit_flower",
         "matSameAs": 1,
         "matOrigin": "TANGLE_SLIME"
       }
     ],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "colorsOrigin": "TANGLE_SLIME" }
     ]
@@ -738,8 +666,7 @@
   {
     "name": "Boom Hermit",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "matOrigin": "BOOM_SLIME" }
     ]
@@ -747,8 +674,7 @@
   {
     "name": "Rad Hermit",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "matOrigin": "RAD_SLIME" }
     ]
@@ -756,8 +682,7 @@
   {
     "name": "Rock Hermit",
     "props": ["CustomSlime1Structures", "CustomSlime2Structures"],
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "mesh": "rock_hermit_spine",
         "matSameAs": 1,
@@ -765,8 +690,7 @@
       },
       { "skip": true }
     ],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "skipNull": true },
       { "colorsOrigin": "ROCK_SLIME" }
     ]
@@ -775,16 +699,14 @@
     "name": "Tabby Hermit",
     "props": ["CustomBody", "CustomSlime2Structures", "CustomSlime1Structures"],
     "bodyStruct": { "matOrigin": "TABBY_SLIME" },
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "mesh": "tabby_ears",
         "matSameAs": 1,
         "matOrigin": "TABBY_SLIME"
       }
     ],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "skipNull": true },
       { "colorsOrigin": "TABBY_SLIME" }
     ]
@@ -793,16 +715,14 @@
     "name": "Hunter Hermit",
     "props": ["CustomBody", "CustomSlime2Structures", "CustomSlime1Structures"],
     "bodyStruct": { "matOrigin": "HUNTER_SLIME" },
-    "slime1Structs":
-    [
+    "slime1Structs": [
       {
         "mesh": "hunter_ears",
         "matSameAs": 1,
         "matOrigin": "HUNTER_SLIME"
       }
     ],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "skipNull": true },
       { "colorsOrigin": "HUNTER_SLIME" }
     ]
@@ -811,13 +731,11 @@
     "name": "Crystal Hermit",
     "props": ["CustomBody", "CustomSlime2Structures", "CustomSlime1Structures"],
     "bodyStruct": { "matOrigin": "CRYSTAL_SLIME" },
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "skipNull": true },
       { "colorsOrigin": "CRYSTAL_SLIME" }
     ],
-    "slime1Structs":
-    [
+    "slime1Structs": [
       { "skip": true },
       {
         "mesh": "crystal_hermit_spine",
@@ -829,8 +747,7 @@
   {
     "name": "Dervish Hermit",
     "props": ["CustomSlime2Structures"],
-    "slime2Structs":
-    [
+    "slime2Structs": [
       { "cloneFallback": false },
       { "colorsOrigin": "DERVISH_SLIME" }
     ]

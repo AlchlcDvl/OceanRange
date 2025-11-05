@@ -251,6 +251,17 @@ public static class Inventory
         return mesh.bindposes.Length == 0 ? mesh : mesh.Clone();
     }
 
+    public static bool TryGetMesh(string name, out Mesh mesh)
+    {
+        if (!TryGet(name, out mesh))
+            return false;
+
+        if (mesh.bindposes.Length > 0)
+            mesh = mesh.Clone();
+
+        return true;
+    }
+
     /// <summary>
     /// Gets a Shader from the assets associated with the provided name.
     /// </summary>

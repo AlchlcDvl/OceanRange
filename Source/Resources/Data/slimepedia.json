@@ -3,12 +3,10 @@
     "name": "Rosi",
     "zones": ["REEF"],
     "favToy": "OCTO_BUDDY_TOY",
-    "slimeFeatures":
-    [
+    "slimeFeatures": [
       {
         "mesh": "rosi_body",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#F9E5F0",
           "_MiddleColor": "#E6C7D2",
           "_BottomColor": "#F68ED9"
@@ -24,12 +22,10 @@
       }
     ],
     "mainAmmoColor": "#F9E5F0",
-    "plortFeatures":
-    [
+    "plortFeatures": [
       {
         "mesh": "pearl",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#F46CB7",
           "_MiddleColor": "#E6C7D2",
           "_BottomColor": "#F9E5F0"
@@ -44,8 +40,7 @@
         "sameAs": 2
       }
     ],
-    "gordoFeatures":
-    [
+    "gordoFeatures": [
       {
         "mesh": "rosi_body_gordo",
         "sameAs": 0
@@ -92,14 +87,12 @@
     "zones": ["REEF", "MOSS"],
     "toAdd": ["OceanRange.Slimes.CocoBehaviour, OceanRange", "DamagePlayerOnTouch, Assembly-CSharp"],
     "onomicsType": "plorts",
-    "slimeFeatures":
-    [
+    "slimeFeatures": [
       {
         "pattern": "coco_pattern",
         "matOrigin": "TABBY_SLIME",
         "gloss": 1,
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#744D11",
           "_BottomColor": "#966F33"
         }
@@ -109,11 +102,9 @@
         "colorProps": { "_TopColor": "#744D11" }
       }
     ],
-    "plortFeatures":
-    [
+    "plortFeatures": [
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#FEFCFF",
           "_MiddleColor": "#DCDADD",
           "_BottomColor": "#ada08e"
@@ -151,14 +142,12 @@
     "zones": ["QUARRY", "RUINS"],
     "toAdd": ["OceanRange.Slimes.MineBehaviour, OceanRange"],
     "toRemove": ["BoomSlimeExplode, Assembly-CSharp", "BoomMaterialAnimator, Assembly-CSharp"],
-    "slimeFeatures":
-    [
+    "slimeFeatures": [
       {
         "pattern": "mine_pattern",
         "matOrigin": "TABBY_SLIME",
         "gloss": 1,
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#9EA16F",
           "_BottomColor": "#445660"
         }
@@ -169,8 +158,7 @@
         "colorProps": { "_TopColor": "#212A2F" }
       }
     ],
-    "plortFeatures":
-    [
+    "plortFeatures": [
       {
         "mesh": "pearl",
         "colorProps": { "_TopColor": "#445660" }
@@ -180,8 +168,7 @@
         "sameAs": 1
       }
     ],
-    "gordoFeatures":
-    [
+    "gordoFeatures": [
       { "colorProps": { "_TopColor": "#445660" } },
       {
         "mesh": "mine_exterior_gordo",
@@ -214,12 +201,10 @@
     "spawnAmount": 1,
     "toAdd": ["OceanRange.Slimes.LanternBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
     "toRemove": ["SlimeHover, Assembly-CSharp", "DestroyOutsideHoursOfDay, Assembly-CSharp"],
-    "slimeFeatures":
-    [
+    "slimeFeatures": [
       {
         "matOrigin": "PINK_SLIME",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#752C86",
           "_MiddleColor": "#9445A7",
           "_BottomColor": "#B15EC8"
@@ -229,8 +214,7 @@
         "mesh": "lantern_fins",
         "pattern": "lantern_pattern",
         "matOrigin": "TABBY_SLIME",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#752C86",
           "_BottomColor": "#B15EC8"
         }
@@ -250,13 +234,11 @@
         "colorProps": { "_TopColor": "#EBDB6A" }
       }
     ],
-    "plortFeatures":
-    [
+    "plortFeatures": [
       {
         "mesh": "pearl",
         "gloss": 1,
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#B15EC8",
           "_MiddleColor": "#EBDB6A",
           "_BottomColor": "#752C86"
@@ -271,8 +253,7 @@
         "sameAs": 3
       }
     ],
-    "gordoFeatures":
-    [
+    "gordoFeatures": [
       { "sameAs": 0 },
       {
         "mesh": "lantern_fins_gordo",
@@ -307,12 +288,10 @@
     "toAdd": ["OceanRange.Slimes.SandBehaviour, OceanRange"],
     "toRemove": ["GotoWater, Assembly-CSharp", "GotoConsumable, Assembly-CSharp", "DestroyOnTouching, Assembly-CSharp", "SlimeEatWater, Assembly-CSharp"],
     "natGordoSpawn": false,
-    "slimeFeatures":
-    [
+    "slimeFeatures": [
       {
         "skipNull": true,
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#E2DFD2",
           "_MiddleColor": "#E8C499",
           "_BottomColor": "#EDA960"
@@ -324,15 +303,13 @@
         "colorProps": { "_TopColor": "#E8C499" }
       }
     ],
-    "plortFeatures":
-    [
+    "plortFeatures": [
       {
         "mesh": "pearl",
         "colorProps": { "_TopColor": "#E2DFD2" }
       }
     ],
-    "gordoFeatures":
-    [
+    "gordoFeatures": [
       {
         "mesh": "puddle_body_gordo",
         "sameAs": 0
@@ -350,14 +327,12 @@
     "saturation": 30,
     "jiggle": 0.25,
     "toAdd": ["StalkConsumable, Assembly-CSharp"],
-    "slimeFeatures":
-    [
+    "slimeFeatures": [
       {
         "pattern": "mesmer_pattern",
         "matOrigin": "TABBY_SLIME",
         "gloss": 0.11,
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#e034c9",
           "_MiddleColor": "#dafe7a",
           "_BottomColor": "#0a094f"
@@ -367,8 +342,7 @@
         "mesh": "mesmer_pincers",
         "matOrigin": "TABBY_SLIME",
         "pattern": "mesmer_pincer_pattern",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#340ca1",
           "_BottomColor": "#431158"
         }
@@ -376,8 +350,7 @@
       {
         "mesh": "mesmer_tail_base",
         "matOrigin": "PINK_SLIME",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#33169a",
           "_BottomColor": "#431158"
         }
@@ -385,8 +358,7 @@
       {
         "mesh": "mesmer_tail_stem_1",
         "matOrigin": "PINK_SLIME",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#821ed6",
           "_BottomColor": "#33169a"
         }
@@ -394,8 +366,7 @@
       {
         "mesh": "mesmer_tail_stem_2",
         "matOrigin": "PINK_SLIME",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#e034c9",
           "_BottomColor": "#821ed6"
         }
@@ -403,15 +374,13 @@
       {
         "mesh": "mesmer_tail_tip",
         "matOrigin": "PINK_SLIME",
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#dafe7a",
           "_BottomColor": "#e034c9"
         }
       }
     ],
-    "gordoFeatures":
-    [
+    "gordoFeatures": [
       { "sameAs": 0 },
       {
         "mesh": "mesmer_pincers_gordo",
@@ -434,11 +403,9 @@
         "sameAs": 5
       }
     ],
-    "plortFeatures":
-    [
+    "plortFeatures": [
       {
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#0a094f",
           "_MiddleColor": "#2F2251",
           "_BottomColor": "#1e1140"
@@ -464,14 +431,12 @@
     "basePrice": 30,
     "saturation": 25,
     "jiggle": 0.25,
-    "slimeFeatures":
-    [
+    "slimeFeatures": [
       {
         "pattern": "hermit_pattern",
         "matOrigin": "TABBY_SLIME",
         "gloss": 0.11,
-        "colorProps":
-        {
+        "colorProps": {
           "_TopColor": "#f09695",
           "_BottomColor": "#e65954"
         }
@@ -486,16 +451,14 @@
         "colorProps": { "_TopColor": "#b53a35" }
       }
     ],
-    "plortFeatures":
-    [
+    "plortFeatures": [
       { "sameAs": 0 },
       {
         "mesh": "hermit_shell_plort",
         "sameAs": 1
       }
     ],
-    "gordoFeatures":
-    [
+    "gordoFeatures": [
       { "sameAs": 0 },
       {
         "mesh": "hermit_shell_gordo",
@@ -528,8 +491,7 @@
     "saturation": 50000,
     "spawnAmount": 0.00125,
     "jiggle": 0.5,
-    "slimeFeatures":
-    [
+    "slimeFeatures": [
       { "matOrigin": "GOLD_SLIME" },
       {
         "mesh": "goldfish_fins",
@@ -537,15 +499,13 @@
         "colorProps": { "_TopColor": "#dbc777" }
       }
     ],
-    "plortFeatures":
-    [
+    "plortFeatures": [
       {
         "mesh": "pearl",
         "cloneFallback": false
       }
     ],
-    "gordoFeatures":
-    [
+    "gordoFeatures": [
       { "sameAs": 0 },
       {
         "mesh": "goldfish_fins_gordo",
