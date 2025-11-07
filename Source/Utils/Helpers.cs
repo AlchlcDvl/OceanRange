@@ -547,4 +547,20 @@ public static class Helpers
     // }
 
     public static T AddComponent<T>(this Component component) where T : Component => component.gameObject.AddComponent<T>();
+
+    public static GameObject[] FindAllChildren(this GameObject obj, string name)
+    {
+        var list = new List<GameObject>();
+
+        foreach (Transform item in obj.transform)
+        {
+            if (item.name.Equals(name))
+                list.Add(item.gameObject);
+
+            if (item.childCount > 0)
+                list.AddRange(item.gameObject.FindAllChildren(name));
+        }
+
+        return [.. list];
+    }
 }

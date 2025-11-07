@@ -61,6 +61,7 @@ public sealed class ChimkenData : FoodData
 
 public abstract class PlantData : FoodData
 {
+    public abstract bool IsFruit { get; }
     public abstract string Type { get; }
     public abstract string ResourceIdSuffix { get; }
     protected abstract IdentifiableId DefaultPlant { get; }
@@ -103,6 +104,7 @@ public abstract class PlantData : FoodData
 
 public sealed class VeggieData : PlantData
 {
+    public override bool IsFruit => false;
     public override string Type => "Veggie";
     public override string ResourceIdSuffix => "Patch";
     protected override IdentifiableId DefaultPlant => IdentifiableId.CARROT_VEGGIE;
@@ -111,6 +113,7 @@ public sealed class VeggieData : PlantData
 
 public sealed class FruitData : PlantData
 {
+    public override bool IsFruit => true;
     public override string Type => "Fruit";
     public override string ResourceIdSuffix => "Tree";
     protected override IdentifiableId DefaultPlant => IdentifiableId.POGO_FRUIT;

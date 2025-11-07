@@ -371,31 +371,37 @@ public static class Cookbook
         var resource = CreateFarmSetup(plantData.BaseResource!.Value, lower + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
         var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, lower + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
 
-        if (plantData is FruitData)
+        if (plantData.IsFruit)
         {
-            var partName = plantData.BaseResource.Value.ToString();
+            var partName = plantData.BaseResource.Value.ToString().ToLowerInvariant();
 
             if (partName.EndsWith("_tree", StringComparison.OrdinalIgnoreCase))
                 partName = partName.Replace("_tree", string.Empty);
             else
                 partName = "pogo";
 
-            var trunkExists = Inventory.TryGetMesh(lower + "_trunk", out var trunk);
-            var leavesExist = Inventory.TryGetMesh(lower + "_leaves", out var leaves);
-
-            if (trunkExists)
+            if (Inventory.TryGetMesh(lower + "_trunk", out var trunk))
             {
+                "Here!".DoLog();
                 var name = "tree_" + partName;
-                SetTreeMeshes(resource.FindChildren(name).Select(x => x.GetComponent<MeshFilter>()), trunk);
-                SetTreeMeshes(resourceDlx.FindChildren(name).Select(x => x.GetComponent<MeshFilter>()), trunk);
+                name.DoLog();
+                trunk.name.DoLog();
+                SetTreeMeshes(resource, name, trunk);
+                SetTreeMeshes(resourceDlx, name, trunk);
             }
 
-            if (leavesExist)
+            if (Inventory.TryGetMesh(lower + "_leaves", out var leaves))
             {
                 var name = "leaves_" + partName;
-                SetTreeMeshes(resource.FindChildren(name).Select(x => x.GetComponent<MeshFilter>()), leaves);
-                SetTreeMeshes(resourceDlx.FindChildren(name).Select(x => x.GetComponent<MeshFilter>()), leaves);
+                SetTreeMeshes(resource, name, leaves);
+                SetTreeMeshes(resourceDlx, name, leaves);
             }
+        }
+        else if (Inventory.TryGetMesh(lower + "_sprout", out var sprout))
+        {
+            var mat = materials[0];
+            TranslateModel(resource.FindAllChildren("Sprout"), sprout, mat);
+            TranslateModel(resourceDlx.FindAllChildren("Sprout"), sprout, mat);
         }
 
         LookupRegistry.RegisterSpawnResource(resource);
@@ -414,7 +420,7 @@ public static class Cookbook
         PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress);
     }
 
-    private static void SetTreeMeshes(IEnumerable<MeshFilter> filters, Mesh mesh) => filters.Do(x => x.sharedMesh = mesh);
+    private static void SetTreeMeshes(GameObject parent, string child, Mesh mesh) => parent.FindAllChildren(child).Select(x => x.GetComponent<MeshFilter>()).Do(x => x.sharedMesh = mesh);
 
     private static GameObject CreateFarmSetup(SpawnResourceId baseFarm, string patchName, SpawnResourceId spawnResource, GameObject plant)
     {
@@ -426,9 +432,7 @@ public static class Cookbook
         component.BonusObjectsToSpawn = [];
         component.BonusChance = 0f;
         var partial = plant.FindChildWithPartialName("model_");
-        var mesh = partial.GetComponent<MeshFilter>().sharedMesh;
-        TranslateModel(prefab.FindChildren("Sprout"), mesh, null);
-        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), mesh, partial.GetComponent<MeshRenderer>().sharedMaterial);
+        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), partial.GetComponent<MeshFilter>().sharedMesh, partial.GetComponent<MeshRenderer>().sharedMaterial);
         return prefab;
     }
 
@@ -437,9 +441,7 @@ public static class Cookbook
         foreach (var gameObj in gameObjects)
         {
             gameObj.GetComponent<MeshFilter>().sharedMesh = mesh;
-
-            if (material)
-                gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
+            gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
         }
     }
 
