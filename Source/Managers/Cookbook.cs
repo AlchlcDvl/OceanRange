@@ -382,10 +382,7 @@ public static class Cookbook
 
             if (Inventory.TryGetMesh(lower + "_trunk", out var trunk))
             {
-                "Here!".DoLog();
                 var name = "tree_" + partName;
-                name.DoLog();
-                trunk.name.DoLog();
                 SetTreeMeshes(resource, name, trunk);
                 SetTreeMeshes(resourceDlx, name, trunk);
             }
