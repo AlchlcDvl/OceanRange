@@ -307,7 +307,6 @@ public static class Largopedia
                     if (prefab.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                         rend.sharedMesh = rend.sharedMesh.Clone();
 
-                    prefab.LODIndex = j;
                     newStruct.Element.Prefabs[j] = prefab;
                 }
 

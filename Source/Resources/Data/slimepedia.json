@@ -333,8 +333,8 @@
         "matOrigin": "TABBY_SLIME",
         "gloss": 0.11,
         "colorProps": {
-          "_TopColor": "#e034c9",
-          "_MiddleColor": "#dafe7a",
+          "_TopColor": "#340ca1",
+          "_MiddleColor": "#e034c9",
           "_BottomColor": "#0a094f"
         }
       },

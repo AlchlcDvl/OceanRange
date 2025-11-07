@@ -31,8 +31,6 @@ public static class Cookbook
     private static readonly int SwayStrength = ShaderUtils.GetOrSet("_SwayStrength");
     private static readonly int AmbientOcclusion = ShaderUtils.GetOrSet("_AmbientOcclusion");
 
-    private static Texture2D White;
-
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
 #endif
@@ -165,8 +163,6 @@ public static class Cookbook
 #endif
     public static void LoadAllFoods()
     {
-        White = Inventory.GetTexture2D("all_white");
-
         Array.ForEach(Fruits, BaseCreatePlant);
         Array.ForEach(Veggies, BaseCreatePlant);
         Array.ForEach(Chimkens, BaseCreateChimken);
@@ -364,7 +360,7 @@ public static class Cookbook
             if (maskExists)
                 material.SetTexture(Mask, mask);
 
-            material.SetTexture(AmbientOcclusion, ambientExists && maskExists ? ambient : White);
+            material.SetTexture(AmbientOcclusion, ambientExists && maskExists ? ambient : Texture2D.whiteTexture);
         }
 
         plantData.InitFoodDetails?.Invoke(null, [prefab]);
