@@ -131,5 +131,11 @@
       "basePrice": 30,
       "saturation": 15
     }
+  ],
+  "groups": [
+    {
+      "name": "Dirt",
+      "foods": ["SILKY_SAND_CRAFT"]
+    }
   ]
 }

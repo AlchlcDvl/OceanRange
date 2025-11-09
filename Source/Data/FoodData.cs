@@ -6,9 +6,19 @@ namespace OceanRange.Data;
 
 public sealed class Ingredients : JsonData
 {
+    [JsonRequired] public GroupData[] Groups;
     [JsonRequired] public FruitData[] Fruits;
     [JsonRequired] public VeggieData[] Veggies;
     [JsonRequired] public ChimkenData[] Chimkens;
+}
+
+public sealed class GroupData : JsonData
+{
+    [JsonRequired] public IdentifiableId[] Foods;
+
+    [JsonIgnore] public FoodGroup Group;
+
+    protected override void OnDeserialise() => Group = Helpers.AddEnumValue<FoodGroup>(Name.ToUpperInvariant());
 }
 
 public abstract class FoodData : SpawnedActorData

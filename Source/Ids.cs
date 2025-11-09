@@ -10,8 +10,6 @@ public static class Ids
 {
     public static readonly SlimeExpression Sleeping;
 
-    public static readonly FoodGroup DIRT;
-
     public static readonly ProgressType EXCHANGE_LISA;
 
     public static readonly Category OCEAN;

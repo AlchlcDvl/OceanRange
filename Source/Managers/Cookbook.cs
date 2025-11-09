@@ -44,7 +44,8 @@ public static class Cookbook
         Veggies = food.Veggies;
         Chimkens = food.Chimkens;
 
-        Ids.DIRT.RegisterId(IdentifiableId.SILKY_SAND_CRAFT);
+        foreach (var groupData in food.Groups)
+            groupData.Group.RegisterIdRange(groupData.Foods);
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
