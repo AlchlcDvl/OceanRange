@@ -2,22 +2,12 @@ using System.Linq.Expressions;
 
 namespace OceanRange.Modules;
 
-public sealed class EnumMetadata
+public sealed class EnumMetadata(Type enumType)
 {
-    public readonly bool IsFlags;
-    public readonly string ZeroName;
-    public readonly List<(object, string)> Values;
-    public readonly Func<ulong, object> FromUInt64;
-
-    public EnumMetadata(Type enumType)
-    {
-        IsFlags = enumType.IsDefined<FlagsAttribute>();
-        Values = [.. Enum.GetValues(enumType).Cast<object>().Zip(Enum.GetNames(enumType))];
-        ZeroName = Enum.ToObject(enumType, 0).ToString();
-
-        var underlying = Enum.GetUnderlyingType(enumType);
-        FromUInt64 = MakeFromUInt64(enumType, underlying);
-    }
+    public readonly bool IsFlags = enumType.IsDefined<FlagsAttribute>();
+    public readonly string ZeroName = Enum.ToObject(enumType, 0).ToString();
+    public readonly List<(object, string)> Values = [.. Enum.GetValues(enumType).Cast<object>().Zip(Enum.GetNames(enumType))];
+    public readonly Func<ulong, object> FromUInt64 = MakeFromUInt64(enumType, Enum.GetUnderlyingType(enumType));
 
     private static Func<ulong, object> MakeFromUInt64(Type enumType, Type underlying)
     {
