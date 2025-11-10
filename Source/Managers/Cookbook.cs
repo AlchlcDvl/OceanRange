@@ -331,7 +331,7 @@ public static class Cookbook
         var cycle = prefab.GetComponent<ResourceCycle>();
 
         var materials = new Material[2];
-        materials[0] = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
+        var mat = materials[0] = meshRend.sharedMaterial = meshRend.sharedMaterial.Clone();
         materials[1] = cycle.rottenMat = cycle.rottenMat.Clone();
 
         var ramp = $"{lower}_ramp_";
@@ -366,41 +366,10 @@ public static class Cookbook
 
         plantData.InitFoodDetails?.Invoke(null, [prefab]);
 
-        var icon = Inventory.GetSprite(lower);
-        RegisterFood(prefab, icon, plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
+        RegisterFood(prefab, Inventory.GetSprite(lower), plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
-        var resource = CreateFarmSetup(plantData.BaseResource!.Value, lower + plantData.ResourceIdSuffix, plantData.ResourceId, prefab);
-        var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, lower + plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab);
-
-        if (plantData.IsFruit)
-        {
-            var partName = plantData.BaseResource.Value.ToString().ToLowerInvariant();
-
-            if (partName.EndsWith("_tree", StringComparison.OrdinalIgnoreCase))
-                partName = partName.Replace("_tree", string.Empty);
-            else
-                partName = "pogo";
-
-            if (Inventory.TryGetMesh(lower + "_trunk", out var trunk))
-            {
-                var name = "tree_" + partName;
-                SetTreeMeshes(resource, name, trunk);
-                SetTreeMeshes(resourceDlx, name, trunk);
-            }
-
-            if (Inventory.TryGetMesh(lower + "_leaves", out var leaves))
-            {
-                var name = "leaves_" + partName;
-                SetTreeMeshes(resource, name, leaves);
-                SetTreeMeshes(resourceDlx, name, leaves);
-            }
-        }
-        else if (Inventory.TryGetMesh(lower + "_sprout", out var sprout))
-        {
-            var mat = materials[0];
-            TranslateModel(resource.FindAllChildren("Sprout"), sprout, mat);
-            TranslateModel(resourceDlx.FindAllChildren("Sprout"), sprout, mat);
-        }
+        var resource = CreateFarmSetup(plantData.BaseResource!.Value, lower, plantData.ResourceIdSuffix, plantData.ResourceId, prefab, mesh, plantData.IsFruit, mat);
+        var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, lower, plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, mesh, plantData.IsFruit, mat);
 
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);
@@ -418,19 +387,37 @@ public static class Cookbook
         PlortRegistry.AddPlortEntry(plantData.MainId, plantData.Progress);
     }
 
-    private static void SetTreeMeshes(GameObject parent, string child, Mesh mesh) => parent.FindAllChildren(child).Select(x => x.GetComponent<MeshFilter>()).Do(x => x.sharedMesh = mesh);
-
-    private static GameObject CreateFarmSetup(SpawnResourceId baseFarm, string patchName, SpawnResourceId spawnResource, GameObject plant)
+    private static GameObject CreateFarmSetup(SpawnResourceId baseFarm, string lower, string suffix, SpawnResourceId resourceId, GameObject plant, Mesh mesh, bool isFruit, Material material)
     {
         var prefab = baseFarm.GetResourcePrefab().CreatePrefab();
-        prefab.name = patchName;
+        prefab.name = lower + suffix;
+
         var component = prefab.GetComponent<SpawnResource>();
-        component.id = spawnResource;
+        component.id = resourceId;
         component.ObjectsToSpawn = [plant];
         component.BonusObjectsToSpawn = [];
         component.BonusChance = 0f;
-        var partial = plant.FindChildWithPartialName("model_");
-        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), partial.GetComponent<MeshFilter>().sharedMesh, partial.GetComponent<MeshRenderer>().sharedMaterial);
+
+        TranslateModel(component.SpawnJoints.Select(x => x.gameObject), mesh, material);
+
+        if (isFruit)
+        {
+            var partName = resourceId.ToString().ToLowerInvariant();
+
+            if (partName.EndsWith("_tree", StringComparison.OrdinalIgnoreCase))
+                partName = partName.Replace("_tree", string.Empty);
+            else
+                partName = "pogo";
+
+            if (Inventory.TryGetMesh(lower + "_trunk", out var trunk))
+                TranslateModel(prefab.FindAllChildren("tree_" + partName), trunk, null);
+
+            if (Inventory.TryGetMesh(lower + "_leaves", out var leaves))
+                TranslateModel(prefab.FindAllChildren("leaves_" + partName), leaves, null);
+        }
+        else if (Inventory.TryGetMesh(lower + "_sprout", out var sprout))
+            TranslateModel(prefab.FindAllChildren("Sprout"), sprout, material);
+
         return prefab;
     }
 
@@ -439,7 +426,9 @@ public static class Cookbook
         foreach (var gameObj in gameObjects)
         {
             gameObj.GetComponent<MeshFilter>().sharedMesh = mesh;
-            gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
+
+            if (material)
+                gameObj.GetComponent<MeshRenderer>().sharedMaterial = material;
         }
     }
 
