@@ -203,7 +203,7 @@ public static class Helpers
 
     public static T AddEnumValue<T>(string name) where T : struct, Enum => (T)AddEnumValue(name, typeof(T));
 
-    private static object AddEnumValue(string name, Type enumType)
+    public static object AddEnumValue(string name, Type enumType)
     {
         if (TryParseEnum(enumType, name, true, out var result))
             return result;
@@ -221,12 +221,15 @@ public static class Helpers
                 IdentifiableIds.Add(identifiableId);
                 break;
             }
-            // case GadgetId gadgetId: // Uncomment once we add gadgets
+            // case GadgetId gadgetId: // TODO: Uncomment once we add gadgets
             // {
             //     GadgetIds.Add(gadgetId);
             //     break;
             // }
         }
+
+        if (EnumMetadata.TryGet(enumType, out var metadata))
+            metadata.Values.Add((value, name));
 
         return value;
     }

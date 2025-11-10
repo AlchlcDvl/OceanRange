@@ -139,7 +139,7 @@ public static class Slimepedia
 
         TarrDef = IdentifiableId.TARR_SLIME.GetSlimeDefinition();
 
-        // GordoMesh = IdentifiableId.PINK_GORDO.GetPrefab().transform.Find("").GetComponent<SkinnedMeshRenderer>().sharedMesh.Clone();
+        // GordoMesh = IdentifiableId.PINK_GORDO.GetPrefab().transform.Find("Vibrating/slime_gordo").GetComponent<SkinnedMeshRenderer>().sharedMesh.Clone();
         // GordoMesh.name = "slime_gordo";
 
         Array.ForEach(Slimes, BaseLoadSlime);
@@ -474,7 +474,7 @@ public static class Slimepedia
         }
 
         var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
-        elem.name = elem.Name = modelData.Name?.Replace("(Clone)", "") ?? (modelData.IsBody ? "Body" : "Structure");
+        elem.name = elem.Name = modelData.Name?.Replace("(Clone)", string.Empty) ?? (modelData.IsBody ? "Body" : "Structure");
         structure.SupportsFaces = modelData.IsBody;
 
         if (modelData.IgnoreLodIndex)
