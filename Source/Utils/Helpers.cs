@@ -74,7 +74,7 @@ public static class Helpers
         return list;
     }
 
-    // private static IEnumerable<T> ExceptBy<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x));
+    public static IEnumerable<T> Except<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x));
 
     // public static bool TryHexToColor32(string hex, out Color32 color)
     // {

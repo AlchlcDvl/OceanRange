@@ -19,7 +19,10 @@ public sealed class RancherData : JsonData
     protected override void OnDeserialise()
     {
         RancherId = Name.ToLowerInvariant();
-        RancherName = Helpers.AddEnumValue<RancherName>(Name.ToUpperInvariant());
+
+        var upper = Name.ToUpperInvariant();
+
+        RancherName = Helpers.AddEnumValue<RancherName>(upper);
 
         Rancher = new()
         {
@@ -33,6 +36,9 @@ public sealed class RancherData : JsonData
             indivRewards = IndivRewards ?? [],
             indivRareRewards = IndivRareRewards ?? []
         };
+
+        Mailbox.MailMap["exchangeintro_" + RancherId].UnlockFuncAnd +=
+            _ => SceneContext.Instance.ProgressDirector.HasProgress(Helpers.AddEnumValue<ProgressType>("EXCHANGE_" + upper));
     }
 
     [JsonIgnore] private bool Handled;

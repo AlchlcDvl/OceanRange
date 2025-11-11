@@ -10,6 +10,7 @@ namespace OceanRange.Managers;
 public static class Slimepedia
 {
     public static Dictionary<IdentifiableId, SlimeData> SlimeDataMap;
+    public static Dictionary<IdentifiableId, SlimeData> PlortDataMap;
     public static SlimeData[] Slimes;
     public static bool MgExists;
     public static bool MvExists;
@@ -64,6 +65,7 @@ public static class Slimepedia
 
         Slimes = Inventory.GetJsonArray<SlimeData>("slimepedia");
         SlimeDataMap = Slimes.ToDictionary(x => x.MainId, Identifiable.idComparer);
+        PlortDataMap = Slimes.ToDictionary(x => x.PlortId, Identifiable.idComparer);
 
         GordoSaveData.Lookup = Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId, Identifiable.idComparer);
 
