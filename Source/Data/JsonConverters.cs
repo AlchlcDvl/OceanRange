@@ -345,30 +345,29 @@ public sealed class EnumConverter : OceanJsonConverter
     protected override object ParseFromJson(JsonReader reader, Type objectType)
     {
         var targetType = Nullable.GetUnderlyingType(objectType) ?? objectType;
-        var metadata = EnumMetadata.Get(targetType);
-        return metadata.IsFlags ? ParseFlags(reader, targetType, metadata) : ParseSingle(reader, targetType, metadata, false);
+        return EnumMetadata.Get(targetType).IsFlags ? ParseFlags(reader, targetType) : ParseSingle(reader, targetType, false);
     }
 
-    private static object ParseSingle(JsonReader reader, Type enumType, EnumMetadata metadata, bool partOfArray) => reader.TokenType switch
+    private static object ParseSingle(JsonReader reader, Type enumType, bool partOfArray) => reader.TokenType switch
     {
         JsonToken.Null when partOfArray => null, // Only check null when in an array, because normal null values are handled outside this method
         JsonToken.String when Helpers.TryParseEnum(enumType, reader.Value.ToString() , true, out var parsed) => parsed, // Attempt to parse the string, make sure to use this arm
         JsonToken.String when reader.Value is string name && name.StartsWith('+') => Helpers.AddEnumValue(name, enumType), // Attempt to use the string as a new enum value, alternative use of strings
-        JsonToken.Integer => metadata.FromUInt64(Convert.ToUInt64(reader.Value)), // Avoid adding numbers, they're hard to understand in JSON when you don't have access to the relevant enum
+        JsonToken.Integer => Enum.ToObject(enumType, Convert.ToUInt64(reader.Value)), // Avoid adding numbers, they're hard to understand in JSON when you don't have access to the relevant enum
         _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {enumType.Name}. Expected {(partOfArray ? "a valid array of defined strings or ints, " : string.Empty)}a defined string or an integer.") // Throw an error if an unsupported value type is given
     };
 
-    private static object ParseFlags(JsonReader reader, Type enumType, EnumMetadata metadata)
+    private static object ParseFlags(JsonReader reader, Type enumType)
     {
         if (reader.TokenType != JsonToken.StartArray)
-            return ParseSingle(reader, enumType, metadata, false);
+            return ParseSingle(reader, enumType, false);
 
         var combined = 0UL;
 
         while (reader.Read() && reader.TokenType != JsonToken.EndArray)
-            combined |= Convert.ToUInt64(ParseSingle(reader, enumType, metadata, true));
+            combined |= Convert.ToUInt64(ParseSingle(reader, enumType, true));
 
-        return metadata.FromUInt64(combined);
+        return Enum.ToObject(enumType, combined);
     }
 
     /// <inheritdoc/>

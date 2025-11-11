@@ -6,7 +6,7 @@ global using UObject = UnityEngine.Object;
 global using FoodGroup = SlimeEat.FoodGroup;
 global using Language = MessageDirector.Lang;
 global using IdentifiableId = Identifiable.Id;
-global using Ambiance = AmbianceDirector.Zone;
+// global using Ambiance = AmbianceDirector.Zone;
 global using SpawnResourceId = SpawnResource.Id;
 global using Category = ExchangeDirector.Category;
 global using StorageType = SiloStorage.StorageType;
@@ -15,7 +15,7 @@ global using SlimeExpression = SlimeFace.SlimeExpression;
 global using ProgressType = ProgressDirector.ProgressType;
 global using PediaCategory = SRML.SR.PediaRegistry.PediaCategory;
 global using RancherName = RancherChatMetadata.Entry.RancherName;
-global using RegionId = MonomiPark.SlimeRancher.Regions.RegionRegistry.RegionSetId;
+// global using RegionId = MonomiPark.SlimeRancher.Regions.RegionRegistry.RegionSetId;
 
 global using SRML.SR;
 

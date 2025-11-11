@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-
 namespace OceanRange.Modules;
 
 public sealed class EnumMetadata(Type enumType)
@@ -7,15 +5,6 @@ public sealed class EnumMetadata(Type enumType)
     public readonly bool IsFlags = enumType.IsDefined<FlagsAttribute>();
     public readonly string ZeroName = Enum.ToObject(enumType, 0).ToString();
     public readonly List<(object, string)> Values = [.. Enum.GetValues(enumType).Cast<object>().Zip(Enum.GetNames(enumType))];
-    public readonly Func<ulong, object> FromUInt64 = MakeFromUInt64(enumType, Enum.GetUnderlyingType(enumType));
-
-    private static Func<ulong, object> MakeFromUInt64(Type enumType, Type underlying)
-    {
-        var value = Expression.Parameter(typeof(ulong), "value");
-        var converted = Expression.ConvertChecked(value, underlying);
-        var boxed = Expression.Convert(Expression.Convert(converted, enumType), typeof(object));
-        return Expression.Lambda<Func<ulong, object>>(boxed, value).Compile();
-    }
 
     private static readonly Dictionary<Type, EnumMetadata> MetadataCache = [];
 
