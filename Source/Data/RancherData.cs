@@ -41,47 +41,44 @@ public sealed class RancherData : JsonData
             _ => SceneContext.Instance.ProgressDirector.HasProgress(Helpers.AddEnumValue<ProgressType>("EXCHANGE_" + upper));
     }
 
-    [JsonIgnore] private bool Handled;
+    private static readonly HashSet<string> OfferIds = [];
+    private static readonly Dictionary<Language, HashSet<int>> LoadingIndices = new(LanguageComparer.Instance);
 
-    public void HandleTranslationData(RancherLangData langData)
+    public void HandleTranslationData(RancherLangData langData, Language lang)
     {
-        if (Handled)
-            return;
-
-        var offerIds = new HashSet<string>();
+        Rancher.numBlurbs = langData.Offers.Length;
 
         for (var i = 0; i < langData.Offers.Length; i++)
         {
             var id = $"m.offer_{i + 1}.{RancherId}";
 
-            if (offerIds.Contains(id))
-                continue;
-
-            ExchangeOfferRegistry.RegisterOfferID(id);
-            offerIds.Add(id);
+            if (OfferIds.Add(id))
+                ExchangeOfferRegistry.RegisterOfferID(id);
         }
 
         var specId = $"m.bonusoffer.{RancherId}";
 
-        if (!offerIds.Contains(specId))
+        if (OfferIds.Add(specId))
             ExchangeOfferRegistry.RegisterOfferID(specId);
 
-        if (!Main.ClsExists)
+        if (!Main.ClsExists || Translator.LoadingIds.ContainsKey(lang) || LoadingIndices.ContainsKey(lang))
             return;
 
-        var loadingIndices = new HashSet<int>();
+        var ids = Translator.LoadingIds[lang] = [];
+        var indices = LoadingIndices[lang] = [];
 
         for (var i = 0; i < langData.LoadingTexts.Length; i++)
         {
-            if (loadingIndices.Contains(i))
+            if (!indices.Add(i))
                 continue;
 
-            Translator.LoadingIds.Add(GetNextLoadingIdBypass());
-            loadingIndices.Add(i);
+            var id = GetNextLoadingIdBypass(lang);
+            ids.Add(id);
+            AddLocalTipTextBypass(id, lang);
         }
-
-        Handled = true;
     }
 
-    private static string GetNextLoadingIdBypass() => CLS.AddToLoading.GetNextLoadingId();
+    private static string GetNextLoadingIdBypass(Language lang) => CLS.AddToLoading.GetNextLoadingId(lang);
+
+    private static void AddLocalTipTextBypass(string id, Language lang) => CLS.AddToLoading.AddLocalTipText(id, lang);
 }

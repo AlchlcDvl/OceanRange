@@ -91,6 +91,7 @@ internal sealed class Main : ModEntryPoint
     public override void PostLoad()
     {
         Slimepedia.PostLoadSlimes();
+        Translator.PostLoadLangData();
 
         // Inventory.Bundle.Unload(false);
         Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", /*"ocean_range",*/ "contacts"); // Release handles
