@@ -10,6 +10,7 @@ namespace OceanRange.Managers;
 public static class Slimepedia
 {
     public static Dictionary<IdentifiableId, SlimeData> SlimeDataMap;
+    public static Dictionary<IdentifiableId, SlimeData> PlortDataMap;
     public static SlimeData[] Slimes;
     public static bool MgExists;
     public static bool MvExists;
@@ -64,6 +65,7 @@ public static class Slimepedia
 
         Slimes = Inventory.GetJsonArray<SlimeData>("slimepedia");
         SlimeDataMap = Slimes.ToDictionary(x => x.MainId, Identifiable.idComparer);
+        PlortDataMap = Slimes.ToDictionary(x => x.PlortId, Identifiable.idComparer);
 
         GordoSaveData.Lookup = Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId, Identifiable.idComparer);
 
@@ -139,7 +141,7 @@ public static class Slimepedia
 
         TarrDef = IdentifiableId.TARR_SLIME.GetSlimeDefinition();
 
-        // GordoMesh = IdentifiableId.PINK_GORDO.GetPrefab().transform.Find("").GetComponent<SkinnedMeshRenderer>().sharedMesh.Clone();
+        // GordoMesh = IdentifiableId.PINK_GORDO.GetPrefab().transform.Find("Vibrating/slime_gordo").GetComponent<SkinnedMeshRenderer>().sharedMesh.Clone();
         // GordoMesh.name = "slime_gordo";
 
         Array.ForEach(Slimes, BaseLoadSlime);
@@ -474,7 +476,7 @@ public static class Slimepedia
         }
 
         var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
-        elem.name = elem.Name = modelData.Name?.Replace("(Clone)", "") ?? (modelData.IsBody ? "Body" : "Structure");
+        elem.name = elem.Name = modelData.Name?.Replace("(Clone)", string.Empty) ?? (modelData.IsBody ? "Body" : "Structure");
         structure.SupportsFaces = modelData.IsBody;
 
         if (modelData.IgnoreLodIndex)

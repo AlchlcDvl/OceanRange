@@ -93,7 +93,7 @@ public static class LatchCustomTranslations
     [UsedImplicitly]
     public static void Postfix(string path, Dictionary<string, string> __result)
     {
-        if (!MessageDirector.GetLang(GameContext.Instance.MessageDirector.GetCurrentLanguageCode()).GetTranslations().TryGetValue(path, out var translations))
+        if (!GameContext.Instance.MessageDirector.GetCultureLang().GetTranslations().TryGetValue(path, out var translations))
             return;
 
         foreach (var (id, text) in translations)
@@ -107,8 +107,8 @@ public static class FilterValues
     [UsedImplicitly]
     public static void Postfix(ExchangeDirector __instance)
     {
-        __instance.catDict[Category.PLORTS] = [.. __instance.catDict[Category.PLORTS].Except([Ids.GOLDFISH_PLORT])];
-        __instance.catDict[Category.SLIMES] = [.. __instance.catDict[Category.SLIMES].Except([Ids.GOLDFISH_SLIME])];
+        __instance.catDict[Category.PLORTS] = [.. __instance.catDict[Category.PLORTS].Except(x => Slimepedia.PlortDataMap.TryGetValue(x, out var value) && !value.Exchangeable)];
+        __instance.catDict[Category.SLIMES] = [.. __instance.catDict[Category.SLIMES].Except(x => Slimepedia.SlimeDataMap.TryGetValue(x, out var value) && !value.Exchangeable)];
     }
 }
 

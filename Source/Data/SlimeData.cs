@@ -80,8 +80,6 @@ public sealed class SlimeData : SpawnedActorData
     [JsonIgnore] public MethodInfo InitPlortDetails;
     [JsonIgnore] public MethodInfo InitGordoDetails;
 
-    [JsonIgnore] private bool Handled;
-
     protected override void OnDeserialise()
     {
         base.OnDeserialise();
@@ -135,12 +133,5 @@ public sealed class SlimeData : SpawnedActorData
         Vaccable |= Slimepedia.MvExists;
     }
 
-    public void HandleTranslationData(SlimeLangData data)
-    {
-        if (Handled)
-            return;
-
-        Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;
-        Handled = true;
-    }
+    public void HandleTranslationData(SlimeLangData data) => Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;
 }

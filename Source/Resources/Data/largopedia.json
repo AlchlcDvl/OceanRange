@@ -144,7 +144,12 @@
       "colorsOrigin": "COCO_SLIME",
       "matOrigin": "HONEY_SLIME"
     },
-    "slime2Structs": [ { "colorsOrigin": "COCO_SLIME" } ],
+    "slime2Structs": [
+      {
+        "colorsOrigin": "COCO_SLIME",
+        "mesh": "coco_honey_plate"
+      }
+    ],
     "jiggle": 0.1
   },
   {

@@ -81,7 +81,7 @@ internal sealed class Main : ModEntryPoint
         Contacts.LoadAllRanchers();
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
-            AddSplashesBypass(Inventory.GetSprites("loading_1", "loading_2", "loading_3", "loading_4"));
+            AddSplashesBypass(Inventory.GetSprites("loading_1", "loading_2", "loading_3", "loading_4", "loading_5"));
     }
 
     /// <inheritdoc/>
@@ -93,10 +93,10 @@ internal sealed class Main : ModEntryPoint
         Slimepedia.PostLoadSlimes();
 
         // Inventory.Bundle.Unload(false);
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", /*"ocean_range",*/ "contacts"); // Release handles
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", /*"ocean_range", "blueprints"*/ "contacts"); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
-            Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4");
+            Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4", "loading_5");
 
         GC.Collect(); // Free up temp memory
     }

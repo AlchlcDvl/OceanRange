@@ -3,8 +3,7 @@ namespace OceanRange.Managers;
 public static class Translator
 {
     public static readonly Dictionary<string, string> SlimeToOnomicsMap = [];
-
-    public static readonly List<string> LoadingIds = [];
+    public static readonly Dictionary<Language, List<string>> LoadingIds = new(LanguageComparer.Instance);
 
     private static readonly Dictionary<Language, Translations> TranslationsHolder = new(LanguageComparer.Instance);
 
@@ -18,12 +17,13 @@ public static class Translator
     {
         Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslations);
         FallbackTranslations = Fallback.GetTranslations();
+        Fallback.WhenFallback();
     }
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
         var holder = TranslationsHolder.GetOrAdd(lang, GenerateTranslations);
-        holder.OnLanguageChanged();
+        holder.OnLanguageChanged(lang);
         return holder.GetTranslations();
     }
 
@@ -38,7 +38,7 @@ public static class Translator
         }
 
         if (lang == Config.FALLBACK_LANGUAGE)
-            throw new("Fallback was null");
+            throw new($"Fallback {langName} was null");
 
         return Fallback ?? GenerateTranslations(Config.FALLBACK_LANGUAGE);
     }
