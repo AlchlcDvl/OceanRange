@@ -17,12 +17,8 @@ public static class Translator
     {
         Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslations);
         FallbackTranslations = Fallback.GetTranslations();
+        Fallback.WhenFallback();
     }
-
-#if DEBUG
-    [TimeDiagnostic("Pedia Postload")]
-#endif
-    public static void PostLoadLangData() => Fallback.WhenFallback();
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {

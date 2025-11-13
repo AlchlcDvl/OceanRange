@@ -12,6 +12,7 @@ Discord:
 - Sticky Fingers: The ooy gooey goodness that stick to your fingers!
 - Prickly Coral: The oceanic fruit found rarely in the dry reef!
 - Translations: The mod now supports the following languages: Turkish, French, Spanish, Russian* and German*!
+
 ## Changes!
 - Change: Moved the lantern gordo to a new location, good luck finding it this time!
 - Change: Sand gordos now have a proper body shape!
@@ -20,6 +21,7 @@ Discord:
 - Improvement: Updated the market entries to better mimic vanilla behaviour
 - Improvement: Improved several aspects of the mod to ensure maximum capability
 - Removed: Removed the need for AssetsLib
+
 ## Fixes!
 - Critical: Fixed the mod not loading on certain pc and game locales
 - Critical: Fixed popped natural gordos respawning whenever you load a save (you'll need to pop them once more for the mod to actually register its popped status)
