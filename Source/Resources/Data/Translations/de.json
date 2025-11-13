@@ -1,165 +1,165 @@
 {
-  "name": "EN",
+  "name": "DE",
   "additional": {
     "ui": {
-      "l.pearls": "Pearlonomics",
-      "m.foodgroup.dirt": "Dirt"
+      "l.pearls": "Perlenormie",
+      "m.foodgroup.dirt": "Erde"
     },
     "pedia": {
-      "m.favored_by.silky_sand_craft": "Sand Slime"
+      "m.favored_by.silky_sand_craft": "Sand-Schleim"
     }
   },
   "slimes": [
     {
-      "translatedName": "Rosi Slime",
+      "translatedName": "Rosi-Schleim",
       "name": "Rosi",
-      "risks": "There is not much to worry about the rosi slime. They are very easy to ranch, only needing food and companionship. A lonely rosi slime is a sad rosi slime. So it's recommended for ranchers to have more than one if they want a healthy production of pearls.",
-      "slimeology": "The rosi slime is the most common slime found in The Great Reef. They are often seen as cheerful, friendly and mischievous, often pranking other slimes and even humans. Rosi slimes have a deep bond with one another and are very rarely seen alone, As long as they have a partner to play with, they will be happy forever, rarely showing any sadness. And when they are sad it's often at the expense of others. Trying their best to cheer the slime or human back to their happy selves.",
-      "diet": "Everything",
-      "favourite": "No favorite food. The Rosi slime loves everything equally.",
-      "onomics": "Rosi pearls are often called the \"Aphrodite Pearl\" for their rejuvenating properties on human skin. Beauty companies frequently market their products as the key to a youthful glow, claiming that rosi pearls help rewind aging skin by 20-50 years. This wouldn't be a problem if their frills were also believed to have abilities to cure internal organs, even rare cancers when consumed. While their frills can slowly regenerate constant tearing causes smaller gills to grow. However, new research shows that these healing properties are temporary. The resulting constant consumption and usage of the pearl cause rapid aging, making rosi pearls an unreliable anti-aging solution.",
-      "intro": "The pink pearl of the sea. Believed to be the cousin of the pink slime."
+      "risks": "Bei den Rosi-Schleimen gibt es nichts zu fürchten. Sie lassen sich sehr einfach züchten und benötigen nur Nahrung und ein wenig Freundschaft. Ein einsamer Rosi-Schleim ist ein trauriger Rosi-Schleim. Daher wird es Ranchers empfohlen, mehr als einen zu halten, wenn sie eine gesunde Perlenproduktion anstreben.",
+      "slimeology": "Der Rosi-Schleim ist der am häufigsten anzutreffende Schleim im Großen Riff. Rosi-Schleime sind oft fröhlich, freundlich und schadenfroh weshalb sie häufig Schabernack mit anderen Schleimen und Menschen treiben. Rosi-Schleime haben einen sehr starken Bund miteinander und sind selten alleine in der Natur gesehen. Solange sie einen Partner zum spielen haben, sind sie ewig glücklich und zeigen selten Traurigkeit. Wenn ein Rosi-Schleim mal traurig ist, geht das oft auf Kosten anderer. Rosi Schleime versuchen ihr Bestes, den Schleim oder Mensch der sich in einer schlechten Laune befindet wieder aufzumuntern und glücklich zu machen.",
+      "diet": "Alles",
+      "favourite": "Kein Lieblingsessen. Der Rosi-Schleim hat alles und jeden gleich lieb.",
+      "onomics": "Rosi Perlen werden aufgrund ihrer verjüngenden Wirkung auf die menschliche Haut oft als \"Aphroditen Perlen\" bezeichnet. Kosmetikunternehmen vermarkten ihre Produkte oft als Schlüssel zu jugendlicher Ausstrahlung und behaupten, dass Rosi-Perlen die Haut um 20 bis 50 Jahre jünger aussehen lassen. Dies wäre kein Problem, wenn Rosi Perlen nicht ebenfalls die Fähigkeit besitzen, innere Organe zu heilen und seltene Krebsarten zu beseitigen. Neue Forschungsergebnisse zeigen jedoch, dass die heilenden Eigenschaften der Rosi Perlen leider nur temporär sind und das der daraus resultierende konstante Verzehr zu schnelleres alten führen kann. Aus diesem Grund sind Rosi Perlen eine unzuverlässige Anti-Aging Lösung.",
+      "intro": "Die rosane Perle des Sees. Man glaubt, sie sei Verwandt mit dem rosanen Schleim."
     },
     {
-      "translatedName": "Coco Slime",
+      "translatedName": "Kokos-Schleim",
       "name": "Coco",
-      "risks": "Be cautious while walking under palm trees as coco slimes are very territorial and if they sense you underneath, they will harden their soft, squishy bodies to a hard coconut-like shell and crash down onto their targets. Tourists in the past who got hit in the head by a coco slime have reported blurred vision and dizziness afterwards with some even being knocked out cold. This is also how they hunt in the wild. Despite their hard skin and agility, they are quite easy to ranch as long as they are well feed and have enough exposure to sunlight.",
-      "slimeology": "Coco slimes are commonly found hanging from the palm trees of the island. Being natives to SwirlPool Island, the coco slimes have natural adapted a higher jump in order to climb trees and escape predators. Due to them being grown from palm trees, they have plant like attributes which causes them to require constant sunlight and also tend to avoid eating fruits and vegetables as it would be cannibalism.",
-      "diet": "Meat",
-      "favourite": "Sandy Hen",
-      "onomics": "Coco plorts, unlike their producer, are very soft and silky as well as being an excellent source of calcium when condensed to liquid. Despite being very similar to earth's milk in properties, they can still be consumed by people who are lactose intolerant, making them extremely popular for creating lactose intolerance options for dairy products. And due to their incredibly soft and silky texture, they are also very good for skin care and used often in spas as substitutes to milk baths.",
-      "intro": "The concussion slime, wear helmets!"
+      "risks": "Sei sehr vorsichtig wenn du dich unter einer Palme befindest. Kokos-Schleime sind sehr territorial und wenn sie dich spüren, verwandeln sie ihre weiche und glibberige Körper zu einer kokusnussartigen Schale und stürzen sich auf ihr Ziel. Touristen die in der Vergangenheit von einem Kokos-Schleim getroffen wurden, berichteten von verschwommener Sicht und Schwindelgefühlen, manche wurden sogar durch den Aufprall bewusstlos. Genau diese Methode wird ebenfalls bei dem jagen in der Wildnis verwendet. Trotz ihrer harten Haut und ihrer Beweglichkeit, sind Kokos-Schleime sehr einfach zu züchten. Solange ein Kokos-Schleim gut ernährt ist und genügend Sonnenlicht erhält, werden alle gut gelaunt sein.",
+      "slimeology": "Kokos-Schleime sind oft in der Nähe von Palmen zu finden. Da sie auf Wirbelbecken Insel heimisch sind, haben sie eine höhere Sprungkraft entwickelt um auf Bäume zu klettern und Raubtieren zu entkommen. Da sie auf Palmen aufgewachsen sind, haben sie pflanzenähnliche Eigenschaften, die dazu führen, dass sie ständig Sonnenlicht benötigen und den Verzehr von Obst und Gemüse meiden, da dies Kannibalismus wäre...",
+      "diet": "Fleisch",
+      "favourite": "Sand-Huhn",
+      "onomics": "Kokos-Plorts sind im Gegensatz zu ihren Herstellern sehr sanft und seidig und stellen im kondensierten Zustand eine hervorragende Kalziumquelle dar. Obwohl die Flüssigkeit sehr ähnlich ist wie die herkömmliche Milch auf der Erde, kann sie auch von Menschen mit Laktoseintoleranz konsumiert werden, was sie äußerst beliebt macht als Alternative für traditionelle Milchprodukte. Dank ihrer unglaublich weichen und seidigen Textur eignen sich Kokos-Plorts auch sehr gut zur Hautpflege und werden oft in Spas als Ersatz für Milchbäder verwendet.",
+      "intro": "Es wird vorgeschlagen, einen Helm zu tragen!"
     },
     {
-      "translatedName": "Mine Slime",
+      "translatedName": "Minen-Schleim",
       "name": "Mine",
-      "risks": "Approach mine slimes with caution, for their spikes aren't just for show! Any direct contact will result in a localized eruption. While other slimes will be boomed clear of the danger zone, only fellow mine slimes and their boom cousins possess a natural immunity to these contact explosions. This peculiar trait makes co-habitation an active (and often loud) affair, as they'll seek out their explosive kin for regular, relieving bursts. Keeping them together helps manage their volatile nature, preventing an otherwise grumpy slime.",
-      "slimeology": "The mine slime, a distant and more... prickly cousin to the boom slime, has a unique take on volatility. Unlike their explosive kin, a mine slime's detonations are triggered only by direct contact with another slime or an unwary rancher. To deter accidental bumps, their bodies are adorned with sharp, crystalline spikes; a clear warning sign. Despite their fiery tendencies, these slimes prefer a milder diet of vegetables, with the blowtato being their ultimate delight. This root's highly volatile compounds provide the perfect internal spark for their constant energetic needs and powerful bursts. If a mine slime goes too long without popping, however, their internal pressure builds to uncomfortable levels, driving them to seek relief by finding water, or joining in an explosive embrace with fellow boom or mine slimes.",
-      "diet": "Veggie",
-      "favourite": "Blowtato",
-      "onomics": "Mine plorts are curious, resilient gems, forged into a pearl-like shape under the immense internal pressures of the mine slime. These unique pearls retain a fragment of their progenitor's explosive nature, though a considerably firmer thwack is required to unleash their contained energy. Their peculiar, controlled detonations make them highly prized in industrial applications, particularly when refined into a fine powder. From powering small, controlled bursts in excavation to adding a spectacular sparkle to interstellar fireworks displays, mine pearls certainly make an impact on the galactic exchange",
-      "intro": "The touch-me-not of slimes!"
+      "risks": "Wenn du dich einem Minen schleim näherst, solltest du sehr vorsichtig sein da seine Stacheln nicht nur als Dekoration dienen! Jeder direkter Kontakt wird mit einer Explosion enden. Während andere Slimes aus der Explosionszone geschleudert werden, besitzen nur andere Minen-Schleime und ihre knalligen Verwandten eine natürliche immunität gegenüber den Explosionen. Diese besondere Eigenschaft macht das Zusammenleben zu einer aktiven (und sehr lauten) Angelegenheit, da sie ihre explosiven Artgenossen für regelmäßige, entlastende Ausbrüche aufsuchen. Diese Ausbrüche helfen ihnen, ihre unberechenbare Natur zu zügeln was einen schlecht gelaunten Schleim verhindert.",
+      "slimeology": "Der Minenschleim, ein entfernter und stacheligerer Cousin des Knall Schleims, hat eine einzigartige Einstellung zur Volatilität. Anders als ihre explosiven Verwandten werden die Detonationen eines Minen Schleims nur durch direkten Kontakt mit einem anderen Schleim oder einem unachtsamen Rancher ausgelöst. Um versehentlichen Kontakt zu verhindern, sind ihre Körper mit spitzen Stacheln bedeckt (Ein eindeutiges Warnsignal!). Trotz ihrer feurigen Neigung bevorzugen diese Schleime eine mildere Diet, wofür die Knalltoffel perfekt geeignet ist. Die hochflüchtigen Verbindungen dieser Wurzel liefern den perfekten inneren Funken für den ständigen Energiebedarf und den kraftvollen Explosionen. Wenn ein Mienen-Schleim zu lange ohne Explosion auskommt, steigt sein innerer Druck auf ein unangenehmes Niveau, was ihn dazu treibt von selber Erleichterung zu suchen, indem er Wasser sucht oder sich mit einem anderen Mienen- oder Knall-Schleim in eine explosive Umarmung stürtzt.",
+      "diet": "Gemüse",
+      "favourite": "Knalltoffel",
+      "onomics": "Minen-Plorts sind kuriose, widerstandsfähige Edelsteine welche unter dem enormen Druck des Minen Schleims eine perlenartige Form annehmen. Diese einzigartigen Perlen bewahren einen Teil der explosiven Natur ihrer Vorfahrten (obwohl dafür ein wesentlich stärkerer Schlag erforderlich ist, um ihre enthaltene Energie freizusetzen). Ihre besonderen, kontrollierten Detonationen machen sie in der Industrie sehr begehrt, insbesondere wenn sie zu einem feinem Pulver verarbeitet werden. Von der Energieversorgung kleiner und kontrollierter Explosionen bei Ausgrabungen bis hin zu den spektakulärsten Feuerwerken haben Minen Perlen einen gigantischen Einfluss auf den galaktischen Markt.",
+      "intro": "Bitte kein Körperkontakt!"
     },
     {
-      "translatedName": "Lantern Slime",
+      "translatedName": "Laternen-Schleim",
       "name": "Lantern",
-      "risks": "Lantern slimes aren't the most social compared to other slime species. During the day, they can be found sleeping. When disturbed from their nap, they emit a bright flash to startle any diver or slime that dares to interrupt their beauty sleep and try to run away. However, at night, they become very docile and can be found swimming across the coral reef in search of food.",
-      "slimeology": "The lantern slime is a distant cousin of the phosphor slime. At one point in its evolution, the phosphor slimes expelled their inner core, using it to attract prey underwater. Slime nature is indeed peculiar. Much like its cousins, the lantern slimes can be found at night in the deepest parts of the Moss Blanket and the Great Reef. They are often seen alone and rarely in groups, as they prefer an isolated lifestyle and little interest in socializing. However, when it comes to humans, lantern slimes often aid divers in finding their way back to land.",
-      "diet": "Meat",
-      "favourite": "Radiant Hen",
-      "onomics": "Lantern pearls are a key ingredient in many beauty products due to their natural moisturizing properties. These pearls not only hydrate the skin but also impart a radiant, plum-like glow, making them ideal for night creams. However, it's important to note that their protective barrier against bacteria diminishes rapidly when exposed to sunlight. Therefore, products containing a high concentration of lantern pearls are best applied before bedtime for their benefits.",
-      "intro": "It lights up your life!"
+      "risks": "Laternen-Schleime sind im Vergleich zu anderen Schleimarten nicht die geselligsten. Tagsüber verbringen sie lieber ihre Zeit mit dem Schlafen. Wenn sie aus ihrem Nickerchen geweckt werden, stoßen sie einen hellen Blitz aus um jeden Taucher und jeden Schleim, der es wagt ihren Schönheitsschlaf zu stören, zu erschrecken. In der Nacht werden sie jedoch sehr friedlich und man kann sie auf der Suche nach Nahrung im großen Korallenriff schwimmen sehen.",
+      "slimeology": "Der Laternen-Schleim ist ein entfernter Verwandter des Phosphor Schleims. Im Laufe ihrer Evolution, stoßen Phosphor-Schleime ihren inneren Kern aus um Beute unter Wasser anzulocken. Schleime haben eine sehr seltsame Natur. Ähnlich wie ihre Verwandten findet man Laternen Schleime in den dunkelsten und tiefsten Teilen des Mossbetts und des Großen Riffs. Laternen Schleime sind oft allein und nur selten in Gruppen anzutreffen, da sie ein isoliertes Leben bevorzugen und wenig Interesse an Geselligkeit haben. Wenn es jedoch um Menschen geht, helfen Laternen Schleime Tauchern oft, den Weg zurück ans Land zu finden.",
+      "diet": "Fleisch",
+      "favourite": "Leucht-Huhn",
+      "onomics": "Laternen Perlen sind aufgrund ihrer natürlichen feuchtigkeitsspendenden Eigenschaften ein wichtiger Bestandteil vieler Schönheitsprodukte. Diese Perlen spenden der Haut nicht nur Feuchtigkeit, sondern verleihen ihr auch einen strahlenden Schimmer, wodurch sie sich ideal für Nachtcremes eignen. Allerdings ist zu beachten, dass die Schutzbarriere gegen Bakterien bei Sonnenlicht schnell nachlässt. Daher sollten Produkte mit einer hohen Konzentration an Laternen Perlen am besten vor der Schlafenszeit aufgetragen werden, um ihre Wirkung vollständig zu entfalten.",
+      "intro": "Es bringt dich zum strahlen!"
     },
     {
-      "translatedName": "Sand Slime",
+      "translatedName": "Sand-Schleim",
       "name": "Sand",
-      "risks": "Rest easy, ranchers! The sand slime is one of the most delightfully docile slimes you'll encounter. These mellow blobs pose virtually no risk to the ranch, thriving peacefully in any populated corral without inciting a single outbreak. However, despite their beach-dwelling nature, sand slimes are surprisingly delicate when it comes to deep water; prolonged submersion will cause them to slowly dissolve! Even their valuable pearl plorts are safe from hungry mouths; it seems no other slime has a taste for a glistening pearl that began its life as common dirt. Their laid-back nature and inability to cause a ruckus make them perfect companions for even the most timid slimes, just keep them away from the deep end!",
-      "slimeology": "The sand slime, a curious terrestrial cousin to both the puddle and fire slimes, makes its home along the shallow, sun-drenched shores of the Far, Far Range. Much like its elemental kin, these intriguing slimes require no typical sustenance from a rancher's feeder; instead, they subsist entirely on good old dirt. After sifting through the gritty soil, sand slimes process the minerals within, producing glimmering plorts that bear a striking resemblance to Earth's precious pearls. Their calm demeanor and unique diet make them a rather low-maintenance addition to any ranch.",
-      "diet": "Dirt",
-      "favourite": "Silky Sand",
-      "onomics": "Sand plorts are true marvels of natural refinement. Though the sand slime itself is soft and yielding, the pearls it produces are remarkably tougher than their Earth counterparts, defying their humble origins. These pristine, spherical treasures, born from nothing more than processed soil, fetch an exceptional price on the Plort Market. Their iridescent sheen and superior durability make them highly sought-after for crafting exquisite jewelry and other luxury adornments across the galaxy, proving that true beauty can indeed come from the ground up!",
-      "intro": "You can find it between your toes!"
+      "risks": "Ganz ruhig, Rancher! Der Sand-Schleim ist eines der angenehmsten und zutraulichsten Wesen, die du jemals begegnen wirst. Diese sanften Schleimkugeln stellen praktisch keine Gefahr für die Ranch dar. Sand Schleime gedeihen friedlich in ihren Gehegen, ohne auch nur einen einzigen Aufruhr auszulösen. Trotz ihrer Vorliebe für Strände, sind Sand Schleime erstaunlich empfindlich, was tiefes Wasser betrifft. Bei längerer Zeit mit Kontakt zu Wasser besteht die Chance das sie sich langsam auflösen. Ihre wertvollen Perlen sind zum Glück vor hungrigen Mäulern sicher, anscheinend hat kein anderer Schleim einen Hunger auf eine Perle die einst als Dreck begann.  ",
+      "slimeology": "Der Sand-Schleim, ein kurioser Verwandter des Pfützen- und Feuer-Schleims, lebt an den flachen und sonnigen Ufern der Fernen, Fernen Weite. Ähnlich wie seine elementaren Verwandten verlangen diese Schleime nicht die typische Nahrung aus den Futtertrogen eines Ranchers. Sand Schleime ernähren sie sich ausschließlich von der guten alten Erde. Nachdem der sandige Boden durchgewühlt wurde, verarbeiten Sand-Schleime die darin aufgenommenen Mineralien und produzieren glitzernde Plorts, die den kostbaren Perlen der Erde stark ähneln. Ihr ruhiges Wesen und ihre einzigartige Diet machen sie zu einer pflegeleichten Bereicherung für jede Ranch.",
+      "diet": "Erde",
+      "favourite": "Seidener Sand",
+      "onomics": "Sand-Plorts sind wahre Wunder natürlicher Veredelung. Obwohl der Sand-Schleim selbst, sehr weich ist, sind die von ihm produzierten Perlen überraschend widerstandsfähiger als ihre Gegenstücke auf dem Planet Erde. Diese Makellose und kugelförmige Schätze, sind aus nichts anderem als verarbeiteter Erde entstanden jedoch erzielen sie auf dem Plort-Markt außergewöhnliche Preise. Ihr Glanz und ihre überragende Haltbarkeit machen sie in der ganzen Galaxie zu einem begehrten Rohstoff, der für die Herstellung von edlen Schmuckstücken und anderen luxuriösen Verzierungen verwendet wird. Sand-Plorts sind ein Beweis dafür, dass wahre Schönheit tatsächlich von dem Boden aus entstehen kann!",
+      "intro": "Du kannst es zwischen deinen Zehen spüren!"
     },
     {
-      "translatedName": "Mesmer Slime",
+      "translatedName": "Mesmer-Schleim",
       "name": "Mesmer",
-      "risks": "Mesmer slimes may be a risk to the ranch, as the patterns they produce enact a hypnotic effect on slimes that gaze upon them, which can leave them bundled up together for hours—especially during the dark, where their glow is most visible. When a mesmer slime is left alone without the company of others, its mood will also fall. During agitation, mesmer slimes exhibit a feral-like state, seemingly unhappy due to the gut feeling that no one wants to be friends with them. They channel this disappointment by exhibiting eye and mouth patterns similar to the tarr, which only scares off other slimes even more. They will also pounce and mindlessly attack ranchers and slimes with their bug-like appendages. Otherwise they're quite simple to take care of.",
-      "slimeology": "The perplexing, dangerous-looking, yet friendly mesmer slime emits very obvious pulsating colors on its body. It's somewhat debatable what the true purpose of these displays are, but most slime scientists agree that it is to try and appeal to and be the favorite friend of as many slimes as possible, even with their scorpion-like appearances. Interestingly, they seem to be very sociable. Mesmer slimes spend most of their time inside lush jungles and caverns on the island, where you could easily spot their glows.",
-      "diet": "Fruit",
-      "favourite": "Sticky Fingers",
-      "onomics": "Mesmer plorts contain bioluminescent bacteria, which seem to be the source of their radiant colors. These bacteria may display a wide range of hues, though they usually have to be artificially mutated using complex chemical compounds to show specific shades. Products made with mesmer plorts are often luxurious, imperious, and flashy alternatives to renewable light, favored by the wealthy for their novelty. Despite the lavish presentation, their true market value remains surprisingly modest.",
-      "intro": "ooooooooooooooooooo pretty"
+      "risks": "Mesmer-Schleime könnten oft eine Gefahr für die Ranch darstellen, da die von ihnen erzeugten Muster eine hypnotische Wirkung auf andere Schleime haben. Schleime können dieses Muster verständlicherweise stundenlang anstarren, besonders im Dunkeln, wo ihr Leuchten am deutlichsten zu sehen ist. Wenn ein Mesmer-Schleim ganz alleine gelassen wird, verschlechtert sich seine Stimmung. In diesem Zustand verhalten sie sich wild und scheinen unglücklich zu sein, weil sie das Gefühl haben, niemand wolle mit ihnen befreundet sein. Sie strahlen diese Enttäuschung aus, indem sie Augen und Mundmuster zeigen, die denen von einem Teer Schleims ähneln, was andere Schleime nur noch mehr abschreckt. In diesem Zustand stürzen sie sich auch auf Rancher und Schleime und greifen diese mit ihren insektenartigen Gliedmaßen an. Hat man diese Hindernisse überwunden, lassen sie recht einfach halten (Und sie sehen gut aus!)",
+      "slimeology": "Der gefährlich aussehende, aber dennoch freundliche Mesmer-Schleim strahlt deutlich sichtbare und pulsierende Farben an seinem Körper aus. Der genaue Zweck dieser Leuchten ist etwas umstritten, aber die meisten Schleimforscher sind sich einig, dass sie versuchen, möglichst viele Schleime für sich zu gewinnen und deren Lieblingsfreund zu werden, trotz ihren skorpionartigen Körper. Interessanterweise scheinen Mesmer-Schleime sehr gesellig zu sein. Die meiste Zeit verbringen sie in dicht bewachsenen Dschungeln und Höhlen aufd er Insel, wo ihr Leuchten am besten zu sehen ist.",
+      "diet": "Frucht",
+      "favourite": "Klebriger Finger",
+      "onomics": "Mesmer-Plorts enthalten biolumineszente Bakterien, die für ihre leuchtended Farben verantwortlich zu sein scheinen. Diese Bakterien können ein breites Farbspektrum aufweisen, müssen jedoch in der Regel mit künstlichen chemischen Verbindungen mutiert werden, um bestimmte Farbtöne zu erhalten. Produkte aus Mesmer-Plorts sind oft luxuriöse und imposante Alternativen zu erneuerbarem Licht und werden aufgrund ihrer Neuartigkeit von Wohlhabenden Menschen bevorzugt. Trotz der aufwendigen Lichtershow bleibt ihr tatsächlicher Marktwert überraschend bescheiden.",
+      "intro": "ooooooooooooooooooo so hübsch!"
     },
     {
-      "translatedName": "Hermit Slime",
+      "translatedName": "Einsiedler-Schleim",
       "name": "Hermit",
-      "risks": "Hermit slimes are naturally suspicious and can quickly hide when detecting sudden movement or loud noise. This can make it difficult to collect parcels and stored items. If it does not feel safe, it may spend long periods hidden in its shell, making it difficult to handle and collect its plorts. When trying to get items out of their shell, you need to do it carefully and patiently. Rough methods can make the slime even more reluctant to come out of its shell in the future. It is recommended to keep the hermit slimes happy and prevent them from becoming even more distrustful, it is advisable to use the coral fruit and other peaceful strategies to interact with them.",
-      "slimeology": "The hermit slime is a fascinating creature that lives in coastal and rocky areas. This slime is characterized by always carrying a shell on its back, which it uses as a shelter and storage for the valuable objects it collects. The hermit slime has the unique characteristic of being able to shed its shell and adapt to its environment, being able to enter shells, coconuts, stones, and even garbage like boxes. Its favorite food is the prickly coral fruit, a delicious fruit that grows from an exotic plant that grows in the crevices of rocks and near the sea, this food can help the rancher gain the trust of the slime and thus facilitate its collection.",
-      "diet": "Fruit",
-      "favourite": "Prickly Coral",
-      "onomics": "The hermit plorts are as unique as the slimes are. Thanks to the slimes' constant collection of materials in their environment, their plorts contain microfragments of shells and minerals. Hermit plorts are incredibly durable and are used to craft durable building materials and marine decorations. Additionally, they are famous for their ability to glow in the dark when rubbed against a hard surface! Some ranchers use them to decorate their ranches with natural underwater lights.",
-      "intro": "The ever reclusive shell wanderer!"
+      "risks": "Einsiedler Schleime sind von Natur aus misstrauisch und verstecken sich schnell bei plötzlichen Bewegungen oder lauten Geräuschen. Fühlt sich der Schleim nicht sicher, zieht er sich oft für längerer Zeit zurück in sein Gehäuse, was das Sammeln seiner Plorts zu einer schwierigen Aufgabe macht. Beim Versuch, Gegenstände aus dem Gehäuse zu holen, ist Vorsicht und Gedult geboten. Furchteinfließende Methoden können dazu führen, dass der Schleim in der Zukunft noch scheuer wird und sein Gehäuse noch seltener verlässt. Um einen Einsiedler-Schleim bei Laune zu halten und sein Misstrauen zu verringern, empfiehlt es sich, Korallen Früchte und andere friedliche Strategien einzusetzen.",
+      "slimeology": "Der Einsiedler-Schleim ist ein faszinierendes Wesen, das an Küsten und Felsen lebt. Charakteristisch für diesen Schleim ist, dass er immer eine Muschel auf seinen Rücken trägt, die ihm als Unterschlupf und Aufbewahrungsort für seine gesammelten Schätze dient. Der Einsiedler-Schleim besitzt die einzigartige Fähigkeit, seine Muschek abzuwerfen und sich so seiner Umgebung anzupassen. Er kann in Muscheln, Kokusnüsse, Steine und sogar in Mülltonnen einziehen. Seine Lieblingsspeise ist die Stachelige Korallen Frucht, eine köstliche Frucht, die an einer exotischen Pflanze wächst die in Felsspalten und nah an Ufern wächst. Diese Frucht kann dem Rancher helfen, das Vertrauen des Schleims zurück zu gewinnen und ihn so leichter zu sammeln.",
+      "diet": "Frucht",
+      "favourite": "Stachelige Koralle",
+      "onomics": "Einsiedler-Plorts sind genauso einzigartig wie der Schleim selbst. Da die Schleime ständig Materialien aus ihrer Umgebung sammeln, enthalten ihre Plorts winzige Bruchstücke von Muscheln und Mineralien. Einsiedler-Plorts sind unglaublich widerstandsfähig und werden zur Herstellung von robusten Baumaterialien und Dekorationen verwendet. Außerdem sind sie berühmt dafür, dass sie im Dunkeln leuchten, wenn man sie an einer harten Oberfläche reibt! Manche Rancher nutzen sie, um ihre Ranches mit natürlicher Unterwasserbeleuchtung zu schmücken.",
+      "intro": "Ein zurückgezogener Wanderer"
     },
     {
-      "translatedName": "Goldfish Slime",
+      "translatedName": "Goldfisch-Schleim",
       "name": "Goldfish",
-      "risks": "Goldfish slimes cannot be captured or contained in traditional corrals, and like gold slimes, they vanish shortly after being discovered. Attempting to corral one will only result in it slipping away with a splash. However, quick-thinking ranchers may be able to feed it its favorite food in time to earn a precious plort.",
-      "slimeology": "Goldfish slimes are an exceptionally rare aquatic variant of the ever elusive gold slime. Unlike their land-loving cousin, these shimmering slimes have adapted to life beneath the waves, gracefully darting through underwater currents with their flowing tails and luminous scales. Their movement mimics that of koi or ornamental goldfish, and they leave behind glittering trails in the water when startled. While they share the same skittish nature as gold slimes, goldfish slimes are slightly easier to observe — if only for a moment longer. They often appear in deep reef trenches or near ancient underwater ruins, surfacing briefly before vanishing in a blink.",
-      "diet": "Gilded Ginger",
-      "favourite": "Gilded Ginger",
-      "onomics": "Goldfish plorts are even rarer than gold plorts and twice as valuable, making them a highly sought-after resource. Their underwater origin gives them unique energetic properties, often used in cutting-edge aquatic tech and luxury hologlass manufacturing. Due to their rarity, the Slime Science Lab recommends handling with extreme care, and counting yourself lucky to have found one at all.",
-      "intro": "The slippery slime with a luxurious shine!"
+      "risks": "Goldfisch-Schleime lassen sich weden fangen noch in herkömmlichen Gehegen halten. Ähnlich wie Goldschleime verschwinden sie kurz, nachdem sie entdeckt wurden. Jeder Versuch einen einzufangen, endet damit dass er mit einem Platschen entwischt. Schnelle Rancher könnten es schaffen ihn rechtzeitig mit seinem Lieblingsfutter zu füttern um ein großes Vermögen zu verdienen.",
+      "slimeology": "Goldfisch-Schleime sind eine äußerst seltene Variante des scheuen Gold Schleims. Anders als ihre landlebenden Verwandten haben sich diese schimmernden Schleime an das Leben unter Wasser angepasst. Mit ihren fließenden Schwänzen und leuchtenden Schuppen gleiten sie durch die Strömungen der Fernen ,fernen Weite. Ihre Bewegungen ähneln denen von Kois oder Ziergoldfischen, und wenn sie sich erschrecken, hinterlassen sie eine glitzernde Spur im Wasser. Obwohl sie genauso scheu sind wie Gold-Schleime, lassen sich Goldfisch-Schleime etwas leichter beobachten (Wenn auch nur für einen kurzen Moment länger). Sie tauchen oft in tiefe Riffgräben oder in der Nähe von alten Ruinen unter wasser. Sie erscheinen kurz und verschwinden dann blitzschnell wieder.",
+      "diet": "Vergoldeter Ingwer",
+      "favourite": "Vergoldeter Ingwer",
+      "onomics": "Goldfisch-Plorts sind noch seltener als Gold-Plorts und sogar doppelt so wertvoll, was sie zu einer begehrten Ressource macht. Ihre Herkunft aus dem Wasser verleiht ihnen einzigartige energetische Eigenschaften, die häufig in modernster Aquatiktechnologie und der Herstellung von luxuriösem Hologlas genutzt werden. Aufgrund ihrer Seltenheit empfehlt Slime Science Lab, sie mit äußerster Vorsicht zu behandeln und sich glücklich zu schätzen, überhaupt einen gefunden zu haben.",
+      "intro": "Der Schleim mit dem feinen Schein!"
     }
   ],
   "hens": [
     {
       "name": "Sandy",
-      "translatedName": "Sandy Hen",
-      "about": "A sun-baked cousin to the familiar stony hen, Sandy Hens are masters of coastal concealment. Their feathers have evolved into a remarkable mimicry of the dry, shifting sands of the beaches they call home, making them incredibly difficult to spot. Unfortunately for the sandy hen, their superb camouflage is no match for the keen eyes of a coco slime. Perched high in their swaying palm trees, these predators have a particular fondness for the sandy hen's uniquely dry meat, which perfectly balances their own juicy, tropical insides. For a rancher looking for a tasty, albeit a bit parched, bite, the sandy hen offers a familiar flavor with an undeniably arid finish.",
-      "favouredBy": "Coco Slime",
-      "ranch": "Sandy hens in close proximity to roostros will periodically lay eggs that produce Sandy chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.",
-      "type": "Meat",
-      "intro": "The beach side camouflage master!"
+      "translatedName": "Sand-Huhn",
+      "about": "Als sonnenliebender Verwandter des altbekannten Stein-Huhns ist das Sand-Huhn ein wahrer Meister der Tarnung. Sein Gefieder hat sich zu einer Nachahmung des trockenen Strandsands entwickelt, was es in Küstenregionen nahezu unsichtbar macht. Leider ist die hervorragende Tarnung kein Schutz vor den scharfen Augen des Kokos-Schleims. Hoch oben in den Palmen lauern diese gefährlichen Raubtiere, die eine besondere Vorliebe für das trockene Fleisch des Sandhuhns entwickelt haben. Für einen Rancher, der auf der Suche nach einem schmeckhaften, wenn auch etwas trockenen Happen ist, bieten Sand-Hühner einen vertrauten und einzigartigen Geschmack.",
+      "favouredBy": "Kokos-Schleim",
+      "ranch": "Sand-Hühner legen in der Nähe von Rostros regelmäßig Eier, aus denen kleine Sand-Küken schlüpfen. Allerdings werden sie nervös, wenn sich zu viele Hühner oder Rostros auf engem Raum befinden was die Eier produktion vollständig zum Halt bringt. Kluge Rancher, die Erfahrungen in Hühnerromantik haben, achten eher darauf, dass ihre Gehege niemald mehr als zwölf ausgewachsene Hühner beherbergen.",
+      "type": "Fleisch",
+      "intro": "Gewinner von allen Versteckspielen"
     },
     {
       "name": "Radiant",
-      "translatedName": "Radiant Hen",
-      "about": "A peculiar hen among its kind, the radiant hen stands out, literally. Unlike most chickens that try to blend in with their surroundings, the radiant hen has evolved feathers that glow with a soft, ethereal light. This makes them incredibly easy to spot, a trait that would typically be a disadvantage. However, for the nocturnal lantern slimes, this luminosity is irresistible. They are often found clustered around these hens, seemingly mesmerized by their unique radiance. It's believed the hens' constant, gentle light helps to regulate the lantern slimes' internal bioluminescence, which can sometimes become unstable. For ranchers, the radiant hen is a beacon, making them surprisingly easy to locate in the dark corners of the Far, Far Range. Their meat, however, tastes just like a regular chicken.",
-      "favouredBy": "Lantern Slime",
-      "ranch": "Radiant hens in close proximity to roostros will periodically lay eggs that produce Radiant chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.",
-      "type": "Meat",
-      "intro": "Always out of place!"
+      "translatedName": "Leucht-Huhn",
+      "about": "Ein ungewöhnliches Huhn seiner Art. Das Leucht-Huhn fällt buchstäblich auf. Anders als die meisten Hühner, die versuchen sich unauffällig in ihrer Umgebung einzufügen, hat das Leucht-Huhn ein Gefieder entwickelt das in einem sanften und schönen Licht schimmert. Dadurch ist es unglaublich leicht zu entdecken. Für die nachtaktiven Laternen-Schleime ist das Leuchten unwiderstehlich. Man findet sie oft dicht um diese Hühner versammelt, scheinbar völlig fasziniert von ihren einzigartigen Strahlen. Man glaubt dass das dauerhafte Leuchten der Leucht-Hühner ihnen hilft, die innere Biolumineszenz zu regulieren welche gelegentlich instabil werden kann. Für Rancher ist das Leucht-Huhn ein wahres Lichtzeichen. Es ist überraschend leicht sie in den dunklen Ecken der Fernen, Fernen Weite zu finden. Ihr Fleisch schmeckt jedoch nur ganz gewöhnlich.",
+      "favouredBy": "Laternen-Schleim",
+      "ranch": "Leucht-Hühner legen in der Nähe von Rostros regelmäßig Eier, aus denen kleine Leucht-Küken schlüpfen. Allerdings werden sie nervös, wenn sich zu viele Hühner oder Rostros auf engem Raum befinden was die Eier produktion vollständig zum Halt bringt. Kluge Rancher, die Erfahrungen in Hühnerromantik haben, achten eher darauf, dass ihre Gehege niemald mehr als zwölf ausgewachsene Hühner beherbergen.",
+      "type": "Fleisch",
+      "intro": "Du strahlst!"
     }
   ],
   "chicks": [
     {
       "name": "Sandy",
-      "translatedName": "Sandy Chickadoo",
-      "about": "Sandy chickadoos are baby chickens that will eventually grow into a Sandy hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.",
-      "favouredBy": "(not a slime food)",
-      "ranch": "Keep Sandy Chickadoos in a safe place and they'll eventually grow into a Sandy Hen or Roostro.",
-      "type": "Future Meat",
-      "intro": "A budding camouflager!"
+      "translatedName": "Sand-Küken",
+      "about": "Sand-Küken sind junge Hühner, die schließlich zu einem Sand-Huhn oder, seltener, zu einem Rostro aufwachsen. Küken aller Art werden niemals von Schleime gefressen. Einige glauben, Schleime seien einfach zu gutmuütig, um so etwas zu tun. Andere sind überzeugt, dass die Küken schlicht noch nicht genug Fleisch auf den Knochen haben.",
+      "favouredBy": "(keine Slime-Nahrung",
+      "ranch": "Bewahre Sand-Küken an einem sicheren Ort auf, und sie werden schließlich zu einem Sand-Huhn oder Rostro heranwachsen.",
+      "type": "Zukünftiges Fleisch",
+      "intro": "Ein kleiner Tarnprofi in Ausbildung!"
     },
     {
       "name": "Radiant",
-      "translatedName": "Radiant Chickadoo",
-      "about": "Radiant chickadoos are baby chickens that will eventually grow into a Radiant hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.",
-      "favouredBy": "(not a slime food)",
-      "ranch": "Keep Radiant Chickadoos in a safe place and they'll eventually grow into a Radiant Hen or Roostro.",
-      "type": "Future Meat",
-      "intro": "Doesn't fit right in yet..."
+      "translatedName": "Leucht-Küken",
+      "about": "Leucht-Küken sind junge Hühner, die schließlich zu einem Sand-Huhn oder, seltener, zu einem Rostro aufwachsen. Küken aller Art werden niemals von Schleime gefressen. Einige glauben, Schleime seien einfach zu gutmuütig, um so etwas zu tun. Andere sind überzeugt, dass die Küken schlicht noch nicht genug Fleisch auf den Knochen haben.",
+      "favouredBy": "(keine Slime-Nahrung)",
+      "ranch": "Bewahre Leucht-Küken an einem sicheren Ort auf, und sie werden schließlich zu einem Leucht-Huhn oder Rostro heranwachsen.",
+      "type": "Zukünftiges Fleisch",
+      "intro": "Fühlt sich hier noch fehl am Platz…"
     }
   ],
   "fruits": [
     {
       "name": "Sticky",
-      "translatedName": "Sticky Fingers",
-      "about": "A sweet treat that tends to stick to your teeth, or even your fingers. Once prized as the key ingredient in many of the Far, Far Range’s candies, this fruit balances its gooey stickiness with a surprisingly rich creaminess and a satisfying crunch.",
-      "favouredBy": "Mesmer Slime",
-      "ranch": "Deposit a sticky finger into a garden's depositor and you'll have a large Sticky Finger tree of your very own.",
-      "type": "Fruit",
-      "intro": "The sticky fruit!"
+      "translatedName": "Klebriger Finger",
+      "about": "Eine süße Leckerei, die gerne an den Zähnen oder sogar an den Fingern kleben bleibt. Sie ist die wichtigste Zutat vieler Süßigkeiten aus der Fernen, Fernen Weite und zeichnet sich durch ihre klebrig-weiche Konsistenz aus, die eine überraschend reichhaltige Cremigkeit besitzt.",
+      "favouredBy": "Mesmer Schleim",
+      "ranch": "Lege einen Klebrigen Finger in den Replikator deines Gartens, und schon wächst dort dein ganz eigener Klebriger-Finger Baum.",
+      "type": "Frucht",
+      "intro": "Klebrige Situation.."
     },
     {
       "name": "Coral",
-      "translatedName": "Prickly Coral",
-      "about": "A member of the prickly fruit family, uniquely adapted to grow beneath the waves. Unlike its distant cousin, the Prickly Pear, this fruit conceals a subtle sweetness within its inner core. Though still considered an acquired taste, those willing to give it a chance often find its initial bitterness surprisingly tolerable.",
-      "favouredBy": "Hermit Slime",
-      "ranch": "Deposit a prickly coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
-      "type": "Fruit",
-      "intro": "Watch for the pointy parts!"
+      "translatedName": "Stachelige Koralle",
+      "about": "Ein Mitglied der stacheligen Fruchtfamilie, das sich auf einzigartige Weise daran angepasst hat, unter den Wellen zu wachsen. Anders als sein entfernter Verwandter, die Pieksbirne, verbirgt diese Frucht in ihrem Inneren eine feine Süße. Obwohl sie noch immer als Geschmack für Kenner gilt, empfinden viele, die ihr eine Chance geben, das ihre anfängliche Bitterkeit ein sehr angenehmes Gefühl ist.",
+      "favouredBy": "Einsiedler-Schleim",
+      "ranch": "Lege eine Stachelige Koralle in den Replikator deines Gartens, und schon wächst dort dein ganz eigener Korallen Baum.",
+      "type": "Frucht",
+      "intro": "Achte auf die spitzen Stellen!"
     }
   ],
   "veggies": [
     {
       "name": "Blowtato",
-      "translatedName": "Blowtato",
-      "about": "The blowtato is a peculiar, highly reactive root vegetable, mostly found sprouting from the cracked earth of the Indigo Quarry. Much like the mine slimes that adore them, these spuds have a natural propensity for explosive flair due to a volatile compound within. Ranchers must handle them with extreme care, as a small puncture or \"burp\" is recommended before cooking to prevent a startling bang! For mine slimes, this explosive nature is pure delight, fueling their rock-shattering abilities and making the blowtato their favorite snack. Clever miners even use them to loosen stubborn rock formations, though caution is always advised.",
-      "favouredBy": "Mine Slime",
-      "ranch": "Deposit a blowtato into a garden's depositor and you'll have a large Blowtato crop of your very own.",
-      "type": "Veggie",
-      "intro": "The explosive veggie!"
+      "translatedName": "Knalltoffel",
+      "about": "Die Knalltoffel ist ein ungewöhnliches, hochreaktives Wurzelgemüse, das meist aus den rissigen Böden des Indigo-Steinbruchs sprießt. Ähnlich wie die Minen-Schleime, die sie über alles lieben, besitzen diese Knollen eine natürliche Neigung zu explosiver Dramatik was durch einer flüchtigen Verbindung in ihrem Inneren verursacht wird. Rancher müssen sie mit äußerster Vorsicht behandeln, denn ein kleiner Einstich oder ein „Rülpser“ vor dem Kochen wird dringend empfohlen, um einen unerwarteten Knall zu vermeiden! Für Minen-Schleime ist diese explosive Eigenschaft jedoch ein reines Vergnügen. Sie befeuert ihre felsenbrechenden Fähigkeiten und macht die Knalltoffel zu ihrem absoluten Lieblingssnack. Schlaue Bergleute nutzen sie sogar, um hartnäckige Gesteinsformationen in die Luft zu sprengen.",
+      "favouredBy": "Minen-Schleim",
+      "ranch": "Lege eine Knalltoffel in den Replikator deines Gartens, und schon wächst dort deine ganz eigene Knalltoffel Ernte.",
+      "type": "Gemüse",
+      "intro": "Dieses Gemüse hat es in sich!"
     }
   ],
   "ranchers": [
@@ -167,92 +167,92 @@
       "name": "Lisa",
       "translatedName": "Lisa Erwin",
       "offers": [
-        "...Oops! Did I click that? Ah, sorry, mate... well, while you're here, could ya lend me a hand?",
-        "Zzzz... huh?! What was I doin' again?",
-        "Rise 'n shine! We've got work to crack on with."
+        "...Ups! Hab ich was gedrückt? Ah, tut mir leid Kumpel... nun, wo du schon mal hier bist, könntest du mir vielleicht helfen?",
+        "Zzzz... huh?! Was hatte ich nochmal gemacht?..",
+        "Rise 'n shine! Wir haben noch sehr viel Arbeit zu erledigen!"
       ],
-      "specialOffer": "When I need a burst of energy, I just keep calm and grab a cuppa coffee.",
+      "specialOffer": "Wenn ich mal nen' Energieschub brauche, bleib ich einfach ruhig und hole mir ne' Tasse Kaffee.",
       "loadingTexts": [
-        "Lisa tried to show a mesmer slime its own reflection once. It stood there at the mirror for hours.",
-        "Lisa often gets into scientific disputes with Viktor."
+        "Lisa versuchte einmal, einem Mesmer-Schleim sein Spiegelbild zu zeigen... Er stand stundenlang vor dem Spiegel.",
+        "Lisa gerät oft in wissenschaftliche Diskussionen mit Viktor.."
       ]
     }
   ],
   "largos": [
     {
-      "translatedName": "Rosi Mine Largo",
+      "translatedName": "Rosi Minen Largo",
       "name": "Rosi Mine"
     },
     {
-      "translatedName": "Rosi Lantern Largo",
+      "translatedName": "Rosi Laternen Largo",
       "name": "Rosi Lantern"
     },
     {
-      "translatedName": "Mine Lantern Largo",
+      "translatedName": "Minen Laternen Largo",
       "name": "Mine Lantern"
     },
     {
-      "translatedName": "Pink Coco Largo",
+      "translatedName": "Pink Kokos Largo",
       "name": "Pink Coco"
     },
     {
-      "translatedName": "Coco Saber Largo",
+      "translatedName": "Kokos Säbel Largo",
       "name": "Coco Saber"
     },
     {
-      "translatedName": "Coco Quantum Largo",
+      "translatedName": "Kokos Quanten Largo",
       "name": "Coco Quantum"
     },
     {
-      "translatedName": "Coco Honey Largo",
+      "translatedName": "Kokos Honig Largo",
       "name": "Coco Honey"
     },
     {
-      "translatedName": "Coco Phosphor Largo",
+      "translatedName": "Kokos Phosphor Largo",
       "name": "Coco Phosphor"
     },
     {
-      "translatedName": "Coco Mosaic Largo",
+      "translatedName": "Kokos Mosaik Largo",
       "name": "Coco Mosaic"
     },
     {
-      "translatedName": "Coco Tangle Largo",
+      "translatedName": "Kokos Rank Largo",
       "name": "Coco Tangle"
     },
     {
-      "translatedName": "Coco Boom Largo",
+      "translatedName": "Kokos Knall Largo",
       "name": "Coco Boom"
     },
     {
-      "translatedName": "Coco Rad Largo",
+      "translatedName": "Kokos Rad Largo",
       "name": "Coco Rad"
     },
     {
-      "translatedName": "Coco Rock Largo",
+      "translatedName": "Kokos Fels Largo",
       "name": "Coco Rock"
     },
     {
-      "translatedName": "Coco Tabby Largo",
+      "translatedName": "Kokos Miez Largo",
       "name": "Coco Tabby"
     },
     {
-      "translatedName": "Coco Hunter Largo",
+      "translatedName": "Kokos Jäger Largo",
       "name": "Coco Hunter"
     },
     {
-      "translatedName": "Coco Crystal Largo",
+      "translatedName": "Kokos Kristall Largo",
       "name": "Coco Crystal"
     },
     {
-      "translatedName": "Coco Dervish Largo",
+      "translatedName": "Kokos Derwisch Largo",
       "name": "Coco Dervish"
     },
     {
-      "translatedName": "Coco Mesmer Largo",
+      "translatedName": "Kokos Mesmer Largo",
       "name": "Coco Mesmer"
     },
     {
-      "translatedName": "Coco Hermit Largo",
+      "translatedName": "Kokos Einsiedler Largo",
       "name": "Coco Hermit"
     },
     {
@@ -260,15 +260,15 @@
       "name": "Pink Mesmer"
     },
     {
-      "translatedName": "Saber Mesmer Largo",
+      "translatedName": "Säbel Mesmer Largo",
       "name": "Saber Mesmer"
     },
     {
-      "translatedName": "Quantum Mesmer Largo",
+      "translatedName": "Quanten Mesmer Largo",
       "name": "Quantum Mesmer"
     },
     {
-      "translatedName": "Honey Mesmer Largo",
+      "translatedName": "Honig Mesmer Largo",
       "name": "Honey Mesmer"
     },
     {
@@ -276,15 +276,15 @@
       "name": "Phosphor Mesmer"
     },
     {
-      "translatedName": "Mosaic Mesmer Largo",
+      "translatedName": "Mosaik Mesmer Largo",
       "name": "Mosaic Mesmer"
     },
     {
-      "translatedName": "Tangle Mesmer Largo",
+      "translatedName": "Rank Mesmer Largo",
       "name": "Tangle Mesmer"
     },
     {
-      "translatedName": "Boom Mesmer Largo",
+      "translatedName": "Knall Mesmer Largo",
       "name": "Boom Mesmer"
     },
     {
@@ -292,83 +292,83 @@
       "name": "Rad Mesmer"
     },
     {
-      "translatedName": "Rock Mesmer Largo",
+      "translatedName": "Fels Mesmer Largo",
       "name": "Rock Mesmer"
     },
     {
-      "translatedName": "Tabby Mesmer Largo",
+      "translatedName": "Miez Mesmer Largo",
       "name": "Tabby Mesmer"
     },
     {
-      "translatedName": "Hunter Mesmer Largo",
+      "translatedName": "Jäger Mesmer Largo",
       "name": "Hunter Mesmer"
     },
     {
-      "translatedName": "Crystal Mesmer Largo",
+      "translatedName": "Kristall Mesmer Largo",
       "name": "Crystal Mesmer"
     },
     {
-      "translatedName": "Dervish Mesmer Largo",
+      "translatedName": "Derwisch Mesmer Largo",
       "name": "Dervish Mesmer"
     },
     {
-      "translatedName": "Mesmer Hermit Largo",
+      "translatedName": "Mesmer Einsiedler Largo",
       "name": "Mesmer Hermit"
     },
     {
-      "translatedName": "Pink Hermit Largo",
+      "translatedName": "Pink Einsiedler Largo",
       "name": "Pink Hermit"
     },
     {
-      "translatedName": "Saber Hermit Largo",
+      "translatedName": "Säbel Einsiedler Largo",
       "name": "Saber Hermit"
     },
     {
-      "translatedName": "Quantum Hermit Largo",
+      "translatedName": "Quanten Einsiedler Largo",
       "name": "Quantum Hermit"
     },
     {
-      "translatedName": "Honey Hermit Largo",
+      "translatedName": "Honig Einsiedler Largo",
       "name": "Honey Hermit"
     },
     {
-      "translatedName": "Phosphor Hermit Largo",
+      "translatedName": "Phosphor Einsiedler Largo",
       "name": "Phosphor Hermit"
     },
     {
-      "translatedName": "Mosaic Hermit Largo",
+      "translatedName": "Mosaik Einsiedler Largo",
       "name": "Mosaic Hermit"
     },
     {
-      "translatedName": "Tangle Hermit Largo",
+      "translatedName": "Rank Einsiedler Largo",
       "name": "Tangle Hermit"
     },
     {
-      "translatedName": "Boom Hermit Largo",
+      "translatedName": "Knall Einsiedler Largo",
       "name": "Boom Hermit"
     },
     {
-      "translatedName": "Rad Hermit Largo",
+      "translatedName": "Rad Einsiedler Largo",
       "name": "Rad Hermit"
     },
     {
-      "translatedName": "Rock Hermit Largo",
+      "translatedName": "Fels Einsiedler Largo",
       "name": "Rock Hermit"
     },
     {
-      "translatedName": "Tabby Hermit Largo",
+      "translatedName": "Miez Einsiedler Largo",
       "name": "Tabby Hermit"
     },
     {
-      "translatedName": "Hunter Hermit Largo",
+      "translatedName": "Jäger Einsiedler Largo",
       "name": "Hunter Hermit"
     },
     {
-      "translatedName": "Crystal Hermit Largo",
+      "translatedName": "Kristall Einsiedler Largo",
       "name": "Crystal Hermit"
     },
     {
-      "translatedName": "Dervish Hermit Largo",
+      "translatedName": "Derwisch Einsiedler Largo",
       "name": "Dervish Hermit"
     }
   ],
@@ -378,15 +378,15 @@
       "name": "Rosi"
     },
     {
-      "translatedName": "Coco Gordo",
+      "translatedName": "Kokos Gordo",
       "name": "Coco"
     },
     {
-      "translatedName": "Mine Gordo",
+      "translatedName": "Minen Gordo",
       "name": "Mine"
     },
     {
-      "translatedName": "Lantern Gordo",
+      "translatedName": "Lanternen Gordo",
       "name": "Lantern"
     },
     {
@@ -394,11 +394,11 @@
       "name": "Mesmer"
     },
     {
-      "translatedName": "Hermit Gordo",
+      "translatedName": "Einsiedler Gordo",
       "name": "Hermit"
     },
     {
-      "translatedName": "Goldfish Gordo",
+      "translatedName": "Goldfisch Gordo",
       "name": "Goldfish"
     },
     {
@@ -408,23 +408,23 @@
   ],
   "plorts": [
     {
-      "translatedName": "Rosi Pearl",
+      "translatedName": "Rosi Perle",
       "name": "Rosi"
     },
     {
-      "translatedName": "Coco Plort",
+      "translatedName": "Kokos Plort",
       "name": "Coco"
     },
     {
-      "translatedName": "Mine Pearl",
+      "translatedName": "Minen Perle",
       "name": "Mine"
     },
     {
-      "translatedName": "Lantern Pearl",
+      "translatedName": "Lanternen Perle",
       "name": "Lantern"
     },
     {
-      "translatedName": "Sand Pearl",
+      "translatedName": "Sand Perle",
       "name": "Sand"
     },
     {
@@ -432,20 +432,20 @@
       "name": "Mesmer"
     },
     {
-      "translatedName": "Hermit Plort",
+      "translatedName": "Einsiedler Plort",
       "name": "Hermit"
     },
     {
-      "translatedName": "Goldfish Pearl",
+      "translatedName": "Goldfisch Perle",
       "name": "Goldfish"
     }
   ],
   "zones": [
     {
       "name": "Swirlpool Island",
-      "translatedName": "Swirlpool Island",
-      "intro": "A distant land of wonder for those who are curious!",
-      "presence": "Traversing the island...",
+      "translatedName": "Wirbelbecken Insel",
+      "intro": "Ein fernes Land voller Abenteuer für die Neugierigen!",
+      "presence": "Die Insel durchqueren…",
       "description": "Placeholder"
     }
   ],
@@ -453,14 +453,14 @@
     {
       "mailKey": "ocean_intro",
       "translatedName": "S.P.L.A.S.H",
-      "subject": "Notice from the S.P.L.A.S.H. Foundation",
-      "body": "Greetings, Rancher.\n\nThe 7Zee Corporation, in partnership with the S.P.L.A.S.H. Foundation (Slime Preservation, Learning, Assistance, Sanctuary & Harmony), would like to inform you of unusual phenomena occurring across the region.\n\nReports indicate that non-native slimes, creatures not previously known to inhabit these ecosystems, are beginning to appear in unexpected locations. The cause of these disturbances is currently unknown, but rest assured: our teams are on it.\n\nA certified Slimeologist will be reaching out to you shortly with further information and guidance. In the meantime, proceed with caution and report any unusual slime behavior through your Starmail terminal.\n\nStay safe, stay curious.\n\nSincerely,\nThe Board of S.P.L.A.S.H."
+      "subject": "Mitteilung der S.P.L.A.S.H. Stiftung",
+      "body": "Grüße Rancher,\n\nDie 7Zee Corporation möchte in Zusammenarbeit mit der S.P.L.A.S.H. Stiftung (Schleim Pflege, Lernen, Assistenz, Schutz, Heilung) Sie über ungewöhnliche Phänomene in der Region informieren.\n\nBerichte deuten darauf hin, dass nicht-einheimische Schleime, die bisher nicht in diesem Ökosystem bekannt waren, an unerwarteten Orten aufgetaucht sind. Die Ursache dieser Störung ist derzeit unbekannt, aber seien Sie versichert: Unsere Teams kümmern sich darum.\n\nEin zertifizierter Schleimologe wird sich in Kürze mit weiteren Informationen und Anleitungen bei Ihnen melden. Bis dahin sollten Sie vorsichtig vorgehen und jedes ungewöhnliche Verhalten von Schleimen über Ihr Starmail-Terminal melden.\n\nBleiben Sie sicher, bleiben Sie neugierig.\n\nMit freundlichen Grüßen,\nDer Vorstand der S.P.L.A.S.H.-Stiftung."
     },
     {
       "mailKey": "exchangeintro_lisa",
       "translatedName": "Lisa Erwin",
-      "subject": "G'day from S.P.L.A.S.H. HQ!",
-      "body": "Name's Lisa Erwin! Slimeologist, field researcher, and proud member of S.P.L.A.S.H. (that's Slime Preservation, Learning, Assistance, Sanctuary & Harmony for the uninitiated). You could say I'm a bit of a slime whisperer. Been studyin' their behaviors, quirks, and oddities since I first touched down on the Far, Far Range. If it jiggles, hops, or purrs, chances are I've logged a dozen pages on it.\n\nLately, reports have been floodin' in about some strange slime activity happenin' right near your patch of land. Can't say I've seen anything quite like it in the data — and trust me, that's sayin' something.\n\nSo! I'll be reachin' out through the Range Exchange in a couple o' days. Nothin' too formal — just a quick chat, maybe get your eyes on a few of these peculiar slime friends, if you're willin'. Could be nothin'... or it might just be the biggest slime mystery this dusty ol' rock's ever seen.\n\nKeep an eye on those corrals, yeah?\n\nCheers,\n- Lisa.\nFar, Far Range S.P.L.A.S.H.\n\nP.S. If a slime starts hummin' at ya... don't panic. Just write it down."
+      "subject": "Grüß dich aus S.P.L.A.S.H. Zentrale!",
+      "body": "Hey! Mein Name ist Lisa Erwin! Schleimologin, Feldforscherin und stolzes Mitglied der S.P.L.A.S.H. Stiftung (für alle Unwissenden: Schleim Pflege, Lernen, Assistenz, Schutz, Heilung). Man könnte sagen, ich bin eine Art Schleimflüsterin... Ich beobachte ihr Verhalten, ihre Eigenheiten, ihre Kuriositäten und das schon seit dem ich das erste Mal auf der Fernen, Fernen Weite gelandet bin. Wenn es wackelt, hüpft oder schnurrt, stehen die Chancen gut, dass ich schon Dutzende Seiten darüber notiert habe.\n\nIn letzer Zeit erreichen und Berichte über seltsame Schleimaktivitäten ganz in der Nähe deines Landstücks. Sowas habe ich in den Daten noch nie gesehen, und glaub mir, das soll was heißen.\n\nOkay also! In ein paar Tagen werd' ich mich nochmal über den Range Exchange bei dir melden. Nix Förmliches, nur ein kurzes Gespräch, vielleicht können wiur uns ja ein paar dieser komischen Schleimfreunde mal zusammen angucken falls du Lust hast. Könnte harmlos sein.. oder vielleicht wird es ja das größte Schleimrätsel das dieser staubige Felsen jemals gesehen hat. Behalte deine Gehege im Auge, alright?\n\nCheers\n\n- Lisa\nFernen, Fernen Weite S.P.L.A.S.H.\n\nPS: Wenn ein Schleim mal anfängt dich an anzusummen.. keine Panik. Einfach aufschreiben und alles sollte hoffentlich okay sein."
     }
   ]
 }
