@@ -1,11 +1,12 @@
 ﻿namespace OceanRange.Patches;
 
 // TODO: Remove when the pr is merged and SRML 0.3.0 is out
-[HarmonyPatch(typeof(GordoSnare), nameof(GordoSnare.GetGordoIdForBait)), HarmonyPriority(Priority.First + 1)]
+[HarmonyPatch(typeof(GordoSnare), nameof(GordoSnare.GetGordoIdForBait)), HarmonyPriority(Priority.First + 1), UsedImplicitly]
 public static class GordoSnarePatch
 {
     public static IdentifiableId[] Pinks;
 
+    [UsedImplicitly]
     public static bool Prefix(GordoSnare __instance, ref IdentifiableId __result)
     {
         var dictionary = new Dictionary<IdentifiableId, float>(Identifiable.idComparer);
@@ -36,28 +37,27 @@ public static class GordoSnarePatch
         {
             var value = (float)__instance.foodTypeSnareWeight / normalIds.Count;
 
-            for (var j = 0; j < normalIds.Count; j++)
-                dictionary.Add(normalIds[j], value);
+            foreach (var normalId in normalIds)
+                dictionary.Add(normalId, value);
         }
 
         if (favIds.Count > 0)
         {
             var value = (float)__instance.favoredFoodSnareWeight / favIds.Count;
 
-            for (var j = 0; j < favIds.Count; j++)
-                dictionary.Add(favIds[j], value);
+            foreach (var favId in favIds)
+                dictionary.Add(favId, value);
         }
 
         if (Pinks.Length > 0)
         {
             var value = (float)__instance.pinkSnareWeight / Pinks.Length;
 
-            for (var j = 0; j < Pinks.Length; j++)
-                dictionary.Add(Pinks[j], value);
+            foreach (var pink in Pinks)
+                dictionary.Add(pink, value);
         }
 
-        var pink = Randoms.SHARED.Pick(Pinks);
-        __result = Randoms.SHARED.Pick(dictionary, pink);
+        __result = Randoms.SHARED.Pick(dictionary, Randoms.SHARED.Pick(Pinks));
         return false;
     }
 }

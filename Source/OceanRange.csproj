@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>OceanRange</AssemblyName>
-        <RootNamespace>TheOceanRange</RootNamespace>
-        <TargetFramework>net4.8</TargetFramework>
+        <RootNamespace>OceanRange</RootNamespace>
+        <TargetFramework>net4.7.2</TargetFramework>
         <Version>0.0.2</Version>
         <DebugType>none</DebugType>
         <DebugSymbols>true</DebugSymbols>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>preview</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Authors>TheRanchExchange</Authors>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
@@ -14,23 +14,42 @@
         <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
         <Description>Dive into the slime sea!</Description>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
-        <Configurations>Debug;Release</Configurations>
+        <Configurations>Debug;Release;Unity</Configurations>
         <PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" />
-        <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" />
-        <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" />
-        <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="all" />
-
-        <EmbeddedResource Include="Resources\*" />
-        <EmbeddedResource Include="Resources\*\*" />
-    </ItemGroup>
+    <PropertyGroup Condition="$(Configuration)==Unity">
+        <DefineConstants>UNITY</DefineConstants>
+    </PropertyGroup>
 
     <PropertyGroup Condition="$(Configuration)==Release">
         <Optimize>true</Optimize>
     </PropertyGroup>
 
-    <Import Project="../SlimeRancher.props" /> <!-- This will error if there's no SLimeRancher.props file, delete this line if you don't use it -->
+    <ItemGroup>
+        <Reference Include="../Libs/*.dll" />
+    </ItemGroup>
+
+    <ItemGroup Condition="$(Configuration)!=Unity">
+        <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
+        <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
+        <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
+        <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="all" ExcludeAssets="runtime" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3"  PrivateAssets="all" ExcludeAssets="runtime" />
+
+        <EmbeddedResource Include="Resources\*" />
+        <EmbeddedResource Include="Resources\*\*" />
+        <EmbeddedResource Include="Resources\*\*\*" />
+
+        <Publicize Include="Assembly-CSharp" />
+        <Publicize Include="UnityEngine.CoreModule" />
+    </ItemGroup>
+
+    <ItemGroup Condition="$(Configuration)==Unity">
+        <Compile Remove="**\*.cs" />
+
+        <Compile Include="Unity\*.cs" />
+    </ItemGroup>
+
+    <Import Project="../SlimeRancher.props" />
 </Project>

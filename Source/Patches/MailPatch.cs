@@ -1,10 +1,11 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(TimeDirector), nameof(TimeDirector.LateUpdate))]
+[HarmonyPatch(typeof(TimeDirector), nameof(TimeDirector.LateUpdate)), UsedImplicitly]
 public static class FixAndProperlyShowMailPatch
 {
     public static bool IsLoaded;
 
+    [UsedImplicitly]
     public static void Postfix(TimeDirector __instance)
     {
         if (!IsLoaded)

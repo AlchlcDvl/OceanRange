@@ -2,17 +2,57 @@
 - Release!
 
 0.0.2
-- New slimes: Mesmer
-- Added Lisa Erwin, a new rancher!
+Discord:
+## New!
+- Mesmer Slimes: Hypnotic and awe inducing slimes that are actually playful pacifists!
+- Hermit Slimes: Reclusive and shy slimes that like to nibble on fruits in their shells!
+- Goldfish Slimes: The rare, timid and beautiful slimes adapted to the sea!
+- Lisa Erwin: The SPLASH foundation's resident slimeologist, ready to teach you interesting things about slimes!
+- Largos: The modded slimes can become largos!
+- Sticky Fingers: The ooy gooey goodness that stick to your fingers!
+- Prickly Coral: The oceanic fruit found rarely in the dry reef!
+- Translations: The mod now supports the following languages: Turkish, French, Spanish and German!
+
+## Changes!
+- Change: Moved the lantern gordo to a new location, good luck finding it this time!
+- Change: Sand gordos now have a proper body shape!
+- Improvement: Lantern slimes no longer sleep in a cave or cave adjacent location, similar to how phosphor slimes stay alive
+- Improvement: Updated the visuals and behaviours of several slimes, chickens and foods to be more consistent with their respective pedia entries and icons
+- Improvement: Updated the market entries to better mimic vanilla behaviour
+- Improvement: Improved several aspects of the mod to ensure maximum capability
+- Removed: Removed the need for AssetsLib
+
+## Fixes!
+- Critical: Fixed the mod not loading on certain pc and game locales
+- Critical: Fixed popped natural gordos respawning whenever you load a save (you'll need to pop them once more for the mod to actually register its popped status)
+- Semi-Critical: Fixed rosi slimes producing way too many plorts
+- Gameplay: Fixed the pink gordo appearing more times than it should
+- Visual: Fixed a couple typos
+- Visual: Fixed lantern slime fins appearing detached from the main body
+- Visual: Fixed blowtato dirt patches missing their dirt
+- Visual: Fixed blowtatoes swaying (appearing "wavy") when lying idle on the ground
+- Visual: Fixed the inconsistent aspect ratio and scale of the chick and hen icons
+
+Nexus:
+- New slimes: Mesmer, Hermit, Goldfish
+- New fruits: Sticky Fingers, Prickly Coral
+- New rancher: Lisa Erwin; she will try to first contact you by day 7 at noon
+- Added modded slime largos
+- Added translations: Turkish, French, Spanish and German
 - The sand gordo now has a custom body
 - Sand gordo snare behaviour is now consistent with its diet
+- Moved the lantern gordo to a new location
 - Lantern sleep habits now work similar to phosphor slimes, where they will be awake when under a solar shield or inside a cave
 - Updated how mod assets are handled
-- Updated the visual looks of the slimes
-- Slimes are now more consistent with their pedia entries
+- Updated the visuals and behaviours of several slimes, chickens and foods
+- Updated plort prices to mimic the behaviour of vanilla plorts
+- Fixed popped natural gordos respawning upon loading saves
+- Fixed the bug where the mod wouldn't load on certain pc and game locales
+- Fixed the amount of plorts a rosi slime would produce in presence of other slimes
 - Fixed the pink gordo appearing more times than it should on gordo snares when compared to the rosi gordo
 - Fixed a couple typos
 - Fixed lantern slime fins appearing detached from the main body
-- Fixed the amount of plorts a rosi slime would produce in presence of other slimes
-- Fixed popped natural gordos respawning upon loading saves (you'll need to pop them once more for the mod to actually register its popped status)
-- Fixed the bug where the mod wouldn't load on certain pc locales
+- Fixed blowtato patches missing their dirt
+- Fixed blowtato appearing "wavy"
+- Fixed the inconsistent aspect ratio of the chick and hen icons
+- Removed the need for AssetsLib

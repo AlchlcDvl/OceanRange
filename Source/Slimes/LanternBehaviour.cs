@@ -9,12 +9,13 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
     private float FleeingUntil;
     private bool WaitForPhysicsUpdate;
 
-    public bool CanMove;
+    public CanMoveHandler CanMove;
     public bool Fleeing;
 
     public void Awake()
     {
         Applicator = GetComponent<SlimeAppearanceApplicator>();
+        CanMove = this.EnsureComponent<CanMoveHandler>();
         TimeDir = SceneContext.Instance.TimeDirector;
         WaitForPhysicsUpdate = true;
     }
@@ -28,19 +29,19 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
         if (Fleeing)
         {
             Fleeing = Time.fixedTime < FleeingUntil;
-            Applicator.SetExpression(SlimeFace.SlimeExpression.Alarm);
+            Applicator.SetExpression(SlimeExpression.Alarm);
             return;
         }
 
         if (Caves.Count > 0)
         {
-            CanMove = true;
+            CanMove.CanMove = true;
             return;
         }
 
-        CanMove = TimeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
+        CanMove.CanMove = TimeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
 
-        if (!CanMove)
+        if (!CanMove.CanMove)
             Applicator.SetExpression(Ids.Sleeping);
     }
 
@@ -55,10 +56,10 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
 
     public void OnControllerCollision(GameObject gameObj)
     {
-        if (CanMove)
+        if (CanMove.CanMove)
             return;
 
-        CanMove = Fleeing = gameObj == SceneContext.Instance.Player;
+        CanMove.CanMove = Fleeing = gameObj == SceneContext.Instance.Player;
 
         if (Fleeing)
             FleeingUntil = Time.fixedTime + 10f;

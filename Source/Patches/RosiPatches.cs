@@ -1,8 +1,9 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.Produce))]
+[HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.Produce)), UsedImplicitly]
 public static class SlimeEatProduce
 {
+    [UsedImplicitly]
     public static void Prefix(SlimeEat __instance, ref int count)
     {
         if (!__instance.GetComponent<RosiBehaviour>() || !CorralRegion.allCorrals.TryFinding(x => x.GetComponent<Collider>().bounds.Contains(__instance.transform.position), out var corral))

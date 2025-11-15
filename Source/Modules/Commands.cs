@@ -10,12 +10,12 @@ public sealed class EchoCommand : ConsoleCommand
     public override string Description => "Echos whatever arguments you type into the console.";
     public override string ExtendedDescription => "Echos whatever arguments you type into the console, great for passing temporary notes into logs.";
 
-    public override bool Execute(string[] args) => true;
+    public override bool Execute(string[] _) => true;
 }
 
 public sealed class SavePositionCommand : ConsoleCommand
 {
-    public readonly Dictionary<string, List<Vector3>> SavedPositions = [];
+    public readonly Dictionary<string, Dictionary<string, List<string>>> SavedPositions = [];
 
     public override string ID => "savePos";
     public override string Usage => "savePos";
@@ -25,16 +25,21 @@ public sealed class SavePositionCommand : ConsoleCommand
     public override bool Execute(string[] args)
     {
         if (args?.Length is not (null or 0))
-            return false;
+            Main.Console.LogWarning("This command does not have arguments!");
 
         var pos = SceneContext.Instance.Player.transform.position;
-        var name = Helpers.GetClosestCell(pos).name.Replace("cell", "");
+        var name = DebugUtils.GetClosestCell(pos).name.Replace("cell", string.Empty);
+        var zone = name.TrueSplit('_')[0].ToUpperInvariant();
 
-        if (!SavedPositions.TryGetValue(name, out var positions))
-            positions = SavedPositions[name] = [];
+        if (!SavedPositions.TryGetValue(zone, out var positions))
+            SavedPositions[zone] = positions = [];
 
-        positions.Add(pos);
-        Main.Console.Log("Saved " + name + " at " + pos.ToString());
+        if (!positions.TryGetValue(name, out var positions2))
+            positions[name] = positions2 = [];
+
+        positions2.Add(DebugUtils.FormatOrientation(new(pos, Vector3.zero)));
+
+        Main.Console.Log("Saved " + name + " at " + pos);
         return true;
     }
 }
@@ -51,7 +56,10 @@ public sealed class TeleportCommand : ConsoleCommand
             args = [.. args[0].TrueSplit(',', ' ', ';')];
 
         if (args?.Length is not 3)
+        {
+            Main.Console.LogError("Incorrect number of coordinate components!");
             return false;
+        }
 
         var pos = SceneContext.Instance.Player.transform.position;
 
@@ -63,7 +71,27 @@ public sealed class TeleportCommand : ConsoleCommand
 
         var vector = string.Join(",", args);
         SceneContext.Instance.Player.transform.position = Helpers.ParseVector(vector);
+
         Main.Console.Log("Teleported to " + vector);
+        return true;
+    }
+}
+
+public class TesterUnlockProgressCommand : ConsoleCommand
+{
+    public override string ID => "tester_unlock_progress";
+    public override string Usage => "tester_unlock_progress";
+    public override string Description => "Unlocks all 7Zee progress to quickly get to the Docks.";
+
+    public override bool Execute(string[] args)
+    {
+        if (args?.Length is not (null or 0))
+            Main.Console.LogWarning("This command does not have arguments!");
+
+        SceneContext.Instance.ProgressDirector.model.progressDict[ProgressType.CORPORATE_PARTNER] = 999;
+        SceneContext.Instance.ProgressDirector.NoteProgressChanged(ProgressType.CORPORATE_PARTNER);
+
+        Main.Console.Log("7Zee unlocked past max! You may have to reload save to apply changes.");
         return true;
     }
 }

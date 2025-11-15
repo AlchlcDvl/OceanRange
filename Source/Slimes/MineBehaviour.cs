@@ -21,6 +21,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     private const float MinDelay = 5f;
 
     public GameObject ExplodeFX;
+    public bool IsLargo;
 
     private float NextPossibleExplode;
     private float NextExplodeDelayTime = MaxDelay;
@@ -59,7 +60,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         Marker.SetActive(false);
     }
 
-    public override float Relevancy(bool _) => Calmed.IsCalmed() || !Contact || State is ExplodeState.Exploding ? 0f : 1f;
+    public override float Relevancy(bool _) => Calmed.IsCalmed() || !Contact || State is not ExplodeState.Idle ? 0f : 1f;
 
     public override void Action() {}
 
@@ -94,7 +95,10 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
 
     private void Explode()
     {
-        PhysicsUtil.Explode(gameObject, ExplodeRadius, ExplodePower, MinPlayerDamage, MaxPlayerDamage);
+        if (IsLargo)
+            PhysicsUtil.Explode(gameObject, ExplodeRadius * 2f, ExplodePower * 2f, MinPlayerDamage * 1.2f, MaxPlayerDamage * 1.2f);
+        else
+            PhysicsUtil.Explode(gameObject, ExplodeRadius, ExplodePower, MinPlayerDamage, MaxPlayerDamage);
 
         if (gameObject.layer == LayerMask.NameToLayer("Launched"))
             SceneContext.Instance.AchievementsDirector.AddToStat(AchievementsDirector.IntStat.LAUNCHED_BOOM_EXPLODE, 1);
@@ -108,5 +112,5 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
 
     public override bool CanRethink() => State == ExplodeState.Idle;
 
-    public void OnControllerCollision(GameObject gameObj) => Contact = Time.fixedTime > NextPossibleExplode && gameObj == SceneContext.Instance.Player;
+    public void OnControllerCollision(GameObject gameObj) => Contact = Time.fixedTime > NextPossibleExplode && (gameObj == SceneContext.Instance.Player || (gameObj.TryGetComponent<Identifiable>(out var id) && Identifiable.IsSlime(id.id)));
 }

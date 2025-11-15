@@ -1,0 +1,478 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+
+namespace OceanRange.Data;
+
+// Parsing validation delegate for byte, float etc
+public delegate bool TryParseDelegate<T>(string value, NumberStyles style, CultureInfo culture, out T component) where T : struct;
+
+// Unity's try parse methods for html strings, much faster and simpler using a delegate pointing to native code than doing it myself
+public delegate bool TryParseHtml<T>(string valString, out T color) where T : struct;
+
+/// <summary>
+/// Main base class for all json converters for all json serialised values. Provides wrappers for the read and write methods because the additional params are never used.
+/// </summary>
+public abstract class OceanJsonConverter : JsonConverter
+{
+    protected virtual bool CustomSerialisation => false;
+
+    /// <inheritdoc/>
+    public override sealed object ReadJson(JsonReader reader, Type objectType, [AllowNull] object _1, JsonSerializer _2)
+    {
+        if (reader.TokenType == JsonToken.Null)
+            return null;
+
+        try
+        {
+            return ParseFromJson(reader, objectType);
+        }
+        catch (Exception ex)
+        {
+            throw new JsonSerializationException($"Encountered an error while deserialising {objectType.Name} at path {reader.Path}:", ex);
+        }
+    }
+
+    /// <inheritdoc/>
+    public override sealed void WriteJson(JsonWriter writer, [AllowNull] object value, JsonSerializer _)
+    {
+        if (value == null)
+            writer.WriteNull();
+        else if (CustomSerialisation)
+            WriteJson(writer, value);
+        else
+            writer.WriteValue(ToValueString(value));
+    }
+
+    /// <summary>
+    /// A converter's implementation of reading from json.
+    /// </summary>
+    /// <param name="reader">The json reader.</param>
+    /// <param name="objectType">The type of the object (used for non generics).</param>
+    /// <returns>The deserialised value.</returns>
+    protected abstract object ParseFromJson(JsonReader reader, Type objectType);
+
+    /// <summary>
+    /// Converts the value to a string representation to be entered into the json.
+    /// </summary>
+    /// <param name="value">The value to convert.</param>
+    /// <returns>A string representation of the passed value.</returns>
+    protected virtual string ToValueString(object value) => value.ToString();
+
+    /// <summary>
+    /// Writes the JSON representation of the object.
+    /// </summary>
+    /// <param name="writer">The JsonWriter to write to.</param>
+    /// <param name="value">The value to write.</param>
+    protected virtual void WriteJson(JsonWriter writer, [AllowNull] object value) { }
+}
+
+/// <summary>
+/// Generic json converter for <typeparamref name="T"/> with a simplified CanConvert check.
+/// </summary>
+/// <typeparam name="T">The type of the value being handled.</typeparam>
+public abstract class OceanJsonConverter<T> : OceanJsonConverter
+{
+    /// <inheritdoc/>
+    public override sealed bool CanConvert(Type objectType) => typeof(T).IsAssignableFrom(objectType) || objectType.IsNullableOf<T>();
+
+    /// <inheritdoc/>
+    protected override sealed string ToValueString(object value)
+    {
+        if (value is T tValue)
+            return ToValueString(tValue);
+
+        throw new JsonSerializationException("Received unknown value: " + value);
+    }
+
+    /// <inheritdoc/>
+    protected override sealed object ParseFromJson(JsonReader reader, Type _) => ParseFromJson(reader);
+
+    /// <inheritdoc/>
+    protected override sealed void WriteJson(JsonWriter writer, [AllowNull] object value)
+    {
+        if (value is T tValue)
+            WriteJson(writer, tValue);
+        else
+            throw new JsonSerializationException("Received unknown value: " + value);
+    }
+
+    /// <summary>
+    /// Wrapper method without the type parameter.
+    /// </summary>
+    /// <inheritdoc cref="ParseFromJson(JsonReader, Type)"/>
+    protected abstract T ParseFromJson(JsonReader reader);
+
+    /// <summary>
+    /// Type safe wrapper.
+    /// </summary>
+    /// <inheritdoc cref="ToValueString(object)"/>
+    protected virtual string ToValueString(T value) => value.ToString();
+
+    /// <summary>
+    /// Type safe wrapper.
+    /// </summary>
+    /// <inheritdoc cref="WriteJson(JsonWriter, object)"/>
+    protected virtual void WriteJson(JsonWriter writer, [AllowNull] T value) { }
+}
+
+/// <summary>
+/// Converter class that handles values types that have components (eg, Vector3 has 3 float components, Orientation has 2 Vector3 components)
+/// </summary>
+/// <typeparam name="TValue">The type of the value being handled.</typeparam>
+/// <typeparam name="TComponent">The type of the values that make up <typeparamref name="TValue"/>.</typeparam>
+/// <param name="format">The expected format.</param>
+/// <param name="style">The accepted number style.</param>
+/// <param name="tryParse">The number parser and validator.</param>
+/// <param name="maxLength">Maximum accepted component values.</param>
+/// <param name="minLength">Minimum accepted component values.</param>
+/// <param name="defaultValue">The default value for missing components between min and max counts.</param>
+/// <param name="separators">The separator used for splitting the string into component parts.</param>
+public abstract class MultiComponentConverter<TValue, TComponent>(string format, NumberStyles style, TryParseDelegate<TComponent> tryParse, int maxLength, int minLength, TComponent defaultValue = default, params char[] separators)
+    : OceanJsonConverter<TValue>
+    where TValue : struct // The value being read/written
+    where TComponent : struct // The type that make up the value's components
+{
+    private readonly TryParseDelegate<TComponent> TryParse = tryParse; // The delegate that handles converting strings to the component values
+    private readonly int MaxLength = maxLength; // Maximum possible values needed
+    private readonly int MinLength = minLength; // Minimum possible values needed
+    private readonly char[] Separators = separators.Length == 0 ? [','] : separators; // Separator for complex formats
+    private readonly TComponent Default = defaultValue; // The default values for component indices between min and max counts
+    private readonly NumberStyles Style = style; // The supported styles of the numbers
+    private readonly string Format = format; // The expected format in case of parsing error
+    private readonly TComponent[] Parsed = new TComponent[maxLength];
+
+    /// <summary>
+    /// Creates the instance of the type handled by the converter using the parse array of components.
+    /// </summary>
+    /// <param name="array">The component array.</param>
+    /// <returns>An instance employing the values deserialised from a string.</returns>
+    protected abstract TValue FillFromArray(TComponent[] array);
+
+    /// <summary>
+    /// Parses a string into <typeparamref name="TValue"/>.
+    /// </summary>
+    /// <param name="valString">The string to parse.</param>
+    /// <returns>The parse <typeparamref name="TValue"/>.</returns>
+    public TValue Parse(string valString) => ParseOtherFormat(valString, out var result) ? result : FillFromArray(ParseComponents(valString));
+
+    /// <summary>
+    /// An alternative parsing format that doesn't involve splitting the string to get the values.
+    /// </summary>
+    /// <param name="valString">The string to parse.</param>
+    /// <param name="result">The parsed result.</param>
+    /// <returns>true if the parsing was successful.</returns>
+    protected virtual bool ParseOtherFormat(string valString, out TValue result)
+    {
+        result = default;
+        return false;
+    }
+
+    /// <inheritdoc/>
+    protected override sealed TValue ParseFromJson(JsonReader reader)
+    {
+        var valString = reader.Value?.ToString() ?? "null";
+
+        if (reader.TokenType != JsonToken.String)
+            throw new InvalidDataException($"Cannot convert value '{valString}'. Expected string format {Format}.");
+
+        return Parse(valString);
+    }
+
+    /// <summary>
+    /// Breaks down a value string and returns an array of <typeparamref name="TComponent"/>.
+    /// </summary>
+    /// <param name="value">The value to parse.</param>
+    /// <returns>An array of parsed components from the provided string.</returns>
+    /// <exception cref="InvalidDataException">Thrown if a component string was not of the correct number format.</exception>
+    private TComponent[] ParseComponents(string value)
+    {
+        var components = value.TrueSplit(Separators); // Split into would be components
+
+        // Ensure that the correct number of components are there
+
+        if (components.Count < MinLength)
+            throw new InvalidDataException($"'{value}' has too less values!");
+
+        if (components.Count > MaxLength)
+            throw new InvalidDataException($"'{value}' has too many values!");
+
+        for (var i = 0; i < components.Count; i++) // For each string component
+        {
+            var component = components[i];
+
+            if (TryParse(component, Style, CultureInfo.InvariantCulture, out var valueComponent)) // Attempt to parse
+                Parsed[i] = valueComponent; // Assign to index of array if parsing successful
+            else
+                throw new InvalidDataException($"Invalid {typeof(TComponent).Name} string '{component}' at index {i}!"); // Throw error otherwise
+        }
+
+        // Filling in the missing values with the converter default
+        for (var i = components.Count; i < MaxLength; i++)
+            Parsed[i] = Default;
+
+        return Parsed;
+    }
+}
+
+/// <summary>
+/// Vector3 converter.
+/// </summary>
+public sealed class Vector3Converter() : MultiComponentConverter<Vector3, float>("'x,y,z' or 'x,y'", NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 3, 2)
+{
+    public static readonly Vector3Converter Instance = new(); // Used for Orientation conversion
+
+    /// <inheritdoc/>
+    protected override Vector3 FillFromArray(float[] array) => new(array[0], array[1], array[2]); // 0 = x, 1 = y, 2 = z
+
+    /// <inheritdoc/>
+    protected override string ToValueString(Vector3 value) => value.ToVectorString();
+}
+
+/// <summary>
+/// Orientation converter.
+/// </summary>
+public sealed class OrientationConverter : OceanJsonConverter<Orientation>
+{
+    private static readonly OrientationConverterFloat FloatHandler = new();
+    private static readonly OrientationConverterVector3 Vector3Handler = new();
+
+    protected override Orientation ParseFromJson(JsonReader reader)
+    {
+        var valString = reader.Value?.ToString() ?? "null";
+
+        if (reader.TokenType != JsonToken.String)
+            throw new InvalidDataException($"Cannot convert value '{valString}' to Orientation. Expected string of vectors.");
+
+        return valString.StartsWith('f') ? FloatHandler.Parse(valString) : Vector3Handler.Parse(valString);
+    }
+
+    protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()};{value.Scale.ToVectorString()}";
+}
+
+/// <summary>
+/// Orientation converter using a grouped Vector3 format.
+/// </summary>
+/// <remarks>Uses Vector3Converter under the hood.</remarks>
+public sealed class OrientationConverterVector3() : MultiComponentConverter<Orientation, Vector3>("'x,y' or 'x,y,z' in groups of two or three separated by ;", NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, 3,
+    2, Vector3.one, ';')
+{
+    /// <inheritdoc/>
+    protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1], array[2]); // 0 = position, 1 = rotation, 2 = scale
+
+    /// <inheritdoc/>
+    protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()};{value.Scale.ToVectorString()}";
+}
+
+/// <summary>
+/// Orientation converter using an ungrouped set of floats.
+/// </summary>
+public sealed class OrientationConverterFloat() : MultiComponentConverter<Orientation, float>("two or three 'x,y,z' sets separated by ,", NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 9, 6, 1, 'f', ',')
+{
+    /// <inheritdoc/>
+    protected override Orientation FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3], array[4], array[5], array[6], array[7], array[8]);
+    // 0 = position x, 1 = position y, 2 = position z, 3 = rotation x, 4 = rotation y, 5 = rotation z, 6 = scale x, 7 = scale y, 8 = scale z
+
+    /// <inheritdoc/>
+    protected override string ToValueString(Orientation value) => $"f{value.Position.ToVectorString()},{value.Rotation.ToVectorString()},{value.Scale.ToVectorString()}";
+}
+
+/// <summary>
+/// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+/// </summary>
+/// <typeparam name="TColor">The type of the color being handled (Color/Color32).</typeparam>
+/// <typeparam name="TComponent">The type of the values that make up <typeparamref name="TColor"/>.</typeparam>
+public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentConverter<TColor, TComponent>
+    where TColor : struct // Color or Color32, but I don't know how to limit to only those two types
+    where TComponent : struct // float or byte, same as above
+{
+    private readonly TryParseHtml<TColor> TryParseHtmlColor; // Unity parsing delegate
+
+    /// <summary>
+    /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+    /// </summary>
+    /// <param name="style">The accepted number style.</param>
+    /// <param name="tryParse">The number parsing delegate.</param>
+    /// <param name="defaultValue">The default value for missing values.</param>
+    /// <param name="htmlParser">The delegate for the unity html parsing method.</param>
+    protected BaseColorConverter(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : base("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
+    {
+        var tType = typeof(TColor);
+
+        if (tType != typeof(Color) && tType != typeof(Color32))
+            throw new InvalidOperationException($"Invalid color type: {tType.Name}. Only UnityEngine.Color or UnityEngine.Color32 are supported.");
+
+        TryParseHtmlColor = htmlParser;
+    }
+
+    /// <inheritdoc/>
+    protected override sealed bool ParseOtherFormat(string valString, out TColor result) => valString.StartsWith('#') ? TryParseHtmlColor(valString, out result) :  base.ParseOtherFormat(valString, out result);
+}
+
+/// <summary>
+/// Color converter.
+/// </summary>
+public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberStyles.Float, float.TryParse, 1f, Helpers.TryHexToColor)
+{
+    /// <inheritdoc/>
+    protected override Color FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
+
+    /// <inheritdoc/>
+    protected override string ToValueString(Color value) => value.ToColorString();
+}
+
+// /// <summary>
+// /// Color32 converter.
+// /// </summary>
+// public sealed class Color32Converter() : BaseColorConverter<Color32, byte>(NumberStyles.Integer, byte.TryParse, 255, Helpers.TryHexToColor32)
+// {
+//     /// <inheritdoc/>
+//     protected override Color32 FillFromArray(byte[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
+
+//     /// <inheritdoc/>
+//     protected override string ToValueString(Color32 value) => value.ToHexRGBA(); // Using hex code here because it's a simpler representation
+// }
+
+/// <summary>
+/// Enum converter.
+/// </summary>
+/// <remarks>Made because srml's enum patching is causing errors with patched enum types being read by newtonsoft, will be removed if and when a fix is administered.</remarks>
+public sealed class EnumConverter : OceanJsonConverter
+{
+    protected override bool CustomSerialisation => true;
+
+    public override bool CanConvert(Type objectType) => objectType.IsEnum || objectType.IsNullableEnum();
+
+    protected override object ParseFromJson(JsonReader reader, Type objectType)
+    {
+        var targetType = Nullable.GetUnderlyingType(objectType) ?? objectType;
+        return EnumMetadata.Get(targetType).IsFlags ? ParseFlags(reader, targetType) : ParseSingle(reader, targetType, false);
+    }
+
+    private static object ParseSingle(JsonReader reader, Type enumType, bool partOfArray) => reader.TokenType switch
+    {
+        JsonToken.Null when partOfArray => null, // Only check null when in an array, because normal null values are handled outside this method
+        JsonToken.String when Helpers.TryParseEnum(enumType, reader.Value.ToString() , true, out var parsed) => parsed, // Attempt to parse the string, make sure to use this arm
+        JsonToken.String when reader.Value is string name && name.StartsWith('+') => Helpers.AddEnumValue(name, enumType), // Attempt to use the string as a new enum value, alternative use of strings
+        JsonToken.Integer => Enum.ToObject(enumType, Convert.ToUInt64(reader.Value)), // Avoid adding numbers, they're hard to understand in JSON when you don't have access to the relevant enum
+        _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {enumType.Name}. Expected {(partOfArray ? "a valid array of defined strings or ints, " : string.Empty)}a defined string or an integer.") // Throw an error if an unsupported value type is given
+    };
+
+    private static object ParseFlags(JsonReader reader, Type enumType)
+    {
+        if (reader.TokenType != JsonToken.StartArray)
+            return ParseSingle(reader, enumType, false);
+
+        var combined = 0UL;
+
+        while (reader.Read() && reader.TokenType != JsonToken.EndArray)
+            combined |= Convert.ToUInt64(ParseSingle(reader, enumType, true));
+
+        return Enum.ToObject(enumType, combined);
+    }
+
+    /// <inheritdoc/>
+    protected override void WriteJson(JsonWriter writer, [AllowNull] object value)
+    {
+        if (value == null)
+        {
+            writer.WriteNull();
+            return;
+        }
+
+        var type = value.GetType();
+        var enumType = Nullable.GetUnderlyingType(type) ?? type;
+        var metadata = EnumMetadata.Get(enumType);
+
+        if (!metadata.IsFlags)
+        {
+            var name = Enum.GetName(enumType, value);
+
+            if (name != null)
+                writer.WriteValue(name);
+            else
+                writer.WriteValue(Convert.ToUInt64(value));
+
+            return;
+        }
+
+        var underlying = Convert.ToUInt64(value);
+
+        if (underlying == 0)
+        {
+            writer.WriteValue(metadata.ZeroName);
+            return;
+        }
+
+        var exactMatchName = Enum.GetName(enumType, value);
+
+        if (exactMatchName != null)
+        {
+            writer.WriteValue(exactMatchName);
+            return;
+        }
+
+        var setFlags = new List<string>();
+        var matchedBits = 0UL;
+
+        foreach (var (flag, name) in metadata.Values.Select(x => (Convert.ToUInt64(x.Item1), x.Item2)).OrderByDescending(x => x.Item1))
+        {
+            if (flag == 0 || (underlying & flag) != flag || (matchedBits & flag) != 0)
+                continue;
+
+            setFlags.Add(name);
+            matchedBits |= flag;
+        }
+
+        var leftoverBits = underlying & ~matchedBits;
+
+        switch (setFlags.Count)
+        {
+            case 0 when leftoverBits != 0:
+            {
+                writer.WriteValue(underlying);
+                break;
+            }
+            case 1 when leftoverBits == 0:
+            {
+                writer.WriteValue(setFlags[0]);
+                break;
+            }
+            default:
+            {
+                writer.WriteStartArray();
+
+                foreach (var flag in setFlags)
+                    writer.WriteValue(flag);
+
+                if (leftoverBits != 0)
+                    writer.WriteValue(leftoverBits);
+
+                writer.WriteEndArray();
+                break;
+            }
+        }
+    }
+}
+
+/// <summary>
+/// Type converter.
+/// </summary>
+public sealed class TypeConverter : OceanJsonConverter<Type>
+{
+    private static readonly Dictionary<string, Type> CachedTypes = [];
+
+    /// <inheritdoc/>
+    protected override Type ParseFromJson(JsonReader reader)
+    {
+        if (reader.TokenType != JsonToken.String)
+            throw new InvalidDataException("Expected a string of the format as 'Namespace.TypeName, Assembly' or 'Namespace.TypeName' or full qualified name"); // Throw if invalid
+
+        var name = reader.Value as string; // Convert to string
+
+        // Try to find the type, throw if not found
+        return CachedTypes.GetOrAdd(name, Type.GetType) ?? throw new ArgumentException($"Cannot find type {name}!");
+    }
+
+    /// <inheritdoc/>
+    protected override string ToValueString(Type value) => value.FullName + ", " + value.Assembly.GetName().Name;
+}

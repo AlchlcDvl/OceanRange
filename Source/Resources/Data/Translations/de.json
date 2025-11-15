@@ -1,0 +1,466 @@
+{
+  "name": "DE",
+  "additional": {
+    "ui": {
+      "l.pearls": "Perlenormie",
+      "m.foodgroup.dirt": "Erde"
+    },
+    "pedia": {
+      "m.favored_by.silky_sand_craft": "Sand-Schleim"
+    }
+  },
+  "slimes": [
+    {
+      "translatedName": "Rosi-Schleim",
+      "name": "Rosi",
+      "risks": "Bei den Rosi-Schleimen gibt es nichts zu fürchten. Sie lassen sich sehr einfach züchten und benötigen nur Nahrung und ein wenig Freundschaft. Ein einsamer Rosi-Schleim ist ein trauriger Rosi-Schleim. Daher wird es Ranchers empfohlen, mehr als einen zu halten, wenn sie eine gesunde Perlenproduktion anstreben.",
+      "slimeology": "Der Rosi-Schleim ist der am häufigsten anzutreffende Schleim im Großen Riff. Rosi-Schleime sind oft fröhlich, freundlich und schadenfroh weshalb sie häufig Schabernack mit anderen Schleimen und Menschen treiben. Rosi-Schleime haben einen sehr starken Bund miteinander und sind selten alleine in der Natur gesehen. Solange sie einen Partner zum spielen haben, sind sie ewig glücklich und zeigen selten Traurigkeit. Wenn ein Rosi-Schleim mal traurig ist, geht das oft auf Kosten anderer. Rosi Schleime versuchen ihr Bestes, den Schleim oder Mensch der sich in einer schlechten Laune befindet wieder aufzumuntern und glücklich zu machen.",
+      "diet": "Alles",
+      "favourite": "Kein Lieblingsessen. Der Rosi-Schleim hat alles und jeden gleich lieb.",
+      "onomics": "Rosi Perlen werden aufgrund ihrer verjüngenden Wirkung auf die menschliche Haut oft als \"Aphroditen Perlen\" bezeichnet. Kosmetikunternehmen vermarkten ihre Produkte oft als Schlüssel zu jugendlicher Ausstrahlung und behaupten, dass Rosi-Perlen die Haut um 20 bis 50 Jahre jünger aussehen lassen. Dies wäre kein Problem, wenn Rosi Perlen nicht ebenfalls die Fähigkeit besitzen, innere Organe zu heilen und seltene Krebsarten zu beseitigen. Neue Forschungsergebnisse zeigen jedoch, dass die heilenden Eigenschaften der Rosi Perlen leider nur temporär sind und das der daraus resultierende konstante Verzehr zu schnelleres alten führen kann. Aus diesem Grund sind Rosi Perlen eine unzuverlässige Anti-Aging Lösung.",
+      "intro": "Die rosane Perle des Sees. Man glaubt, sie sei Verwandt mit dem rosanen Schleim."
+    },
+    {
+      "translatedName": "Kokos-Schleim",
+      "name": "Coco",
+      "risks": "Sei sehr vorsichtig wenn du dich unter einer Palme befindest. Kokos-Schleime sind sehr territorial und wenn sie dich spüren, verwandeln sie ihre weiche und glibberige Körper zu einer kokusnussartigen Schale und stürzen sich auf ihr Ziel. Touristen die in der Vergangenheit von einem Kokos-Schleim getroffen wurden, berichteten von verschwommener Sicht und Schwindelgefühlen, manche wurden sogar durch den Aufprall bewusstlos. Genau diese Methode wird ebenfalls bei dem jagen in der Wildnis verwendet. Trotz ihrer harten Haut und ihrer Beweglichkeit, sind Kokos-Schleime sehr einfach zu züchten. Solange ein Kokos-Schleim gut ernährt ist und genügend Sonnenlicht erhält, werden alle gut gelaunt sein.",
+      "slimeology": "Kokos-Schleime sind oft in der Nähe von Palmen zu finden. Da sie auf Wirbelbecken Insel heimisch sind, haben sie eine höhere Sprungkraft entwickelt um auf Bäume zu klettern und Raubtieren zu entkommen. Da sie auf Palmen aufgewachsen sind, haben sie pflanzenähnliche Eigenschaften, die dazu führen, dass sie ständig Sonnenlicht benötigen und den Verzehr von Obst und Gemüse meiden, da dies Kannibalismus wäre...",
+      "diet": "Fleisch",
+      "favourite": "Sand-Huhn",
+      "onomics": "Kokos-Plorts sind im Gegensatz zu ihren Herstellern sehr sanft und seidig und stellen im kondensierten Zustand eine hervorragende Kalziumquelle dar. Obwohl die Flüssigkeit sehr ähnlich ist wie die herkömmliche Milch auf der Erde, kann sie auch von Menschen mit Laktoseintoleranz konsumiert werden, was sie äußerst beliebt macht als Alternative für traditionelle Milchprodukte. Dank ihrer unglaublich weichen und seidigen Textur eignen sich Kokos-Plorts auch sehr gut zur Hautpflege und werden oft in Spas als Ersatz für Milchbäder verwendet.",
+      "intro": "Es wird vorgeschlagen, einen Helm zu tragen!"
+    },
+    {
+      "translatedName": "Minen-Schleim",
+      "name": "Mine",
+      "risks": "Wenn du dich einem Minen schleim näherst, solltest du sehr vorsichtig sein da seine Stacheln nicht nur als Dekoration dienen! Jeder direkter Kontakt wird mit einer Explosion enden. Während andere Slimes aus der Explosionszone geschleudert werden, besitzen nur andere Minen-Schleime und ihre knalligen Verwandten eine natürliche immunität gegenüber den Explosionen. Diese besondere Eigenschaft macht das Zusammenleben zu einer aktiven (und sehr lauten) Angelegenheit, da sie ihre explosiven Artgenossen für regelmäßige, entlastende Ausbrüche aufsuchen. Diese Ausbrüche helfen ihnen, ihre unberechenbare Natur zu zügeln was einen schlecht gelaunten Schleim verhindert.",
+      "slimeology": "Der Minenschleim, ein entfernter und stacheligerer Cousin des Knall Schleims, hat eine einzigartige Einstellung zur Volatilität. Anders als ihre explosiven Verwandten werden die Detonationen eines Minen Schleims nur durch direkten Kontakt mit einem anderen Schleim oder einem unachtsamen Rancher ausgelöst. Um versehentlichen Kontakt zu verhindern, sind ihre Körper mit spitzen Stacheln bedeckt (Ein eindeutiges Warnsignal!). Trotz ihrer feurigen Neigung bevorzugen diese Schleime eine mildere Diet, wofür die Knalltoffel perfekt geeignet ist. Die hochflüchtigen Verbindungen dieser Wurzel liefern den perfekten inneren Funken für den ständigen Energiebedarf und den kraftvollen Explosionen. Wenn ein Mienen-Schleim zu lange ohne Explosion auskommt, steigt sein innerer Druck auf ein unangenehmes Niveau, was ihn dazu treibt von selber Erleichterung zu suchen, indem er Wasser sucht oder sich mit einem anderen Mienen- oder Knall-Schleim in eine explosive Umarmung stürtzt.",
+      "diet": "Gemüse",
+      "favourite": "Knalltoffel",
+      "onomics": "Minen-Plorts sind kuriose, widerstandsfähige Edelsteine welche unter dem enormen Druck des Minen Schleims eine perlenartige Form annehmen. Diese einzigartigen Perlen bewahren einen Teil der explosiven Natur ihrer Vorfahrten (obwohl dafür ein wesentlich stärkerer Schlag erforderlich ist, um ihre enthaltene Energie freizusetzen). Ihre besonderen, kontrollierten Detonationen machen sie in der Industrie sehr begehrt, insbesondere wenn sie zu einem feinem Pulver verarbeitet werden. Von der Energieversorgung kleiner und kontrollierter Explosionen bei Ausgrabungen bis hin zu den spektakulärsten Feuerwerken haben Minen Perlen einen gigantischen Einfluss auf den galaktischen Markt.",
+      "intro": "Bitte kein Körperkontakt!"
+    },
+    {
+      "translatedName": "Laternen-Schleim",
+      "name": "Lantern",
+      "risks": "Laternen-Schleime sind im Vergleich zu anderen Schleimarten nicht die geselligsten. Tagsüber verbringen sie lieber ihre Zeit mit dem Schlafen. Wenn sie aus ihrem Nickerchen geweckt werden, stoßen sie einen hellen Blitz aus um jeden Taucher und jeden Schleim, der es wagt ihren Schönheitsschlaf zu stören, zu erschrecken. In der Nacht werden sie jedoch sehr friedlich und man kann sie auf der Suche nach Nahrung im großen Korallenriff schwimmen sehen.",
+      "slimeology": "Der Laternen-Schleim ist ein entfernter Verwandter des Phosphor Schleims. Im Laufe ihrer Evolution, stoßen Phosphor-Schleime ihren inneren Kern aus um Beute unter Wasser anzulocken. Schleime haben eine sehr seltsame Natur. Ähnlich wie ihre Verwandten findet man Laternen Schleime in den dunkelsten und tiefsten Teilen des Mossbetts und des Großen Riffs. Laternen Schleime sind oft allein und nur selten in Gruppen anzutreffen, da sie ein isoliertes Leben bevorzugen und wenig Interesse an Geselligkeit haben. Wenn es jedoch um Menschen geht, helfen Laternen Schleime Tauchern oft, den Weg zurück ans Land zu finden.",
+      "diet": "Fleisch",
+      "favourite": "Leucht-Huhn",
+      "onomics": "Laternen Perlen sind aufgrund ihrer natürlichen feuchtigkeitsspendenden Eigenschaften ein wichtiger Bestandteil vieler Schönheitsprodukte. Diese Perlen spenden der Haut nicht nur Feuchtigkeit, sondern verleihen ihr auch einen strahlenden Schimmer, wodurch sie sich ideal für Nachtcremes eignen. Allerdings ist zu beachten, dass die Schutzbarriere gegen Bakterien bei Sonnenlicht schnell nachlässt. Daher sollten Produkte mit einer hohen Konzentration an Laternen Perlen am besten vor der Schlafenszeit aufgetragen werden, um ihre Wirkung vollständig zu entfalten.",
+      "intro": "Es bringt dich zum strahlen!"
+    },
+    {
+      "translatedName": "Sand-Schleim",
+      "name": "Sand",
+      "risks": "Ganz ruhig, Rancher! Der Sand-Schleim ist eines der angenehmsten und zutraulichsten Wesen, die du jemals begegnen wirst. Diese sanften Schleimkugeln stellen praktisch keine Gefahr für die Ranch dar. Sand Schleime gedeihen friedlich in ihren Gehegen, ohne auch nur einen einzigen Aufruhr auszulösen. Trotz ihrer Vorliebe für Strände, sind Sand Schleime erstaunlich empfindlich, was tiefes Wasser betrifft. Bei längerer Zeit mit Kontakt zu Wasser besteht die Chance das sie sich langsam auflösen. Ihre wertvollen Perlen sind zum Glück vor hungrigen Mäulern sicher, anscheinend hat kein anderer Schleim einen Hunger auf eine Perle die einst als Dreck begann.  ",
+      "slimeology": "Der Sand-Schleim, ein kurioser Verwandter des Pfützen- und Feuer-Schleims, lebt an den flachen und sonnigen Ufern der Fernen, Fernen Weite. Ähnlich wie seine elementaren Verwandten verlangen diese Schleime nicht die typische Nahrung aus den Futtertrogen eines Ranchers. Sand Schleime ernähren sie sich ausschließlich von der guten alten Erde. Nachdem der sandige Boden durchgewühlt wurde, verarbeiten Sand-Schleime die darin aufgenommenen Mineralien und produzieren glitzernde Plorts, die den kostbaren Perlen der Erde stark ähneln. Ihr ruhiges Wesen und ihre einzigartige Diet machen sie zu einer pflegeleichten Bereicherung für jede Ranch.",
+      "diet": "Erde",
+      "favourite": "Seidener Sand",
+      "onomics": "Sand-Plorts sind wahre Wunder natürlicher Veredelung. Obwohl der Sand-Schleim selbst, sehr weich ist, sind die von ihm produzierten Perlen überraschend widerstandsfähiger als ihre Gegenstücke auf dem Planet Erde. Diese Makellose und kugelförmige Schätze, sind aus nichts anderem als verarbeiteter Erde entstanden jedoch erzielen sie auf dem Plort-Markt außergewöhnliche Preise. Ihr Glanz und ihre überragende Haltbarkeit machen sie in der ganzen Galaxie zu einem begehrten Rohstoff, der für die Herstellung von edlen Schmuckstücken und anderen luxuriösen Verzierungen verwendet wird. Sand-Plorts sind ein Beweis dafür, dass wahre Schönheit tatsächlich von dem Boden aus entstehen kann!",
+      "intro": "Du kannst es zwischen deinen Zehen spüren!"
+    },
+    {
+      "translatedName": "Mesmer-Schleim",
+      "name": "Mesmer",
+      "risks": "Mesmer-Schleime könnten oft eine Gefahr für die Ranch darstellen, da die von ihnen erzeugten Muster eine hypnotische Wirkung auf andere Schleime haben. Schleime können dieses Muster verständlicherweise stundenlang anstarren, besonders im Dunkeln, wo ihr Leuchten am deutlichsten zu sehen ist. Wenn ein Mesmer-Schleim ganz alleine gelassen wird, verschlechtert sich seine Stimmung. In diesem Zustand verhalten sie sich wild und scheinen unglücklich zu sein, weil sie das Gefühl haben, niemand wolle mit ihnen befreundet sein. Sie strahlen diese Enttäuschung aus, indem sie Augen und Mundmuster zeigen, die denen von einem Teer Schleims ähneln, was andere Schleime nur noch mehr abschreckt. In diesem Zustand stürzen sie sich auch auf Rancher und Schleime und greifen diese mit ihren insektenartigen Gliedmaßen an. Hat man diese Hindernisse überwunden, lassen sie recht einfach halten (Und sie sehen gut aus!)",
+      "slimeology": "Der gefährlich aussehende, aber dennoch freundliche Mesmer-Schleim strahlt deutlich sichtbare und pulsierende Farben an seinem Körper aus. Der genaue Zweck dieser Leuchten ist etwas umstritten, aber die meisten Schleimforscher sind sich einig, dass sie versuchen, möglichst viele Schleime für sich zu gewinnen und deren Lieblingsfreund zu werden, trotz ihren skorpionartigen Körper. Interessanterweise scheinen Mesmer-Schleime sehr gesellig zu sein. Die meiste Zeit verbringen sie in dicht bewachsenen Dschungeln und Höhlen aufd er Insel, wo ihr Leuchten am besten zu sehen ist.",
+      "diet": "Frucht",
+      "favourite": "Klebriger Finger",
+      "onomics": "Mesmer-Plorts enthalten biolumineszente Bakterien, die für ihre leuchtended Farben verantwortlich zu sein scheinen. Diese Bakterien können ein breites Farbspektrum aufweisen, müssen jedoch in der Regel mit künstlichen chemischen Verbindungen mutiert werden, um bestimmte Farbtöne zu erhalten. Produkte aus Mesmer-Plorts sind oft luxuriöse und imposante Alternativen zu erneuerbarem Licht und werden aufgrund ihrer Neuartigkeit von Wohlhabenden Menschen bevorzugt. Trotz der aufwendigen Lichtershow bleibt ihr tatsächlicher Marktwert überraschend bescheiden.",
+      "intro": "ooooooooooooooooooo so hübsch!"
+    },
+    {
+      "translatedName": "Einsiedler-Schleim",
+      "name": "Hermit",
+      "risks": "Einsiedler Schleime sind von Natur aus misstrauisch und verstecken sich schnell bei plötzlichen Bewegungen oder lauten Geräuschen. Fühlt sich der Schleim nicht sicher, zieht er sich oft für längerer Zeit zurück in sein Gehäuse, was das Sammeln seiner Plorts zu einer schwierigen Aufgabe macht. Beim Versuch, Gegenstände aus dem Gehäuse zu holen, ist Vorsicht und Gedult geboten. Furchteinfließende Methoden können dazu führen, dass der Schleim in der Zukunft noch scheuer wird und sein Gehäuse noch seltener verlässt. Um einen Einsiedler-Schleim bei Laune zu halten und sein Misstrauen zu verringern, empfiehlt es sich, Korallen Früchte und andere friedliche Strategien einzusetzen.",
+      "slimeology": "Der Einsiedler-Schleim ist ein faszinierendes Wesen, das an Küsten und Felsen lebt. Charakteristisch für diesen Schleim ist, dass er immer eine Muschel auf seinen Rücken trägt, die ihm als Unterschlupf und Aufbewahrungsort für seine gesammelten Schätze dient. Der Einsiedler-Schleim besitzt die einzigartige Fähigkeit, seine Muschek abzuwerfen und sich so seiner Umgebung anzupassen. Er kann in Muscheln, Kokusnüsse, Steine und sogar in Mülltonnen einziehen. Seine Lieblingsspeise ist die Stachelige Korallen Frucht, eine köstliche Frucht, die an einer exotischen Pflanze wächst die in Felsspalten und nah an Ufern wächst. Diese Frucht kann dem Rancher helfen, das Vertrauen des Schleims zurück zu gewinnen und ihn so leichter zu sammeln.",
+      "diet": "Frucht",
+      "favourite": "Stachelige Koralle",
+      "onomics": "Einsiedler-Plorts sind genauso einzigartig wie der Schleim selbst. Da die Schleime ständig Materialien aus ihrer Umgebung sammeln, enthalten ihre Plorts winzige Bruchstücke von Muscheln und Mineralien. Einsiedler-Plorts sind unglaublich widerstandsfähig und werden zur Herstellung von robusten Baumaterialien und Dekorationen verwendet. Außerdem sind sie berühmt dafür, dass sie im Dunkeln leuchten, wenn man sie an einer harten Oberfläche reibt! Manche Rancher nutzen sie, um ihre Ranches mit natürlicher Unterwasserbeleuchtung zu schmücken.",
+      "intro": "Ein zurückgezogener Wanderer"
+    },
+    {
+      "translatedName": "Goldfisch-Schleim",
+      "name": "Goldfish",
+      "risks": "Goldfisch-Schleime lassen sich weden fangen noch in herkömmlichen Gehegen halten. Ähnlich wie Goldschleime verschwinden sie kurz, nachdem sie entdeckt wurden. Jeder Versuch einen einzufangen, endet damit dass er mit einem Platschen entwischt. Schnelle Rancher könnten es schaffen ihn rechtzeitig mit seinem Lieblingsfutter zu füttern um ein großes Vermögen zu verdienen.",
+      "slimeology": "Goldfisch-Schleime sind eine äußerst seltene Variante des scheuen Gold Schleims. Anders als ihre landlebenden Verwandten haben sich diese schimmernden Schleime an das Leben unter Wasser angepasst. Mit ihren fließenden Schwänzen und leuchtenden Schuppen gleiten sie durch die Strömungen der Fernen ,fernen Weite. Ihre Bewegungen ähneln denen von Kois oder Ziergoldfischen, und wenn sie sich erschrecken, hinterlassen sie eine glitzernde Spur im Wasser. Obwohl sie genauso scheu sind wie Gold-Schleime, lassen sich Goldfisch-Schleime etwas leichter beobachten (Wenn auch nur für einen kurzen Moment länger). Sie tauchen oft in tiefe Riffgräben oder in der Nähe von alten Ruinen unter wasser. Sie erscheinen kurz und verschwinden dann blitzschnell wieder.",
+      "diet": "Vergoldeter Ingwer",
+      "favourite": "Vergoldeter Ingwer",
+      "onomics": "Goldfisch-Plorts sind noch seltener als Gold-Plorts und sogar doppelt so wertvoll, was sie zu einer begehrten Ressource macht. Ihre Herkunft aus dem Wasser verleiht ihnen einzigartige energetische Eigenschaften, die häufig in modernster Aquatiktechnologie und der Herstellung von luxuriösem Hologlas genutzt werden. Aufgrund ihrer Seltenheit empfehlt Slime Science Lab, sie mit äußerster Vorsicht zu behandeln und sich glücklich zu schätzen, überhaupt einen gefunden zu haben.",
+      "intro": "Der Schleim mit dem feinen Schein!"
+    }
+  ],
+  "hens": [
+    {
+      "name": "Sandy",
+      "translatedName": "Sand-Huhn",
+      "about": "Als sonnenliebender Verwandter des altbekannten Stein-Huhns ist das Sand-Huhn ein wahrer Meister der Tarnung. Sein Gefieder hat sich zu einer Nachahmung des trockenen Strandsands entwickelt, was es in Küstenregionen nahezu unsichtbar macht. Leider ist die hervorragende Tarnung kein Schutz vor den scharfen Augen des Kokos-Schleims. Hoch oben in den Palmen lauern diese gefährlichen Raubtiere, die eine besondere Vorliebe für das trockene Fleisch des Sandhuhns entwickelt haben. Für einen Rancher, der auf der Suche nach einem schmeckhaften, wenn auch etwas trockenen Happen ist, bieten Sand-Hühner einen vertrauten und einzigartigen Geschmack.",
+      "favouredBy": "Kokos-Schleim",
+      "ranch": "Sand-Hühner legen in der Nähe von Rostros regelmäßig Eier, aus denen kleine Sand-Küken schlüpfen. Allerdings werden sie nervös, wenn sich zu viele Hühner oder Rostros auf engem Raum befinden was die Eier produktion vollständig zum Halt bringt. Kluge Rancher, die Erfahrungen in Hühnerromantik haben, achten eher darauf, dass ihre Gehege niemald mehr als zwölf ausgewachsene Hühner beherbergen.",
+      "type": "Fleisch",
+      "intro": "Gewinner von allen Versteckspielen"
+    },
+    {
+      "name": "Radiant",
+      "translatedName": "Leucht-Huhn",
+      "about": "Ein ungewöhnliches Huhn seiner Art. Das Leucht-Huhn fällt buchstäblich auf. Anders als die meisten Hühner, die versuchen sich unauffällig in ihrer Umgebung einzufügen, hat das Leucht-Huhn ein Gefieder entwickelt das in einem sanften und schönen Licht schimmert. Dadurch ist es unglaublich leicht zu entdecken. Für die nachtaktiven Laternen-Schleime ist das Leuchten unwiderstehlich. Man findet sie oft dicht um diese Hühner versammelt, scheinbar völlig fasziniert von ihren einzigartigen Strahlen. Man glaubt dass das dauerhafte Leuchten der Leucht-Hühner ihnen hilft, die innere Biolumineszenz zu regulieren welche gelegentlich instabil werden kann. Für Rancher ist das Leucht-Huhn ein wahres Lichtzeichen. Es ist überraschend leicht sie in den dunklen Ecken der Fernen, Fernen Weite zu finden. Ihr Fleisch schmeckt jedoch nur ganz gewöhnlich.",
+      "favouredBy": "Laternen-Schleim",
+      "ranch": "Leucht-Hühner legen in der Nähe von Rostros regelmäßig Eier, aus denen kleine Leucht-Küken schlüpfen. Allerdings werden sie nervös, wenn sich zu viele Hühner oder Rostros auf engem Raum befinden was die Eier produktion vollständig zum Halt bringt. Kluge Rancher, die Erfahrungen in Hühnerromantik haben, achten eher darauf, dass ihre Gehege niemald mehr als zwölf ausgewachsene Hühner beherbergen.",
+      "type": "Fleisch",
+      "intro": "Du strahlst!"
+    }
+  ],
+  "chicks": [
+    {
+      "name": "Sandy",
+      "translatedName": "Sand-Küken",
+      "about": "Sand-Küken sind junge Hühner, die schließlich zu einem Sand-Huhn oder, seltener, zu einem Rostro aufwachsen. Küken aller Art werden niemals von Schleime gefressen. Einige glauben, Schleime seien einfach zu gutmuütig, um so etwas zu tun. Andere sind überzeugt, dass die Küken schlicht noch nicht genug Fleisch auf den Knochen haben.",
+      "favouredBy": "(keine Slime-Nahrung",
+      "ranch": "Bewahre Sand-Küken an einem sicheren Ort auf, und sie werden schließlich zu einem Sand-Huhn oder Rostro heranwachsen.",
+      "type": "Zukünftiges Fleisch",
+      "intro": "Ein kleiner Tarnprofi in Ausbildung!"
+    },
+    {
+      "name": "Radiant",
+      "translatedName": "Leucht-Küken",
+      "about": "Leucht-Küken sind junge Hühner, die schließlich zu einem Sand-Huhn oder, seltener, zu einem Rostro aufwachsen. Küken aller Art werden niemals von Schleime gefressen. Einige glauben, Schleime seien einfach zu gutmuütig, um so etwas zu tun. Andere sind überzeugt, dass die Küken schlicht noch nicht genug Fleisch auf den Knochen haben.",
+      "favouredBy": "(keine Slime-Nahrung)",
+      "ranch": "Bewahre Leucht-Küken an einem sicheren Ort auf, und sie werden schließlich zu einem Leucht-Huhn oder Rostro heranwachsen.",
+      "type": "Zukünftiges Fleisch",
+      "intro": "Fühlt sich hier noch fehl am Platz…"
+    }
+  ],
+  "fruits": [
+    {
+      "name": "Sticky",
+      "translatedName": "Klebriger Finger",
+      "about": "Eine süße Leckerei, die gerne an den Zähnen oder sogar an den Fingern kleben bleibt. Sie ist die wichtigste Zutat vieler Süßigkeiten aus der Fernen, Fernen Weite und zeichnet sich durch ihre klebrig-weiche Konsistenz aus, die eine überraschend reichhaltige Cremigkeit besitzt.",
+      "favouredBy": "Mesmer Schleim",
+      "ranch": "Lege einen Klebrigen Finger in den Replikator deines Gartens, und schon wächst dort dein ganz eigener Klebriger-Finger Baum.",
+      "type": "Frucht",
+      "intro": "Klebrige Situation.."
+    },
+    {
+      "name": "Coral",
+      "translatedName": "Stachelige Koralle",
+      "about": "Ein Mitglied der stacheligen Fruchtfamilie, das sich auf einzigartige Weise daran angepasst hat, unter den Wellen zu wachsen. Anders als sein entfernter Verwandter, die Pieksbirne, verbirgt diese Frucht in ihrem Inneren eine feine Süße. Obwohl sie noch immer als Geschmack für Kenner gilt, empfinden viele, die ihr eine Chance geben, das ihre anfängliche Bitterkeit ein sehr angenehmes Gefühl ist.",
+      "favouredBy": "Einsiedler-Schleim",
+      "ranch": "Lege eine Stachelige Koralle in den Replikator deines Gartens, und schon wächst dort dein ganz eigener Korallen Baum.",
+      "type": "Frucht",
+      "intro": "Achte auf die spitzen Stellen!"
+    }
+  ],
+  "veggies": [
+    {
+      "name": "Blowtato",
+      "translatedName": "Knalltoffel",
+      "about": "Die Knalltoffel ist ein ungewöhnliches, hochreaktives Wurzelgemüse, das meist aus den rissigen Böden des Indigo-Steinbruchs sprießt. Ähnlich wie die Minen-Schleime, die sie über alles lieben, besitzen diese Knollen eine natürliche Neigung zu explosiver Dramatik was durch einer flüchtigen Verbindung in ihrem Inneren verursacht wird. Rancher müssen sie mit äußerster Vorsicht behandeln, denn ein kleiner Einstich oder ein „Rülpser“ vor dem Kochen wird dringend empfohlen, um einen unerwarteten Knall zu vermeiden! Für Minen-Schleime ist diese explosive Eigenschaft jedoch ein reines Vergnügen. Sie befeuert ihre felsenbrechenden Fähigkeiten und macht die Knalltoffel zu ihrem absoluten Lieblingssnack. Schlaue Bergleute nutzen sie sogar, um hartnäckige Gesteinsformationen in die Luft zu sprengen.",
+      "favouredBy": "Minen-Schleim",
+      "ranch": "Lege eine Knalltoffel in den Replikator deines Gartens, und schon wächst dort deine ganz eigene Knalltoffel Ernte.",
+      "type": "Gemüse",
+      "intro": "Dieses Gemüse hat es in sich!"
+    }
+  ],
+  "ranchers": [
+    {
+      "name": "Lisa",
+      "translatedName": "Lisa Erwin",
+      "offers": [
+        "...Ups! Hab ich was gedrückt? Ah, tut mir leid Kumpel... nun, wo du schon mal hier bist, könntest du mir vielleicht helfen?",
+        "Zzzz... huh?! Was hatte ich nochmal gemacht?..",
+        "Rise 'n shine! Wir haben noch sehr viel Arbeit zu erledigen!"
+      ],
+      "specialOffer": "Wenn ich mal nen' Energieschub brauche, bleib ich einfach ruhig und hole mir ne' Tasse Kaffee.",
+      "loadingTexts": [
+        "Lisa versuchte einmal, einem Mesmer-Schleim sein Spiegelbild zu zeigen... Er stand stundenlang vor dem Spiegel.",
+        "Lisa gerät oft in wissenschaftliche Diskussionen mit Viktor.."
+      ]
+    }
+  ],
+  "largos": [
+    {
+      "translatedName": "Rosi Minen Largo",
+      "name": "Rosi Mine"
+    },
+    {
+      "translatedName": "Rosi Laternen Largo",
+      "name": "Rosi Lantern"
+    },
+    {
+      "translatedName": "Minen Laternen Largo",
+      "name": "Mine Lantern"
+    },
+    {
+      "translatedName": "Pink Kokos Largo",
+      "name": "Pink Coco"
+    },
+    {
+      "translatedName": "Kokos Säbel Largo",
+      "name": "Coco Saber"
+    },
+    {
+      "translatedName": "Kokos Quanten Largo",
+      "name": "Coco Quantum"
+    },
+    {
+      "translatedName": "Kokos Honig Largo",
+      "name": "Coco Honey"
+    },
+    {
+      "translatedName": "Kokos Phosphor Largo",
+      "name": "Coco Phosphor"
+    },
+    {
+      "translatedName": "Kokos Mosaik Largo",
+      "name": "Coco Mosaic"
+    },
+    {
+      "translatedName": "Kokos Rank Largo",
+      "name": "Coco Tangle"
+    },
+    {
+      "translatedName": "Kokos Knall Largo",
+      "name": "Coco Boom"
+    },
+    {
+      "translatedName": "Kokos Rad Largo",
+      "name": "Coco Rad"
+    },
+    {
+      "translatedName": "Kokos Fels Largo",
+      "name": "Coco Rock"
+    },
+    {
+      "translatedName": "Kokos Miez Largo",
+      "name": "Coco Tabby"
+    },
+    {
+      "translatedName": "Kokos Jäger Largo",
+      "name": "Coco Hunter"
+    },
+    {
+      "translatedName": "Kokos Kristall Largo",
+      "name": "Coco Crystal"
+    },
+    {
+      "translatedName": "Kokos Derwisch Largo",
+      "name": "Coco Dervish"
+    },
+    {
+      "translatedName": "Kokos Mesmer Largo",
+      "name": "Coco Mesmer"
+    },
+    {
+      "translatedName": "Kokos Einsiedler Largo",
+      "name": "Coco Hermit"
+    },
+    {
+      "translatedName": "Pink Mesmer Largo",
+      "name": "Pink Mesmer"
+    },
+    {
+      "translatedName": "Säbel Mesmer Largo",
+      "name": "Saber Mesmer"
+    },
+    {
+      "translatedName": "Quanten Mesmer Largo",
+      "name": "Quantum Mesmer"
+    },
+    {
+      "translatedName": "Honig Mesmer Largo",
+      "name": "Honey Mesmer"
+    },
+    {
+      "translatedName": "Phosphor Mesmer Largo",
+      "name": "Phosphor Mesmer"
+    },
+    {
+      "translatedName": "Mosaik Mesmer Largo",
+      "name": "Mosaic Mesmer"
+    },
+    {
+      "translatedName": "Rank Mesmer Largo",
+      "name": "Tangle Mesmer"
+    },
+    {
+      "translatedName": "Knall Mesmer Largo",
+      "name": "Boom Mesmer"
+    },
+    {
+      "translatedName": "Rad Mesmer Largo",
+      "name": "Rad Mesmer"
+    },
+    {
+      "translatedName": "Fels Mesmer Largo",
+      "name": "Rock Mesmer"
+    },
+    {
+      "translatedName": "Miez Mesmer Largo",
+      "name": "Tabby Mesmer"
+    },
+    {
+      "translatedName": "Jäger Mesmer Largo",
+      "name": "Hunter Mesmer"
+    },
+    {
+      "translatedName": "Kristall Mesmer Largo",
+      "name": "Crystal Mesmer"
+    },
+    {
+      "translatedName": "Derwisch Mesmer Largo",
+      "name": "Dervish Mesmer"
+    },
+    {
+      "translatedName": "Mesmer Einsiedler Largo",
+      "name": "Mesmer Hermit"
+    },
+    {
+      "translatedName": "Pink Einsiedler Largo",
+      "name": "Pink Hermit"
+    },
+    {
+      "translatedName": "Säbel Einsiedler Largo",
+      "name": "Saber Hermit"
+    },
+    {
+      "translatedName": "Quanten Einsiedler Largo",
+      "name": "Quantum Hermit"
+    },
+    {
+      "translatedName": "Honig Einsiedler Largo",
+      "name": "Honey Hermit"
+    },
+    {
+      "translatedName": "Phosphor Einsiedler Largo",
+      "name": "Phosphor Hermit"
+    },
+    {
+      "translatedName": "Mosaik Einsiedler Largo",
+      "name": "Mosaic Hermit"
+    },
+    {
+      "translatedName": "Rank Einsiedler Largo",
+      "name": "Tangle Hermit"
+    },
+    {
+      "translatedName": "Knall Einsiedler Largo",
+      "name": "Boom Hermit"
+    },
+    {
+      "translatedName": "Rad Einsiedler Largo",
+      "name": "Rad Hermit"
+    },
+    {
+      "translatedName": "Fels Einsiedler Largo",
+      "name": "Rock Hermit"
+    },
+    {
+      "translatedName": "Miez Einsiedler Largo",
+      "name": "Tabby Hermit"
+    },
+    {
+      "translatedName": "Jäger Einsiedler Largo",
+      "name": "Hunter Hermit"
+    },
+    {
+      "translatedName": "Kristall Einsiedler Largo",
+      "name": "Crystal Hermit"
+    },
+    {
+      "translatedName": "Derwisch Einsiedler Largo",
+      "name": "Dervish Hermit"
+    }
+  ],
+  "gordos": [
+    {
+      "translatedName": "Rosi Gordo",
+      "name": "Rosi"
+    },
+    {
+      "translatedName": "Kokos Gordo",
+      "name": "Coco"
+    },
+    {
+      "translatedName": "Minen Gordo",
+      "name": "Mine"
+    },
+    {
+      "translatedName": "Lanternen Gordo",
+      "name": "Lantern"
+    },
+    {
+      "translatedName": "Mesmer Gordo",
+      "name": "Mesmer"
+    },
+    {
+      "translatedName": "Einsiedler Gordo",
+      "name": "Hermit"
+    },
+    {
+      "translatedName": "Goldfisch Gordo",
+      "name": "Goldfish"
+    },
+    {
+      "translatedName": "Sand Gordo",
+      "name": "Sand"
+    }
+  ],
+  "plorts": [
+    {
+      "translatedName": "Rosi Perle",
+      "name": "Rosi"
+    },
+    {
+      "translatedName": "Kokos Plort",
+      "name": "Coco"
+    },
+    {
+      "translatedName": "Minen Perle",
+      "name": "Mine"
+    },
+    {
+      "translatedName": "Lanternen Perle",
+      "name": "Lantern"
+    },
+    {
+      "translatedName": "Sand Perle",
+      "name": "Sand"
+    },
+    {
+      "translatedName": "Mesmer Plort",
+      "name": "Mesmer"
+    },
+    {
+      "translatedName": "Einsiedler Plort",
+      "name": "Hermit"
+    },
+    {
+      "translatedName": "Goldfisch Perle",
+      "name": "Goldfish"
+    }
+  ],
+  "zones": [
+    {
+      "name": "Swirlpool Island",
+      "translatedName": "Wirbelbecken Insel",
+      "intro": "Ein fernes Land voller Abenteuer für die Neugierigen!",
+      "presence": "Die Insel durchqueren…",
+      "description": "Placeholder"
+    }
+  ],
+  "mail": [
+    {
+      "mailKey": "ocean_intro",
+      "translatedName": "S.P.L.A.S.H",
+      "subject": "Mitteilung der S.P.L.A.S.H. Stiftung",
+      "body": "Grüße Rancher,\n\nDie 7Zee Corporation möchte in Zusammenarbeit mit der S.P.L.A.S.H. Stiftung (Schleim Pflege, Lernen, Assistenz, Schutz, Heilung) Sie über ungewöhnliche Phänomene in der Region informieren.\n\nBerichte deuten darauf hin, dass nicht-einheimische Schleime, die bisher nicht in diesem Ökosystem bekannt waren, an unerwarteten Orten aufgetaucht sind. Die Ursache dieser Störung ist derzeit unbekannt, aber seien Sie versichert: Unsere Teams kümmern sich darum.\n\nEin zertifizierter Schleimologe wird sich in Kürze mit weiteren Informationen und Anleitungen bei Ihnen melden. Bis dahin sollten Sie vorsichtig vorgehen und jedes ungewöhnliche Verhalten von Schleimen über Ihr Starmail-Terminal melden.\n\nBleiben Sie sicher, bleiben Sie neugierig.\n\nMit freundlichen Grüßen,\nDer Vorstand der S.P.L.A.S.H.-Stiftung."
+    },
+    {
+      "mailKey": "exchangeintro_lisa",
+      "translatedName": "Lisa Erwin",
+      "subject": "Grüß dich aus S.P.L.A.S.H. Zentrale!",
+      "body": "Hey! Mein Name ist Lisa Erwin! Schleimologin, Feldforscherin und stolzes Mitglied der S.P.L.A.S.H. Stiftung (für alle Unwissenden: Schleim Pflege, Lernen, Assistenz, Schutz, Heilung). Man könnte sagen, ich bin eine Art Schleimflüsterin... Ich beobachte ihr Verhalten, ihre Eigenheiten, ihre Kuriositäten und das schon seit dem ich das erste Mal auf der Fernen, Fernen Weite gelandet bin. Wenn es wackelt, hüpft oder schnurrt, stehen die Chancen gut, dass ich schon Dutzende Seiten darüber notiert habe.\n\nIn letzer Zeit erreichen und Berichte über seltsame Schleimaktivitäten ganz in der Nähe deines Landstücks. Sowas habe ich in den Daten noch nie gesehen, und glaub mir, das soll was heißen.\n\nOkay also! In ein paar Tagen werd' ich mich nochmal über den Range Exchange bei dir melden. Nix Förmliches, nur ein kurzes Gespräch, vielleicht können wiur uns ja ein paar dieser komischen Schleimfreunde mal zusammen angucken falls du Lust hast. Könnte harmlos sein.. oder vielleicht wird es ja das größte Schleimrätsel das dieser staubige Felsen jemals gesehen hat. Behalte deine Gehege im Auge, alright?\n\nCheers\n\n- Lisa\nFernen, Fernen Weite S.P.L.A.S.H.\n\nPS: Wenn ein Schleim mal anfängt dich an anzusummen.. keine Panik. Einfach aufschreiben und alles sollte hoffentlich okay sein."
+    }
+  ]
+}

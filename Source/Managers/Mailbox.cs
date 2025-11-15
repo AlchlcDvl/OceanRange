@@ -2,22 +2,18 @@ namespace OceanRange.Managers;
 
 public static class Mailbox
 {
-    public static CustomMailData[] Mail;
+    public static MailData[] Mail;
+    public static Dictionary<string, MailData> MailMap;
 
 #if DEBUG
     [TimeDiagnostic("Mail Preload")]
 #endif
-    public static void PreLoadMailData()
+    public static void PreloadMailData()
     {
-        Mail = AssetManager.GetJsonArray<CustomMailData>("mailbox");
-        Array.ForEach(Mail, PreLoadMail);
+        Mail = Inventory.GetJsonArray<MailData>("mailbox");
+        MailMap = Mail.ToDictionary(x => x.Id);
+        Array.ForEach(Mail, PreloadMail);
     }
 
-    private static void PreLoadMail(CustomMailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id)
-        .SetSubjectTranslation(mailData.Title)
-        .SetFromTranslation(mailData.From)
-        .SetBodyTranslation(mailData.Body)
-        .SetReadCallback((_, _) => mailData.Read = true));
-
-    public static void InitLisaIntroDetails(CustomMailData mailData) => mailData.UnlockFuncAnd += _ => SceneContext.Instance.ProgressDirector.HasProgress(Ids.EXCHANGE_LISA);
+    private static void PreloadMail(MailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id).SetReadCallback((_, _) => mailData.Read = true));
 }

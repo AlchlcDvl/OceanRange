@@ -8,10 +8,13 @@ indent_style = space
 charset = utf-8
 end_of_line = lf
 insert_final_newline = false
-indent_size = 4
+
+[*.json]
+indent_size = 2
 
 # Dotnet code style settings:
 [*.{cs,vb}]
+indent_size = 4
 
 dotnet_separate_import_directive_groups = false
 dotnet_sort_system_directives_first = true
@@ -162,3 +165,6 @@ dotnet_diagnostic.RCS1047.severity = none
 
 # IDE0002: Simplify Member Access
 dotnet_diagnostic.IDE0002.severity = warning
+
+# RCS1194: Implement exception constructors
+dotnet_diagnostic.RCS1194.severity = none

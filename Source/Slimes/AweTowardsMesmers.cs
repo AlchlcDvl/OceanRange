@@ -42,9 +42,9 @@ public sealed class AweTowardsMesmers : FindConsumable
     public override Dictionary<IdentifiableId, DriveCalculator> GetSearchIds()
     {
         var driveCalc = new DriveCalculator(SlimeEmotions.Emotion.NONE, 0f, 0f);
-        var result = new Dictionary<IdentifiableId, DriveCalculator>(Identifiable.idComparer) { [Ids.MESMER_SLIME] = driveCalc };
+        var result = new Dictionary<IdentifiableId, DriveCalculator>(Identifiable.idComparer);
 
-        foreach (var largo in SlimeManager.MesmerLargos)
+        foreach (var largo in Largopedia.Mesmers)
             result[largo] = driveCalc;
 
         return result;
