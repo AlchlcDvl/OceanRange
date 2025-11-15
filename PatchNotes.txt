@@ -11,7 +11,7 @@ Discord:
 - Largos: The modded slimes can become largos!
 - Sticky Fingers: The ooy gooey goodness that stick to your fingers!
 - Prickly Coral: The oceanic fruit found rarely in the dry reef!
-- Translations: The mod now supports the following languages: Turkish, French, Spanish, Russian* and German*!
+- Translations: The mod now supports the following languages: Turkish, French, Spanish and German!
 
 ## Changes!
 - Change: Moved the lantern gordo to a new location, good luck finding it this time!
@@ -38,7 +38,7 @@ Nexus:
 - New fruits: Sticky Fingers, Prickly Coral
 - New rancher: Lisa Erwin; she will try to first contact you by day 7 at noon
 - Added modded slime largos
-- Added translations
+- Added translations: Turkish, French, Spanish and German
 - The sand gordo now has a custom body
 - Sand gordo snare behaviour is now consistent with its diet
 - Moved the lantern gordo to a new location
