@@ -13,7 +13,4 @@ Ignore.*
 Dev*/
 UnusedAssets/
 SrExports/
-/Bundle/Assets/CS
-/Bundle/Assets/Mesh
-/Bundle/Assets/Shader
 SlimeRancher/
