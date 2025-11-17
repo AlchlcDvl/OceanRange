@@ -96,7 +96,7 @@
       "name": "Sandy",
       "translatedName": "Poule sableuse",
       "about": "La cousine beaucoup plus bronzée de la poule rocailleuse, les poules sableuses sont les maîtres du camouflage à la plage. Leurs plumes ont une apparence presque identique au sable aride des plages où elles font leur nid, les rendant plus dures à repérer. Malheuresement pour elles, leur superbe camouflage ne vaut rien face aux yeux du slime coco. Du haut de leurs palmiers, ces prédateurs apprécient particulièrement la viande sèche des poules sableuses, ce qui se marie parfaitement à leur propre aspect plus tropical. Pour les éleveurs à la recherche d'un repas savoureux et un peu sec, la poule sablonneuse offre une saveur familière avec un arrière-goût du désert.",
-      "favouredBy": "Slime coco",
+      "favouredBy": "@t.coco_slime_entry",
       "ranch": "Les poules sableuses à proximité des Cocqo déposeront périodiquement des œufs qui produiront des poussidoux sableux. Mais mettre trop de poules ou de Cocqos à proximité génère du stress, et la production d’œufs stoppera. Les éleveurs malins qui comprennent la nature complexe de l'amour entre poulets éviteront de mettre plus de 12 oiseaux dans un poulailler.",
       "type": "@m.resource_type.henhen",
       "intro": "Le maître du camouflage à la plage !"
@@ -158,7 +158,7 @@
       "about": "La pam-tate est un légume surprenant à haut potentiel réactif, souvent trouvé dans les roches brisées de la Carrière Indigo. Tout comme le slime mine qui les adores, ces patates ont une tendance à la combustion causée par les minéraux volatiles qui se trouvent à l'intérieur. Les éleveurs doivent faire excès de précaution, une petite incision est fortemment recommandée avant des les cuisiner afin d'éviter de réduire la cuisine en miettes ! Pour les slimes mine, cette particularité explosive est un vrai délice, renforçant leurs capacités de brise-roches. Certains mineurs malins s'en servent même pour creuser certains petits tunnels, même si cela n'est pas vraiment recommandé.",
       "favouredBy": "@t.mine_slime_entry",
       "ranch": "Déposez une pamtate dans le réceptacle d'un jardin, et vous obtiendrez une grande récolte, rien qu'à vous.",
-      "type": "Légume",
+      "type": "@m.resource_type.carrot",
       "intro": "Un légume explosif !"
     }
   ],
