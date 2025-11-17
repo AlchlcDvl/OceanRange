@@ -2,10 +2,18 @@
 
 // namespace OceanRange.Managers;
 
+// public delegate GadgetDefinition.CraftCost[] CreateCraftCosts(IdentifiableId plortId, IdentifiableId resourceId);
+
+// public sealed class Schematics
+// {
+//     [JsonRequired] public LampData[] Lamps;
+//     [JsonRequired] public WarpDepotData[] WarpDepots;
+//     [JsonRequired] public TeleporterData[] Teleporters;
+// }
+
 // public abstract class GadgetData : JsonData
 // {
-//     public abstract GadgetId BaseGadget { get; }
-//     protected abstract string Prefix { get; }
+//     protected virtual string Prefix => string.Empty;
 
 //     public GadgetDefinition.CraftCost[] CraftCosts;
 
@@ -13,16 +21,55 @@
 
 //     protected override void OnDeserialise()
 //     {
-//         Id = Helpers.AddEnumValue<GadgetId>(Prefix + "_" + Name.ToUpperInvariant());
+//         Id = Helpers.AddEnumValue<GadgetId>((Prefix.Length > 0 ? string.Empty : "_") + Name.ToUpperInvariant());
 //     }
+// }
+
+// public abstract class VariantGadgetData : GadgetData
+// {
+//     public abstract GadgetId BaseGadget { get; }
+// }
+
+// public abstract class SlimeGadgetData : VariantGadgetData
+// {
+//     protected abstract CreateCraftCosts CostCreator { get; }
+
+//     [JsonRequired] public IdentifiableId PlortId;
+//     [JsonRequired] public IdentifiableId ResourceId;
+
+//     protected override void OnDeserialise()
+//     {
+//         base.OnDeserialise();
+//         CraftCosts = CostCreator(PlortId, ResourceId);
+//     }
+// }
+
+// public sealed class LampData : SlimeGadgetData
+// {
+//     public override GadgetId BaseGadget => GadgetId.LAMP_RED;
+
+//     protected override string Prefix => "LAMP";
+//     protected override CreateCraftCosts CostCreator => Blueprints.CreateLampCraftCosts;
+// }
+
+// public sealed class WarpDepotData : SlimeGadgetData
+// {
+//     public override GadgetId BaseGadget => GadgetId.WARP_DEPOT_RED;
+
+//     protected override string Prefix => "WARP_DEPOT";
+//     protected override CreateCraftCosts CostCreator => Blueprints.CreateWarpDepotCraftCosts;
+// }
+
+// public sealed class TeleporterData : SlimeGadgetData
+// {
+//     public override GadgetId BaseGadget => GadgetId.TELEPORTER_PINK;
+
+//     protected override string Prefix => "TELEPORTER";
+//     protected override CreateCraftCosts CostCreator => Blueprints.CreateTeleporterCraftCosts;
 // }
 
 // public sealed class GadgetLangData : LangData
 // {
-//     public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
-//     {
-//         throw new NotImplementedException();
-//     }
 // }
 
 // public static class Blueprints
@@ -35,7 +82,12 @@
 //     private static readonly int Color30 = ShaderUtils.GetOrSet("_Color30");
 //     private static readonly int Color31 = ShaderUtils.GetOrSet("_Color31");
 
-//     private static void CreateGadget(GadgetData gadgetData)
+//     public static void PreloadBlueprintData()
+//     {
+
+//     }
+
+//     private static void CreateGadget(SlimeGadgetData gadgetData)
 //     {
 //         var gadgetDefinition = gadgetData.BaseGadget.GetGadgetDefinition();
 //         var gameObject = gadgetDefinition.prefab.CreatePrefab();
@@ -60,7 +112,7 @@
 //         component.sharedMaterial = material;
 
 //         LookupRegistry.RegisterGadget(CopyGadgetDefinition(gadgetDefinition, gadgetId, sprite, gameObject, craftCosts));
-//         gadgetId.GetTranslation().SetNameTranslation(name + " Teleport").SetDescriptionTranslation("A set of two teleporters that can be used to create your own quick travel link.");
+//         gadgetId.GetTranslation().SetNameTranslation(name + " Teleporter").SetDescriptionTranslation("A set of two teleporters that can be used to create your own quick travel link.");
 //     }
 
 //     private static GameObject CreateWarpDepot(GadgetId gadgetId, string name, Sprite sprite, Color color, GadgetDefinition.CraftCost[] craftCosts = null)
@@ -112,19 +164,19 @@
 
 //     private static GadgetDefinition CopyGadgetDefinition(GadgetDefinition gadgetDefinition, GadgetId id, Sprite sprite, GameObject prefab, GadgetDefinition.CraftCost[] craftCost)
 //     {
-//         var gadgetDefinition2 = ScriptableObject.CreateInstance<GadgetDefinition>();
-//         gadgetDefinition2.icon = sprite;
-//         gadgetDefinition2.id = id;
-//         gadgetDefinition2.prefab = prefab;
-//         gadgetDefinition2.blueprintCost = gadgetDefinition.blueprintCost;
-//         gadgetDefinition2.countLimit = gadgetDefinition.countLimit;
-//         gadgetDefinition2.craftCosts = craftCost;
-//         gadgetDefinition2.pediaLink = gadgetDefinition.pediaLink;
-//         gadgetDefinition2.buyCountLimit = gadgetDefinition.buyCountLimit;
-//         gadgetDefinition2.buyInPairs = gadgetDefinition.buyInPairs;
-//         gadgetDefinition2.countOtherIds = gadgetDefinition.countOtherIds;
-//         gadgetDefinition2.destroyOnRemoval = gadgetDefinition.destroyOnRemoval;
-//         return gadgetDefinition2;
+//         var definition = ScriptableObject.CreateInstance<GadgetDefinition>();
+//         definition.id = id;
+//         definition.icon = sprite;
+//         definition.prefab = prefab;
+//         definition.craftCosts = craftCost;
+//         definition.pediaLink = gadgetDefinition.pediaLink;
+//         definition.countLimit = gadgetDefinition.countLimit;
+//         definition.buyInPairs = gadgetDefinition.buyInPairs;
+//         definition.countOtherIds = gadgetDefinition.countOtherIds;
+//         definition.blueprintCost = gadgetDefinition.blueprintCost;
+//         definition.buyCountLimit = gadgetDefinition.buyCountLimit;
+//         definition.destroyOnRemoval = gadgetDefinition.destroyOnRemoval;
+//         return definition;
 //     }
 
 //     public static GadgetDefinition.CraftCost[] CreateWarpDepotCraftCosts(IdentifiableId plortId, IdentifiableId resourceId) =>

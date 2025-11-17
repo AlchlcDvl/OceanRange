@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Text.RegularExpressions;
+
 namespace OceanRange.Managers;
 
 public static class Translator
@@ -5,26 +8,53 @@ public static class Translator
     public static readonly Dictionary<string, string> SlimeToOnomicsMap = [];
     public static readonly Dictionary<Language, List<string>> LoadingIds = new(LanguageComparer.Instance);
 
+    private static readonly Dictionary<string, Dictionary<string, string>> FallbackTranslations = [];
     private static readonly Dictionary<Language, Translations> TranslationsHolder = new(LanguageComparer.Instance);
+    private static readonly Dictionary<Language, Dictionary<string, Dictionary<string, string>>> VanillaFallbackTranslations = new(LanguageComparer.Instance);
+
+    private static readonly string[] Bundles = ["achieve", "actor", "build", "exchange", "global", "keys", "mail", "pedia", "range", "tutorial", "ui"];
 
     private static Translations Fallback;
-    private static Dictionary<string, Dictionary<string, string>> FallbackTranslations;
+    private static bool FallbackHandled;
 
 #if DEBUG
     [TimeDiagnostic("Pedia Preload")]
 #endif
-    public static void PreloadLangData()
+    public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslations);
+
+    public static void MessageDirectorHook(MessageDirector __instance)
     {
-        Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslations);
-        FallbackTranslations = Fallback.GetTranslations();
+        if (FallbackHandled)
+            return;
+
+        StoreVanillaTranslations(__instance, Config.FALLBACK_LANGUAGE);
+
+        foreach (var (key, texts) in Fallback.GetTranslations(Config.FALLBACK_LANGUAGE))
+            FallbackTranslations[key] = texts;
+
         Fallback.WhenFallback();
+
+        FallbackHandled = true;
+    }
+
+    private static void StoreVanillaTranslations(MessageDirector __instance, Language lang)
+    {
+        if (VanillaFallbackTranslations.ContainsKey(lang))
+            return;
+
+        var translations = VanillaFallbackTranslations[lang] = [];
+        var info = MessageDirector.GetCultureInfo(lang);
+
+        foreach (var bundle in Bundles)
+            translations[bundle] = GetBundle(__instance.msgPath, bundle, info, __instance.fallbackLang).dict;
     }
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
         var holder = TranslationsHolder.GetOrAdd(lang, GenerateTranslations);
         holder.OnLanguageChanged(lang);
-        return holder.GetTranslations();
+        StoreVanillaTranslations(GameContext.Instance.MessageDirector, lang);
+        return holder.GetTranslations(lang);
     }
 
     private static Translations GenerateTranslations(Language lang)
@@ -51,5 +81,144 @@ public static class Translator
         return bundle;
     }
 
-    public static void AddTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName) => bundle[id] = text ?? FallbackTranslations[bundleName][id];
+    public readonly struct DeferredTranslation(Dictionary<string, string> bundle, string id, string text, string bundleName, Language lang, bool isFallback)
+    {
+        public readonly Dictionary<string, string> Bundle = bundle;
+        public readonly string Id = id;
+        public readonly string Text = text;
+        public readonly string BundleName = bundleName;
+        public readonly Language Lang = lang;
+        public readonly bool IsFallback = isFallback;
+
+        public void AddComplexTranslation(Dictionary<string, Dictionary<string, string>> translations) => Bundle[Id] = GetTranslationValue(Id, Text, BundleName, translations, Lang, IsFallback) ?? $"STRMSS: {Id}";
+    }
+
+    private static List<DeferredTranslation> CurrentDeferredList;
+
+    public static void BeginGatherPass() => CurrentDeferredList = [];
+
+    public static List<DeferredTranslation> EndGatherPass()
+    {
+        var list = CurrentDeferredList;
+        CurrentDeferredList = null;
+        return list;
+    }
+
+    public static void AddTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName, Language lang, bool isFallback = false)
+    {
+        if (text?.StartsWith('@') == true)
+            CurrentDeferredList.Add(new(bundle, id, text, bundleName, lang, isFallback));
+        else
+            bundle[id] = text ?? $"STRMSS: {id}";
+    }
+
+    private static string GetTranslationValue(string id, string text, string bundleName, Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
+    {
+        var resolvedText = ResolveReference(text, bundleName, translations) ?? ResolveReference(text, bundleName, VanillaFallbackTranslations[lang]);
+
+        if (resolvedText != null)
+            return resolvedText;
+
+        if (isFallback)
+        {
+            Main.Console.LogError($"{bundleName}:{id} was null!");
+            return null;
+        }
+
+        if (FallbackTranslations.TryGetValue(bundleName, out var innerBundle) && innerBundle.TryGetValue(id, out var innerValueToAssign))
+        {
+            resolvedText = ResolveReference(innerValueToAssign, bundleName, FallbackTranslations);
+
+            if (resolvedText != null)
+                return resolvedText;
+        }
+
+        var fallback = VanillaFallbackTranslations[Config.FALLBACK_LANGUAGE];
+
+        if (fallback.TryGetValue(bundleName, out var vanillaFallbackBundle) && vanillaFallbackBundle.TryGetValue(id, out var vanillaFallbackValue))
+        {
+            resolvedText = ResolveReference(vanillaFallbackValue, bundleName, fallback);
+
+            if (resolvedText != null)
+                return resolvedText;
+        }
+
+        Main.Console.LogError($"Couldn't find {bundleName}:{id} in fallback!");
+        return null;
+    }
+
+    private static string ResolveReference(string referenceText, string currentBundleName, Dictionary<string, Dictionary<string, string>> translations)
+    {
+        var refKey = referenceText.Substring(1);
+        var refBundleName = currentBundleName;
+        var refId = refKey;
+        var colonIndex = refKey.IndexOf(':');
+
+        if (colonIndex > 0 && colonIndex < refKey.Length - 1)
+        {
+            refBundleName = refKey.Substring(0, colonIndex);
+            refId = refKey.Substring(colonIndex + 1);
+        }
+
+        if (translations.TryGetValue(refBundleName, out var referencedBundle) && referencedBundle.TryGetValue(refId, out var resolvedText))
+        {
+            if (resolvedText?.StartsWith('@') == true)
+                return ResolveReference(resolvedText, refBundleName, translations);
+
+            return resolvedText;
+        }
+
+        return null;
+    }
+
+    private static ResourceBundle GetBundle(string prefix, string path, CultureInfo culture, string defaultLang)
+    {
+        var culturePath = prefix + "/" + culture.Name + "/" + path;
+        var langPath = prefix + "/" + culture.TwoLetterISOLanguageName + "/" + path;
+        var defaultPath = prefix + "/" + defaultLang + "/" + path;
+        return new ResourceBundle(LoadFromResources(culturePath, langPath, defaultPath));
+    }
+
+    private static Dictionary<string, string> LoadFromResources(string culturePath, string langPath, string defaultPath)
+    {
+        var textAsset = (Resources.Load<TextAsset>(culturePath) ?? Resources.Load<TextAsset>(langPath)) ?? Resources.Load<TextAsset>(defaultPath);
+
+        if (textAsset == null)
+        {
+            Log.Warning("Failed to read file.", "culturePath", culturePath, "langPath", langPath, "defaultPath", defaultPath);
+            return [];
+        }
+
+        return LoadFromTextAsset(textAsset);
+    }
+
+    private static Dictionary<string, string> LoadFromTextAsset(TextAsset file) => LoadFromText(file.name, file.text);
+
+    private static Dictionary<string, string> LoadFromText(string path, string text)
+    {
+        var list = Regex.Replace(text, "\\\\(\\r\\n|\\n|\\r)[ \\t]*", string.Empty)?.Split('\n');
+
+        if (list == null)
+        {
+            Log.Warning("Resource is empty. '" + path + "'");
+            return [];
+        }
+
+        var dictionary = new Dictionary<string, string>();
+
+        foreach (var item2 in list)
+        {
+            if (item2.Length > 1 && item2[0] != '#')
+            {
+                var array2 = Regex.Split(item2, "(?<!(?<!\\\\)*\\\\)\\=");
+
+                if (array2.Length != 2)
+                    Log.Warning("Illegal resource bundle line", "path", path, "line", item2);
+                else
+                    dictionary[ResourceBundle.Unescape(array2[0]).Trim()] = ResourceBundle.Unescape(array2[1]).Trim();
+            }
+        }
+
+        return dictionary;
+    }
 }

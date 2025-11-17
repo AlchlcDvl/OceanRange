@@ -24,30 +24,37 @@ public sealed class Translations : JsonData
 
     [JsonIgnore] private LangData[] LangDatas;
 
-    protected override void OnDeserialise() => LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Plorts, .. Mail/*, .. Zones, .. Crafts, .. EdibleCrafts */];
+    protected override void OnDeserialise() => LangDatas = [.. Slimes, .. Hens, .. Chicks, .. Veggies, .. Fruits, .. Ranchers, .. Gordos, .. Largos, .. Plorts, .. Mail/*, .. Zones, .. Crafts, .. EdibleCrafts*/];
 
     [JsonIgnore] private Dictionary<string, Dictionary<string, string>> TranslatedTexts;
 
-    public Dictionary<string, Dictionary<string, string>> GetTranslations()
+    public Dictionary<string, Dictionary<string, string>> GetTranslations(Language lang)
     {
         if (TranslatedTexts != null)
             return TranslatedTexts;
 
         TranslatedTexts = [];
+        Translator.BeginGatherPass();
+
+        var isFallback = lang == Config.FALLBACK_LANGUAGE;
 
         foreach (var (bundleName, values) in Additional)
         {
             var keyValues = TranslatedTexts.GetBundle(bundleName);
 
-            foreach (var (id, translatedTexts) in values)
-                keyValues[id] = translatedTexts;
+            foreach (var (id, translatedText) in values)
+                keyValues.AddTranslation(id, translatedText, bundleName, lang, isFallback);
         }
 
-        var lang = Helpers.ParseEnum<Language>(Name);
-
         foreach (var langData in LangDatas)
-            langData.AddTranslations(TranslatedTexts, lang);
+            langData.AddTranslations(TranslatedTexts, lang, isFallback);
 
+        var deferredItems = Translator.EndGatherPass();
+
+        foreach (var item in deferredItems)
+            item.AddComplexTranslation(TranslatedTexts);
+
+        deferredItems.Clear();
         return TranslatedTexts;
     }
 
@@ -68,7 +75,7 @@ public abstract class LangData : JsonData
 {
     [JsonRequired] public string TranslatedName;
 
-    public abstract void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang);
+    public abstract void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback);
 
     public virtual void WhenFallback() { }
 }
@@ -80,12 +87,12 @@ public sealed class MailLangData : LangData
 
     [JsonRequired] public string MailKey;
 
-    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language _)
+    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
         var bundle = translations.GetBundle("mail");
-        bundle.AddTranslation("m.from." + MailKey, TranslatedName, "mail");
-        bundle.AddTranslation("m.body." + MailKey, Body, "mail");
-        bundle.AddTranslation("m.subj." + MailKey, Subject, "mail");
+        bundle.AddTranslation("m.from." + MailKey, TranslatedName, "mail", lang);
+        bundle.AddTranslation("m.body." + MailKey, Body, "mail", lang);
+        bundle.AddTranslation("m.subj." + MailKey, Subject, "mail", lang);
     }
 }
 
@@ -100,22 +107,24 @@ public sealed class RancherLangData : LangData
 
     protected override void OnDeserialise() => Rancher = Contacts.RancherMap[Helpers.ParseEnum<RancherName>(Name.ToUpperInvariant())];
 
-    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
         var rancherId = Rancher.RancherId;
         var bundle = translations.GetBundle("exchange");
 
         for (var i = 0; i < Offers.Length; i++)
-            bundle.AddTranslation($"m.offer_{i + 1}.{rancherId}", Offers[i], "exchange");
+            bundle.AddTranslation($"m.offer_{i + 1}.{rancherId}", Offers[i], "exchange", lang);
 
-        bundle.AddTranslation($"m.bonusoffer.{rancherId}", SpecialOffer, "exchange");
-        bundle.AddTranslation($"m.rancher.{rancherId}", TranslatedName, "exchange");
+        bundle.AddTranslation($"m.bonusoffer.{rancherId}", SpecialOffer, "exchange", lang);
+        bundle.AddTranslation($"m.rancher.{rancherId}", TranslatedName, "exchange", lang);
 
         if (!Main.ClsExists || !Translator.LoadingIds.TryGetValue(lang, out var ids))
             return;
 
+        var bundle2 = translations.GetBundle("ui");
+
         for (var i = 0; i < LoadingTexts.Length; i++)
-            bundle.AddTranslation(ids[i], LoadingTexts[i], "ui");
+            bundle2.AddTranslation(ids[i], LoadingTexts[i], "ui", lang);
     }
 
     public void OnLanguageChanged(Language lang) => Rancher.HandleTranslationData(this, lang);
@@ -125,8 +134,8 @@ public abstract class IdentifiableLangData : LangData
 {
     [JsonIgnore] protected IdentifiableId IdentId;
 
-    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
-        => translations.GetBundle("actor").AddTranslation("l." + IdentId.ToString().ToLowerInvariant(), TranslatedName, "actor");
+    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback) =>
+        translations.GetBundle("actor").AddTranslation("l." + IdentId.ToString().ToLowerInvariant(), TranslatedName, "actor", lang);
 }
 
 public sealed class PlortLangData : IdentifiableLangData
@@ -145,10 +154,10 @@ public sealed class GordoLangData : IdentifiableLangData
 
     protected override void OnDeserialise() => Exists = Enum.TryParse(Name.ToUpperInvariant() + "_GORDO", out IdentId);
 
-    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
         if (Exists)
-            base.AddTranslations(translations, lang);
+            base.AddTranslations(translations, lang, isFallback);
     }
 }
 
@@ -177,11 +186,11 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
 
     public override void WhenFallback() => PediaRegistry.SetPediaCategory(PediaId, Category);
 
-    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language _)
+    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
         var bundle = translations.GetBundle("pedia");
-        bundle.AddTranslation("t." + PediaKey, TranslatedName, "pedia");
-        bundle.AddTranslation("m.intro." + PediaKey, Intro, "pedia");
+        bundle.AddTranslation("t." + PediaKey, TranslatedName, "pedia", lang);
+        bundle.AddTranslation("m.intro." + PediaKey, Intro, "pedia", lang);
     }
 }
 
@@ -194,12 +203,12 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
 
 //     protected override void OnDeserialisedEvent(string mainPart) => ZoneId = Helpers.ParseEnum<Zone>(mainPart);
 
-//     public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+//     public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
 //     {
-//         base.AddTranslations(translations);
+//         base.AddTranslations(translations, lang, isFallback);
 
-//         translations.GetBundle("global").AddTranslation("l.presence." + ZoneId.ToString().ToLowerInvariant(), Presence, "global");
-//         translations.GetBundle("pedia").AddTranslation("m.desc." + PediaKey, Description, "pedia");
+//         translations.GetBundle("global").AddTranslation("l.presence." + ZoneId.ToString().ToLowerInvariant(), Presence, "global", lang);
+//         translations.GetBundle("pedia").AddTranslation("m.desc." + PediaKey, Description, "pedia", lang);
 //     }
 // }
 
@@ -215,10 +224,10 @@ public abstract class ActorLangData(string suffix, PediaCategory category) : Ped
         PediaRegistry.RegisterIdentifiableMapping(PediaId, ActorId);
     }
 
-    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
-        base.AddTranslations(translations, lang);
-        translations.GetBundle("actor").AddTranslation("l." + ActorId.ToString().ToLowerInvariant(), TranslatedName, "actor");
+        base.AddTranslations(translations, lang, isFallback);
+        translations.GetBundle("actor").AddTranslation("l." + ActorId.ToString().ToLowerInvariant(), TranslatedName, "actor", lang);
     }
 }
 
@@ -236,16 +245,16 @@ public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIME
         Slimepedia.SlimeDataMap[ActorId].HandleTranslationData(this);
     }
 
-    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
-        base.AddTranslations(translations, lang);
+        base.AddTranslations(translations, lang, isFallback);
 
         var bundle = translations.GetBundle("pedia");
-        bundle.AddTranslation("m.diet." + PediaKey, Diet, "pedia");
-        bundle.AddTranslation("m.risks." + PediaKey, Risks, "pedia");
-        bundle.AddTranslation("m.favorite." + PediaKey, Favourite, "pedia");
-        bundle.AddTranslation("m.plortonomics." + PediaKey, Onomics, "pedia");
-        bundle.AddTranslation("m.slimeology." + PediaKey, Slimeology, "pedia");
+        bundle.AddTranslation("m.diet." + PediaKey, Diet, "pedia", lang);
+        bundle.AddTranslation("m.risks." + PediaKey, Risks, "pedia", lang);
+        bundle.AddTranslation("m.favorite." + PediaKey, Favourite, "pedia", lang);
+        bundle.AddTranslation("m.plortonomics." + PediaKey, Onomics, "pedia", lang);
+        bundle.AddTranslation("m.slimeology." + PediaKey, Slimeology, "pedia", lang);
     }
 }
 
@@ -255,14 +264,14 @@ public abstract class ResourceLangData(string suffix) : ActorLangData(suffix, Pe
     [JsonRequired] public string Ranch;
     [JsonRequired] public string About;
 
-    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+    public override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
-        base.AddTranslations(translations, lang);
+        base.AddTranslations(translations, lang, isFallback);
 
         var bundle = translations.GetBundle("pedia");
-        bundle.AddTranslation("m.desc." + PediaKey, About, "pedia");
-        bundle.AddTranslation("m.how_to_use." + PediaKey, Ranch, "pedia");
-        bundle.AddTranslation("m.resource_type." + PediaKey, Type, "pedia");
+        bundle.AddTranslation("m.desc." + PediaKey, About, "pedia", lang);
+        bundle.AddTranslation("m.how_to_use." + PediaKey, Ranch, "pedia", lang);
+        bundle.AddTranslation("m.resource_type." + PediaKey, Type, "pedia", lang);
     }
 }
 
@@ -272,10 +281,10 @@ public abstract class FoodLangData(string suffix) : ResourceLangData(suffix)
 {
     [JsonRequired] public string FavouredBy;
 
-    public override sealed void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+    public override sealed void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
-        base.AddTranslations(translations, lang);
-        translations.GetBundle("pedia").AddTranslation("m.favored_by." + PediaKey, FavouredBy, "pedia");
+        base.AddTranslations(translations, lang, isFallback);
+        translations.GetBundle("pedia").AddTranslation("m.favored_by." + PediaKey, FavouredBy, "pedia", lang);
     }
 }
 
