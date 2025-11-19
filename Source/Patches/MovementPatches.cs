@@ -23,6 +23,7 @@ public static class StopMoving
         return true;
     }
 
+    [UsedImplicitly]
     public static void Postfix(SlimeRandomMove __instance, ref (float, float) __state) => (__instance.scootSpeedFactor, __instance.verticalFactor) = __state;
 }
 

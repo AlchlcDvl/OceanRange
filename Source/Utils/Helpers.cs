@@ -394,25 +394,25 @@ public static class Helpers
         Mouth = face.Mouth?.Clone(),
     };
 
-    public static IEnumerator PerformTimedAction(float duration, Action<float> action)
-    {
-        var startTime = Time.time;
-        var endTime = startTime + duration;
+    // public static IEnumerator PerformTimedAction(float duration, Action<float> action)
+    // {
+    //     var startTime = Time.time;
+    //     var endTime = startTime + duration;
+    //
+    //     while (Time.time < endTime)
+    //     {
+    //         action((Time.time - startTime) / duration);
+    //         yield return null;
+    //     }
+    //
+    //     action(1f);
+    // }
 
-        while (Time.time < endTime)
-        {
-            action((Time.time - startTime) / duration);
-            yield return null;
-        }
-
-        action(1f);
-    }
-
-    public static IEnumerator WaitWhile(Func<bool> predicate)
-    {
-        while (predicate())
-            yield return null;
-    }
+    // public static IEnumerator WaitWhile(Func<bool> predicate)
+    // {
+    //     while (predicate())
+    //         yield return null;
+    // }
 
     // public static IEnumerator WaitUntil(Func<bool> predicate)
     // {
@@ -420,13 +420,13 @@ public static class Helpers
     //         yield return null;
     // }
 
-    // public static IEnumerator Wait(float duration)
-    // {
-    //     var endTime = Time.time + duration;
+    public static IEnumerator Wait(float duration)
+    {
+        var endTime = Time.time + duration;
 
-    //     while (Time.time < endTime)
-    //         yield return null;
-    // }
+        while (Time.time < endTime)
+            yield return null;
+    }
 
     // public static bool TryGetInterfaceComponent<T>(this Component obj, out T component) where T : class
     // {
@@ -549,7 +549,7 @@ public static class Helpers
     //     return texture2D.DontDestroy();
     // }
 
-    public static T AddComponent<T>(this Component component) where T : Component => component.gameObject.AddComponent<T>();
+    // public static T AddComponent<T>(this Component component) where T : Component => component.gameObject.AddComponent<T>();
 
     public static GameObject[] FindAllChildren(this GameObject obj, string name)
     {

@@ -403,11 +403,7 @@ public static class Cookbook
         if (isFruit)
         {
             var partName = resourceId.ToString().ToLowerInvariant();
-
-            if (partName.EndsWith("_tree", StringComparison.OrdinalIgnoreCase))
-                partName = partName.Replace("_tree", string.Empty);
-            else
-                partName = "pogo";
+            partName = partName.EndsWith("_tree", StringComparison.OrdinalIgnoreCase) ? partName.Replace("_tree", string.Empty) : "pogo";
 
             if (Inventory.TryGetMesh(lower + "_trunk", out var trunk))
                 TranslateModel(prefab.FindAllChildren("tree_" + partName), trunk, null);

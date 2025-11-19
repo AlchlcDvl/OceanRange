@@ -83,12 +83,12 @@ public static class Translator
 
     public readonly struct DeferredTranslation(Dictionary<string, string> bundle, string id, string text, string bundleName, Language lang, bool isFallback)
     {
-        public readonly Dictionary<string, string> Bundle = bundle;
-        public readonly string Id = id;
-        public readonly string Text = text;
-        public readonly string BundleName = bundleName;
-        public readonly Language Lang = lang;
-        public readonly bool IsFallback = isFallback;
+        private readonly string Id = id;
+        private readonly string Text = text;
+        private readonly Language Lang = lang;
+        private readonly bool IsFallback = isFallback;
+        private readonly string BundleName = bundleName;
+        private readonly Dictionary<string, string> Bundle = bundle;
 
         public void AddComplexTranslation(Dictionary<string, Dictionary<string, string>> translations) => Bundle[Id] = GetTranslationValue(Id, Text, BundleName, translations, Lang, IsFallback) ?? $"STRMSS: {Id}";
     }
@@ -161,12 +161,7 @@ public static class Translator
         }
 
         if (translations.TryGetValue(refBundleName, out var referencedBundle) && referencedBundle.TryGetValue(refId, out var resolvedText))
-        {
-            if (resolvedText?.StartsWith('@') == true)
-                return ResolveReference(resolvedText, refBundleName, translations);
-
-            return resolvedText;
-        }
+            return resolvedText?.StartsWith('@') == true ? ResolveReference(resolvedText, refBundleName, translations) : resolvedText;
 
         return null;
     }
@@ -176,12 +171,12 @@ public static class Translator
         var culturePath = prefix + "/" + culture.Name + "/" + path;
         var langPath = prefix + "/" + culture.TwoLetterISOLanguageName + "/" + path;
         var defaultPath = prefix + "/" + defaultLang + "/" + path;
-        return new ResourceBundle(LoadFromResources(culturePath, langPath, defaultPath));
+        return new(LoadFromResources(culturePath, langPath, defaultPath));
     }
 
     private static Dictionary<string, string> LoadFromResources(string culturePath, string langPath, string defaultPath)
     {
-        var textAsset = (Resources.Load<TextAsset>(culturePath) ?? Resources.Load<TextAsset>(langPath)) ?? Resources.Load<TextAsset>(defaultPath);
+        var textAsset = Resources.Load<TextAsset>(culturePath) ?? Resources.Load<TextAsset>(langPath) ?? Resources.Load<TextAsset>(defaultPath);
 
         if (textAsset == null)
         {
@@ -189,34 +184,25 @@ public static class Translator
             return [];
         }
 
-        return LoadFromTextAsset(textAsset);
+        return LoadFromText(textAsset.name, textAsset.text);
     }
-
-    private static Dictionary<string, string> LoadFromTextAsset(TextAsset file) => LoadFromText(file.name, file.text);
 
     private static Dictionary<string, string> LoadFromText(string path, string text)
     {
-        var list = Regex.Replace(text, "\\\\(\\r\\n|\\n|\\r)[ \\t]*", string.Empty)?.Split('\n');
-
-        if (list == null)
-        {
-            Log.Warning("Resource is empty. '" + path + "'");
-            return [];
-        }
-
-        var dictionary = new Dictionary<string, string>();
+        var list = Regex.Replace(text, @"\\(\r\n|\n|\r)[ \t]*", string.Empty).Split('\n');
+        var dictionary = new Dictionary<string, string>(list.Length);
 
         foreach (var item2 in list)
         {
-            if (item2.Length > 1 && item2[0] != '#')
-            {
-                var array2 = Regex.Split(item2, "(?<!(?<!\\\\)*\\\\)\\=");
+            if (item2.Length <= 1 || item2.StartsWith('#'))
+                continue;
 
-                if (array2.Length != 2)
-                    Log.Warning("Illegal resource bundle line", "path", path, "line", item2);
-                else
-                    dictionary[ResourceBundle.Unescape(array2[0]).Trim()] = ResourceBundle.Unescape(array2[1]).Trim();
-            }
+            var array2 = Regex.Split(item2, @"(?<!(?<!\\)*\\)\=");
+
+            if (array2.Length != 2)
+                Log.Warning("Illegal resource bundle line", "path", path, "line", item2);
+            else
+                dictionary[ResourceBundle.Unescape(array2[0]).Trim()] = ResourceBundle.Unescape(array2[1]).Trim();
         }
 
         return dictionary;

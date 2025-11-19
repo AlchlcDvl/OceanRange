@@ -56,7 +56,7 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
 
     public override readonly int GetHashCode() => Position.GetHashCode() ^ (Rotation.GetHashCode() << 2) ^ (Scale.GetHashCode() >> 2); // Mimics the Vector3 hash code calculation with x, y and z components
 
-    public readonly override string ToString() => $"Position: {Position}, Rotation: {Rotation}, Scale: {Scale}";
+    public override readonly string ToString() => $"Position: {Position}, Rotation: {Rotation}, Scale: {Scale}";
 
     public static bool operator ==(Orientation left, Orientation right) => left.Equals(right);
 
