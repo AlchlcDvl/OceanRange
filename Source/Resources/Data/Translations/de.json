@@ -3,7 +3,8 @@
   "additional": {
     "ui": {
       "l.pearls": "Perlenormie:",
-      "m.foodgroup.dirt": "Erde"
+      "m.foodgroup.dirt": "Erde",
+      "m.text.largo": "Largo slimes are large slime hybrids formed when a slime eats a plort unlike its own.\n\nVac to keep them on your nozzle, or shoot to send them flying!\n\nDo remember, the biology of the slimes matters! Pearl producing slimes cannot create largos with those that create plorts!"
     },
     "pedia": {
       "m.favored_by.silky_sand_craft": "@t.sand_slime_entry"
