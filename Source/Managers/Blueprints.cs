@@ -1,5 +1,3 @@
-// using SRML.SR.Translation;
-
 // namespace OceanRange.Managers;
 
 // public delegate GadgetDefinition.CraftCost[] CreateCraftCosts(IdentifiableId plortId, IdentifiableId resourceId);
@@ -21,7 +19,7 @@
 
 //     protected override void OnDeserialise()
 //     {
-//         Id = Helpers.AddEnumValue<GadgetId>((Prefix.Length > 0 ? string.Empty : "_") + Name.ToUpperInvariant());
+//         Id = Helpers.AddEnumValue<GadgetId>((Prefix.Length > 0 ? "_" : string.Empty) + Name.ToUpperInvariant());
 //     }
 // }
 
@@ -34,27 +32,35 @@
 // {
 //     protected abstract CreateCraftCosts CostCreator { get; }
 
+//     public abstract string TypePrefix { get; }
+
 //     [JsonRequired] public IdentifiableId PlortId;
 //     [JsonRequired] public IdentifiableId ResourceId;
+
+//     public Color Color;
 
 //     protected override void OnDeserialise()
 //     {
 //         base.OnDeserialise();
-//         CraftCosts = CostCreator(PlortId, ResourceId);
+//         CraftCosts ??= CostCreator(PlortId, ResourceId);
 //     }
 // }
 
 // public sealed class LampData : SlimeGadgetData
 // {
 //     public override GadgetId BaseGadget => GadgetId.LAMP_RED;
+//     public override string TypePrefix => "decorSlimeLamp";
 
 //     protected override string Prefix => "LAMP";
 //     protected override CreateCraftCosts CostCreator => Blueprints.CreateLampCraftCosts;
+
+//     [JsonRequired] public IdentifiableId SlimeId;
 // }
 
 // public sealed class WarpDepotData : SlimeGadgetData
 // {
 //     public override GadgetId BaseGadget => GadgetId.WARP_DEPOT_RED;
+//     public override string TypePrefix => "gadgetWarpDepot";
 
 //     protected override string Prefix => "WARP_DEPOT";
 //     protected override CreateCraftCosts CostCreator => Blueprints.CreateWarpDepotCraftCosts;
@@ -63,13 +69,42 @@
 // public sealed class TeleporterData : SlimeGadgetData
 // {
 //     public override GadgetId BaseGadget => GadgetId.TELEPORTER_PINK;
+//     public override string TypePrefix => "gadgetTeleport";
 
 //     protected override string Prefix => "TELEPORTER";
 //     protected override CreateCraftCosts CostCreator => Blueprints.CreateTeleporterCraftCosts;
 // }
 
-// public sealed class GadgetLangData : LangData
+// public abstract class GadgetLangData : LangData
 // {
+//     protected virtual string Prefix => string.Empty;
+//     protected virtual string DescId => string.Empty;
+
+//     public sealed override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+//     {
+//         var pedia = translations.GetBundle("pedia");
+//         var part = Prefix + (Prefix.Length > 0 ? "_" : string.Empty) + Name.ToLowerInvariant();
+//         pedia.AddTranslation("m.gadget.name." + part, TranslatedName, "pedia");
+//         pedia.AddComplexTranslation("m.gadget.desc." + part, "@m.gadget.desc." + DescId, "pedia");
+//     }
+// }
+
+// public sealed class LampLangData : GadgetLangData
+// {
+//     protected override string DescId => "lamp_pink";
+//     protected override string Prefix => "lamp";
+// }
+
+// public sealed class WarpLangData : GadgetLangData
+// {
+//     protected override string DescId => "warp_depot_pink";
+//     protected override string Prefix => "warp_depot";
+// }
+
+// public sealed class TeleporterLangData : GadgetLangData
+// {
+//     protected override string DescId => "teleporter_pink";
+//     protected override string Prefix => "teleporter";
 // }
 
 // public static class Blueprints
@@ -82,84 +117,65 @@
 //     private static readonly int Color30 = ShaderUtils.GetOrSet("_Color30");
 //     private static readonly int Color31 = ShaderUtils.GetOrSet("_Color31");
 
+// #if DEBUG
+//     [TimeDiagnostic("Blueprints Preload")]
+// #endif
 //     public static void PreloadBlueprintData()
 //     {
-
+//         var schematics = Inventory.GetJson<Schematics>("blueprints");
 //     }
 
 //     private static void CreateGadget(SlimeGadgetData gadgetData)
 //     {
 //         var gadgetDefinition = gadgetData.BaseGadget.GetGadgetDefinition();
-//         var gameObject = gadgetDefinition.prefab.CreatePrefab();
-//         gameObject.GetComponent<Gadget>().id = gadgetData.Id;
-//         LookupRegistry.RegisterGadget(CopyGadgetDefinition(gadgetDefinition, gadgetData.Id, Inventory.GetSprite($"{gadgetData.Name}_icon"), gameObject, gadgetData.CraftCosts));
+
+//         var prefab = gadgetDefinition.prefab.CreatePrefab();
+//         prefab.name = gadgetData.TypePrefix + gadgetData.Name;
+//         prefab.GetComponent<Gadget>().id = gadgetData.Id;
+
+//         if (gadgetData is LampData lampData)
+//             CreateLamp(lampData, prefab);
+//         else if (gadgetData is WarpDepotData warpDepotData)
+//             CreateWarpDepot(warpDepotData, prefab);
+//         else if (gadgetData is TeleporterData teleporterData)
+//             CreateTeleporter(teleporterData, prefab);
+
+//         LookupRegistry.RegisterGadget(CopyGadgetDefinition(gadgetDefinition, gadgetData.Id, Inventory.GetSprite($"{gadgetData.Name}_icon"), prefab, gadgetData.CraftCosts));
 //     }
 
-//     private static void CreateTeleporter(GadgetId gadgetId, string name, Sprite sprite, Color color, GadgetDefinition.CraftCost[] craftCosts = null)
+//     private static void CreateTeleporter(TeleporterData teleporterData, GameObject prefab)
 //     {
-//         var gadgetDefinition = GadgetId.TELEPORTER_PINK.GetGadgetDefinition();
-//         var gameObject = gadgetDefinition.prefab.CreatePrefab();
-//         gameObject.name = "gadgetTeleport" + name;
-//         gameObject.GetComponentInChildren<TeleporterGadget>().linkName = "gadgetTeleport" + name + "_linked";
+//         prefab.GetComponentInChildren<TeleporterGadget>().linkName = "gadgetTeleport" + teleporterData.Name + "_linked";
 
-//         var component = gameObject.transform.Find("model_telepad/mesh_telepad").GetComponent<SkinnedMeshRenderer>();
+//         var component = prefab.transform.Find("model_telepad/mesh_telepad").GetComponent<SkinnedMeshRenderer>();
 //         var material = component.sharedMaterial.Clone();
-//         material.name = "Telepad_" + name;
-//         material.SetColor(Color00, color);
-//         material.SetColor(Color01, color);
-//         material.SetColor(Color20, color);
-//         material.SetColor(Color21, color);
+//         material.name = "Telepad_" + teleporterData.Name;
+//         material.SetColors(teleporterData.Color, Color00, Color01, Color20, Color21);
 //         component.sharedMaterial = material;
-
-//         LookupRegistry.RegisterGadget(CopyGadgetDefinition(gadgetDefinition, gadgetId, sprite, gameObject, craftCosts));
-//         gadgetId.GetTranslation().SetNameTranslation(name + " Teleporter").SetDescriptionTranslation("A set of two teleporters that can be used to create your own quick travel link.");
 //     }
 
-//     private static GameObject CreateWarpDepot(GadgetId gadgetId, string name, Sprite sprite, Color color, GadgetDefinition.CraftCost[] craftCosts = null)
+//     private static void CreateWarpDepot(WarpDepotData warpDepotData, GameObject prefab)
 //     {
-//         var gadgetDefinition = GadgetId.WARP_DEPOT_RED.GetGadgetDefinition();
-//         var gameObject = gadgetDefinition.prefab.CreatePrefab();
-//         gameObject.name = "gadgetWarpDepot" + name;
-//         gameObject.GetComponent<Gadget>().id = gadgetId;
-//         var component = gameObject.transform.Find("warpdepot").GetComponent<MeshRenderer>();
+//         var component = prefab.transform.Find("warpdepot").GetComponent<MeshRenderer>();
 //         var material = component.sharedMaterial.Clone();
-//         material.name = "WarpDepot_" + name;
-//         material.SetColor(Color11, color);
-//         material.SetColor(Color20, color);
-//         material.SetColor(Color21, color);
-//         material.SetColor(Color30, color);
-//         material.SetColor(Color31, color);
+//         material.name = "WarpDepot_" + warpDepotData.Name;
+//         material.SetColors(warpDepotData.Color, Color11, Color20, Color21, Color30, Color31);
 //         component.sharedMaterial = material;
-//         var gadgetDefinition2 = CopyGadgetDefinition(gadgetDefinition, gadgetId, sprite, gameObject, craftCosts);
-//         LookupRegistry.RegisterGadget(gadgetDefinition2);
-//         gadgetId.GetTranslation().SetNameTranslation(name + " Warp Depot").SetDescriptionTranslation("A set of two gadgets that allow you to remotely transfer resources between two points.");
-//         return gameObject;
 //     }
 
-//     private static void CreateLamp(GadgetId gadgetId, string name, Sprite sprite, IdentifiableId slimeId, GadgetDefinition.CraftCost[] craftCosts = null)
+//     private static void CreateLamp(LampData lampData, GameObject prefab)
 //     {
-//         var gadgetDefinition = GadgetId.LAMP_RED.GetGadgetDefinition();
-//         var slimeByIdentifiableId = slimeId.GetSlimeDefinition();
+//         var slimeByIdentifiableId = lampData.SlimeId.GetSlimeDefinition();
 //         var defaultMaterials = slimeByIdentifiableId.AppearancesDefault[0].Structures[0].DefaultMaterials;
 //         var palette = SlimeAppearance.Palette.FromMaterial(defaultMaterials[0]);
-//         var gameObject = gadgetDefinition.prefab.CreatePrefab();
 
-//         gameObject.name = "decorSlimeLamp" + name;
-//         gameObject.GetComponent<Gadget>().id = gadgetId;
-
-//         var component = gameObject.transform.Find("slimeslime").GetComponent<SkinnedMeshRenderer>();
-//         var component2 = gameObject.transform.Find("glass_inside").GetComponent<MeshRenderer>();
+//         var component = prefab.transform.Find("slimeslime").GetComponent<SkinnedMeshRenderer>();
+//         var component2 = prefab.transform.Find("glass_inside").GetComponent<MeshRenderer>();
 //         var material = component2.sharedMaterial.Clone();
-//         material.name = "SlimeLamp_body_" + name;
-//         material.SetColor(Slimepedia.TopColor, palette.Top);
-//         material.SetColor(Slimepedia.MiddleColor, palette.Middle);
-//         material.SetColor(Slimepedia.BottomColor, palette.Bottom);
+//         material.name = "SlimeLamp_body_" + lampData.Name;
+//         material.SetColors((Slimepedia.TopColor, palette.Top), (Slimepedia.MiddleColor, palette.Middle), (Slimepedia.BottomColor, palette.Bottom));
 //         component.sharedMaterial = defaultMaterials[0];
 //         component2.sharedMaterial = material;
-
-//         var gadgetDefinition2 = CopyGadgetDefinition(gadgetDefinition, gadgetId, sprite, gameObject, craftCosts);
-//         LookupRegistry.RegisterGadget(gadgetDefinition2);
-//         gadgetId.GetTranslation().SetNameTranslation(name + " Slime Lamp").SetDescriptionTranslation("A decorative lamp housing a happy slime.");
 //     }
 
 //     private static GadgetDefinition CopyGadgetDefinition(GadgetDefinition gadgetDefinition, GadgetId id, Sprite sprite, GameObject prefab, GadgetDefinition.CraftCost[] craftCost)

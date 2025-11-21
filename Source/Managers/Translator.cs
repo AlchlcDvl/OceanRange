@@ -59,9 +59,9 @@ public static class Translator
 
     private static Translations GenerateTranslations(Language lang)
     {
-        var langName = lang.ToString();
+        var langName = lang.ToString().ToLowerInvariant();
 
-        if (Inventory.TryGetJson<Translations>(langName.ToLowerInvariant(), Config.DUMP_TRANSLATIONS, out var translations))
+        if (Inventory.TryGetJson<Translations>(langName, Config.DUMP_TRANSLATIONS, out var translations))
         {
             Inventory.TryReleaseHandles(langName);
             return translations;
@@ -81,16 +81,15 @@ public static class Translator
         return bundle;
     }
 
-    public readonly struct DeferredTranslation(Dictionary<string, string> bundle, string id, string text, string bundleName, Language lang, bool isFallback)
+    public readonly struct DeferredTranslation(Dictionary<string, string> bundle, string id, string text, string bundleName)
     {
         private readonly string Id = id;
         private readonly string Text = text;
-        private readonly Language Lang = lang;
-        private readonly bool IsFallback = isFallback;
         private readonly string BundleName = bundleName;
         private readonly Dictionary<string, string> Bundle = bundle;
 
-        public void AddComplexTranslation(Dictionary<string, Dictionary<string, string>> translations) => Bundle[Id] = GetTranslationValue(Id, Text, BundleName, translations, Lang, IsFallback) ?? $"STRMSS: {Id}";
+        public void AddComplexTranslation(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback = false) =>
+            Bundle[Id] = GetTranslationValue(Id, Text, BundleName, translations, lang, isFallback) ?? $"STRMSS: {Id}";
     }
 
     private static List<DeferredTranslation> CurrentDeferredList;
@@ -104,13 +103,17 @@ public static class Translator
         return list;
     }
 
-    public static void AddTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName, Language lang, bool isFallback = false)
+    public static void AddTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName)
     {
         if (text?.StartsWith('@') == true)
-            CurrentDeferredList.Add(new(bundle, id, text, bundleName, lang, isFallback));
+            bundle.AddComplexTranslation(id, text, bundleName);
         else
-            bundle[id] = text ?? $"STRMSS: {id}";
+            bundle.AddSimpleTranslation(id, text);
     }
+
+    public static void AddSimpleTranslation(this Dictionary<string, string> bundle, string id, string text) => bundle[id] = text ?? $"STRMSS: {id}";
+
+    public static void AddComplexTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName) => CurrentDeferredList.Add(new(bundle, id, text, bundleName));
 
     private static string GetTranslationValue(string id, string text, string bundleName, Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
@@ -189,8 +192,8 @@ public static class Translator
 
     private static Dictionary<string, string> LoadFromText(string path, string text)
     {
-        var list = Regex.Replace(text, @"\\(\r\n|\n|\r)[ \t]*", string.Empty).Split('\n');
-        var dictionary = new Dictionary<string, string>(list.Length);
+        var list = Regex.Replace(text, @"\\(\r\n|\n|\r)[ \t]*", string.Empty).TrueSplit('\n');
+        var dictionary = new Dictionary<string, string>(list.Count);
 
         foreach (var item2 in list)
         {

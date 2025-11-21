@@ -566,4 +566,16 @@ public static class Helpers
 
         return [.. list];
     }
+
+    // public static void SetColors(this Material mat, params (int, Color)[] values)
+    // {
+    //     foreach (var (prop, color) in values)
+    //         mat.SetColor(prop, color);
+    // }
+
+    // public static void SetColors(this Material mat, Color color, params int[] props)
+    // {
+    //     foreach (var prop in props)
+    //         mat.SetColor(prop, color);
+    // }
 }

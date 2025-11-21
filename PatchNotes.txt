@@ -1,7 +1,7 @@
-0.0.1
+0.1.0
 - Release!
 
-0.0.2
+0.2.0
 Discord:
 ## New!
 - Mesmer Slimes: Hypnotic and awe inducing slimes that are actually playful pacifists!
@@ -56,3 +56,20 @@ Nexus:
 - Fixed blowtato appearing "wavy"
 - Fixed the inconsistent aspect ratio of the chick and hen icons
 - Removed the need for AssetsLib
+
+0.2.1
+Discord:
+## Changes!
+- Improved the translation system of the mod to function better and lag less
+
+## Fixes!
+- Critical: Fixed the ranch exchange being stuck offline
+- Informational: Added clarification to the largo tutorial that pearl and plort producing slimes cannot largofy together
+
+## Notes!
+- **Make sure to update Custom Loading Screens if you are using it! Otherwise the loading screen will not function fully!**
+
+Nexus:
+Improvement: Improved the translation system of the mod to function better and lag less
+Critical Fix: Fixed the ranch exchange being stuck offline
+Clarification: Added clarification to the largo tutorial that pearl and plort producing slimes cannot largofy together
