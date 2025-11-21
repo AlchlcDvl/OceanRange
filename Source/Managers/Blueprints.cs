@@ -19,7 +19,7 @@
 
 //     protected override void OnDeserialise()
 //     {
-//         Id = Helpers.AddEnumValue<GadgetId>((Prefix.Length > 0 ? "_" : string.Empty) + Name.ToUpperInvariant());
+//         Id = Helpers.AddEnumValue<GadgetId>(Prefix + (Prefix.Length > 0 ? "_" : string.Empty) + Name.ToUpperInvariant());
 //     }
 // }
 
