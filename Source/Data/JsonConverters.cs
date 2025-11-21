@@ -351,7 +351,7 @@ public sealed class EnumConverter : OceanJsonConverter
     private static object ParseSingle(JsonReader reader, Type enumType, bool partOfArray) => reader.TokenType switch
     {
         JsonToken.Null when partOfArray => null, // Only check null when in an array, because normal null values are handled outside this method
-        JsonToken.String when Helpers.TryParseEnum(enumType, reader.Value.ToString() , true, out var parsed) => parsed, // Attempt to parse the string, make sure to use this arm
+        JsonToken.String when Helpers.TryParseEnum(enumType, reader.Value!.ToString() , true, out var parsed) => parsed, // Attempt to parse the string, make sure to use this arm
         JsonToken.String when reader.Value is string name && name.StartsWith('+') => Helpers.AddEnumValue(name, enumType), // Attempt to use the string as a new enum value, alternative use of strings
         JsonToken.Integer => Enum.ToObject(enumType, Convert.ToUInt64(reader.Value)), // Avoid adding numbers, they're hard to understand in JSON when you don't have access to the relevant enum
         _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {enumType.Name}. Expected {(partOfArray ? "a valid array of defined strings or ints, " : string.Empty)}a defined string or an integer.") // Throw an error if an unsupported value type is given
