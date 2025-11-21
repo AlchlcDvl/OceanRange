@@ -5,6 +5,9 @@
       "l.pearls": "Perlanomia:",
       "m.foodgroup.dirt": "Tierra"
     },
+    "tutorial": {
+      "m.text.largo": "Los slimes largo son un híbrido de dos slimes resultando de un slime que se ha comido un plort que no es como él.\n\nSucciónalos para mantenerlos en la boquilla del vac pack o ¡lánzalos para mandarlos a volar!\n\nPero recuerda ¡La biología de los slimes importan! ¡Los slimes que producen perlas no pueden convertirse en largos con slimes que producen plorts!"
+    },
     "pedia": {
       "m.favored_by.silky_sand_craft": "@t.sand_slime_entry"
     }
