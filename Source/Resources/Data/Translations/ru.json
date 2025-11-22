@@ -1,12 +1,12 @@
 {
-  "name": "EN",
+  "name": "RU",
   "additional": {
     "ui": {
       "l.pearls": "Pearlonomics",
       "m.foodgroup.dirt": "Dirt"
     },
     "tutorial": {
-      "m.text.largo": "Largo slimes are large slime hybrids formed when a slime eats a plort unlike its own.\n\nVac to keep them on your nozzle, or shoot to send them flying!\n\nDo remember, the biology of the slimes matters! Pearl producing slimes cannot create largos with those that create plorts!"
+      "m.text.largo": "Ларго слаймы - это большой гибрид слаймов получающийся в том случае когда некий слайм съедает чужеродный плорт.\n\nЗавакайте их чтобы удерживать их на кончике дула, или выстрелите чтобы отправить их в полёт!\n\nПомните, биология слаймов имеет значение! слаймы производящие жемчуг не могут образовывать ларго с теми кто производит плорты!"
     },
     "pedia": {
       "m.favored_by.silky_sand_craft": "Sand Slime"
