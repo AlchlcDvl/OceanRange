@@ -36,6 +36,7 @@
 
 //     [JsonRequired] public IdentifiableId PlortId;
 //     [JsonRequired] public IdentifiableId ResourceId;
+//     [JsonRequired] public IdentifiableId SlimeId;
 
 //     public Color Color;
 
@@ -53,8 +54,6 @@
 
 //     protected override string Prefix => "LAMP";
 //     protected override CreateCraftCosts CostCreator => Blueprints.CreateLampCraftCosts;
-
-//     [JsonRequired] public IdentifiableId SlimeId;
 // }
 
 // public sealed class WarpDepotData : SlimeGadgetData

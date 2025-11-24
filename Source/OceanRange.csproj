@@ -41,8 +41,6 @@
         <EmbeddedResource Include="Resources\*\*" />
         <EmbeddedResource Include="Resources\*\*\*" />
 
-        <EmbeddedResource Remove="Resources\Data\Translations\ru.json" />
-
         <Publicize Include="Assembly-CSharp" />
         <Publicize Include="UnityEngine.CoreModule" />
     </ItemGroup>
