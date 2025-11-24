@@ -2,7 +2,7 @@
   "name": "RU",
   "additional": {
     "ui": {
-      "l.pearls": "Жемчугономия",
+      "l.pearls": "Жемчугономия:",
       "m.foodgroup.dirt": "Грязь"
     },
     "tutorial": {
