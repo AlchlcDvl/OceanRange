@@ -750,14 +750,9 @@ public static class Slimepedia
 
         foreach (var structure in structures)
         {
-            var rendHandled = false;
-
             foreach (var appearanceObject in structure.Element.Prefabs)
             {
-                if (structure.Element.Name.IndexOf("offground", StringComparison.OrdinalIgnoreCase) >= 0 && !sharedMesh)
-                    continue;
-
-                if (!appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend) || rendHandled)
+                if (!appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                     continue;
 
                 appearanceObject.AttachedBones = AttachedBones;
@@ -770,7 +765,7 @@ public static class Slimepedia
                 if (structure.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0 && !sharedMesh)
                     sharedMesh = mesh;
 
-                rendHandled = true;
+                break;
             }
         }
 
