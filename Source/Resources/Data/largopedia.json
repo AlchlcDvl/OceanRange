@@ -56,10 +56,7 @@
         "mesh": "lantern_stalk",
         "cloneFallback": false
       },
-      {
-        "skipNull": true,
-        "instantiatePrefabs": true
-      },
+      { "instantiatePrefabs": true },
       {
         "mesh": "lantern_lure",
         "cloneFallback": false
@@ -90,10 +87,7 @@
         "matSameAs": 1,
         "matOrigin": "MINE_SLIME"
       },
-      {
-        "skipNull": true,
-        "instantiatePrefabs": true
-      },
+      { "instantiatePrefabs": true },
       {
         "mesh": "lantern_lure",
         "colorProps": { "_TopColor": "#9EA16F" }
@@ -631,14 +625,8 @@
     "props": ["CustomSlime2Structures", "CustomSlime1Structures"],
     "slime1Structs": [
       { "mesh": "hermit_phosphor_anten" },
-      {
-        "skipNull": true,
-        "instantiatePrefabs": true
-      },
-      {
-        "skipNull": true,
-        "instantiatePrefabs": true
-      }
+      { "instantiatePrefabs": true },
+      { "instantiatePrefabs": true }
     ],
     "slime2Structs": [
       { "cloneFallback": false },

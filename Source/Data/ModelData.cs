@@ -23,6 +23,7 @@ public sealed class ModelData : JsonData
         {
             Mesh = data?.Mesh;
             Jiggle = data?.Jiggle;
+            PrefabLength = data?.PrefabLength;
         }
 
         if (data == null)
@@ -32,13 +33,17 @@ public sealed class ModelData : JsonData
         CloneSameAs = data.CloneSameAs;
         CloneFallback = data.CloneFallback;
         CloneMatOrigin = data.CloneMatOrigin;
+        InvertColorOriginColors = data.InvertColorOriginColors;
 
         if (!includeMeshData)
             return;
 
         Skip = data.Skip;
         SkipNull = data.SkipNull;
+        SkipRigging = data.SkipRigging;
+        UseBaseStruct = data.UseBaseStruct;
         IgnoreLodIndex = data.IgnoreLodIndex;
+        InstantiatePrefabs = data.InstantiatePrefabs;
     }
 
     public float? Gloss;
@@ -52,6 +57,7 @@ public sealed class ModelData : JsonData
     public bool CloneSameAs;
     public bool CloneMatOrigin = true;
     public bool CloneFallback = true;
+    public bool SkipRigging;
 
     public IdentifiableId? MatOrigin;
     public IdentifiableId? ColorsOrigin;
@@ -81,6 +87,9 @@ public sealed class ModelData : JsonData
 
     protected override void OnDeserialise()
     {
+        if (InstantiatePrefabs)
+            SkipNull = true;
+
         if (ColorPropsJson == null)
             return;
 
