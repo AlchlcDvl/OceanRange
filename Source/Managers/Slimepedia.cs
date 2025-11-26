@@ -750,6 +750,8 @@ public static class Slimepedia
 
         foreach (var structure in structures)
         {
+            var isBody = structure.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0;
+
             foreach (var appearanceObject in structure.Element.Prefabs)
             {
                 if (!appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
@@ -762,7 +764,7 @@ public static class Slimepedia
                 list.Add((rend, mesh, handler?.Jiggle, handler?.SkipRigging ?? false));
                 handler?.Destroy();
 
-                if (structure.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0 && !sharedMesh)
+                if (isBody && !sharedMesh)
                     sharedMesh = mesh;
 
                 break;
