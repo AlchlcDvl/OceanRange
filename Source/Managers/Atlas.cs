@@ -2,7 +2,7 @@
 
 // namespace OceanRange.Managers;
 
-// [Manager]
+// [Manager(ManagerType.Atlas)]
 // public static class Atlas
 // {
 //     private static ZoneData[] Zones;
@@ -27,7 +27,7 @@
 // #if DEBUG
 //     [TimeDiagnostic("Atlas PreOnSaveLoad")]
 // #endif
-//     [PreloadMethod(0)]
+//     [PreloadMethod]
 //     private static void PreOnSaveLoad(SceneContext context)
 //     {
 //         // Load regions before the zones or the game implodes
@@ -101,7 +101,7 @@
 // #if DEBUG
 //     [TimeDiagnostic("Atlas Load")]
 // #endif
-//     [LoadMethod(0)]
+//     [LoadMethod]
 //     public static void LoadMap()
 //     {
 //         TeleporterPrefab = Inventory.GetPrefab("TeleporterDevEntrance");

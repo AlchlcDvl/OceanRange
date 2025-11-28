@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace OceanRange.Managers;
 
 // Manager class to handle the commonality of a bunch of slime handling code
-[Manager]
+[Manager(ManagerType.Slimepedia)]
 public static class Slimepedia
 {
     public static Dictionary<IdentifiableId, SlimeData> SlimeDataMap;
@@ -58,7 +58,7 @@ public static class Slimepedia
 #if DEBUG
     [TimeDiagnostic("Slimes Preload")]
 #endif
-    [PreloadMethod(3)]
+    [PreloadMethod]
     public static void PreloadSlimeData()
     {
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
@@ -122,7 +122,7 @@ public static class Slimepedia
 #if DEBUG
     [TimeDiagnostic("Slimes Load")]
 #endif
-    [LoadMethod(2)]
+    [LoadMethod]
     public static void LoadAllSlimes()
     {
         RocksPrefab = IdentifiableId.ROCK_PLORT.GetPrefab().transform.Find("rocks");

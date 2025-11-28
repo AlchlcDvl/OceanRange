@@ -8,7 +8,7 @@ namespace OceanRange.Managers;
 /// <summary>
 /// Handles the saving and reading of modded data that implement <c><see cref="ISaveData"/></c>.
 /// </summary>
-[Manager]
+[Manager(ManagerType.FloppyDisk)]
 public static class FloppyDisk
 {
     /// <summary>
@@ -17,7 +17,7 @@ public static class FloppyDisk
 #if DEBUG
     [TimeDiagnostic("Save Preload")]
 #endif
-    [PreloadMethod(1)]
+    [PreloadMethod]
     public static void PreloadSaveData()
     {
         SaveRegistry.RegisterWorldDataLoadDelegate(ReadSaveData);

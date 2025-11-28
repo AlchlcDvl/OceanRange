@@ -1,6 +1,6 @@
 namespace OceanRange.Managers;
 
-[Manager]
+[Manager(ManagerType.Mailbox)]
 public static class Mailbox
 {
     public static MailData[] Mail;
@@ -9,7 +9,7 @@ public static class Mailbox
 #if DEBUG
     [TimeDiagnostic("Mail Preload")]
 #endif
-    [PreloadMethod(5)]
+    [PreloadMethod]
     public static void PreloadMailData()
     {
         Mail = Inventory.GetJsonArray<MailData>("mailbox");

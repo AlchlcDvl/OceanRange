@@ -1,14 +1,30 @@
-namespace OceanRange.Managers;
+namespace OceanRange.Modules;
 
-public enum LoadState
+public enum LoadState : byte
 {
     Preload,
     Load,
     Postload
 }
 
+public enum ManagerType : byte
+{
+    // Atlas,
+    FloppyDisk,
+    Cookbook,
+    Slimepedia,
+    Largopedia,
+    Mailbox,
+    Contacts,
+    // Blueprints,
+    Translator
+}
+
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class ManagerAttribute : Attribute;
+public sealed class ManagerAttribute(ManagerType manager) : Attribute
+{
+    public readonly ManagerType Manager = manager;
+}
 
 [AttributeUsage(AttributeTargets.Method)]
 public abstract class ManagerMethodAttribute(int order, LoadState state) : Attribute

@@ -3,7 +3,7 @@ using SRML.SR.Utils;
 namespace OceanRange.Managers;
 
 // All hail the json gods, for they look upon me favourably
-[Manager]
+[Manager(ManagerType.Largopedia)]
 public static class Largopedia
 {
     /*
@@ -47,13 +47,13 @@ public static class Largopedia
 #if DEBUG
     [TimeDiagnostic("Largos Preload")]
 #endif
-    [PreloadMethod(4)]
+    [PreloadMethod]
     public static void PreloadLargoData() => Largos = Inventory.GetJsonArray<LargoData>("largopedia");
 
 #if DEBUG
     [TimeDiagnostic("Largos Load")]
 #endif
-    [LoadMethod(3)]
+    [LoadMethod]
     public static void LoadAllLargos()
     {
         QuantumMat = IdentifiableId.QUANTUM_SLIME.GetSlimeDefinition().AppearancesDefault[0].QubitAppearance.Structures[0].DefaultMaterials[0];

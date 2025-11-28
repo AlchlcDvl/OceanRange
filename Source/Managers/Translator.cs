@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace OceanRange.Managers;
 
-[Manager]
+[Manager(ManagerType.Translator)]
 public static class Translator
 {
     public static readonly Dictionary<string, string> SlimeToOnomicsMap = [];

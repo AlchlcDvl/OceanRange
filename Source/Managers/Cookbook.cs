@@ -3,7 +3,7 @@ using SRML;
 
 namespace OceanRange.Managers;
 
-[Manager]
+[Manager(ManagerType.Cookbook)]
 public static class Cookbook
 {
     /// <summary>
@@ -35,7 +35,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
 #endif
-    [PreloadMethod(2)]
+    [PreloadMethod]
     public static void PreloadFoodData()
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
@@ -112,7 +112,7 @@ public static class Cookbook
                     for (var i = 0; i < orientations.Length; i++)
                     {
                         var resource = CreateSpawner(orientations[i], veggiePrefab, parent, context, array, lower + veggieData.Name + "0" + i);
-                        resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = dirt;
+                        resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = dirt; // Cloning from the base game creates invisible meshes, so I had to extract the dirt mesh from the game and reimplement it here
                     }
                 }
             }
@@ -164,7 +164,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Load")]
 #endif
-    [LoadMethod(1)]
+    [LoadMethod]
     public static void LoadAllFoods()
     {
         Array.ForEach(Fruits, BaseCreatePlant);

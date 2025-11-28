@@ -8,22 +8,22 @@ public static class BootStrapper
 
     public static void RegisterManagers(Assembly assembly)
     {
-        var foundMethods = new List<(LoadState State, int Order, MethodInfo Method)>();
+        var foundMethods = new List<(LoadState State, int MethodOrder, ManagerType ManagerOrder, MethodInfo Method)>();
 
         foreach (var type in AccessTools.GetTypesFromAssembly(assembly))
         {
-            if (type.IsInterface || !type.IsAbstract || !type.IsSealed || !type.IsDefined<ManagerAttribute>())
+            if (type.IsInterface || !type.IsAbstract || !type.IsSealed || !type.TryGetAttribute<ManagerAttribute>(out var mngAttr))
                 continue;
 
             foreach (var method in type.GetMethods(AccessTools.all))
             {
                 if (method.IsStatic && method.TryGetAttribute<ManagerMethodAttribute>(out var attr))
-                    foundMethods.Add((attr.State, attr.Order, method));
+                    foundMethods.Add((attr.State, attr.Order, mngAttr.Manager, method));
             }
         }
 
         foreach (var group in foundMethods.GroupBy(x => x.State))
-            MethodCache[group.Key] = [.. group.OrderBy(x => x.Order).Select(x => x.Method)];
+            MethodCache[group.Key] = [.. group.OrderBy(x => x.MethodOrder).ThenBy(x => x.ManagerOrder).Select(x => x.Method)];
     }
 
     public static void ExecuteLoadState(LoadState state)
