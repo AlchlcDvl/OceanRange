@@ -39,9 +39,8 @@ internal sealed class Main : ModEntryPoint
 
         Inventory.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
 
-        ManagerAttribute.RegisterManagers(); // Handles the registration of the various manager classes
-
-        ManagerAttribute.ExecuteLoadState(LoadState.Preload); // Executes the preload methods of all of the manager classes
+        BootStrapper.RegisterManagers(Inventory.Core); // Handles the registration of the various manager classes
+        BootStrapper.ExecuteLoadState(LoadState.Preload); // Executes the preload methods of all of the manager classes
 
         Helpers.CategoriseIds();
 
@@ -68,7 +67,7 @@ internal sealed class Main : ModEntryPoint
     public override void Load()
     {
         // Loads the various forms of data the mod uses
-        ManagerAttribute.ExecuteLoadState(LoadState.Load); // Executes the load methods of all of the manager classes
+        BootStrapper.ExecuteLoadState(LoadState.Load); // Executes the load methods of all of the manager classes
 
         if (ClsExists) // If Custom Loading Screens is loaded, then add the splash art for the background
             AddSplashesBypass(Inventory.GetSprites("loading_1", "loading_2", "loading_3", "loading_4", "loading_5"));
@@ -80,7 +79,7 @@ internal sealed class Main : ModEntryPoint
 #endif
     public override void PostLoad()
     {
-        ManagerAttribute.ExecuteLoadState(LoadState.Postload); // Executes the postload methods of all of the manager classes
+        BootStrapper.ExecuteLoadState(LoadState.Postload); // Executes the postload methods of all of the manager classes
 
         // Inventory.Bundle.Unload(false);
         Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", "contacts"/*, "ocean_range", "blueprints"*/); // Release handles
