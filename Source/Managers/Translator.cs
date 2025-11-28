@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace OceanRange.Managers;
 
+[Manager]
 public static class Translator
 {
     public static readonly Dictionary<string, string> SlimeToOnomicsMap = [];
@@ -20,6 +21,7 @@ public static class Translator
 #if DEBUG
     [TimeDiagnostic("Pedia Preload")]
 #endif
+    [PreloadMethod]
     public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslations);
 
     public static void MessageDirectorHook(MessageDirector __instance)
@@ -111,7 +113,7 @@ public static class Translator
             bundle.AddSimpleTranslation(id, text);
     }
 
-    public static void AddSimpleTranslation(this Dictionary<string, string> bundle, string id, string text) => bundle[id] = text ?? $"STRMSS: {id}";
+    public static void AddSimpleTranslation(this Dictionary<string, string> bundle, string id, string text) => bundle[id] = text.IsNullOrWhiteSpace() ? $"STRMSS: {id}" : text;
 
     public static void AddComplexTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName) => CurrentDeferredList.Add(new(bundle, id, text, bundleName));
 

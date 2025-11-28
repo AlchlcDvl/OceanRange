@@ -106,6 +106,7 @@
 //     protected override string Prefix => "teleporter";
 // }
 
+// [Manager]
 // public static class Blueprints
 // {
 //     private static readonly int Color00 = ShaderUtils.GetOrSet("_Color00");
@@ -119,6 +120,7 @@
 // #if DEBUG
 //     [TimeDiagnostic("Blueprints Preload")]
 // #endif
+//     [PreloadMethod(7)]
 //     public static void PreloadBlueprintData()
 //     {
 //         var schematics = Inventory.GetJson<Schematics>("blueprints");

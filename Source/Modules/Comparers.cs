@@ -26,3 +26,12 @@ public sealed class LanguageComparer : IEqualityComparer<Language>
 
     public int GetHashCode(Language id) => (int)id;
 }
+
+public sealed class LoadStateComparer : IEqualityComparer<LoadState>
+{
+    public static readonly LoadStateComparer Instance = new();
+
+    public bool Equals(LoadState id1, LoadState id2) => id1 == id2;
+
+    public int GetHashCode(LoadState id) => (int)id;
+}

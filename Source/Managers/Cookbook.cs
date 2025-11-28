@@ -3,6 +3,7 @@ using SRML;
 
 namespace OceanRange.Managers;
 
+[Manager]
 public static class Cookbook
 {
     /// <summary>
@@ -34,6 +35,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
 #endif
+    [PreloadMethod(2)]
     public static void PreloadFoodData()
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
@@ -162,6 +164,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Load")]
 #endif
+    [LoadMethod(1)]
     public static void LoadAllFoods()
     {
         Array.ForEach(Fruits, BaseCreatePlant);

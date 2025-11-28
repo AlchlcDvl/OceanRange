@@ -444,7 +444,7 @@ public static class Helpers
 
     public static T EnsureComponent<T>(this Component component) where T : Component => component.gameObject.EnsureComponent<T>();
 
-    public static bool StartsWith(this string @string, char character) => @string[0] == character;
+    public static bool StartsWith(this string @string, char character) => @string.Length > 0 && @string[0] == character;
 
     public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => member.IsDefined(typeof(T), false);
 
@@ -578,4 +578,10 @@ public static class Helpers
     //     foreach (var prop in props)
     //         mat.SetColor(prop, color);
     // }
+
+    public static bool TryGetAttribute<T>(this MemberInfo info, out T attribute, bool inherit = true) where T : Attribute
+    {
+        attribute = info.GetCustomAttribute<T>(inherit);
+        return attribute != null;
+    }
 }
