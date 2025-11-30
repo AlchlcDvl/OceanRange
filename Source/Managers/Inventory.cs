@@ -11,7 +11,7 @@ namespace OceanRange.Managers;
 /// </summary>
 public static class Inventory
 {
-    public static AssetBundle Bundle;
+    // public static AssetBundle Bundle;
 
     /// <summary>
     /// Assembly data for the mod's dll.
@@ -262,20 +262,20 @@ public static class Inventory
         return true;
     }
 
-    /// <summary>
-    /// Gets a Shader from the assets associated with the provided name.
-    /// </summary>
-    /// <inheritdoc cref="Get{T}(string)"/>
-    public static Shader GetShader(string name) => Get<Shader>(name);
+    // /// <summary>
+    // /// Gets a Shader from the assets associated with the provided name.
+    // /// </summary>
+    // /// <inheritdoc cref="Get{T}(string)"/>
+    // public static Shader GetShader(string name) => Get<Shader>(name);
 
-    /// <summary>
-    /// Gets a ScriptableObject instance associated with the provided type and name.
-    /// </summary>
-    /// <typeparam name="T">The type of the data.</typeparam>
-    /// <inheritdoc cref="Get{T}(string)"/>
-    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
-
-    public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
+    // /// <summary>
+    // /// Gets a ScriptableObject instance associated with the provided type and name.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the data.</typeparam>
+    // /// <inheritdoc cref="Get{T}(string)"/>
+    // public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
+    //
+    // public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 

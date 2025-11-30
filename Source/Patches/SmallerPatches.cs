@@ -101,6 +101,13 @@ public static class LatchCustomTranslations
     }
 }
 
+[HarmonyPatch(typeof(MessageDirector), nameof(MessageDirector.Awake)), UsedImplicitly]
+public static class HookLanguageLoading
+{
+    [UsedImplicitly]
+    public static void Prefix(MessageDirector __instance) => Translator.MessageDirectorHook(__instance);
+}
+
 [HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake)), UsedImplicitly]
 public static class FilterValues
 {

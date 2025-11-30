@@ -1,5 +1,6 @@
 namespace OceanRange.Managers;
 
+[Manager(ManagerType.Contacts)]
 public static class Contacts
 {
     public static Dictionary<RancherName, RancherData> RancherMap;
@@ -9,6 +10,7 @@ public static class Contacts
 #if DEBUG
     [TimeDiagnostic("Contacts Preload")]
 #endif
+    [PreloadMethod, UsedImplicitly]
     public static void PreloadRancherData()
     {
         Ranchers = Inventory.GetJsonArray<RancherData>("contacts");
@@ -34,6 +36,7 @@ public static class Contacts
 #if DEBUG
     [TimeDiagnostic("Contacts Load")]
 #endif
+    [LoadMethod, UsedImplicitly]
     public static void LoadAllRanchers() => Array.ForEach(Ranchers, LoadRancher);
 
     private static void LoadRancher(RancherData rancher)
