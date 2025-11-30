@@ -6,7 +6,7 @@
       "m.foodgroup.dirt": "Erde"
     },
     "tutorial": {
-      "m.text.largo": "Largo slimes are large slime hybrids formed when a slime eats a plort unlike its own.\n\nVac to keep them on your nozzle, or shoot to send them flying!\n\nDo remember, the biology of the slimes matters! Pearl producing slimes cannot create largos with those that create plorts!"
+      "m.text.largo": "Largo-Schleime sind große Schleimhybride, die entstehen, wenn ein Schleim ein Plort frisst das nicht zu seiner eigenen Art gehört.\n\nSauge sie an, um sie auf deiner Düse zu halten, oder schieße sie weg, um sie weg zu schleudern!\n\nDenke jedoch immer daran dass die Biologie der Schleime wichtig ist! Plortproduzierende Schleime können keine Largos mit Schleimen bilden, die keine Plorts erzeugen."
     },
     "pedia": {
       "m.favored_by.silky_sand_craft": "@t.sand_slime_entry"
