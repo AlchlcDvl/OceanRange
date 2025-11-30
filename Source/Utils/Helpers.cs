@@ -245,30 +245,30 @@ public static class Helpers
 
     // public static string ToHexRGBA(this Color32 color) => $"#{color.r.ToString(InvariantCulture):X2}{color.g.ToString(InvariantCulture):X2}{color.b.ToString(InvariantCulture):X2}{color.a.ToString(InvariantCulture):X2}";
 
-    public static Vector3 ToPower(this Vector3 vector, int power)
-    {
-        if (power == 0)
-            return Vector3.one;
-
-        var result = Vector3.one;
-        var abs = Mathf.Abs(power);
-
-        for (var i = 0; i < abs; i++)
-        {
-            result.x *= vector.x;
-            result.y *= vector.y;
-            result.z *= vector.z;
-        }
-
-        if (power < 0)
-        {
-            result.x = 1f / result.x;
-            result.y = 1f / result.y;
-            result.z = 1f / result.z;
-        }
-
-        return result;
-    }
+    // public static Vector3 ToPower(this Vector3 vector, int power)
+    // {
+    //     if (power == 0)
+    //         return Vector3.one;
+    //
+    //     var result = Vector3.one;
+    //     var abs = Mathf.Abs(power);
+    //
+    //     for (var i = 0; i < abs; i++)
+    //     {
+    //         result.x *= vector.x;
+    //         result.y *= vector.y;
+    //         result.z *= vector.z;
+    //     }
+    //
+    //     if (power < 0)
+    //     {
+    //         result.x = 1f / result.x;
+    //         result.y = 1f / result.y;
+    //         result.z = 1f / result.z;
+    //     }
+    //
+    //     return result;
+    // }
 
     public static float Sum(this Vector3 vector) => vector.x + vector.y + vector.z;
 
@@ -504,7 +504,7 @@ public static class Helpers
 
     public static Vector3 Multiply(this Vector3 value, Vector3 scale) => new(value.x * scale.x, value.y * scale.y, value.z * scale.z);
 
-    public static Vector3 Abs(this Vector3 value) => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
+    // public static Vector3 Abs(this Vector3 value) => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
 
     public static bool TryGetItem<T>(this T[] array, int index, out T value)
     {
@@ -583,5 +583,11 @@ public static class Helpers
     {
         attribute = info.GetCustomAttribute<T>(inherit);
         return attribute != null;
+    }
+
+    public static void SetColor(this Material material, int nameID, Color? color)
+    {
+        if (color.HasValue)
+            material.SetColor(nameID, color.Value);
     }
 }

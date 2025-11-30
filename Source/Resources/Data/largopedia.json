@@ -681,7 +681,7 @@
         "matSameAs": 1,
         "matOrigin": "ROCK_SLIME"
       },
-      { "skip": true }
+      { "skipNull": true }
     ],
     "slime2Structs": [
       { "skipNull": true },
@@ -729,7 +729,7 @@
       { "colorsOrigin": "CRYSTAL_SLIME" }
     ],
     "slime1Structs": [
-      { "skip": true },
+      { "skipNull": true },
       {
         "mesh": "crystal_hermit_spine",
         "matSameAs": 1,

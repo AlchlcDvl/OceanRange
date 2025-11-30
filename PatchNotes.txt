@@ -61,13 +61,15 @@ Removed the need for AssetsLib
 Discord:
 ## New!
 - Translations: Added Russian translations
+- Information: Added clarification to the largo tutorial that pearl and plort producing slimes cannot largofy together
 
 ## Changes!
 - Improved the translation system of the mod to function better and lag less
 
 ## Fixes!
 - Critical: Fixed the ranch exchange being stuck offline
-- Informational: Added clarification to the largo tutorial that pearl and plort producing slimes cannot largofy together
+- Visual: Fixed Goldfish slimes having pink slime colored platter
+- Visual: Fixed Rock and Crystal largos disappearing when doing their rolling action
 
 ## Notes!
 - **Make sure to update Custom Loading Screens if you are using it! Otherwise the loading screen will not function fully!**

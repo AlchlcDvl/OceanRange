@@ -21,7 +21,7 @@ public static class Translator
 #if DEBUG
     [TimeDiagnostic("Pedia Preload")]
 #endif
-    [PreloadMethod]
+    [PreloadMethod, UsedImplicitly]
     public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslations);
 
     public static void MessageDirectorHook(MessageDirector __instance)
@@ -113,9 +113,9 @@ public static class Translator
             bundle.AddSimpleTranslation(id, text);
     }
 
-    public static void AddSimpleTranslation(this Dictionary<string, string> bundle, string id, string text) => bundle[id] = text.IsNullOrWhiteSpace() ? $"STRMSS: {id}" : text;
+    private static void AddSimpleTranslation(this Dictionary<string, string> bundle, string id, string text) => bundle[id] = text.IsNullOrWhiteSpace() ? $"STRMSS: {id}" : text;
 
-    public static void AddComplexTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName) => CurrentDeferredList.Add(new(bundle, id, text, bundleName));
+    private static void AddComplexTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName) => CurrentDeferredList.Add(new(bundle, id, text, bundleName));
 
     private static string GetTranslationValue(string id, string text, string bundleName, Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {

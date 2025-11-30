@@ -47,13 +47,13 @@ public static class Largopedia
 #if DEBUG
     [TimeDiagnostic("Largos Preload")]
 #endif
-    [PreloadMethod]
+    [PreloadMethod, UsedImplicitly]
     public static void PreloadLargoData() => Largos = Inventory.GetJsonArray<LargoData>("largopedia");
 
 #if DEBUG
     [TimeDiagnostic("Largos Load")]
 #endif
-    [LoadMethod]
+    [LoadMethod, UsedImplicitly]
     public static void LoadAllLargos()
     {
         QuantumMat = IdentifiableId.QUANTUM_SLIME.GetSlimeDefinition().AppearancesDefault[0].QubitAppearance.Structures[0].DefaultMaterials[0];

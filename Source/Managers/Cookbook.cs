@@ -35,7 +35,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
 #endif
-    [PreloadMethod]
+    [PreloadMethod, UsedImplicitly]
     public static void PreloadFoodData()
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
@@ -164,7 +164,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Load")]
 #endif
-    [LoadMethod]
+    [LoadMethod, UsedImplicitly]
     public static void LoadAllFoods()
     {
         Array.ForEach(Fruits, BaseCreatePlant);
