@@ -166,19 +166,15 @@ public static class Helpers
 
     public static Mesh Clone(this Mesh originalMesh)
     {
-        if (!originalMesh.isReadable)
-            return originalMesh;
-
         var mesh = new Mesh
         {
+            indexFormat = originalMesh.indexFormat,
             vertices = originalMesh.vertices,
-            triangles = originalMesh.triangles,
-
-            colors = originalMesh.colors,
+            normals = originalMesh.normals,
+            tangents = originalMesh.tangents,
+            bounds = originalMesh.bounds,
             colors32 = originalMesh.colors32,
-
             name = originalMesh.name + "_Clone",
-
             subMeshCount = originalMesh.subMeshCount
         };
 
@@ -187,7 +183,10 @@ public static class Helpers
         for (var i = 0; i < 8; i++)
         {
             originalMesh.GetUVs(i, uvs);
-            mesh.SetUVs(i, uvs);
+
+            if (uvs.Count > 0)
+                mesh.SetUVs(i, uvs);
+
             uvs.Clear();
         }
 

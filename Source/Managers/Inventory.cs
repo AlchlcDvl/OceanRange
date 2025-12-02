@@ -3,6 +3,7 @@ using SRML.Utils;
 using System.IO.Compression;
 using System.Text;
 using Newtonsoft.Json.Serialization;
+using UnityEngine.Rendering;
 
 namespace OceanRange.Managers;
 
@@ -355,13 +356,33 @@ public static class Inventory
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
         using var reader = new BinaryReader(decompressor);
 
-        return new()
+        var mesh = new Mesh()
         {
+            indexFormat = (IndexFormat)reader.ReadByte(),
             vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            triangles = BinaryUtils.ReadArray(reader, ReadInt),
-            uv = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2),
+            normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
+            tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4),
+            bounds = new()
+            {
+                center = BinaryUtils.ReadVector3(reader),
+                extents = BinaryUtils.ReadVector3(reader)
+            },
+            subMeshCount = reader.ReadInt32(),
             bindposes = []
         };
+
+        for (var i = 0; i < mesh.subMeshCount; i++)
+            mesh.SetTriangles(BinaryUtils.ReadArray(reader, ReadInt), i);
+
+        for (var i = 0; i < 8; i++)
+        {
+            var uvs = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2);
+
+            if (uvs.Length > 0)
+                mesh.SetUVs(i, uvs);
+        }
+
+        return mesh;
     }
 
     private static int ReadInt(BinaryReader reader) => reader.ReadInt32();

@@ -56,9 +56,29 @@ static class ExportMeshes
 
     static void WriteMesh(BinaryWriter writer, Mesh mesh)
     {
+        writer.Write((byte)mesh.indexFormat);
         WriteArray(writer, mesh.vertices, WriteVector3);
-        WriteArray(writer, mesh.triangles, WriteInt);
-        WriteArray(writer, mesh.uv, WriteVector2);
+        WriteArray(writer, mesh.normals, WriteVector3);
+        WriteArray(writer, mesh.tangents, WriteVector4);
+
+        var bounds = mesh.bounds;
+        WriteVector3(writer, bounds.center);
+        WriteVector3(writer, bounds.extents);
+
+        WriteInt(writer, mesh.subMeshCount);
+
+        for (var i = 0; i < mesh.subMeshCount; i++)
+            WriteArray(writer, mesh.GetTriangles(i), WriteInt);
+
+        var uvs = new List<Vector2>();
+
+        for (var i = 0; i < 8; i++)
+        {
+            mesh.GetUVs(i, uvs);
+            WriteList(writer, uvs, WriteVector2);
+            uvs.Clear();
+        }
+
         writer.Flush();
     }
 
@@ -88,6 +108,20 @@ static class ExportMeshes
         writer.Write(array.Length);
 
         for (var i = 0; i < array.Length; i++)
+            writeAction(writer, array[i]);
+    }
+
+    static void WriteList<T>(BinaryWriter writer, List<T> array, Action<BinaryWriter, T> writeAction)
+    {
+        if (array == null)
+        {
+            writer.Write(0);
+            return;
+        }
+
+        writer.Write(array.Count);
+
+        for (var i = 0; i < array.Count; i++)
             writeAction(writer, array[i]);
     }
 

@@ -70,6 +70,7 @@ Discord:
 - Critical: Fixed the ranch exchange being stuck offline
 - Visual: Fixed Goldfish slimes having pink slime colored platter
 - Visual: Fixed Rock and Crystal largos disappearing when doing their rolling action
+- Visual: Fixed slimes looking "low poly"
 
 ## Notes!
 - **Make sure to update Custom Loading Screens if you are using it! Otherwise the loading screen will not function fully!**
@@ -77,5 +78,8 @@ Discord:
 Nexus:
 Translations: Added Russian translations
 Improvement: Improved the translation system of the mod to function better and lag less
-Critical Fix: Fixed the ranch exchange being stuck offline
 Clarification: Added clarification to the largo tutorial that pearl and plort producing slimes cannot largofy together
+Critical Fix: Fixed the ranch exchange being stuck offline
+Visual Fix: Fixed Goldfish slimes having pink slime colored platter
+Visual Fix: Fixed Rock and Crystal largos disappearing when doing their rolling action
+Visual Fix: Fixed slimes looking "low poly"

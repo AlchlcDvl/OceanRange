@@ -2,6 +2,7 @@ using OceanRange.Patches;
 using OceanRange.Saves;
 using SRML;
 using SRML.SR.SaveSystem;
+using SRML.Utils;
 using UnityEngine.UI;
 
 namespace OceanRange.Managers;
@@ -462,10 +463,12 @@ public static class Slimepedia
                 return structure;
 
             var elemInner = structure.Element = structure.Element.Instantiate();
+            var oldPrefabs = elemInner.Prefabs;
+            elemInner.Prefabs = new SlimeAppearanceObject[oldPrefabs.Length];
 
-            for (var i = 0; i < structure.Element.Prefabs.Length; i++)
+            for (var i = 0; i < oldPrefabs.Length; i++)
             {
-                var prefab = elemInner.Prefabs[i].DeepCopy();
+                var prefab = oldPrefabs[i].DeepCopy();
                 var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
                 handler.Jiggle = modelData.Jiggle;
                 handler.SkipRigging = modelData.SkipRigging;
@@ -676,16 +679,13 @@ public static class Slimepedia
 
             var vertices2 = mesh.vertices;
             var weights = new BoneWeight[vertices2.Length];
+            var jiggle = meshName.Jiggle ?? 1f;
 
             for (var n = 0; n < vertices2.Length; n++)
-                weights[n] = HandleBoneWeight(vertices2[n] - zero, num, meshName.Jiggle ?? 1f);
+                weights[n] = HandleBoneWeight(vertices2[n] - zero, num, jiggle);
 
             mesh.boneWeights = weights;
             mesh.bindposes = poses;
-
-            mesh.RecalculateBounds();
-            mesh.RecalculateNormals();
-            mesh.RecalculateTangents();
 
             var meshRend = isFirst ? prefabRend : prefabRend.Instantiate(parent);
             meshRend.sharedMesh = mesh;
@@ -809,10 +809,6 @@ public static class Slimepedia
 
             mesh.boneWeights = weights;
             mesh.bindposes = poses;
-
-            mesh.RecalculateBounds();
-            mesh.RecalculateNormals();
-            mesh.RecalculateTangents();
 
             rend.localBounds = mesh.bounds;
         }

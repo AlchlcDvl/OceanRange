@@ -284,10 +284,6 @@ public static class Cookbook
 
         var mesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
 
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
-        mesh.RecalculateTangents();
-
         meshModel.GetComponent<MeshFilter>().sharedMesh = mesh;
         prefab.GetComponent<MeshFilter>().sharedMesh = mesh;
 

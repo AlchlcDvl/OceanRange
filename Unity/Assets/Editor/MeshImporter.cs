@@ -38,13 +38,27 @@ sealed class MeshImporter : ScriptedImporter
 
     static void ReadMesh(BinaryReader reader, Mesh mesh)
     {
-        mesh.vertices = ReadArray(reader, ReadVector3);
-        mesh.triangles = ReadArray(reader, ReadInt);
-        mesh.uv = ReadArray(reader, ReadVector2);
+        mesh.indexFormat = (IndexFormat)reader.ReadByte();
+        mesh.vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3);
+        mesh.normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3);
+        mesh.tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4);
+        mesh.bounds = new()
+        {
+            center = BinaryUtils.ReadVector3(reader),
+            extents = BinaryUtils.ReadVector3(reader)
+        };
+        mesh.subMeshCount = reader.ReadInt32();
 
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
-        mesh.RecalculateTangents();
+        for (var i = 0; i < mesh.subMeshCount; i++)
+            mesh.SetTriangles(BinaryUtils.ReadArray(reader, ReadInt), i);
+
+        for (var i = 0; i < 8; i++)
+        {
+            var uvs = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2);
+
+            if (uvs.Length > 0)
+                mesh.SetUVs(i, uvs);
+        }
     }
 
     static int ReadInt(BinaryReader reader) => reader.ReadInt32();
