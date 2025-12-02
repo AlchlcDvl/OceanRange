@@ -5,13 +5,9 @@ namespace OceanRange;
 
 internal sealed class Main : ModEntryPoint
 {
-    public static ConsoleInstance Console;
     public static bool ClsExists;
     public static Transform PrefabParent;
-
-#if DEBUG
-    private static readonly SavePositionCommand SavePos = new(); // Keeping the instance of the command because it stores saved positions
-#endif
+    public static ConsoleInstance Console;
 
     /// <inheritdoc/>
     public override void PreLoad()
@@ -39,7 +35,7 @@ internal sealed class Main : ModEntryPoint
 
         Inventory.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
 
-        BootStrapper.RegisterManagers(Inventory.Core); // Handles the registration of the various manager classes
+        BootStrapper.RegisterAttributes(Inventory.Core); // Handles the registration of the various manager classes
         BootStrapper.ExecuteLoadState(LoadState.Preload); // Executes the preload methods of all of the manager classes
 
         Helpers.CategoriseIds();
@@ -49,11 +45,7 @@ internal sealed class Main : ModEntryPoint
         PrefabParent = gameObject.transform;
 
 #if DEBUG
-        // Debug stuff for the special commands
-        RegisterCommand(SavePos);
-        RegisterCommand(new EchoCommand());
-        RegisterCommand(new TeleportCommand());
-        RegisterCommand(new TesterUnlockProgressCommand());
+        BootStrapper.RegisterCommands();
 
         watch.Stop();
         ConsoleInstance.Log($"Mod Preloaded in {watch.ElapsedMilliseconds}ms!");
@@ -95,7 +87,7 @@ internal sealed class Main : ModEntryPoint
     [TimeDiagnostic("Mod Unload")]
     public override void Unload()
     {
-        File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePos.SavedPositions, Inventory.JsonSettings));
+        File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePositionCommand.SavedPositions, Inventory.JsonSettings));
 #else
     public override void Unload()
     {

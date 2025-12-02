@@ -1,25 +1,56 @@
 using System.Reflection;
 
+#if DEBUG
+using SRML.Console;
+using static SRML.Console.Console;
+#endif
+
 namespace OceanRange.Managers;
 
 public static class BootStrapper
 {
     private static readonly Dictionary<LoadState, MethodInfo[]> MethodCache = new(LoadStateComparer.Instance);
 
-    public static void RegisterManagers(Assembly assembly)
+#if DEBUG
+    private static readonly List<ConsoleCommand> Commands = [];
+#endif
+
+    public static void RegisterAttributes(Assembly assembly)
     {
         var foundMethods = new List<(LoadState State, int MethodOrder, ManagerType ManagerOrder, MethodInfo Method)>();
 
         foreach (var type in AccessTools.GetTypesFromAssembly(assembly))
         {
-            if (type.IsInterface || !type.IsAbstract || !type.IsSealed || !type.TryGetAttribute<ManagerAttribute>(out var mngAttr))
+            if (type.IsInterface)
                 continue;
 
-            foreach (var method in type.GetMethods(AccessTools.all))
+            if (type.TryGetAttribute<ManagerAttribute>(out var mngAttr))
             {
-                if (method.IsStatic && method.TryGetAttribute<ManagerMethodAttribute>(out var attr))
-                    foundMethods.Add((attr.State, attr.Order, mngAttr.Manager, method));
+                if (!type.IsAbstract || !type.IsSealed)
+                {
+                    Main.Console.LogError("ManagerAttribute should only be used on static types!");
+                    continue;
+                }
+
+                foreach (var method in type.GetMethods(AccessTools.all))
+                {
+                    if (method.IsStatic && method.TryGetAttribute<ManagerMethodAttribute>(out var attr))
+                        foundMethods.Add((attr.State, attr.Order, mngAttr.Manager, method));
+                }
             }
+
+#if DEBUG
+            if (type.IsDefined<CommandAttribute>())
+            {
+                if (type.IsAbstract)
+                {
+                    Main.Console.LogError("CommandAttribute should only be used on concrete types!");
+                    continue;
+                }
+
+                Commands.Add((ConsoleCommand)Activator.CreateInstance(type)!);
+            }
+#endif
         }
 
         foreach (var group in foundMethods.GroupBy(x => x.State))
@@ -45,4 +76,12 @@ public static class BootStrapper
             }
         }
     }
+
+#if DEBUG
+    public static void RegisterCommands()
+    {
+        foreach (var command in Commands)
+            RegisterCommand(command);
+    }
+#endif
 }

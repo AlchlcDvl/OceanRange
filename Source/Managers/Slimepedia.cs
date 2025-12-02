@@ -2,7 +2,6 @@ using OceanRange.Patches;
 using OceanRange.Saves;
 using SRML;
 using SRML.SR.SaveSystem;
-using SRML.Utils;
 using UnityEngine.UI;
 
 namespace OceanRange.Managers;
@@ -550,7 +549,7 @@ public static class Slimepedia
             material = matData.CachedMaterial;
             setProps = false;
         }
-        // else if (matData.Shader != null)
+        // else if (matData.Shader != null) // WIP
         //     material = new(Inventory.GetShader(matData.Shader));
         else if (matData.MatOrigin.HasValue)
         {
@@ -650,19 +649,8 @@ public static class Slimepedia
             poses[k] = bones[k].worldToLocalMatrix * rootMatrix;
 
         var sharedMesh = prefabRend.sharedMesh;
-        var vertices = sharedMesh.vertices;
-        var zero = Vector3.zero;
 
-        foreach (var vector in vertices)
-            zero += vector;
-
-        zero /= vertices.Length;
-        var num = 0f;
-
-        foreach (var vector in vertices)
-            num += (vector - zero).magnitude;
-
-        num /= vertices.Length;
+        var (zero, num) = GetCenteredValues(sharedMesh.vertices);
 
         for (var i = 0; i < slimeData.GordoFeatures.Length; i++)
         {
@@ -671,7 +659,7 @@ public static class Slimepedia
             var isFirst = i == 0;
             var mesh = isNull
                 ? sharedMesh.Clone()
-                    // : (meshName.Mesh == "slime_gordo"
+                    // : (meshName.Mesh == "slime_gordo" // WIP
                     //     ? GordoMesh
                     : (isFirst || meshName.Mesh.EndsWith("_gordo", StringComparison.Ordinal)
                         ? Inventory.GetMesh(meshName.Mesh)
@@ -776,19 +764,7 @@ public static class Slimepedia
             poses[i] = applicator.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
         }
 
-        var vertices = sharedMesh.vertices;
-        var zero = Vector3.zero;
-
-        foreach (var vector in vertices)
-            zero += vector;
-
-        zero /= vertices.Length;
-        var num = 0f;
-
-        foreach (var vector in vertices)
-            num += (vector - zero).magnitude;
-
-        num /= vertices.Length;
+        var (zero, num) = GetCenteredValues(sharedMesh.vertices);
 
         foreach (var (rend, mesh, jiggleFactor, skip) in list)
         {
@@ -812,6 +788,23 @@ public static class Slimepedia
 
             rend.localBounds = mesh.bounds;
         }
+    }
+
+    private static (Vector3, float) GetCenteredValues(Vector3[] vertices)
+    {
+        var zero = Vector3.zero;
+
+        foreach (var vector in vertices)
+            zero += vector;
+
+        zero /= vertices.Length;
+        var num = 0f;
+
+        foreach (var vector in vertices)
+            num += (vector - zero).magnitude;
+
+        num /= vertices.Length;
+        return (zero, num);
     }
 
     [UsedImplicitly]
