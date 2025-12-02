@@ -378,7 +378,7 @@
       {
         "colorsOrigin": "PHOSPHOR_SLIME",
         "matOrigin": "TABBY_SLIME",
-        "pattern": "mesmer_pincer_pattern"
+        "pattern": "mesmer_pincer"
       },
       {
         "colorsOrigin": "PHOSPHOR_SLIME",
@@ -484,7 +484,7 @@
     "props": ["CustomBody", "CustomSlime2Structures"],
     "bodyStruct": {
       "colorsOrigin": "ROCK_SLIME",
-      "pattern": "mesmer_pattern",
+      "pattern": "mesmer",
       "matOrigin": "TABBY_SLIME",
       "gloss": 0.11
     },
@@ -492,7 +492,7 @@
       {
         "colorsOrigin": "ROCK_SLIME",
         "matOrigin": "TABBY_SLIME",
-        "pattern": "mesmer_pincer_pattern"
+        "pattern": "mesmer_pincer"
       },
       {
         "colorsOrigin": "ROCK_SLIME",
@@ -538,7 +538,7 @@
     "props": ["CustomBody", "CustomSlime2Structures"],
     "bodyStruct": {
       "colorsOrigin": "CRYSTAL_SLIME",
-      "pattern": "mesmer_pattern",
+      "pattern": "mesmer",
       "matOrigin": "TABBY_SLIME",
       "gloss": 0.11
     },
@@ -546,7 +546,7 @@
       {
         "colorsOrigin": "CRYSTAL_SLIME",
         "matOrigin": "TABBY_SLIME",
-        "pattern": "mesmer_pincer_pattern"
+        "pattern": "mesmer_pincer"
       },
       {
         "colorsOrigin": "CRYSTAL_SLIME",

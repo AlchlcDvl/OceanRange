@@ -89,7 +89,7 @@
     "onomicsType": "plorts",
     "slimeFeatures": [
       {
-        "pattern": "coco_pattern",
+        "pattern": "coco",
         "matOrigin": "TABBY_SLIME",
         "gloss": 1,
         "colorProps": {
@@ -144,7 +144,7 @@
     "toRemove": ["BoomSlimeExplode, Assembly-CSharp", "BoomMaterialAnimator, Assembly-CSharp"],
     "slimeFeatures": [
       {
-        "pattern": "mine_pattern",
+        "pattern": "mine",
         "matOrigin": "TABBY_SLIME",
         "gloss": 1,
         "colorProps": {
@@ -212,7 +212,7 @@
       },
       {
         "mesh": "lantern_fins",
-        "pattern": "lantern_pattern",
+        "pattern": "lantern",
         "matOrigin": "TABBY_SLIME",
         "colorProps": {
           "_TopColor": "#752C86",
@@ -329,7 +329,7 @@
     "toAdd": ["StalkConsumable, Assembly-CSharp"],
     "slimeFeatures": [
       {
-        "pattern": "mesmer_pattern",
+        "pattern": "mesmer",
         "matOrigin": "TABBY_SLIME",
         "gloss": 0.11,
         "colorProps": {
@@ -341,7 +341,7 @@
       {
         "mesh": "mesmer_pincers",
         "matOrigin": "TABBY_SLIME",
-        "pattern": "mesmer_pincer_pattern",
+        "pattern": "mesmer_pincer",
         "colorProps": {
           "_TopColor": "#340ca1",
           "_BottomColor": "#431158"
@@ -433,7 +433,7 @@
     "jiggle": 0.25,
     "slimeFeatures": [
       {
-        "pattern": "hermit_pattern",
+        "pattern": "hermit",
         "matOrigin": "TABBY_SLIME",
         "gloss": 0.11,
         "colorProps": {
@@ -443,8 +443,12 @@
       },
       {
         "mesh": "hermit_shell",
-        "matOrigin": "PINK_SLIME",
-        "colorProps": { "_TopColor": "#f6d599" }
+        "matOrigin": "TABBY_SLIME",
+        "pattern": "hermit_shell",
+        "colorProps": {
+          "_TopColor": "#f68c65",
+          "_BottomColor": "#f6d599"
+        }
       },
       {
         "mesh": "hermit_claws",

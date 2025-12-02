@@ -607,7 +607,7 @@ public static class Slimepedia
 
         if (modelData.Pattern != null)
         {
-            var tex = Inventory.GetTexture2D(modelData.Pattern);
+            var tex = Inventory.GetTexture2D(modelData.Pattern + "_pattern");
 
             if (material.HasProperty(StripeTexture))
                 material.SetTexture(StripeTexture, tex);
