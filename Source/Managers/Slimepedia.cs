@@ -28,7 +28,7 @@ public static class Slimepedia
     public static readonly int MiddleColor = ShaderUtils.GetOrSet("_MiddleColor");
     public static readonly int BottomColor = ShaderUtils.GetOrSet("_BottomColor");
 
-    private static readonly int Color = ShaderUtils.GetOrSet("_Color");
+    public static readonly int Color = ShaderUtils.GetOrSet("_Color");
     private static readonly int Gloss = ShaderUtils.GetOrSet("_Gloss");
     private static readonly int EyeRed = ShaderUtils.GetOrSet("_EyeRed");
     private static readonly int EyeBlue = ShaderUtils.GetOrSet("_EyeBlue");
@@ -508,7 +508,16 @@ public static class Slimepedia
                     prefab = prefab.CreatePrefab();
 
                 if (prefab.TryGetComponent<SkinnedMeshRenderer>(out var rend))
+                {
                     rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(modelData.Mesh + "_LOD0");
+
+                    if (isFirst)
+                    {
+                        var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
+                        handler.Jiggle = modelData.Jiggle;
+                        handler.SkipRigging = modelData.SkipRigging;
+                    }
+                }
                 else if (!isNull && prefab.TryGetComponent<MeshFilter>(out var filter))
                     filter.sharedMesh = Inventory.GetMesh(modelData.Mesh + "_LOD" + j);
 
@@ -517,13 +526,6 @@ public static class Slimepedia
                     prefab.name = modelData.Mesh + "_LOD" + j;
                     prefab.transform.localPosition = Vector3.zero;
                     prefab.transform.localEulerAngles = Vector3.zero;
-                }
-
-                if (isFirst)
-                {
-                    var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
-                    handler.Jiggle = modelData.Jiggle;
-                    handler.SkipRigging = modelData.SkipRigging;
                 }
 
                 prefab.LODIndex = j;
@@ -582,9 +584,14 @@ public static class Slimepedia
         return material;
     }
 
-    private static Material GetMat(IdentifiableId source, int? index) => Identifiable.IsPlort(source)
-        ? source.GetPrefab().GetComponent<MeshRenderer>().sharedMaterials[index ?? 0]
-        : source.GetSlimeDefinition().AppearancesDefault[0].Structures[index ?? 0].DefaultMaterials[0];
+    private static Material GetMat(IdentifiableId source, int? index)
+    {
+        if (Identifiable.IsSlime(source))
+            return source.GetSlimeDefinition().AppearancesDefault[0].Structures[index ?? 0].DefaultMaterials[0];
+
+        var prefab = source.GetPrefab();
+        return (prefab.GetComponent<MeshRenderer>() ?? prefab.GetComponentInChildren<MeshRenderer>()).sharedMaterials[index ?? 0];
+    }
 
     public static void SetMatProperties(ModelData modelData, Material material)
     {
@@ -600,6 +607,9 @@ public static class Slimepedia
 
             if (temp.HasProperty(BottomColor))
                 modelData.ColorProps[modelData.InvertColorOriginColors ? TopColor : BottomColor] = temp.GetColor(BottomColor);
+
+            if (temp.HasProperty(Color))
+                modelData.ColorProps[Color] = temp.GetColor(Color);
         }
 
         if (modelData.Gloss.HasValue && material.HasProperty(Gloss))
@@ -659,8 +669,8 @@ public static class Slimepedia
             var isFirst = i == 0;
             var mesh = isNull
                 ? sharedMesh.Clone()
-                    // : (meshName.Mesh == "slime_gordo" // WIP
-                    //     ? GordoMesh
+                // : (meshName.Mesh == "slime_gordo" // WIP
+                //     ? GordoMesh
                     : (isFirst || meshName.Mesh.EndsWith("_gordo", StringComparison.Ordinal)
                         ? Inventory.GetMesh(meshName.Mesh)
                         : Inventory.GetMesh(meshName.Mesh + "_LOD0"));
@@ -817,7 +827,7 @@ public static class Slimepedia
         prefab.transform.localScale /= 3f;
         prefab.transform.localPosition = new(0f, 0.4f, 1.03f);
 
-        var rend = prefab.transform.GetComponentInChildren<MeshRenderer>();
+        var rend = prefab.GetComponentInChildren<MeshRenderer>();
         var material = rend.sharedMaterial.Clone();
         material.SetColor(Color, "#EBDB6A".HexToColor());
         rend.sharedMaterial = material;

@@ -90,8 +90,19 @@ public sealed class ModelData : JsonData
         if (InstantiatePrefabs)
             SkipNull = true;
 
-        if (ColorPropsJson == null)
+        if (ColorPropsJson?.Count is null or 0)
+        {
+            if (MatOrigin.HasValue && Pattern == null)
+                CloneMatOrigin = false;
+
+            if (!Gloss.HasValue)
+            {
+                CloneSameAs = false;
+                CloneFallback = false;
+            }
+
             return;
+        }
 
         foreach (var (prop, color) in ColorPropsJson.ToArray())
         {
@@ -99,9 +110,7 @@ public sealed class ModelData : JsonData
                 continue;
 
             var baseName = prop.Substring(0, prop.Length - TopLength);
-
             var middleColor = ColorPropsJson.GetOrAdd(baseName + "MiddleColor", color);
-
             var bottom = baseName + "BottomColor";
 
             if (!ColorPropsJson.ContainsKey(bottom))

@@ -336,4 +336,13 @@ public static class Largopedia
 
     [UsedImplicitly]
     public static void InitPhosphorHermitDetails(GameObject prefab, SlimeDefinition _1, SlimeAppearance _2) => prefab.AddComponent<PhosphorHermitAppearanceFixer>();
+
+    [UsedImplicitly]
+    public static void InitRosiLanternDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
+    {
+        // var rend = appearance.Structures[3].Element.Prefabs[0].GetComponentInChildren<MeshRenderer>();
+        // rend.name.DoLog();
+        // var mat = rend.sharedMaterial.Clone();
+        // mat.SetColor(Slimepedia.Color, "#F9E5F0".HexToColor());
+    }
 }

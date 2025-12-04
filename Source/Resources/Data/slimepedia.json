@@ -224,7 +224,6 @@
         "sameAs": 0
       },
       {
-        "skipNull": true,
         "useBaseStruct": true,
         "instantiatePrefabs": true
       },
