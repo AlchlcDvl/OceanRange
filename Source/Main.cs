@@ -35,14 +35,14 @@ internal sealed class Main : ModEntryPoint
 
         Inventory.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the json settings
 
+        var gameObject = new GameObject("OceanPrefabs").DontDestroy();
+        gameObject.SetActive(false);
+        PrefabParent = gameObject.transform;
+
         BootStrapper.RegisterAttributes(Inventory.Core); // Handles the registration of the various manager classes
         BootStrapper.ExecuteLoadState(LoadState.Preload); // Executes the preload methods of all of the manager classes
 
         Helpers.CategoriseIds();
-
-        var gameObject = new GameObject("OceanPrefabs").DontDestroy();
-        gameObject.SetActive(false);
-        PrefabParent = gameObject.transform;
 
 #if DEBUG
         BootStrapper.RegisterCommands();

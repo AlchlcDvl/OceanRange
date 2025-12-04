@@ -502,12 +502,7 @@
         "colorProps": { "_TopColor": "#dbc777" }
       }
     ],
-    "plortFeatures": [
-      {
-        "mesh": "pearl",
-        "cloneFallback": false
-      }
-    ],
+    "plortFeatures": [ { "mesh": "pearl" } ],
     "gordoFeatures": [
       { "sameAs": 0 },
       {

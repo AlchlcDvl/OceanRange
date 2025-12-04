@@ -333,9 +333,10 @@ public static class Slimepedia
             tracker.Destroy();
 
         var baseAppearance = baseDefinition.AppearancesDefault[0]; // Getting the base appearance
-        var appearance = baseAppearance.DeepCopy(); // Cloning our own appearance
+        var appearance = baseAppearance.Instantiate(); // Cloning our own appearance
         appearance.name = $"{slimeData.Name}Normal";
 
+        appearance.Face = appearance.Face.DeepCopy();
         appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, Sleeping.Clone()];
 
         // Faces stuff
@@ -467,7 +468,7 @@ public static class Slimepedia
 
             for (var i = 0; i < oldPrefabs.Length; i++)
             {
-                var prefab = oldPrefabs[i].DeepCopy();
+                var prefab = oldPrefabs[i].CreatePrefab();
                 var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
                 handler.Jiggle = modelData.Jiggle;
                 handler.SkipRigging = modelData.SkipRigging;
@@ -853,7 +854,7 @@ public static class Slimepedia
     public static void InitGoldfishPlortDetails(GameObject prefab, SlimeDefinition definition) => definition.IdentifiableId.GetPrefab().GetComponent<GoldSlimeProducePlorts>().plortPrefab = prefab;
 
     [UsedImplicitly]
-    public static void InitGoldfishSlimeDetails(GameObject prefab, SlimeDefinition definition, SlimeAppearance appearance) => appearance.ColorPalette = IdentifiableId.GOLD_SLIME.GetSlimeDefinition().AppearancesDefault[0].ColorPalette;
+    public static void InitGoldfishSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance) => appearance.ColorPalette = IdentifiableId.GOLD_SLIME.GetSlimeDefinition().AppearancesDefault[0].ColorPalette;
 
 #if DEBUG
     [TimeDiagnostic("Slime Postload")]

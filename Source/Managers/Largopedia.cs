@@ -121,12 +121,12 @@ public static class Largopedia
 
         foreach (var expression in appearance1.Face._expressionToFaceLookup.Keys.Union(appearance2.Face._expressionToFaceLookup.Keys, SlimeFace.DefaultSlimeExpressionComparer))
         {
-            appearance.Face._expressionToFaceLookup.Add(expression, new()
+            appearance.Face._expressionToFaceLookup[expression] = new()
             {
                 SlimeExpression = expression,
                 Eyes = eyes.TryGetValue(expression, out var eyesInner) ? eyesInner.Eyes : null,
                 Mouth = mouth.TryGetValue(expression, out var mouthInner) ? mouthInner.Mouth : null
-            });
+            };
         }
 
         appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
@@ -179,7 +179,7 @@ public static class Largopedia
 
         if (appearance1.QubitAppearance != null || appearance2.QubitAppearance != null)
         {
-            var qubitAppearance = appearance.QubitAppearance = appearance.DeepCopy();
+            var qubitAppearance = appearance.QubitAppearance = appearance.Instantiate();
             var material = QuantumMat.Clone();
             material.SetFloat(GhostToggle, 1f);
 
@@ -336,13 +336,4 @@ public static class Largopedia
 
     [UsedImplicitly]
     public static void InitPhosphorHermitDetails(GameObject prefab, SlimeDefinition _1, SlimeAppearance _2) => prefab.AddComponent<PhosphorHermitAppearanceFixer>();
-
-    [UsedImplicitly]
-    public static void InitRosiLanternDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
-    {
-        // var rend = appearance.Structures[3].Element.Prefabs[0].GetComponentInChildren<MeshRenderer>();
-        // rend.name.DoLog();
-        // var mat = rend.sharedMaterial.Clone();
-        // mat.SetColor(Slimepedia.Color, "#F9E5F0".HexToColor());
-    }
 }
