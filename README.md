@@ -36,7 +36,7 @@ Make sure to read the known issues before reporting bugs! Duplicates will be rem
 - Programmers: AlchlcSystm and GeilDBL
 - 3D Modelers: Jack Z and Miramation
 - Artists: DiegoBA, Sir.UWU, Ghostly and LoyalRancher128
-- Translators - Tanqueiron27𝟎7 (Spanish), Leo (Turkish), catweazel123 (German), TheFireDragon (French), sl1m1v4d (Russian)
+- Translators - Tanqueiron27𝟎7 (Spanish), Leo and EgeK (Turkish), catweazel123 (German), TheFireDragon (French), sl1m1v4d (Russian)
 
 ## Known Issues
 - None at the moment
