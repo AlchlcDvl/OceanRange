@@ -62,10 +62,11 @@ Discord:
 ## New!
 - Translations: Added Russian translations
 - Information: Added clarification to the largo tutorial that pearl and plort producing slimes cannot largofy together
+- Configs: Added comments to the mod configs to better understand what they do
 
 ## Changes!
 - Improved the translation system of the mod to function better and lag less
-- Improved the Turkish translations
+- Improved the quality of the Turkish translations
 
 ## Fixes!
 - Critical: Fixed the ranch exchange being stuck offline
@@ -74,13 +75,14 @@ Discord:
 - Visual: Fixed slimes looking "low poly"
 
 ## Notes!
-- **Make sure to update Custom Loading Screens if you are using it! Otherwise the loading screen will not function fully!**
+- **Make sure to update Custom Loading Screens if you are using it! Otherwise the loading screen will not function fully and the game will lag a lot!**
 
 Nexus:
 Translations: Added Russian translations
-Improvement: Improved the translation system of the mod to function better and lag less
+Configs: Added comments to the mod configs to better understand what they do
 Clarification: Added clarification to the largo tutorial that pearl and plort producing slimes cannot largofy together
-Translations: Improved the Turkish translations
+Improvement: Improved the translation system of the mod to function better and lag less
+Translations: Improved quality of the the Turkish translations
 Critical Fix: Fixed the ranch exchange being stuck offline
 Visual Fix: Fixed Goldfish slimes having pink slime colored platter
 Visual Fix: Fixed Rock and Crystal largos disappearing when doing their rolling action
