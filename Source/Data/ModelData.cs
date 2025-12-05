@@ -10,7 +10,6 @@ public sealed class ModelData : JsonData
     {
         Gloss = data?.Gloss;
         SameAs = data?.SameAs;
-        // Shader = data?.Shader;
         Pattern = data?.Pattern;
         MatSameAs = data?.MatSameAs;
         MatOrigin = data?.MatOrigin;
@@ -30,7 +29,7 @@ public sealed class ModelData : JsonData
             return;
 
         IsBody = data.IsBody;
-        ShouldClone = data.ShouldClone;
+        IsModified = data.IsModified;
         InvertColorOriginColors = data.InvertColorOriginColors;
 
         if (!includeMeshData)
@@ -57,8 +56,6 @@ public sealed class ModelData : JsonData
     public IdentifiableId? MatOrigin;
     public IdentifiableId? ColorsOrigin;
 
-    // public string Shader;
-
     public string Mesh;
     public bool IgnoreLodIndex;
 
@@ -73,9 +70,8 @@ public sealed class ModelData : JsonData
     [JsonProperty("invert")] public bool InvertColorOriginColors;
     [JsonProperty("colorProps")] private Dictionary<string, Color> ColorPropsJson;
 
-    [JsonIgnore] public bool ShouldClone = true;
-
     [JsonIgnore] public bool IsBody;
+    [JsonIgnore] public bool IsModified = true;
     [JsonIgnore] public Material CachedMaterial;
     [JsonIgnore] public readonly Dictionary<int, Color> ColorProps = [];
 
@@ -89,8 +85,8 @@ public sealed class ModelData : JsonData
 
         if (ColorPropsJson?.Count is null or 0)
         {
-            if (Pattern == null && !Gloss.HasValue && !InvertColorOriginColors)
-                ShouldClone = false;
+            if (Pattern == null && !Gloss.HasValue && !ColorsOrigin.HasValue && !InvertColorOriginColors)
+                IsModified = false;
 
             return;
         }

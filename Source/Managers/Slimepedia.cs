@@ -542,44 +542,26 @@ public static class Slimepedia
         if (matData == null)
             return fallback.Clone();
 
-        // ReSharper disable once RedundantAssignment
-        var setProps = true;
-        var cloneMat = false;
+        var isModified = matData.IsModified;
         Material material;
 
         if (matData.CachedMaterial)
         {
             material = matData.CachedMaterial;
-            setProps = false;
+            isModified = false;
         }
-        // else if (matData.Shader != null) // WIP
-        //     material = new(Inventory.GetShader(matData.Shader));
         else if (matData.MatOrigin.HasValue)
-        {
             material = GetMat(matData.MatOrigin.Value, matData.MatSameAs);
-            setProps = cloneMat = matData.ShouldClone;
-        }
         else if (matData.SameAs.HasValue && mainMatData?.Length is > 0)
-        {
             material = mainMatData[matData.SameAs.Value].CachedMaterial;
-            setProps = cloneMat = matData.ShouldClone;
-        }
         else
-        {
             material = fallback;
-            setProps = cloneMat = matData.ShouldClone;
-        }
 
-        if (cloneMat)
+        if (isModified)
         {
             material = material.Clone();
-
-            if (matData.Name != null)
-                material.name = matData.Name;
-        }
-
-        if (setProps)
             SetMatProperties(matData, material);
+        }
 
         matData.CachedMaterial = material;
         return material;

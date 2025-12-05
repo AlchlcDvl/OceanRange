@@ -96,6 +96,12 @@ internal sealed class Main : ModEntryPoint
             mesh.Destroy();
 
         Helpers.ClonedMeshes.Clear();
+
+        foreach (var mat in Helpers.ClonedMats)
+            mat.Destroy();
+
+        Helpers.ClonedMats.Clear();
+
         Inventory.ReleaseHandles();
     }
 
