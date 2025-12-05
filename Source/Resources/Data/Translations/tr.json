@@ -6,7 +6,7 @@
       "m.foodgroup.dirt": "Kum"
     },
     "tutorial": {
-      "m.text.largo": "Largo slimes are large slime hybrids formed when a slime eats a plort unlike its own.\n\nVac to keep them on your nozzle, or shoot to send them flying!\n\nDo remember, the biology of the slimes matters! Pearl producing slimes cannot create largos with those that create plorts!"
+      "m.text.largo": "Büyük slimelar, bir slime kendi türü dışında bir plort yediğinde oluşan büyük slime karışımlarıdır.\n\nOnları tutmak için vakumlayabilir veya fırlatmak istediğinizde kolayca ateşleyebilirsiniz.\n\nAncak unutmayın, slimes’ların biyolojisi gerçekten önemlidir. İnci üreten slimes, plort üretenlerle largo oluşturamaz!"
     },
     "pedia": {
       "m.favored_by.silky_sand_craft": "@t.sand_slime_entry"
@@ -19,7 +19,7 @@
       "risks": "Rosi slime konusunda endişelenecek pek bir şey yok. Çiftlikte yetiştirilmeleri çok kolay, sadece yiyecek ve arkadaşlığa ihtiyaçları var. Yalnız bir rosi slime, hüzünlü bir rosi slime olur. Bu yüzden, sağlıklı bir inci üretimi istiyorlarsanız, çiftçilerin birden fazla slime bulundurmaları önerilir.",
       "slimeology": "Rosi slime, Büyük Resif'te bulunan en yaygın balçıktır. Genellikle neşeli, arkadaş canlısı ve yaramaz olarak görülürler, sık sık diğer balçıklara ve hatta insanlara şaka yaparlar. Rosi balçıklarının birbirleriyle derin bir bağı vardır ve çok nadiren yalnız görülürler. Oynayacakları bir partnerleri olduğu sürece sonsuza dek mutlu olurlar ve nadiren üzüntü gösterirler. Ve üzgün olduklarında, genellikle başkalarının zararınadırlar. Balçığı veya insanı mutlu hallerine geri döndürmek için ellerinden geleni yaparlar.",
       "diet": "@m.diet.pink_slime",
-      "favourite": "Sevdikleri bir yemek yoktur.Herşeyi eşit değerde sever",
+      "favourite": "Sevdikleri bir yemek yoktur. Herşeyi eşit değerde sever.",
       "onomics": "Rosi incileri, insan cildi üzerindeki gençleştirici özellikleri nedeniyle sıklıkla \"Afrodit İncisi\" olarak anılır. Güzellik şirketleri, ürünlerini gençlik ışıltısının anahtarı olarak pazarlayarak, rosi incilerinin yaşlanan cildi 20-50 yıl geriye götürdüğünü iddia ederler. Eğer bu incilerin iç organları, hatta tüketildiğinde nadir görülen kanserleri bile iyileştirebildiğine inanılsaydı, bu bir sorun olmazdı. İncileri yavaşça yenilenebilse de, sürekli yırtılma solungaçların daha küçük büyümesine neden olur. Ancak yeni araştırmalar, bu iyileştirici özelliklerin geçici olduğunu gösteriyor. İncinin sürekli tüketilmesi ve kullanılması, hızlı yaşlanmaya neden olarak rosi incilerini güvenilmez bir yaşlanma karşıtı çözüm haline getiriyor.",
       "intro": "Denizin pembe incisi.Pembe slime'nin kuzeni olduğuna ınanılıyor."
     },
@@ -183,195 +183,195 @@
   ],
   "largos": [
     {
-      "translatedName": "Rosi Mine Largo",
+      "translatedName": "Büyük Rosi Mine",
       "name": "Rosi Mine"
     },
     {
-      "translatedName": "Rosi Lantern Largo",
+      "translatedName": "Büyük Rosi Lantern",
       "name": "Rosi Lantern"
     },
     {
-      "translatedName": "Mine Lantern Largo",
+      "translatedName": "Büyük Mine Lantern",
       "name": "Mine Lantern"
     },
     {
-      "translatedName": "Pink Coco Largo",
+      "translatedName": "Büyük Pink Coco",
       "name": "Pink Coco"
     },
     {
-      "translatedName": "Coco Saber Largo",
+      "translatedName": "Büyük Coco Kılıçdişli",
       "name": "Coco Saber"
     },
     {
-      "translatedName": "Coco Quantum Largo",
+      "translatedName": "Büyük Coco Kuantum",
       "name": "Coco Quantum"
     },
     {
-      "translatedName": "Coco Honey Largo",
+      "translatedName": "Büyük Coco Bal",
       "name": "Coco Honey"
     },
     {
-      "translatedName": "Coco Phosphor Largo",
+      "translatedName": "Büyük Coco Fosfor",
       "name": "Coco Phosphor"
     },
     {
-      "translatedName": "Coco Mosaic Largo",
+      "translatedName": "Büyük Coco Mozaik",
       "name": "Coco Mosaic"
     },
     {
-      "translatedName": "Coco Tangle Largo",
+      "translatedName": "Büyük Coco Arapsaçı",
       "name": "Coco Tangle"
     },
     {
-      "translatedName": "Coco Boom Largo",
+      "translatedName": "Büyük Coco Patlayıcı",
       "name": "Coco Boom"
     },
     {
-      "translatedName": "Coco Rad Largo",
+      "translatedName": "Büyük Coco Radyoaktif",
       "name": "Coco Rad"
     },
     {
-      "translatedName": "Coco Rock Largo",
+      "translatedName": "Büyük Coco Kaya",
       "name": "Coco Rock"
     },
     {
-      "translatedName": "Coco Tabby Largo",
+      "translatedName": "Büyük Coco Tekir",
       "name": "Coco Tabby"
     },
     {
-      "translatedName": "Coco Hunter Largo",
+      "translatedName": "Büyük Coco Avcı",
       "name": "Coco Hunter"
     },
     {
-      "translatedName": "Coco Crystal Largo",
+      "translatedName": "Büyük Coco Kristal",
       "name": "Coco Crystal"
     },
     {
-      "translatedName": "Coco Dervish Largo",
+      "translatedName": "Büyük Coco Derviş",
       "name": "Coco Dervish"
     },
     {
-      "translatedName": "Coco Mesmer Largo",
+      "translatedName": "Büyük Coco Mesmer",
       "name": "Coco Mesmer"
     },
     {
-      "translatedName": "Coco Hermit Largo",
+      "translatedName": "Büyük Coco Hermit",
       "name": "Coco Hermit"
     },
     {
-      "translatedName": "Pink Mesmer Largo",
+      "translatedName": "Büyük Pembe Mesmer",
       "name": "Pink Mesmer"
     },
     {
-      "translatedName": "Saber Mesmer Largo",
+      "translatedName": "Büyük Kılıçdişli Mesmer",
       "name": "Saber Mesmer"
     },
     {
-      "translatedName": "Quantum Mesmer Largo",
+      "translatedName": "Büyük Kuantum Mesmer",
       "name": "Quantum Mesmer"
     },
     {
-      "translatedName": "Honey Mesmer Largo",
+      "translatedName": "Büyük Bal Mesmer",
       "name": "Honey Mesmer"
     },
     {
-      "translatedName": "Phosphor Mesmer Largo",
+      "translatedName": "Büyük Fosfor Mesmer",
       "name": "Phosphor Mesmer"
     },
     {
-      "translatedName": "Mosaic Mesmer Largo",
+      "translatedName": "Büyük Mozaik Mesmer",
       "name": "Mosaic Mesmer"
     },
     {
-      "translatedName": "Tangle Mesmer Largo",
+      "translatedName": "Büyük Arapsaçı Mesmer",
       "name": "Tangle Mesmer"
     },
     {
-      "translatedName": "Boom Mesmer Largo",
+      "translatedName": "Büyük Patlayıcı Mesmer",
       "name": "Boom Mesmer"
     },
     {
-      "translatedName": "Rad Mesmer Largo",
+      "translatedName": "Büyük Radyoaktif Mesmer",
       "name": "Rad Mesmer"
     },
     {
-      "translatedName": "Rock Mesmer Largo",
+      "translatedName": "Büyük Kaya Mesmer",
       "name": "Rock Mesmer"
     },
     {
-      "translatedName": "Tabby Mesmer Largo",
+      "translatedName": "Büyük Tekir Mesmer",
       "name": "Tabby Mesmer"
     },
     {
-      "translatedName": "Hunter Mesmer Largo",
+      "translatedName": "Büyük Avcı Mesmer",
       "name": "Hunter Mesmer"
     },
     {
-      "translatedName": "Crystal Mesmer Largo",
+      "translatedName": "Büyük Kristal Mesmer",
       "name": "Crystal Mesmer"
     },
     {
-      "translatedName": "Dervish Mesmer Largo",
+      "translatedName": "Büyük Derviş Mesmer",
       "name": "Dervish Mesmer"
     },
     {
-      "translatedName": "Mesmer Hermit Largo",
+      "translatedName": "Büyük Mesmer Hermit",
       "name": "Mesmer Hermit"
     },
     {
-      "translatedName": "Pink Hermit Largo",
+      "translatedName": "Büyük Pembe Hermit",
       "name": "Pink Hermit"
     },
     {
-      "translatedName": "Saber Hermit Largo",
+      "translatedName": "Büyük Kılıçdişli Hermit",
       "name": "Saber Hermit"
     },
     {
-      "translatedName": "Quantum Hermit Largo",
+      "translatedName": "Büyük Kuantum Hermit",
       "name": "Quantum Hermit"
     },
     {
-      "translatedName": "Honey Hermit Largo",
+      "translatedName": "Büyük Bal Hermit",
       "name": "Honey Hermit"
     },
     {
-      "translatedName": "Phosphor Hermit Largo",
+      "translatedName": "Büyük Fosfor Hermit",
       "name": "Phosphor Hermit"
     },
     {
-      "translatedName": "Mosaic Hermit Largo",
+      "translatedName": "Büyük Mozaik Hermit",
       "name": "Mosaic Hermit"
     },
     {
-      "translatedName": "Tangle Hermit Largo",
+      "translatedName": "Büyük Arapsaçı Hermit",
       "name": "Tangle Hermit"
     },
     {
-      "translatedName": "Boom Hermit Largo",
+      "translatedName": "Büyük Patlayıcı Hermit",
       "name": "Boom Hermit"
     },
     {
-      "translatedName": "Rad Hermit Largo",
+      "translatedName": "Büyük Radyoaktif Hermit",
       "name": "Rad Hermit"
     },
     {
-      "translatedName": "Rock Hermit Largo",
+      "translatedName": "Büyük Kaya Hermit",
       "name": "Rock Hermit"
     },
     {
-      "translatedName": "Tabby Hermit Largo",
+      "translatedName": "Büyük Tekir Hermit",
       "name": "Tabby Hermit"
     },
     {
-      "translatedName": "Hunter Hermit Largo",
+      "translatedName": "Büyük Avcı Hermit",
       "name": "Hunter Hermit"
     },
     {
-      "translatedName": "Crystal Hermit Largo",
+      "translatedName": "Büyük Kristal Hermit",
       "name": "Crystal Hermit"
     },
     {
-      "translatedName": "Dervish Hermit Largo",
+      "translatedName": "Büyük Derviş Hermit",
       "name": "Dervish Hermit"
     }
   ],
@@ -411,7 +411,7 @@
   ],
   "plorts": [
     {
-      "translatedName": "Rosi Pearl",
+      "translatedName": "Rosi İnci",
       "name": "Rosi"
     },
     {
@@ -419,15 +419,15 @@
       "name": "Coco"
     },
     {
-      "translatedName": "Mine Pearl",
+      "translatedName": "Mine İnci",
       "name": "Mine"
     },
     {
-      "translatedName": "Lantern Pearl",
+      "translatedName": "Lantern İnci",
       "name": "Lantern"
     },
     {
-      "translatedName": "Sand Pearl",
+      "translatedName": "Sand İnci",
       "name": "Sand"
     },
     {
@@ -439,7 +439,7 @@
       "name": "Hermit"
     },
     {
-      "translatedName": "Goldfish Pearl",
+      "translatedName": "Japon Balığı İnci",
       "name": "Goldfish"
     }
   ],
@@ -449,7 +449,7 @@
       "translatedName": "Swirlpool Adası",
       "intro": "Merak edenler için uzaklarda bir harikalar diyarı!",
       "presence": "Adayı keşfe çıkıyorum...",
-      "description": "Placeholder"
+      "description": "Yer tutucu"
     }
   ],
   "mail": [
