@@ -291,7 +291,7 @@
       "name": "Boom Mesmer"
     },
     {
-      "translatedName": "Rad Mesmer Largo",
+      "translatedName": "Büyük Radyoaktif Mesmer",
       "name": "Rad Mesmer"
     },
     {
@@ -331,47 +331,47 @@
       "name": "Quantum Hermit"
     },
     {
-      "translatedName": "Honey Hermit Largo",
+      "translatedName": "Büyük Bal Hermit",
       "name": "Honey Hermit"
     },
     {
-      "translatedName": "Phosphor Hermit Largo",
+      "translatedName": "Büyük Fosfor Hermit",
       "name": "Phosphor Hermit"
     },
     {
-      "translatedName": "Mosaic Hermit Largo",
+      "translatedName": "Büyük Mozaik Hermit",
       "name": "Mosaic Hermit"
     },
     {
-      "translatedName": "Tangle Hermit Largo",
+      "translatedName": "Büyük Arapsaçı Hermit",
       "name": "Tangle Hermit"
     },
     {
-      "translatedName": "Boom Hermit Largo",
+      "translatedName": "Büyük Patlayıcı Hermit",
       "name": "Boom Hermit"
     },
     {
-      "translatedName": "Rad Hermit Largo",
+      "translatedName": "Büyük Radyoaktif Hermit",
       "name": "Rad Hermit"
     },
     {
-      "translatedName": "Rock Hermit Largo",
+      "translatedName": "Büyük Kaya Hermit",
       "name": "Rock Hermit"
     },
     {
-      "translatedName": "Tabby Hermit Largo",
+      "translatedName": "Büyük Tekir Hermit",
       "name": "Tabby Hermit"
     },
     {
-      "translatedName": "Hunter Hermit Largo",
+      "translatedName": "Büyük Avcı Hermit",
       "name": "Hunter Hermit"
     },
     {
-      "translatedName": "Crystal Hermit Largo",
+      "translatedName": "Büyük Kristal Hermit",
       "name": "Crystal Hermit"
     },
     {
-      "translatedName": "Dervish Hermit Largo",
+      "translatedName": "Büyük Derviş Hermit",
       "name": "Dervish Hermit"
     }
   ],
@@ -411,7 +411,7 @@
   ],
   "plorts": [
     {
-      "translatedName": "Rosi Pearl",
+      "translatedName": "Rosi İnci",
       "name": "Rosi"
     },
     {
@@ -419,15 +419,15 @@
       "name": "Coco"
     },
     {
-      "translatedName": "Mine Pearl",
+      "translatedName": "Mine İnci",
       "name": "Mine"
     },
     {
-      "translatedName": "Lantern Pearl",
+      "translatedName": "Lantern İnci",
       "name": "Lantern"
     },
     {
-      "translatedName": "Sand Pearl",
+      "translatedName": "Sand İnci",
       "name": "Sand"
     },
     {
@@ -439,7 +439,7 @@
       "name": "Hermit"
     },
     {
-      "translatedName": "Goldfish Pearl",
+      "translatedName": "Japon Balığı İnci",
       "name": "Goldfish"
     }
   ],
@@ -449,7 +449,7 @@
       "translatedName": "Swirlpool Adası",
       "intro": "Merak edenler için uzaklarda bir harikalar diyarı!",
       "presence": "Adayı keşfe çıkıyorum...",
-      "description": "Placeholder"
+      "description": "Yer tutucu"
     }
   ],
   "mail": [
