@@ -90,7 +90,7 @@ public static class Translator
         private readonly string BundleName = bundleName;
         private readonly Dictionary<string, string> Bundle = bundle;
 
-        public void AddComplexTranslation(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback = false) =>
+        public void AddComplexTranslation(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback) =>
             Bundle[Id] = GetTranslationValue(Id, Text, BundleName, translations, lang, isFallback) ?? $"STRMSS: {Id}";
     }
 

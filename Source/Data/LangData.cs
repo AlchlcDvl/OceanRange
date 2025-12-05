@@ -51,12 +51,11 @@ public sealed class Translations : JsonData
         foreach (var langData in LangDatas)
             langData.AddTranslations(TranslatedTexts, lang);
 
+        var deferredItems = Translator.EndGatherPass();
         var isFallback = lang == Config.FALLBACK_LANGUAGE;
 
-        var deferredItems = Translator.EndGatherPass();
-
         foreach (var item in deferredItems)
-            item.AddComplexTranslation(TranslatedTexts, lang);
+            item.AddComplexTranslation(TranslatedTexts, lang, isFallback);
 
         deferredItems.Clear();
         return TranslatedTexts;

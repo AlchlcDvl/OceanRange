@@ -557,17 +557,17 @@ public static class Slimepedia
         else if (matData.MatOrigin.HasValue)
         {
             material = GetMat(matData.MatOrigin.Value, matData.MatSameAs);
-            setProps = cloneMat = matData.CloneMatOrigin;
+            setProps = cloneMat = matData.ShouldClone;
         }
         else if (matData.SameAs.HasValue && mainMatData?.Length is > 0)
         {
             material = mainMatData[matData.SameAs.Value].CachedMaterial;
-            setProps = cloneMat = matData.CloneSameAs;
+            setProps = cloneMat = matData.ShouldClone;
         }
         else
         {
             material = fallback;
-            setProps = cloneMat = matData.CloneFallback;
+            setProps = cloneMat = matData.ShouldClone;
         }
 
         if (cloneMat)

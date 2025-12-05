@@ -26,7 +26,7 @@ public sealed class SavePositionCommand : ConsoleCommand
 
     public override bool Execute(string[] args)
     {
-        if (args?.Length is not (null or 0))
+        if (args?.Length is > 0)
             Main.Console.LogWarning("This command does not have arguments!");
 
         var pos = SceneContext.Instance.Player.transform.position;
@@ -89,7 +89,7 @@ public sealed class TeleportCommand : ConsoleCommand
 
 //     public override bool Execute(string[] args)
 //     {
-//         if (args?.Length is not (null or 0))
+//         if (args?.Length is > 0)
 //             Main.Console.LogWarning("This command does not have arguments!");
 
 //         SceneContext.Instance.ProgressDirector.model.progressDict[ProgressType.CORPORATE_PARTNER] = 999;

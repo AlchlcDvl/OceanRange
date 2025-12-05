@@ -30,9 +30,7 @@ public sealed class ModelData : JsonData
             return;
 
         IsBody = data.IsBody;
-        CloneSameAs = data.CloneSameAs;
-        CloneFallback = data.CloneFallback;
-        CloneMatOrigin = data.CloneMatOrigin;
+        ShouldClone = data.ShouldClone;
         InvertColorOriginColors = data.InvertColorOriginColors;
 
         if (!includeMeshData)
@@ -54,9 +52,6 @@ public sealed class ModelData : JsonData
     public int? MatSameAs;
     public int? ColorsSameAs;
 
-    public bool CloneSameAs;
-    public bool CloneMatOrigin = true;
-    public bool CloneFallback = true;
     public bool SkipRigging;
 
     public IdentifiableId? MatOrigin;
@@ -78,9 +73,11 @@ public sealed class ModelData : JsonData
     [JsonProperty("invert")] public bool InvertColorOriginColors;
     [JsonProperty("colorProps")] private Dictionary<string, Color> ColorPropsJson;
 
+    [JsonIgnore] public bool ShouldClone = true;
+
     [JsonIgnore] public bool IsBody;
-    [JsonIgnore] public readonly Dictionary<int, Color> ColorProps = [];
     [JsonIgnore] public Material CachedMaterial;
+    [JsonIgnore] public readonly Dictionary<int, Color> ColorProps = [];
 
     private const string Top = "TopColor";
     private static readonly int TopLength = Top.Length;
@@ -92,14 +89,8 @@ public sealed class ModelData : JsonData
 
         if (ColorPropsJson?.Count is null or 0)
         {
-            if (MatOrigin.HasValue && Pattern == null)
-                CloneMatOrigin = false;
-
-            if (!Gloss.HasValue)
-            {
-                CloneSameAs = false;
-                CloneFallback = false;
-            }
+            if (Pattern == null && !Gloss.HasValue && !InvertColorOriginColors)
+                ShouldClone = false;
 
             return;
         }

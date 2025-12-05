@@ -43,10 +43,7 @@
       }
     ],
     "slime2Structs": [
-      {
-        "mesh": "rosi_lantern_fins",
-        "cloneFallback": false
-      },
+      { "mesh": "rosi_lantern_fins" },
       { "instantiatePrefabs": true },
       { "instantiatePrefabs": true },
       { "instantiatePrefabs": true }
