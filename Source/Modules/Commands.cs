@@ -3,6 +3,7 @@ using SRML.Console;
 
 namespace OceanRange.Modules;
 
+[Command]
 public sealed class EchoCommand : ConsoleCommand
 {
     public override string ID => "echo";
@@ -13,9 +14,10 @@ public sealed class EchoCommand : ConsoleCommand
     public override bool Execute(string[] _) => true;
 }
 
+[Command]
 public sealed class SavePositionCommand : ConsoleCommand
 {
-    public readonly Dictionary<string, Dictionary<string, List<string>>> SavedPositions = [];
+    public static readonly Dictionary<string, Dictionary<string, List<string>>> SavedPositions = [];
 
     public override string ID => "savePos";
     public override string Usage => "savePos";
@@ -24,7 +26,7 @@ public sealed class SavePositionCommand : ConsoleCommand
 
     public override bool Execute(string[] args)
     {
-        if (args?.Length is not (null or 0))
+        if (args?.Length is > 0)
             Main.Console.LogWarning("This command does not have arguments!");
 
         var pos = SceneContext.Instance.Player.transform.position;
@@ -44,6 +46,7 @@ public sealed class SavePositionCommand : ConsoleCommand
     }
 }
 
+[Command]
 public sealed class TeleportCommand : ConsoleCommand
 {
     public override string ID => "tp";
@@ -77,22 +80,23 @@ public sealed class TeleportCommand : ConsoleCommand
     }
 }
 
-public class TesterUnlockProgressCommand : ConsoleCommand
-{
-    public override string ID => "tester_unlock_progress";
-    public override string Usage => "tester_unlock_progress";
-    public override string Description => "Unlocks all 7Zee progress to quickly get to the Docks.";
+// [Command]
+// public class TesterUnlockProgressCommand : ConsoleCommand
+// {
+//     public override string ID => "tester_unlock_progress";
+//     public override string Usage => "tester_unlock_progress";
+//     public override string Description => "Unlocks all 7Zee progress to quickly get to the Docks.";
 
-    public override bool Execute(string[] args)
-    {
-        if (args?.Length is not (null or 0))
-            Main.Console.LogWarning("This command does not have arguments!");
+//     public override bool Execute(string[] args)
+//     {
+//         if (args?.Length is > 0)
+//             Main.Console.LogWarning("This command does not have arguments!");
 
-        SceneContext.Instance.ProgressDirector.model.progressDict[ProgressType.CORPORATE_PARTNER] = 999;
-        SceneContext.Instance.ProgressDirector.NoteProgressChanged(ProgressType.CORPORATE_PARTNER);
+//         SceneContext.Instance.ProgressDirector.model.progressDict[ProgressType.CORPORATE_PARTNER] = 999;
+//         SceneContext.Instance.ProgressDirector.NoteProgressChanged(ProgressType.CORPORATE_PARTNER);
 
-        Main.Console.Log("7Zee unlocked past max! You may have to reload save to apply changes.");
-        return true;
-    }
-}
+//         Main.Console.Log("7Zee unlocked past max! You may have to reload save to apply changes.");
+//         return true;
+//     }
+// }
 #endif

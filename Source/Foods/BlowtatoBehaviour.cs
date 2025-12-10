@@ -42,7 +42,7 @@ public sealed class BlowtatoBehaviour : CollidableActorBehaviour, Collidable
     {
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
         var main = particleSystem.main;
-        main.startSizeMultiplier = 1f / 6f;
+        main.startSizeMultiplier /= 6f;
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
     }
 }

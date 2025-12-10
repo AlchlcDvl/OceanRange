@@ -17,6 +17,7 @@ public sealed class PediaOnomicsHandler : MonoBehaviour
 public sealed class ModelDataHandler : MonoBehaviour
 {
     public float? Jiggle;
+    public bool SkipRigging;
 }
 
 public abstract class AppearanceFixer : MonoBehaviour

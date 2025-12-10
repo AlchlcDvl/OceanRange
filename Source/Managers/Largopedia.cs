@@ -3,6 +3,7 @@ using SRML.SR.Utils;
 namespace OceanRange.Managers;
 
 // All hail the json gods, for they look upon me favourably
+[Manager(ManagerType.Largopedia)]
 public static class Largopedia
 {
     /*
@@ -46,11 +47,13 @@ public static class Largopedia
 #if DEBUG
     [TimeDiagnostic("Largos Preload")]
 #endif
+    [PreloadMethod, UsedImplicitly]
     public static void PreloadLargoData() => Largos = Inventory.GetJsonArray<LargoData>("largopedia");
 
 #if DEBUG
     [TimeDiagnostic("Largos Load")]
 #endif
+    [LoadMethod, UsedImplicitly]
     public static void LoadAllLargos()
     {
         QuantumMat = IdentifiableId.QUANTUM_SLIME.GetSlimeDefinition().AppearancesDefault[0].QubitAppearance.Structures[0].DefaultMaterials[0];
@@ -118,12 +121,12 @@ public static class Largopedia
 
         foreach (var expression in appearance1.Face._expressionToFaceLookup.Keys.Union(appearance2.Face._expressionToFaceLookup.Keys, SlimeFace.DefaultSlimeExpressionComparer))
         {
-            appearance.Face._expressionToFaceLookup.Add(expression, new()
+            appearance.Face._expressionToFaceLookup[expression] = new()
             {
                 SlimeExpression = expression,
                 Eyes = eyes.TryGetValue(expression, out var eyesInner) ? eyesInner.Eyes : null,
                 Mouth = mouth.TryGetValue(expression, out var mouthInner) ? mouthInner.Mouth : null
-            });
+            };
         }
 
         appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
@@ -176,7 +179,7 @@ public static class Largopedia
 
         if (appearance1.QubitAppearance != null || appearance2.QubitAppearance != null)
         {
-            var qubitAppearance = appearance.QubitAppearance = appearance.DeepCopy();
+            var qubitAppearance = appearance.QubitAppearance = appearance.Instantiate();
             var material = QuantumMat.Clone();
             material.SetFloat(GhostToggle, 1f);
 

@@ -3,6 +3,7 @@ using SRML;
 
 namespace OceanRange.Managers;
 
+[Manager(ManagerType.Cookbook)]
 public static class Cookbook
 {
     /// <summary>
@@ -34,6 +35,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
 #endif
+    [PreloadMethod, UsedImplicitly]
     public static void PreloadFoodData()
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
@@ -110,7 +112,7 @@ public static class Cookbook
                     for (var i = 0; i < orientations.Length; i++)
                     {
                         var resource = CreateSpawner(orientations[i], veggiePrefab, parent, context, array, lower + veggieData.Name + "0" + i);
-                        resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = dirt;
+                        resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = dirt; // Cloning from the base game creates invisible meshes, so I had to extract the dirt mesh from the game and reimplement it here
                     }
                 }
             }
@@ -162,6 +164,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Load")]
 #endif
+    [LoadMethod, UsedImplicitly]
     public static void LoadAllFoods()
     {
         Array.ForEach(Fruits, BaseCreatePlant);
@@ -281,10 +284,6 @@ public static class Cookbook
 
         var mesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
 
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
-        mesh.RecalculateTangents();
-
         meshModel.GetComponent<MeshFilter>().sharedMesh = mesh;
         prefab.GetComponent<MeshFilter>().sharedMesh = mesh;
 
@@ -403,11 +402,7 @@ public static class Cookbook
         if (isFruit)
         {
             var partName = resourceId.ToString().ToLowerInvariant();
-
-            if (partName.EndsWith("_tree", StringComparison.OrdinalIgnoreCase))
-                partName = partName.Replace("_tree", string.Empty);
-            else
-                partName = "pogo";
+            partName = partName.EndsWith("_tree", StringComparison.OrdinalIgnoreCase) ? partName.Replace("_tree", string.Empty) : "pogo";
 
             if (Inventory.TryGetMesh(lower + "_trunk", out var trunk))
                 TranslateModel(prefab.FindAllChildren("tree_" + partName), trunk, null);

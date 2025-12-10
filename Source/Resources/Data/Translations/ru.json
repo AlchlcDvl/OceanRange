@@ -1,466 +1,469 @@
 {
-  "name": "EN",
+  "name": "RU",
   "additional": {
     "ui": {
-      "l.pearls": "Pearlonomics",
-      "m.foodgroup.dirt": "Dirt"
+      "l.pearls": "Жемчугономия:",
+      "m.foodgroup.dirt": "Грязь"
+    },
+    "tutorial": {
+      "m.text.largo": "Ларго слаймы - это большой гибрид слаймов получающийся в том случае когда некий слайм съедает чужеродный плорт.\n\nЗавакайте их чтобы удерживать их на кончике дула, или выстрелите чтобы отправить их в полёт!\n\nПомните, биология слаймов имеет значение! слаймы производящие жемчуг не могут образовывать ларго с теми кто производит плорты!"
     },
     "pedia": {
-      "m.favored_by.silky_sand_craft": "Sand Slime"
+      "m.favored_by.silky_sand_craft": "@t.sand_slime_entry"
     }
   },
   "slimes": [
     {
-      "translatedName": "Rosi Slime",
+      "translatedName": "Слайм Рози",
       "name": "Rosi",
-      "risks": "There is not much to worry about the rosi slime. They are very easy to ranch, only needing food and companionship. A lonely rosi slime is a sad rosi slime. So it's recommended for ranchers to have more than one if they want a healthy production of pearls.",
-      "slimeology": "The rosi slime is the most common slime found in The Great Reef. They are often seen as cheerful, friendly and mischievous, often pranking other slimes and even humans. Rosi slimes have a deep bond with one another and are very rarely seen alone, As long as they have a partner to play with, they will be happy forever, rarely showing any sadness. And when they are sad it's often at the expense of others. Trying their best to cheer the slime or human back to their happy selves.",
-      "diet": "Everything",
-      "favourite": "No favorite food. The Rosi slime loves everything equally.",
-      "onomics": "Rosi pearls are often called the \"Aphrodite Pearl\" for their rejuvenating properties on human skin. Beauty companies frequently market their products as the key to a youthful glow, claiming that rosi pearls help rewind aging skin by 20-50 years. This wouldn't be a problem if their frills were also believed to have abilities to cure internal organs, even rare cancers when consumed. While their frills can slowly regenerate constant tearing causes smaller gills to grow. However, new research shows that these healing properties are temporary. The resulting constant consumption and usage of the pearl cause rapid aging, making rosi pearls an unreliable anti-aging solution.",
-      "intro": "The pink pearl of the sea. Believed to be the cousin of the pink slime."
+      "risks": "Рози слаймы не представляют угрозы. Их очень легко содержать, потому что они нуждаются только в еде и компании. Одинокий Рози слайм - грустный Рози слайм. Так что хозяинам ранчо рекомендуется владеть больше чем одним для здорового производства жемчуга.",
+      "slimeology": "Слайм Рози самый распространенный слайм найденный в Высохшем Рифе. Их часто видят как радостных, дружелюбных и пакостливых, часто разыгрывающими других слаймов и даже людей. Рози слаймы очень привязаны к друг другу и очень редко замечены в одиночку, пока им есть с кем играть, они будут счастливы вечно, почти никогда не грустя. И даже когда им грустно, это часто за счёт других. Пытаются изо всех сил подборить унывающего слайма или человека.",
+      "diet": "@m.diet.pink_slime",
+      "favourite": "Нет любимой еды. Рози слайм любит всё одинаково.",
+      "onomics": "Жемчуг Рози часто называют \"Жемчугом Афродиты\" за его омолаживающие свойства для людской кожи. Компании в индустрии красоты часто рекламируют их продукты как ключ к свежести кожи, заявляя что жемчуг Рози помогает откатить старение кожи на 20-50 лет. Это не было бы проблемой, если бы не считалось что их жабры так же владеют свойствами способными лечить внутренние органы и даже редкие формы рака при употреблении. Хоть их жабры и могут медленно регенерировать, постоянное рвание вызывает уменьшение растущих жабер. Однако, новые исследования показывают, что эти лечебные свойства временные. Постоянное употребление и исползование жемчуга приводит к быстрому старению, делая жемчуг Рози ненадёжным решением старения.",
+      "intro": "Розовые жемчужины моря. Считаются родственником розового слайма."
     },
     {
-      "translatedName": "Coco Slime",
+      "translatedName": "Кокосовый слайм",
       "name": "Coco",
-      "risks": "Be cautious while walking under palm trees as coco slimes are very territorial and if they sense you underneath, they will harden their soft, squishy bodies to a hard coconut-like shell and crash down onto their targets. Tourists in the past who got hit in the head by a coco slime have reported blurred vision and dizziness afterwards with some even being knocked out cold. This is also how they hunt in the wild. Despite their hard skin and agility, they are quite easy to ranch as long as they are well feed and have enough exposure to sunlight.",
-      "slimeology": "Coco slimes are commonly found hanging from the palm trees of the island. Being natives to SwirlPool Island, the coco slimes have natural adapted a higher jump in order to climb trees and escape predators. Due to them being grown from palm trees, they have plant like attributes which causes them to require constant sunlight and also tend to avoid eating fruits and vegetables as it would be cannibalism.",
-      "diet": "Meat",
-      "favourite": "Sandy Hen",
-      "onomics": "Coco plorts, unlike their producer, are very soft and silky as well as being an excellent source of calcium when condensed to liquid. Despite being very similar to earth's milk in properties, they can still be consumed by people who are lactose intolerant, making them extremely popular for creating lactose intolerance options for dairy products. And due to their incredibly soft and silky texture, they are also very good for skin care and used often in spas as substitutes to milk baths.",
-      "intro": "The concussion slime, wear helmets!"
+      "risks": "Будьте осторожны проходя под пальмами, так как кокосовые слаймы очень территориальны и если заметят тебя внизу, их мягкое тело затвердеет до состояния, похожего на кокосовую скорлупу, и они упадут прямо на свою цель. Туристы, на голову которых в прошлом падал кокосовый слайм сообщали о размытом зрении и головокружении после столкновения, некоторые даже теряли сознание. Так они и охотятся в дикой природе. Несмотря на их твёрдую оболочку и скорость, ими довольно легко овладеть, до тех пор пока они хорошо накормлены и имеют достаточно солнечного света.",
+      "slimeology": "Кокосовые слаймы часто замечены висящими на пальмах острова. Являясь естественными жителями СпиралеВодного Острова, кокосовые слаймы естественным путём приспособились прыгать выше чтобы взбираться на деревья и убегать от хищников. Из-за того что они растут из пальм, у них имеются свойства подобные растениям, потому они нуждаются в постоянном солнечном свете и избегают поедания фруктов и овощей как будто это каннибализм.",
+      "diet": "@m.diet.boom_slime",
+      "favourite": "@t.sandy_hen_entry",
+      "onomics": "Кокосовые плорты, в отличии от их источника, очень мягкие и гладкие, а так же являются отличным источником кальция, когда превращены в жидкость. Несмотря на большую схожесть с свойствами земного молока, люди не переносящие лактозу всё равно могут их есть, делая их невероятно популярными для создания вариаций продуктов для людей не переносящих лактозу. И благодаря их невероятно мягкой, гладкой текстуре, они так же очень подходят для ухода за кожей и часто используются в спа как замена молочным ванным.",
+      "intro": "Крышесносный слайм, лучше наденьте шлем!"
     },
     {
-      "translatedName": "Mine Slime",
+      "translatedName": "Слайм мина",
       "name": "Mine",
-      "risks": "Approach mine slimes with caution, for their spikes aren't just for show! Any direct contact will result in a localized eruption. While other slimes will be boomed clear of the danger zone, only fellow mine slimes and their boom cousins possess a natural immunity to these contact explosions. This peculiar trait makes co-habitation an active (and often loud) affair, as they'll seek out their explosive kin for regular, relieving bursts. Keeping them together helps manage their volatile nature, preventing an otherwise grumpy slime.",
-      "slimeology": "The mine slime, a distant and more... prickly cousin to the boom slime, has a unique take on volatility. Unlike their explosive kin, a mine slime's detonations are triggered only by direct contact with another slime or an unwary rancher. To deter accidental bumps, their bodies are adorned with sharp, crystalline spikes; a clear warning sign. Despite their fiery tendencies, these slimes prefer a milder diet of vegetables, with the blowtato being their ultimate delight. This root's highly volatile compounds provide the perfect internal spark for their constant energetic needs and powerful bursts. If a mine slime goes too long without popping, however, their internal pressure builds to uncomfortable levels, driving them to seek relief by finding water, or joining in an explosive embrace with fellow boom or mine slimes.",
-      "diet": "Veggie",
-      "favourite": "Blowtato",
-      "onomics": "Mine plorts are curious, resilient gems, forged into a pearl-like shape under the immense internal pressures of the mine slime. These unique pearls retain a fragment of their progenitor's explosive nature, though a considerably firmer thwack is required to unleash their contained energy. Their peculiar, controlled detonations make them highly prized in industrial applications, particularly when refined into a fine powder. From powering small, controlled bursts in excavation to adding a spectacular sparkle to interstellar fireworks displays, mine pearls certainly make an impact on the galactic exchange",
-      "intro": "The touch-me-not of slimes!"
+      "risks": "Будьте осторожны приближаясь к слаймам минам, так как их шипы не просто украшение! Любое прямое воздействие приведёт к локализированному взрыву. Пока других слаймов уносит взрывом из зоны опасности, только слаймы мины и их бабах-родственники имеют естественный иммунитет к этим контактным взрывам. Эта особенная черта делает со-существование их в одном загоне активной (и очень громкой) связью, потому что они будут выискивать своих взрывных братьев для регулярных, облегчающих бабахов. Содержание этих слаймов вместе поддержит их волатильную природу, не давая слайму грустить.",
+      "slimeology": "Слайм мина, далекий и более... колючий родственник бабах-слайма, уникален в своем выражении волатильности. В отличии от своих взрывных братьев, детонация слайма мины происходит только при прямом контакте с другим слаймом или невнимательным слаймоводом. Чтобы предотвратить случайные столкновения, их тела покрыты острыми, кристаллическими шипами; явный предупреждающий знак. Несмотря на их резкое поведение, эти слаймы предпочитают более спокойную диету из овощей, из которых взрывтошка является их любимцем. Весьма волатильные вещества этого корнеплода предоставляют идеальную искру для их постоянных энергетических потребностей и мощных взрывов. Если, однако, слайм мина не будет взрываться слишком долго, внутри них будет накапливаться давление неприятных уровней, заставляющее их искать воду для расслабления, или присоединиться к взрывному представлению других бабах-слаймов или слаймов мин.",
+      "diet": "@m.diet.rad_slime",
+      "favourite": "@t.blowtato_veggie_entry",
+      "onomics": "Жемчуг мины - любопытные, упругие самоцветы, скованные в форму подобную жемчугу под чрезвычайным внутренним давлением слаймов мин. Эти уникальные жемчужины сохраняют частичку взрывной натуры их прородителя, однако потребуется достаточно сильный удар чтобы выпустить их энергию. Их специфичные, контролируемые детонации делают их очень ценимыми в промышленности, в частности переработанными в мелкий порошок. Начиная созданием небольших, контролируемых взрывов во время раскопок и заканчивая добавлением захватывающей искры к космическим феерверкам, плорты мины без сомнения влияют на галактический обмен",
+      "intro": "Слайм недотрога."
     },
     {
-      "translatedName": "Lantern Slime",
+      "translatedName": "Фонарный слайм",
       "name": "Lantern",
-      "risks": "Lantern slimes aren't the most social compared to other slime species. During the day, they can be found sleeping. When disturbed from their nap, they emit a bright flash to startle any diver or slime that dares to interrupt their beauty sleep and try to run away. However, at night, they become very docile and can be found swimming across the coral reef in search of food.",
-      "slimeology": "The lantern slime is a distant cousin of the phosphor slime. At one point in its evolution, the phosphor slimes expelled their inner core, using it to attract prey underwater. Slime nature is indeed peculiar. Much like its cousins, the lantern slimes can be found at night in the deepest parts of the Moss Blanket and the Great Reef. They are often seen alone and rarely in groups, as they prefer an isolated lifestyle and little interest in socializing. However, when it comes to humans, lantern slimes often aid divers in finding their way back to land.",
-      "diet": "Meat",
-      "favourite": "Radiant Hen",
-      "onomics": "Lantern pearls are a key ingredient in many beauty products due to their natural moisturizing properties. These pearls not only hydrate the skin but also impart a radiant, plum-like glow, making them ideal for night creams. However, it's important to note that their protective barrier against bacteria diminishes rapidly when exposed to sunlight. Therefore, products containing a high concentration of lantern pearls are best applied before bedtime for their benefits.",
-      "intro": "It lights up your life!"
+      "risks": "Фонарные слаймы не очень социальны в сравнении с другими видами слаймов. Днём их можно найти спящими. Когда кто-то отвлекает их от сна, они испускают яркую вспышку чтобы отпугнуть дайвера или слайма, который смеет нарушать их сладкий сон, и пытаются сбежать. Однако, когда наступает ночь, они становятся очень покладистыми и чаще всего замечены плавающими меж коралловых рифов в поисках пищи.",
+      "slimeology": "Фонарные слаймы - дальние родственники фосфорных слаймов. Однажды, во время его эволюции, фосфорный слайм выпустил наружу своё внутреннее ядро, используя его чтобы приманивать добычу под водой. Природа слаймов действительно любопытна. Прям как их родственник, фонарные слаймы встречаются ночью в глубочайших участках Мшистого Покрова и Высохшего Рифа. Они часто встречаются в одиночку и редко в группах, так как они предпочитают более изолированный стиль жизни и не интересуются социализацией. Однако, когда речь заходит о людях, фонарные слаймы часто помогают дайверам попасть назад на сушу.",
+      "diet": "@m.diet.boom_slime",
+      "favourite": "@t.radiant_hen_entry",
+      "onomics": "Фонарные жемчужины - главный ингредиент многих продуктов красоты из-за их увлажняющих свойств. Эти жемчужины не только увлажняют кожу, но и передают лучистое, сливовое сияние, делая их идеальными для ночных кремов. Однако, важно заметить что их защитный барьер от бактерий быстро исчезает под воздействием солнечного света. Поэтому продукты, содержащие большую концентрацию фонарного жемчуга, лучше всего применять перед сном для достижения нужного эффекта.",
+      "intro": "Сделает твою жизнь ярче!"
     },
     {
-      "translatedName": "Sand Slime",
+      "translatedName": "Песочный слайм",
       "name": "Sand",
-      "risks": "Rest easy, ranchers! The sand slime is one of the most delightfully docile slimes you'll encounter. These mellow blobs pose virtually no risk to the ranch, thriving peacefully in any populated corral without inciting a single outbreak. However, despite their beach-dwelling nature, sand slimes are surprisingly delicate when it comes to deep water; prolonged submersion will cause them to slowly dissolve! Even their valuable pearl plorts are safe from hungry mouths; it seems no other slime has a taste for a glistening pearl that began its life as common dirt. Their laid-back nature and inability to cause a ruckus make them perfect companions for even the most timid slimes, just keep them away from the deep end!",
-      "slimeology": "The sand slime, a curious terrestrial cousin to both the puddle and fire slimes, makes its home along the shallow, sun-drenched shores of the Far, Far Range. Much like its elemental kin, these intriguing slimes require no typical sustenance from a rancher's feeder; instead, they subsist entirely on good old dirt. After sifting through the gritty soil, sand slimes process the minerals within, producing glimmering plorts that bear a striking resemblance to Earth's precious pearls. Their calm demeanor and unique diet make them a rather low-maintenance addition to any ranch.",
-      "diet": "Dirt",
-      "favourite": "Silky Sand",
-      "onomics": "Sand plorts are true marvels of natural refinement. Though the sand slime itself is soft and yielding, the pearls it produces are remarkably tougher than their Earth counterparts, defying their humble origins. These pristine, spherical treasures, born from nothing more than processed soil, fetch an exceptional price on the Plort Market. Their iridescent sheen and superior durability make them highly sought-after for crafting exquisite jewelry and other luxury adornments across the galaxy, proving that true beauty can indeed come from the ground up!",
-      "intro": "You can find it between your toes!"
+      "risks": "Выдохните, хозяина ранчо! Песочный слайм один из самых невероятно послушных слаймов из всех тех которых вы встретите. Эти мягкие комочки не представляют никакой угрозы для ранчо, спокойно существуя в любом заполненном загоне без того чтобы начать и единого бунта. Однако, несмотря на их природу проживания на пляжах, песочные слаймы удивительно деликатны, когда речь заходит о глубокой воде; длительное погружение приведёт к тому что они начнут медленно расстворяться! Даже их ценные жемчужные плорты в безопасности от голодных ртов; похоже что ни одному другому слайму не по вкусу сверкающий жемчуг который когда то был просто грязью. Их спокойный характер и неспособность создания даже небольших неприятностей делают их идеальной компанией даже для самых застенчивых слаймов, только держите их подальше от глубокой части!",
+      "slimeology": "Песочный слайм, любопытный сухопутный родственник как лужи так и огненного слаймов, обитает вдоль мелководных, солнечных берегов Далёкого-Далёкого Запределья. Как и их элементальные братья, эти интересные слаймы не нуждаются в том чтобы хозяин рачно поддерживал их питание; вместо этого, им хватает старой доброй хорошей грязи. После просеивания песчаной почвы, песочные слаймы обрабатывают минералы, создавая сверкающие плорты, которые имеют поразительное сходство с Земным жемчугом. Их спокойное поведение и уникальная диета делают их вполне себе низкозатратным дополнением к любому ранчо.",
+      "diet": "@ui:m.foodgroup.dirt",
+      "favourite": "@t.silky_sand_craft",
+      "onomics": "Песочные плорты это настоящие чудеса естественной переработки. Хоть сами песочные слаймы мягкие, жемчуг который они производят заметно твёрже их Земного эквивалента, отрицая их скромное происхождение. Эти безупречные, сферические сокровища, рождённые ничем более обработанного грунта, имеют исключительную цену на Плорт маркете. Их переливающийся блеск и сверхпрочность делают их очень желанными для создания из них изысканных ювелирных изделий и других украшений по всей галактике, доказывая что истинная красота и вправду может появиться из обыкновенной земли!",
+      "intro": "Их можно найти промежь пальцев!"
     },
     {
-      "translatedName": "Mesmer Slime",
+      "translatedName": "Слайм гипнотизёр",
       "name": "Mesmer",
-      "risks": "Mesmer slimes may be a risk to the ranch, as the patterns they produce enact a hypnotic effect on slimes that gaze upon them, which can leave them bundled up together for hours—especially during the dark, where their glow is most visible. When a mesmer slime is left alone without the company of others, its mood will also fall. During agitation, mesmer slimes exhibit a feral-like state, seemingly unhappy due to the gut feeling that no one wants to be friends with them. They channel this disappointment by exhibiting eye and mouth patterns similar to the tarr, which only scares off other slimes even more. They will also pounce and mindlessly attack ranchers and slimes with their bug-like appendages. Otherwise they're quite simple to take care of.",
-      "slimeology": "The perplexing, dangerous-looking, yet friendly mesmer slime emits very obvious pulsating colors on its body. It's somewhat debatable what the true purpose of these displays are, but most slime scientists agree that it is to try and appeal to and be the favorite friend of as many slimes as possible, even with their scorpion-like appearances. Interestingly, they seem to be very sociable. Mesmer slimes spend most of their time inside lush jungles and caverns on the island, where you could easily spot their glows.",
-      "diet": "Fruit",
-      "favourite": "Sticky Fingers",
-      "onomics": "Mesmer plorts contain bioluminescent bacteria, which seem to be the source of their radiant colors. These bacteria may display a wide range of hues, though they usually have to be artificially mutated using complex chemical compounds to show specific shades. Products made with mesmer plorts are often luxurious, imperious, and flashy alternatives to renewable light, favored by the wealthy for their novelty. Despite the lavish presentation, their true market value remains surprisingly modest.",
-      "intro": "ooooooooooooooooooo pretty"
+      "risks": "Слаймы гипнотизёры могут представлять угрозу для ранчо, потому что узоры, которые они производят, вводят слаймов которые смотрят на них в гипноз, что может привести к тому что они будут кучковаться вместе часами - особенно во время сумерек, когда их свечение особенно заметно. Когда слайм гипнотизёр остаётся один, его настроение начнёт падать. Во время беспокойства слаймы гипнотизёры переходят в одичавшее состояние, похоже вследствии того что они не счастливы потому что им кажется что никто не хочет с ними дружить. Они направляют это разочарование в создание форм глаз и рта похожих на варра, которые только сильнее отпугивают других слаймов. Они так же будут прыгать и бездумно атаковать слаймоводов и слаймов своими жукоподобными отростками. В остальном их довольно легко содержать.",
+      "slimeology": "Загадочные, опасно выглядящие, но дружелюбные слаймы гипнотизёры испускают заметное пулсирующее свечение на их теле. Не совсем ясно какое истинное предназначение этих узоров, но большинство ученых соглашаются что это попытка угодить и стать лучшим другом как можно большего количества слаймов, даже с их обликом похожим на скорпиона. Примечательно, что они являются очень социальными. Слаймы гипнотизёры проводят большую часть своего времени внутри густых джунглей и пещер острова, где можно легко заметить их свечения.",
+      "diet": "@m.diet.honey_slime",
+      "favourite": "@t.sticky_fruit_entry",
+      "onomics": "Плорты гипнотизёра содержат биолюминесцентные бактерии, которые являются источником их ярких цветов. Эти бактерии могут проявлять широкий спектр цветов, однако им приходится быть искусственно мутированными используя сложные химические вещества, чтобы они показывали определенный оттенок. Продукты созданные с плортами гипнотизёра часто роскошные, надменные и яркие аналоги возобновляемого света, предпочитаемые богатеями за их необычность. Несмотря на их роскошный облик, их истинная цена остаётся удивительно скромной.",
+      "intro": "оооооооооооооооо красиво"
     },
     {
-      "translatedName": "Hermit Slime",
+      "translatedName": "Слайм отшельник",
       "name": "Hermit",
-      "risks": "Hermit slimes are naturally suspicious and can quickly hide when detecting sudden movement or loud noise. This can make it difficult to collect parcels and stored items. If it does not feel safe, it may spend long periods hidden in its shell, making it difficult to handle and collect its plorts. When trying to get items out of their shell, you need to do it carefully and patiently. Rough methods can make the slime even more reluctant to come out of its shell in the future. It is recommended to keep the hermit slimes happy and prevent them from becoming even more distrustful, it is advisable to use the coral fruit and other peaceful strategies to interact with them.",
-      "slimeology": "The hermit slime is a fascinating creature that lives in coastal and rocky areas. This slime is characterized by always carrying a shell on its back, which it uses as a shelter and storage for the valuable objects it collects. The hermit slime has the unique characteristic of being able to shed its shell and adapt to its environment, being able to enter shells, coconuts, stones, and even garbage like boxes. Its favorite food is the prickly coral fruit, a delicious fruit that grows from an exotic plant that grows in the crevices of rocks and near the sea, this food can help the rancher gain the trust of the slime and thus facilitate its collection.",
-      "diet": "Fruit",
-      "favourite": "Prickly Coral",
-      "onomics": "The hermit plorts are as unique as the slimes are. Thanks to the slimes' constant collection of materials in their environment, their plorts contain microfragments of shells and minerals. Hermit plorts are incredibly durable and are used to craft durable building materials and marine decorations. Additionally, they are famous for their ability to glow in the dark when rubbed against a hard surface! Some ranchers use them to decorate their ranches with natural underwater lights.",
-      "intro": "The ever reclusive shell wanderer!"
+      "risks": "Слаймы отшельники подозрительны от природы и могут быстро спрятаться когда замечают резкие движения или громкий шум. Из-за этого может быть сложно собирать плорты и хранимые предметы. Если он не чувствует себя в безопасности, он может проводить долгое время спрятанным в своей ракушке, делая уход и сбор плортов сложнее. При попытках достать предметы из их раковин, вам нужно будет делать это осторожно и с терпением. Грубые методы могут сделать слайма более неохотным выходить из его ракушки в будущем. Рекомендуется содержать слаймов отшельников счастливыми и не давать им становиться еще более недоверчивыми, советуется использовать колкий коралл и другие мирные стратегии взаимодействия с ними.",
+      "slimeology": "Слайм отшельник - удивительное создание, которое живет в прибрежных и скалистых зонах. Этот слайм характеризуется всегда носящим ракушку на своей спине, которую он использует как убежище и хранилище для ценных объектов которые он собирает. Слайм отшельник имеет уникальную особенность способности отбрасывать свою раковину и адаптироваться к своему окружению, имея способность входить в ракушки, кокосы, камни, и даже такой мусор как например коробки. Его любимая еда это колкий коралл, вкусный фрукт который растёт на экзотическом растении которое растёт в трещинах камней и рядом с морем, эта еда может помочь хозяину ранчо заполучить доверие слайма и посодействовать его коллекции.",
+      "diet": "@m.diet.honey_slime",
+      "favourite": "@t.coral_fruit_entry",
+      "onomics": "Плорты отшельника так же уникальны как сами слаймы. Благодаря тому что слайм постоянно собирает материалы в своем окружении, их плорты содержат микрофрагменты ракушек и минералов. Плорты отшельника удивительно прочные и используются в создании долговечных строительных материалов и водных декораций. К тому же, они известны за свою способность светиться в темноте если их потереть о твёрдую поверхность! Некоторые хозяина ранчо используют их для декорирования их ранчо натуральными подводными источниками света.",
+      "intro": "уединённый странник в ракушке!"
     },
     {
-      "translatedName": "Goldfish Slime",
+      "translatedName": "Слайм золотая рыбка",
       "name": "Goldfish",
-      "risks": "Goldfish slimes cannot be captured or contained in traditional corrals, and like gold slimes, they vanish shortly after being discovered. Attempting to corral one will only result in it slipping away with a splash. However, quick-thinking ranchers may be able to feed it its favorite food in time to earn a precious plort.",
-      "slimeology": "Goldfish slimes are an exceptionally rare aquatic variant of the ever elusive gold slime. Unlike their land-loving cousin, these shimmering slimes have adapted to life beneath the waves, gracefully darting through underwater currents with their flowing tails and luminous scales. Their movement mimics that of koi or ornamental goldfish, and they leave behind glittering trails in the water when startled. While they share the same skittish nature as gold slimes, goldfish slimes are slightly easier to observe — if only for a moment longer. They often appear in deep reef trenches or near ancient underwater ruins, surfacing briefly before vanishing in a blink.",
-      "diet": "Gilded Ginger",
-      "favourite": "Gilded Ginger",
-      "onomics": "Goldfish plorts are even rarer than gold plorts and twice as valuable, making them a highly sought-after resource. Their underwater origin gives them unique energetic properties, often used in cutting-edge aquatic tech and luxury hologlass manufacturing. Due to their rarity, the Slime Science Lab recommends handling with extreme care, and counting yourself lucky to have found one at all.",
-      "intro": "The slippery slime with a luxurious shine!"
+      "risks": "Слаймы золотые рыбки не могут быть пойманы или содержаныы в традиционых загонах, и как золотые слаймы, они пропадают вскоре после обнаружения. Попытка поймать одного приведет только к тому что он ускользнёт с всплеском. Однако, быстро соображающие слаймоводы могут успеть скормить им их любимую еду вовремя чтобы получить драгоценный плорт.",
+      "slimeology": "Слаймы золотые рыбки это чрезвычайно редкий водный вариант неуловимого золотого слайма. В отличии от их землелюбивых родственников, эти блестящие слаймы адаптировались жить под волнами, изящно метаясь через подводные потоки с своими гибкими хвостами и сверкающей чешуей. Их движения имитируют движения карпов кои или декоративных золотых рыбок, и они оставляют позади себя блестящие следы в воде когда напуганы. Хоть они так-же пугливы, как и золотые слаймы, за слаймами золотыми рыбками немного легче наблюдать — может дольше на пару мгновений. Они часто появляются в глубоких коралловых траншеях или рядом с древними подводными руинами, ненадолго всплывая перед тем как исчезнуть в мгновение ока.",
+      "diet": "@m.diet.gold_slime",
+      "favourite": "@m.favorite.gold_slime",
+      "onomics": "Плорты золотой рыбки ещё реже чем золотые плорты и в два раза ценнее, делая их высоко желаемым ресурсом. Их подводное происхождение дает им уникальные энергетические свойства, часто используемые в новейшей водной технике и производства роскошного голостекла. Из-за их редкости, Лаборатория слаймонауки рекомендует обращаться с ними чрезвычайно осторожно, и считать большой удачей что вы вообще нашли хотя бы один.",
+      "intro": "Скользкий слайм с богатеньким блеском!"
     }
   ],
   "hens": [
     {
       "name": "Sandy",
-      "translatedName": "Sandy Hen",
-      "about": "A sun-baked cousin to the familiar stony hen, Sandy Hens are masters of coastal concealment. Their feathers have evolved into a remarkable mimicry of the dry, shifting sands of the beaches they call home, making them incredibly difficult to spot. Unfortunately for the sandy hen, their superb camouflage is no match for the keen eyes of a coco slime. Perched high in their swaying palm trees, these predators have a particular fondness for the sandy hen's uniquely dry meat, which perfectly balances their own juicy, tropical insides. For a rancher looking for a tasty, albeit a bit parched, bite, the sandy hen offers a familiar flavor with an undeniably arid finish.",
-      "favouredBy": "Coco Slime",
-      "ranch": "Sandy hens in close proximity to roostros will periodically lay eggs that produce Sandy chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.",
-      "type": "Meat",
-      "intro": "The beach side camouflage master!"
+      "translatedName": "Песчанная курица",
+      "about": "Загорелые родственники уже знакомых каменистых куриц, песчанные курицы мастера прибрежного укрытия. Их перья эволюционировали в замечательную имитацию сухих, скользящих песков пляжей, которые они считают домом, из-за чего их довольно трудно заметить. К сожалению для песчанной курицы, их превосходный камуфляж не ровня зорким глазам кокосового слайма. Расположенные высоко на их качающихся пальмах, эти хищники имеют особое предпочтение исключительно сухому мясу песчанной курицы, что идеально балансирует их собственные сочные, тропические внутренности. Для слаймовода, ищущего вкусный, хоть и слегка сухой, кусок, песчанная курица предоставляет знакомый вкус с бесспорно засушливым послевкусием.",
+      "favouredBy": "@t.coco_slime_entry",
+      "ranch": "Песчанные курицы, находящиеся вблизи от кукарекунов, периодически откладывают яйца, из которых впоследствии вылупляются песчанные цып-цыпчики. Однако чрезмерное скопление куриц и кукарекунов на ограниченной территории заставляет их нервничать и они могут перестать нести яйца. Опытные хозяева ранчо, искушенные в вопросах тонкой натуры куриных любовных отношений, всегда заботятся о том, чтобы в курятнике количество пернатых не превышало 12 взрослых особей.",
+      "type": "@m.resource_type.henhen",
+      "intro": "Пляжный мастер камуфляжа"
     },
     {
       "name": "Radiant",
-      "translatedName": "Radiant Hen",
-      "about": "A peculiar hen among its kind, the radiant hen stands out, literally. Unlike most chickens that try to blend in with their surroundings, the radiant hen has evolved feathers that glow with a soft, ethereal light. This makes them incredibly easy to spot, a trait that would typically be a disadvantage. However, for the nocturnal lantern slimes, this luminosity is irresistible. They are often found clustered around these hens, seemingly mesmerized by their unique radiance. It's believed the hens' constant, gentle light helps to regulate the lantern slimes' internal bioluminescence, which can sometimes become unstable. For ranchers, the radiant hen is a beacon, making them surprisingly easy to locate in the dark corners of the Far, Far Range. Their meat, however, tastes just like a regular chicken.",
-      "favouredBy": "Lantern Slime",
-      "ranch": "Radiant hens in close proximity to roostros will periodically lay eggs that produce Radiant chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.",
-      "type": "Meat",
-      "intro": "Always out of place!"
+      "translatedName": "Лучезарная курица",
+      "about": "В своём роде специфичная курица, лучезарная курица выделяется, буквально. В отличии от большинства куриц, которые пытаются слиться с своим окружением, перья лучезарной курицы эволюционировали так что они светятся мягким, неземным светом. Из-за этого их невероятно легко заметить, черта, которая обычно была бы негативной. Однако, для ночных фонарных слаймов, от этого свечения нельзя отказаться. Они часто толпятся вокруг этих куриц, загипнотизированные их мерцанием. Считается что мягкий свет, излучаемый курицей, помогает регулировать внутреннюю биолюминесценцию фонарных слаймов, которая может иногда быть нестабильной. Для слаймоводов, лучезарная курица как маяк, что делает их невероятно легкими в обнаружении в темных уголках Далекого далекого запределья. Их мясо, однако, на вкус как обыкновенная курица.",
+      "favouredBy": "@t.lantern_slime_entry",
+      "ranch": "Лучезарные курицы, находящиеся вблизи от кукарекунов, периодически откладывают яйца, из которых впоследствии вылупляются лучезарные цып-цыпчики. Однако чрезмерное скопление куриц и кукарекунов на ограниченной территории заставляет их нервничать и они могут перестать нести яйца. Опытные хозяева ранчо, искушенные в вопросах тонкой натуры куриных любовных отношений, всегда заботятся о том, чтобы в курятнике количество пернатых не превышало 12 взрослых особей.",
+      "type": "@m.resource_type.henhen",
+      "intro": "Всегда выделяется!"
     }
   ],
   "chicks": [
     {
       "name": "Sandy",
-      "translatedName": "Sandy Chickadoo",
-      "about": "Sandy chickadoos are baby chickens that will eventually grow into a Sandy hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.",
-      "favouredBy": "(not a slime food)",
-      "ranch": "Keep Sandy Chickadoos in a safe place and they'll eventually grow into a Sandy Hen or Roostro.",
-      "type": "Future Meat",
-      "intro": "A budding camouflager!"
+      "translatedName": "Песчанный цып-цыпчик",
+      "about": "Песчанные цып-цыпчики это цыплята, из которых однажды вырастут песчанные курицы или, реже, кукарекуны.\n\nСлаймы не едят никаких цып-цыпчиков. Некоторые считают, что слаймы слишком добрые, чтобы решиться на такое. А другие утверждают, что дело пока в недостаточном количестве мяса.",
+      "favouredBy": "@m.favored_by.chickadoo",
+      "ranch": "Держи песчанных цып-цыпчиков в надёжном убежище, и однажды из них вырастут песчанные курицы или кукарекуны.",
+      "type": "@m.resource_type.chickadoo",
+      "intro": "Будущий камуфляжник!"
     },
     {
       "name": "Radiant",
-      "translatedName": "Radiant Chickadoo",
-      "about": "Radiant chickadoos are baby chickens that will eventually grow into a Radiant hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.",
-      "favouredBy": "(not a slime food)",
-      "ranch": "Keep Radiant Chickadoos in a safe place and they'll eventually grow into a Radiant Hen or Roostro.",
-      "type": "Future Meat",
-      "intro": "Doesn't fit right in yet..."
+      "translatedName": "Лучезарный цып-цыпчик",
+      "about": "Лучезарные цып-цыпчики это цыплята, из которых однажды вырастут лучезарные курицы или, реже, кукарекуны.\n\nСлаймы не едят никаких цып-цыпчиков. Некоторые считают, что слаймы слишком добрые, чтобы решиться на такое. А другие утверждают, что дело пока в недостаточном количестве мяса.",
+      "favouredBy": "@m.favored_by.chickadoo",
+      "ranch": "Держи лучезарных цып-цыпчиков в надёжном убежище, и однажды из них вырастут лучезарные курицы или кукарекуны.",
+      "type": "@m.resource_type.chickadoo",
+      "intro": "Ещё не вписывается..."
     }
   ],
   "fruits": [
     {
       "name": "Sticky",
-      "translatedName": "Sticky Fingers",
-      "about": "A sweet treat that tends to stick to your teeth, or even your fingers. Once prized as the key ingredient in many of the Far, Far Range’s candies, this fruit balances its gooey stickiness with a surprisingly rich creaminess and a satisfying crunch.",
-      "favouredBy": "Mesmer Slime",
-      "ranch": "Deposit a sticky finger into a garden's depositor and you'll have a large Sticky Finger tree of your very own.",
-      "type": "Fruit",
-      "intro": "The sticky fruit!"
+      "translatedName": "Пальцеклей",
+      "about": "Сладкое угощение которое постоянно к вашим зубам и даже пальцам. Известен как ключевой ингредиент в множестве конфет Далекого далекого запределья, этот фрукт балансирует свою клейкость с удивительно богатой кремовостью и удовлетворительным хрустом.",
+      "favouredBy": "@t.mesmer_slime_entry",
+      "ranch": "Стоит только положить пальцеклей в депозитарий участка, и у тебя вырастет высокое пальцеклеевое дерево.",
+      "type": "@m.resource_type.pogo",
+      "intro": "Липкий фрукт!"
     },
     {
       "name": "Coral",
-      "translatedName": "Prickly Coral",
-      "about": "A member of the prickly fruit family, uniquely adapted to grow beneath the waves. Unlike its distant cousin, the Prickly Pear, this fruit conceals a subtle sweetness within its inner core. Though still considered an acquired taste, those willing to give it a chance often find its initial bitterness surprisingly tolerable.",
-      "favouredBy": "Hermit Slime",
-      "ranch": "Deposit a prickly coral into a garden's depositor and you'll have a large Prickly Coral tree of your very own.",
-      "type": "Fruit",
-      "intro": "Watch for the pointy parts!"
+      "translatedName": "Колкий коралл",
+      "about": "Часть семейства колких фруктов, адаптировался жить под волнами. В отличии от своего дальнего родственника, грушовника, этот фрукт слегка сладок в своей сердцевине. Хоть вкус и считается унаследованным, те кто решаются попробовать часто находят его начальную кислоту на удивление терпимой.",
+      "favouredBy": "@t.hermit_slime_entry",
+      "ranch": "Стоит только положить колкий коралл в депозитарий участка, и у тебя вырастет высокое коралловое дерево.",
+      "type": "@m.resource_type.pogo",
+      "intro": "Осторожней с колючками!"
     }
   ],
   "veggies": [
     {
       "name": "Blowtato",
-      "translatedName": "Blowtato",
-      "about": "The blowtato is a peculiar, highly reactive root vegetable, mostly found sprouting from the cracked earth of the Indigo Quarry. Much like the mine slimes that adore them, these spuds have a natural propensity for explosive flair due to a volatile compound within. Ranchers must handle them with extreme care, as a small puncture or \"burp\" is recommended before cooking to prevent a startling bang! For mine slimes, this explosive nature is pure delight, fueling their rock-shattering abilities and making the blowtato their favorite snack. Clever miners even use them to loosen stubborn rock formations, though caution is always advised.",
-      "favouredBy": "Mine Slime",
-      "ranch": "Deposit a blowtato into a garden's depositor and you'll have a large Blowtato crop of your very own.",
-      "type": "Veggie",
-      "intro": "The explosive veggie!"
+      "translatedName": "Взрывтошка",
+      "about": "Взрывтошка это специфичный, высоко реактивный корнеплод, чаще всего найденный в росколах земли Карьера Индиго. Прямо как слаймы мины которые их обожают, эти картофелины имеют высокий шанс взрыва из-за волатильного химиката содержащегося внутри. Хозяева ранчо должны обращаться с ними чрезвычайно осторожно, создание маленькой дырки или \"отрыгивание\" рекоммендуется перед готовкой чтобы избежать оглушающего взрыва! Для слаймов мин, эта взрывная натура - чистейшее наслаждение, заправляющее их камнеломные способности и делая взрывтошку их любимым перекусом. Находчивые шахтеры даже используют его чтобы ослабить сильные каменные образования, однако всегда рекоммендуется соблюдать осторожность.",
+      "favouredBy": "@t.mine_slime_entry",
+      "ranch": "Стоит только положить взрывтошку в депозитарий участка, и в твоем распоряжении целый урожай.",
+      "type": "@m.resource_type.carrot",
+      "intro": "Взрывной корнеплод!"
     }
   ],
   "ranchers": [
     {
       "name": "Lisa",
-      "translatedName": "Lisa Erwin",
+      "translatedName": "Лиза Эрвин",
       "offers": [
-        "...Oops! Did I click that? Ah, sorry, mate... well, while you're here, could ya lend me a hand?",
-        "Zzzz... huh?! What was I doin' again?",
-        "Rise 'n shine! We've got work to crack on with."
+        "...Упс! Я что нажала на это? А, извини, приятель... ну, пока ты ещё здесь, можешь протянуть мне руку помощи?",
+        "Хррр... А?! На чем я остановилась?",
+        "Проснись и пой! У нас есть работа к которой нужно приступить."
       ],
-      "specialOffer": "When I need a burst of energy, I just keep calm and grab a cuppa coffee.",
+      "specialOffer": "Когда мне нужен заряд энергии, Я просто держу себя в руках и беру чашечку кофе.",
       "loadingTexts": [
-        "Lisa tried to show a mesmer slime its own reflection once. It stood there at the mirror for hours.",
-        "Lisa often gets into scientific disputes with Viktor."
+        "Лиза однажды попыталась показать слайму гипнотизёру его отражение. Он стоял перед зеркалом часами.",
+        "Лиза часто попадает в научные споры с Виктором."
       ]
     }
   ],
   "largos": [
     {
-      "translatedName": "Rosi Mine Largo",
+      "translatedName": "Мина Рози ларго",
       "name": "Rosi Mine"
     },
     {
-      "translatedName": "Rosi Lantern Largo",
+      "translatedName": "Фонарный Рози ларго",
       "name": "Rosi Lantern"
     },
     {
-      "translatedName": "Mine Lantern Largo",
+      "translatedName": "Фонарный мина ларго",
       "name": "Mine Lantern"
     },
     {
-      "translatedName": "Pink Coco Largo",
+      "translatedName": "Розовый кокосовый ларго",
       "name": "Pink Coco"
     },
     {
-      "translatedName": "Coco Saber Largo",
+      "translatedName": "Саблезубый кокосовый ларго",
       "name": "Coco Saber"
     },
     {
-      "translatedName": "Coco Quantum Largo",
+      "translatedName": "Квантовый кокосовый ларго",
       "name": "Coco Quantum"
     },
     {
-      "translatedName": "Coco Honey Largo",
+      "translatedName": "Медовый кокосовый ларго",
       "name": "Coco Honey"
     },
     {
-      "translatedName": "Coco Phosphor Largo",
+      "translatedName": "Фосфорный кокосовый ларго",
       "name": "Coco Phosphor"
     },
     {
-      "translatedName": "Coco Mosaic Largo",
+      "translatedName": "Мозаичный кокосовый ларго",
       "name": "Coco Mosaic"
     },
     {
-      "translatedName": "Coco Tangle Largo",
+      "translatedName": "Кокосовый вьюнок-ларго",
       "name": "Coco Tangle"
     },
     {
-      "translatedName": "Coco Boom Largo",
+      "translatedName": "Кокосовый бабах-ларго",
       "name": "Coco Boom"
     },
     {
-      "translatedName": "Coco Rad Largo",
+      "translatedName": "Радиоактивный кокосовый ларго",
       "name": "Coco Rad"
     },
     {
-      "translatedName": "Coco Rock Largo",
+      "translatedName": "Скалистый кокосовый ларго",
       "name": "Coco Rock"
     },
     {
-      "translatedName": "Coco Tabby Largo",
+      "translatedName": "Мяуровый кокосовый ларго",
       "name": "Coco Tabby"
     },
     {
-      "translatedName": "Coco Hunter Largo",
+      "translatedName": "Кокосовый охотник ларго",
       "name": "Coco Hunter"
     },
     {
-      "translatedName": "Coco Crystal Largo",
+      "translatedName": "Кристальный кокосовый ларго",
       "name": "Coco Crystal"
     },
     {
-      "translatedName": "Coco Dervish Largo",
+      "translatedName": "Кокосовый дервиш ларго",
       "name": "Coco Dervish"
     },
     {
-      "translatedName": "Coco Mesmer Largo",
+      "translatedName": "Кокосовый гипнотизёр ларго",
       "name": "Coco Mesmer"
     },
     {
-      "translatedName": "Coco Hermit Largo",
+      "translatedName": "Кокосовый отшельник ларго",
       "name": "Coco Hermit"
     },
     {
-      "translatedName": "Pink Mesmer Largo",
+      "translatedName": "Розовый гипнотизёр ларго",
       "name": "Pink Mesmer"
     },
     {
-      "translatedName": "Saber Mesmer Largo",
+      "translatedName": "Саблезубый гипнотизёр ларго",
       "name": "Saber Mesmer"
     },
     {
-      "translatedName": "Quantum Mesmer Largo",
+      "translatedName": "Квантовый гипнотизёр ларго",
       "name": "Quantum Mesmer"
     },
     {
-      "translatedName": "Honey Mesmer Largo",
+      "translatedName": "Медовый гипнотизёр ларго",
       "name": "Honey Mesmer"
     },
     {
-      "translatedName": "Phosphor Mesmer Largo",
+      "translatedName": "Фосфорный гипнотизёр ларго",
       "name": "Phosphor Mesmer"
     },
     {
-      "translatedName": "Mosaic Mesmer Largo",
+      "translatedName": "Мозаичный гипнотизёр ларго",
       "name": "Mosaic Mesmer"
     },
     {
-      "translatedName": "Tangle Mesmer Largo",
+      "translatedName": "Вьюнок-гипнотизёр ларго",
       "name": "Tangle Mesmer"
     },
     {
-      "translatedName": "Boom Mesmer Largo",
+      "translatedName": "Бабах-гипнотизёр ларго",
       "name": "Boom Mesmer"
     },
     {
-      "translatedName": "Rad Mesmer Largo",
+      "translatedName": "Радиоактивный гипнотизёр ларго",
       "name": "Rad Mesmer"
     },
     {
-      "translatedName": "Rock Mesmer Largo",
+      "translatedName": "Скалистый гипнотизёр ларго",
       "name": "Rock Mesmer"
     },
     {
-      "translatedName": "Tabby Mesmer Largo",
+      "translatedName": "Мяуровый гипнотизёр ларго",
       "name": "Tabby Mesmer"
     },
     {
-      "translatedName": "Hunter Mesmer Largo",
+      "translatedName": "Гипнотизёр охотник ларго",
       "name": "Hunter Mesmer"
     },
     {
-      "translatedName": "Crystal Mesmer Largo",
+      "translatedName": "Кристальный гипнотизёр ларго",
       "name": "Crystal Mesmer"
     },
     {
-      "translatedName": "Dervish Mesmer Largo",
+      "translatedName": "Гипнотизёр дервиш ларго",
       "name": "Dervish Mesmer"
     },
     {
-      "translatedName": "Mesmer Hermit Largo",
+      "translatedName": "Гипнотизёр отшельник ларго",
       "name": "Mesmer Hermit"
     },
     {
-      "translatedName": "Pink Hermit Largo",
+      "translatedName": "Розовый отшельник ларго",
       "name": "Pink Hermit"
     },
     {
-      "translatedName": "Saber Hermit Largo",
+      "translatedName": "Саблезубый отшельник ларго",
       "name": "Saber Hermit"
     },
     {
-      "translatedName": "Quantum Hermit Largo",
+      "translatedName": "Квантовый отшельник ларго",
       "name": "Quantum Hermit"
     },
     {
-      "translatedName": "Honey Hermit Largo",
+      "translatedName": "Медовый отшельник ларго",
       "name": "Honey Hermit"
     },
     {
-      "translatedName": "Phosphor Hermit Largo",
+      "translatedName": "Фосфорный отшельник ларго",
       "name": "Phosphor Hermit"
     },
     {
-      "translatedName": "Mosaic Hermit Largo",
+      "translatedName": "Мозаичный отшельник ларго",
       "name": "Mosaic Hermit"
     },
     {
-      "translatedName": "Tangle Hermit Largo",
+      "translatedName": "Отшельник вьюнок-ларго",
       "name": "Tangle Hermit"
     },
     {
-      "translatedName": "Boom Hermit Largo",
+      "translatedName": "Бабах-отшельник ларго",
       "name": "Boom Hermit"
     },
     {
-      "translatedName": "Rad Hermit Largo",
+      "translatedName": "Радиоактивный отшельник ларго",
       "name": "Rad Hermit"
     },
     {
-      "translatedName": "Rock Hermit Largo",
+      "translatedName": "Скалистый отшельник ларго",
       "name": "Rock Hermit"
     },
     {
-      "translatedName": "Tabby Hermit Largo",
+      "translatedName": "Мяуровый отшельник ларго",
       "name": "Tabby Hermit"
     },
     {
-      "translatedName": "Hunter Hermit Largo",
+      "translatedName": "Отшельник охотник ларго",
       "name": "Hunter Hermit"
     },
     {
-      "translatedName": "Crystal Hermit Largo",
+      "translatedName": "Кристальный отшельник ларго",
       "name": "Crystal Hermit"
     },
     {
-      "translatedName": "Dervish Hermit Largo",
+      "translatedName": "Отшельник дервиш ларго",
       "name": "Dervish Hermit"
     }
   ],
   "gordos": [
     {
-      "translatedName": "Rosi Gordo",
+      "translatedName": "Гордо Рози",
       "name": "Rosi"
     },
     {
-      "translatedName": "Coco Gordo",
+      "translatedName": "Кокосовый гордо",
       "name": "Coco"
     },
     {
-      "translatedName": "Mine Gordo",
+      "translatedName": "Гордо мина",
       "name": "Mine"
     },
     {
-      "translatedName": "Lantern Gordo",
+      "translatedName": "Фонарный гордо",
       "name": "Lantern"
     },
     {
-      "translatedName": "Mesmer Gordo",
+      "translatedName": "Гордо гипнотизёр",
       "name": "Mesmer"
     },
     {
-      "translatedName": "Hermit Gordo",
+      "translatedName": "Гордо отшельник",
       "name": "Hermit"
     },
     {
-      "translatedName": "Goldfish Gordo",
+      "translatedName": "Гордо золотая рыбка",
       "name": "Goldfish"
     },
     {
-      "translatedName": "Sand Gordo",
+      "translatedName": "Песочный гордо",
       "name": "Sand"
     }
   ],
   "plorts": [
     {
-      "translatedName": "Rosi Pearl",
+      "translatedName": "Жемчуг Рози",
       "name": "Rosi"
     },
     {
-      "translatedName": "Coco Plort",
+      "translatedName": "Кокосовый плорт",
       "name": "Coco"
     },
     {
-      "translatedName": "Mine Pearl",
+      "translatedName": "Жемчуг мина",
       "name": "Mine"
     },
     {
-      "translatedName": "Lantern Pearl",
+      "translatedName": "Фонарный жемчуг",
       "name": "Lantern"
     },
     {
-      "translatedName": "Sand Pearl",
+      "translatedName": "Песочный жемчуг",
       "name": "Sand"
     },
     {
-      "translatedName": "Mesmer Plort",
+      "translatedName": "Плорт гипнотизёра",
       "name": "Mesmer"
     },
     {
-      "translatedName": "Hermit Plort",
+      "translatedName": "Плорт отшельника",
       "name": "Hermit"
     },
     {
-      "translatedName": "Goldfish Pearl",
+      "translatedName": "Жемчуг золотой рыбки",
       "name": "Goldfish"
     }
   ],
   "zones": [
     {
       "name": "Swirlpool Island",
-      "translatedName": "Swirlpool Island",
-      "intro": "A distant land of wonder for those who are curious!",
-      "presence": "Traversing the island...",
+      "translatedName": "Спиралеводный остров",
+      "intro": "Дальние земли чудес для самых любопытных!",
+      "presence": "Проходим через остров...",
       "description": "Placeholder"
     }
   ],
   "mail": [
     {
       "mailKey": "ocean_intro",
-      "translatedName": "S.P.L.A.S.H",
-      "subject": "Notice from the S.P.L.A.S.H. Foundation",
-      "body": "Greetings, Rancher.\n\nThe 7Zee Corporation, in partnership with the S.P.L.A.S.H. Foundation (Slime Preservation, Learning, Assistance, Sanctuary & Harmony), would like to inform you of unusual phenomena occurring across the region.\n\nReports indicate that non-native slimes, creatures not previously known to inhabit these ecosystems, are beginning to appear in unexpected locations. The cause of these disturbances is currently unknown, but rest assured: our teams are on it.\n\nA certified Slimeologist will be reaching out to you shortly with further information and guidance. In the meantime, proceed with caution and report any unusual slime behavior through your Starmail terminal.\n\nStay safe, stay curious.\n\nSincerely,\nThe Board of S.P.L.A.S.H."
+      "translatedName": "В.С.П.Л.Е.С.К.",
+      "subject": "Извещение от Фонда В.С.П.Л.Е.С.К. ",
+      "body": "Здравствуй, хозяин ранчо.\n\nКорпорация 7Zee, вместе с Фондом В.С.П.Л.Е.С.К. (Выискивание Слаймов, Помощь, Лекции, Единство, Сохранение и Классификация.), желают проинформировать вас о необычном феномене происходящем в регионе.\n\nОтчёты сообщают что не местные слаймы, существа, которые раньше не были задокументированны на данной области, начинают появляться в неожиданных местах. Причина этих аномалий пока неизвестна, но будьте уверенны: наши команды это исследуют.\n\nСертифицированный слаймолог скоро свяжется с вами с последующей информацией и наводками. А пока, действуйте с осторожностью и сообщайте о любом необычном поведении слаймов в вашем терминале звёздной почты.\n\nБерегите себя и свою любопытность.\n\nС уважением,\nСовет В.С.П.Л.Е.С.К."
     },
     {
       "mailKey": "exchangeintro_lisa",
-      "translatedName": "Lisa Erwin",
-      "subject": "G'day from S.P.L.A.S.H. HQ!",
-      "body": "Name's Lisa Erwin! Slimeologist, field researcher, and proud member of S.P.L.A.S.H. (that's Slime Preservation, Learning, Assistance, Sanctuary & Harmony for the uninitiated). You could say I'm a bit of a slime whisperer. Been studyin' their behaviors, quirks, and oddities since I first touched down on the Far, Far Range. If it jiggles, hops, or purrs, chances are I've logged a dozen pages on it.\n\nLately, reports have been floodin' in about some strange slime activity happenin' right near your patch of land. Can't say I've seen anything quite like it in the data — and trust me, that's sayin' something.\n\nSo! I'll be reachin' out through the Range Exchange in a couple o' days. Nothin' too formal — just a quick chat, maybe get your eyes on a few of these peculiar slime friends, if you're willin'. Could be nothin'... or it might just be the biggest slime mystery this dusty ol' rock's ever seen.\n\nKeep an eye on those corrals, yeah?\n\nCheers,\n- Lisa.\nFar, Far Range S.P.L.A.S.H.\n\nP.S. If a slime starts hummin' at ya... don't panic. Just write it down."
+      "translatedName": "@exchange:m.rancher.lisa",
+      "subject": "Добрый день из штаба В.С.П.Л.Е.С.К.!",
+      "body": "Звать меня Лиза Эрвин! Слаймолог, полевой исследователь и гордый член В.С.П.Л.Е.С.К. (это Выискивание Слаймов, Помощь, Лекции, Единство, Сохранение и Классификация для не ознакомленных). Можно сказать я прямо укротитель слаймов. Изучала их поведение, особенности и странности с тех пор как я впервые приземлилась на Далёком далёком запределье. Если что то покачивается, прыгает, или мурчит, скорее всего я написала десятки страниц об этом.\n\nПоследнее время, был целый поток отчетов о том что происходят какие то странные изменения в поведении слаймов прямо вблизи твоей территории. Не могу сказать что я когда либо видела что то подобное — и поверь мне, это о чём то говорит.\n\nТак что! Я звякну через пункт обмена через пару деньков. Ничего слишком формального — просто быстрый разговор, может увидишь парочку этих интересных слаймиков, если пожелаешь. Может быть ничего... или может быть самая большая слаймовая тайна которую этот старый пыльный камень когда либо видел.\n\nСледи за своими загонами,хорошо?\n\nДо встречи,\n- Лиза.\nДалекое далекое запределье В.С.П.Л.Е.С.К.\n\nP.S. если слайм на тебя гудит... не паникуй. Просто запиши это."
     }
   ]
 }

@@ -80,7 +80,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         State = ExplodeState.Preparing;
         Marker.SetActive(true);
         SfAnimator.SetTrigger("triggerGrimace");
-        yield return new WaitForSeconds(BoomSlimeExplode.EXPLOSION_PREP_TIME);
+        yield return Helpers.Wait(BoomSlimeExplode.EXPLOSION_PREP_TIME);
         Marker.SetActive(false);
         State = ExplodeState.Exploding;
         SpawnAndPlayFX(ExplodeFX, transform.position, transform.rotation);
@@ -89,7 +89,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         NextPossibleExplode = Time.time + NextExplodeDelayTime;
         State = ExplodeState.Recovering;
         SfAnimator.SetTrigger("triggerFried");
-        yield return new WaitForSeconds(BoomSlimeExplode.EXPLOSION_RECOVERY_TIME);
+        yield return Helpers.Wait(BoomSlimeExplode.EXPLOSION_RECOVERY_TIME);
         State = ExplodeState.Idle;
     }
 

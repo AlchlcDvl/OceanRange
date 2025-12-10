@@ -3,6 +3,7 @@ using SRML.Utils;
 using System.IO.Compression;
 using System.Text;
 using Newtonsoft.Json.Serialization;
+using UnityEngine.Rendering;
 
 namespace OceanRange.Managers;
 
@@ -11,7 +12,7 @@ namespace OceanRange.Managers;
 /// </summary>
 public static class Inventory
 {
-    public static AssetBundle Bundle;
+    // public static AssetBundle Bundle;
 
     /// <summary>
     /// Assembly data for the mod's dll.
@@ -262,20 +263,20 @@ public static class Inventory
         return true;
     }
 
-    /// <summary>
-    /// Gets a Shader from the assets associated with the provided name.
-    /// </summary>
-    /// <inheritdoc cref="Get{T}(string)"/>
-    public static Shader GetShader(string name) => Get<Shader>(name);
+    // /// <summary>
+    // /// Gets a Shader from the assets associated with the provided name.
+    // /// </summary>
+    // /// <inheritdoc cref="Get{T}(string)"/>
+    // public static Shader GetShader(string name) => Get<Shader>(name);
 
-    /// <summary>
-    /// Gets a ScriptableObject instance associated with the provided type and name.
-    /// </summary>
-    /// <typeparam name="T">The type of the data.</typeparam>
-    /// <inheritdoc cref="Get{T}(string)"/>
-    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
-
-    public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
+    // /// <summary>
+    // /// Gets a ScriptableObject instance associated with the provided type and name.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the data.</typeparam>
+    // /// <inheritdoc cref="Get{T}(string)"/>
+    // public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
+    //
+    // public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
 
     private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
 
@@ -355,13 +356,33 @@ public static class Inventory
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
         using var reader = new BinaryReader(decompressor);
 
-        return new()
+        var mesh = new Mesh()
         {
+            indexFormat = (IndexFormat)reader.ReadByte(),
             vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            triangles = BinaryUtils.ReadArray(reader, ReadInt),
-            uv = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2),
+            normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
+            tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4),
+            bounds = new()
+            {
+                center = BinaryUtils.ReadVector3(reader),
+                extents = BinaryUtils.ReadVector3(reader)
+            },
+            subMeshCount = reader.ReadInt32(),
             bindposes = []
         };
+
+        for (var i = 0; i < mesh.subMeshCount; i++)
+            mesh.SetTriangles(BinaryUtils.ReadArray(reader, ReadInt), i);
+
+        for (var i = 0; i < 8; i++)
+        {
+            var uvs = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2);
+
+            if (uvs.Length > 0)
+                mesh.SetUVs(i, uvs);
+        }
+
+        return mesh;
     }
 
     private static int ReadInt(BinaryReader reader) => reader.ReadInt32();

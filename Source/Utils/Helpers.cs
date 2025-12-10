@@ -166,19 +166,15 @@ public static class Helpers
 
     public static Mesh Clone(this Mesh originalMesh)
     {
-        if (!originalMesh.isReadable)
-            return originalMesh;
-
         var mesh = new Mesh
         {
+            indexFormat = originalMesh.indexFormat,
             vertices = originalMesh.vertices,
-            triangles = originalMesh.triangles,
-
-            colors = originalMesh.colors,
+            normals = originalMesh.normals,
+            tangents = originalMesh.tangents,
+            bounds = originalMesh.bounds,
             colors32 = originalMesh.colors32,
-
             name = originalMesh.name + "_Clone",
-
             subMeshCount = originalMesh.subMeshCount
         };
 
@@ -187,7 +183,10 @@ public static class Helpers
         for (var i = 0; i < 8; i++)
         {
             originalMesh.GetUVs(i, uvs);
-            mesh.SetUVs(i, uvs);
+
+            if (uvs.Count > 0)
+                mesh.SetUVs(i, uvs);
+
             uvs.Clear();
         }
 
@@ -245,30 +244,30 @@ public static class Helpers
 
     // public static string ToHexRGBA(this Color32 color) => $"#{color.r.ToString(InvariantCulture):X2}{color.g.ToString(InvariantCulture):X2}{color.b.ToString(InvariantCulture):X2}{color.a.ToString(InvariantCulture):X2}";
 
-    public static Vector3 ToPower(this Vector3 vector, int power)
-    {
-        if (power == 0)
-            return Vector3.one;
-
-        var result = Vector3.one;
-        var abs = Mathf.Abs(power);
-
-        for (var i = 0; i < abs; i++)
-        {
-            result.x *= vector.x;
-            result.y *= vector.y;
-            result.z *= vector.z;
-        }
-
-        if (power < 0)
-        {
-            result.x = 1f / result.x;
-            result.y = 1f / result.y;
-            result.z = 1f / result.z;
-        }
-
-        return result;
-    }
+    // public static Vector3 ToPower(this Vector3 vector, int power)
+    // {
+    //     if (power == 0)
+    //         return Vector3.one;
+    //
+    //     var result = Vector3.one;
+    //     var abs = Mathf.Abs(power);
+    //
+    //     for (var i = 0; i < abs; i++)
+    //     {
+    //         result.x *= vector.x;
+    //         result.y *= vector.y;
+    //         result.z *= vector.z;
+    //     }
+    //
+    //     if (power < 0)
+    //     {
+    //         result.x = 1f / result.x;
+    //         result.y = 1f / result.y;
+    //         result.z = 1f / result.z;
+    //     }
+    //
+    //     return result;
+    // }
 
     public static float Sum(this Vector3 vector) => vector.x + vector.y + vector.z;
 
@@ -394,25 +393,25 @@ public static class Helpers
         Mouth = face.Mouth?.Clone(),
     };
 
-    public static IEnumerator PerformTimedAction(float duration, Action<float> action)
-    {
-        var startTime = Time.time;
-        var endTime = startTime + duration;
+    // public static IEnumerator PerformTimedAction(float duration, Action<float> action)
+    // {
+    //     var startTime = Time.time;
+    //     var endTime = startTime + duration;
+    //
+    //     while (Time.time < endTime)
+    //     {
+    //         action((Time.time - startTime) / duration);
+    //         yield return null;
+    //     }
+    //
+    //     action(1f);
+    // }
 
-        while (Time.time < endTime)
-        {
-            action((Time.time - startTime) / duration);
-            yield return null;
-        }
-
-        action(1f);
-    }
-
-    public static IEnumerator WaitWhile(Func<bool> predicate)
-    {
-        while (predicate())
-            yield return null;
-    }
+    // public static IEnumerator WaitWhile(Func<bool> predicate)
+    // {
+    //     while (predicate())
+    //         yield return null;
+    // }
 
     // public static IEnumerator WaitUntil(Func<bool> predicate)
     // {
@@ -420,13 +419,13 @@ public static class Helpers
     //         yield return null;
     // }
 
-    // public static IEnumerator Wait(float duration)
-    // {
-    //     var endTime = Time.time + duration;
+    public static IEnumerator Wait(float duration)
+    {
+        var endTime = Time.time + duration;
 
-    //     while (Time.time < endTime)
-    //         yield return null;
-    // }
+        while (Time.time < endTime)
+            yield return null;
+    }
 
     // public static bool TryGetInterfaceComponent<T>(this Component obj, out T component) where T : class
     // {
@@ -444,7 +443,7 @@ public static class Helpers
 
     public static T EnsureComponent<T>(this Component component) where T : Component => component.gameObject.EnsureComponent<T>();
 
-    public static bool StartsWith(this string @string, char character) => @string[0] == character;
+    public static bool StartsWith(this string @string, char character) => @string.Length > 0 && @string[0] == character;
 
     public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => member.IsDefined(typeof(T), false);
 
@@ -498,13 +497,20 @@ public static class Helpers
 
     // public static string[] GetEnumNames<T>() where T : struct, Enum => Enum.GetNames(typeof(T));
 
-    public static Material Clone(this Material material) => new(material);
+    public static List<Material> ClonedMats = [];
+
+    public static Material Clone(this Material material)
+    {
+        var mat = new Material(material);
+        ClonedMats.Add(mat);
+        return mat;
+    }
 
     public static T CreatePrefab<T>(this T obj) where T : UObject => UObject.Instantiate(obj, Main.PrefabParent, false);
 
     public static Vector3 Multiply(this Vector3 value, Vector3 scale) => new(value.x * scale.x, value.y * scale.y, value.z * scale.z);
 
-    public static Vector3 Abs(this Vector3 value) => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
+    // public static Vector3 Abs(this Vector3 value) => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
 
     public static bool TryGetItem<T>(this T[] array, int index, out T value)
     {
@@ -549,7 +555,7 @@ public static class Helpers
     //     return texture2D.DontDestroy();
     // }
 
-    public static T AddComponent<T>(this Component component) where T : Component => component.gameObject.AddComponent<T>();
+    // public static T AddComponent<T>(this Component component) where T : Component => component.gameObject.AddComponent<T>();
 
     public static GameObject[] FindAllChildren(this GameObject obj, string name)
     {
@@ -565,5 +571,29 @@ public static class Helpers
         }
 
         return [.. list];
+    }
+
+    // public static void SetColors(this Material mat, params (int, Color)[] values)
+    // {
+    //     foreach (var (prop, color) in values)
+    //         mat.SetColor(prop, color);
+    // }
+
+    // public static void SetColors(this Material mat, Color color, params int[] props)
+    // {
+    //     foreach (var prop in props)
+    //         mat.SetColor(prop, color);
+    // }
+
+    public static bool TryGetAttribute<T>(this MemberInfo info, out T attribute, bool inherit = true) where T : Attribute
+    {
+        attribute = info.GetCustomAttribute<T>(inherit);
+        return attribute != null;
+    }
+
+    public static void SetColor(this Material material, int nameID, Color? color)
+    {
+        if (color.HasValue)
+            material.SetColor(nameID, color.Value);
     }
 }
