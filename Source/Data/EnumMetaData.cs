@@ -1,4 +1,4 @@
-namespace OceanRange.Modules;
+namespace OceanRange.Data;
 
 public sealed class EnumMetadata(Type enumType)
 {

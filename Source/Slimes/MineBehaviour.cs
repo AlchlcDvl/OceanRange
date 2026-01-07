@@ -38,10 +38,17 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
         Calmed = GetComponent<CalmedByWaterSpray>();
         Marker = GetComponentsInChildren<ExplodeIndicatorMarker>(true)[0];
 
-        var applicator = GetComponent<SlimeAppearanceApplicator>();
+        if (!TryGetComponent<SlimeAppearanceApplicator>(out var applicator))
+            return;
 
-        if (applicator.Appearance)
-            ExplodeFX = applicator.Appearance.ExplosionAppearance.explodeFx;
+        UpdateFX(applicator.Appearance);
+        applicator.OnAppearanceChanged += UpdateFX;
+    }
+
+    private void UpdateFX(SlimeAppearance appearance)
+    {
+        if (appearance)
+            ExplodeFX = appearance.ExplosionAppearance.explodeFx;
     }
 
     public override void OnEnable()

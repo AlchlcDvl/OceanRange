@@ -18,8 +18,11 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
         Vacuumable = GetComponent<Vacuumable>();
         SlimeAudio = GetComponent<SlimeAudio>();
 
-        if (TryGetComponent<SlimeAppearanceApplicator>(out var slimeAppearanceApplicator) && slimeAppearanceApplicator.Appearance)
-            UpdateMaterialStealthController();
+        if (!TryGetComponent<SlimeAppearanceApplicator>(out var applicator))
+            return;
+
+        UpdateMaterialStealthController(applicator.Appearance);
+        applicator.OnAppearanceChanged += UpdateMaterialStealthController;
     }
 
     public override void OnDestroy()
@@ -46,6 +49,12 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
     {
         StealthController.SetOpacity(opacity);
         LastOpacity = opacity;
+    }
+
+    private void UpdateMaterialStealthController(SlimeAppearance appearance)
+    {
+        if (appearance)
+            UpdateMaterialStealthController();
     }
 
     public void UpdateMaterialStealthController()

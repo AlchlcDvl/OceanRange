@@ -1,9 +1,9 @@
 {
   "id": "ocean.range",
   "name": "Ocean Range",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "author": "TheRanchExchange Team",
-  "description": "Explore the slime sea!\n\nThe Team:\nProgrammers - AlchlcSystm, GielDBL, AmorphousSystem, PinkTarr\nArtists - LoyalRancher, DiegoBA, Sir.UWU, Ghostly\nModelers - JackZ, Miramation\nTranslators - Tanqueiron27𝟎7 (Spanish), Leo and EgeK (Turkish), catweazel123 (German), sl1m1v4d (Russian), TheFireDragon (French)",
+  "description": "Explore the slime sea!\n\nThe Team:\nProgrammers - AlchlcSystm, GielDBL, AmorphousSystem, PinkTarr\nArtists - LoyalRancher, DiegoBA, Sir.UWU, Ghostly\nModelers - JackZ, Miramation\nComposers - dyjo\nTranslators - Tanqueiron27𝟎7 (Spanish), Leo and EgeK (Turkish), catweazel123 (German), sl1m1v4d (Russian), TheFireDragon (French)",
   "load_after": ["slimesandmarket", "sellthingsmod", "custom.loading", "luckygordo"],
   "load_before": ["more_vaccing"]
 }

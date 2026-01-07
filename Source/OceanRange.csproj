@@ -3,7 +3,7 @@
         <AssemblyName>OceanRange</AssemblyName>
         <RootNamespace>OceanRange</RootNamespace>
         <TargetFramework>net4.7.2</TargetFramework>
-        <Version>0.2.1</Version>
+        <Version>0.3.0</Version>
         <DebugType>none</DebugType>
         <DebugSymbols>true</DebugSymbols>
         <LangVersion>preview</LangVersion>
@@ -31,7 +31,6 @@
     </ItemGroup>
 
     <ItemGroup Condition="$(Configuration)!=Unity">
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" PrivateAssets="all" ExcludeAssets="runtime" />
         <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="all" ExcludeAssets="runtime" />
         <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
         <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
@@ -41,7 +40,7 @@
         <EmbeddedResource Include="Resources\*\*" />
         <EmbeddedResource Include="Resources\*\*\*" />
 
-        <Publicize Include="Assembly-CSharp" />
+        <Publicize Include="Assembly-CSharp" IncludeCompilerGeneratedMembers="false" />
         <Publicize Include="UnityEngine.CoreModule" />
     </ItemGroup>
 

@@ -69,8 +69,6 @@ public static class Slimepedia
         SlimeDataMap = Slimes.ToDictionary(x => x.MainId, Identifiable.idComparer);
         PlortDataMap = Slimes.ToDictionary(x => x.PlortId, Identifiable.idComparer);
 
-        GordoSaveData.Lookup = Slimes.Where(x => x.HasGordo && x.NaturalGordoSpawn).ToDictionary(x => x.GordoId, Identifiable.idComparer);
-
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
     }

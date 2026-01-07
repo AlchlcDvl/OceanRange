@@ -17,7 +17,14 @@ public sealed class LargoData : ActorData
         }
     }
 
-    [JsonRequired] public LargoProps Props;
+    [JsonRequired] public LargoProps NormalToNormalProps;
+
+    // TODO: Awaiting models
+    // public LargoProps NormalToSsProps;
+    // public LargoProps SsToNormalProps;
+    // public LargoProps SsToSsProps;
+
+    public DefinitionProps DefProps;
 
     public ModelData BodyStruct;
 
@@ -65,20 +72,20 @@ public sealed class LargoData : ActorData
         if (BodyStruct != null)
         {
             BodyStruct.IsBody = true;
-            // BodyStruct.Jiggle ??= Jiggle;
+            BodyStruct.Jiggle ??= Jiggle;
             // BodyStruct.Mesh ??= "slime_default";
         }
 
-        // if (Slime1Structs != null)
-        // {
-        //     foreach (var feature in Slime1Structs)
-        //         feature.Jiggle ??= Jiggle;
-        // }
+        if (Slime1Structs != null)
+        {
+            foreach (var feature in Slime1Structs)
+                feature.Jiggle ??= Jiggle;
+        }
 
-        // if (Slime2Structs != null)
-        // {
-        //     foreach (var feature in Slime2Structs)
-        //         feature.Jiggle ??= Jiggle;
-        // }
+        if (Slime2Structs != null)
+        {
+            foreach (var feature in Slime2Structs)
+                feature.Jiggle ??= Jiggle;
+        }
     }
 }

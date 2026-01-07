@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace OceanRange.Saves;
@@ -5,33 +6,122 @@ namespace OceanRange.Saves;
 /// <summary>
 /// A writer class that stores data and converts it into a ulong array.
 /// </summary>
-public sealed class SaveWriter
+public sealed class SaveWriter : IDisposable
 {
+    private readonly MemoryStream _stream;
+
     // The internal writer.
-    private readonly List<byte> Bytes = [];
+    private readonly BinaryWriter _writer;
 
-    // Write methods for various data types. More to come as more and more data types are added
-    public void Write(bool value) => Bytes.Add((byte)(value ? 1 : 0));
+    // private byte _currentPackingByte;
+    // private int _currentBitIndex;
 
-    public void Write(int value) => Bytes.AddRange(BitConverter.GetBytes(value));
-
-    public void Write(string value)
+    public SaveWriter()
     {
-        var bytes = Encoding.UTF8.GetBytes(value);
-        Write(bytes.Length);
-        Bytes.AddRange(bytes);
+        _stream = new MemoryStream();
+        _writer = new BinaryWriter(_stream, Encoding.UTF8);
     }
 
-    /// <summary>
-    /// Converts the byte data to a ulong array.
-    /// </summary>
-    /// <returns>A ulong[] that represents the data that was fed.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteBool(bool value) => _writer.Write(value);
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteSByte(sbyte value) => _writer.Write(value);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteByte(byte value) => _writer.Write(value);
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteShort(short value) => _writer.Write(value);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteUShort(ushort value) => _writer.Write(value);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteInt(int value) => _writer.Write(value);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteUInt(uint value) => _writer.Write(value);
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteLong(long value) => _writer.Write(value);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteULong(ulong value) => _writer.Write(value);
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteFloat(float value) => _writer.Write(value);
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteDouble(double value) => _writer.Write(value);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteString(string value) => _writer.Write(value ?? string.Empty);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void WriteEnum<T>(T value) where T : struct, Enum => SaveWriterDels.Enum<T>.Func(this, value);
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteVector3(Vector3 value)
+    // {
+    //     _writer.Write(value.x);
+    //     _writer.Write(value.y);
+    //     _writer.Write(value.z);
+    // }
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteQuaternion(Quaternion value)
+    // {
+    //     _writer.Write(value.x);
+    //     _writer.Write(value.y);
+    //     _writer.Write(value.z);
+    //     _writer.Write(value.w);
+    // }
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void ResetPackingBools()
+    // {
+    //     _currentPackingByte = 0;
+    //     _currentBitIndex = 0;
+    // }
+
+    // public void WritePackedBool(bool value)
+    // {
+    //     if (value)
+    //         _currentPackingByte |= (byte)(1 << _currentBitIndex);
+
+    //     _currentBitIndex++;
+
+    //     if (_currentBitIndex == 8)
+    //     {
+    //         _writer.Write(_currentPackingByte);
+    //         ResetPackingBools();
+    //     }
+    // }
+
+    // public void EndPackingBools()
+    // {
+    //     if (_currentBitIndex > 0)
+    //         _writer.Write(_currentPackingByte);
+
+    //     ResetPackingBools();
+    // }
+
+    public void Dispose()
+    {
+        _writer.Dispose();
+        _stream.Dispose();
+        // ReSharper disable once GCSuppressFinalizeForTypeWithoutDestructor
+        GC.SuppressFinalize(this);
+    }
+
     public ulong[] ToArray(out byte padding)
     {
-        padding = (byte)((8 - (Bytes.Count % 8)) % 8);
-        var totalBytes = Bytes.Count + padding;
+        var array = _stream.ToArray();
+        padding = (byte)((8 - (array.Length % 8)) % 8);
+        var totalBytes = array.Length + padding;
         var ulongArray = new ulong[totalBytes / 8];
-        Buffer.BlockCopy(Bytes.ToArray(), 0, ulongArray, 0, Bytes.Count);
+        Buffer.BlockCopy(array, 0, ulongArray, 0, array.Length);
         return ulongArray;
     }
 }
@@ -39,10 +129,13 @@ public sealed class SaveWriter
 /// <summary>
 /// A reader class that de-serializes a ulong array and allows reading of various data types.
 /// </summary>
-public sealed class SaveReader
+public sealed class SaveReader : IDisposable
 {
-    private readonly byte[] Data;
-    private int Position;
+    private readonly MemoryStream _stream;
+    private readonly BinaryReader _reader;
+
+    private byte _currentPackedByte;
+    private int _currentBitIndex = 8;
 
     /// <summary>
     /// Initializes a new instance of the SaveReader with a ulong array.
@@ -52,30 +145,78 @@ public sealed class SaveReader
     public unsafe SaveReader(ulong[] data, byte padding)
     {
         var totalBytes = (data.Length * 8) - padding;
-        Data = new byte[totalBytes];
+        var byteData = new byte[totalBytes];
 
-        fixed (byte* dest = Data)
+        fixed (byte* dest = byteData)
         {
             fixed (ulong* src = data)
                 Buffer.MemoryCopy(src, dest, totalBytes, totalBytes);
         }
     }
 
-    // Read methods for various data types.
-    public bool ReadBoolean() => Data[Position++] != 0;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public byte ReadByte() => _reader.ReadByte();
 
-    public int ReadInt32()
-    {
-        var result = BitConverter.ToInt32(Data, Position);
-        Position += 4;
-        return result;
-    }
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public sbyte ReadSByte() => _reader.ReadSByte();
 
-    public string ReadString()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int ReadInt() => _reader.ReadInt32();
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public long ReadLong() => _reader.ReadInt64();
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public float ReadFloat() => _reader.ReadSingle();
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public double ReadDouble() => _reader.ReadDouble();
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public short ReadShort() => _reader.ReadInt16();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ushort ReadUShort() => _reader.ReadUInt16();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public uint ReadUInt() => _reader.ReadUInt32();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ulong ReadULong() => _reader.ReadUInt64();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string ReadString() => _reader.ReadString();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ReadBool() => _reader.ReadBoolean();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public T ReadEnum<T>() where T : struct, Enum => SaveReaderDels.Enum<T>.Func(this);
+
+    // public bool ReadPackedBool()
+    // {
+    //     if (_currentBitIndex >= 8)
+    //     {
+    //         _currentPackedByte = _reader.ReadByte();
+    //         _currentBitIndex = 0;
+    //     }
+
+    //     var value = (_currentPackedByte & (1 << _currentBitIndex)) != 0;
+    //     _currentBitIndex++;
+    //     return value;
+    // }
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void EndPackingBools() => _currentBitIndex = 8;
+
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void Skip(int count) => _stream.Position += count;
+
+    public void Dispose()
     {
-        var length = ReadInt32();
-        var result = Encoding.UTF8.GetString(Data, Position, length);
-        Position += length;
-        return result;
+        _reader.Dispose();
+        _stream.Dispose();
+        // ReSharper disable once GCSuppressFinalizeForTypeWithoutDestructor
+        GC.SuppressFinalize(this);
     }
 }

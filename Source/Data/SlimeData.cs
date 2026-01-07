@@ -1,6 +1,7 @@
 ﻿// ReSharper disable UnassignedField.Global
 
 using System.Reflection;
+using OceanRange.Saves;
 
 namespace OceanRange.Data;
 
@@ -71,8 +72,6 @@ public sealed class SlimeData : SpawnedActorData
 
     [JsonProperty("gordoEat")] public int GordoEatAmount = 25;
 
-    [JsonIgnore] public bool IsPopped;
-
     [JsonIgnore] public IdentifiableId GordoId;
     [JsonIgnore] public IdentifiableId PlortId;
 
@@ -131,6 +130,9 @@ public sealed class SlimeData : SpawnedActorData
         GordoFeatures ??= [.. SlimeFeatures.Select(x => x.Clone(false, "slime_gordo"))];
 
         Vaccable |= Slimepedia.MvExists;
+
+        if (HasGordo && NaturalGordoSpawn)
+            GordoSaveDataV02.Lookup[GordoId] = false;
     }
 
     public void HandleTranslationData(SlimeLangData data) => Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;

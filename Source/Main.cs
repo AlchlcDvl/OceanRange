@@ -20,6 +20,7 @@ internal sealed class Main : ModEntryPoint
         var harmonyWatch = new System.Diagnostics.Stopwatch();
         harmonyWatch.Start();
 #endif
+
         Console = ConsoleInstance; // Passing the console so that every other class can log things as well
 
         HarmonyInstance.PatchAll(Inventory.Core); // Patch methods

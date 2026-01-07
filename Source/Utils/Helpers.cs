@@ -3,6 +3,7 @@ using System.Globalization;
 using SRML.Utils;
 using System.Collections;
 using System.Reflection;
+using OceanRange.Saves;
 
 namespace OceanRange.Utils;
 
@@ -156,10 +157,8 @@ public static class Helpers
         gordo.name = gordo.name.Replace("(Clone)", string.Empty).Trim();
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs, IdentifiableId.KEY.GetPrefab()];
 
-        if (slimeData.IsPopped)
+        if (GordoSaveDataV02.Lookup.TryGetValue(slimeData.GordoId, out var popped) && popped)
             gordo.SetActive(false);
-        else
-            gordo.AddComponent<GordoPop>().Data = slimeData;
     }
 
     public static readonly List<Mesh> ClonedMeshes = [];

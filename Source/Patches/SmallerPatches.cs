@@ -1,22 +1,6 @@
+using OceanRange.Saves;
+
 namespace OceanRange.Patches;
-
-// This patch exists because the assembly publicizer has issues trying to publicize events, why???
-[HarmonyPatch(typeof(SlimeAppearanceApplicator), nameof(SlimeAppearanceApplicator.ApplyAppearance)), UsedImplicitly]
-public static class MineSlimeAppearanceFix
-{
-    [UsedImplicitly]
-    public static void Postfix(SlimeAppearanceApplicator __instance)
-    {
-        if (!__instance.Appearance)
-            return;
-
-        if (__instance.TryGetComponent<MineBehaviour>(out var mine))
-            mine.ExplodeFX = __instance.Appearance.ExplosionAppearance.explodeFx;
-
-        if (__instance.TryGetComponent<StealthFixer>(out var fixer))
-            fixer.UpdateMaterialStealthController();
-    }
-}
 
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap)), UsedImplicitly]
 public static class EatMapFix
@@ -70,8 +54,8 @@ public static class EnsureGordoStaysPopped
     [UsedImplicitly]
     public static void Postfix(GordoEat __instance)
     {
-        if (__instance.TryGetComponent<GordoPop>(out var pop))
-            pop.Data.IsPopped = true;
+        if (__instance.TryGetComponent<GordoIdentifiable>(out var identifiable))
+            GordoSaveDataV02.Lookup[identifiable.id] = true;
     }
 }
 

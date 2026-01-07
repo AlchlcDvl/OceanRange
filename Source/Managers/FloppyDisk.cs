@@ -24,7 +24,7 @@ public static class FloppyDisk
         SaveRegistry.RegisterWorldDataSaveDelegate(WriteSaveData);
     }
 
-    private static readonly ISaveData[] SaveData = [new MailSaveData(), new GordoSaveData()];
+    private static readonly ISaveData[] SaveData = [new MailSaveData(), new GordoSaveDataV01(), new GordoSaveDataV02()];
 
     /// <summary>
     /// Reads the save data from a compounded data piece.

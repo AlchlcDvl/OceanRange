@@ -77,12 +77,12 @@ public static class Largopedia
         definition.IsLargo = true;
         definition.Name = slime1.Name + " " + slime2.Name;
         definition.PrefabScale = 2f;
-        definition.Sounds = largoData.Props.HasFlag(LargoProps.UseSlime2ForSound) ? slime2.Sounds : slime1.Sounds;
+        definition.Sounds = largoData.DefProps.HasFlag(DefinitionProps.UseSlime2ForSound) ? slime2.Sounds : slime1.Sounds;
         definition.LoadLargoDiet();
         definition.FavoriteToys = [];
         definition.name = largoData.Slime1 + largoData.Slime2;
 
-        var props = largoData.Props;
+        var props = largoData.NormalToNormalProps;
         var useSlime2Body = props.HasFlag(LargoProps.UseSlime2ForBody);
 
         var slime1Prefab = (useSlime2Body ? largoData.Slime2Id : largoData.Slime1Id).GetPrefab();
@@ -118,6 +118,9 @@ public static class Largopedia
 
         var eyes = props.HasFlag(LargoProps.UseSlime2ForEyes) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
         var mouth = props.HasFlag(LargoProps.UseSlime2ForMouth) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
+
+        // ! // FIXME: Fix invisible secret styles for largos
+        // GameContext.Instance.DLCDirector.onPackageInstalled += null;
 
         foreach (var expression in appearance1.Face._expressionToFaceLookup.Keys.Union(appearance2.Face._expressionToFaceLookup.Keys, SlimeFace.DefaultSlimeExpressionComparer))
         {
