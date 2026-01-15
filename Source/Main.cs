@@ -1,4 +1,5 @@
 ﻿using SRML;
+
 using static SRML.Console.Console;
 
 namespace OceanRange;
@@ -75,7 +76,7 @@ internal sealed class Main : ModEntryPoint
         BootStrapper.ExecuteLoadState(LoadState.Postload); // Executes the postload methods of all of the manager classes
 
         // Inventory.Bundle.Unload(false);
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "atlas", "contacts"/*, "ocean_range", "blueprints"*/); // Release handles
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "contacts"/*, "atlas", "ocean_range", "blueprints"*/); // Release handles
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4", "loading_5");

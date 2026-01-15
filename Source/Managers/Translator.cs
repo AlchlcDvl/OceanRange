@@ -18,11 +18,13 @@ public static class Translator
     private static Translations Fallback;
     private static bool FallbackHandled;
 
+    private static readonly Func<Language, Translations> GenerateTranslationsFunc = GenerateTranslations;
+
 #if DEBUG
     [TimeDiagnostic("Pedia Preload")]
 #endif
     [PreloadMethod, UsedImplicitly]
-    public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslations);
+    public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
 
     public static void MessageDirectorHook(MessageDirector __instance)
     {
@@ -53,7 +55,7 @@ public static class Translator
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
-        var holder = TranslationsHolder.GetOrAdd(lang, GenerateTranslations);
+        var holder = TranslationsHolder.GetOrAdd(lang, GenerateTranslationsFunc);
         holder.OnLanguageChanged(lang);
         StoreVanillaTranslations(GameContext.Instance.MessageDirector, lang);
         return holder.GetTranslations(lang);

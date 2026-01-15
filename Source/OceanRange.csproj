@@ -40,6 +40,8 @@
         <EmbeddedResource Include="Resources\*\*" />
         <EmbeddedResource Include="Resources\*\*\*" />
 
+        <EmbeddedResource Remove="Resources\Data\atlas.json" />
+
         <Publicize Include="Assembly-CSharp" IncludeCompilerGeneratedMembers="false" />
         <Publicize Include="UnityEngine.CoreModule" />
     </ItemGroup>

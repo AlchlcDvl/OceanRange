@@ -460,6 +460,7 @@ public sealed class EnumConverter : OceanJsonConverter
 public sealed class TypeConverter : OceanJsonConverter<Type>
 {
     private static readonly Dictionary<string, Type> CachedTypes = [];
+    private static readonly Func<string, Type> TypeGettingFunc = Type.GetType;
 
     /// <inheritdoc/>
     protected override Type ParseFromJson(JsonReader reader)
@@ -470,7 +471,7 @@ public sealed class TypeConverter : OceanJsonConverter<Type>
         var name = reader.Value as string; // Convert to string
 
         // Try to find the type, throw if not found
-        return CachedTypes.GetOrAdd(name, Type.GetType) ?? throw new ArgumentException($"Cannot find type {name}!");
+        return CachedTypes.GetOrAdd(name, TypeGettingFunc) ?? throw new ArgumentException($"Cannot find type {name}!");
     }
 
     /// <inheritdoc/>

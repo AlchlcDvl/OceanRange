@@ -2,6 +2,7 @@ using System.Reflection;
 
 #if DEBUG
 using SRML.Console;
+
 using static SRML.Console.Console;
 #endif
 
@@ -87,12 +88,12 @@ public static class BootStrapper
 
     private static Exception GetTrueException(Exception ex, out string chain)
     {
-        chain = ex.GetType().Name + " -> ";
+        chain = ex.GetType().Name;
 
         while (ex.InnerException != null)
         {
             ex = ex.InnerException;
-            chain += ex.GetType().Name + " -> ";
+            chain += " -> " + ex.GetType().Name;
         }
 
         return ex;
