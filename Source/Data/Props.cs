@@ -30,8 +30,11 @@ public enum LargoProps : byte
 public enum DefinitionProps : byte
 {
     None = 0,
+
     UseSlime2ForSound = 1 << 0, // I kept for parity's sake with SRML's largo props
     UseSlime2ForBody = 1 << 1,
+
+    UseSlime2AsBase = UseSlime2ForSound | UseSlime2ForBody
 }
 
 [Flags]

@@ -69,7 +69,7 @@ public sealed class LargoData : ActorData
         Jiggle ??= ((Slime1Data?.Jiggle ?? 1f) + (Slime2Data?.Jiggle ?? 1f)) / 2f;
 
         foreach (var appearance in Appearances)
-            appearance.SetJiggle(Jiggle);
+            appearance.SetJiggle(Jiggle.Value);
     }
 }
 
@@ -94,21 +94,22 @@ public sealed class LargoAppearanceData : JsonData
         // BodyStruct.Mesh ??= "slime_default";
     }
 
-    public void SetJiggle(float? jiggle)
+    public void SetJiggle(float jiggle)
     {
-        if (BodyStruct != null)
-            BodyStruct.Jiggle ??= jiggle;
+        Jiggle ??= jiggle;
+
+        BodyStruct?.Jiggle ??= Jiggle;
 
         if (!Slime1Structs.IsNullOrEmpty())
         {
             foreach (var feature in Slime1Structs)
-                feature.Jiggle ??= jiggle;
+                feature.Jiggle ??= Jiggle;
         }
 
         if (!Slime2Structs.IsNullOrEmpty())
         {
             foreach (var feature in Slime2Structs)
-                feature.Jiggle ??= jiggle;
+                feature.Jiggle ??= Jiggle;
         }
     }
 }

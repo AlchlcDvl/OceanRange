@@ -284,9 +284,9 @@ public static class Largopedia
             }
         }
 
-        largoData.InitLargoAppearanceDetails?.Invoke(null, [definition, appearance]);
-        largoData.InitSlime1AppearanceDetails?.Invoke(null, [definition, appearance]);
-        largoData.InitSlime2AppearanceDetails?.Invoke(null, [definition, appearance]);
+        largoData.InitLargoAppearanceDetails?.Invoke(null, [appearance, appearanceData.AppProps]);
+        largoData.InitSlime1AppearanceDetails?.Invoke(null, [appearance, appearanceData.AppProps]);
+        largoData.InitSlime2AppearanceDetails?.Invoke(null, [appearance, appearanceData.AppProps]);
 
         SlimeRegistry.RegisterAppearance(definition, appearance);
         return appearance;
