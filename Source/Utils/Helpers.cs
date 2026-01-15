@@ -4,6 +4,7 @@ using SRML.Utils;
 using System.Collections;
 using System.Reflection;
 using OceanRange.Saves;
+using System.Linq.Expressions;
 
 namespace OceanRange.Utils;
 
@@ -12,113 +13,148 @@ public static class Helpers
     // private static readonly Dictionary<string, Color32> HexToColor32s = [];
     private static readonly Dictionary<string, Color> HexToColors = [];
 
-    public static bool TryFinding<T>(this IEnumerable<T> source, Func<T, bool> predicate, out T value)
+    extension<T1>(IEnumerable<T1> source1)
     {
-        foreach (var item in source)
+        public bool TryFinding(Func<T1, bool> predicate, out T1 value)
         {
-            if (!predicate(item))
-                continue;
-
-            value = item;
-            return true;
-        }
-
-        value = default;
-        return false;
-    }
-
-    public static T DontDestroy<T>(this T obj) where T : UObject
-    {
-        obj.DontDestroyOnLoad();
-        obj.hideFlags |= HideFlags.HideAndDontSave;
-        return obj;
-    }
-
-    public static string ReplaceAll(this string @string, string newValue, string[] valuesToReplace)
-    {
-        valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
-        return @string;
-    }
-
-    public static List<string> TrueSplit(this string @string, params char[] separators)
-    {
-        var separatorSet = separators.ToHashSet();
-        var separatorCount = @string.Count(separatorSet.Contains);
-
-        var list = new List<string>(separatorCount + 1);
-        var start = 0;
-
-        for (var i = 0; i < @string.Length; i++)
-        {
-            if (!separatorSet.Contains(@string[i]))
-                continue;
-
-            if (i > start)
+            foreach (var item in source1)
             {
-                var part = @string.Substring(start, i - start).Trim();
+                if (!predicate(item))
+                    continue;
 
-                if (!string.IsNullOrWhiteSpace(part))
-                    list.Add(part);
+                value = item;
+                return true;
             }
 
-            start = i + 1;
+            value = default;
+            return false;
         }
 
-        if (start < @string.Length)
+        public IEnumerable<T1> Except(Func<T1, bool> predicate) => source1.Where(x => !predicate(x));
+
+        public IEnumerable<(T1, T2)> Zip<T2>(IEnumerable<T2> source2)
         {
-            var lastPart = @string.Substring(start).Trim();
+            using var e1 = source1.GetEnumerator();
+            using var e2 = source2.GetEnumerator();
 
-            if (!string.IsNullOrWhiteSpace(lastPart))
-                list.Add(lastPart);
+            while (true)
+            {
+                var has1 = e1.MoveNext();
+                var has2 = e2.MoveNext();
+
+                if (!has1 || !has2)
+                {
+                    if (has1 != has2)
+                        throw new ArgumentException("Sequences have different lengths.");
+
+                    yield break;
+                }
+
+                yield return (e1.Current, e2.Current);
+            }
         }
-
-        return list;
     }
 
-    public static IEnumerable<T> Except<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(x => !predicate(x));
-
-    // public static bool TryHexToColor32(string hex, out Color32 color)
-    // {
-    //     if (HexToColor32s.TryGetValue(hex, out color))
-    //         return true;
-
-    //     if (ColorUtility.DoTryParseHtmlColor(hex, out color))
-    //     {
-    //         HexToColor32s[hex] = color;
-    //         return true;
-    //     }
-
-    //     color = default;
-    //     return false;
-    // }
-
-    public static bool TryHexToColor(this string hex, out Color color)
+    extension(string @string)
     {
-        if (HexToColors.TryGetValue(hex, out color))
-            return true;
-
-        if (ColorUtility.TryParseHtmlString(hex, out color))
+        public string ReplaceAll(string newValue, string[] valuesToReplace)
         {
-            HexToColors[hex] = color;
-            return true;
+            valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
+            return @string;
         }
 
-        color = default;
-        return false;
-    }
+        public List<string> TrueSplit(params char[] separators)
+        {
+            var separatorSet = separators.ToHashSet();
+            var separatorCount = @string.Count(separatorSet.Contains);
 
-    public static Color HexToColor(this string hex) => hex.TryHexToColor(out var color) ? color : default;
+            var list = new List<string>(separatorCount + 1);
+            var start = 0;
+
+            for (var i = 0; i < @string.Length; i++)
+            {
+                if (!separatorSet.Contains(@string[i]))
+                    continue;
+
+                if (i > start)
+                {
+                    var part = @string.Substring(start, i - start).Trim();
+
+                    if (!string.IsNullOrWhiteSpace(part))
+                        list.Add(part);
+                }
+
+                start = i + 1;
+            }
+
+            if (start < @string.Length)
+            {
+                var lastPart = @string.Substring(start).Trim();
+
+                if (!string.IsNullOrWhiteSpace(lastPart))
+                    list.Add(lastPart);
+            }
+
+            return list;
+        }
+
+        // public bool TryHexToColor32(out Color32 color)
+        // {
+        //     if (HexToColor32s.TryGetValue(@string, out color))
+        //         return true;
+
+        //     if (ColorUtility.DoTryParseHtmlColor(@string, out color))
+        //     {
+        //         HexToColor32s[@string] = color;
+        //         return true;
+        //     }
+
+        //     color = default;
+        //     return false;
+        // }
+
+        public bool TryHexToColor(out Color color)
+        {
+            if (HexToColors.TryGetValue(@string, out color))
+                return true;
+
+            if (ColorUtility.TryParseHtmlString(@string, out color))
+            {
+                HexToColors[@string] = color;
+                return true;
+            }
+
+            color = default;
+            return false;
+        }
+
+        public Color HexToColor() => @string.TryHexToColor(out var color) ? color : default;
+
+        public bool StartsWith(char character) => @string.Length > 0 && @string[0] == character;
+    }
 
     public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value, true);
 
     // public static T ToEnum<T>(object value) where T : struct, Enum => (T)Enum.ToObject(typeof(T), value);
 
-    public static T DeepCopy<T>(this T obj) where T : UObject => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
+    extension<T>(T obj) where T : UObject
+    {
+        public T DontDestroy()
+        {
+            obj.DontDestroyOnLoad();
+            obj.hideFlags |= HideFlags.HideAndDontSave;
+            return obj;
+        }
+
+        public T DeepCopy() => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
+
+        public T CreatePrefab() => UObject.Instantiate(obj, Main.PrefabParent, false);
+    }
 
     // public static T DeepCopyNonUnityObject<T>(this T obj)
     // {
     //     var instance = Activator.CreateInstance<T>();
-    //     instance.CopyValues(obj);
+    //     instance.CopyValuesFrom(obj);
     //     return instance;
     // }
 
@@ -243,33 +279,6 @@ public static class Helpers
 
     // public static string ToHexRGBA(this Color32 color) => $"#{color.r.ToString(InvariantCulture):X2}{color.g.ToString(InvariantCulture):X2}{color.b.ToString(InvariantCulture):X2}{color.a.ToString(InvariantCulture):X2}";
 
-    // public static Vector3 ToPower(this Vector3 vector, int power)
-    // {
-    //     if (power == 0)
-    //         return Vector3.one;
-    //
-    //     var result = Vector3.one;
-    //     var abs = Mathf.Abs(power);
-    //
-    //     for (var i = 0; i < abs; i++)
-    //     {
-    //         result.x *= vector.x;
-    //         result.y *= vector.y;
-    //         result.z *= vector.z;
-    //     }
-    //
-    //     if (power < 0)
-    //     {
-    //         result.x = 1f / result.x;
-    //         result.y = 1f / result.y;
-    //         result.z = 1f / result.z;
-    //     }
-    //
-    //     return result;
-    // }
-
-    public static float Sum(this Vector3 vector) => vector.x + vector.y + vector.z;
-
     public static bool IsValidZone(DirectedActorSpawner spawner, Zone[] zones)
     {
         var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
@@ -318,52 +327,53 @@ public static class Helpers
         }
     }
 
-    public static bool TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey[] keys, out TValue result)
+    extension(Vector3 value)
     {
-        foreach (var key in keys)
-        {
-            if (dict.TryGetValue(key, out result))
-                return true;
-        }
+        // public Vector3 ToPower(int power)
+        // {
+        //     if (power == 0)
+        //         return Vector3.one;
 
-        result = default;
-        return false;
+        //     var result = Vector3.one;
+        //     var abs = Mathf.Abs(power);
+
+        //     for (var i = 0; i < abs; i++)
+        //     {
+        //         result.x *= value.x;
+        //         result.y *= value.y;
+        //         result.z *= value.z;
+        //     }
+
+        //     if (power < 0)
+        //     {
+        //         result.x = 1f / result.x;
+        //         result.y = 1f / result.y;
+        //         result.z = 1f / result.z;
+        //     }
+
+        //     return result;
+        // }
+
+        public float Sum() => value.x + value.y + value.z;
+
+        public string ToVectorString() => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
+
+        public Vector3 Multiply(Vector3 scale) => new(value.x * scale.x, value.y * scale.y, value.z * scale.z);
+
+        // public Vector3 Abs() => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
     }
-
-    // public static bool ContainsKeys<TKey, TValue>(this IDictionary<TKey, TValue> dict, params TKey[] keys)
-    // {
-    //     foreach (var key in keys)
-    //     {
-    //         if (dict.ContainsKey(key))
-    //             return true;
-    //     }
-
-    //     return false;
-    // }
-
-    public static string ToVectorString(this Vector3 value) => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
 
     public static string ToColorString(this Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
 
-    public static bool IsNullableOf<T>(this Type type)
+    extension(Type type)
     {
-        var tType = typeof(T);
-        return tType.IsValueType && tType.IsAssignableFrom(Nullable.GetUnderlyingType(type));
-    }
-
-    public static bool IsNullableEnum(this Type type) => Nullable.GetUnderlyingType(type) is { IsEnum: true };
-
-    public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue value)
-    {
-        try
+        public bool IsNullableOf<T>()
         {
-            dict.Add(key, value);
-            return true;
+            var tType = typeof(T);
+            return tType.IsValueType && tType.IsAssignableFrom(Nullable.GetUnderlyingType(type));
         }
-        catch
-        {
-            return false;
-        }
+
+        public bool IsNullableEnum() => Nullable.GetUnderlyingType(type) is { IsEnum: true };
     }
 
     public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> pair, out TKey key, out TValue value)
@@ -372,16 +382,79 @@ public static class Helpers
         value = pair.Value;
     }
 
-    public static bool TryRemove<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, out TValue value)
+    extension<TKey, TValue>(IDictionary<TKey, TValue> dict)
     {
-        try
+        public bool TryGetValue(TKey[] keys, out TValue result)
         {
-            return dict.TryGetValue(key, out value) && dict.Remove(key);
-        }
-        catch
-        {
-            value = default;
+            foreach (var key in keys)
+            {
+                if (dict.TryGetValue(key, out result))
+                    return true;
+            }
+
+            result = default;
             return false;
+        }
+
+        // public bool ContainsKeys(params TKey[] keys)
+        // {
+        //     foreach (var key in keys)
+        //     {
+        //         if (dict.ContainsKey(key))
+        //             return true;
+        //     }
+
+        //     return false;
+        // }
+
+        public bool TryAdd(TKey key, TValue value)
+        {
+            try
+            {
+                dict.Add(key, value);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool TryRemove(TKey key, out TValue value)
+        {
+            try
+            {
+                return dict.TryGetValue(key, out value) && dict.Remove(key);
+            }
+            catch
+            {
+                value = default;
+                return false;
+            }
+        }
+
+        public TValue GetOrAdd(TKey key, Func<TKey, TValue> func)
+        {
+            if (!dict.TryGetValue(key, out var value))
+                dict[key] = value = func(key);
+
+            return value;
+        }
+
+        public TValue GetOrAdd(TKey key, Func<TValue> func)
+        {
+            if (!dict.TryGetValue(key, out var value))
+                dict[key] = value = func();
+
+            return value;
+        }
+
+        public TValue GetOrAdd(TKey key, TValue defaultValue)
+        {
+            if (!dict.TryGetValue(key, out var value))
+                dict[key] = value = defaultValue;
+
+            return value;
         }
     }
 
@@ -426,90 +499,30 @@ public static class Helpers
             yield return null;
     }
 
-    // public static bool TryGetInterfaceComponent<T>(this Component obj, out T component) where T : class
-    // {
-    //     if (obj.TryGetComponent(typeof(T), out var result))
-    //     {
-    //         component = result as T;
-    //         return true;
-    //     }
+    extension(Component component)
+    {
+        public bool TryGetInterfaceComponent<T>(out T result) where T : class
+        {
+            if (component.TryGetComponent(typeof(T), out var value))
+            {
+                result = value as T;
+                return true;
+            }
 
-    //     component = default;
-    //     return false;
-    // }
+            result = default;
+            return false;
+        }
+
+        public T EnsureComponent<T>() where T : Component => component.gameObject.EnsureComponent<T>();
+    }
 
     private static T EnsureComponent<T>(this GameObject go) where T : Component => go.GetComponent<T>() ?? go.AddComponent<T>();
 
-    public static T EnsureComponent<T>(this Component component) where T : Component => component.gameObject.EnsureComponent<T>();
-
-    public static bool StartsWith(this string @string, char character) => @string.Length > 0 && @string[0] == character;
-
     public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => member.IsDefined(typeof(T), false);
-
-    public static IEnumerable<(T1, T2)> Zip<T1, T2>(this IEnumerable<T1> source1, IEnumerable<T2> source2)
-    {
-        using var e1 = source1.GetEnumerator();
-        using var e2 = source2.GetEnumerator();
-
-        while (true)
-        {
-            var has1 = e1.MoveNext();
-            var has2 = e2.MoveNext();
-
-            if (!has1 || !has2)
-            {
-                if (has1 != has2)
-                    throw new ArgumentException("Sequences have different lengths.");
-
-                yield break;
-            }
-
-            yield return (e1.Current, e2.Current);
-        }
-    }
-
-    public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TKey, TValue> func)
-    {
-        if (!dict.TryGetValue(key, out var value))
-            dict[key] = value = func(key);
-
-        return value;
-    }
-
-    public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, Func<TValue> func)
-    {
-        if (!dict.TryGetValue(key, out var value))
-            dict[key] = value = func();
-
-        return value;
-    }
-
-    public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue defaultValue)
-    {
-        if (!dict.TryGetValue(key, out var value))
-            dict[key] = value = defaultValue;
-
-        return value;
-    }
 
     public static T[] GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
 
     // public static string[] GetEnumNames<T>() where T : struct, Enum => Enum.GetNames(typeof(T));
-
-    public static List<Material> ClonedMats = [];
-
-    public static Material Clone(this Material material)
-    {
-        var mat = new Material(material);
-        ClonedMats.Add(mat);
-        return mat;
-    }
-
-    public static T CreatePrefab<T>(this T obj) where T : UObject => UObject.Instantiate(obj, Main.PrefabParent, false);
-
-    public static Vector3 Multiply(this Vector3 value, Vector3 scale) => new(value.x * scale.x, value.y * scale.y, value.z * scale.z);
-
-    // public static Vector3 Abs(this Vector3 value) => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
 
     public static bool TryGetItem<T>(this T[] array, int index, out T value)
     {
@@ -572,27 +585,69 @@ public static class Helpers
         return [.. list];
     }
 
-    // public static void SetColors(this Material mat, params (int, Color)[] values)
-    // {
-    //     foreach (var (prop, color) in values)
-    //         mat.SetColor(prop, color);
-    // }
-
-    // public static void SetColors(this Material mat, Color color, params int[] props)
-    // {
-    //     foreach (var prop in props)
-    //         mat.SetColor(prop, color);
-    // }
-
     public static bool TryGetAttribute<T>(this MemberInfo info, out T attribute, bool inherit = true) where T : Attribute
     {
         attribute = info.GetCustomAttribute<T>(inherit);
         return attribute != null;
     }
 
-    public static void SetColor(this Material material, int nameID, Color? color)
+    public static List<Material> ClonedMats = [];
+
+    extension(Material material)
     {
-        if (color.HasValue)
-            material.SetColor(nameID, color.Value);
+        public Material Clone()
+        {
+            var mat = new Material(material);
+            ClonedMats.Add(mat);
+            return mat;
+        }
+
+        // public void SetColors(params (int, Color)[] values)
+        // {
+        //     foreach (var (prop, color) in values)
+        //         material.SetColor(prop, color);
+        // }
+
+        // public void SetColors(Color color, params int[] props)
+        // {
+        //     foreach (var prop in props)
+        //         material.SetColor(prop, color);
+        // }
+
+        public void SetColor(int nameID, Color? color)
+        {
+            if (color.HasValue)
+                material.SetColor(nameID, color.Value);
+        }
+    }
+
+    public static bool HasFlagFast<T>(this T value, T flag) where T : struct, Enum => EnumFlagCache<T>.HasFlagDelegate(value, flag);
+
+    private static class EnumFlagCache<T> where T : struct, Enum
+    {
+        public static readonly Func<T, T, bool> HasFlagDelegate = CreateDelegate();
+
+        private static Func<T, T, bool> CreateDelegate()
+        {
+            var valueParam = Expression.Parameter(typeof(T), "value");
+            var flagParam = Expression.Parameter(typeof(T), "flag");
+
+            var underlyingType = Enum.GetUnderlyingType(typeof(T));
+
+            var valueCast = Expression.Convert(valueParam, underlyingType); // (number)value
+            var flagCast = Expression.Convert(flagParam, underlyingType); // (number)flag
+
+            var zeroConstant = Expression.Default(underlyingType); // 0 or the None flag
+
+            var andOperation = Expression.And(valueCast, flagCast); // and = value & flag
+            var bitwiseCheck = Expression.Equal(andOperation, flagCast); // bit = and == flag
+
+            var valueIsZero = Expression.Equal(valueCast, zeroConstant); // valZero = value == 0
+            var flagIsZero = Expression.Equal(flagCast, zeroConstant); // flagZero = flag == 0
+
+            var finalCheck = Expression.Condition(flagIsZero, valueIsZero, bitwiseCheck); // flagZero ? valueZero : bit
+
+            return Expression.Lambda<Func<T, T, bool>>(finalCheck, valueParam, flagParam).Compile();
+        }
     }
 }

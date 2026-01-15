@@ -47,6 +47,7 @@ public static class Inventory
     };
 
     private static readonly JsonSerializer OrJsonSerializer = JsonSerializer.Create(JsonSettings);
+    private static readonly Func<string, AssetHandle> Create = name => new(name);
 
     // private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
     // {
@@ -151,14 +152,6 @@ public static class Inventory
         }
     }
 
-    /// <summary>
-    /// Helper method to converge all asset paths and names to a shorter string representation, aka their file names.
-    /// </summary>
-    /// <param name="path">The original path of the asset.</param>
-    /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
-    private static string SanitisePath(this string path) => path
-        .ReplaceAll(string.Empty, Extensions) // Removing the file extension first
-        .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux/AssetBundle/Urls, \ for Mac, . for Embedded/Memory) and get the last entry which should be the asset name
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.
     /// </summary>
@@ -444,20 +437,28 @@ public static class Inventory
         return ms.ToArray();
     }
 
-    /// <summary>
-    /// Reads all the bytes from the provided file path.
-    /// </summary>
-    /// <param name="path">The file path to serialise to bytes.</param>
-    /// <returns>A byte array representing the file.</returns>
-    private static byte[] ReadBytes(this string path) => Core.GetManifestResourceStream(path)!.ReadFully();
+    extension(string path)
+    {
+        /// <summary>
+        /// Reads all the bytes from the provided file path.
+        /// </summary>
+        /// <returns>A byte array representing the file.</returns>
+        private byte[] ReadBytes() => Core.GetManifestResourceStream(path)!.ReadFully();
+
+        /// <summary>
+        /// Helper method to converge all asset paths and names to a shorter string representations, aka their file names.
+        /// </summary>
+        /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
+        private string SanitisePath() => path
+            .ReplaceAll(string.Empty, Extensions) // Removing the file extension first
+            .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux/AssetBundle/Urls, \ for Mac, . for Embedded/Memory) and get the last entry which should be the asset name
+    }
 
     /// <summary>
     /// Creates an asset handle for the provided asset.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     private static void CreateAssetHandle(string path) => Assets.GetOrAdd(path.SanitisePath(), Create).AddPath(path);
-
-    private static AssetHandle Create(string name) => new(name);
 
     // /// <summary>
     // /// Creates an asset handle for the provided asset.
@@ -555,30 +556,33 @@ public static class Inventory
 #if DEBUG
     // This is all for mainly debugging stuff when I want to dump assets from the main game, uncomment for use
 
-    // public static void Dump(this Texture texture, string fileName = null, string path = null, bool png = true)
-    // {
-    //     if (!texture)
-    //         return;
-
-    //     var decompress = texture.Decompress();
-    //     File.WriteAllBytes(Path.Combine(path ?? DumpPath, (fileName ?? texture.name) + (png ? ".png" : ".jpg")), png ? decompress.EncodeToPNG() : decompress.EncodeToJPG());
-    // }
-
     // public static void Dump(this Sprite sprite, string fileName = null, string path = null) => sprite.texture.Dump(fileName, path);
 
-    // private static Texture2D Decompress(this Texture source)
+    // extension(Texture texture)
     // {
-    //     var renderTex = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
-    //     Graphics.Blit(source, renderTex);
-    //     var previous = RenderTexture.active;
-    //     RenderTexture.active = renderTex;
-    //     var readableText = new Texture2D(source.width, source.height);
-    //     readableText.ReadPixels(new(0, 0, renderTex.width, renderTex.height), 0, 0);
-    //     readableText.Apply();
-    //     RenderTexture.active = previous;
-    //     RenderTexture.ReleaseTemporary(renderTex);
-    //     readableText.name = source.name;
-    //     return readableText;
+    //     public void Dump(string fileName = null, string path = null, bool png = true)
+    //     {
+    //         if (!texture)
+    //             return;
+
+    //         var decompress = texture.Decompress();
+    //         File.WriteAllBytes(Path.Combine(path ?? DumpPath, (fileName ?? texture.name) + (png ? ".png" : ".jpg")), png ? decompress.EncodeToPNG() : decompress.EncodeToJPG());
+    //     }
+
+    //     private Texture2D Decompress()
+    //     {
+    //         var renderTex = RenderTexture.GetTemporary(texture.width, texture.height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
+    //         Graphics.Blit(texture, renderTex);
+    //         var previous = RenderTexture.active;
+    //         RenderTexture.active = renderTex;
+    //         var readableText = new Texture2D(texture.width, texture.height);
+    //         readableText.ReadPixels(new(0, 0, renderTex.width, renderTex.height), 0, 0);
+    //         readableText.Apply();
+    //         RenderTexture.active = previous;
+    //         RenderTexture.ReleaseTemporary(renderTex);
+    //         readableText.name = texture.name;
+    //         return readableText;
+    //     }
     // }
 #endif
 }

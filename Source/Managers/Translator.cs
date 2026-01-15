@@ -105,17 +105,20 @@ public static class Translator
         return list;
     }
 
-    public static void AddTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName)
+    extension(Dictionary<string, string> bundle)
     {
-        if (text?.StartsWith('@') == true)
-            bundle.AddComplexTranslation(id, text, bundleName);
-        else
-            bundle.AddSimpleTranslation(id, text);
+        public void AddTranslation(string id, string text, string bundleName)
+        {
+            if (text?.StartsWith('@') == true)
+                bundle.AddComplexTranslation(id, text, bundleName);
+            else
+                bundle.AddSimpleTranslation(id, text);
+        }
+
+        private void AddSimpleTranslation(string id, string text) => bundle[id] = text.IsNullOrWhiteSpace() ? $"STRMSS: {id}" : text;
+
+        private void AddComplexTranslation(string id, string text, string bundleName) => CurrentDeferredList.Add(new(bundle, id, text, bundleName));
     }
-
-    private static void AddSimpleTranslation(this Dictionary<string, string> bundle, string id, string text) => bundle[id] = text.IsNullOrWhiteSpace() ? $"STRMSS: {id}" : text;
-
-    private static void AddComplexTranslation(this Dictionary<string, string> bundle, string id, string text, string bundleName) => CurrentDeferredList.Add(new(bundle, id, text, bundleName));
 
     private static string GetTranslationValue(string id, string text, string bundleName, Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {

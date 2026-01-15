@@ -38,6 +38,8 @@ public static class Largopedia
 
     public static readonly Dictionary<IdentifiableId, List<(IdentifiableId, IdentifiableId)>> LargoMaps = new(Identifiable.idComparer);
 
+    private static readonly Func<List<(IdentifiableId, IdentifiableId)>> Create = () => [];
+
     private static Material QuantumMat;
     private static float DefaultRadius;
 
@@ -77,13 +79,13 @@ public static class Largopedia
         definition.IsLargo = true;
         definition.Name = slime1.Name + " " + slime2.Name;
         definition.PrefabScale = 2f;
-        definition.Sounds = largoData.DefProps.HasFlag(DefinitionProps.UseSlime2ForSound) ? slime2.Sounds : slime1.Sounds;
+        definition.Sounds = largoData.DefProps.HasFlagFast(DefinitionProps.UseSlime2ForSound) ? slime2.Sounds : slime1.Sounds;
         definition.LoadLargoDiet();
         definition.FavoriteToys = [];
         definition.name = largoData.Slime1 + largoData.Slime2;
 
         var props = largoData.NormalToNormalProps;
-        var useSlime2Body = props.HasFlag(LargoProps.UseSlime2ForBody);
+        var useSlime2Body = props.HasFlagFast(LargoProps.UseSlime2ForBody);
 
         var slime1Prefab = (useSlime2Body ? largoData.Slime2Id : largoData.Slime1Id).GetPrefab();
         var slime2Prefab = (useSlime2Body ? largoData.Slime1Id : largoData.Slime2Id).GetPrefab();
@@ -116,8 +118,8 @@ public static class Largopedia
         appearance.Face._expressionToFaceLookup.Clear();
         appearance.name = largoData.Slime1 + largoData.Slime2 + "Normal";
 
-        var eyes = props.HasFlag(LargoProps.UseSlime2ForEyes) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
-        var mouth = props.HasFlag(LargoProps.UseSlime2ForMouth) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
+        var eyes = props.HasFlagFast(LargoProps.UseSlime2ForEyes) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
+        var mouth = props.HasFlagFast(LargoProps.UseSlime2ForMouth) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
 
         // ! // FIXME: Fix invisible secret styles for largos
         // GameContext.Instance.DLCDirector.onPackageInstalled += null;
@@ -144,7 +146,7 @@ public static class Largopedia
         var baseBody = useSlime2Body ? slime2Body : slime1Body;
 
         var modelMap = new Dictionary<int, ModelData>();
-        var customBody = props.HasFlag(LargoProps.CustomBody);
+        var customBody = props.HasFlagFast(LargoProps.CustomBody);
         SlimeAppearanceStructure body;
 
         if (customBody)
@@ -158,7 +160,7 @@ public static class Largopedia
             {
                 DefaultMaterials =
                 {
-                    [0] = (props.HasFlag(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone()
+                    [0] = (props.HasFlagFast(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone()
                 }
             };
         }
@@ -261,14 +263,12 @@ public static class Largopedia
         SlimeRegistry.RegisterSlimeDefinition(definition);
     }
 
-    private static List<(IdentifiableId, IdentifiableId)> Create() => [];
-
     private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, LargoProps props, LargoProps custom, LargoProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure body,
         Dictionary<int, ModelData> modelMap)
     {
         var avoid = baseStructs.IndexOfItem(body);
 
-        if (props.HasFlag(custom))
+        if (props.HasFlagFast(custom))
         {
             var j = 0;
 
@@ -292,7 +292,7 @@ public static class Largopedia
                 list.Add(structure);
             }
         }
-        else if (!props.HasFlag(exclude))
+        else if (!props.HasFlagFast(exclude))
         {
             for (var i = 0; i < baseStructs.Length; i++)
             {

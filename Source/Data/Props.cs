@@ -33,3 +33,19 @@ public enum LargoProps : ushort
     // Same as UseSlime2AsBase
     ExcludeStructures = ExcludeSlime1Structures | ExcludeSlime2Structures
 }
+
+[Flags]
+public enum DefinitionProps : byte
+{
+    None = 0,
+    UseSlime2ForSound = 1 << 0 // I kept for parity's sake with SRML's largo props
+}
+
+[Flags]
+public enum AppearanceProps : byte
+{
+    None = 0,
+    SS1 = 1 << 0,
+    SS2 = 1 << 1,
+    BothSS = SS1 | SS2
+}

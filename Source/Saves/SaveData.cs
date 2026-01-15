@@ -8,7 +8,7 @@ public sealed class MailSaveData : ISaveData
 
     public ulong[] Write(out byte padding)
     {
-        var writer = new SaveWriter();
+        using var writer = new SaveWriter();
         writer.WriteInt(Mailbox.Mail.Length);
 
         foreach (var mail in Mailbox.Mail)
@@ -30,7 +30,7 @@ public sealed class MailSaveData : ISaveData
 
     public void Read(ulong[] data, byte padding)
     {
-        var reader = new SaveReader(data, padding);
+        using var reader = new SaveReader(data, padding);
         var length = reader.ReadInt();
 
         for (var i = 0; i < length; i++)
@@ -50,7 +50,7 @@ public sealed class GordoSaveDataV01 : ISaveData
 
     public ulong[] Write(out byte padding)
     {
-        var writer = new SaveWriter();
+        using var writer = new SaveWriter();
         writer.WriteInt(GordoSaveDataV02.Lookup.Count);
 
         foreach (var id in GordoSaveDataV02.Lookup.Keys)
@@ -67,7 +67,7 @@ public sealed class GordoSaveDataV01 : ISaveData
 
     public void Read(ulong[] data, byte padding)
     {
-        var reader = new SaveReader(data, padding);
+        using var reader = new SaveReader(data, padding);
         var count = reader.ReadInt();
 
         while (count-- > 0)
@@ -89,7 +89,7 @@ public sealed class GordoSaveDataV02 : ISaveData
 
     public ulong[] Write(out byte padding)
     {
-        var writer = new SaveWriter();
+        using var writer = new SaveWriter();
         writer.WriteInt(Lookup.Count);
 
         foreach (var id in Lookup.Keys)
@@ -106,7 +106,7 @@ public sealed class GordoSaveDataV02 : ISaveData
 
     public void Read(ulong[] data, byte padding)
     {
-        var reader = new SaveReader(data, padding);
+        using var reader = new SaveReader(data, padding);
         var count = reader.ReadInt();
 
         while (count-- > 0)

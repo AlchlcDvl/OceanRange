@@ -5,28 +5,31 @@ namespace OceanRange.Utils;
 
 public static class DebugUtils
 {
-    public static void DoLog(this object message) => Main.Console.Log(message?.ToString() ?? "message was null");
-
-    public static void DoLogWarn(this object message) => Main.Console.LogWarning(message?.ToString() ?? "message was null");
-
-    public static void DoLogError(this object message) => Main.Console.LogError(message?.ToString() ?? "message was null");
-
-    public static void LogIf(this object message, bool condition)
+    extension(object message)
     {
-        if (condition)
-            message.DoLog();
-    }
+        public void DoLog() => Main.Console.Log(message?.ToString() ?? "message was null");
 
-    public static void LogWarningIf(this object message, bool condition)
-    {
-        if (condition)
-            message.DoLogWarn();
-    }
+        public void DoLogWarn() => Main.Console.LogWarning(message?.ToString() ?? "message was null");
 
-    public static void LogErrorIf(this object message, bool condition)
-    {
-        if (condition)
-            message.DoLogError();
+        public void DoLogError() => Main.Console.LogError(message?.ToString() ?? "message was null");
+
+        public void LogIf(bool condition)
+        {
+            if (condition)
+                message.DoLog();
+        }
+
+        public void LogWarningIf(bool condition)
+        {
+            if (condition)
+                message.DoLogWarn();
+        }
+
+        public void LogErrorIf(bool condition)
+        {
+            if (condition)
+                message.DoLogError();
+        }
     }
 
     public static GameObject GetClosestCell(Vector3 pos)

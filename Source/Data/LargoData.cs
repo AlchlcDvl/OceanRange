@@ -17,19 +17,10 @@ public sealed class LargoData : ActorData
         }
     }
 
-    [JsonRequired] public LargoProps NormalToNormalProps;
-
-    // TODO: Awaiting models
-    // public LargoProps NormalToSsProps;
-    // public LargoProps SsToNormalProps;
-    // public LargoProps SsToSsProps;
+    // TODO: Awaiting models for indices 1, 2 and 3 - Stick to index 0 for normal appearance for now
+    [JsonRequired] public LargoAppearanceData[] Appearances;
 
     public DefinitionProps DefProps;
-
-    public ModelData BodyStruct;
-
-    public ModelData[] Slime1Structs;
-    public ModelData[] Slime2Structs;
 
     public float? Jiggle;
 
@@ -69,23 +60,48 @@ public sealed class LargoData : ActorData
 
         Jiggle ??= ((Slime1Data?.Jiggle ?? 1f) + (Slime2Data?.Jiggle ?? 1f)) / 2f;
 
+        foreach (var appearance in Appearances)
+            appearance.SetJiggle(Jiggle);
+    }
+}
+
+public sealed class LargoAppearanceData : JsonData
+{
+    [JsonRequired] public LargoProps LargoProps;
+
+    public AppearanceProps AppProps;
+
+    public ModelData BodyStruct;
+
+    public ModelData[] Slime1Structs;
+    public ModelData[] Slime2Structs;
+
+    public float? Jiggle;
+
+    protected override void OnDeserialise()
+    {
+        if (BodyStruct == null)
+            return;
+
+        BodyStruct.IsBody = true;
+        // BodyStruct.Mesh ??= "slime_default";
+    }
+
+    public void SetJiggle(float? jiggle)
+    {
         if (BodyStruct != null)
-        {
-            BodyStruct.IsBody = true;
-            BodyStruct.Jiggle ??= Jiggle;
-            // BodyStruct.Mesh ??= "slime_default";
-        }
+            BodyStruct.Jiggle ??= jiggle;
 
         if (Slime1Structs != null)
         {
             foreach (var feature in Slime1Structs)
-                feature.Jiggle ??= Jiggle;
+                feature.Jiggle ??= jiggle;
         }
 
         if (Slime2Structs != null)
         {
             foreach (var feature in Slime2Structs)
-                feature.Jiggle ??= Jiggle;
+                feature.Jiggle ??= jiggle;
         }
     }
 }

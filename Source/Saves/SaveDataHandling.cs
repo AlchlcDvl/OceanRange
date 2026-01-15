@@ -134,8 +134,8 @@ public sealed class SaveReader : IDisposable
     private readonly MemoryStream _stream;
     private readonly BinaryReader _reader;
 
-    private byte _currentPackedByte;
-    private int _currentBitIndex = 8;
+    // private byte _currentPackedByte;
+    // private int _currentBitIndex = 8;
 
     /// <summary>
     /// Initializes a new instance of the SaveReader with a ulong array.

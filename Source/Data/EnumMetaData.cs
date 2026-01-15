@@ -7,8 +7,7 @@ public sealed class EnumMetadata(Type enumType)
     public readonly List<(object, string)> Values = [.. Enum.GetValues(enumType).Cast<object>().Zip(Enum.GetNames(enumType))];
 
     private static readonly Dictionary<Type, EnumMetadata> MetadataCache = [];
-
-    private static EnumMetadata Create(Type enumType) => new(enumType);
+    private static readonly Func<Type, EnumMetadata> Create = enumType => new(enumType);
 
     public static EnumMetadata Get(Type enumType) => MetadataCache.GetOrAdd(enumType, Create);
 
