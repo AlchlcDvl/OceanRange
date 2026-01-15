@@ -3,7 +3,7 @@
     "name": "Rosi Mine",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForFace", "CustomStructures"],
+        "largoProps": "UseSlime2ForFace",
         "bodyStruct": {
           "matOrigin": "PINK_SLIME",
           "gloss": 1,
@@ -35,7 +35,6 @@
     "name": "Rosi Lantern",
     "appearances": [
       {
-        "largoProps": "CustomStructures",
         "bodyStruct": {
           "matOrigin": "LANTERN_SLIME"
         },
@@ -63,7 +62,6 @@
     "name": "Mine Lantern",
     "appearances": [
       {
-        "largoProps": "CustomStructures",
         "bodyStruct": { "matOrigin": "ROSI_MINE_LARGO" },
         "slime1Structs": [
           {
@@ -93,7 +91,6 @@
     "name": "Pink Coco",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures"],
         "bodyStruct": {
           "colorsOrigin": "PINK_SLIME",
           "matOrigin": "COCO_SLIME",
@@ -113,7 +110,7 @@
     "name": "Coco Saber",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "UseSlime2ForBody"],
+        "largoProps": "UseSlime2ForBody",
         "bodyStruct": { "matOrigin": "COCO_SLIME" }
       }
     ]
@@ -122,7 +119,6 @@
     "name": "Coco Quantum",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime1Structures"],
         "bodyStruct": {
           "colorsOrigin": "COCO_SLIME",
           "matOrigin": "QUANTUM_SLIME",
@@ -142,7 +138,6 @@
     "name": "Coco Honey",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures"],
         "bodyStruct": {
           "colorsOrigin": "COCO_SLIME",
           "matOrigin": "HONEY_SLIME"
@@ -161,7 +156,6 @@
     "name": "Coco Phosphor",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime1Structures"],
         "bodyStruct": {
           "colorsOrigin": "PHOSPHOR_SLIME",
           "matOrigin": "COCO_SLIME",
@@ -176,7 +170,6 @@
     "name": "Coco Mosaic",
     "appearances": [
       {
-        "largoProps": "CustomBody",
         "bodyStruct": { "matOrigin": "COCO_SLIME" },
         "jiggle": 0.1
       }
@@ -186,7 +179,6 @@
     "name": "Coco Tangle",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime1Structures"],
         "bodyStruct": {
           "colorsOrigin": "TANGLE_SLIME",
           "matOrigin": "COCO_SLIME",
@@ -201,7 +193,6 @@
     "name": "Coco Boom",
     "appearances": [
       {
-        "largoProps": "CustomBody",
         "bodyStruct": {
           "colorsOrigin": "COCO_SLIME",
           "matOrigin": "BOOM_SLIME"
@@ -214,7 +205,6 @@
     "name": "Coco Rad",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime1Structures"],
         "bodyStruct": {
           "colorsOrigin": "RAD_SLIME",
           "matOrigin": "COCO_SLIME",
@@ -229,7 +219,6 @@
     "name": "Coco Rock",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime1Structures"],
         "bodyStruct": {
           "colorsOrigin": "ROCK_SLIME",
           "matOrigin": "COCO_SLIME",
@@ -244,7 +233,7 @@
     "name": "Coco Tabby",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForMouth", "CustomSlime2Structures"],
+        "largoProps": "UseSlime2ForMouth",
         "slime2Structs": [
           { "matOrigin": "COCO_SLIME" },
           { "matOrigin": "COCO_SLIME" }
@@ -257,7 +246,7 @@
     "name": "Coco Hunter",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForFace", "CustomSlime2Structures"],
+        "largoProps": "UseSlime2ForFace",
         "slime2Structs": [
           {
             "colorProps": {
@@ -274,7 +263,6 @@
     "name": "Coco Crystal",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime1Structures"],
         "bodyStruct": {
           "colorsOrigin": "CRYSTAL_SLIME",
           "matOrigin": "COCO_SLIME",
@@ -289,7 +277,6 @@
     "name": "Coco Dervish",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [ { "colorsOrigin": "COCO_SLIME" } ],
         "jiggle": 0.1
       }
@@ -299,7 +286,6 @@
     "name": "Coco Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures"],
         "bodyStruct": {
           "matOrigin": "MESMER_SLIME",
           "colorsOrigin": "COCO_SLIME"
@@ -324,7 +310,6 @@
     "name": "Coco Hermit",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "colorProps": {
@@ -342,7 +327,7 @@
     "name": "Pink Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures", "UseSlime2ForBody"],
+        "largoProps": "UseSlime2ForBody",
         "bodyStruct": { "colorsOrigin": "PINK_SLIME" },
         "slime2Structs": [
           { "colorsOrigin": "PINK_SLIME" },
@@ -362,7 +347,6 @@
     "name": "Quantum Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures"],
         "bodyStruct": {
           "matOrigin": "QUANTUM_SLIME",
           "colorsOrigin": "MESMER_SLIME"
@@ -411,7 +395,6 @@
     "name": "Honey Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures", "CustomSlime1Structures"],
         "bodyStruct": {
           "colorsOrigin": "MESMER_SLIME",
           "matOrigin": "HONEY_SLIME"
@@ -451,7 +434,6 @@
     "name": "Phosphor Mesmer",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "colorsOrigin": "PHOSPHOR_SLIME",
@@ -477,7 +459,6 @@
     "name": "Tangle Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime1Structures"],
         "bodyStruct": { "matOrigin": "MESMER_SLIME" },
         "slime1Structs": [
           {
@@ -495,7 +476,6 @@
     "name": "Boom Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures"],
         "bodyStruct": {
           "colorsOrigin": "MESMER_SLIME",
           "matOrigin": "BOOM_SLIME",
@@ -535,7 +515,6 @@
     "name": "Rad Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures"],
         "bodyStruct": {
           "colorsOrigin": "MESMER_SLIME",
           "matOrigin": "RAD_SLIME",
@@ -575,7 +554,6 @@
     "name": "Rock Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures"],
         "bodyStruct": {
           "colorsOrigin": "ROCK_SLIME",
           "pattern": "mesmer",
@@ -609,7 +587,7 @@
     "name": "Tabby Mesmer",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForBodyMaterial", "CustomSlime1Structures"],
+        "largoProps": "UseSlime2ForBodyMaterial",
         "slime1Structs": [
           {
             "mesh": "tabby_ears",
@@ -625,7 +603,7 @@
     "name": "Hunter Mesmer",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForBodyMaterial", "CustomSlime1Structures"],
+        "largoProps": "UseSlime2ForBodyMaterial",
         "slime1Structs": [
           {
             "mesh": "hunter_ears",
@@ -641,7 +619,6 @@
     "name": "Crystal Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures"],
         "bodyStruct": {
           "colorsOrigin": "CRYSTAL_SLIME",
           "pattern": "mesmer",
@@ -669,7 +646,6 @@
     "name": "Dervish Mesmer",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime1Structures"],
         "bodyStruct": { "matOrigin": "MESMER_SLIME" },
         "slime1Structs": [
           {
@@ -686,7 +662,6 @@
     "name": "Mesmer Hermit",
     "appearances": [
       {
-        "largoProps": ["CustomSlime1Structures", "CustomSlime2Structures"],
         "slime1Structs": [
           { "instantiatePrefabs": true },
           { "skip": true },
@@ -710,7 +685,6 @@
     "name": "Pink Hermit",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "colorProps": {
@@ -727,7 +701,6 @@
     "name": "Saber Hermit",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "colorProps": {
@@ -744,7 +717,6 @@
     "name": "Quantum Hermit",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "matOrigin": "QUANTUM_SLIME",
@@ -759,7 +731,6 @@
     "name": "Honey Hermit",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "colorProps": {
@@ -776,7 +747,6 @@
     "name": "Phosphor Hermit",
     "appearances": [
       {
-        "largoProps": ["CustomSlime2Structures", "CustomSlime1Structures"],
         "slime1Structs": [
           { "mesh": "hermit_phosphor_anten" },
           { "instantiatePrefabs": true },
@@ -798,7 +768,6 @@
     "name": "Mosaic Hermit",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "colorProps": {
@@ -815,7 +784,6 @@
     "name": "Tangle Hermit",
     "appearances": [
       {
-        "largoProps": ["CustomSlime1Structures", "CustomSlime2Structures"],
         "slime1Structs": [
           {
             "mesh": "tangle_hermit_flower",
@@ -839,7 +807,6 @@
     "name": "Boom Hermit",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "colorProps": {
@@ -856,7 +823,6 @@
     "name": "Rad Hermit",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "colorProps": {
@@ -873,7 +839,6 @@
     "name": "Rock Hermit",
     "appearances": [
       {
-        "largoProps": ["CustomSlime1Structures", "CustomSlime2Structures"],
         "slime1Structs": [
           {
             "mesh": "rock_hermit_spine",
@@ -898,7 +863,6 @@
     "name": "Tabby Hermit",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures", "CustomSlime1Structures"],
         "bodyStruct": { "matOrigin": "TABBY_SLIME" },
         "slime1Structs": [
           {
@@ -923,7 +887,6 @@
     "name": "Hunter Hermit",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures", "CustomSlime1Structures"],
         "bodyStruct": { "matOrigin": "HUNTER_SLIME" },
         "slime1Structs": [
           {
@@ -948,7 +911,6 @@
     "name": "Crystal Hermit",
     "appearances": [
       {
-        "largoProps": ["CustomBody", "CustomSlime2Structures", "CustomSlime1Structures"],
         "bodyStruct": { "matOrigin": "CRYSTAL_SLIME" },
         "slime2Structs": [
           {
@@ -974,7 +936,6 @@
     "name": "Dervish Hermit",
     "appearances": [
       {
-        "largoProps": "CustomSlime2Structures",
         "slime2Structs": [
           {
             "colorProps": {

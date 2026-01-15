@@ -75,8 +75,7 @@ public sealed class LargoData : ActorData
 
 public sealed class LargoAppearanceData : JsonData
 {
-    [JsonRequired] public LargoProps LargoProps;
-
+    public LargoProps LargoProps;
     public AppearanceProps AppProps;
 
     public ModelData BodyStruct;
