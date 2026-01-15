@@ -37,6 +37,10 @@ public sealed class LargoData : ActorData
     [JsonIgnore] public MethodInfo InitSlime2Details;
     [JsonIgnore] public MethodInfo InitLargoDetails;
 
+    [JsonIgnore] public MethodInfo InitSlime1AppearanceDetails;
+    [JsonIgnore] public MethodInfo InitSlime2AppearanceDetails;
+    [JsonIgnore] public MethodInfo InitLargoAppearanceDetails;
+
     protected override void OnDeserialise()
     {
         var parts = Name.TrueSplit(' ');
@@ -54,6 +58,10 @@ public sealed class LargoData : ActorData
         Methods.TryGetValue("Init" + Slime1 + "Details", out InitSlime1Details);
         Methods.TryGetValue("Init" + Slime2 + "Details", out InitSlime2Details);
         Methods.TryGetValue("Init" + Slime1 + Slime2 + "Details", out InitLargoDetails);
+
+        Methods.TryGetValue("Init" + Slime1 + "AppearanceDetails", out InitSlime1AppearanceDetails);
+        Methods.TryGetValue("Init" + Slime2 + "AppearanceDetails", out InitSlime2AppearanceDetails);
+        Methods.TryGetValue("Init" + Slime1 + Slime2 + "AppearanceDetails", out InitLargoAppearanceDetails);
 
         Slimepedia.SlimeDataMap.TryGetValue(Slime1Id, out Slime1Data);
         Slimepedia.SlimeDataMap.TryGetValue(Slime2Id, out Slime2Data);

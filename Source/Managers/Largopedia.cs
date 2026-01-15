@@ -1,4 +1,5 @@
 using SRML.SR.Utils;
+using DLCPackage;
 
 namespace OceanRange.Managers;
 
@@ -84,8 +85,7 @@ public static class Largopedia
         definition.FavoriteToys = [];
         definition.name = largoData.Slime1 + largoData.Slime2;
 
-        var props = largoData.NormalToNormalProps;
-        var useSlime2Body = props.HasFlagFast(LargoProps.UseSlime2ForBody);
+        var useSlime2Body = largoData.DefProps.HasFlagFast(DefinitionProps.UseSlime2ForBody);
 
         var slime1Prefab = (useSlime2Body ? largoData.Slime2Id : largoData.Slime1Id).GetPrefab();
         var slime2Prefab = (useSlime2Body ? largoData.Slime1Id : largoData.Slime2Id).GetPrefab();
@@ -111,103 +111,31 @@ public static class Largopedia
         var appearance1 = slime1.AppearancesDefault[0];
         var appearance2 = slime2.AppearancesDefault[0];
 
-        var appearance = ScriptableObject.CreateInstance<SlimeAppearance>();
-        appearance.AnimatorOverride = appearance1.AnimatorOverride ?? appearance2.AnimatorOverride;
-        appearance.DependentAppearances = [appearance1, appearance2];
-        appearance.Face = appearance1.Face.DeepCopy();
-        appearance.Face._expressionToFaceLookup.Clear();
-        appearance.name = largoData.Slime1 + largoData.Slime2 + "Normal";
-
-        var eyes = props.HasFlagFast(LargoProps.UseSlime2ForEyes) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
-        var mouth = props.HasFlagFast(LargoProps.UseSlime2ForMouth) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
-
-        // ! // FIXME: Fix invisible secret styles for largos
-        // GameContext.Instance.DLCDirector.onPackageInstalled += null;
-
-        foreach (var expression in appearance1.Face._expressionToFaceLookup.Keys.Union(appearance2.Face._expressionToFaceLookup.Keys, SlimeFace.DefaultSlimeExpressionComparer))
-        {
-            appearance.Face._expressionToFaceLookup[expression] = new()
-            {
-                SlimeExpression = expression,
-                Eyes = eyes.TryGetValue(expression, out var eyesInner) ? eyesInner.Eyes : null,
-                Mouth = mouth.TryGetValue(expression, out var mouthInner) ? mouthInner.Mouth : null
-            };
-        }
-
-        appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
-        appearance.NameXlateKey = appearance1.NameXlateKey;
-        appearance.SaveSet = SlimeAppearance.AppearanceSaveSet.CLASSIC;
-
         var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
         applicator.SlimeDefinition = definition;
 
-        var slime1Body = appearance1.Structures.FirstOrDefault(x => x.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0);
-        var slime2Body = appearance2.Structures.FirstOrDefault(x => x.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0);
-        var baseBody = useSlime2Body ? slime2Body : slime1Body;
+        definition.AppearancesDefault = [GenerateAppearance(appearance1, appearance2, largoData.Appearances[0], applicator, SlimeAppearance.AppearanceSaveSet.CLASSIC, largoData, definition)];
 
-        var modelMap = new Dictionary<int, ModelData>();
-        var customBody = props.HasFlagFast(LargoProps.CustomBody);
-        SlimeAppearanceStructure body;
-
-        if (customBody)
+        // TODO: Implement and test the invisible largos bug fix
+        GameContext.Instance.DLCDirector.onPackageInstalled += id =>
         {
-            body = Slimepedia.GenerateStructure(baseBody, largoData.BodyStruct, null);
-            modelMap[0] = largoData.BodyStruct;
-        }
-        else
-        {
-            body = new(baseBody)
-            {
-                DefaultMaterials =
-                {
-                    [0] = (props.HasFlagFast(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone()
-                }
-            };
-        }
+            if (id != Id.SECRET_STYLE)
+                return;
 
-        var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
+            var ss1 = slime1.GetAppearanceForSet(SlimeAppearance.AppearanceSaveSet.SECRET_STYLE);
+            var ss2 = slime2.GetAppearanceForSet(SlimeAppearance.AppearanceSaveSet.SECRET_STYLE);
 
-        GenerateStructures(appearance1.Structures, largoData.Slime1Structs, props, LargoProps.CustomSlime1Structures, LargoProps.ExcludeSlime1Structures, list, slime1Body, modelMap);
-        GenerateStructures(appearance2.Structures, largoData.Slime2Structs, props, LargoProps.CustomSlime2Structures, LargoProps.ExcludeSlime2Structures, list, slime2Body, modelMap);
+            var ssAppearance1Data = largoData.Appearances.FirstOrDefault(x => x.AppProps.HasFlagFast(AppearanceProps.SS1) && !x.AppProps.HasFlagFast(AppearanceProps.SS2));
+            var ssAppearance2Data = largoData.Appearances.FirstOrDefault(x => x.AppProps.HasFlagFast(AppearanceProps.SS2) && !x.AppProps.HasFlagFast(AppearanceProps.SS1));
+            var ssAppearance3Data = largoData.Appearances.FirstOrDefault(x => x.AppProps.HasFlagFast(AppearanceProps.SS2) && x.AppProps.HasFlagFast(AppearanceProps.SS1));
 
-        appearance.Structures = [.. list];
-        applicator.GenerateSlimeBones(appearance.Structures, largoData.Jiggle.Value);
-
-        appearance.ColorPalette = SlimeAppearance.Palette.FromMaterial(appearance.Structures[0].DefaultMaterials[0]);
-        appearance.CrystalAppearance = appearance1.CrystalAppearance ?? appearance2.CrystalAppearance;
-        appearance.DeathAppearance = appearance1.DeathAppearance ?? appearance2.DeathAppearance;
-        appearance.ExplosionAppearance = appearance1.ExplosionAppearance ?? appearance2.ExplosionAppearance;
-        appearance.GlintAppearance = appearance1.GlintAppearance ?? appearance2.GlintAppearance;
-        appearance.ShockedAppearance = appearance1.ShockedAppearance ?? appearance2.ShockedAppearance;
-        appearance.TornadoAppearance = appearance1.TornadoAppearance ?? appearance2.TornadoAppearance;
-        appearance.VineAppearance = appearance1.VineAppearance ?? appearance2.VineAppearance;
-
-        if (appearance1.QubitAppearance != null || appearance2.QubitAppearance != null)
-        {
-            var qubitAppearance = appearance.QubitAppearance = appearance.Instantiate();
-            var material = QuantumMat.Clone();
-            material.SetFloat(GhostToggle, 1f);
-
-            for (var i = 0; i < appearance.Structures.Length; i++)
-            {
-                var structure = qubitAppearance.Structures[i] = new(appearance.Structures[i]);
-                var mat = material.Clone();
-
-                if (modelMap.TryGetValue(i, out var modelData))
-                    Slimepedia.SetMatProperties(modelData, mat);
-                else
-                {
-                    var og = structure.DefaultMaterials[0];
-                    mat.SetColor(Slimepedia.TopColor, og.GetColor(Slimepedia.TopColor));
-                    mat.SetColor(Slimepedia.MiddleColor, og.GetColor(Slimepedia.MiddleColor));
-                    mat.SetColor(Slimepedia.BottomColor, og.GetColor(Slimepedia.BottomColor));
-                }
-
-                structure.DefaultMaterials[0] = mat;
-            }
-        }
-
-        definition.AppearancesDefault = [appearance];
+            if (ss1 != null && ss2 != null && ssAppearance3Data != null)
+                GenerateAppearance(ss1, ss2, ssAppearance3Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
+            else if (ss1 != null && ssAppearance1Data != null)
+                GenerateAppearance(ss1, appearance2, ssAppearance1Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
+            else if (ss2 != null && ssAppearance2Data != null)
+                GenerateAppearance(appearance1, ss2, ssAppearance2Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
+        };
 
         LargoMaps.GetOrAdd(largoData.Slime1Id, Create).Add((largoData.MainId, largoData.Slime2Id));
         LargoMaps.GetOrAdd(largoData.Slime2Id, Create).Add((largoData.MainId, largoData.Slime1Id));
@@ -253,14 +181,116 @@ public static class Largopedia
                 prefab.RemoveComponent(component);
         }
 
-        largoData.InitLargoDetails?.Invoke(null, [prefab, definition, appearance]);
-        largoData.InitSlime1Details?.Invoke(null, [prefab, definition, appearance]);
-        largoData.InitSlime2Details?.Invoke(null, [prefab, definition, appearance]);
-
-        SlimeRegistry.RegisterAppearance(definition, appearance);
+        largoData.InitLargoDetails?.Invoke(null, [prefab, definition]);
+        largoData.InitSlime1Details?.Invoke(null, [prefab, definition]);
+        largoData.InitSlime2Details?.Invoke(null, [prefab, definition]);
 
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         SlimeRegistry.RegisterSlimeDefinition(definition);
+    }
+
+    private static SlimeAppearance GenerateAppearance(SlimeAppearance appearance1, SlimeAppearance appearance2, LargoAppearanceData appearanceData, SlimeAppearanceApplicator applicator, SlimeAppearance.AppearanceSaveSet set, LargoData largoData,
+        SlimeDefinition definition)
+    {
+        var useSlime2Body = appearanceData.LargoProps.HasFlagFast(LargoProps.UseSlime2ForBody);
+
+        var appearance = ScriptableObject.CreateInstance<SlimeAppearance>();
+        appearance.AnimatorOverride = appearance1.AnimatorOverride ?? appearance2.AnimatorOverride;
+        appearance.DependentAppearances = [appearance1, appearance2];
+        appearance.Face = appearance1.Face.DeepCopy();
+        appearance.Face._expressionToFaceLookup.Clear();
+        appearance.name = largoData.Slime1 + largoData.Slime2 + (appearanceData.AppProps.HasFlagFast(AppearanceProps.SS1) ? "SS" : "Normal") + (appearanceData.AppProps.HasFlagFast(AppearanceProps.SS2) ? "SS" : "Normal");
+
+        var props = appearanceData.LargoProps;
+        var eyes = props.HasFlagFast(LargoProps.UseSlime2ForEyes) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
+        var mouth = props.HasFlagFast(LargoProps.UseSlime2ForMouth) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
+
+        foreach (var expression in appearance1.Face._expressionToFaceLookup.Keys.Union(appearance2.Face._expressionToFaceLookup.Keys, SlimeFace.DefaultSlimeExpressionComparer))
+        {
+            appearance.Face._expressionToFaceLookup[expression] = new()
+            {
+                SlimeExpression = expression,
+                Eyes = eyes.TryGetValue(expression, out var eyesInner) ? eyesInner.Eyes : null,
+                Mouth = mouth.TryGetValue(expression, out var mouthInner) ? mouthInner.Mouth : null
+            };
+        }
+
+        appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
+        appearance.NameXlateKey = appearance1.NameXlateKey;
+        appearance.SaveSet = set;
+
+        var slime1Body = appearance1.Structures.FirstOrDefault(x => x.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0);
+        var slime2Body = appearance2.Structures.FirstOrDefault(x => x.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0);
+        var baseBody = useSlime2Body ? slime2Body : slime1Body;
+
+        var modelMap = new Dictionary<int, ModelData>();
+        var customBody = props.HasFlagFast(LargoProps.CustomBody);
+        SlimeAppearanceStructure body;
+
+        if (customBody)
+        {
+            body = Slimepedia.GenerateStructure(baseBody, appearanceData.BodyStruct, null);
+            modelMap[0] = appearanceData.BodyStruct;
+        }
+        else
+        {
+            body = new(baseBody)
+            {
+                DefaultMaterials =
+                {
+                    [0] = (props.HasFlagFast(LargoProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone()
+                }
+            };
+        }
+
+        var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
+
+        GenerateStructures(appearance1.Structures, appearanceData.Slime1Structs, props, LargoProps.CustomSlime1Structures, LargoProps.ExcludeSlime1Structures, list, slime1Body, modelMap);
+        GenerateStructures(appearance2.Structures, appearanceData.Slime2Structs, props, LargoProps.CustomSlime2Structures, LargoProps.ExcludeSlime2Structures, list, slime2Body, modelMap);
+
+        appearance.Structures = [.. list];
+        applicator.GenerateSlimeBones(appearance.Structures, appearanceData.Jiggle.Value);
+
+        appearance.ColorPalette = SlimeAppearance.Palette.FromMaterial(appearance.Structures[0].DefaultMaterials[0]);
+        appearance.CrystalAppearance = appearance1.CrystalAppearance ?? appearance2.CrystalAppearance;
+        appearance.DeathAppearance = appearance1.DeathAppearance ?? appearance2.DeathAppearance;
+        appearance.ExplosionAppearance = appearance1.ExplosionAppearance ?? appearance2.ExplosionAppearance;
+        appearance.GlintAppearance = appearance1.GlintAppearance ?? appearance2.GlintAppearance;
+        appearance.ShockedAppearance = appearance1.ShockedAppearance ?? appearance2.ShockedAppearance;
+        appearance.TornadoAppearance = appearance1.TornadoAppearance ?? appearance2.TornadoAppearance;
+        appearance.VineAppearance = appearance1.VineAppearance ?? appearance2.VineAppearance;
+
+        if (appearance1.QubitAppearance != null || appearance2.QubitAppearance != null)
+        {
+            var qubitAppearance = appearance.QubitAppearance = appearance.Instantiate();
+            var material = QuantumMat.Clone();
+            material.SetFloat(GhostToggle, 1f);
+
+            for (var i = 0; i < appearance.Structures.Length; i++)
+            {
+                var structure = qubitAppearance.Structures[i] = new(appearance.Structures[i]);
+                var mat = material.Clone();
+
+                if (modelMap.TryGetValue(i, out var modelData))
+                    Slimepedia.SetMatProperties(modelData, mat);
+                else
+                {
+                    var og = structure.DefaultMaterials[0];
+                    mat.SetColor(Slimepedia.TopColor, og.GetColor(Slimepedia.TopColor));
+                    mat.SetColor(Slimepedia.MiddleColor, og.GetColor(Slimepedia.MiddleColor));
+                    mat.SetColor(Slimepedia.BottomColor, og.GetColor(Slimepedia.BottomColor));
+                }
+
+                structure.DefaultMaterials[0] = mat;
+            }
+        }
+
+        largoData.InitLargoAppearanceDetails?.Invoke(null, [definition, appearance]);
+        largoData.InitSlime1AppearanceDetails?.Invoke(null, [definition, appearance]);
+        largoData.InitSlime2AppearanceDetails?.Invoke(null, [definition, appearance]);
+
+        SlimeRegistry.RegisterAppearance(definition, appearance);
+        return appearance;
     }
 
     private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, LargoProps props, LargoProps custom, LargoProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure body,
@@ -322,21 +352,21 @@ public static class Largopedia
     }
 
     [UsedImplicitly]
-    public static void InitMineDetails(GameObject prefab, SlimeDefinition _1, SlimeAppearance _2) => prefab.GetComponent<MineBehaviour>().IsLargo = true;
+    public static void InitMineDetails(GameObject prefab, SlimeDefinition _) => prefab.GetComponent<MineBehaviour>().IsLargo = true;
 
     [UsedImplicitly]
-    public static void InitMesmerDetails(GameObject _1, SlimeDefinition definition, SlimeAppearance _2) => Mesmers.Add(definition.IdentifiableId);
+    public static void InitMesmerDetails(GameObject _, SlimeDefinition definition) => Mesmers.Add(definition.IdentifiableId);
 
     [UsedImplicitly]
-    public static void InitHunterDetails(GameObject prefab, SlimeDefinition _1, SlimeAppearance _2)
+    public static void InitHunterDetails(GameObject prefab, SlimeDefinition _)
     {
         prefab.RemoveComponent<SlimeStealth>();
         prefab.AddComponent<StealthFixer>();
     }
 
     [UsedImplicitly]
-    public static void InitTangleHermitDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance) => appearance.Structures[1].Element.Prefabs[0].transform.localPosition -= new Vector3(0f, 0.2f, 0f);
+    public static void InitTangleHermitAppearanceDetails(SlimeAppearance appearance, AppearanceProps _) => appearance.Structures[1].Element.Prefabs[0].transform.localPosition -= new Vector3(0f, 0.2f, 0f);
 
     [UsedImplicitly]
-    public static void InitPhosphorHermitDetails(GameObject prefab, SlimeDefinition _1, SlimeAppearance _2) => prefab.AddComponent<PhosphorHermitAppearanceFixer>();
+    public static void InitPhosphorHermitDetails(GameObject prefab, SlimeDefinition _) => prefab.AddComponent<PhosphorHermitAppearanceFixer>();
 }

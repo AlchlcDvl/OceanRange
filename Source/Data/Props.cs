@@ -38,7 +38,8 @@ public enum LargoProps : ushort
 public enum DefinitionProps : byte
 {
     None = 0,
-    UseSlime2ForSound = 1 << 0 // I kept for parity's sake with SRML's largo props
+    UseSlime2ForSound = 1 << 0, // I kept for parity's sake with SRML's largo props
+    UseSlime2ForBody = 1 << 1,
 }
 
 [Flags]
