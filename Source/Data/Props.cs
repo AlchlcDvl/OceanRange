@@ -3,7 +3,7 @@
 namespace OceanRange.Data;
 
 [Flags]
-public enum LargoProps : ushort
+public enum LargoProps : byte
 {
     None = 0,
 
@@ -19,16 +19,8 @@ public enum LargoProps : ushort
     // Combines the above values so you don't have to write a long array just with the above values
     UseSlime2AsBase = UseSlime2ForFace | UseSlime2ForBody | UseSlime2ForBodyMaterial,
 
-    // Markers for whether custom (non-base slime) structures/materials are in use for relevant parts
-    CustomSlime1Structures = 1 << 4,
-    CustomSlime2Structures = 1 << 5,
-    CustomBody = 1 << 6,
-
-    // Same as UseSlime2AsBase
-    CustomStructures = CustomSlime1Structures | CustomSlime2Structures | CustomBody,
-
-    ExcludeSlime1Structures = 1 << 7,
-    ExcludeSlime2Structures = 1 << 8,
+    ExcludeSlime1Structures = 1 << 4,
+    ExcludeSlime2Structures = 1 << 5,
 
     // Same as UseSlime2AsBase
     ExcludeStructures = ExcludeSlime1Structures | ExcludeSlime2Structures

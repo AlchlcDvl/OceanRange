@@ -49,7 +49,7 @@ public static class GordoSnarePatch
                 dictionary.Add(favId, value);
         }
 
-        if (Pinks.Length > 0)
+        if (!Pinks.IsNullOrEmpty())
         {
             var value = (float)__instance.pinkSnareWeight / Pinks.Length;
 

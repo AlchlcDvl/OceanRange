@@ -250,7 +250,7 @@ public static class Inventory
         if (!TryGet(name, out mesh))
             return false;
 
-        if (mesh.bindposes.Length > 0)
+        if (!mesh.bindposes.IsNullOrEmpty())
             mesh = mesh.Clone();
 
         return true;
@@ -371,7 +371,7 @@ public static class Inventory
         {
             var uvs = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2);
 
-            if (uvs.Length > 0)
+            if (!uvs.IsNullOrEmpty())
                 mesh.SetUVs(i, uvs);
         }
 

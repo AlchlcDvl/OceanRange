@@ -4,7 +4,8 @@ public enum LoadState : byte
 {
     Preload,
     Load,
-    Postload
+    Postload,
+    Unload
 }
 
 public enum ManagerType : byte
@@ -38,3 +39,5 @@ public sealed class PreloadMethodAttribute(int order = int.MaxValue) : ManagerMe
 public sealed class LoadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Load);
 
 public sealed class PostloadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Postload);
+
+public sealed class UnloadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Unload);

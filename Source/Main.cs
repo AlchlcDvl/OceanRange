@@ -93,6 +93,8 @@ internal sealed class Main : ModEntryPoint
     public override void Unload()
     {
 #endif
+        BootStrapper.ExecuteLoadState(LoadState.Unload); // Executes the unload methods of all of the manager classes
+
         foreach (var mesh in Helpers.ClonedMeshes)
             mesh.Destroy();
 

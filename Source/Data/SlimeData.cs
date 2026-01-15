@@ -103,7 +103,7 @@ public sealed class SlimeData : SpawnedActorData
         if (NaturalGordoSpawn)
             NaturalGordoSpawn &= HasGordo;
 
-        if (SlimeFeatures.Length > 0)
+        if (!SlimeFeatures.IsNullOrEmpty())
         {
             var matData = SlimeFeatures[0];
             matData.IsBody = true;

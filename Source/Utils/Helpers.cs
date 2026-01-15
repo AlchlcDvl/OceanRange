@@ -5,6 +5,7 @@ using System.Collections;
 using System.Reflection;
 using OceanRange.Saves;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace OceanRange.Utils;
 
@@ -526,7 +527,7 @@ public static class Helpers
 
     public static bool TryGetItem<T>(this T[] array, int index, out T value)
     {
-        if (array == null)
+        if (array.IsNullOrEmpty())
         {
             value = default;
             return false;
@@ -621,6 +622,7 @@ public static class Helpers
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool HasFlagFast<T>(this T value, T flag) where T : struct, Enum => EnumFlagCache<T>.HasFlagDelegate(value, flag);
 
     private static class EnumFlagCache<T> where T : struct, Enum
@@ -637,17 +639,10 @@ public static class Helpers
             var valueCast = Expression.Convert(valueParam, underlyingType); // (number)value
             var flagCast = Expression.Convert(flagParam, underlyingType); // (number)flag
 
-            var zeroConstant = Expression.Default(underlyingType); // 0 or the None flag
+            var andOp = Expression.And(valueCast, flagCast); // and = value & flag
+            var bitCheck = Expression.Equal(andOp, flagCast); // bit = and == flag
 
-            var andOperation = Expression.And(valueCast, flagCast); // and = value & flag
-            var bitwiseCheck = Expression.Equal(andOperation, flagCast); // bit = and == flag
-
-            var valueIsZero = Expression.Equal(valueCast, zeroConstant); // valZero = value == 0
-            var flagIsZero = Expression.Equal(flagCast, zeroConstant); // flagZero = flag == 0
-
-            var finalCheck = Expression.Condition(flagIsZero, valueIsZero, bitwiseCheck); // flagZero ? valueZero : bit
-
-            return Expression.Lambda<Func<T, T, bool>>(finalCheck, valueParam, flagParam).Compile();
+            return Expression.Lambda<Func<T, T, bool>>(bitCheck, valueParam, flagParam).Compile();
         }
     }
 }

@@ -102,10 +102,10 @@ public static class Largopedia
         if (prefab.TryGetComponent<PinkSlimeFoodTypeTracker>(out var tracker))
             tracker.Destroy();
 
-        if (slime1.FavoriteToys != null)
+        if (!slime1.FavoriteToys.IsNullOrEmpty())
             definition.FavoriteToys = [.. definition.FavoriteToys.Union(slime1.FavoriteToys, Identifiable.idComparer)];
 
-        if (slime2.FavoriteToys != null)
+        if (!slime2.FavoriteToys.IsNullOrEmpty())
             definition.FavoriteToys = [.. definition.FavoriteToys.Union(slime2.FavoriteToys, Identifiable.idComparer)];
 
         var appearance1 = slime1.AppearancesDefault[0];
@@ -169,13 +169,13 @@ public static class Largopedia
                 slime2Prefab.GetChildCopy(item.name).transform.SetParent(prefab.transform);
         }
 
-        if (largoData.Slime1Data?.ComponentsToRemove != null)
+        if (largoData.Slime1Data?.ComponentsToRemove?.IsNullOrEmpty() == false)
         {
             foreach (var component in largoData.Slime1Data.ComponentsToRemove)
                 prefab.RemoveComponent(component);
         }
 
-        if (largoData.Slime2Data?.ComponentsToRemove != null)
+        if (largoData.Slime2Data?.ComponentsToRemove?.IsNullOrEmpty() == false)
         {
             foreach (var component in largoData.Slime2Data.ComponentsToRemove)
                 prefab.RemoveComponent(component);
@@ -224,10 +224,9 @@ public static class Largopedia
         var baseBody = useSlime2Body ? slime2Body : slime1Body;
 
         var modelMap = new Dictionary<int, ModelData>();
-        var customBody = props.HasFlagFast(LargoProps.CustomBody);
         SlimeAppearanceStructure body;
 
-        if (customBody)
+        if (appearanceData.BodyStruct != null)
         {
             body = Slimepedia.GenerateStructure(baseBody, appearanceData.BodyStruct, null);
             modelMap[0] = appearanceData.BodyStruct;
@@ -245,8 +244,8 @@ public static class Largopedia
 
         var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
 
-        GenerateStructures(appearance1.Structures, appearanceData.Slime1Structs, props, LargoProps.CustomSlime1Structures, LargoProps.ExcludeSlime1Structures, list, slime1Body, modelMap);
-        GenerateStructures(appearance2.Structures, appearanceData.Slime2Structs, props, LargoProps.CustomSlime2Structures, LargoProps.ExcludeSlime2Structures, list, slime2Body, modelMap);
+        GenerateStructures(appearance1.Structures, appearanceData.Slime1Structs, props, LargoProps.ExcludeSlime1Structures, list, slime1Body, modelMap);
+        GenerateStructures(appearance2.Structures, appearanceData.Slime2Structs, props, LargoProps.ExcludeSlime2Structures, list, slime2Body, modelMap);
 
         appearance.Structures = [.. list];
         applicator.GenerateSlimeBones(appearance.Structures, appearanceData.Jiggle.Value);
@@ -293,12 +292,12 @@ public static class Largopedia
         return appearance;
     }
 
-    private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, LargoProps props, LargoProps custom, LargoProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure body,
+    private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, LargoProps props, LargoProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure body,
         Dictionary<int, ModelData> modelMap)
     {
         var avoid = baseStructs.IndexOfItem(body);
 
-        if (props.HasFlagFast(custom))
+        if (!modelDatas.IsNullOrEmpty())
         {
             var j = 0;
 

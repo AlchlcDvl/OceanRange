@@ -100,13 +100,13 @@ public sealed class LargoAppearanceData : JsonData
         if (BodyStruct != null)
             BodyStruct.Jiggle ??= jiggle;
 
-        if (Slime1Structs != null)
+        if (!Slime1Structs.IsNullOrEmpty())
         {
             foreach (var feature in Slime1Structs)
                 feature.Jiggle ??= jiggle;
         }
 
-        if (Slime2Structs != null)
+        if (!Slime2Structs.IsNullOrEmpty())
         {
             foreach (var feature in Slime2Structs)
                 feature.Jiggle ??= jiggle;
