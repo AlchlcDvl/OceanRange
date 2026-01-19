@@ -26,7 +26,7 @@ public abstract class SpawnedActorData : ActorData
     [JsonRequired] public float BasePrice;
     [JsonRequired] public float Saturation;
 
-    [JsonRequired] public Color MainAmmoColor;
+    public Color MainAmmoColor;
 
     protected override void OnDeserialise() => Progress ??= [];
 }

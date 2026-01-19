@@ -43,7 +43,7 @@ public sealed class MailData : JsonData
 
     public bool ShouldUnlock(double time)
     {
-        if (Sent || Read || UnlockAfter > time)
+        if (Sent || Read || UnlockAfter.GetValueOrDefault() > time)
             return false;
 
         return /*UnlockFuncOr?.Invoke(time) == true || */NoSubscribers || Subscribers.All(subscriber => subscriber(time));

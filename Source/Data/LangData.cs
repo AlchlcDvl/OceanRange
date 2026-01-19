@@ -25,6 +25,8 @@ public sealed class Translations : JsonData
     // [JsonRequired] public WarpLangData[] Warps;
     // [JsonRequired] public TeleporterLangData[] Teleporters;
 
+    public Dictionary<string, Dictionary<string, string>> AdditionalExotic;
+
     [JsonIgnore] private LangData[] LangDatas;
 
     protected override void OnDeserialise() =>
@@ -61,6 +63,36 @@ public sealed class Translations : JsonData
         return TranslatedTexts;
     }
 
+    [JsonIgnore] private bool ExoticTranslationsHandled;
+
+    public void AddExoticTranslations(Language lang)
+    {
+        if (ExoticTranslationsHandled)
+            return;
+
+        Translator.BeginGatherPass();
+
+        foreach (var (bundleName, values) in AdditionalExotic)
+        {
+            var keyValues = TranslatedTexts.GetBundle(bundleName);
+
+            foreach (var (id, translatedText) in values)
+                keyValues.AddTranslation(id, translatedText, bundleName);
+        }
+
+        foreach (var langData in LangDatas)
+            langData.AddExoticTranslations(TranslatedTexts, lang);
+
+        var deferredItems = Translator.EndGatherPass();
+        var isFallback = lang == Config.FALLBACK_LANGUAGE;
+
+        foreach (var item in deferredItems)
+            item.AddComplexTranslation(TranslatedTexts, lang, isFallback);
+
+        deferredItems.Clear();
+        ExoticTranslationsHandled = true;
+    }
+
     public void OnLanguageChanged(Language lang)
     {
         foreach (var rancher in Ranchers)
@@ -79,6 +111,8 @@ public abstract class LangData : JsonData
     [JsonRequired] public string TranslatedName;
 
     public abstract void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang);
+
+    public virtual void AddExoticTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang) { }
 
     public virtual void WhenFallback() { }
 }
@@ -241,6 +275,7 @@ public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIME
     [JsonRequired] public string Diet;
     [JsonRequired] public string Favourite;
     [JsonRequired] public string Onomics;
+    public string Exotic;
 
     public override void WhenFallback()
     {
@@ -259,6 +294,9 @@ public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIME
         bundle.AddTranslation("m.plortonomics." + PediaKey, Onomics, "pedia");
         bundle.AddTranslation("m.slimeology." + PediaKey, Slimeology, "pedia");
     }
+
+    public override void AddExoticTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+        => translations.GetBundle("actor").AddTranslation("t.secret_style_" + PediaKey, Exotic, "actor");
 }
 
 public abstract class ResourceLangData(string suffix) : ActorLangData(suffix, PediaCategory.RESOURCES)

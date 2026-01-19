@@ -29,6 +29,7 @@ public sealed class ModelData : JsonData
             return;
 
         IsBody = data.IsBody;
+        UseSSMat = data.UseSSMat;
         IsModified = data.IsModified;
         InvertColorOriginColors = data.InvertColorOriginColors;
 
@@ -63,6 +64,8 @@ public sealed class ModelData : JsonData
     public bool SkipNull;
     public bool UseBaseStruct;
     public bool InstantiatePrefabs;
+
+    public bool UseSSMat;
 
     public float? Jiggle;
     public int? PrefabLength;

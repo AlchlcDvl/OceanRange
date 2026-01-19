@@ -502,24 +502,52 @@ public static class Helpers
 
     extension(Component component)
     {
-        public bool TryGetInterfaceComponent<T>(out T result) where T : class
-        {
-            if (component.TryGetComponent(typeof(T), out var value))
-            {
-                result = value as T;
-                return true;
-            }
+        // public bool TryGetInterfaceComponent<T>(out T result) where T : class
+        // {
+        //     if (component.TryGetComponent(typeof(T), out var value))
+        //     {
+        //         result = value as T;
+        //         return true;
+        //     }
 
-            result = default;
-            return false;
-        }
+        //     result = default;
+        //     return false;
+        // }
 
         public T EnsureComponent<T>() where T : Component => component.gameObject.EnsureComponent<T>();
     }
 
-    private static T EnsureComponent<T>(this GameObject go) where T : Component => go.GetComponent<T>() ?? go.AddComponent<T>();
+    extension(GameObject obj)
+    {
+        public GameObject[] FindAllChildren(string name)
+        {
+            var list = new List<GameObject>();
 
-    public static bool IsDefined<T>(this MemberInfo member) where T : Attribute => member.IsDefined(typeof(T), false);
+            foreach (Transform item in obj.transform)
+            {
+                if (item.name.Equals(name))
+                    list.Add(item.gameObject);
+
+                if (item.childCount > 0)
+                    list.AddRange(item.gameObject.FindAllChildren(name));
+            }
+
+            return [.. list];
+        }
+
+        private T EnsureComponent<T>() where T : Component => obj.GetComponent<T>() ?? obj.AddComponent<T>();
+    }
+
+    extension<T>(MemberInfo info) where T : Attribute
+    {
+        public bool IsDefined() => info.IsDefined(typeof(T), false);
+
+        public bool TryGetAttribute(out T attribute, bool inherit = true)
+        {
+            attribute = info.GetCustomAttribute<T>(inherit);
+            return attribute != null;
+        }
+    }
 
     public static T[] GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
 
@@ -569,28 +597,6 @@ public static class Helpers
     // }
 
     // public static T AddComponent<T>(this Component component) where T : Component => component.gameObject.AddComponent<T>();
-
-    public static GameObject[] FindAllChildren(this GameObject obj, string name)
-    {
-        var list = new List<GameObject>();
-
-        foreach (Transform item in obj.transform)
-        {
-            if (item.name.Equals(name))
-                list.Add(item.gameObject);
-
-            if (item.childCount > 0)
-                list.AddRange(item.gameObject.FindAllChildren(name));
-        }
-
-        return [.. list];
-    }
-
-    public static bool TryGetAttribute<T>(this MemberInfo info, out T attribute, bool inherit = true) where T : Attribute
-    {
-        attribute = info.GetCustomAttribute<T>(inherit);
-        return attribute != null;
-    }
 
     public static List<Material> ClonedMats = [];
 

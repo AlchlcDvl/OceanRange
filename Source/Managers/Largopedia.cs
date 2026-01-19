@@ -63,6 +63,18 @@ public static class Largopedia
         DefaultRadius = IdentifiableId.PINK_SLIME.GetPrefab().GetComponent<SphereCollider>().radius;
 
         Array.ForEach(Largos, CreateLargo);
+
+        // TODO: Implement and test the invisible largos bug fix
+        GameContext.Instance.DLCDirector.onPackageInstalled += CreateSecretStyles;
+    }
+
+#if DEBUG
+    [TimeDiagnostic("Largos SS Load")]
+#endif
+    private static void CreateSecretStyles(Id id)
+    {
+        if (id == Id.SECRET_STYLE)
+            Array.ForEach(Largos, CreateSSLargo);
     }
 
 #if DEBUG
@@ -116,27 +128,6 @@ public static class Largopedia
 
         definition.AppearancesDefault = [GenerateAppearance(appearance1, appearance2, largoData.Appearances[0], applicator, SlimeAppearance.AppearanceSaveSet.CLASSIC, largoData, definition)];
 
-        // TODO: Implement and test the invisible largos bug fix
-        GameContext.Instance.DLCDirector.onPackageInstalled += id =>
-        {
-            if (id != Id.SECRET_STYLE)
-                return;
-
-            var ss1 = slime1.GetAppearanceForSet(SlimeAppearance.AppearanceSaveSet.SECRET_STYLE);
-            var ss2 = slime2.GetAppearanceForSet(SlimeAppearance.AppearanceSaveSet.SECRET_STYLE);
-
-            var ssAppearance1Data = largoData.Appearances.FirstOrDefault(x => x.AppProps.HasFlagFast(AppearanceProps.SS1) && !x.AppProps.HasFlagFast(AppearanceProps.SS2));
-            var ssAppearance2Data = largoData.Appearances.FirstOrDefault(x => x.AppProps.HasFlagFast(AppearanceProps.SS2) && !x.AppProps.HasFlagFast(AppearanceProps.SS1));
-            var ssAppearance3Data = largoData.Appearances.FirstOrDefault(x => x.AppProps.HasFlagFast(AppearanceProps.SS2) && x.AppProps.HasFlagFast(AppearanceProps.SS1));
-
-            if (ss1 != null && ss2 != null && ssAppearance3Data != null)
-                GenerateAppearance(ss1, ss2, ssAppearance3Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
-            else if (ss1 != null && ssAppearance1Data != null)
-                GenerateAppearance(ss1, appearance2, ssAppearance1Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
-            else if (ss2 != null && ssAppearance2Data != null)
-                GenerateAppearance(appearance1, ss2, ssAppearance2Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
-        };
-
         LargoMaps.GetOrAdd(largoData.Slime1Id, Create).Add((largoData.MainId, largoData.Slime2Id));
         LargoMaps.GetOrAdd(largoData.Slime2Id, Create).Add((largoData.MainId, largoData.Slime1Id));
 
@@ -189,6 +180,33 @@ public static class Largopedia
         SlimeRegistry.RegisterSlimeDefinition(definition);
     }
 
+    private static void CreateSSLargo(LargoData largoData)
+    {
+        var slime1 = largoData.Slime1Id.GetSlimeDefinition();
+        var slime2 = largoData.Slime2Id.GetSlimeDefinition();
+        var definition = largoData.MainId.GetSlimeDefinition();
+
+        var prefab = largoData.MainId.GetPrefab();
+        var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
+
+        var ss1 = slime1.GetAppearanceForSet(SlimeAppearance.AppearanceSaveSet.SECRET_STYLE);
+        var ss2 = slime2.GetAppearanceForSet(SlimeAppearance.AppearanceSaveSet.SECRET_STYLE);
+
+        var ssAppearance1Data = largoData.Appearances.FirstOrDefault(x => x.AppProps.HasFlagFast(AppearanceProps.SS1) && !x.AppProps.HasFlagFast(AppearanceProps.SS2));
+        var ssAppearance2Data = largoData.Appearances.FirstOrDefault(x => x.AppProps.HasFlagFast(AppearanceProps.SS2) && !x.AppProps.HasFlagFast(AppearanceProps.SS1));
+        var ssAppearance3Data = largoData.Appearances.FirstOrDefault(x => x.AppProps.HasFlagFast(AppearanceProps.SS2) && x.AppProps.HasFlagFast(AppearanceProps.SS1));
+
+        var appearance1 = slime1.AppearancesDefault[0];
+        var appearance2 = slime2.AppearancesDefault[0];
+
+        if (ss1 != null && ss2 != null && ssAppearance3Data != null)
+            GenerateAppearance(ss1, ss2, ssAppearance3Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
+        else if (ss1 != null && ssAppearance1Data != null)
+            GenerateAppearance(ss1, appearance2, ssAppearance1Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
+        else if (ss2 != null && ssAppearance2Data != null)
+            GenerateAppearance(appearance1, ss2, ssAppearance2Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
+    }
+
     private static SlimeAppearance GenerateAppearance(SlimeAppearance appearance1, SlimeAppearance appearance2, LargoAppearanceData appearanceData, SlimeAppearanceApplicator applicator, SlimeAppearance.AppearanceSaveSet set, LargoData largoData,
         SlimeDefinition definition)
     {
@@ -199,7 +217,7 @@ public static class Largopedia
         appearance.DependentAppearances = [appearance1, appearance2];
         appearance.Face = appearance1.Face.DeepCopy();
         appearance.Face._expressionToFaceLookup.Clear();
-        appearance.name = largoData.Slime1 + largoData.Slime2 + (appearanceData.AppProps.HasFlagFast(AppearanceProps.SS1) ? "SS" : "Normal") + (appearanceData.AppProps.HasFlagFast(AppearanceProps.SS2) ? "SS" : "Normal");
+        appearance.name = largoData.Slime1 + largoData.Slime2 + (appearanceData.AppProps.HasFlagFast(AppearanceProps.SS1) ? "Exotic" : "Normal") + (appearanceData.AppProps.HasFlagFast(AppearanceProps.SS2) ? "Exotic" : "Normal");
 
         var props = appearanceData.LargoProps;
         var eyes = props.HasFlagFast(LargoProps.UseSlime2ForEyes) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;

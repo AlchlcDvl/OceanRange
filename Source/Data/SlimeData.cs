@@ -20,10 +20,9 @@ public sealed class SlimeData : SpawnedActorData
 
     [JsonRequired] public IdentifiableId FavToy;
     [JsonRequired] public Zone[] Zones;
-    [JsonRequired] public ModelData[] SlimeFeatures;
+    [JsonRequired] public SlimeAppearanceData NormalAppearance;
 
-    public ModelData[] GordoFeatures;
-    public ModelData[] PlortFeatures;
+    public SlimeAppearanceData SSAppearance;
 
     public bool NightSpawn;
 
@@ -34,19 +33,6 @@ public sealed class SlimeData : SpawnedActorData
     public IdentifiableId BasePlort = IdentifiableId.PINK_PLORT;
     public IdentifiableId BaseGordo = IdentifiableId.PINK_GORDO;
 
-    public Color? TopMouthColor;
-    public Color? MiddleMouthColor;
-    public Color? BottomMouthColor;
-
-    public Color? RedEyeColor;
-    public Color? GreenEyeColor;
-    public Color? BlueEyeColor;
-
-    public Color? TopPaletteColor;
-    public Color? MiddlePaletteColor;
-    public Color? BottomPaletteColor;
-
-    public Color? PlortAmmoColor;
     public bool CanBeRefined;
 
     public IdentifiableId? ComponentBase;
@@ -103,6 +89,48 @@ public sealed class SlimeData : SpawnedActorData
         if (NaturalGordoSpawn)
             NaturalGordoSpawn &= HasGordo;
 
+        NormalAppearance.SetJiggle(Jiggle);
+        SSAppearance?.SetJiggle(Jiggle);
+
+        Vaccable |= Slimepedia.MvExists;
+
+        if (HasGordo && NaturalGordoSpawn)
+            GordoSaveDataV02.Lookup[GordoId] = false;
+    }
+
+    public void HandleTranslationData(SlimeLangData data) => Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;
+}
+
+public sealed class SlimeAppearanceData : JsonData
+{
+    [JsonRequired] public ModelData[] SlimeFeatures;
+    [JsonRequired] public ModelData[] GordoFeatures;
+    [JsonRequired] public ModelData[] PlortFeatures;
+
+    [JsonRequired] public Color MainAmmoColor;
+
+    public Color? TopMouthColor;
+    public Color? MiddleMouthColor;
+    public Color? BottomMouthColor;
+
+    public Color? RedEyeColor;
+    public Color? GreenEyeColor;
+    public Color? BlueEyeColor;
+
+    public Color? TopPaletteColor;
+    public Color? MiddlePaletteColor;
+    public Color? BottomPaletteColor;
+
+    public Color? PlortAmmoColor;
+
+    public float? Jiggle;
+
+    public bool IsSS;
+
+    protected override void OnDeserialise()
+    {
+        base.OnDeserialise();
+
         if (!SlimeFeatures.IsNullOrEmpty())
         {
             var matData = SlimeFeatures[0];
@@ -118,22 +146,47 @@ public sealed class SlimeData : SpawnedActorData
                 BottomPaletteColor = bottomColor;
 
             // foreach (var feature in SlimeFeatures)
-            // {
             //     feature.Mesh ??= "slime_default";
-            //     feature.Jiggle ??= Jiggle;
-            // }
         }
 
         PlortAmmoColor ??= MainAmmoColor;
 
-        PlortFeatures ??= [.. SlimeFeatures.Select(x => x.Clone(false, "plort"))];
-        GordoFeatures ??= [.. SlimeFeatures.Select(x => x.Clone(false, "slime_gordo"))];
-
-        Vaccable |= Slimepedia.MvExists;
-
-        if (HasGordo && NaturalGordoSpawn)
-            GordoSaveDataV02.Lookup[GordoId] = false;
+        foreach (var feature in GordoFeatures)
+            feature.Jiggle ??= Jiggle;
     }
 
-    public void HandleTranslationData(SlimeLangData data) => Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;
+    public void SetJiggle(float jiggle)
+    {
+        Jiggle ??= jiggle;
+
+        foreach (var feature in SlimeFeatures)
+            feature.Jiggle ??= Jiggle;
+
+        foreach (var feature in GordoFeatures)
+            feature.Jiggle ??= Jiggle;
+    }
+}
+
+public abstract class AppearanceHandle(string name)
+{
+    private readonly string Name = name;
+
+    protected bool Initialised;
+    protected GameObject Holder;
+
+    protected abstract void InitialiseAppearance(GameObject obj);
+
+    protected abstract void ApplyAppearance(GameObject obj);
+
+    public void HandleAppearance(GameObject obj)
+    {
+        if (!Initialised)
+        {
+            Holder = new GameObject(Name + "_AppearanceHolder");
+            InitialiseAppearance(obj);
+            Initialised = true;
+        }
+
+        ApplyAppearance(obj);
+    }
 }

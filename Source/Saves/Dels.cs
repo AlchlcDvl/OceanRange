@@ -16,7 +16,6 @@ public static class SaveWriterDels
         private static Action<SaveWriter, T> CreateWriter()
         {
             var underlyingType = Enum.GetUnderlyingType(typeof(T));
-            var size = Marshal.SizeOf(underlyingType);
 
             // Create expression parameters
             var writerParam = Expression.Parameter(typeof(SaveWriter), "w");
@@ -26,13 +25,17 @@ public static class SaveWriterDels
             var convertExpr = Expression.Convert(valueParam, underlyingType);
 
             // Get the appropriate Write method based on size
-            var writeMethod = Method(size switch
+            var writeMethod = Method(underlyingType.Name switch
             {
-                1 => nameof(SaveWriter.WriteByte),
-                2 => nameof(SaveWriter.WriteUShort),
-                4 => nameof(SaveWriter.WriteUInt),
-                8 => nameof(SaveWriter.WriteULong),
-                _ => throw new ArgumentException($"Enum size {size} not supported"),
+                "Byte" => nameof(SaveWriter.WriteByte),
+                "SByte" => nameof(SaveWriter.WriteSByte),
+                "Int16" => nameof(SaveWriter.WriteShort),
+                "Int32" => nameof(SaveWriter.WriteInt),
+                "Int64" => nameof(SaveWriter.WriteLong),
+                "UInt16" => nameof(SaveWriter.WriteUShort),
+                "UInt32" => nameof(SaveWriter.WriteUInt),
+                "UInt64" => nameof(SaveWriter.WriteULong),
+                _ => throw new ArgumentException($"Enum size {Marshal.SizeOf(underlyingType)} not supported"),
             });
 
             // Create method call: w.WriteMethod((UnderlyingType)v)
@@ -62,19 +65,22 @@ public static class SaveReaderDels
         private static Func<SaveReader, T> CreateReader()
         {
             var underlyingType = Enum.GetUnderlyingType(typeof(T));
-            var size = Marshal.SizeOf(underlyingType);
 
             // Create expression parameter
             var readerParam = Expression.Parameter(typeof(SaveReader), "r");
 
             // Get the appropriate Read method based on size
-            var readMethod = Method(size switch
+            var readMethod = Method(underlyingType.Name switch
             {
-                1 => nameof(SaveReader.ReadByte),
-                2 => nameof(SaveReader.ReadUShort),
-                4 => nameof(SaveReader.ReadUInt),
-                8 => nameof(SaveReader.ReadULong),
-                _ => throw new ArgumentException($"Enum size {size} not supported"),
+                "Byte" => nameof(SaveReader.ReadByte),
+                "SByte" => nameof(SaveReader.ReadSByte),
+                "Int16" => nameof(SaveReader.ReadShort),
+                "Int32" => nameof(SaveReader.ReadInt),
+                "Int64" => nameof(SaveReader.ReadLong),
+                "UInt16" => nameof(SaveReader.ReadUShort),
+                "UInt32" => nameof(SaveReader.ReadUInt),
+                "UInt64" => nameof(SaveReader.ReadULong),
+                _ => throw new ArgumentException($"Enum size {Marshal.SizeOf(underlyingType)} not supported"),
             });
 
             // Create method call: r.ReadMethod()

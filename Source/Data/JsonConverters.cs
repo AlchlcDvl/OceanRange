@@ -135,7 +135,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     private readonly TryParseDelegate<TComponent> TryParse = tryParse; // The delegate that handles converting strings to the component values
     private readonly int MaxLength = maxLength; // Maximum possible values needed
     private readonly int MinLength = minLength; // Minimum possible values needed
-    private readonly char[] Separators = separators.Length == 0 ? [','] : separators; // Separator for complex formats
+    private readonly char[] Separators = separators.IsNullOrEmpty() ? [','] : separators; // Separator for complex formats
     private readonly TComponent Default = defaultValue; // The default values for component indices between min and max counts
     private readonly NumberStyles Style = style; // The supported styles of the numbers
     private readonly string Format = format; // The expected format in case of parsing error

@@ -140,7 +140,7 @@ public static class Inventory
     /// <exception cref="FileNotFoundException">Thrown if an asset name is not an asset shipped with the mod.</exception>
     public static void ReleaseHandles(params string[] handles)
     {
-        if (handles.Length == 0)
+        if (handles.IsNullOrEmpty())
             handles = [.. Assets.Keys];
 
         foreach (var handleName in handles)
@@ -242,7 +242,7 @@ public static class Inventory
     public static Mesh GetMesh(string name)
     {
         var mesh = Get<Mesh>(name);
-        return mesh.bindposes.Length == 0 ? mesh : mesh.Clone();
+        return mesh.bindposes.IsNullOrEmpty() ? mesh : mesh.Clone();
     }
 
     public static bool TryGetMesh(string name, out Mesh mesh)

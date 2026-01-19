@@ -1,3 +1,4 @@
+using DLCPackage;
 using OceanRange.Patches;
 using SRML;
 using SRML.SR.SaveSystem;
@@ -14,6 +15,9 @@ public static class Slimepedia
     public static SlimeData[] Slimes;
     public static bool MgExists;
     public static bool MvExists;
+    public static bool SstExists;
+    public static bool MoSsExists;
+    public static bool SsExists;
 
     // private static Mesh GordoMesh;
     private static bool SamExists;
@@ -63,6 +67,8 @@ public static class Slimepedia
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
         MgExists = SRModLoader.IsModPresent("luckygordo");
         MvExists = SRModLoader.IsModPresent("more_vaccing");
+        SstExists = SRModLoader.IsModPresent("secretstylethings");
+        MoSsExists = SRModLoader.IsModPresent("mosecretstyles");
 
         Slimes = Inventory.GetJsonArray<SlimeData>("slimepedia");
         SlimeDataMap = Slimes.ToDictionary(x => x.MainId, Identifiable.idComparer);
@@ -70,6 +76,15 @@ public static class Slimepedia
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
+        GameContext.Instance.DLCDirector.onPackageInstalled += HandleSecretStyles;
+    }
+
+    private static void HandleSecretStyles(Id id)
+    {
+        if (id != Id.SECRET_STYLE || SsExists)
+            return;
+
+        SsExists = true;
     }
 
 #if DEBUG
@@ -330,41 +345,6 @@ public static class Slimepedia
             tracker.Destroy();
 
         var baseAppearance = baseDefinition.AppearancesDefault[0]; // Getting the base appearance
-        var appearance = baseAppearance.Instantiate(); // Cloning our own appearance
-        appearance.name = $"{slimeData.Name}Normal";
-
-        appearance.Face = appearance.Face.DeepCopy();
-        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, Sleeping.Clone()];
-
-        // Faces stuff
-        foreach (var face in appearance.Face.ExpressionFaces)
-        {
-            if (face.Mouth)
-            {
-                face.Mouth.SetColor(MouthTop, slimeData.TopMouthColor);
-                face.Mouth.SetColor(MouthMiddle, slimeData.MiddleMouthColor);
-                face.Mouth.SetColor(MouthBottom, slimeData.BottomMouthColor);
-            }
-
-            if (face.Eyes)
-            {
-                face.Eyes.SetColor(EyeRed, slimeData.RedEyeColor);
-                face.Eyes.SetColor(EyeGreen, slimeData.GreenEyeColor);
-                face.Eyes.SetColor(EyeBlue, slimeData.BlueEyeColor);
-            }
-        }
-
-        appearance.Face.OnEnable();
-        var prevPalette = appearance.ColorPalette;
-        appearance.ColorPalette = new()
-        {
-            Top = slimeData.TopPaletteColor ?? prevPalette.Top,
-            Middle = slimeData.MiddlePaletteColor ?? prevPalette.Middle,
-            Bottom = slimeData.BottomPaletteColor ?? prevPalette.Bottom,
-            Ammo = slimeData.MainAmmoColor
-        };
-
-        appearance.Icon = Inventory.GetSprite($"{lower}_slime");
         applicator.Appearance = appearance;
 
         if (slimeData.ComponentsToAdd != null)
@@ -390,7 +370,7 @@ public static class Slimepedia
             }
         }
 
-        BasicInitSlimeAppearance(appearance, slimeData, baseAppearance);
+        BasicInitSlimeAppearance(appearance, slimeData.NormalAppearance, baseAppearance);
 
         slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance]); // Slime specific details being put here
 
@@ -430,7 +410,46 @@ public static class Slimepedia
 
     private static void RegisterSlimeBypass(SlimeData slimeData) => SlimesAndMarket.MarketRegistry.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress);
 
-    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeData slimeData, SlimeAppearance baseAppearance)
+    private static SlimeAppearance GenerateAppearance(SlimeData slimeData, SlimeAppearanceData data, SlimeAppearance baseAppearance, string lower)
+    {
+        var appearance = baseAppearance.Instantiate(); // Cloning our own appearance
+        appearance.name = $"{slimeData.Name}Normal";
+
+        appearance.Face = appearance.Face.DeepCopy();
+        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, Sleeping.Clone()];
+
+        // Faces stuff
+        foreach (var face in appearance.Face.ExpressionFaces)
+        {
+            if (face.Mouth)
+            {
+                face.Mouth.SetColor(MouthTop, data.TopMouthColor);
+                face.Mouth.SetColor(MouthMiddle, data.MiddleMouthColor);
+                face.Mouth.SetColor(MouthBottom, data.BottomMouthColor);
+            }
+
+            if (face.Eyes)
+            {
+                face.Eyes.SetColor(EyeRed, data.RedEyeColor);
+                face.Eyes.SetColor(EyeGreen, data.GreenEyeColor);
+                face.Eyes.SetColor(EyeBlue, data.BlueEyeColor);
+            }
+        }
+
+        appearance.Face.OnEnable();
+        var prevPalette = appearance.ColorPalette;
+        appearance.ColorPalette = new()
+        {
+            Top = data.TopPaletteColor ?? prevPalette.Top,
+            Middle = data.MiddlePaletteColor ?? prevPalette.Middle,
+            Bottom = data.BottomPaletteColor ?? prevPalette.Bottom,
+            Ammo = data.MainAmmoColor
+        };
+
+        appearance.Icon = Inventory.GetSprite($"{lower}_slime");
+    }
+
+    private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceData slimeData, SlimeAppearance baseAppearance)
     {
         var baseStruct = appearance.Structures[0];
         appearance.Structures = new SlimeAppearanceStructure[slimeData.SlimeFeatures.Length];
@@ -613,9 +632,9 @@ public static class Slimepedia
         }
     }
 
-    private static void GenerateGordoBones(this Transform gordo, SlimeData slimeData, SkinnedMeshRenderer prefabRend)
+    private static void GenerateGordoBones(this Transform gordo, SlimeAppearanceData slimeData, SkinnedMeshRenderer prefabRend)
     {
-        if (slimeData.GordoFeatures.Length == 0)
+        if (slimeData.GordoFeatures.IsNullOrEmpty())
             return;
 
         var parent = gordo.parent;

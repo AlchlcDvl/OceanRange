@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using DLCPackage;
 
 namespace OceanRange.Managers;
 
@@ -17,6 +18,7 @@ public static class Translator
 
     private static Translations Fallback;
     private static bool FallbackHandled;
+    private static bool ExoticsLoaded;
 
     private static readonly Func<Language, Translations> GenerateTranslationsFunc = GenerateTranslations;
 
@@ -24,7 +26,11 @@ public static class Translator
     [TimeDiagnostic("Pedia Preload")]
 #endif
     [PreloadMethod, UsedImplicitly]
-    public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
+    public static void PreloadLangData()
+    {
+        Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
+        GameContext.Instance.DLCDirector.onPackageInstalled += HandleDefaultExotics;
+    }
 
     public static void MessageDirectorHook(MessageDirector __instance)
     {
@@ -39,6 +45,15 @@ public static class Translator
         Fallback.WhenFallback();
 
         FallbackHandled = true;
+    }
+
+    private static void HandleDefaultExotics(Id id)
+    {
+        if (id != Id.SECRET_STYLE || ExoticsLoaded)
+            return;
+
+        Fallback.AddExoticTranslations(Config.FALLBACK_LANGUAGE);
+        ExoticsLoaded = true;
     }
 
     private static void StoreVanillaTranslations(MessageDirector __instance, Language lang)
@@ -58,7 +73,12 @@ public static class Translator
         var holder = TranslationsHolder.GetOrAdd(lang, GenerateTranslationsFunc);
         holder.OnLanguageChanged(lang);
         StoreVanillaTranslations(GameContext.Instance.MessageDirector, lang);
-        return holder.GetTranslations(lang);
+        var translations = holder.GetTranslations(lang);
+
+        if (ExoticsLoaded)
+            holder.AddExoticTranslations(lang);
+
+        return translations;
     }
 
     private static Translations GenerateTranslations(Language lang)
