@@ -106,6 +106,11 @@ internal sealed class Main : ModEntryPoint
 
         Helpers.ClonedMats.Clear();
 
+        // foreach (var texture in Helpers.CreatedRamps)
+        //     texture.Destroy();
+
+        // Helpers.CreatedRamps.Clear();
+
         Inventory.ReleaseHandles();
     }
 

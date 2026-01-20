@@ -6,6 +6,7 @@ using System.Reflection;
 using OceanRange.Saves;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace OceanRange.Utils;
 
@@ -60,8 +61,12 @@ public static class Helpers
     {
         public string ReplaceAll(string newValue, string[] valuesToReplace)
         {
-            valuesToReplace.Do(x => @string = @string.Replace(x, newValue));
-            return @string;
+            var sb = new StringBuilder(@string);
+
+            foreach (var val in valuesToReplace)
+                sb.Replace(val, newValue);
+
+            return sb.ToString();
         }
 
         public List<string> TrueSplit(params char[] separators)
@@ -171,12 +176,6 @@ public static class Helpers
 
         foreach (var field in type1.GetFields(CopyFlags))
             field.SetValue(dest, field.GetValue(source));
-
-        foreach (var property in type1.GetProperties(CopyFlags))
-        {
-            if (property.CanWrite)
-                property.SetValue(dest, property.GetValue(source));
-        }
     }
 
     public static bool IsInLoopedRange(this float num, float min, float max, float rangeMin, float rangeMax, bool inner)
@@ -574,6 +573,8 @@ public static class Helpers
         return false;
     }
 
+    // private static readonly List<Texture2D> CreatedRamps = [];
+
     // public static Texture2D CreateRamp(string name, Color a, Color b)
     // {
     //     var texture2D = new Texture2D(128, 32) { name = name };
@@ -587,6 +588,7 @@ public static class Helpers
     //     }
 
     //     texture2D.Apply();
+    //     CreatedRamps.Add(texture2D);
     //     return texture2D.DontDestroy();
     // }
 
@@ -601,6 +603,7 @@ public static class Helpers
     //     }
 
     //     texture2D.Apply();
+    //     CreatedRamps.Add(texture2D);
     //     return texture2D.DontDestroy();
     // }
 

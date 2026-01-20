@@ -85,6 +85,11 @@ public static class Slimepedia
             return;
 
         SsExists = true;
+
+        foreach (var slimeData in Slimes)
+        {
+            // Something...
+        }
     }
 
 #if DEBUG
@@ -261,7 +266,7 @@ public static class Slimepedia
             filter.sharedMesh = isNull ? filter.mesh.Clone() : Inventory.GetMesh(meshName.Mesh);
 
             var rend = rocks.GetComponent<MeshRenderer>();
-            var material = GenerateMaterial(normal.PlortFeatures[i], normal.SlimeFeatures, rend.sharedMaterial);
+            var material = GenerateMaterial(normal.PlortFeatures[i].MatData, normal.SlimeFeatures, rend.sharedMaterial);
 
             if (first)
                 rend.sharedMaterial = material;
@@ -345,9 +350,6 @@ public static class Slimepedia
         if (prefab.TryGetComponent<PinkSlimeFoodTypeTracker>(out var tracker))
             tracker.Destroy();
 
-        var baseAppearance = baseDefinition.AppearancesDefault[0]; // Getting the base appearance
-        applicator.Appearance = appearance;
-
         if (slimeData.ComponentsToAdd != null)
         {
             foreach (var type in slimeData.ComponentsToAdd)
@@ -371,14 +373,10 @@ public static class Slimepedia
             }
         }
 
-        BasicInitSlimeAppearance(appearance, slimeData.NormalAppearance, baseAppearance);
+        slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition]); // Slime specific details being put here
 
-        slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition, appearance]); // Slime specific details being put here
-
-        applicator.GenerateSlimeBones(appearance.Structures, slimeData.Jiggle);
-
-        SlimeRegistry.RegisterAppearance(definition, appearance);
-
+        var baseAppearance = baseDefinition.AppearancesDefault[0]; // Getting the base appearance
+        var appearance = GenerateAppearance(slimeData, slimeData.NormalAppearance, baseAppearance, lower, applicator, definition);
         definition.AppearancesDefault = [appearance];
 
         // Tarrs should love these guys
@@ -411,7 +409,7 @@ public static class Slimepedia
 
     private static void RegisterSlimeBypass(SlimeData slimeData) => SlimesAndMarket.MarketRegistry.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress);
 
-    private static SlimeAppearance GenerateAppearance(SlimeData slimeData, SlimeAppearanceData data, SlimeAppearance baseAppearance, string lower)
+    private static SlimeAppearance GenerateAppearance(SlimeData slimeData, SlimeAppearanceData data, SlimeAppearance baseAppearance, string lower, SlimeAppearanceApplicator applicator, SlimeDefinition definition)
     {
         var appearance = baseAppearance.Instantiate(); // Cloning our own appearance
         appearance.name = $"{slimeData.Name}Normal";
@@ -448,6 +446,14 @@ public static class Slimepedia
         };
 
         appearance.Icon = Inventory.GetSprite($"{lower}_slime");
+
+        BasicInitSlimeAppearance(appearance, slimeData.NormalAppearance, baseAppearance);
+
+        applicator.GenerateSlimeBones(appearance.Structures, slimeData.Jiggle);
+
+        slimeData.InitAppearanceDetails?.Invoke(null, [appearance, data.IsSS]);
+
+        SlimeRegistry.RegisterAppearance(definition, appearance);
         return appearance;
     }
 
@@ -570,7 +576,7 @@ public static class Slimepedia
         }
         else if (matData.MatOrigin.HasValue)
             material = GetMat(matData.MatOrigin.Value, matData.MatSameAs);
-        else if (matData.SameAs.HasValue && mainMatData.IsNullOrEmpty())
+        else if (matData.SameAs.HasValue && !mainMatData.IsNullOrEmpty())
             material = mainMatData[matData.SameAs.Value].MatData.CachedMaterial;
         else
             material = fallback;
@@ -823,7 +829,7 @@ public static class Slimepedia
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition) => GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, definition.IdentifiableId];
 
     [UsedImplicitly]
-    public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance)
+    public static void InitLanternAppearanceDetails(SlimeAppearance appearance, bool _)
     {
         var prefab = appearance.Structures[3].Element.Prefabs[0];
         prefab.transform.localScale /= 3f;
@@ -836,10 +842,10 @@ public static class Slimepedia
     }
 
     [UsedImplicitly]
-    public static void InitSandSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance _3) => SandBehaviour.ProduceFX = IdentifiableId.PUDDLE_SLIME.GetPrefab().GetComponent<SlimeEatWater>().produceFX;
+    public static void InitSandSlimeDetails(GameObject _1, SlimeDefinition _2) => SandBehaviour.ProduceFX = IdentifiableId.PUDDLE_SLIME.GetPrefab().GetComponent<SlimeEatWater>().produceFX;
 
     [UsedImplicitly]
-    public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _1) => SandBehaviour.PlortPrefab = prefab;
+    public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _) => SandBehaviour.PlortPrefab = prefab;
 
     [UsedImplicitly]
     public static void InitSandGordoDetails(GameObject _, SlimeDefinition definition)
@@ -849,13 +855,13 @@ public static class Slimepedia
     }
 
     [UsedImplicitly]
-    public static void InitMesmerSlimeDetails(GameObject _1, SlimeDefinition definition, SlimeAppearance _2) => Largopedia.Mesmers.Add(definition.IdentifiableId);
+    public static void InitMesmerSlimeDetails(GameObject _, SlimeDefinition definition) => Largopedia.Mesmers.Add(definition.IdentifiableId);
 
     [UsedImplicitly]
     public static void InitGoldfishPlortDetails(GameObject prefab, SlimeDefinition definition) => definition.IdentifiableId.GetPrefab().GetComponent<GoldSlimeProducePlorts>().plortPrefab = prefab;
 
     [UsedImplicitly]
-    public static void InitGoldfishSlimeDetails(GameObject _1, SlimeDefinition _2, SlimeAppearance appearance) => appearance.ColorPalette = IdentifiableId.GOLD_SLIME.GetSlimeDefinition().AppearancesDefault[0].ColorPalette;
+    public static void InitGoldfishAppearanceDetails(SlimeAppearance appearance, bool _) => appearance.ColorPalette = IdentifiableId.GOLD_SLIME.GetSlimeDefinition().AppearancesDefault[0].ColorPalette;
 
 #if DEBUG
     [TimeDiagnostic("Slime Postload")]

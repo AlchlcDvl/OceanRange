@@ -64,10 +64,13 @@ public sealed class SlimeData : SpawnedActorData
     [JsonIgnore] public MethodInfo InitSlimeDetails;
     [JsonIgnore] public MethodInfo InitPlortDetails;
     [JsonIgnore] public MethodInfo InitGordoDetails;
+    [JsonIgnore] public MethodInfo InitAppearanceDetails;
 
     protected override void OnDeserialise()
     {
         base.OnDeserialise();
+
+        SSAppearance?.IsSS = true;
 
         var upper = Name.ToUpperInvariant();
 
@@ -77,6 +80,7 @@ public sealed class SlimeData : SpawnedActorData
         var init = "Init" + Name;
         Methods.TryGetValue(init + "SlimeDetails", out InitSlimeDetails);
         Methods.TryGetValue(init + "PlortDetails", out InitPlortDetails);
+        Methods.TryGetValue(init + "AppearanceDetails", out InitAppearanceDetails);
 
         HasGordo |= Slimepedia.MgExists && upper == "SAND";
 
@@ -125,7 +129,7 @@ public sealed class SlimeAppearanceData : JsonData
 
     public float? Jiggle;
 
-    public bool IsSS;
+    [JsonIgnore] public bool IsSS;
 
     protected override void OnDeserialise()
     {

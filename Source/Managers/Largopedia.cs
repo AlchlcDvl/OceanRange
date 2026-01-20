@@ -246,7 +246,7 @@ public static class Largopedia
 
         if (appearanceData.BodyStruct != null)
         {
-            body = Slimepedia.GenerateStructure(baseBody, appearanceData.BodyStruct, null);
+            body = Slimepedia.GenerateStructure(baseBody, appearanceData.BodyStruct, appearanceData.BodyStruct.MeshData, null);
             modelMap[0] = appearanceData.BodyStruct;
         }
         else
@@ -289,7 +289,7 @@ public static class Largopedia
                 var mat = material.Clone();
 
                 if (modelMap.TryGetValue(i, out var modelData))
-                    Slimepedia.SetMatProperties(modelData, mat);
+                    Slimepedia.SetMatProperties(modelData.MatData, mat);
                 else
                 {
                     var og = structure.DefaultMaterials[0];
@@ -325,12 +325,13 @@ public static class Largopedia
                     continue;
 
                 var modelData = modelDatas[j];
+                var meshData = modelData.MeshData;
                 j++;
 
-                if (modelData.Skip)
+                if (meshData.Skip)
                     continue;
 
-                var structure = Slimepedia.GenerateStructure(baseStructs[i], modelData, modelDatas);
+                var structure = Slimepedia.GenerateStructure(baseStructs[i], modelData, meshData, modelDatas);
 
                 if (structure == null)
                     continue;
