@@ -129,30 +129,29 @@ public sealed class SlimeAppearanceData : JsonData
 
     protected override void OnDeserialise()
     {
-        base.OnDeserialise();
+        var modelData = SlimeFeatures[0];
+        modelData.MeshData.IsBody = true;
+        var matData = modelData.MatData;
 
-        if (!SlimeFeatures.IsNullOrEmpty())
-        {
-            var matData = SlimeFeatures[0];
-            matData.IsBody = true;
+        if (!TopPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.TopColor, out var topColor))
+            TopPaletteColor = topColor;
 
-            if (!TopPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.TopColor, out var topColor))
-                TopPaletteColor = topColor;
+        if (!MiddlePaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.MiddleColor, out var middleColor))
+            MiddlePaletteColor = middleColor;
 
-            if (!MiddlePaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.MiddleColor, out var middleColor))
-                MiddlePaletteColor = middleColor;
-
-            if (!BottomPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.BottomColor, out var bottomColor))
-                BottomPaletteColor = bottomColor;
-
-            // foreach (var feature in SlimeFeatures)
-            //     feature.Mesh ??= "slime_default";
-        }
+        if (!BottomPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.BottomColor, out var bottomColor))
+            BottomPaletteColor = bottomColor;
 
         PlortAmmoColor ??= MainAmmoColor;
 
-        foreach (var feature in GordoFeatures)
-            feature.Jiggle ??= Jiggle;
+        // foreach (var feature in SlimeFeatures)
+        //     feature.MeshData.Mesh ??= "slime_default";
+
+        // foreach (var feature in GordoFeatures)
+        //     feature.MeshData.Mesh ??= "slime_gordo";
+
+        // foreach (var feature in PlortFeatures)
+        //     feature.MeshData.Mesh ??= "plort";
     }
 
     public void SetJiggle(float jiggle)
@@ -160,33 +159,9 @@ public sealed class SlimeAppearanceData : JsonData
         Jiggle ??= jiggle;
 
         foreach (var feature in SlimeFeatures)
-            feature.Jiggle ??= Jiggle;
+            feature.MeshData.Jiggle ??= Jiggle;
 
         foreach (var feature in GordoFeatures)
-            feature.Jiggle ??= Jiggle;
-    }
-}
-
-public abstract class AppearanceHandle(string name)
-{
-    private readonly string Name = name;
-
-    protected bool Initialised;
-    protected GameObject Holder;
-
-    protected abstract void InitialiseAppearance(GameObject obj);
-
-    protected abstract void ApplyAppearance(GameObject obj);
-
-    public void HandleAppearance(GameObject obj)
-    {
-        if (!Initialised)
-        {
-            Holder = new GameObject(Name + "_AppearanceHolder");
-            InitialiseAppearance(obj);
-            Initialised = true;
-        }
-
-        ApplyAppearance(obj);
+            feature.MeshData.Jiggle ??= Jiggle;
     }
 }

@@ -228,7 +228,7 @@ public static class Slimepedia
         var gordoObj = prefab.transform.Find("Vibrating/slime_gordo");
         var prefabRend = gordoObj.GetComponent<SkinnedMeshRenderer>();
         prefabRend.sharedMaterial = material;
-        gordoObj.GenerateGordoBones(slimeData, prefabRend);
+        gordoObj.GenerateGordoBones(slimeData.NormalAppearance, prefabRend);
 
         prefab.AddComponent<PersistentIdHandler>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
 
@@ -248,19 +248,20 @@ public static class Slimepedia
         prefab.name = "plort" + slimeData.Name;
         prefab.GetComponent<Identifiable>().id = slimeData.PlortId;
         prefab.GetComponent<Vacuumable>().size = 0;
+        var normal = slimeData.NormalAppearance;
 
         // Next set up the mesh and material details
-        for (var i = 0; i < slimeData.PlortFeatures.Length; i++)
+        for (var i = 0; i < normal.PlortFeatures.Length; i++)
         {
             var first = i == 0;
-            var meshName = slimeData.PlortFeatures[i];
+            var meshName = normal.PlortFeatures[i].MeshData;
             var rocks = first ? prefab.transform : RocksPrefab.Instantiate(prefab.transform);
             var filter = rocks.GetComponent<MeshFilter>();
             var isNull = meshName.Mesh == null;
             filter.sharedMesh = isNull ? filter.mesh.Clone() : Inventory.GetMesh(meshName.Mesh);
 
             var rend = rocks.GetComponent<MeshRenderer>();
-            var material = GenerateMaterial(slimeData.PlortFeatures[i], slimeData.SlimeFeatures, rend.sharedMaterial);
+            var material = GenerateMaterial(normal.PlortFeatures[i], normal.SlimeFeatures, rend.sharedMaterial);
 
             if (first)
                 rend.sharedMaterial = material;
@@ -282,7 +283,7 @@ public static class Slimepedia
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
-        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.PlortAmmoColor!.Value, icon);
+        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.NormalAppearance.PlortAmmoColor.Value, icon);
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
@@ -447,6 +448,7 @@ public static class Slimepedia
         };
 
         appearance.Icon = Inventory.GetSprite($"{lower}_slime");
+        return appearance;
     }
 
     private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceData slimeData, SlimeAppearance baseAppearance)
@@ -457,25 +459,25 @@ public static class Slimepedia
         for (var i = 0; i < slimeData.SlimeFeatures.Length; i++)
         {
             var modelData = slimeData.SlimeFeatures[i];
-            appearance.Structures[i] = GenerateStructure(modelData.UseBaseStruct && baseAppearance.Structures.TryGetItem(i, out var structure) ? structure : baseStruct, modelData, slimeData.SlimeFeatures);
+            appearance.Structures[i] = GenerateStructure(modelData.MeshData.UseBaseStruct && baseAppearance.Structures.TryGetItem(i, out var structure) ? structure : baseStruct, modelData, modelData.MeshData, slimeData.SlimeFeatures);
         }
     }
 
-    public static SlimeAppearanceStructure GenerateStructure(SlimeAppearanceStructure baseStruct, ModelData modelData, ModelData[] modelDatas)
+    public static SlimeAppearanceStructure GenerateStructure(SlimeAppearanceStructure baseStruct, ModelData modelData, MeshData meshData, ModelData[] modelDatas)
     {
-        if (modelData.Skip)
+        if (meshData.Skip)
             return null;
 
         var structure = new SlimeAppearanceStructure(baseStruct);
 
         if (!structure.DefaultMaterials.IsNullOrEmpty())
-            structure.DefaultMaterials[0] = GenerateMaterial(modelData, modelDatas, structure.DefaultMaterials[0]);
+            structure.DefaultMaterials[0] = GenerateMaterial(modelData.MatData, modelDatas, structure.DefaultMaterials[0]);
 
-        var isNull = modelData.Mesh == null;
+        var isNull = meshData.Mesh == null;
 
-        if (isNull && modelData.SkipNull)
+        if (isNull && meshData.SkipNull)
         {
-            if (!modelData.InstantiatePrefabs)
+            if (!meshData.InstantiatePrefabs)
                 return structure;
 
             var elemInner = structure.Element = structure.Element.Instantiate();
@@ -486,8 +488,8 @@ public static class Slimepedia
             {
                 var prefab = oldPrefabs[i].CreatePrefab();
                 var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
-                handler.Jiggle = modelData.Jiggle;
-                handler.SkipRigging = modelData.SkipRigging;
+                handler.Jiggle = meshData.Jiggle;
+                handler.SkipRigging = meshData.SkipRigging;
                 elemInner.Prefabs[i] = prefab;
             }
 
@@ -495,23 +497,23 @@ public static class Slimepedia
         }
 
         var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
-        elem.name = elem.Name = modelData.Name?.Replace("(Clone)", string.Empty) ?? (modelData.IsBody ? "Body" : "Structure");
-        structure.SupportsFaces = modelData.IsBody;
+        elem.name = elem.Name = meshData.Name?.Replace("(Clone)", string.Empty) ?? (meshData.IsBody ? "Body" : "Structure");
+        structure.SupportsFaces = meshData.IsBody;
 
-        if (modelData.IgnoreLodIndex)
+        if (meshData.IgnoreLodIndex)
         {
             var prefab = SkinnedPrefab.CreatePrefab();
             prefab.IgnoreLODIndex = true;
             var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
-            handler.Jiggle = modelData.Jiggle;
-            handler.SkipRigging = modelData.SkipRigging;
+            handler.Jiggle = meshData.Jiggle;
+            handler.SkipRigging = meshData.SkipRigging;
             var rend = prefab.GetComponent<SkinnedMeshRenderer>();
-            rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(modelData.Mesh);
+            rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(meshData.Mesh);
             elem.Prefabs = [prefab];
         }
         else
         {
-            var length = modelData.PrefabLength ?? (modelData.IsBody ? 4 : 2);
+            var length = meshData.PrefabLength ?? (meshData.IsBody ? 4 : 2);
             elem.Prefabs = new SlimeAppearanceObject[length];
 
             for (var j = 0; j < length; j++)
@@ -526,21 +528,21 @@ public static class Slimepedia
 
                 if (prefab.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                 {
-                    rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(modelData.Mesh + "_LOD0");
+                    rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(meshData.Mesh + "_LOD0");
 
                     if (isFirst)
                     {
                         var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
-                        handler.Jiggle = modelData.Jiggle;
-                        handler.SkipRigging = modelData.SkipRigging;
+                        handler.Jiggle = meshData.Jiggle;
+                        handler.SkipRigging = meshData.SkipRigging;
                     }
                 }
                 else if (!isNull && prefab.TryGetComponent<MeshFilter>(out var filter))
-                    filter.sharedMesh = Inventory.GetMesh(modelData.Mesh + "_LOD" + j);
+                    filter.sharedMesh = Inventory.GetMesh(meshData.Mesh + "_LOD" + j);
 
                 if (!isNull)
                 {
-                    prefab.name = modelData.Mesh + "_LOD" + j;
+                    prefab.name = meshData.Mesh + "_LOD" + j;
                     prefab.transform.localPosition = Vector3.zero;
                     prefab.transform.localEulerAngles = Vector3.zero;
                 }
@@ -553,7 +555,7 @@ public static class Slimepedia
         return structure;
     }
 
-    private static Material GenerateMaterial(ModelData matData, ModelData[] mainMatData, Material fallback)
+    private static Material GenerateMaterial(MatData matData, ModelData[] mainMatData, Material fallback)
     {
         if (matData == null)
             return fallback.Clone();
@@ -569,7 +571,7 @@ public static class Slimepedia
         else if (matData.MatOrigin.HasValue)
             material = GetMat(matData.MatOrigin.Value, matData.MatSameAs);
         else if (matData.SameAs.HasValue && mainMatData?.Length is > 0)
-            material = mainMatData[matData.SameAs.Value].CachedMaterial;
+            material = mainMatData[matData.SameAs.Value].MatData.CachedMaterial;
         else
             material = fallback;
 
@@ -592,31 +594,31 @@ public static class Slimepedia
         return (prefab.GetComponent<MeshRenderer>() ?? prefab.GetComponentInChildren<MeshRenderer>()).sharedMaterials[index ?? 0];
     }
 
-    public static void SetMatProperties(ModelData modelData, Material material)
+    public static void SetMatProperties(MatData matData, Material material)
     {
-        if (modelData.ColorsOrigin.HasValue)
+        if (matData.ColorsOrigin.HasValue)
         {
-            var temp = GetMat(modelData.ColorsOrigin.Value, modelData.ColorsSameAs);
+            var temp = GetMat(matData.ColorsOrigin.Value, matData.ColorsSameAs);
 
             if (temp.HasProperty(TopColor))
-                modelData.ColorProps[modelData.InvertColorOriginColors ? BottomColor : TopColor] = temp.GetColor(TopColor);
+                matData.ColorProps[matData.InvertColorOriginColors ? BottomColor : TopColor] = temp.GetColor(TopColor);
 
             if (temp.HasProperty(MiddleColor))
-                modelData.ColorProps[MiddleColor] = temp.GetColor(MiddleColor);
+                matData.ColorProps[MiddleColor] = temp.GetColor(MiddleColor);
 
             if (temp.HasProperty(BottomColor))
-                modelData.ColorProps[modelData.InvertColorOriginColors ? TopColor : BottomColor] = temp.GetColor(BottomColor);
+                matData.ColorProps[matData.InvertColorOriginColors ? TopColor : BottomColor] = temp.GetColor(BottomColor);
 
             if (temp.HasProperty(Color))
-                modelData.ColorProps[Color] = temp.GetColor(Color);
+                matData.ColorProps[Color] = temp.GetColor(Color);
         }
 
-        if (modelData.Gloss.HasValue && material.HasProperty(Gloss))
-            material.SetFloat(Gloss, modelData.Gloss.Value);
+        if (matData.Gloss.HasValue && material.HasProperty(Gloss))
+            material.SetFloat(Gloss, matData.Gloss.Value);
 
-        if (modelData.Pattern != null)
+        if (matData.Pattern != null)
         {
-            var tex = Inventory.GetTexture2D(modelData.Pattern + "_pattern");
+            var tex = Inventory.GetTexture2D(matData.Pattern + "_pattern");
 
             if (material.HasProperty(StripeTexture))
                 material.SetTexture(StripeTexture, tex);
@@ -625,7 +627,7 @@ public static class Slimepedia
                 material.SetTexture(ColorMask, tex);
         }
 
-        foreach (var (prop, value) in modelData.ColorProps)
+        foreach (var (prop, value) in matData.ColorProps)
         {
             if (material.HasProperty(prop))
                 material.SetColor(prop, value);
@@ -663,7 +665,8 @@ public static class Slimepedia
 
         for (var i = 0; i < slimeData.GordoFeatures.Length; i++)
         {
-            var meshName = slimeData.GordoFeatures[i];
+            var feature = slimeData.GordoFeatures[i];
+            var meshName = feature.MeshData;
             var isNull = meshName.Mesh == null;
             var isFirst = i == 0;
             var mesh = isNull
@@ -693,7 +696,7 @@ public static class Slimepedia
             if (!isNull && !isFirst)
                 meshRend.name = meshName.Mesh;
 
-            var material = GenerateMaterial(slimeData.GordoFeatures[i], slimeData.SlimeFeatures, meshRend.sharedMaterial);
+            var material = GenerateMaterial(feature.MatData, slimeData.SlimeFeatures, meshRend.sharedMaterial);
 
             if (isFirst)
                 meshRend.sharedMaterial = material;

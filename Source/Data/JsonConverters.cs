@@ -247,33 +247,33 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
     }
 
     protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()};{value.Scale.ToVectorString()}";
-}
 
-/// <summary>
-/// Orientation converter using a grouped Vector3 format.
-/// </summary>
-/// <remarks>Uses Vector3Converter under the hood.</remarks>
-public sealed class OrientationConverterVector3() : MultiComponentConverter<Orientation, Vector3>("'x,y' or 'x,y,z' in groups of two or three separated by ;", NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, 3,
-    2, Vector3.one, ';')
-{
-    /// <inheritdoc/>
-    protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1], array[2]); // 0 = position, 1 = rotation, 2 = scale
+    /// <summary>
+    /// Orientation converter using a grouped Vector3 format.
+    /// </summary>
+    /// <remarks>Uses Vector3Converter under the hood.</remarks>
+    private sealed class OrientationConverterVector3() : MultiComponentConverter<Orientation, Vector3>("'x,y' or 'x,y,z' in groups of two or three separated by ;", NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, 3,
+        2, Vector3.one, ';')
+    {
+        /// <inheritdoc/>
+        protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1], array[2]); // 0 = position, 1 = rotation, 2 = scale
 
-    /// <inheritdoc/>
-    protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()};{value.Scale.ToVectorString()}";
-}
+        /// <inheritdoc/>
+        protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()};{value.Scale.ToVectorString()}";
+    }
 
-/// <summary>
-/// Orientation converter using an ungrouped set of floats.
-/// </summary>
-public sealed class OrientationConverterFloat() : MultiComponentConverter<Orientation, float>("two or three 'x,y,z' sets separated by ,", NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 9, 6, 1, 'f', ',')
-{
-    /// <inheritdoc/>
-    protected override Orientation FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3], array[4], array[5], array[6], array[7], array[8]);
-    // 0 = position x, 1 = position y, 2 = position z, 3 = rotation x, 4 = rotation y, 5 = rotation z, 6 = scale x, 7 = scale y, 8 = scale z
+    /// <summary>
+    /// Orientation converter using an ungrouped set of floats.
+    /// </summary>
+    private sealed class OrientationConverterFloat() : MultiComponentConverter<Orientation, float>("two or three 'x,y,z' sets separated by ,", NumberStyles.Float | NumberStyles.AllowThousands, float.TryParse, 9, 6, 1, 'f', ',')
+    {
+        /// <inheritdoc/>
+        protected override Orientation FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3], array[4], array[5], array[6], array[7], array[8]);
+        // 0 = position x, 1 = position y, 2 = position z, 3 = rotation x, 4 = rotation y, 5 = rotation z, 6 = scale x, 7 = scale y, 8 = scale z
 
-    /// <inheritdoc/>
-    protected override string ToValueString(Orientation value) => $"f{value.Position.ToVectorString()},{value.Rotation.ToVectorString()},{value.Scale.ToVectorString()}";
+        /// <inheritdoc/>
+        protected override string ToValueString(Orientation value) => $"f{value.Position.ToVectorString()},{value.Rotation.ToVectorString()},{value.Scale.ToVectorString()}";
+    }
 }
 
 /// <summary>

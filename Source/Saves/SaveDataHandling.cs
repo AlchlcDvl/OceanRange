@@ -152,6 +152,9 @@ public sealed class SaveReader : IDisposable
             fixed (ulong* src = data)
                 Buffer.MemoryCopy(src, dest, totalBytes, totalBytes);
         }
+
+        _stream = new MemoryStream(byteData);
+        _reader = new BinaryReader(_stream, Encoding.UTF8);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

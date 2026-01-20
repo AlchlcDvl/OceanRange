@@ -3,28 +3,33 @@ using SRML.Console;
 
 namespace OceanRange.Modules;
 
-[Command]
-public sealed class EchoCommand : ConsoleCommand
+public sealed class OceanCommand(string id, string usage, string description, string extendedDescription, Func<string[], bool> execute) : ConsoleCommand
 {
-    public override string ID => "echo";
-    public override string Usage => "echo [argument] [argument] ...";
-    public override string Description => "Echos whatever arguments you type into the console.";
-    public override string ExtendedDescription => "Echos whatever arguments you type into the console, great for passing temporary notes into logs.";
+    public override string ID => id;
+    public override string Usage => usage;
+    public override string Description => description;
+    public override string ExtendedDescription => extendedDescription;
 
-    public override bool Execute(string[] _) => true;
+    private readonly Func<string[], bool> _execute = execute;
+
+    public override bool Execute(string[] args) => _execute(args);
 }
 
-[Command]
-public sealed class SavePositionCommand : ConsoleCommand
+public static class Commands
 {
     public static readonly Dictionary<string, Dictionary<string, List<string>>> SavedPositions = [];
 
-    public override string ID => "savePos";
-    public override string Usage => "savePos";
-    public override string Description => "Saves the player's position into a dictionary with the closest cell's name.";
-    public override string ExtendedDescription => "Saves the player's position into a dictionary with the closest cell's name as the key to later output into a json file upon quit";
+    public static readonly OceanCommand[] OceanCommands =
+    [
+        new("echo", "echo [argument] [argument] ...", "Echos whatever arguments you type into the console.", "Echos whatever arguments you type into the console, great for passing temporary notes into logs.", Echo),
+        new("tp", "tp <x,y,z or x y z or x;y;z coordinates>", "Teleports the player to the specified position.", "Teleports the player to the specified position. You can use commas, spaces, or semicolons as separators. Use '~' to keep the current coordinate for that axis.", Teleport),
+        new("savePos", "savePos", "Saves the player's position into a dictionary with the closest cell's name.", "Saves the player's position into a dictionary with the closest cell's name as the key to later output into a json file upon quit.", SavePos),
+        // new("tester_unlock_progress", "tester_unlock_progress", "Unlocks all 7Zee progress to quickly get to the Docks.", "Unlocks all 7Zee progress to quickly get to the Docks. You may have to reload your save to apply changes.", TesterUnlockProgress)
+    ];
 
-    public override bool Execute(string[] args)
+    private static bool Echo(string[] _) => true;
+
+    private static bool SavePos(string[] args)
     {
         if (args?.Length is > 0)
             Main.Console.LogWarning("This command does not have arguments!");
@@ -44,16 +49,8 @@ public sealed class SavePositionCommand : ConsoleCommand
         Main.Console.Log("Saved " + name + " at " + pos);
         return true;
     }
-}
 
-[Command]
-public sealed class TeleportCommand : ConsoleCommand
-{
-    public override string ID => "tp";
-    public override string Usage => "tp <x,y,z or x y z or x;y;z coordinates>";
-    public override string Description => "Teleports the player to the specified position.";
-
-    public override bool Execute(string[] args)
+    private static bool Teleport(string[] args)
     {
         if (args?.Length is 1)
             args = [.. args[0].TrueSplit(',', ' ', ';')];
@@ -78,25 +75,17 @@ public sealed class TeleportCommand : ConsoleCommand
         Main.Console.Log("Teleported to " + vector);
         return true;
     }
+
+    // public static bool TesterUnlockProgress(string[] args)
+    // {
+    //     if (args?.Length is > 0)
+    //         Main.Console.LogWarning("This command does not have arguments!");
+
+    //     SceneContext.Instance.ProgressDirector.model.progressDict[ProgressType.CORPORATE_PARTNER] = 999;
+    //     SceneContext.Instance.ProgressDirector.NoteProgressChanged(ProgressType.CORPORATE_PARTNER);
+
+    //     Main.Console.Log("7Zee unlocked past max! You may have to reload save to apply changes.");
+    //     return true;
+    // }
 }
-
-// [Command]
-// public class TesterUnlockProgressCommand : ConsoleCommand
-// {
-//     public override string ID => "tester_unlock_progress";
-//     public override string Usage => "tester_unlock_progress";
-//     public override string Description => "Unlocks all 7Zee progress to quickly get to the Docks.";
-
-//     public override bool Execute(string[] args)
-//     {
-//         if (args?.Length is > 0)
-//             Main.Console.LogWarning("This command does not have arguments!");
-
-//         SceneContext.Instance.ProgressDirector.model.progressDict[ProgressType.CORPORATE_PARTNER] = 999;
-//         SceneContext.Instance.ProgressDirector.NoteProgressChanged(ProgressType.CORPORATE_PARTNER);
-
-//         Main.Console.Log("7Zee unlocked past max! You may have to reload save to apply changes.");
-//         return true;
-//     }
-// }
 #endif

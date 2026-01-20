@@ -89,7 +89,7 @@ internal sealed class Main : ModEntryPoint
     [TimeDiagnostic("Mod Unload")]
     public override void Unload()
     {
-        File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.json"), JsonConvert.SerializeObject(SavePositionCommand.SavedPositions, Inventory.JsonSettings));
+        File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.json"), JsonConvert.SerializeObject(Commands.SavedPositions, Inventory.JsonSettings));
 #else
     public override void Unload()
     {

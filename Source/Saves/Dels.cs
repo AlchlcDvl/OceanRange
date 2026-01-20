@@ -25,26 +25,24 @@ public static class SaveWriterDels
             var convertExpr = Expression.Convert(valueParam, underlyingType);
 
             // Get the appropriate Write method based on size
-            var writeMethod = Method(underlyingType.Name switch
+            var writeMethod = Type.GetTypeCode(underlyingType) switch
             {
-                "Byte" => nameof(SaveWriter.WriteByte),
-                "SByte" => nameof(SaveWriter.WriteSByte),
-                "Int16" => nameof(SaveWriter.WriteShort),
-                "Int32" => nameof(SaveWriter.WriteInt),
-                "Int64" => nameof(SaveWriter.WriteLong),
-                "UInt16" => nameof(SaveWriter.WriteUShort),
-                "UInt32" => nameof(SaveWriter.WriteUInt),
-                "UInt64" => nameof(SaveWriter.WriteULong),
-                _ => throw new ArgumentException($"Enum size {Marshal.SizeOf(underlyingType)} not supported"),
-            });
+                TypeCode.Byte   => nameof(SaveWriter.WriteByte),
+                TypeCode.SByte  => nameof(SaveWriter.WriteSByte),
+                TypeCode.Int16  => nameof(SaveWriter.WriteShort),
+                TypeCode.UInt16 => nameof(SaveWriter.WriteUShort),
+                TypeCode.Int32  => nameof(SaveWriter.WriteInt),
+                TypeCode.UInt32 => nameof(SaveWriter.WriteUInt),
+                TypeCode.Int64  => nameof(SaveWriter.WriteLong),
+                TypeCode.UInt64 => nameof(SaveWriter.WriteULong),
+                _ => throw new NotSupportedException($"Enum underlying type {underlyingType.Name} is not supported.")
+            };
 
             // Create method call: w.WriteMethod((UnderlyingType)v)
-            var callExpr = Expression.Call(writerParam, writeMethod, convertExpr);
+            var callExpr = Expression.Call(writerParam, Method(writeMethod), convertExpr);
 
             // Create lambda: (SaveWriter w, T v) => w.WriteMethod((UnderlyingType)v)
-            var lambda = Expression.Lambda<Action<SaveWriter, T>>(callExpr, writerParam, valueParam);
-
-            return lambda.Compile();
+            return Expression.Lambda<Action<SaveWriter, T>>(callExpr, writerParam, valueParam).Compile();
         }
     }
 
@@ -70,29 +68,27 @@ public static class SaveReaderDels
             var readerParam = Expression.Parameter(typeof(SaveReader), "r");
 
             // Get the appropriate Read method based on size
-            var readMethod = Method(underlyingType.Name switch
+            var readMethod = Type.GetTypeCode(underlyingType) switch
             {
-                "Byte" => nameof(SaveReader.ReadByte),
-                "SByte" => nameof(SaveReader.ReadSByte),
-                "Int16" => nameof(SaveReader.ReadShort),
-                "Int32" => nameof(SaveReader.ReadInt),
-                "Int64" => nameof(SaveReader.ReadLong),
-                "UInt16" => nameof(SaveReader.ReadUShort),
-                "UInt32" => nameof(SaveReader.ReadUInt),
-                "UInt64" => nameof(SaveReader.ReadULong),
+                TypeCode.Byte   => nameof(SaveReader.ReadByte),
+                TypeCode.SByte  => nameof(SaveReader.ReadSByte),
+                TypeCode.Int16  => nameof(SaveReader.ReadShort),
+                TypeCode.UInt16 => nameof(SaveReader.ReadUShort),
+                TypeCode.Int32  => nameof(SaveReader.ReadInt),
+                TypeCode.UInt32 => nameof(SaveReader.ReadUInt),
+                TypeCode.Int64  => nameof(SaveReader.ReadLong),
+                TypeCode.UInt64 => nameof(SaveReader.ReadULong),
                 _ => throw new ArgumentException($"Enum size {Marshal.SizeOf(underlyingType)} not supported"),
-            });
+            };
 
             // Create method call: r.ReadMethod()
-            var readCall = Expression.Call(readerParam, readMethod);
+            var readCall = Expression.Call(readerParam, Method(readMethod));
 
             // Convert from underlying type to enum type (this avoids boxing)
             var convertExpr = Expression.Convert(readCall, typeof(T));
 
             // Create lambda: (SaveReader r) => (T)r.ReadMethod()
-            var lambda = Expression.Lambda<Func<SaveReader, T>>(convertExpr, readerParam);
-
-            return lambda.Compile();
+            return Expression.Lambda<Func<SaveReader, T>>(convertExpr, readerParam).Compile();
         }
     }
 
