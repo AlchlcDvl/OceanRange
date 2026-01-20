@@ -306,7 +306,7 @@ public static class Helpers
 
     public static void CreateRanchExchangeOffer(IdentifiableId id, int weight, ProgressType[] progress)
     {
-        if (progress?.Length is null or 0)
+        if (progress.IsNullOrEmpty())
             ExchangeOfferRegistry.RegisterInitialItem(id, weight);
         else
             ExchangeOfferRegistry.RegisterUnlockableItem(id, progress[0], weight);
@@ -561,9 +561,17 @@ public static class Helpers
             return false;
         }
 
-        var result = index < array.Length && index >= 0;
-        value = result ? array[index] : default;
-        return result;
+        if (index < 0)
+            index = array.Length + index;
+
+        if (index >= 0 && index < array.Length)
+        {
+            value = array[index];
+            return true;
+        }
+
+        value = default;
+        return false;
     }
 
     // public static Texture2D CreateRamp(string name, Color a, Color b)

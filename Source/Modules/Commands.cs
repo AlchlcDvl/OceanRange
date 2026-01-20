@@ -31,7 +31,7 @@ public static class Commands
 
     private static bool SavePos(string[] args)
     {
-        if (args?.Length is > 0)
+        if (!args.IsNullOrEmpty())
             Main.Console.LogWarning("This command does not have arguments!");
 
         var pos = SceneContext.Instance.Player.transform.position;
@@ -78,7 +78,7 @@ public static class Commands
 
     // public static bool TesterUnlockProgress(string[] args)
     // {
-    //     if (args?.Length is > 0)
+    //     if (!args.IsNullOrEmpty())
     //         Main.Console.LogWarning("This command does not have arguments!");
 
     //     SceneContext.Instance.ProgressDirector.model.progressDict[ProgressType.CORPORATE_PARTNER] = 999;

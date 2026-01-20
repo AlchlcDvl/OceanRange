@@ -570,7 +570,7 @@ public static class Slimepedia
         }
         else if (matData.MatOrigin.HasValue)
             material = GetMat(matData.MatOrigin.Value, matData.MatSameAs);
-        else if (matData.SameAs.HasValue && mainMatData?.Length is > 0)
+        else if (matData.SameAs.HasValue && mainMatData.IsNullOrEmpty())
             material = mainMatData[matData.SameAs.Value].MatData.CachedMaterial;
         else
             material = fallback;

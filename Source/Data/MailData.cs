@@ -38,7 +38,7 @@ public sealed class MailData : JsonData
 
         Subscribers = UnlockFuncAnd?.GetInvocationList()?.Select(x => (Func<double, bool>)x)?.ToArray();
 
-        NoSubscribers = Subscribers?.Length is null or 0;
+        NoSubscribers = Subscribers.IsNullOrEmpty();
     }
 
     public bool ShouldUnlock(double time)
