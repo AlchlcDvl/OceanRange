@@ -90,26 +90,26 @@ public sealed class LargoAppearanceData : JsonData
         if (BodyStruct == null)
             return;
 
-        BodyStruct.IsBody = true;
-        // BodyStruct.Mesh ??= "slime_default";
+        BodyStruct.MeshData.IsBody = true;
+        // BodyStruct.MeshData.Mesh ??= "slime_default";
     }
 
     public void SetJiggle(float jiggle)
     {
         Jiggle ??= jiggle;
 
-        BodyStruct?.Jiggle ??= Jiggle;
+        BodyStruct?.MeshData.Jiggle ??= Jiggle;
 
         if (!Slime1Structs.IsNullOrEmpty())
         {
             foreach (var feature in Slime1Structs)
-                feature.Jiggle ??= Jiggle;
+                feature.MeshData.Jiggle ??= Jiggle;
         }
 
         if (!Slime2Structs.IsNullOrEmpty())
         {
             foreach (var feature in Slime2Structs)
-                feature.Jiggle ??= Jiggle;
+                feature.MeshData.Jiggle ??= Jiggle;
         }
     }
 }

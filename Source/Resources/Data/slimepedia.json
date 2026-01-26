@@ -6,53 +6,57 @@
     "normalAppearance": {
       "slimeFeatures": [
         {
-          "mesh": "rosi_body",
-          "colorProps": {
-            "_TopColor": "#F9E5F0",
-            "_MiddleColor": "#E6C7D2",
-            "_BottomColor": "#F68ED9"
+          "meshData": { "mesh": "rosi_body" },
+          "matData": {
+            "colorProps": {
+              "_TopColor": "#F9E5F0",
+              "_MiddleColor": "#E6C7D2",
+              "_BottomColor": "#F68ED9"
+            }
           }
         },
         {
-          "mesh": "rosi_stalk",
-          "sameAs": 0
+          "meshData": { "mesh": "rosi_stalk" },
+          "matData": { "sameAs": 0 }
         },
         {
-          "mesh": "rosi_frills",
-          "colorProps": { "_TopColor": "#F46CB7" }
+          "meshData": { "mesh": "rosi_frills" },
+          "matData": { "colorProps": { "_TopColor": "#F46CB7" } }
         }
       ],
       "mainAmmoColor": "#F9E5F0",
       "plortFeatures": [
         {
-          "mesh": "pearl",
-          "colorProps": {
-            "_TopColor": "#F46CB7",
-            "_MiddleColor": "#E6C7D2",
-            "_BottomColor": "#F9E5F0"
+          "meshData": { "mesh": "pearl" },
+          "matData": {
+            "colorProps": {
+              "_TopColor": "#F46CB7",
+              "_MiddleColor": "#E6C7D2",
+              "_BottomColor": "#F9E5F0"
+            }
           }
         },
         {
-          "mesh": "rosi_stalk_pearl",
-          "sameAs": 1
+          "meshData": { "mesh": "rosi_stalk_pearl" },
+          "matData": { "sameAs": 1 }
         },
         {
-          "mesh": "rosi_frills_pearl",
-          "sameAs": 2
+          "meshData": { "mesh": "rosi_frills_pearl" },
+          "matData": { "sameAs": 2 }
         }
       ],
       "gordoFeatures": [
         {
-          "mesh": "rosi_body_gordo",
-          "sameAs": 0
+          "meshData": { "mesh": "rosi_body_gordo" },
+          "matData": { "sameAs": 0 }
         },
         {
-          "mesh": "rosi_stalk_gordo",
-          "sameAs": 1
+          "meshData": { "mesh": "rosi_stalk_gordo" },
+          "matData": { "sameAs": 1 }
         },
         {
-          "mesh": "rosi_frills_gordo",
-          "sameAs": 2
+          "meshData": { "mesh": "rosi_frills_gordo" },
+          "matData": { "sameAs": 2 }
         }
       ],
       "jiggle": 0.75
@@ -92,25 +96,46 @@
       "jiggle": 0.1,
       "slimeFeatures": [
         {
-          "pattern": "coco",
-          "matOrigin": "TABBY_SLIME",
-          "gloss": 1,
-          "colorProps": {
-            "_TopColor": "#744D11",
-            "_BottomColor": "#966F33"
+          "matData": {
+            "pattern": "coco",
+            "matOrigin": "TABBY_SLIME",
+            "gloss": 1,
+            "colorProps": {
+              "_TopColor": "#744D11",
+              "_BottomColor": "#966F33"
+            }
           }
         },
         {
-          "mesh": "coco_brows",
-          "colorProps": { "_TopColor": "#744D11" }
+          "meshData": { "mesh": "coco_brows" },
+          "matData": { "colorProps": { "_TopColor": "#744D11" } }
+        }
+      ],
+      "gordoFeatures": [
+        {
+          "matData": {
+            "pattern": "coco",
+            "matOrigin": "TABBY_SLIME",
+            "gloss": 1,
+            "colorProps": {
+              "_TopColor": "#744D11",
+              "_BottomColor": "#966F33"
+            }
+          }
+        },
+        {
+          "meshData": { "mesh": "coco_brows" },
+          "matData": { "colorProps": { "_TopColor": "#744D11" } }
         }
       ],
       "plortFeatures": [
         {
-          "colorProps": {
-            "_TopColor": "#FEFCFF",
-            "_MiddleColor": "#DCDADD",
-            "_BottomColor": "#ada08e"
+          "matData": {
+            "colorProps": {
+              "_TopColor": "#FEFCFF",
+              "_MiddleColor": "#DCDADD",
+              "_BottomColor": "#ada08e"
+            }
           }
         }
       ]
@@ -149,35 +174,39 @@
       "jiggle": 0.125,
       "slimeFeatures": [
         {
-          "pattern": "mine",
-          "matOrigin": "TABBY_SLIME",
-          "gloss": 1,
-          "colorProps": {
-            "_TopColor": "#9EA16F",
-            "_BottomColor": "#445660"
+          "matData": {
+            "pattern": "mine",
+            "matOrigin": "TABBY_SLIME",
+            "gloss": 1,
+            "colorProps": {
+              "_TopColor": "#9EA16F",
+              "_BottomColor": "#445660"
+            }
           }
         },
         {
-          "mesh": "mine_exterior",
-          "matOrigin": "PINK_SLIME",
-          "colorProps": { "_TopColor": "#212A2F" }
+          "meshData": { "mesh": "mine_exterior" },
+          "matData": {
+            "matOrigin": "PINK_SLIME",
+            "colorProps": { "_TopColor": "#212A2F" }
+          }
         }
       ],
       "plortFeatures": [
         {
-          "mesh": "pearl",
-          "colorProps": { "_TopColor": "#445660" }
+          "meshData": { "mesh": "pearl" },
+          "matData": { "colorProps": { "_TopColor": "#445660" } }
         },
         {
-          "mesh": "mine_pearl",
-          "sameAs": 1
+          "meshData": { "mesh": "mine_pearl" },
+          "matData": { "sameAs": 1 }
         }
       ],
       "gordoFeatures": [
-        { "colorProps": { "_TopColor": "#445660" } },
+        { "matData": { "colorProps": { "_TopColor": "#445660" } } },
         {
-          "mesh": "mine_exterior_gordo",
-          "sameAs": 1
+          "meshData": { "mesh": "mine_exterior_gordo" },
+          "matData": { "sameAs": 1 }
         }
       ]
     }
@@ -210,68 +239,80 @@
       "jiggle": 0.25,
       "slimeFeatures": [
         {
-          "matOrigin": "PINK_SLIME",
-          "colorProps": {
-            "_TopColor": "#752C86",
-            "_MiddleColor": "#9445A7",
-            "_BottomColor": "#B15EC8"
+          "matData": {
+            "matOrigin": "PINK_SLIME",
+            "colorProps": {
+              "_TopColor": "#752C86",
+              "_MiddleColor": "#9445A7",
+              "_BottomColor": "#B15EC8"
+            }
           }
         },
         {
-          "mesh": "lantern_fins",
-          "pattern": "lantern",
-          "matOrigin": "TABBY_SLIME",
-          "colorProps": {
-            "_TopColor": "#752C86",
-            "_BottomColor": "#B15EC8"
+          "meshData": {
+            "mesh": "lantern_fins"
+          },
+          "matData": {
+            "pattern": "lantern",
+            "matOrigin": "TABBY_SLIME",
+            "colorProps": {
+              "_TopColor": "#752C86",
+              "_BottomColor": "#B15EC8"
+            }
           }
         },
         {
-          "mesh": "lantern_stalk",
-          "sameAs": 0
+          "meshData": { "mesh": "lantern_stalk" },
+          "matData": { "sameAs": 0 }
         },
         {
-          "useBaseStruct": true,
-          "instantiatePrefabs": true
+          "meshData": {
+            "useBaseStruct": true,
+            "instantiatePrefabs": true
+          }
         },
         {
-          "mesh": "lantern_lure",
-          "matOrigin": "PHOSPHOR_SLIME",
-          "colorProps": { "_TopColor": "#EBDB6A" }
+          "meshData": { "mesh": "lantern_lure" },
+          "matData": {
+            "matOrigin": "PHOSPHOR_SLIME",
+            "colorProps": { "_TopColor": "#EBDB6A" }
+          }
         }
       ],
       "plortFeatures": [
         {
-          "mesh": "pearl",
-          "gloss": 1,
-          "colorProps": {
-            "_TopColor": "#B15EC8",
-            "_MiddleColor": "#EBDB6A",
-            "_BottomColor": "#752C86"
+          "meshData": { "mesh": "pearl" },
+          "matData": {
+            "gloss": 1,
+            "colorProps": {
+              "_TopColor": "#B15EC8",
+              "_MiddleColor": "#EBDB6A",
+              "_BottomColor": "#752C86"
+            }
           }
         },
         {
-          "mesh": "lantern_stalk_pearl",
-          "sameAs": 2
+          "meshData": { "mesh": "lantern_stalk_pearl" },
+          "matData": { "sameAs": 2 }
         },
         {
-          "mesh": "lantern_lure_pearl",
-          "sameAs": 3
+          "meshData": { "mesh": "lantern_lure_pearl" },
+          "matData": { "sameAs": 3 }
         }
       ],
       "gordoFeatures": [
-        { "sameAs": 0 },
+        { "matData": { "sameAs": 0 } },
         {
-          "mesh": "lantern_fins_gordo",
-          "sameAs": 1
+          "meshData": { "mesh": "lantern_fins_gordo" },
+          "matData": { "sameAs": 1 }
         },
         {
-          "mesh": "lantern_stalk",
-          "sameAs": 2
+          "meshData": { "mesh": "lantern_stalk" },
+          "matData": { "sameAs": 2 }
         },
         {
-          "mesh": "lantern_lure",
-          "sameAs": 3
+          "meshData": { "mesh": "lantern_lure" },
+          "matData": { "sameAs": 3 }
         }
       ]
     }
@@ -298,29 +339,33 @@
       "jiggle": 0.125,
       "slimeFeatures": [
         {
-          "skipNull": true,
-          "colorProps": {
-            "_TopColor": "#E2DFD2",
-            "_MiddleColor": "#E8C499",
-            "_BottomColor": "#EDA960"
+          "meshData": { "skipNull": true },
+          "matData": {
+            "colorProps": {
+              "_TopColor": "#E2DFD2",
+              "_MiddleColor": "#E8C499",
+              "_BottomColor": "#EDA960"
+            }
           }
         },
         {
-          "mesh": "sand_shells",
-          "gloss": 1,
-          "colorProps": { "_TopColor": "#E8C499" }
+          "meshData": { "mesh": "sand_shells" },
+          "matData": {
+            "gloss": 1,
+            "colorProps": { "_TopColor": "#E8C499" }
+          }
         }
       ],
       "plortFeatures": [
         {
-          "mesh": "pearl",
-          "colorProps": { "_TopColor": "#E2DFD2" }
+          "meshData": { "mesh": "pearl" },
+          "matData": { "colorProps": { "_TopColor": "#E2DFD2" } }
         }
       ],
       "gordoFeatures": [
         {
-          "mesh": "puddle_body_gordo",
-          "sameAs": 0
+          "meshData": { "mesh": "puddle_body_gordo" },
+          "matData": { "sameAs": 0 }
         }
       ]
     }
@@ -346,86 +391,100 @@
       "jiggle": 0.25,
       "slimeFeatures": [
         {
-          "pattern": "mesmer",
-          "matOrigin": "TABBY_SLIME",
-          "gloss": 0.11,
-          "colorProps": {
-            "_TopColor": "#340ca1",
-            "_MiddleColor": "#e034c9",
-            "_BottomColor": "#0a094f"
+          "matData": {
+            "pattern": "mesmer",
+            "matOrigin": "TABBY_SLIME",
+            "gloss": 0.11,
+            "colorProps": {
+              "_TopColor": "#340ca1",
+              "_MiddleColor": "#e034c9",
+              "_BottomColor": "#0a094f"
+            }
           }
         },
         {
-          "mesh": "mesmer_pincers",
-          "matOrigin": "TABBY_SLIME",
-          "pattern": "mesmer_pincer",
-          "colorProps": {
-            "_TopColor": "#340ca1",
-            "_BottomColor": "#431158"
+          "meshData": { "mesh": "mesmer_pincers" },
+          "matData": {
+            "matOrigin": "TABBY_SLIME",
+            "pattern": "mesmer_pincer",
+            "colorProps": {
+              "_TopColor": "#340ca1",
+              "_BottomColor": "#431158"
+            }
           }
         },
         {
-          "mesh": "mesmer_tail_base",
-          "matOrigin": "PINK_SLIME",
-          "colorProps": {
-            "_TopColor": "#33169a",
-            "_BottomColor": "#431158"
+          "meshData": { "mesh": "mesmer_tail_base" },
+          "matData": {
+            "matOrigin": "PINK_SLIME",
+            "colorProps": {
+              "_TopColor": "#33169a",
+              "_BottomColor": "#431158"
+            }
           }
         },
         {
-          "mesh": "mesmer_tail_stem_1",
-          "matOrigin": "PINK_SLIME",
-          "colorProps": {
-            "_TopColor": "#821ed6",
-            "_BottomColor": "#33169a"
+          "meshData": { "mesh": "mesmer_tail_stem_1" },
+          "matData": {
+            "matOrigin": "PINK_SLIME",
+            "colorProps": {
+              "_TopColor": "#821ed6",
+              "_BottomColor": "#33169a"
+            }
           }
         },
         {
-          "mesh": "mesmer_tail_stem_2",
-          "matOrigin": "PINK_SLIME",
-          "colorProps": {
-            "_TopColor": "#e034c9",
-            "_BottomColor": "#821ed6"
+          "meshData": { "mesh": "mesmer_tail_stem_2" },
+          "matData": {
+            "matOrigin": "PINK_SLIME",
+            "colorProps": {
+              "_TopColor": "#e034c9",
+              "_BottomColor": "#821ed6"
+            }
           }
         },
         {
-          "mesh": "mesmer_tail_tip",
-          "matOrigin": "PINK_SLIME",
-          "colorProps": {
-            "_TopColor": "#dafe7a",
-            "_BottomColor": "#e034c9"
+          "meshData": { "mesh": "mesmer_tail_tip" },
+          "matData": {
+            "matOrigin": "PINK_SLIME",
+            "colorProps": {
+              "_TopColor": "#dafe7a",
+              "_BottomColor": "#e034c9"
+            }
           }
         }
       ],
       "gordoFeatures": [
-        { "sameAs": 0 },
+        { "matData": { "sameAs": 0 } },
         {
-          "mesh": "mesmer_pincers_gordo",
-          "sameAs": 1
+          "meshData": { "mesh": "mesmer_pincers_gordo" },
+          "matData": { "sameAs": 1 }
         },
         {
-          "mesh": "mesmer_tail_base_gordo",
-          "sameAs": 2
+          "meshData": { "mesh": "mesmer_tail_base_gordo" },
+          "matData": { "sameAs": 2 }
         },
         {
-          "mesh": "mesmer_tail_stem_1_gordo",
-          "sameAs": 3
+          "meshData": { "mesh": "mesmer_tail_stem_1_gordo" },
+          "matData": { "sameAs": 3 }
         },
         {
-          "mesh": "mesmer_tail_stem_2_gordo",
-          "sameAs": 4
+          "meshData": { "mesh": "mesmer_tail_stem_2_gordo" },
+          "matData": { "sameAs": 4 }
         },
         {
-          "mesh": "mesmer_tail_tip_gordo",
-          "sameAs": 5
+          "meshData": { "mesh": "mesmer_tail_tip_gordo" },
+          "matData": { "sameAs": 5 }
         }
       ],
       "plortFeatures": [
         {
-          "colorProps": {
-            "_TopColor": "#0a094f",
-            "_MiddleColor": "#2F2251",
-            "_BottomColor": "#1e1140"
+          "matData": {
+            "colorProps": {
+              "_TopColor": "#0a094f",
+              "_MiddleColor": "#2F2251",
+              "_BottomColor": "#1e1140"
+            }
           }
         }
       ]
@@ -453,44 +512,48 @@
       "jiggle": 0.25,
       "slimeFeatures": [
         {
-          "pattern": "hermit",
-          "matOrigin": "TABBY_SLIME",
-          "gloss": 0.11,
-          "colorProps": {
-            "_TopColor": "#f09695",
-            "_BottomColor": "#e65954"
+          "matData": {
+            "pattern": "hermit",
+            "matOrigin": "TABBY_SLIME",
+            "gloss": 0.11,
+            "colorProps": {
+              "_TopColor": "#f09695",
+              "_BottomColor": "#e65954"
+            }
           }
         },
         {
-          "mesh": "hermit_shell",
-          "matOrigin": "TABBY_SLIME",
-          "pattern": "hermit_shell",
-          "colorProps": {
-            "_TopColor": "#f68c65",
-            "_BottomColor": "#f6d599"
+          "meshData": { "mesh": "hermit_shell" },
+          "matData": {
+            "matOrigin": "TABBY_SLIME",
+            "pattern": "hermit_shell",
+            "colorProps": {
+              "_TopColor": "#f68c65",
+              "_BottomColor": "#f6d599"
+            }
           }
         },
         {
-          "mesh": "hermit_claws",
-          "colorProps": { "_TopColor": "#b53a35" }
+          "meshData": { "mesh": "hermit_claws" },
+          "matData": { "colorProps": { "_TopColor": "#b53a35" } }
         }
       ],
       "plortFeatures": [
-        { "sameAs": 0 },
+        { "matData": { "sameAs": 0 } },
         {
-          "mesh": "hermit_shell_plort",
-          "sameAs": 1
+          "meshData": { "mesh": "hermit_shell_plort" },
+          "matData": { "sameAs": 1 }
         }
       ],
       "gordoFeatures": [
-        { "sameAs": 0 },
+        { "matData": { "sameAs": 0 } },
         {
-          "mesh": "hermit_shell_gordo",
-          "sameAs": 1
+          "meshData": { "mesh": "hermit_shell_gordo" },
+          "matData": { "sameAs": 1 }
         },
         {
-          "mesh": "hermit_claws",
-          "sameAs": 2
+          "meshData": { "mesh": "hermit_claws" },
+          "matData": { "sameAs": 2 }
         }
       ]
     }
@@ -516,19 +579,21 @@
       "mainAmmoColor": "#ffdf00",
       "jiggle": 0.5,
       "slimeFeatures": [
-        { "matOrigin": "GOLD_SLIME" },
+        { "matData": { "matOrigin": "GOLD_SLIME" } },
         {
-          "mesh": "goldfish_fins",
-          "matOrigin": "PUDDLE_SLIME",
-          "colorProps": { "_TopColor": "#dbc777" }
+          "meshData": { "mesh": "goldfish_fins" },
+          "matData": {
+            "matOrigin": "PUDDLE_SLIME",
+            "colorProps": { "_TopColor": "#dbc777" }
+          }
         }
       ],
-      "plortFeatures": [ { "mesh": "pearl" } ],
+      "plortFeatures": [ { "meshData": { "mesh": "pearl" } } ],
       "gordoFeatures": [
-        { "sameAs": 0 },
+        { "matData": { "sameAs": 0 } },
         {
-          "mesh": "goldfish_fins_gordo",
-          "sameAs": 1
+          "meshData": { "mesh": "goldfish_fins_gordo" },
+          "matData": { "sameAs": 1 }
         }
       ]
     }

@@ -2,7 +2,7 @@ namespace OceanRange.Slimes;
 
 public sealed class RosiBehaviour : SRBehaviour
 {
-    public static readonly List<RosiBehaviour> All = [];
+    public static readonly HashSet<RosiBehaviour> All = [];
 
     public void Awake() => All.Add(this);
 

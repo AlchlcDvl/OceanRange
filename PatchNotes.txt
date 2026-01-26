@@ -87,3 +87,13 @@ Critical Fix: Fixed the ranch exchange being stuck offline
 Visual Fix: Fixed Goldfish slimes having pink slime colored platter
 Visual Fix: Fixed Rock and Crystal largos disappearing when doing their rolling action
 Visual Fix: Fixed slimes looking "low poly"
+
+0.3.0
+Discord:
+## New!
+- Mimic Slimes*: Mischievous little things that love to give people a scare!
+- Secret Styles*: The modded slimes now come with their own custom secret styles!
+
+## Fixes
+- Gameplay: Fixed slimes and largos not eating custom foods when SSRML is installed
+- Visual*: Fixed largos turning invisible when one fo the component slimes has an active secret style

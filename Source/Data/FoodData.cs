@@ -18,7 +18,7 @@ public sealed class GroupData : JsonData
 
     [JsonIgnore] public FoodGroup Group;
 
-    protected override void OnDeserialise() => Group = Helpers.AddEnumValue<FoodGroup>(Name.ToUpperInvariant());
+    protected override void OnDeserialise() => Group = Helpers.ParseOrAddEnumValue<FoodGroup>(Name.ToUpperInvariant());
 }
 
 public abstract class FoodData : SpawnedActorData

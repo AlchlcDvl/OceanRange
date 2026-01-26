@@ -2,51 +2,50 @@ namespace OceanRange.Slimes;
 
 public sealed class AweTowardsMesmers : FindConsumable
 {
-    private GameObject Target;
-    private TimeDirector TimeDir;
-    private SlimeFaceAnimator SfAnimator;
-    private double NextActivationTime;
-    private float EndTime;
+    private GameObject target;
+    private TimeDirector timeDir;
+    private SlimeFaceAnimator sfAnimator;
+    private double nextActivationTime;
+    private float endTime;
+
+    private readonly Dictionary<IdentifiableId, DriveCalculator> SearchIdCache = new(Identifiable.idComparer);
+    private readonly DriveCalculator DriveCalculator = new(SlimeEmotions.Emotion.NONE, 0f, 0f);
 
     public override void Awake()
     {
         base.Awake();
-        TimeDir = SceneContext.Instance.TimeDirector;
-        SfAnimator = GetComponent<SlimeFaceAnimator>();
+        timeDir = SceneContext.Instance.TimeDirector;
+        sfAnimator = GetComponent<SlimeFaceAnimator>();
+
+        SearchIdCache.Clear();
+
+        foreach (var largo in Largopedia.Mesmers)
+            SearchIdCache[largo] = DriveCalculator;
     }
 
     public override float Relevancy(bool isGrounded)
     {
-        if (!isGrounded || !TimeDir.HasReached(NextActivationTime))
+        if (!isGrounded || !timeDir.HasReached(nextActivationTime))
             return 0f;
 
-        Target = FindNearestConsumable(out _);
-        return Target ? Randoms.SHARED.GetInRange(0.1f, 1f) : 0f;
+        target = FindNearestConsumable(out _);
+        return target ? Randoms.SHARED.GetInRange(0.1f, 1f) : 0f;
     }
 
     public override void Action()
     {
-        if (Target)
-            RotateTowards(GetGotoPos(Target.gameObject) - transform.position, 5f, 1f);
+        if (target)
+            RotateTowards(GetGotoPos(target.gameObject) - transform.position, 5f, 1f);
     }
 
     public override void Selected()
     {
-        SfAnimator.SetTrigger("triggerLongAwe");
-        NextActivationTime = TimeDir.HoursFromNow(1f);
-        EndTime = Time.time + 3f;
+        sfAnimator.SetTrigger("triggerLongAwe");
+        nextActivationTime = timeDir.HoursFromNow(1f);
+        endTime = Time.time + 3f;
     }
 
-    public override bool CanRethink() => Time.time >= EndTime;
+    public override bool CanRethink() => Time.time >= endTime;
 
-    public override Dictionary<IdentifiableId, DriveCalculator> GetSearchIds()
-    {
-        var driveCalc = new DriveCalculator(SlimeEmotions.Emotion.NONE, 0f, 0f);
-        var result = new Dictionary<IdentifiableId, DriveCalculator>(Identifiable.idComparer);
-
-        foreach (var largo in Largopedia.Mesmers)
-            result[largo] = driveCalc;
-
-        return result;
-    }
+    public override Dictionary<IdentifiableId, DriveCalculator> GetSearchIds() => SearchIdCache;
 }

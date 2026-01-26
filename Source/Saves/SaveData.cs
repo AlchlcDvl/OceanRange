@@ -44,44 +44,7 @@ public sealed class MailSaveData : ISaveData
     }
 }
 
-public sealed class GordoSaveDataV01 : ISaveData
-{
-    public bool Deprecated => true;
-
-    public ulong[] Write(out byte padding)
-    {
-        using var writer = new SaveWriter();
-        writer.WriteInt(GordoSaveDataV02.Lookup.Count);
-
-        foreach (var id in GordoSaveDataV02.Lookup.Keys)
-        {
-            writer.WriteString(id.ToString());
-            writer.WriteBool(GordoSaveDataV02.Lookup[id]);
-
-            if (!EnsureAutoSaveDirectorData.IsAutoSave)
-                GordoSaveDataV02.Lookup[id] = false;
-        }
-
-        return writer.ToArray(out padding);
-    }
-
-    public void Read(ulong[] data, byte padding)
-    {
-        using var reader = new SaveReader(data, padding);
-        var count = reader.ReadInt();
-
-        while (count-- > 0)
-        {
-            var id = Helpers.ParseEnum<IdentifiableId>(reader.ReadString());
-            var flag = reader.ReadBool();
-
-            if (GordoSaveDataV02.Lookup.ContainsKey(id))
-                GordoSaveDataV02.Lookup[id] = flag;
-        }
-    }
-}
-
-public sealed class GordoSaveDataV02 : ISaveData
+public sealed class GordoSaveData : ISaveData
 {
     public bool Deprecated => false;
 

@@ -23,20 +23,20 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     public GameObject ExplodeFX;
     public bool IsLargo;
 
-    private float NextPossibleExplode;
-    private float NextExplodeDelayTime = MaxDelay;
-    private SlimeFaceAnimator SfAnimator;
-    private CalmedByWaterSpray Calmed;
-    private ExplodeIndicatorMarker Marker;
-    private bool Contact;
-    private ExplodeState State;
+    private float nextPossibleExplode;
+    private float nextExplodeDelayTime = MaxDelay;
+    private SlimeFaceAnimator sfAnimator;
+    private CalmedByWaterSpray calmed;
+    private ExplodeIndicatorMarker marker;
+    private bool contact;
+    private ExplodeState state;
 
     public override void Awake()
     {
         base.Awake();
-        SfAnimator = GetComponent<SlimeFaceAnimator>();
-        Calmed = GetComponent<CalmedByWaterSpray>();
-        Marker = GetComponentsInChildren<ExplodeIndicatorMarker>(true)[0];
+        sfAnimator = GetComponent<SlimeFaceAnimator>();
+        calmed = GetComponent<CalmedByWaterSpray>();
+        marker = GetComponentsInChildren<ExplodeIndicatorMarker>(true)[0];
 
         if (!TryGetComponent<SlimeAppearanceApplicator>(out var applicator))
             return;
@@ -55,19 +55,19 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     {
         base.OnEnable();
 
-        if (Time.time + MinDelay > NextPossibleExplode)
-            NextPossibleExplode = Math.Max(NextPossibleExplode, Time.time + Randoms.SHARED.GetFloat(MinDelay));
+        if (Time.time + MinDelay > nextPossibleExplode)
+            nextPossibleExplode = Math.Max(nextPossibleExplode, Time.time + Randoms.SHARED.GetFloat(MinDelay));
     }
 
     public override void Start()
     {
         base.Start();
-        NextExplodeDelayTime = BoomDelay();
-        NextPossibleExplode = Time.time + (NextExplodeDelayTime * Randoms.SHARED.GetInRange(0.25f, 1f));
-        Marker.SetActive(false);
+        nextExplodeDelayTime = BoomDelay();
+        nextPossibleExplode = Time.time + (nextExplodeDelayTime * Randoms.SHARED.GetInRange(0.25f, 1f));
+        marker.SetActive(false);
     }
 
-    public override float Relevancy(bool _) => Calmed.IsCalmed() || !Contact || State is not ExplodeState.Idle ? 0f : 1f;
+    public override float Relevancy(bool _) => calmed.IsCalmed() || !contact || state is not ExplodeState.Idle ? 0f : 1f;
 
     public override void Action() {}
 
@@ -75,29 +75,29 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
 
     public void FixedUpdate()
     {
-        if (Calmed.IsCalmed())
-            NextPossibleExplode += Time.fixedDeltaTime;
+        if (calmed.IsCalmed())
+            nextPossibleExplode += Time.fixedDeltaTime;
     }
 
     private float BoomDelay() => Mathf.Lerp(MinDelay, MaxDelay, Mathf.Clamp01(Randoms.SHARED.GetInRange(-0.1f, 0.1f) + (1f - emotions.GetCurr(SlimeEmotions.Emotion.AGITATION))));
 
     private IEnumerator DelayedExplosion()
     {
-        Contact = false;
-        State = ExplodeState.Preparing;
-        Marker.SetActive(true);
-        SfAnimator.SetTrigger("triggerGrimace");
+        contact = false;
+        state = ExplodeState.Preparing;
+        marker.SetActive(true);
+        sfAnimator.SetTrigger("triggerGrimace");
         yield return Helpers.Wait(BoomSlimeExplode.EXPLOSION_PREP_TIME);
-        Marker.SetActive(false);
-        State = ExplodeState.Exploding;
+        marker.SetActive(false);
+        state = ExplodeState.Exploding;
         SpawnAndPlayFX(ExplodeFX, transform.position, transform.rotation);
         Explode();
-        NextExplodeDelayTime = BoomDelay();
-        NextPossibleExplode = Time.time + NextExplodeDelayTime;
-        State = ExplodeState.Recovering;
-        SfAnimator.SetTrigger("triggerFried");
+        nextExplodeDelayTime = BoomDelay();
+        nextPossibleExplode = Time.time + nextExplodeDelayTime;
+        state = ExplodeState.Recovering;
+        sfAnimator.SetTrigger("triggerFried");
         yield return Helpers.Wait(BoomSlimeExplode.EXPLOSION_RECOVERY_TIME);
-        State = ExplodeState.Idle;
+        state = ExplodeState.Idle;
     }
 
     private void Explode()
@@ -114,10 +114,10 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     public override void OnDisable()
     {
         base.OnDisable();
-        State = ExplodeState.Idle;
+        state = ExplodeState.Idle;
     }
 
-    public override bool CanRethink() => State == ExplodeState.Idle;
+    public override bool CanRethink() => state == ExplodeState.Idle;
 
-    public void OnControllerCollision(GameObject gameObj) => Contact = Time.fixedTime > NextPossibleExplode && (gameObj == SceneContext.Instance.Player || (gameObj.TryGetComponent<Identifiable>(out var id) && Identifiable.IsSlime(id.id)));
+    public void OnControllerCollision(GameObject gameObj) => contact = Time.fixedTime > nextPossibleExplode && (gameObj == SceneContext.Instance.Player || (gameObj.TryGetComponent<Identifiable>(out var id) && Identifiable.IsSlime(id.id)));
 }

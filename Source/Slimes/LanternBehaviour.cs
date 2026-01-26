@@ -4,50 +4,51 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
 {
     private readonly HashSet<GameObject> Caves = [];
 
-    private TimeDirector TimeDir;
-    private SlimeAppearanceApplicator Applicator;
-    private float FleeingUntil;
-    private bool WaitForPhysicsUpdate;
+    private TimeDirector timeDir;
+    private SlimeAppearanceApplicator applicator;
+    private float fleeingUntil;
+    private bool waitForPhysicsUpdate;
+    private CanMoveHandler canMove;
 
-    public CanMoveHandler CanMove;
-    public bool Fleeing;
+    public bool Fleeing => _fleeing;
+    private bool _fleeing;
 
     public void Awake()
     {
-        Applicator = GetComponent<SlimeAppearanceApplicator>();
-        CanMove = this.EnsureComponent<CanMoveHandler>();
-        TimeDir = SceneContext.Instance.TimeDirector;
-        WaitForPhysicsUpdate = true;
+        applicator = GetComponent<SlimeAppearanceApplicator>();
+        canMove = this.EnsureComponent<CanMoveHandler>();
+        timeDir = SceneContext.Instance.TimeDirector;
+        waitForPhysicsUpdate = true;
     }
 
-    public void OnEnable() => WaitForPhysicsUpdate = true;
+    public void OnEnable() => waitForPhysicsUpdate = true;
 
     public void FixedUpdate()
     {
-        WaitForPhysicsUpdate = false;
+        waitForPhysicsUpdate = false;
 
-        if (Fleeing)
+        if (_fleeing)
         {
-            Fleeing = Time.fixedTime < FleeingUntil;
-            Applicator.SetExpression(SlimeExpression.Alarm);
+            _fleeing = Time.fixedTime < fleeingUntil;
+            applicator.SetExpression(SlimeExpression.Alarm);
             return;
         }
 
         if (Caves.Count > 0)
         {
-            CanMove.CanMove = true;
+            canMove.CanMove = true;
             return;
         }
 
-        CanMove.CanMove = TimeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
+        canMove.CanMove = timeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
 
-        if (!CanMove.CanMove)
-            Applicator.SetExpression(Ids.Sleeping);
+        if (!canMove.CanMove)
+            applicator.SetExpression(Ids.Sleeping);
     }
 
     public void Update()
     {
-        if (WaitForPhysicsUpdate)
+        if (waitForPhysicsUpdate)
             return;
 
         if (Caves.Count > 0)
@@ -56,13 +57,13 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
 
     public void OnControllerCollision(GameObject gameObj)
     {
-        if (CanMove.CanMove)
+        if (canMove.CanMove)
             return;
 
-        CanMove.CanMove = Fleeing = gameObj == SceneContext.Instance.Player;
+        canMove.CanMove = _fleeing = gameObj == SceneContext.Instance.Player;
 
-        if (Fleeing)
-            FleeingUntil = Time.fixedTime + 10f;
+        if (_fleeing)
+            fleeingUntil = Time.fixedTime + 10f;
     }
 
     public void OnCaveEnter(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => Caves.Add(caveObj);

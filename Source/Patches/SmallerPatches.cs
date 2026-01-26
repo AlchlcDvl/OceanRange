@@ -2,10 +2,9 @@ using OceanRange.Saves;
 
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap)), UsedImplicitly]
+[HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
 public static class EatMapFix
 {
-    [UsedImplicitly]
     public static void Postfix(SlimeDiet __instance, SlimeDefinitions definitions, SlimeDefinition definition)
     {
         // This is such a goofy oversight lmao, SRML used Identifiable.IsAnimal instead of directly comparing with the Identifiable.MEAT_CLASS, leading to chicks being eaten as well lol
@@ -48,33 +47,33 @@ public static class EatMapFix
     }
 }
 
-[HarmonyPatch(typeof(GordoEat), nameof(GordoEat.ImmediateReachedTarget)), UsedImplicitly]
+[HarmonyPatch(typeof(GordoEat), nameof(GordoEat.ImmediateReachedTarget))]
 public static class EnsureGordoStaysPopped
 {
-    [UsedImplicitly]
     public static void Postfix(GordoEat __instance)
     {
         if (__instance.TryGetComponent<GordoIdentifiable>(out var identifiable))
-            GordoSaveDataV02.Lookup[identifiable.id] = true;
+            GordoSaveData.Lookup[identifiable.id] = true;
     }
 }
 
-[HarmonyPatch(typeof(AutoSaveDirector)), UsedImplicitly]
+[HarmonyPatch(typeof(AutoSaveDirector))]
 public static class EnsureAutoSaveDirectorData
 {
-    public static bool IsAutoSave;
+    public static bool IsAutoSave => _isAutoSave;
 
-    [HarmonyPatch(nameof(AutoSaveDirector.SaveAllNow)), UsedImplicitly]
-    public static void Prefix() => IsAutoSave = true;
+    private static bool _isAutoSave;
 
-    [HarmonyPatch(nameof(AutoSaveDirector.SaveGame)), UsedImplicitly]
-    public static void Postfix() => IsAutoSave = false;
+    [HarmonyPatch(nameof(AutoSaveDirector.SaveAllNow))]
+    public static void Prefix() => _isAutoSave = true;
+
+    [HarmonyPatch(nameof(AutoSaveDirector.SaveGame))]
+    public static void Postfix() => _isAutoSave = false;
 }
 
-[HarmonyPatch(typeof(ResourceBundle), nameof(ResourceBundle.LoadFromText)), UsedImplicitly]
+[HarmonyPatch(typeof(ResourceBundle), nameof(ResourceBundle.LoadFromText))]
 public static class LatchCustomTranslations
 {
-    [UsedImplicitly]
     public static void Postfix(string path, Dictionary<string, string> __result)
     {
         if (!GameContext.Instance.MessageDirector.GetCultureLang().GetTranslations().TryGetValue(path, out var translations))
@@ -85,17 +84,15 @@ public static class LatchCustomTranslations
     }
 }
 
-[HarmonyPatch(typeof(MessageDirector), nameof(MessageDirector.Awake)), UsedImplicitly]
+[HarmonyPatch(typeof(MessageDirector), nameof(MessageDirector.Awake))]
 public static class HookLanguageLoading
 {
-    [UsedImplicitly]
     public static void Prefix(MessageDirector __instance) => Translator.MessageDirectorHook(__instance);
 }
 
-[HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake)), UsedImplicitly]
+[HarmonyPatch(typeof(ExchangeDirector), nameof(ExchangeDirector.Awake))]
 public static class FilterValues
 {
-    [UsedImplicitly]
     public static void Postfix(ExchangeDirector __instance)
     {
         __instance.catDict[Category.PLORTS] = [.. __instance.catDict[Category.PLORTS].Except(x => Slimepedia.PlortDataMap.TryGetValue(x, out var value) && !value.Exchangeable)];
@@ -103,20 +100,20 @@ public static class FilterValues
     }
 }
 
-[HarmonyPatch(typeof(StalkConsumable)), UsedImplicitly]
+[HarmonyPatch(typeof(StalkConsumable))]
 public static class StalkConsumablePatch
 {
-    [HarmonyPatch(nameof(StalkConsumable.SetStealth)), UsedImplicitly]
+    [HarmonyPatch(nameof(StalkConsumable.SetStealth))]
     public static void Postfix(StalkConsumable __instance, bool isStealthed)
     {
         if (__instance.TryGetComponent<StealthFixer>(out var fixer))
             fixer.SetStealth(isStealthed);
     }
 
-    [HarmonyPatch(nameof(StalkConsumable.ProcessCollisionEnter)), UsedImplicitly]
+    [HarmonyPatch(nameof(StalkConsumable.ProcessCollisionEnter))]
     public static bool Prefix(StalkConsumable __instance, Collision col)
     {
-        if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.GetComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player)
+        if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.HasComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player)
         {
             var vector = col.gameObject.transform.InverseTransformPoint(col.contacts[0].point);
 

@@ -9,6 +9,16 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
 
     // public static readonly Orientation Identity = new(Vector3.zero, Vector3.zero, Vector3.one);
 
+    // public Orientation() : this(Vector3.zero, Vector3.zero, Vector3.one) { } // Avoids the scales making things disappear
+
+    // public Orientation(Transform t) : this(t.position, t.eulerAngles, t.localScale) { }
+
+    // public Orientation(Vector3 pos) : this(pos, Vector3.zero, Vector3.one) { }
+
+    // public Orientation(Vector3 pos, Quaternion rot) : this(pos, rot.eulerAngles, Vector3.one) { }
+
+    // public Orientation(Vector3 pos, Quaternion rot, Vector3 scale) : this(pos, rot.eulerAngles, scale) { }
+
 #if DEBUG
     public Orientation(Vector3 pos, Vector3 rot) : this(pos, rot, Vector3.one) { }
 #endif
@@ -50,17 +60,19 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
     //     }
     // }
 
-    public override readonly bool Equals(object obj) => obj is Orientation orientation && Equals(orientation);
-
-    public readonly bool Equals(Orientation other) => Position.Equals(other.Position) && Rotation.Equals(other.Rotation) && Scale.Equals(other.Scale);
-
-    public override readonly int GetHashCode() => Position.GetHashCode() ^ (Rotation.GetHashCode() << 2) ^ (Scale.GetHashCode() >> 2); // Mimics the Vector3 hash code calculation with x, y and z components
-
-    public override readonly string ToString() => $"Position: {Position}, Rotation: {Rotation}, Scale: {Scale}";
+    // public static implicit operator Orientation(Transform t) => new(t);
 
     public static bool operator ==(Orientation left, Orientation right) => left.Equals(right);
 
     public static bool operator !=(Orientation left, Orientation right) => !(left == right);
+
+    public override readonly bool Equals(object obj) => obj is Orientation orientation && Equals(orientation);
+
+    public readonly bool Equals(Orientation other) => Position.Equals(other.Position) && Rotation.Equals(other.Rotation) && Scale.Equals(other.Scale);
+
+    public override readonly string ToString() => $"Position: {Position}, Rotation: {Rotation}, Scale: {Scale}";
+
+    public override readonly int GetHashCode() => Position.GetHashCode() ^ (Rotation.GetHashCode() << 5) ^ (Scale.GetHashCode() >> 2); // Mimics the Vector3 hash code calculation with x, y and z components
 
     // public readonly Orientation WithPosition(Vector3 newPosition) => new(newPosition, Rotation, Scale);
 
@@ -71,6 +83,24 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
     // public readonly Orientation WithScale(Vector3 newScale) => new(Position, Rotation, newScale);
 
     // public readonly Quaternion ToQuaternion() => Quaternion.Euler(Rotation);
+
+    // public readonly void SetTransform(Transform t, bool worldSpace = true)
+    // {
+    //     if (worldSpace)
+    //     {
+    //         t.position = Position;
+    //         t.eulerAngles = Rotation;
+    //     }
+    //     else
+    //     {
+    //         t.localPosition = Position;
+    //         t.localEulerAngles = Rotation;
+    //     }
+
+    //     t.localScale = Scale; // Can't really do world scale easily, but the general use case is local scale anyways
+    // }
+
+    // public static Orientation Lerp(Orientation a, Orientation b, float t) => new(Vector3.Lerp(a.Position, b.Position, t), ClampAngles(LerpAngle(a.Rotation, b.Rotation, t)), Vector3.Lerp(a.Scale, b.Scale, t));
 
     // public readonly void Deconstruct(out Vector3 position, out Vector3 rotation, out Vector3 scale)
     // {
@@ -86,4 +116,6 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
         var clampedAngle = angle % 360f;
         return clampedAngle < 0 ? clampedAngle + 360f : clampedAngle;
     }
+
+    // private static Vector3 LerpAngle(Vector3 a, Vector3 b, float t) => new(Mathf.LerpAngle(a.x, b.x, t), Mathf.LerpAngle(a.y, b.y, t), Mathf.LerpAngle(a.z, b.z, t));
 }

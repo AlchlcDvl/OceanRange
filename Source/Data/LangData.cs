@@ -72,12 +72,15 @@ public sealed class Translations : JsonData
 
         Translator.BeginGatherPass();
 
-        foreach (var (bundleName, values) in AdditionalExotic)
+        if (AdditionalExotic != null)
         {
-            var keyValues = TranslatedTexts.GetBundle(bundleName);
+            foreach (var (bundleName, values) in AdditionalExotic)
+            {
+                var keyValues = TranslatedTexts.GetBundle(bundleName);
 
-            foreach (var (id, translatedText) in values)
-                keyValues.AddTranslation(id, translatedText, bundleName);
+                foreach (var (id, translatedText) in values)
+                    keyValues.AddTranslation(id, translatedText, bundleName);
+            }
         }
 
         foreach (var langData in LangDatas)
@@ -208,7 +211,7 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
 
     [JsonRequired] public string Intro;
 
-    protected override sealed void OnDeserialise()
+    protected sealed override void OnDeserialise()
     {
         var mainPart = Name.ToUpperInvariant() + (Suffix?.Length is > 0 ? ("_" + Suffix) : string.Empty);
 
@@ -322,7 +325,7 @@ public abstract class FoodLangData(string suffix) : ResourceLangData(suffix)
 {
     [JsonRequired] public string FavouredBy;
 
-    public override sealed void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+    public sealed override void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
     {
         base.AddTranslations(translations, lang);
         translations.GetBundle("pedia").AddTranslation("m.favored_by." + PediaKey, FavouredBy, "pedia");

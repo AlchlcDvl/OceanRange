@@ -1,9 +1,10 @@
+using System.Runtime.CompilerServices;
+
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(SlimeRandomMove), nameof(SlimeRandomMove.Action)), UsedImplicitly]
+[HarmonyPatch(typeof(SlimeRandomMove), nameof(SlimeRandomMove.Action))]
 public static class StopMoving
 {
-    [UsedImplicitly]
     public static bool Prefix(SlimeRandomMove __instance, ref (float, float) __state)
     {
         __state = (__instance.scootSpeedFactor, __instance.verticalFactor);
@@ -23,15 +24,14 @@ public static class StopMoving
         return true;
     }
 
-    [UsedImplicitly]
     public static void Postfix(SlimeRandomMove __instance, ref (float, float) __state) => (__instance.scootSpeedFactor, __instance.verticalFactor) = __state;
 }
 
-[HarmonyPatch(typeof(GotoConsumable)), HarmonyPatch(typeof(SlimeHover)), UsedImplicitly]
+[HarmonyPatch]
 public static class StopMovingTowardsFoodOrFlying
 {
-    [HarmonyPatch("Relevancy"), UsedImplicitly]
-    public static bool Prefix(SlimeSubbehaviour __instance, ref float __result)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool CommonPrefix(SlimeSubbehaviour __instance, ref float __result)
     {
         if (!__instance.TryGetComponent<CanMoveHandler>(out var canMove) || canMove.CanMove)
             return true;
@@ -39,4 +39,10 @@ public static class StopMovingTowardsFoodOrFlying
         __result = 0f;
         return false;
     }
+
+    [HarmonyPatch(typeof(GotoConsumable), nameof(SlimeHover.Relevancy))]
+    private static bool Prefix(GotoConsumable __instance, ref float __result) => CommonPrefix(__instance, ref __result);
+
+    [HarmonyPatch(typeof(SlimeHover), nameof(SlimeHover.Relevancy))]
+    private static bool Prefix(SlimeHover __instance, ref float __result) => CommonPrefix(__instance, ref __result);
 }

@@ -1,9 +1,8 @@
 // namespace OceanRange.Patches;
 //
-// [HarmonyPatch(typeof(ZoneDirector), nameof(ZoneDirector.GetRegionSetId)), UsedImplicitly]
+// [HarmonyPatch(typeof(ZoneDirector), nameof(ZoneDirector.GetRegionSetId))]
 // public static class SetModdedRegionId
 // {
-//     [UsedImplicitly]
 //     public static bool Prefix(ref RegionId __result, Zone zone)
 //     {
 //         var isModded = Atlas.ZoneToDataMap.TryGetValue(zone, out var data);
@@ -15,10 +14,9 @@
 //     }
 // }
 //
-// [HarmonyPatch(typeof(PlayerZoneTracker), nameof(PlayerZoneTracker.OnEntered)), UsedImplicitly]
+// [HarmonyPatch(typeof(PlayerZoneTracker), nameof(PlayerZoneTracker.OnEntered))]
 // public static class ShowZonePediaPopUp
 // {
-//     [UsedImplicitly]
 //     public static void Postfix(PlayerZoneTracker __instance, Zone zone)
 //     {
 //         if (Atlas.ZoneToDataMap.TryGetValue(zone, out var data))

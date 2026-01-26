@@ -14,12 +14,12 @@ public static class Cookbook
     /// <summary>
     /// The array containing all fruit related data.
     /// </summary>
-    private static PlantData[] Fruits;
+    private static FruitData[] Fruits;
 
     /// <summary>
     /// The array containing all veggie related data.
     /// </summary>
-    private static PlantData[] Veggies;
+    private static VeggieData[] Veggies;
 
     private static bool StmExists; // Mod check flag
 
@@ -261,7 +261,7 @@ public static class Cookbook
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, id);
         LookupRegistry.RegisterVacEntry(id, ammo, icon);
-        PediaRegistry.RegisterIdEntry(Helpers.ParseEnum<PediaId>(id.ToString() + "_ENTRY"), icon);
+        PediaRegistry.RegisterIdEntry(Helpers.ParseEnum<PediaId>(id + "_ENTRY"), icon);
         AmmoRegistry.RegisterSiloAmmo(siloStorage.Contains, id);
 
         if (exchangeWeight != -1)

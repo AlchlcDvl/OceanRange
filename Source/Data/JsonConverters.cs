@@ -17,7 +17,7 @@ public abstract class OceanJsonConverter : JsonConverter
     protected virtual bool CustomSerialisation => false;
 
     /// <inheritdoc/>
-    public override sealed object ReadJson(JsonReader reader, Type objectType, [AllowNull] object _1, JsonSerializer _2)
+    public sealed override object ReadJson(JsonReader reader, Type objectType, [AllowNull] object _1, JsonSerializer _2)
     {
         if (reader.TokenType == JsonToken.Null)
             return null;
@@ -33,7 +33,7 @@ public abstract class OceanJsonConverter : JsonConverter
     }
 
     /// <inheritdoc/>
-    public override sealed void WriteJson(JsonWriter writer, [AllowNull] object value, JsonSerializer _)
+    public sealed override void WriteJson(JsonWriter writer, [AllowNull] object value, JsonSerializer _)
     {
         if (value == null)
             writer.WriteNull();
@@ -73,10 +73,10 @@ public abstract class OceanJsonConverter : JsonConverter
 public abstract class OceanJsonConverter<T> : OceanJsonConverter
 {
     /// <inheritdoc/>
-    public override sealed bool CanConvert(Type objectType) => typeof(T).IsAssignableFrom(objectType) || objectType.IsNullableOf<T>();
+    public sealed override bool CanConvert(Type objectType) => typeof(T).IsAssignableFrom(objectType) || objectType.IsNullableOf<T>();
 
     /// <inheritdoc/>
-    protected override sealed string ToValueString(object value)
+    protected sealed override string ToValueString(object value)
     {
         if (value is T tValue)
             return ToValueString(tValue);
@@ -85,10 +85,10 @@ public abstract class OceanJsonConverter<T> : OceanJsonConverter
     }
 
     /// <inheritdoc/>
-    protected override sealed object ParseFromJson(JsonReader reader, Type _) => ParseFromJson(reader);
+    protected sealed override object ParseFromJson(JsonReader reader, Type _) => ParseFromJson(reader);
 
     /// <inheritdoc/>
-    protected override sealed void WriteJson(JsonWriter writer, [AllowNull] object value)
+    protected sealed override void WriteJson(JsonWriter writer, [AllowNull] object value)
     {
         if (value is T tValue)
             WriteJson(writer, tValue);
@@ -168,7 +168,7 @@ public abstract class MultiComponentConverter<TValue, TComponent>(string format,
     }
 
     /// <inheritdoc/>
-    protected override sealed TValue ParseFromJson(JsonReader reader)
+    protected sealed override TValue ParseFromJson(JsonReader reader)
     {
         var valString = reader.Value?.ToString() ?? "null";
 
@@ -305,7 +305,7 @@ public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentCon
     }
 
     /// <inheritdoc/>
-    protected override sealed bool ParseOtherFormat(string valString, out TColor result) => valString.StartsWith('#') ? TryParseHtmlColor(valString, out result) :  base.ParseOtherFormat(valString, out result);
+    protected sealed override bool ParseOtherFormat(string valString, out TColor result) => valString.StartsWith('#') ? TryParseHtmlColor(valString, out result) :  base.ParseOtherFormat(valString, out result);
 }
 
 /// <summary>
@@ -352,7 +352,7 @@ public sealed class EnumConverter : OceanJsonConverter
     {
         JsonToken.Null when partOfArray => null, // Only check null when in an array, because normal null values are handled outside this method
         JsonToken.String when Helpers.TryParseEnum(enumType, reader.Value!.ToString() , true, out var parsed) => parsed, // Attempt to parse the string, make sure to use this arm
-        JsonToken.String when reader.Value is string name && name.StartsWith('+') => Helpers.AddEnumValue(name, enumType), // Attempt to use the string as a new enum value, alternative use of strings
+        JsonToken.String when reader.Value is string name && name.StartsWith('+') => Helpers.ParseOrAddEnumValue(name, enumType), // Attempt to use the string as a new enum value, alternative use of strings
         JsonToken.Integer => Enum.ToObject(enumType, Convert.ToUInt64(reader.Value)), // Avoid adding numbers, they're hard to understand in JSON when you don't have access to the relevant enum
         _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {enumType.Name}. Expected {(partOfArray ? "a valid array of defined strings or ints, " : string.Empty)}a defined string or an integer.") // Throw an error if an unsupported value type is given
     };

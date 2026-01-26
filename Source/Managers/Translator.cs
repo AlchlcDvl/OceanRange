@@ -26,11 +26,13 @@ public static class Translator
     [TimeDiagnostic("Pedia Preload")]
 #endif
     [PreloadMethod, UsedImplicitly]
-    public static void PreloadLangData()
-    {
-        Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
-        GameContext.Instance.DLCDirector.onPackageInstalled += HandleDefaultExotics;
-    }
+    public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
+
+#if DEBUG
+    [TimeDiagnostic("Pedia Load")]
+#endif
+    [LoadMethod, UsedImplicitly]
+    public static void LoadLangData() => GameContext.Instance.DLCDirector.onPackageInstalled += HandleDefaultExotics;
 
     public static void MessageDirectorHook(MessageDirector __instance)
     {

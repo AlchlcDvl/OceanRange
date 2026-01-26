@@ -1,56 +1,56 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <AssemblyName>OceanRange</AssemblyName>
-        <RootNamespace>OceanRange</RootNamespace>
-        <TargetFramework>net4.7.2</TargetFramework>
-        <Version>0.3.0</Version>
-        <DebugType>none</DebugType>
-        <DebugSymbols>true</DebugSymbols>
-        <LangVersion>preview</LangVersion>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Authors>TheRanchExchange</Authors>
-        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-        <EnableDynamicLoading>true</EnableDynamicLoading>
-        <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-        <Description>Dive into the slime sea!</Description>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
-        <Configurations>Debug;Release;Unity</Configurations>
-        <PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
-    </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>OceanRange</AssemblyName>
+    <RootNamespace>OceanRange</RootNamespace>
+    <TargetFramework>net4.7.2</TargetFramework>
+    <Version>0.3.0</Version>
+    <DebugType>none</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <LangVersion>preview</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Authors>TheRanchExchange</Authors>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <Description>Dive into the slime sea!</Description>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <Configurations>Debug;Release;Unity</Configurations>
+    <PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="$(Configuration)==Unity">
-        <DefineConstants>UNITY</DefineConstants>
-    </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration)==Unity">
+    <DefineConstants>UNITY</DefineConstants>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="$(Configuration)==Release">
-        <Optimize>true</Optimize>
-    </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration)==Release">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <Reference Include="../Libs/*.dll" />
-    </ItemGroup>
+  <ItemGroup>
+    <Reference Include="../Libs/*.dll" />
+  </ItemGroup>
 
-    <ItemGroup Condition="$(Configuration)!=Unity">
-        <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="all" ExcludeAssets="runtime" />
-        <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
-        <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
-        <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
+  <ItemGroup Condition="$(Configuration)!=Unity">
+    <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
 
-        <EmbeddedResource Include="Resources\*" />
-        <EmbeddedResource Include="Resources\*\*" />
-        <EmbeddedResource Include="Resources\*\*\*" />
+    <EmbeddedResource Include="Resources\*" />
+    <EmbeddedResource Include="Resources\*\*" />
+    <EmbeddedResource Include="Resources\*\*\*" />
 
-        <EmbeddedResource Remove="Resources\Data\atlas.json" />
+    <EmbeddedResource Remove="Resources\Data\atlas.json" />
 
-        <Publicize Include="Assembly-CSharp" IncludeCompilerGeneratedMembers="false" />
-        <Publicize Include="UnityEngine.CoreModule" />
-    </ItemGroup>
+    <Publicize Include="Assembly-CSharp" IncludeCompilerGeneratedMembers="false" />
+    <Publicize Include="UnityEngine.CoreModule" />
+  </ItemGroup>
 
-    <ItemGroup Condition="$(Configuration)==Unity">
-        <Compile Remove="**\*.cs" />
+  <ItemGroup Condition="$(Configuration)==Unity">
+    <Compile Remove="**\*.cs" />
 
-        <Compile Include="Unity\*.cs" />
-    </ItemGroup>
+    <Compile Include="Unity\*.cs" />
+  </ItemGroup>
 
-    <Import Project="../SlimeRancher.props" />
+  <Import Project="../SlimeRancher.props" />
 </Project>

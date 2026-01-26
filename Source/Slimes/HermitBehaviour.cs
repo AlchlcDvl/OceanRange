@@ -6,9 +6,9 @@ namespace OceanRange.Slimes;
 
 public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participant
 {
-    private CalmedByWaterSpray Calmed;
-    private SlimeAppearanceApplicator Applicator;
-    private bool Hiding;
+    private CalmedByWaterSpray calmed;
+    private SlimeAppearanceApplicator applicator;
+    private bool hiding;
 
     public CanMoveHandler CanMove;
     public float Affection;
@@ -19,8 +19,8 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
     public override void Awake()
     {
         base.Awake();
-        Calmed = GetComponent<CalmedByWaterSpray>();
-        Applicator = GetComponent<SlimeAppearanceApplicator>();
+        calmed = GetComponent<CalmedByWaterSpray>();
+        applicator = GetComponent<SlimeAppearanceApplicator>();
         CanMove = this.EnsureComponent<CanMoveHandler>();
     }
 
@@ -30,7 +30,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
     public override float Relevancy(bool _)
     {
-        if (Calmed.IsCalmed() || Affection >= 1f || Hiding || !CanMove.CanMove)
+        if (calmed.IsCalmed() || Affection >= 1f || hiding || !CanMove.CanMove)
             return 0f;
 
         var range = Mathf.Lerp(MaxShyRange, MinShyRange, Affection);
@@ -43,13 +43,13 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
     public override void Selected()
     {
-        if (!Hiding)
+        if (!hiding)
             StartCoroutine(CoHideInShell());
     }
 
     private IEnumerator CoHideInShell()
     {
-        Hiding = true;
+        hiding = true;
         CanMove.CanMove = false;
 
         var player = SceneContext.Instance.Player.transform;
@@ -57,11 +57,11 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
         while ((player.position - transform.position).sqrMagnitude <= range)
         {
-            Applicator.SetExpression(SlimeExpression.Alarm);
+            applicator.SetExpression(SlimeExpression.Alarm);
             yield return null;
         }
 
-        Hiding = false;
+        hiding = false;
         CanMove.CanMove = true;
     }
 }

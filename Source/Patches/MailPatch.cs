@@ -1,25 +1,23 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(TimeDirector), nameof(TimeDirector.LateUpdate)), UsedImplicitly]
+[HarmonyPatch(typeof(TimeDirector), nameof(TimeDirector.LateUpdate))]
 public static class FixAndProperlyShowMailPatch
 {
-    public static bool IsLoaded;
+    public static bool IsLoaded { set => _isLoaded = value; }
 
-    [UsedImplicitly]
+    private static bool _isLoaded;
+
     public static void Postfix(TimeDirector __instance)
     {
-        if (!IsLoaded)
+        if (!_isLoaded || Time.frameCount % 15 != 0)
             return;
 
         var time = __instance.WorldTime();
 
         foreach (var mail in Mailbox.Mail)
         {
-            if (!mail.ShouldUnlock(time))
-                continue;
-
-            mail.Sent = true;
-            SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
+            if (mail.ShouldUnlock(time))
+                mail.Sent = SceneContext.Instance.MailDirector.SendMailIfExists(MailDirector.Type.PERSONAL, mail.Id);
         }
     }
 }

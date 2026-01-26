@@ -9,11 +9,11 @@ charset = utf-8
 end_of_line = lf
 insert_final_newline = false
 
-[*.json]
+[*.{json,xml,csproj}]
 indent_size = 2
 
 # Dotnet code style settings:
-[*.{cs,vb}]
+[*.cs]
 indent_size = 4
 
 dotnet_separate_import_directive_groups = false
@@ -84,10 +84,6 @@ dotnet_naming_symbols.any_async_methods.required_modifiers = async
 dotnet_naming_style.end_in_async.required_suffix = Async
 dotnet_naming_style.end_in_async.capitalization = pascal_case
 
-# IDE0130: Namespace does not match folder structure
-dotnet_diagnostic.IDE0130.severity = none
-
-[*.cs]
 csharp_new_line_before_open_brace = all
 csharp_new_line_before_else = true
 csharp_new_line_before_catch = true
@@ -168,3 +164,12 @@ dotnet_diagnostic.IDE0002.severity = warning
 
 # RCS1194: Implement exception constructors
 dotnet_diagnostic.RCS1194.severity = none
+
+# IDE0370: Remove unnecessary suppression
+dotnet_diagnostic.IDE0370.severity = none
+
+# RCS1181: Convert comment to documentation comment
+dotnet_diagnostic.RCS1181.severity = none
+
+# IDE0130: Namespace does not match folder structure
+dotnet_diagnostic.IDE0130.severity = none

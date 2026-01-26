@@ -1,9 +1,8 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(DamagePlayerOnTouch), nameof(DamagePlayerOnTouch.OnControllerCollision)), UsedImplicitly]
+[HarmonyPatch(typeof(DamagePlayerOnTouch), nameof(DamagePlayerOnTouch.OnControllerCollision))]
 public static class CocoDamageRegisterPatch
 {
-    [UsedImplicitly]
     public static bool Prefix(DamagePlayerOnTouch __instance, GameObject gameObj)
     {
         if (!__instance.TryGetComponent<CocoBehaviour>(out var coco))

@@ -193,7 +193,7 @@ public static class Helpers
         gordo.name = gordo.name.Replace("(Clone)", string.Empty).Trim();
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs, IdentifiableId.KEY.GetPrefab()];
 
-        if (GordoSaveDataV02.Lookup.TryGetValue(slimeData.GordoId, out var popped) && popped)
+        if (GordoSaveData.Lookup.TryGetValue(slimeData.GordoId, out var popped) && popped)
             gordo.SetActive(false);
     }
 
@@ -235,17 +235,21 @@ public static class Helpers
     private static readonly HashSet<IdentifiableId> IdentifiableIds = new(Identifiable.idComparer);
     // private static readonly HashSet<GadgetId> GadgetIds = new(Gadget.idComparer);
 
+    public static T ParseOrAddEnumValue<T>(string name) where T : struct, Enum => Enum.TryParse<T>(name, out var result) ? result : AddEnumValue<T>(name);
+
     public static T AddEnumValue<T>(string name) where T : struct, Enum => (T)AddEnumValue(name, typeof(T));
 
-    public static object AddEnumValue(string name, Type enumType)
-    {
-        if (TryParseEnum(enumType, name, true, out var result))
-            return result;
+    public static object ParseOrAddEnumValue(string name, Type enumType) => TryParseEnum(enumType, name, true, out var result) ? result : AddEnumValue(name, enumType);
 
+    public static object AddEnumValue(string name, Type enumType) => AddEnumValue(name, enumType, EnumPatcher.GetFirstFreeValue(enumType));
+
+    public static T AddEnumValue<T>(string name, T value) where T : struct, Enum => (T)AddEnumValue(name, typeof(T), value);
+
+    public static object AddEnumValue(string name, Type enumType, object value)
+    {
         if (SRModLoader.CurrentLoadingStep > SRModLoader.LoadingStep.PRELOAD)
             throw new InvalidOperationException("Can't add enums outside of the Preload step");
 
-        var value = EnumPatcher.GetFirstFreeValue(enumType);
         EnumPatcher.AddEnumValueWithAlternatives(enumType, value, name);
 
         switch (value)
@@ -514,6 +518,8 @@ public static class Helpers
         // }
 
         public T EnsureComponent<T>() where T : Component => component.gameObject.EnsureComponent<T>();
+
+        public bool HasComponent<T>() where T : Component => component.gameObject.HasComponent<T>();
     }
 
     extension(GameObject obj)
@@ -534,7 +540,7 @@ public static class Helpers
             return [.. list];
         }
 
-        private T EnsureComponent<T>() where T : Component => obj.GetComponent<T>() ?? obj.AddComponent<T>();
+        public T EnsureComponent<T>() where T : Component => obj.GetComponent<T>() ?? obj.AddComponent<T>();
     }
 
     extension<T>(MemberInfo info) where T : Attribute
@@ -632,10 +638,10 @@ public static class Helpers
         //         material.SetColor(prop, color);
         // }
 
-        public void SetColor(int nameID, Color? color)
+        public void SetColor(int nameId, Color? color)
         {
             if (color.HasValue)
-                material.SetColor(nameID, color.Value);
+                material.SetColor(nameId, color.Value);
         }
     }
 

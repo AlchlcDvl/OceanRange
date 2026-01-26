@@ -1,9 +1,8 @@
 namespace OceanRange.Patches;
 
-[HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.OnEat)), UsedImplicitly]
+[HarmonyPatch(typeof(SlimeEat), nameof(SlimeEat.OnEat))]
 public static class IncreaseHermitAffection
 {
-    [UsedImplicitly]
     public static void Postfix(SlimeEat __instance, bool isFavorite)
     {
         if (__instance.TryGetComponent<HermitBehaviour>(out var hermit) && hermit.CanMove.CanMove && (hermit.transform.position - SceneContext.Instance.Player.transform.position).sqrMagnitude < 100f)

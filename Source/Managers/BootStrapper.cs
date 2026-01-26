@@ -47,11 +47,10 @@ public static class BootStrapper
             {
                 method.Invoke(null, null);
             }
-            catch (Exception ex)
+            catch
             {
-                var realError = GetTrueException(ex, out var chain);
-                Main.Console.LogError($"{method.DeclaringType?.Name}.{method.Name} failed {chain}: {realError}");
-                throw realError;
+                Main.Console.LogError($"{method.DeclaringType?.Name}.{method.Name} failed:");
+                throw;
             }
         }
     }
@@ -63,17 +62,4 @@ public static class BootStrapper
             SRConsole.RegisterCommand(command);
     }
 #endif
-
-    private static Exception GetTrueException(Exception ex, out string chain)
-    {
-        chain = ex.GetType().Name;
-
-        while (ex.InnerException != null)
-        {
-            ex = ex.InnerException;
-            chain += " -> " + ex.GetType().Name;
-        }
-
-        return ex;
-    }
 }

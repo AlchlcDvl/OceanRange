@@ -59,7 +59,7 @@ public sealed class SaveWriter : IDisposable
     public void WriteString(string value) => _writer.Write(value ?? string.Empty);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteEnum<T>(T value) where T : struct, Enum => SaveWriterDels.Enum<T>.Func(this, value);
+    public void WriteEnum<T>(T value) where T : struct, Enum => _writer.Write(value.ToString());
 
     // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     // public void WriteVector3(Vector3 value)
@@ -111,8 +111,6 @@ public sealed class SaveWriter : IDisposable
     {
         _writer.Dispose();
         _stream.Dispose();
-        // ReSharper disable once GCSuppressFinalizeForTypeWithoutDestructor
-        GC.SuppressFinalize(this);
     }
 
     public ulong[] ToArray(out byte padding)
@@ -194,7 +192,7 @@ public sealed class SaveReader : IDisposable
     public bool ReadBool() => _reader.ReadBoolean();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public T ReadEnum<T>() where T : struct, Enum => SaveReaderDels.Enum<T>.Func(this);
+    public T ReadEnum<T>() where T : struct, Enum => Helpers.ParseEnum<T>(_reader.ReadString());
 
     // public bool ReadPackedBool()
     // {
@@ -219,7 +217,5 @@ public sealed class SaveReader : IDisposable
     {
         _reader.Dispose();
         _stream.Dispose();
-        // ReSharper disable once GCSuppressFinalizeForTypeWithoutDestructor
-        GC.SuppressFinalize(this);
     }
 }

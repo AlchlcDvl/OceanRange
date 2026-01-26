@@ -12,6 +12,12 @@ public sealed class ModelData() : JsonData
         MatData = data.MatData;
         MeshData = data.MeshData;
     }
+
+    protected override void OnDeserialise()
+    {
+        MatData ??= new();
+        MeshData ??= new();
+    }
 }
 
 public sealed class MatData : JsonData
@@ -57,7 +63,7 @@ public sealed class MatData : JsonData
     private const string Top = "TopColor";
     private static readonly int TopLength = Top.Length;
 
-    private static readonly List<string> _tempKeys = [];
+    private static readonly List<string> TempKeys = [];
 
     protected override void OnDeserialise()
     {
@@ -69,15 +75,15 @@ public sealed class MatData : JsonData
             return;
         }
 
-        _tempKeys.Clear();
+        TempKeys.Clear();
 
         foreach (var key in ColorPropsJson.Keys)
         {
             if (key.EndsWith(Top, StringComparison.Ordinal))
-                _tempKeys.Add(key);
+                TempKeys.Add(key);
         }
 
-        foreach (var prop in _tempKeys)
+        foreach (var prop in TempKeys)
         {
             var baseName = prop.Substring(0, prop.Length - TopLength);
             var color = ColorPropsJson[prop];
@@ -90,7 +96,7 @@ public sealed class MatData : JsonData
                 ColorPropsJson[bottomKey] = middleColor;
         }
 
-        _tempKeys.Clear();
+        TempKeys.Clear();
 
         foreach (var kvp in ColorPropsJson)
             ColorProps[ShaderUtils.GetOrSet(kvp.Key)] = kvp.Value;

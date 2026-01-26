@@ -76,7 +76,6 @@ public static class Slimepedia
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
-        GameContext.Instance.DLCDirector.onPackageInstalled += HandleSecretStyles;
     }
 
     private static void HandleSecretStyles(Id id)
@@ -142,18 +141,15 @@ public static class Slimepedia
     [LoadMethod, UsedImplicitly]
     public static void LoadAllSlimes()
     {
+        GameContext.Instance.DLCDirector.onPackageInstalled += HandleSecretStyles;
+
         RocksPrefab = IdentifiableId.ROCK_PLORT.GetPrefab().transform.Find("rocks");
 
         var pinkAppearance = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0];
 
-        var blink = pinkAppearance.Face._expressionToFaceLookup[SlimeExpression.Blink];
-        Sleeping = new()
-        {
-            SlimeExpression = Ids.Sleeping,
-            Eyes = blink.Eyes?.Clone(),
-            Mouth = blink.Mouth?.Clone()
-        };
-        Sleeping.Eyes?.SetTexture(FaceAtlas, Inventory.GetTexture2D("sleeping_eyes"));
+        Sleeping = pinkAppearance.Face._expressionToFaceLookup[SlimeExpression.Blink].Clone();
+        Sleeping.SlimeExpression = Ids.Sleeping;
+        Sleeping.Eyes.SetTexture(FaceAtlas, Inventory.GetTexture2D("sleeping_eyes"));
 
         // CachedElements["slime_default_1.000"] = BaseElement = pinkAppearance.Structures[0].Element;
 
@@ -202,7 +198,7 @@ public static class Slimepedia
 
         var identifiable = prefab.GetComponent<GordoIdentifiable>();
         identifiable.id = slimeData.GordoId;
-        identifiable.nativeZones = !slimeData.NaturalGordoSpawn ? Helpers.GetEnumValues<Zone>() : [slimeData.GordoZone];
+        identifiable.nativeZones = slimeData.NaturalGordoSpawn ? [slimeData.GordoZone] : Helpers.GetEnumValues<Zone>();
 
         var gordoEat = prefab.GetComponent<GordoEat>();
         var gordoDefinition = gordoEat.slimeDefinition.DeepCopy();
@@ -288,7 +284,7 @@ public static class Slimepedia
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
-        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.NormalAppearance.PlortAmmoColor.Value, icon);
+        LookupRegistry.RegisterVacEntry(slimeData.PlortId, slimeData.NormalAppearance.PlortAmmoColor!.Value, icon);
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
@@ -575,7 +571,7 @@ public static class Slimepedia
             isModified = false;
         }
         else if (matData.MatOrigin.HasValue)
-            material = GetMat(matData.MatOrigin.Value, matData.MatSameAs);
+            material = GetMat(matData.MatOrigin.Value, matData.MatSameAs, matData.UseSSMat);
         else if (matData.SameAs.HasValue && !mainMatData.IsNullOrEmpty())
             material = mainMatData[matData.SameAs.Value].MatData.CachedMaterial;
         else
@@ -591,10 +587,13 @@ public static class Slimepedia
         return material;
     }
 
-    private static Material GetMat(IdentifiableId source, int? index)
+    private static Material GetMat(IdentifiableId source, int? index, bool useSS)
     {
         if (Identifiable.IsSlime(source))
-            return source.GetSlimeDefinition().AppearancesDefault[0].Structures[index ?? 0].DefaultMaterials[0];
+        {
+            var def = source.GetSlimeDefinition();
+            return (useSS && SsExists ? def.GetAppearanceForSet(SlimeAppearance.AppearanceSaveSet.SECRET_STYLE) : def.AppearancesDefault[0]).Structures[index ?? 0].DefaultMaterials[0];
+        }
 
         var prefab = source.GetPrefab();
         return (prefab.GetComponent<MeshRenderer>() ?? prefab.GetComponentInChildren<MeshRenderer>()).sharedMaterials[index ?? 0];
@@ -604,7 +603,7 @@ public static class Slimepedia
     {
         if (matData.ColorsOrigin.HasValue)
         {
-            var temp = GetMat(matData.ColorsOrigin.Value, matData.ColorsSameAs);
+            var temp = GetMat(matData.ColorsOrigin.Value, matData.ColorsSameAs, matData.UseSSMat);
 
             if (temp.HasProperty(TopColor))
                 matData.ColorProps[matData.InvertColorOriginColors ? BottomColor : TopColor] = temp.GetColor(TopColor);
@@ -753,7 +752,7 @@ public static class Slimepedia
 
             foreach (var appearanceObject in structure.Element.Prefabs)
             {
-                if (!appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
+                if (!appearanceObject || !appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                     continue;
 
                 appearanceObject.AttachedBones = AttachedBones;

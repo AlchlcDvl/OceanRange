@@ -6,8 +6,6 @@ public abstract class JsonData
 {
     public string Name;
 
-    protected JsonData() { }
-
     protected virtual void OnDeserialise() { }
 
     [OnDeserialized]

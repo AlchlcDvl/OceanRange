@@ -136,6 +136,18 @@
     {
       "name": "Dirt",
       "foods": ["SILKY_SAND_CRAFT"]
+    },
+    {
+      "name": "Meat",
+      "foods": ["RADIANT_HEN", "SANDY_HEN"]
+    },
+    {
+      "name": "Fruit",
+      "foods": ["STICKY_FRUIT", "CORAL_FRUIT"]
+    },
+    {
+      "name": "Veggie",
+      "foods": ["BLOWTATO_VEGGIE"]
     }
   ]
 }

@@ -12,33 +12,33 @@ public sealed class SandBehaviour : SRBehaviour
     private static readonly Vector3 LocalProduceVel = new(0f, 1f, 0f);
     private const float EatRate = 10f;
 
-    private SlimeEmotions Emotions;
-    private SlimeEat SlimeEat;
-    private RegionMember RegionMember;
-    private float NextChompTime;
-    private SlimeAudio SlimeAudio;
-    private bool Eating;
+    private SlimeEmotions emotions;
+    private SlimeEat slimeEat;
+    private RegionMember regionMember;
+    private float nextChompTime;
+    private SlimeAudio slimeAudio;
+    private bool eating;
 
     public void Awake()
     {
-        Emotions = GetComponent<SlimeEmotions>();
-        SlimeEat = GetComponent<SlimeEat>();
-        SlimeAudio = GetComponent<SlimeAudio>();
-        RegionMember = GetComponent<RegionMember>();
+        emotions = GetComponent<SlimeEmotions>();
+        slimeEat = GetComponent<SlimeEat>();
+        slimeAudio = GetComponent<SlimeAudio>();
+        regionMember = GetComponent<RegionMember>();
         ResetEatClock();
     }
 
     public void Update()
     {
-        if (!Eating && Time.time >= NextChompTime && Emotions.GetCurr(SlimeEmotions.Emotion.HUNGER) > SlimeEat.minDriveToEat)
+        if (!eating && Time.time >= nextChompTime && emotions.GetCurr(SlimeEmotions.Emotion.HUNGER) > slimeEat.minDriveToEat)
             StartCoroutine(ProduceAfterDelay(1, 2f));
     }
 
-    private void ResetEatClock() => NextChompTime = Time.time + EatRate;
+    private void ResetEatClock() => nextChompTime = Time.time + EatRate;
 
     private IEnumerator ProduceAfterDelay(int count, float delay)
     {
-        Eating = true;
+        eating = true;
 
         yield return new WaitForSeconds(delay);
 
@@ -53,7 +53,7 @@ public sealed class SandBehaviour : SRBehaviour
             if (ProduceFX)
                 SpawnAndPlayFX(ProduceFX, position, transform.rotation);
 
-            var go = InstantiateActor(PlortPrefab, RegionMember.setId, position, transform.rotation);
+            var go = InstantiateActor(PlortPrefab, regionMember.setId, position, transform.rotation);
 
             if (go.TryGetComponent<Rigidbody>(out var component))
                 component.velocity = velocity;
@@ -64,9 +64,9 @@ public sealed class SandBehaviour : SRBehaviour
             go.transform.DOScale(go.transform.localScale, 0.5f).From(0.001f);
         }
 
-        SlimeAudio.Play(SlimeAudio.slimeSounds.plortCue);
+        slimeAudio.Play(slimeAudio.slimeSounds.plortCue);
         ResetEatClock();
-        Emotions.Adjust(0, 0f - SlimeEat.drivePerEat);
-        Eating = false;
+        emotions.Adjust(0, 0f - slimeEat.drivePerEat);
+        eating = false;
     }
 }

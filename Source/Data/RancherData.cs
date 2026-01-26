@@ -37,7 +37,7 @@ public sealed class RancherData : JsonData
             indivRareRewards = IndivRareRewards ?? []
         };
 
-        var exchange = Helpers.AddEnumValue<ProgressType>("EXCHANGE_" + upper);
+        var exchange = Helpers.AddEnumValue("EXCHANGE_" + upper, ProgressType.EXCHANGE_BOB + 1);
         Mailbox.MailMap["exchangeintro_" + RancherId].UnlockFuncAnd += _ => SceneContext.Instance.ProgressDirector.HasProgress(exchange);
     }
 
