@@ -25,38 +25,38 @@ public sealed class SaveWriter : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteBool(bool value) => _writer.Write(value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteSByte(sbyte value) => _writer.Write(value);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteSByte(sbyte value) => _writer.Write(value);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteByte(byte value) => _writer.Write(value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteShort(short value) => _writer.Write(value);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteShort(short value) => _writer.Write(value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteUShort(ushort value) => _writer.Write(value);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteUShort(ushort value) => _writer.Write(value);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteInt(int value) => _writer.Write(value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteUInt(uint value) => _writer.Write(value);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteUInt(uint value) => _writer.Write(value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteLong(long value) => _writer.Write(value);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteLong(long value) => _writer.Write(value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteULong(ulong value) => _writer.Write(value);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteULong(ulong value) => _writer.Write(value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteFloat(float value) => _writer.Write(value);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteFloat(float value) => _writer.Write(value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteDouble(double value) => _writer.Write(value);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteDouble(double value) => _writer.Write(value);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteString(string value) => _writer.Write(value ?? string.Empty);
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteString(string value) => _writer.Write(value ?? string.Empty);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void WriteEnum<T>(T value) where T : struct, Enum => _writer.Write(value.ToString());
@@ -158,35 +158,35 @@ public sealed class SaveReader : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public byte ReadByte() => _reader.ReadByte();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public sbyte ReadSByte() => _reader.ReadSByte();
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public sbyte ReadSByte() => _reader.ReadSByte();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int ReadInt() => _reader.ReadInt32();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public long ReadLong() => _reader.ReadInt64();
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public long ReadLong() => _reader.ReadInt64();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float ReadFloat() => _reader.ReadSingle();
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public float ReadFloat() => _reader.ReadSingle();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double ReadDouble() => _reader.ReadDouble();
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public double ReadDouble() => _reader.ReadDouble();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public short ReadShort() => _reader.ReadInt16();
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public short ReadShort() => _reader.ReadInt16();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ushort ReadUShort() => _reader.ReadUInt16();
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public ushort ReadUShort() => _reader.ReadUInt16();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public uint ReadUInt() => _reader.ReadUInt32();
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public uint ReadUInt() => _reader.ReadUInt32();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ulong ReadULong() => _reader.ReadUInt64();
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public ulong ReadULong() => _reader.ReadUInt64();
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string ReadString() => _reader.ReadString();
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public string ReadString() => _reader.ReadString();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool ReadBool() => _reader.ReadBoolean();

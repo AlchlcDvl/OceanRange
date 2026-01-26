@@ -81,15 +81,16 @@ public sealed class SlimeData : SpawnedActorData
         Methods.TryGetValue(init + "AppearanceDetails", out InitAppearanceDetails);
 
         HasGordo |= Slimepedia.MgExists && upper == "SAND";
+        NaturalGordoSpawn &= HasGordo;
 
         if (HasGordo)
         {
             GordoId = Helpers.AddEnumValue<IdentifiableId>(upper + "_GORDO");
             Methods.TryGetValue(init + "GordoDetails", out InitGordoDetails);
-        }
 
-        if (NaturalGordoSpawn)
-            NaturalGordoSpawn &= HasGordo;
+            if (NaturalGordoSpawn)
+                GordoSaveDataV02.AddGordo(GordoId);
+        }
 
         NormalAppearance.SetJiggle(Jiggle);
 
@@ -97,9 +98,6 @@ public sealed class SlimeData : SpawnedActorData
         SSAppearance?.IsSS = true;
 
         Vaccable |= Slimepedia.MvExists;
-
-        if (HasGordo && NaturalGordoSpawn)
-            GordoSaveData.Lookup[GordoId] = false;
     }
 
     public void HandleTranslationData(SlimeLangData data) => Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;

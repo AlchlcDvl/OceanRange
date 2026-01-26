@@ -44,24 +44,22 @@ public sealed class MailSaveData : ISaveData
     }
 }
 
-public sealed class GordoSaveData : ISaveData
+public sealed class GordoSaveDataV01 : ISaveData
 {
-    public bool Deprecated => false;
-
-    public static readonly Dictionary<IdentifiableId, bool> Lookup = new(Identifiable.idComparer);
+    public bool Deprecated => true;
 
     public ulong[] Write(out byte padding)
     {
         using var writer = new SaveWriter();
-        writer.WriteInt(Lookup.Count);
+        writer.WriteInt(GordoSaveDataV02.Lookup.Count);
 
-        foreach (var id in Lookup.Keys)
+        foreach (var (id, flag) in GordoSaveDataV02.Lookup)
         {
             writer.WriteEnum(id);
-            writer.WriteBool(Lookup[id]);
+            writer.WriteBool(flag.IsPopped);
 
             if (!EnsureAutoSaveDirectorData.IsAutoSave)
-                Lookup[id] = false;
+                GordoSaveDataV02.Lookup[id].IsPopped = false;
         }
 
         return writer.ToArray(out padding);
@@ -77,8 +75,63 @@ public sealed class GordoSaveData : ISaveData
             var id = reader.ReadEnum<IdentifiableId>();
             var flag = reader.ReadBool();
 
-            if (Lookup.ContainsKey(id))
-                Lookup[id] = flag;
+            if (GordoSaveDataV02.Lookup.ContainsKey(id))
+                GordoSaveDataV02.Lookup[id].IsPopped = flag;
         }
+    }
+}
+
+public sealed class GordoSaveDataV02 : ISaveData
+{
+    public bool Deprecated => false;
+
+    private static readonly Dictionary<byte, IdentifiableId> IdToIdentifier = [];
+    public static readonly Dictionary<IdentifiableId, GordoData> Lookup = new(Identifiable.idComparer);
+
+    public ulong[] Write(out byte padding)
+    {
+        using var writer = new SaveWriter();
+        writer.WriteByte((byte)Lookup.Count);
+
+        foreach (var data in Lookup.Values)
+        {
+            writer.WriteBool(data.IsPopped);
+            writer.WriteByte(data.Identifier);
+
+            if (!EnsureAutoSaveDirectorData.IsAutoSave)
+                data.IsPopped = false;
+        }
+
+        return writer.ToArray(out padding);
+    }
+
+    public void Read(ulong[] data, byte padding)
+    {
+        using var reader = new SaveReader(data, padding);
+        var count = reader.ReadByte();
+
+        while (count-- > 0)
+        {
+            var identifier = reader.ReadByte();
+            var flag = reader.ReadBool();
+
+            if (IdToIdentifier.TryGetValue(identifier, out var id) && Lookup.ContainsKey(id))
+                Lookup[id].IsPopped = flag;
+        }
+    }
+
+    public static void AddGordo(IdentifiableId id)
+    {
+        if (!Lookup.ContainsKey(id))
+            Lookup[id] = new GordoData { IsPopped = false, Identifier = (byte)Lookup.Count };
+
+        if (!IdToIdentifier.ContainsValue(id))
+            IdToIdentifier[Lookup[id].Identifier] = id;
+    }
+
+    public sealed class GordoData
+    {
+        public bool IsPopped;
+        public byte Identifier;
     }
 }

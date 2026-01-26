@@ -53,7 +53,7 @@ public static class EnsureGordoStaysPopped
     public static void Postfix(GordoEat __instance)
     {
         if (__instance.TryGetComponent<GordoIdentifiable>(out var identifiable))
-            GordoSaveData.Lookup[identifiable.id] = true;
+            GordoSaveDataV02.Lookup[identifiable.id].IsPopped = true;
     }
 }
 

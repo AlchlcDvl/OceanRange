@@ -193,7 +193,7 @@ public static class Helpers
         gordo.name = gordo.name.Replace("(Clone)", string.Empty).Trim();
         gordo.GetComponent<GordoEat>().rewards.activeRewards = [.. gordo.GetComponent<GordoRewards>().rewardPrefabs, IdentifiableId.KEY.GetPrefab()];
 
-        if (GordoSaveData.Lookup.TryGetValue(slimeData.GordoId, out var popped) && popped)
+        if (GordoSaveDataV02.Lookup.TryGetValue(slimeData.GordoId, out var popped) && popped.IsPopped)
             gordo.SetActive(false);
     }
 
