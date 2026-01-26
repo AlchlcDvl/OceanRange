@@ -16,6 +16,8 @@ public sealed class RancherData : JsonData
     [JsonIgnore] public RancherName RancherName;
     [JsonIgnore] public ExchangeDirector.Rancher Rancher;
 
+    private static ProgressType ExchangeThreshold = ProgressType.EXCHANGE_BOB;
+
     protected override void OnDeserialise()
     {
         RancherId = Name.ToLowerInvariant();
@@ -37,7 +39,8 @@ public sealed class RancherData : JsonData
             indivRareRewards = IndivRareRewards ?? []
         };
 
-        var exchange = Helpers.AddEnumValue("EXCHANGE_" + upper, ProgressType.EXCHANGE_BOB + 1);
+        ExchangeThreshold++;
+        var exchange = Helpers.AddEnumValue("EXCHANGE_" + upper, ExchangeThreshold);
         Mailbox.MailMap["exchangeintro_" + RancherId].UnlockFuncAnd += _ => SceneContext.Instance.ProgressDirector.HasProgress(exchange);
     }
 

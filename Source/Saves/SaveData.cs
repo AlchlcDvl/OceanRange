@@ -59,7 +59,7 @@ public sealed class GordoSaveDataV01 : ISaveData
             writer.WriteBool(flag.IsPopped);
 
             if (!EnsureAutoSaveDirectorData.IsAutoSave)
-                GordoSaveDataV02.Lookup[id].IsPopped = false;
+                flag.IsPopped = false;
         }
 
         return writer.ToArray(out padding);
@@ -75,8 +75,8 @@ public sealed class GordoSaveDataV01 : ISaveData
             var id = reader.ReadEnum<IdentifiableId>();
             var flag = reader.ReadBool();
 
-            if (GordoSaveDataV02.Lookup.ContainsKey(id))
-                GordoSaveDataV02.Lookup[id].IsPopped = flag;
+            if (GordoSaveDataV02.Lookup.TryGetValue(id, out var value))
+                value.IsPopped = flag;
         }
     }
 }
@@ -112,11 +112,11 @@ public sealed class GordoSaveDataV02 : ISaveData
 
         while (count-- > 0)
         {
-            var identifier = reader.ReadByte();
             var flag = reader.ReadBool();
+            var identifier = reader.ReadByte();
 
-            if (IdToIdentifier.TryGetValue(identifier, out var id) && Lookup.ContainsKey(id))
-                Lookup[id].IsPopped = flag;
+            if (IdToIdentifier.TryGetValue(identifier, out var id) && Lookup.TryGetValue(id, out var value))
+                value.IsPopped = flag;
         }
     }
 

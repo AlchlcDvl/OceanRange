@@ -94,8 +94,11 @@ public sealed class SlimeData : SpawnedActorData
 
         NormalAppearance.SetJiggle(Jiggle);
 
-        SSAppearance?.SetJiggle(Jiggle);
-        SSAppearance?.IsSS = true;
+        if (SSAppearance != null)
+        {
+            SSAppearance.SetJiggle(Jiggle);
+            SSAppearance.IsSS = true;
+        }
 
         Vaccable |= Slimepedia.MvExists;
     }

@@ -24,23 +24,6 @@ public sealed class MatData : JsonData
 {
     public MatData() => ColorProps = [];
 
-    public MatData(MatData other)
-    {
-        Gloss = other.Gloss;
-        SameAs = other.SameAs;
-        Pattern = other.Pattern;
-        UseSSMat = other.UseSSMat;
-        MatSameAs = other.MatSameAs;
-        MatOrigin = other.MatOrigin;
-        ColorProps = other.ColorProps;
-        IsModified = other.IsModified;
-        ColorsOrigin = other.ColorsOrigin;
-        ColorsSameAs = other.ColorsSameAs;
-        CachedMaterial = other.CachedMaterial;
-        ColorPropsJson = other.ColorPropsJson;
-        InvertColorOriginColors = other.InvertColorOriginColors;
-    }
-
     public float? Gloss;
     public string Pattern;
 
@@ -119,20 +102,6 @@ public sealed class MeshData() : JsonData
     public bool SkipRigging;
 
     [JsonIgnore] public bool IsBody;
-
-    public MeshData(MeshData data) : this()
-    {
-        Mesh = data.Mesh;
-        Skip = data.Skip;
-        IsBody = data.IsBody;
-        Jiggle = data.Jiggle;
-        SkipNull = data.SkipNull;
-        SkipRigging = data.SkipRigging;
-        PrefabLength = data.PrefabLength;
-        UseBaseStruct = data.UseBaseStruct;
-        IgnoreLodIndex = data.IgnoreLodIndex;
-        InstantiatePrefabs = data.InstantiatePrefabs;
-    }
 
     protected override void OnDeserialise()
     {
