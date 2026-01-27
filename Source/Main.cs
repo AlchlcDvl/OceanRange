@@ -1,4 +1,4 @@
-﻿using SRML;
+using SRML;
 
 using static SRML.Console.Console;
 
@@ -31,7 +31,7 @@ internal sealed class Main : ModEntryPoint
         ConsoleInstance.Log($"Game Patched in {harmonyWatch.ElapsedMilliseconds}ms!");
 #endif
 
-        SystemContext.IsModded = true; // I don't know what this does fully, but it's better have this one than not, although it'd be better if SRML did this
+        SystemContext.IsModded = true; // I don't know what this does fully, but it's better have this one than not, although it'd be better if the mod loader did this
 
         ClsExists = SRModLoader.IsModPresent("custom.loading"); // Checks if Custom Loading Screens is present in the mods folder
 
@@ -80,38 +80,36 @@ internal sealed class Main : ModEntryPoint
 
         if (!ClsExists) // Conditionally release the splash art handles if they're not used
             Inventory.ReleaseHandles("loading_1", "loading_2", "loading_3", "loading_4", "loading_5");
-
-        GC.Collect(); // Free up temp memory
     }
 
     /// <inheritdoc/>
 #if DEBUG
     [TimeDiagnostic("Mod Unload")]
+#endif
     public override void Unload()
     {
+#if DEBUG
         File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.json"), JsonConvert.SerializeObject(Commands.SavedPositions, Inventory.JsonSettings));
-#else
-    public override void Unload()
-    {
 #endif
         BootStrapper.ExecuteLoadState(LoadState.Unload); // Executes the unload methods of all of the manager classes
 
-        foreach (var mesh in Helpers.ClonedMeshes)
-            mesh.Destroy();
-
-        Helpers.ClonedMeshes.Clear();
-
-        foreach (var mat in Helpers.ClonedMats)
-            mat.Destroy();
-
-        Helpers.ClonedMats.Clear();
-
-        // foreach (var texture in Helpers.CreatedRamps)
-        //     texture.Destroy();
-
-        // Helpers.CreatedRamps.Clear();
+        // Cleanup resources generated via code without actual assets backing them
+        CleanupResources(Helpers.ClonedMeshes);
+        CleanupResources(Helpers.ClonedMats);
+        // CleanupResources(Helpers.CreatedRamps);
 
         Inventory.ReleaseHandles();
+    }
+
+    private static void CleanupResources<T>(ICollection<T> collection) where T : UObject
+    {
+        foreach (var obj in collection)
+        {
+            if (obj)
+                obj.Destroy();
+        }
+
+        collection.Clear();
     }
 
     public static void AddIconBypass(Sprite icon) => CLS.AddToLoading.AddIcon(icon);

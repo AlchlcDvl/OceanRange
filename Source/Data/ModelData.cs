@@ -22,8 +22,6 @@ public sealed class ModelData() : JsonData
 
 public sealed class MatData : JsonData
 {
-    public MatData() => ColorProps = [];
-
     public float? Gloss;
     public string Pattern;
 
@@ -41,7 +39,7 @@ public sealed class MatData : JsonData
 
     [JsonIgnore] public bool IsModified = true;
     [JsonIgnore] public Material CachedMaterial;
-    [JsonIgnore] public readonly Dictionary<int, Color> ColorProps;
+    [JsonIgnore] public readonly Dictionary<int, Color> ColorProps = [];
 
     private const string Top = "TopColor";
     private static readonly int TopLength = Top.Length;
@@ -50,7 +48,7 @@ public sealed class MatData : JsonData
 
     protected override void OnDeserialise()
     {
-        if (ColorPropsJson?.Count is null or 0)
+        if (ColorPropsJson.IsNullOrEmpty())
         {
             if (Pattern == null && !Gloss.HasValue && !ColorsOrigin.HasValue && !InvertColorOriginColors)
                 IsModified = false;

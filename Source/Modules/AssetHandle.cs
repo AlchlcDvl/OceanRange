@@ -25,17 +25,8 @@ public sealed class AssetHandle(string name) : IDisposable
     /// </summary>
     private bool Disposed;
 
-    /// <summary>
-    /// Destructor.
-    /// </summary>
-    ~AssetHandle() => InternalDispose();
-
     /// <inheritdoc/>
-    public void Dispose()
-    {
-        InternalDispose();
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => InternalDispose();
 
     /// <summary>
     /// Shared disposal between the finaliser and the IDisposable.Dispose call.
@@ -68,6 +59,9 @@ public sealed class AssetHandle(string name) : IDisposable
             throw new ObjectDisposedException(Name);
 
         var extension = Path.GetExtension(path).Replace(".", string.Empty);
+
+        if (string.IsNullOrWhiteSpace(extension))
+            throw new ArgumentException($"Cannot add a path with an empty extension! (path: {path})");
 
         if (Inventory.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other))
             throw new ArgumentException($"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing! (path: {path}, step: TryGetValue/ContainsKey)");

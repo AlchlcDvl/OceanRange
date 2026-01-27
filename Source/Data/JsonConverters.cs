@@ -414,7 +414,7 @@ public sealed class EnumConverter : OceanJsonConverter
         var setFlags = new List<string>();
         var matchedBits = 0UL;
 
-        foreach (var (flag, name) in metadata.Values.Select(x => (Convert.ToUInt64(x.Item1), x.Item2)).OrderByDescending(x => x.Item1))
+        foreach (var (flag, name) in metadata.Values.OrderByDescending(x => x.Item1))
         {
             if (flag == 0 || (underlying & flag) != flag || (matchedBits & flag) != 0)
                 continue;

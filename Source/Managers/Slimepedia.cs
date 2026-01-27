@@ -752,6 +752,8 @@ public static class Slimepedia
 
             foreach (var appearanceObject in structure.Element.Prefabs)
             {
+                applicator.name.LogIf(!appearanceObject);
+
                 if (!appearanceObject || !appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                     continue;
 
@@ -769,7 +771,7 @@ public static class Slimepedia
             }
         }
 
-        if (list.Count == 0 || !sharedMesh)
+        if (list.IsNullOrEmpty() || !sharedMesh)
             return;
 
         var rootMatrix = applicator.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;

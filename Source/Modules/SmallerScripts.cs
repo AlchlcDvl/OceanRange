@@ -31,8 +31,8 @@ public sealed class PhosphorHermitAppearanceFixer : AppearanceFixer
 {
     protected override void FixAppearance()
     {
-        var boneSlime = gameObject.FindChild("bone_slime", true).transform;
-        boneSlime.Find("bone_wing_left").localPosition += new Vector3(0f, -0.1f, 0.4f);
-        boneSlime.Find("bone_wing_right").localPosition += new Vector3(0f, -0.1f, 0.4f);
+        var boneSlime = gameObject.FindChild("bone_slime", true)?.transform;
+        boneSlime?.Find("bone_wing_left")?.localPosition += new Vector3(0f, -0.1f, 0.4f);
+        boneSlime?.Find("bone_wing_right")?.localPosition += new Vector3(0f, -0.1f, 0.4f);
     }
 }

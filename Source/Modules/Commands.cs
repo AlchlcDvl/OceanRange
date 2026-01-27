@@ -29,6 +29,9 @@ public static class Commands
 
     private static bool Echo(string[] _) => true;
 
+    private static readonly Func<Dictionary<string, List<string>>> Create1 = () => [];
+    private static readonly Func<List<string>> Create2 = () => [];
+
     private static bool SavePos(string[] args)
     {
         if (!args.IsNullOrEmpty())
@@ -37,15 +40,9 @@ public static class Commands
         var pos = SceneContext.Instance.Player.transform.position;
         var name = DebugUtils.GetClosestCell(pos).name.Replace("cell", string.Empty);
         var zone = name.TrueSplit('_')[0].ToUpperInvariant();
-
-        if (!SavedPositions.TryGetValue(zone, out var positions))
-            SavedPositions[zone] = positions = [];
-
-        if (!positions.TryGetValue(name, out var positions2))
-            positions[name] = positions2 = [];
-
+        var positions = SavedPositions.GetOrAdd(zone, Create1);
+        var positions2 = positions.GetOrAdd(name, Create2);
         positions2.Add(DebugUtils.FormatOrientation(new(pos, Vector3.zero)));
-
         Main.Console.Log("Saved " + name + " at " + pos);
         return true;
     }

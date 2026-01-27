@@ -29,11 +29,7 @@ public static class Inventory
         Formatting = Formatting.Indented,
 #endif
 
-        ContractResolver = new DefaultContractResolver()
-        {
-            NamingStrategy = new CamelCaseNamingStrategy(false, false)
-        },
-
+        ContractResolver = new DefaultContractResolver() { NamingStrategy = new CamelCaseNamingStrategy(false, false) },
         // Adding the json converters
         Converters =
         [
@@ -100,7 +96,7 @@ public static class Inventory
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
 
-    private static readonly string[] Extensions = [.. AssetTypeExtensions.Values.SelectMany(x => x.Extensions)];//.Union(Platforms.Select(x => "bundle_" + x))];
+    private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*.Union(Platforms.Select(x => "bundle_" + x))*/)];
 
     /// <summary>
     /// Debug string path for the mod to dump assets.

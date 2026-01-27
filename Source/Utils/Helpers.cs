@@ -267,7 +267,7 @@ public static class Helpers
         }
 
         if (EnumMetadata.TryGet(enumType, out var metadata))
-            metadata.Values.Add((value, name));
+            metadata.AddEnumValue(value, name);
 
         return value;
     }
