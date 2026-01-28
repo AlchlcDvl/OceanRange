@@ -21,6 +21,11 @@ public sealed class AssetHandle(string name) : IDisposable
     private readonly Dictionary<Type, UObject> Assets = [];
 
     /// <summary>
+    /// Flag that indicates whether at least one asset has been loaded.
+    /// </summary>
+    public bool HasLoaded { get; private set; }
+
+    /// <summary>
     /// Flag that indicates whether the handle is disposed of.
     /// </summary>
     private bool Disposed;
@@ -118,7 +123,7 @@ public sealed class AssetHandle(string name) : IDisposable
         if (!asset)
             throw new InvalidOperationException($"The load function for asset '{Name}' of type '{tType.Name}' returned null. Path: {path}");
 
-        Assets.Add(tType, asset);
+        HasLoaded = Assets.TryAdd(tType, asset);
 
         // Set name and allow persistence
         asset.name = Name;

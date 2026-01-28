@@ -37,9 +37,7 @@ public sealed class MailSaveData : ISaveData
         {
             var mail = Mailbox.Mail[i];
             mail.Read = reader.ReadBool();
-
-            if (!mail.Read)
-                mail.Sent = reader.ReadBool();
+            mail.Sent = mail.Read || reader.ReadBool();
         }
     }
 }

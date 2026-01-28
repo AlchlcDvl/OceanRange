@@ -148,6 +148,8 @@ public static class Inventory
         }
     }
 
+    public static void ReleaseUnusedHandles() => ReleaseHandles([.. Assets.Where(x => !x.Value.HasLoaded).Select(x => x.Key)]);
+
     /// <summary>
     /// Gets and serialise json data from the asset associated with the provided name.
     /// </summary>

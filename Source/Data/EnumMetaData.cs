@@ -11,7 +11,7 @@ public sealed class EnumMetadata(Type enumType)
 
     private static readonly Dictionary<Type, EnumMetadata> MetadataCache = [];
     private static readonly Func<Type, EnumMetadata> Create = enumType => new(enumType);
-    private static Dictionary<Type, Func<object, ulong>> CompiledDelegates = [];
+    private static readonly Dictionary<Type, Func<object, ulong>> CompiledDelegates = [];
 
     private static List<(ulong, string)> GenerateValues(Type enumType) => [.. Enum.GetValues(enumType).Cast<object>().Select(CompileToULong(enumType)).Zip(Enum.GetNames(enumType))];
 

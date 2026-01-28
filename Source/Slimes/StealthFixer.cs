@@ -82,15 +82,15 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
 
 public sealed class StealthFixerController
 {
-    private static readonly int Alpha = ShaderUtils.GetOrSet("_Alpha");
-    private static readonly Material CloakMaterial = GameContext.Instance.SlimeShaders.cloakMaterial;
-
     private struct RendererEntry
     {
         public Renderer Renderer;
         public Material Original;
         public Material Cloak;
     }
+
+    private static readonly int Alpha = ShaderUtils.GetOrSet("_Alpha");
+    private static readonly Material CloakMaterial = GameContext.Instance.SlimeShaders.cloakMaterial;
 
     private readonly List<RendererEntry> Entries = [];
 

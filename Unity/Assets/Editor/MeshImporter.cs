@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 [ScriptedImporter(1, "cmesh")]
 sealed class MeshImporter : ScriptedImporter
@@ -39,22 +40,22 @@ sealed class MeshImporter : ScriptedImporter
     static void ReadMesh(BinaryReader reader, Mesh mesh)
     {
         mesh.indexFormat = (IndexFormat)reader.ReadByte();
-        mesh.vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3);
-        mesh.normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3);
-        mesh.tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4);
-        mesh.bounds = new()
+        mesh.vertices = ReadArray(reader, ReadVector3);
+        mesh.normals = ReadArray(reader, ReadVector3);
+        mesh.tangents = ReadArray(reader, ReadVector4);
+        mesh.bounds = new Bounds()
         {
-            center = BinaryUtils.ReadVector3(reader),
-            extents = BinaryUtils.ReadVector3(reader)
+            center = ReadVector3(reader),
+            extents = ReadVector3(reader)
         };
         mesh.subMeshCount = reader.ReadInt32();
 
         for (var i = 0; i < mesh.subMeshCount; i++)
-            mesh.SetTriangles(BinaryUtils.ReadArray(reader, ReadInt), i);
+            mesh.SetTriangles(ReadArray(reader, ReadInt), i);
 
         for (var i = 0; i < 8; i++)
         {
-            var uvs = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2);
+            var uvs = ReadArray(reader, ReadVector2);
 
             if (uvs.Length > 0)
                 mesh.SetUVs(i, uvs);
@@ -69,6 +70,15 @@ sealed class MeshImporter : ScriptedImporter
         float y = reader.ReadSingle();
         float z = reader.ReadSingle();
         return new Vector3(x, y, z);
+    }
+
+    static Vector4 ReadVector4(BinaryReader reader)
+    {
+        float x = reader.ReadSingle();
+        float y = reader.ReadSingle();
+        float z = reader.ReadSingle();
+        float w = reader.ReadSingle();
+        return new Vector4(x, y, z, w);
     }
 
     static Vector2 ReadVector2(BinaryReader reader)
@@ -116,7 +126,7 @@ sealed class MeshImportPostprocessor : AssetPostprocessor
 {
     void OnPostprocessModel(GameObject _)
     {
-        var importer = assetImporter as ModelImporter;
+        ModelImporter importer = assetImporter as ModelImporter;
 
         if (importer == null)
             return;

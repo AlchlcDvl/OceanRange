@@ -55,7 +55,7 @@ public sealed class RancherData : JsonData
         {
             var id = $"m.offer_{i + 1}.{RancherId}";
 
-            if (OfferIds.Add(id))
+            if (OfferIds.Add(id)) // In case the number of offers changes between languages
                 ExchangeOfferRegistry.RegisterOfferID(id);
         }
 
