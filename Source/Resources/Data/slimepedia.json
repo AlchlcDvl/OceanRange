@@ -569,6 +569,7 @@
     "spawnAmount": 0.00125,
     "natGordoSpawn": false,
     "gordoRewards": ["CRATE_MOSS_01", "CRATE_REEF_01", "CRATE_RUINS_01", "CRATE_QUARRY_01", "CRATE_DESERT_01"],
+    "zones": ["REEF", "QUARRY", "DESERT", "MOSS", "RUINS", "WILDS"],
     "vaccable": false,
     "gordoEat": 3,
     "exchangeable": false,

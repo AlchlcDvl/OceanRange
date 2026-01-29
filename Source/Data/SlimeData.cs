@@ -1,20 +1,22 @@
 // ReSharper disable UnassignedField.Global
 
-using System.Reflection;
 using OceanRange.Saves;
 
 namespace OceanRange.Data;
 
 public sealed class SlimeData : SpawnedActorData
 {
-    private static readonly Dictionary<string, MethodInfo> Methods = [];
+    private static readonly Dictionary<string, Action<SlimeAppearance, bool>> AppearanceMethods = [];
+    private static readonly Dictionary<string, Action<GameObject, SlimeDefinition>> DefinitionMethods = [];
 
     static SlimeData()
     {
         foreach (var method in AccessTools.GetDeclaredMethods(typeof(Slimepedia)))
         {
-            if (method.Name.EndsWith("Details", StringComparison.Ordinal))
-                Methods[method.Name] = method;
+            if (method.Name.EndsWith("AppearanceDetails", StringComparison.Ordinal))
+                AppearanceMethods[method.Name] = Helpers.CompileAction<SlimeAppearance, bool>(method);
+            else if (method.Name.EndsWith("Details", StringComparison.Ordinal))
+                DefinitionMethods[method.Name] = Helpers.CompileAction<GameObject, SlimeDefinition>(method);
         }
     }
 
@@ -61,10 +63,10 @@ public sealed class SlimeData : SpawnedActorData
     [JsonIgnore] public IdentifiableId GordoId;
     [JsonIgnore] public IdentifiableId PlortId;
 
-    [JsonIgnore] public MethodInfo InitSlimeDetails;
-    [JsonIgnore] public MethodInfo InitPlortDetails;
-    [JsonIgnore] public MethodInfo InitGordoDetails;
-    [JsonIgnore] public MethodInfo InitAppearanceDetails;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitSlimeDetails;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitPlortDetails;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitGordoDetails;
+    [JsonIgnore] public Action<SlimeAppearance, bool> InitAppearanceDetails;
 
     protected override void OnDeserialise()
     {
@@ -76,9 +78,9 @@ public sealed class SlimeData : SpawnedActorData
         PlortId = Helpers.AddEnumValue<IdentifiableId>(upper + "_PLORT");
 
         var init = "Init" + Name;
-        Methods.TryGetValue(init + "SlimeDetails", out InitSlimeDetails);
-        Methods.TryGetValue(init + "PlortDetails", out InitPlortDetails);
-        Methods.TryGetValue(init + "AppearanceDetails", out InitAppearanceDetails);
+        DefinitionMethods.TryGetValue(init + "SlimeDetails", out InitSlimeDetails);
+        DefinitionMethods.TryGetValue(init + "PlortDetails", out InitPlortDetails);
+        AppearanceMethods.TryGetValue(init + "AppearanceDetails", out InitAppearanceDetails);
 
         HasGordo |= Slimepedia.MgExists && upper == "SAND";
         NaturalGordoSpawn &= HasGordo;
@@ -86,7 +88,7 @@ public sealed class SlimeData : SpawnedActorData
         if (HasGordo)
         {
             GordoId = Helpers.AddEnumValue<IdentifiableId>(upper + "_GORDO");
-            Methods.TryGetValue(init + "GordoDetails", out InitGordoDetails);
+            DefinitionMethods.TryGetValue(init + "GordoDetails", out InitGordoDetails);
 
             if (NaturalGordoSpawn)
                 GordoSaveDataV02.AddGordo(GordoId);
@@ -131,6 +133,8 @@ public sealed class SlimeAppearanceData : JsonData
     public float? Jiggle;
 
     [JsonIgnore] public bool IsSS;
+    [JsonIgnore] public bool HasMouthColors;
+    [JsonIgnore] public bool HasEyeColors;
 
     protected override void OnDeserialise()
     {
@@ -157,6 +161,9 @@ public sealed class SlimeAppearanceData : JsonData
 
         // foreach (var feature in PlortFeatures)
         //     feature.MeshData.Mesh ??= "plort";
+
+        HasMouthColors = TopMouthColor.HasValue || MiddleMouthColor.HasValue || BottomMouthColor.HasValue;
+        HasEyeColors = RedEyeColor.HasValue || GreenEyeColor.HasValue || BlueEyeColor.HasValue;
     }
 
     public void SetJiggle(float jiggle)

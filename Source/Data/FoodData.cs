@@ -1,7 +1,5 @@
 // ReSharper disable UnassignedField.Global
 
-using System.Reflection;
-
 namespace OceanRange.Data;
 
 public sealed class Ingredients : JsonData
@@ -23,18 +21,18 @@ public sealed class GroupData : JsonData
 
 public abstract class FoodData : SpawnedActorData
 {
-    protected static readonly Dictionary<string, MethodInfo> Methods = [];
+    protected static readonly Dictionary<string, Action<GameObject>> Methods = [];
 
     static FoodData()
     {
         foreach (var method in AccessTools.GetDeclaredMethods(typeof(Cookbook)))
         {
             if (method.Name.EndsWith("Details", StringComparison.Ordinal))
-                Methods[method.Name] = method;
+                Methods[method.Name] = Helpers.CompileAction<GameObject>(method);
         }
     }
 
-    [JsonIgnore] public MethodInfo InitFoodDetails;
+    [JsonIgnore] public Action<GameObject> InitFoodDetails;
 
     protected override void OnDeserialise()
     {
@@ -52,8 +50,8 @@ public sealed class ChimkenData : FoodData
 
     [JsonIgnore] public IdentifiableId ChickId;
 
-    [JsonIgnore] public MethodInfo InitHenDetails;
-    [JsonIgnore] public MethodInfo InitChickDetails;
+    [JsonIgnore] public Action<GameObject> InitHenDetails;
+    [JsonIgnore] public Action<GameObject> InitChickDetails;
 
     protected override void OnDeserialise()
     {

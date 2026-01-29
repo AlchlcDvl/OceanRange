@@ -22,6 +22,7 @@ public static class Cookbook
     private static VeggieData[] Veggies;
 
     private static bool StmExists; // Mod check flag
+    private static Mesh Dirt;
 
     // Shader properties
     private static readonly int Mask = ShaderUtils.GetOrSet("_Mask");
@@ -48,6 +49,8 @@ public static class Cookbook
 
         foreach (var groupData in food.Groups)
             groupData.Group.RegisterIdRange(groupData.Foods);
+
+        Dirt = Inventory.GetMesh("dirt");
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
@@ -96,7 +99,6 @@ public static class Cookbook
         var resources = UObject.FindObjectsOfType<SpawnResource>();
 
         var veggiePrefab = Array.Find(resources, x => x.name == "patchCarrot02" && x.transform.parent?.name == "Resources");
-        var dirt = Inventory.GetMesh("dirt");
 
         foreach (var veggieData in Veggies)
         {
@@ -112,7 +114,7 @@ public static class Cookbook
                     for (var i = 0; i < orientations.Length; i++)
                     {
                         var resource = CreateSpawner(orientations[i], veggiePrefab, parent, context, array, lower + veggieData.Name + "0" + i);
-                        resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = dirt; // Cloning from the base game creates invisible meshes, so I had to extract the dirt mesh from the game and reimplement it here
+                        resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = Dirt; // Cloning from the base game creates invisible meshes, so I had to extract the dirt mesh from the game and reimplement it here
                     }
                 }
             }
@@ -194,11 +196,11 @@ public static class Cookbook
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
         chickPrefab.GetComponent<TransformAfterTime>().options[0].targetPrefab = henPrefab;
 
-        chimkenData.InitFoodDetails?.Invoke(null, [henPrefab]);
-        chimkenData.InitFoodDetails?.Invoke(null, [chickPrefab]);
+        chimkenData.InitFoodDetails?.Invoke(henPrefab);
+        chimkenData.InitFoodDetails?.Invoke(chickPrefab);
 
-        chimkenData.InitHenDetails?.Invoke(null, [henPrefab]);
-        chimkenData.InitChickDetails?.Invoke(null, [chickPrefab]);
+        chimkenData.InitHenDetails?.Invoke(henPrefab);
+        chimkenData.InitChickDetails?.Invoke(chickPrefab);
 
         // Register both chicks and hens
         var chickIcon = Inventory.GetSprite($"{lower}_chick");
@@ -363,7 +365,7 @@ public static class Cookbook
             material.SetTexture(AmbientOcclusion, ambientExists && maskExists ? ambient : Texture2D.whiteTexture);
         }
 
-        plantData.InitFoodDetails?.Invoke(null, [prefab]);
+        plantData.InitFoodDetails?.Invoke(prefab);
 
         RegisterFood(prefab, Inventory.GetSprite(lower), plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 

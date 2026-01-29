@@ -8,19 +8,22 @@ public sealed class AweTowardsMesmers : FindConsumable
     private double nextActivationTime;
     private float endTime;
 
-    private readonly Dictionary<IdentifiableId, DriveCalculator> SearchIdCache = new(Identifiable.idComparer);
-    private readonly DriveCalculator DriveCalculator = new(SlimeEmotions.Emotion.NONE, 0f, 0f);
+    private static readonly Dictionary<IdentifiableId, DriveCalculator> SearchIdCache = new(Identifiable.idComparer);
+    private static readonly DriveCalculator DriveCalculator = new(SlimeEmotions.Emotion.NONE, 0f, 0f);
+
+    public static void InitCalculator()
+    {
+        SearchIdCache.Clear();
+
+        foreach (var largo in Largopedia.Mesmers)
+            SearchIdCache[largo] = DriveCalculator;
+    }
 
     public override void Awake()
     {
         base.Awake();
         timeDir = SceneContext.Instance.TimeDirector;
         sfAnimator = GetComponent<SlimeFaceAnimator>();
-
-        SearchIdCache.Clear();
-
-        foreach (var largo in Largopedia.Mesmers)
-            SearchIdCache[largo] = DriveCalculator;
     }
 
     public override float Relevancy(bool isGrounded)

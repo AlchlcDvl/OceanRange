@@ -201,7 +201,7 @@ public static class Slimepedia
         identifiable.nativeZones = slimeData.NaturalGordoSpawn ? [slimeData.GordoZone] : Helpers.GetEnumValues<Zone>();
 
         var gordoEat = prefab.GetComponent<GordoEat>();
-        var gordoDefinition = gordoEat.slimeDefinition.DeepCopy();
+        var gordoDefinition = gordoEat.slimeDefinition.CloneInstance();
         gordoDefinition.AppearancesDefault = definition.AppearancesDefault;
         gordoDefinition.Diet = definition.Diet;
         gordoDefinition.IdentifiableId = slimeData.GordoId;
@@ -233,7 +233,7 @@ public static class Slimepedia
 
         prefab.AddComponent<PersistentIdHandler>().ID = ModdedStringRegistry.ClaimID("gordo", $"{slimeData.Name}G1{slimeData.GordoZone.ToString().ToTitleCase()}");
 
-        slimeData.InitGordoDetails?.Invoke(null, [prefab, gordoDefinition]);
+        slimeData.InitGordoDetails?.Invoke(prefab, gordoDefinition);
 
         LookupRegistry.RegisterGordo(prefab);
         SlimeRegistry.RegisterSlimeDefinition(gordoDefinition);
@@ -277,7 +277,7 @@ public static class Slimepedia
 
         var definition = slimeData.MainId.GetSlimeDefinition();
 
-        slimeData.InitPlortDetails?.Invoke(null, [prefab, definition]);
+        slimeData.InitPlortDetails?.Invoke(prefab, definition);
 
         // Registering the prefab and its id along with any other additional stuff
         var icon = Inventory.GetSprite($"{slimeData.Name.ToLowerInvariant()}_plort");
@@ -314,10 +314,16 @@ public static class Slimepedia
         var lower = slimeData.Name.ToLowerInvariant();
 
         // Create a copy for our slimes and populate with info
-        var definition = baseDefinition.DeepCopy();
-        definition.Diet.Produces = [slimeData.PlortId];
-        definition.Diet.AdditionalFoods = [IdentifiableId.SPICY_TOFU];
-        definition.Diet.EatMap?.Clear();
+        var definition = baseDefinition.CloneInstance();
+        var previousDiet = definition.Diet;
+        definition.Diet = new()
+        {
+            Produces = [slimeData.PlortId],
+            AdditionalFoods = [IdentifiableId.SPICY_TOFU],
+            EatMap = [],
+            MajorFoodGroups = previousDiet.MajorFoodGroups,
+            Favorites = previousDiet.Favorites
+        };
         definition.CanLargofy = Identifiable.LARGO_CLASS.Any(x => x.ToString().ToLowerInvariant().IndexOf(lower, StringComparison.Ordinal) >= 0);
         definition.FavoriteToys = [slimeData.FavToy];
         definition.Name = slimeData.Name + " Slime";
@@ -369,7 +375,7 @@ public static class Slimepedia
             }
         }
 
-        slimeData.InitSlimeDetails?.Invoke(null, [prefab, definition]); // Slime specific details being put here
+        slimeData.InitSlimeDetails?.Invoke(prefab, definition); // Slime specific details being put here
 
         var baseAppearance = baseDefinition.AppearancesDefault[0]; // Getting the base appearance
         var appearance = GenerateAppearance(slimeData, slimeData.NormalAppearance, baseAppearance, lower, applicator, definition);
@@ -410,28 +416,16 @@ public static class Slimepedia
         var appearance = baseAppearance.Instantiate(); // Cloning our own appearance
         appearance.name = $"{slimeData.Name}Normal";
 
-        appearance.Face = appearance.Face.DeepCopy();
-        appearance.Face.ExpressionFaces = [.. appearance.Face.ExpressionFaces, Sleeping.Clone()];
+        appearance.Face = appearance.Face.CloneInstance();
+        appearance.Face._expressionToFaceLookup = new(SlimeFace.DefaultSlimeExpressionComparer);
 
         // Faces stuff
         foreach (var face in appearance.Face.ExpressionFaces)
-        {
-            if (face.Mouth)
-            {
-                face.Mouth.SetColor(MouthTop, data.TopMouthColor);
-                face.Mouth.SetColor(MouthMiddle, data.MiddleMouthColor);
-                face.Mouth.SetColor(MouthBottom, data.BottomMouthColor);
-            }
+            HandleFace(face, data, appearance.Face._expressionToFaceLookup);
 
-            if (face.Eyes)
-            {
-                face.Eyes.SetColor(EyeRed, data.RedEyeColor);
-                face.Eyes.SetColor(EyeGreen, data.GreenEyeColor);
-                face.Eyes.SetColor(EyeBlue, data.BlueEyeColor);
-            }
-        }
+        HandleFace(Sleeping, data, appearance.Face._expressionToFaceLookup);
+        appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
 
-        appearance.Face.OnEnable();
         var prevPalette = appearance.ColorPalette;
         appearance.ColorPalette = new()
         {
@@ -447,10 +441,31 @@ public static class Slimepedia
 
         applicator.GenerateSlimeBones(appearance.Structures, slimeData.Jiggle);
 
-        slimeData.InitAppearanceDetails?.Invoke(null, [appearance, data.IsSS]);
+        slimeData.InitAppearanceDetails?.Invoke(appearance, data.IsSS);
 
         SlimeRegistry.RegisterAppearance(definition, appearance);
         return appearance;
+    }
+
+    private static void HandleFace(SlimeExpressionFace face, SlimeAppearanceData data, Dictionary<SlimeExpression, SlimeExpressionFace> expressionToFaceLookup)
+    {
+        if (face.Mouth && data.HasMouthColors)
+        {
+            face.Mouth = face.Mouth.Clone();
+            face.Mouth.SetColor(MouthTop, data.TopMouthColor);
+            face.Mouth.SetColor(MouthMiddle, data.MiddleMouthColor);
+            face.Mouth.SetColor(MouthBottom, data.BottomMouthColor);
+        }
+
+        if (face.Eyes && data.HasEyeColors)
+        {
+            face.Eyes = face.Eyes.Clone();
+            face.Eyes.SetColor(EyeRed, data.RedEyeColor);
+            face.Eyes.SetColor(EyeGreen, data.GreenEyeColor);
+            face.Eyes.SetColor(EyeBlue, data.BlueEyeColor);
+        }
+
+        expressionToFaceLookup[face.SlimeExpression] = face;
     }
 
     private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceData slimeData, SlimeAppearance baseAppearance)
@@ -870,6 +885,8 @@ public static class Slimepedia
     [PostloadMethod, UsedImplicitly]
     public static void PostLoadSlimes()
     {
+        AweTowardsMesmers.InitCalculator();
+
         foreach (var (id, prefab) in GameContext.Instance.LookupDirector.identifiablePrefabDict)
         {
             if (Identifiable.IsSlime(id) && !Largopedia.Mesmers.Contains(id)) // Ensuring that only non-mesmer slimes are affected

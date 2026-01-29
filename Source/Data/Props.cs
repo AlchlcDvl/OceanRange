@@ -3,7 +3,7 @@
 namespace OceanRange.Data;
 
 [Flags]
-public enum LargoProps : byte
+public enum LargoAppearanceProps : byte
 {
     None = 0,
 
@@ -38,7 +38,7 @@ public enum DefinitionProps : byte
 }
 
 [Flags]
-public enum AppearanceProps : byte
+public enum AppearanceType : byte
 {
     None = 0,
     SS1 = 1 << 0,

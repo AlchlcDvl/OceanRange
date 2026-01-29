@@ -129,3 +129,9 @@ public static class StalkConsumablePatch
         return false;
     }
 }
+
+[HarmonyPatch(typeof(SlimeFace), nameof(SlimeFace.OnEnable))]
+public static class FixOnEnableFromRunningEarly
+{
+    public static bool Prefix(SlimeFace __instance) => __instance.ExpressionFaces != null && __instance._expressionToFaceLookup != null;
+}

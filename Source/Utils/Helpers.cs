@@ -152,7 +152,7 @@ public static class Helpers
             return obj;
         }
 
-        public T DeepCopy() => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
+        // public T DeepCopy() => (T)PrefabUtils.DeepCopyObject(obj).DontDestroy();
 
         public T CreatePrefab() => UObject.Instantiate(obj, Main.PrefabParent, false);
     }
@@ -667,5 +667,46 @@ public static class Helpers
 
             return Expression.Lambda<Func<T, T, bool>>(bitCheck, valueParam, flagParam).Compile();
         }
+    }
+
+    public static Action<T> CompileAction<T>(MethodInfo method)
+    {
+        var methodParams = method.GetParameters();
+
+        if (methodParams.Length != 1)
+            throw new ArgumentException($"Method {method.Name} must have exactly 1 parameter.");
+
+        var targetType = methodParams[0].ParameterType;
+        var tType = typeof(T);
+
+        var inputParam = Expression.Parameter(tType, "input");
+
+        Expression castExpr = targetType == tType ? inputParam : Expression.Convert(inputParam, targetType);
+
+        var callExpr = Expression.Call(method, castExpr);
+        return Expression.Lambda<Action<T>>(callExpr, inputParam).Compile();
+    }
+
+    public static Action<T1, T2> CompileAction<T1, T2>(MethodInfo method)
+    {
+        var methodParams = method.GetParameters();
+
+        if (methodParams.Length != 2)
+            throw new ArgumentException($"Method {method.Name} must have exactly 2 parameters.");
+
+        var tType1 = typeof(T1);
+        var tType2 = typeof(T2);
+
+        var targetType1 = methodParams[0].ParameterType;
+        var targetType2 = methodParams[1].ParameterType;
+
+        var p1 = Expression.Parameter(tType1, "arg1");
+        var p2 = Expression.Parameter(tType2, "arg2");
+
+        Expression cast1 = targetType1 == tType1 ? p1 : Expression.Convert(p1, targetType1);
+        Expression cast2 = targetType2 == tType2 ? p2 : Expression.Convert(p2, targetType2);
+
+        var callExpr = Expression.Call(method, cast1, cast2);
+        return Expression.Lambda<Action<T1, T2>>(callExpr, p1, p2).Compile();
     }
 }

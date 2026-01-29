@@ -1,19 +1,20 @@
 // ReSharper disable UnassignedField.Global
 
-using System.Reflection;
-
 namespace OceanRange.Data;
 
 public sealed class LargoData : ActorData
 {
-    private static readonly Dictionary<string, MethodInfo> Methods = [];
+    private static readonly Dictionary<string, Action<GameObject, SlimeDefinition>> DefinitionMethods = [];
+    private static readonly Dictionary<string, Action<SlimeAppearance, AppearanceType>> AppearanceMethods = [];
 
     static LargoData()
     {
         foreach (var method in AccessTools.GetDeclaredMethods(typeof(Largopedia)))
         {
-            if (method.Name.EndsWith("Details", StringComparison.Ordinal))
-                Methods[method.Name] = method;
+            if (method.Name.EndsWith("AppearanceDetails", StringComparison.Ordinal))
+                AppearanceMethods[method.Name] = Helpers.CompileAction<SlimeAppearance, AppearanceType>(method);
+            else if (method.Name.EndsWith("Details", StringComparison.Ordinal))
+                DefinitionMethods[method.Name] = Helpers.CompileAction<GameObject, SlimeDefinition>(method);
         }
     }
 
@@ -33,13 +34,13 @@ public sealed class LargoData : ActorData
     [JsonIgnore] public SlimeData Slime1Data;
     [JsonIgnore] public SlimeData Slime2Data;
 
-    [JsonIgnore] public MethodInfo InitSlime1Details;
-    [JsonIgnore] public MethodInfo InitSlime2Details;
-    [JsonIgnore] public MethodInfo InitLargoDetails;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitSlime1Details;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitSlime2Details;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitLargoDetails;
 
-    [JsonIgnore] public MethodInfo InitSlime1AppearanceDetails;
-    [JsonIgnore] public MethodInfo InitSlime2AppearanceDetails;
-    [JsonIgnore] public MethodInfo InitLargoAppearanceDetails;
+    [JsonIgnore] public Action<SlimeAppearance, AppearanceType> InitSlime1AppearanceDetails;
+    [JsonIgnore] public Action<SlimeAppearance, AppearanceType> InitSlime2AppearanceDetails;
+    [JsonIgnore] public Action<SlimeAppearance, AppearanceType> InitLargoAppearanceDetails;
 
     protected override void OnDeserialise()
     {
@@ -55,13 +56,13 @@ public sealed class LargoData : ActorData
         Slime1Id = Helpers.ParseEnum<IdentifiableId>(slime1Upper + "_SLIME");
         Slime2Id = Helpers.ParseEnum<IdentifiableId>(slime2Upper + "_SLIME");
 
-        Methods.TryGetValue("Init" + Slime1 + "Details", out InitSlime1Details);
-        Methods.TryGetValue("Init" + Slime2 + "Details", out InitSlime2Details);
-        Methods.TryGetValue("Init" + Slime1 + Slime2 + "Details", out InitLargoDetails);
+        DefinitionMethods.TryGetValue("Init" + Slime1 + "Details", out InitSlime1Details);
+        DefinitionMethods.TryGetValue("Init" + Slime2 + "Details", out InitSlime2Details);
+        DefinitionMethods.TryGetValue("Init" + Slime1 + Slime2 + "Details", out InitLargoDetails);
 
-        Methods.TryGetValue("Init" + Slime1 + "AppearanceDetails", out InitSlime1AppearanceDetails);
-        Methods.TryGetValue("Init" + Slime2 + "AppearanceDetails", out InitSlime2AppearanceDetails);
-        Methods.TryGetValue("Init" + Slime1 + Slime2 + "AppearanceDetails", out InitLargoAppearanceDetails);
+        AppearanceMethods.TryGetValue("Init" + Slime1 + "AppearanceDetails", out InitSlime1AppearanceDetails);
+        AppearanceMethods.TryGetValue("Init" + Slime2 + "AppearanceDetails", out InitSlime2AppearanceDetails);
+        AppearanceMethods.TryGetValue("Init" + Slime1 + Slime2 + "AppearanceDetails", out InitLargoAppearanceDetails);
 
         Slimepedia.SlimeDataMap.TryGetValue(Slime1Id, out Slime1Data);
         Slimepedia.SlimeDataMap.TryGetValue(Slime2Id, out Slime2Data);
@@ -75,8 +76,8 @@ public sealed class LargoData : ActorData
 
 public sealed class LargoAppearanceData : JsonData
 {
-    public LargoProps LargoProps;
-    public AppearanceProps AppProps;
+    public LargoAppearanceProps LargoProps;
+    public AppearanceType AppProps;
 
     public ModelData BodyStruct;
 
