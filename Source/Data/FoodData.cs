@@ -78,7 +78,7 @@ public abstract class PlantData : FoodData
     // public bool HasOriginalSpawners = true; // TODO: Implement this in the future
 
     // ReSharper disable once CollectionNeverUpdated.Global
-    public Dictionary<string, Dictionary<string, Orientation[]>> SpawnLocations;
+    public Dictionary<string, Orientation[]> SpawnLocations;
 
     public IdentifiableId? BasePlant;
     public SpawnResourceId? BaseResource;

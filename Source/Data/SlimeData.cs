@@ -63,6 +63,8 @@ public sealed class SlimeData : SpawnedActorData
     [JsonIgnore] public IdentifiableId GordoId;
     [JsonIgnore] public IdentifiableId PlortId;
 
+    [JsonIgnore] public PediaId PediaId;
+
     [JsonIgnore] public Action<GameObject, SlimeDefinition> InitSlimeDetails;
     [JsonIgnore] public Action<GameObject, SlimeDefinition> InitPlortDetails;
     [JsonIgnore] public Action<GameObject, SlimeDefinition> InitGordoDetails;
@@ -105,7 +107,11 @@ public sealed class SlimeData : SpawnedActorData
         Vaccable |= Slimepedia.MvExists;
     }
 
-    public void HandleTranslationData(SlimeLangData data) => Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;
+    public void HandleTranslationData(SlimeLangData data)
+    {
+        Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;
+        PediaId = data.PediaId;
+    }
 }
 
 public sealed class SlimeAppearanceData : JsonData

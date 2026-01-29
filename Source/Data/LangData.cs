@@ -206,7 +206,7 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
     [JsonIgnore] private readonly string Suffix = suffix;
     [JsonIgnore] private readonly PediaCategory Category = category;
 
-    [JsonIgnore] protected PediaId PediaId;
+    [JsonIgnore] public PediaId PediaId;
     [JsonIgnore] public string PediaKey;
 
     [JsonRequired] public string Intro;

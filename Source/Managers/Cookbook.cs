@@ -105,17 +105,15 @@ public static class Cookbook
             var lower = veggieData.ResourceIdSuffix.ToLowerInvariant();
             var array = new[] { veggieData.MainId.GetPrefab() };
 
-            foreach (var (zone, spawnLocations) in veggieData.SpawnLocations)
+            foreach (var (cell, orientations) in veggieData.SpawnLocations)
             {
-                foreach (var (cell, orientations) in spawnLocations)
-                {
-                    var parent = GameObject.Find("zone" + zone + "/cell" + cell + "/Sector/Resources").transform;
+                var zone = cell.Split('_')[0].ToUpperInvariant();
+                var parent = GameObject.Find("zone" + zone + "/cell" + cell + "/Sector/Resources").transform;
 
-                    for (var i = 0; i < orientations.Length; i++)
-                    {
-                        var resource = CreateSpawner(orientations[i], veggiePrefab, parent, context, array, lower + veggieData.Name + "0" + i);
-                        resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = Dirt; // Cloning from the base game creates invisible meshes, so I had to extract the dirt mesh from the game and reimplement it here
-                    }
+                for (var i = 0; i < orientations.Length; i++)
+                {
+                    var resource = CreateSpawner(orientations[i], veggiePrefab, parent, context, array, lower + veggieData.Name + "0" + i);
+                    resource.gameObject.FindChild("Dirt", true).GetComponent<MeshFilter>().sharedMesh = Dirt; // Cloning from the base game creates invisible meshes, so I had to extract the dirt mesh from the game and reimplement it here
                 }
             }
         }
@@ -130,22 +128,20 @@ public static class Cookbook
             var trunkExists = Inventory.TryGetMesh(lowerName + "_trunk", out var trunk);
             var leavesExist = Inventory.TryGetMesh(lowerName + "_leaves", out var leaves);
 
-            foreach (var (zone, spawnLocations) in fruitData.SpawnLocations)
+            foreach (var (cell, orientations) in fruitData.SpawnLocations)
             {
-                foreach (var (cell, orientations) in spawnLocations)
+                var zone = cell.Split('_')[0].ToUpperInvariant();
+                var parent = GameObject.Find("zone" + zone + "/cell" + cell + "/Sector/Resources").transform;
+
+                for (var i = 0; i < orientations.Length; i++)
                 {
-                    var parent = GameObject.Find("zone" + zone + "/cell" + cell + "/Sector/Resources").transform;
+                    var resource = CreateSpawner(orientations[i], fruitPrefab, parent, context, array, lower + fruitData.Name + "0" + i);
 
-                    for (var i = 0; i < orientations.Length; i++)
-                    {
-                        var resource = CreateSpawner(orientations[i], fruitPrefab, parent, context, array, lower + fruitData.Name + "0" + i);
+                    if (trunkExists)
+                        resource.gameObject.FindChild("tree_pogo", true).GetComponent<MeshFilter>().sharedMesh = trunk;
 
-                        if (trunkExists)
-                            resource.gameObject.FindChild("tree_pogo", true).GetComponent<MeshFilter>().sharedMesh = trunk;
-
-                        if (leavesExist)
-                            resource.gameObject.FindChild("leaves_pogo", true).GetComponent<MeshFilter>().sharedMesh = leaves;
-                    }
+                    if (leavesExist)
+                        resource.gameObject.FindChild("leaves_pogo", true).GetComponent<MeshFilter>().sharedMesh = leaves;
                 }
             }
         }
@@ -208,6 +204,8 @@ public static class Cookbook
 
         var henIcon = Inventory.GetSprite($"{lower}_hen");
         RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor, chimkenData.MainId, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
+
+        FoodGroup.MEAT.RegisterId(chimkenData.MainId);
 
         if (Main.ClsExists)
         {
@@ -371,6 +369,11 @@ public static class Cookbook
 
         var resource = CreateFarmSetup(plantData.BaseResource!.Value, lower, plantData.ResourceIdSuffix, plantData.ResourceId, prefab, mesh, plantData.IsFruit, mat);
         var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, lower, plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, mesh, plantData.IsFruit, mat);
+
+        if (plantData.IsFruit)
+            FoodGroup.FRUIT.RegisterId(plantData.MainId);
+        else
+            FoodGroup.VEGGIES.RegisterId(plantData.MainId);
 
         LookupRegistry.RegisterSpawnResource(resource);
         LookupRegistry.RegisterSpawnResource(resourceDlx);

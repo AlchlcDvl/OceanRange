@@ -147,8 +147,9 @@ public static class Slimepedia
 
         var pinkAppearance = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0];
 
-        Sleeping = pinkAppearance.Face._expressionToFaceLookup[SlimeExpression.Blink].Clone();
+        Sleeping = pinkAppearance.Face._expressionToFaceLookup[SlimeExpression.Blink];
         Sleeping.SlimeExpression = Ids.Sleeping;
+        Sleeping.Eyes = Sleeping.Eyes.Clone();
         Sleeping.Eyes.SetTexture(FaceAtlas, Inventory.GetTexture2D("sleeping_eyes"));
 
         // CachedElements["slime_default_1.000"] = BaseElement = pinkAppearance.Structures[0].Element;
@@ -280,7 +281,8 @@ public static class Slimepedia
         slimeData.InitPlortDetails?.Invoke(prefab, definition);
 
         // Registering the prefab and its id along with any other additional stuff
-        var icon = Inventory.GetSprite($"{slimeData.Name.ToLowerInvariant()}_plort");
+        var lower = slimeData.Name.ToLowerInvariant();
+        var icon = Inventory.GetSprite($"{lower}_plort");
         LookupRegistry.RegisterIdentifiablePrefab(prefab);
         PediaRegistry.RegisterIdentifiableMapping(PediaId.PLORTS, slimeData.PlortId);
         AmmoRegistry.RegisterPlayerAmmo(PlayerState.AmmoMode.DEFAULT, slimeData.PlortId);
@@ -288,18 +290,21 @@ public static class Slimepedia
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
-        var silo = new List<StorageType> { StorageType.NON_SLIMES, StorageType.PLORT };
+        var silo = new HashSet<StorageType> { StorageType.NON_SLIMES, StorageType.PLORT };
 
         if (slimeData.CanBeRefined)
             silo.Add(StorageType.CRAFTING);
 
         AmmoRegistry.RegisterSiloAmmo(silo.Contains, slimeData.PlortId);
 
+        if (lower != "sand")
+            FoodGroup.PLORTS.RegisterId(slimeData.PlortId);
+
         if (slimeData.CanBeRefined)
             AmmoRegistry.RegisterRefineryResource(slimeData.PlortId);
 
         if (!slimeData.Vaccable)
-            PediaRegistry.RegisterIdentifiableMapping(Helpers.ParseEnum<PediaId>(slimeData.Name.ToUpperInvariant() + "_SLIME_ENTRY"), slimeData.PlortId);
+            PediaRegistry.RegisterIdentifiableMapping(slimeData.PediaId, slimeData.PlortId);
 
         if (slimeData.Exchangeable)
             Helpers.CreateRanchExchangeOffer(slimeData.PlortId, slimeData.PlortExchangeWeight, slimeData.Progress);
@@ -403,7 +408,8 @@ public static class Slimepedia
             LookupRegistry.RegisterVacEntry(slimeData.MainId, appearance.ColorPalette.Ammo, appearance.Icon);
         }
 
-        PediaRegistry.RegisterIdEntry(Helpers.ParseEnum<PediaId>(slimeData.Name.ToUpperInvariant() + "_SLIME_ENTRY"), appearance.Icon);
+        PediaRegistry.RegisterIdEntry(slimeData.PediaId, appearance.Icon);
+        FoodGroup.NONTARRGOLD_SLIMES.RegisterId(slimeData.MainId);
 
         if (Main.ClsExists)
             Main.AddIconBypass(appearance.Icon);

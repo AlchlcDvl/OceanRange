@@ -96,7 +96,7 @@ public static class Inventory
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = [];
 
-    private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*.Union(Platforms.Select(x => "bundle_" + x))*/)];
+    private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*.Concat(Platforms.Select(x => "bundle_" + x))*/)];
 
     /// <summary>
     /// Debug string path for the mod to dump assets.

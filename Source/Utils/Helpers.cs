@@ -462,13 +462,6 @@ public static class Helpers
         }
     }
 
-    public static SlimeExpressionFace Clone(this SlimeExpressionFace face) => new()
-    {
-        SlimeExpression = face.SlimeExpression,
-        Eyes = face.Eyes?.Clone(),
-        Mouth = face.Mouth?.Clone(),
-    };
-
     // public static IEnumerator PerformTimedAction(float duration, Action<float> action)
     // {
     //     var startTime = Time.time;
@@ -671,42 +664,17 @@ public static class Helpers
 
     public static Action<T> CompileAction<T>(MethodInfo method)
     {
-        var methodParams = method.GetParameters();
-
-        if (methodParams.Length != 1)
-            throw new ArgumentException($"Method {method.Name} must have exactly 1 parameter.");
-
-        var targetType = methodParams[0].ParameterType;
-        var tType = typeof(T);
-
-        var inputParam = Expression.Parameter(tType, "input");
-
-        Expression castExpr = targetType == tType ? inputParam : Expression.Convert(inputParam, targetType);
-
-        var callExpr = Expression.Call(method, castExpr);
-        return Expression.Lambda<Action<T>>(callExpr, inputParam).Compile();
+        var arg = Expression.Parameter(typeof(T), "arg");
+        var callExpr = Expression.Call(method, arg);
+        return Expression.Lambda<Action<T>>(callExpr, arg).Compile();
     }
 
     public static Action<T1, T2> CompileAction<T1, T2>(MethodInfo method)
     {
-        var methodParams = method.GetParameters();
+        var arg1 = Expression.Parameter(typeof(T1), "arg1");
+        var arg2 = Expression.Parameter(typeof(T2), "arg2");
 
-        if (methodParams.Length != 2)
-            throw new ArgumentException($"Method {method.Name} must have exactly 2 parameters.");
-
-        var tType1 = typeof(T1);
-        var tType2 = typeof(T2);
-
-        var targetType1 = methodParams[0].ParameterType;
-        var targetType2 = methodParams[1].ParameterType;
-
-        var p1 = Expression.Parameter(tType1, "arg1");
-        var p2 = Expression.Parameter(tType2, "arg2");
-
-        Expression cast1 = targetType1 == tType1 ? p1 : Expression.Convert(p1, targetType1);
-        Expression cast2 = targetType2 == tType2 ? p2 : Expression.Convert(p2, targetType2);
-
-        var callExpr = Expression.Call(method, cast1, cast2);
-        return Expression.Lambda<Action<T1, T2>>(callExpr, p1, p2).Compile();
+        var callExpr = Expression.Call(method, arg1, arg2);
+        return Expression.Lambda<Action<T1, T2>>(callExpr, arg1, arg2).Compile();
     }
 }
