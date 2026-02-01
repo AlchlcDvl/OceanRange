@@ -93,25 +93,14 @@ internal sealed class Main : ModEntryPoint
         BootStrapper.ExecuteLoadState(LoadState.Unload); // Executes the unload methods of all of the manager classes
 
         // Cleanup resources generated via code without actual assets backing them
-        CleanupResources(Helpers.ClonedMeshes);
-        CleanupResources(Helpers.ClonedMats);
-        // CleanupResources(Helpers.CreatedRamps);
+        Helpers.ClonedMeshes.CleanupResources();
+        Helpers.ClonedMats.CleanupResources();
+        // Helpers.CreatedRamps.CleanupResources();
 
         if (PrefabParent)
             PrefabParent.Destroy();
 
         Inventory.ReleaseHandles();
-    }
-
-    private static void CleanupResources<T>(ICollection<T> collection) where T : UObject
-    {
-        foreach (var obj in collection)
-        {
-            if (obj)
-                obj.Destroy();
-        }
-
-        collection.Clear();
     }
 
     public static void AddIconBypass(Sprite icon) => CLS.AddToLoading.AddIcon(icon);

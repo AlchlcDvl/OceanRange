@@ -687,4 +687,16 @@ public static class Helpers
     //     var callExpr = Expression.Call(method, arg1, arg2, arg3);
     //     return Expression.Lambda<Action<T1, T2, T3>>(callExpr, arg1, arg2, arg3).Compile();
     // }
+
+    public static void CleanupResources<T>(this ICollection<T> collection, bool clear = true) where T : UObject
+    {
+        foreach (var obj in collection)
+        {
+            if (obj)
+                obj.Destroy();
+        }
+
+        if (clear)
+            collection.Clear();
+    }
 }

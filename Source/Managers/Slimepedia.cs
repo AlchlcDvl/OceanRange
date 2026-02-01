@@ -21,6 +21,7 @@ public static class Slimepedia
 
     // private static Mesh GordoMesh;
     private static bool SamExists;
+    private static bool FixerExists;
     private static Transform RocksPrefab;
     private static SlimeDefinition TarrDef;
     private static SlimeExpressionFace Sleeping;
@@ -38,6 +39,7 @@ public static class Slimepedia
     // private static readonly int MainTex = ShaderUtils.GetOrSet("_MainTex");
     private static readonly int EyeGreen = ShaderUtils.GetOrSet("_EyeGreen");
     private static readonly int MouthTop = ShaderUtils.GetOrSet("_MouthTop");
+    private static readonly int EdgeColor = ShaderUtils.GetOrSet("_EdgeColor");
     private static readonly int ColorMask = ShaderUtils.GetOrSet("_ColorMask");
     private static readonly int FaceAtlas = ShaderUtils.GetOrSet("_FaceAtlas");
     private static readonly int MouthMiddle = ShaderUtils.GetOrSet("_MouthMid");
@@ -69,6 +71,7 @@ public static class Slimepedia
         MvExists = SRModLoader.IsModPresent("more_vaccing");
         SstExists = SRModLoader.IsModPresent("secretstylethings");
         MoSsExists = SRModLoader.IsModPresent("mosecretstyles");
+        FixerExists = SRModLoader.IsModPresent("appearancefixer");
 
         Slimes = Inventory.GetJsonArray<SlimeData>("slimepedia");
 
@@ -92,10 +95,10 @@ public static class Slimepedia
 
         SsExists = true;
 
-        foreach (var slimeData in Slimes)
-        {
-            // Something...
-        }
+        // foreach (var slimeData in Slimes)
+        // {
+        //     // Something...
+        // }
     }
 
 #if DEBUG
@@ -459,9 +462,6 @@ public static class Slimepedia
         if (data.ChangedFace)
             appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
 
-        if (data.IsSS)
-            definition.AppearancesDynamic.Add(appearance);
-
         SlimeRegistry.RegisterAppearance(definition, appearance);
         return appearance;
     }
@@ -650,6 +650,9 @@ public static class Slimepedia
 
             if (temp.HasProperty(Color))
                 matData.ColorProps[Color] = temp.GetColor(Color);
+
+            if (temp.HasProperty(EdgeColor))
+                matData.ColorProps[EdgeColor] = temp.GetColor(EdgeColor);
         }
 
         if (matData.Gloss.HasValue && material.HasProperty(Gloss))
@@ -668,7 +671,7 @@ public static class Slimepedia
 
         foreach (var (prop, value) in matData.ColorProps)
         {
-            if (material.HasProperty(prop))
+            if (material.HasProperty(prop) && (prop != EdgeColor || !FixerExists))
                 material.SetColor(prop, value);
         }
     }

@@ -611,9 +611,18 @@
                 "_Color": "#340ca1",
                 "_EdgeColor": "#340ca1"
               }
-            }
+            },
+            "meshData": { "instantiatePrefabs": true }
           },
-          { "sameAs": 1 }
+          {
+            "matData": {
+              "colorProps": {
+                "_Color": "#340ca1",
+                "_EdgeColor": "#340ca1"
+              }
+            },
+            "meshData": { "instantiatePrefabs": true }
+          }
         ],
         "slime2Structs": [
           {

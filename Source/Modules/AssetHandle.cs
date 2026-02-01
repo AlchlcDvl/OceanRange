@@ -31,24 +31,13 @@ public sealed class AssetHandle(string name) : IDisposable
     private bool Disposed;
 
     /// <inheritdoc/>
-    public void Dispose() => InternalDispose();
-
-    /// <summary>
-    /// Shared disposal between the finaliser and the IDisposable.Dispose call.
-    /// </summary>
-    private void InternalDispose()
+    public void Dispose()
     {
         if (Disposed)
             return;
 
         Paths.Clear();
-
-        foreach (var asset in Assets.Values)
-        {
-            if (asset)
-                asset.Destroy();
-        }
-
+        Assets.Values.CleanupResources(false);
         Assets.Clear();
         Disposed = true;
     }
