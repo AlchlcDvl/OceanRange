@@ -1,8 +1,6 @@
 // ReSharper disable UnassignedField.Global
 // ReSharper disable CollectionNeverUpdated.Global
 
-using System.Reflection;
-
 namespace OceanRange.Data;
 
 public sealed class Translations : JsonData

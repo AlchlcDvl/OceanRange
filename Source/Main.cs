@@ -22,6 +22,8 @@ internal sealed class Main : ModEntryPoint
         harmonyWatch.Start();
 #endif
 
+        SystemContext.IsModded = true; // I don't know what this does fully, but it's better have this one than not, although it'd be better if the mod loader did this
+
         Console = ConsoleInstance; // Passing the console so that every other class can log things as well
 
         HarmonyInstance.PatchAll(Inventory.Core); // Patch methods
@@ -30,8 +32,6 @@ internal sealed class Main : ModEntryPoint
         harmonyWatch.Stop();
         ConsoleInstance.Log($"Game Patched in {harmonyWatch.ElapsedMilliseconds}ms!");
 #endif
-
-        SystemContext.IsModded = true; // I don't know what this does fully, but it's better have this one than not, although it'd be better if the mod loader did this
 
         ClsExists = SRModLoader.IsModPresent("custom.loading"); // Checks if Custom Loading Screens is present in the mods folder
 
@@ -96,6 +96,9 @@ internal sealed class Main : ModEntryPoint
         CleanupResources(Helpers.ClonedMeshes);
         CleanupResources(Helpers.ClonedMats);
         // CleanupResources(Helpers.CreatedRamps);
+
+        if (PrefabParent)
+            PrefabParent.Destroy();
 
         Inventory.ReleaseHandles();
     }
