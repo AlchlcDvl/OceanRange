@@ -6,7 +6,7 @@ namespace OceanRange.Data;
 
 public sealed class SlimeData : SpawnedActorData
 {
-    private static readonly Dictionary<string, Action<SlimeAppearance, bool>> AppearanceMethods = [];
+    private static readonly Dictionary<string, Action<SlimeAppearance, SlimeAppearanceData>> AppearanceMethods = [];
     private static readonly Dictionary<string, Action<GameObject, SlimeDefinition>> DefinitionMethods = [];
 
     static SlimeData()
@@ -14,7 +14,7 @@ public sealed class SlimeData : SpawnedActorData
         foreach (var method in AccessTools.GetDeclaredMethods(typeof(Slimepedia)))
         {
             if (method.Name.EndsWith("AppearanceDetails", StringComparison.Ordinal))
-                AppearanceMethods[method.Name] = Helpers.CompileAction<SlimeAppearance, bool>(method);
+                AppearanceMethods[method.Name] = Helpers.CompileAction<SlimeAppearance, SlimeAppearanceData>(method);
             else if (method.Name.EndsWith("Details", StringComparison.Ordinal))
                 DefinitionMethods[method.Name] = Helpers.CompileAction<GameObject, SlimeDefinition>(method);
         }
@@ -68,7 +68,7 @@ public sealed class SlimeData : SpawnedActorData
     [JsonIgnore] public Action<GameObject, SlimeDefinition> InitSlimeDetails;
     [JsonIgnore] public Action<GameObject, SlimeDefinition> InitPlortDetails;
     [JsonIgnore] public Action<GameObject, SlimeDefinition> InitGordoDetails;
-    [JsonIgnore] public Action<SlimeAppearance, bool> InitAppearanceDetails;
+    [JsonIgnore] public Action<SlimeAppearance, SlimeAppearanceData> InitAppearanceDetails;
 
     protected override void OnDeserialise()
     {
@@ -141,6 +141,7 @@ public sealed class SlimeAppearanceData : JsonData
     [JsonIgnore] public bool IsSS;
     [JsonIgnore] public bool HasMouthColors;
     [JsonIgnore] public bool HasEyeColors;
+    [JsonIgnore] public bool ChangedFace;
 
     protected override void OnDeserialise()
     {
@@ -170,6 +171,7 @@ public sealed class SlimeAppearanceData : JsonData
 
         HasMouthColors = TopMouthColor.HasValue || MiddleMouthColor.HasValue || BottomMouthColor.HasValue;
         HasEyeColors = RedEyeColor.HasValue || GreenEyeColor.HasValue || BlueEyeColor.HasValue;
+        ChangedFace = HasMouthColors || HasEyeColors;
     }
 
     public void SetJiggle(float jiggle)

@@ -13,8 +13,8 @@ public sealed class SaveWriter : IDisposable
     // The internal writer.
     private readonly BinaryWriter _writer;
 
-    // private byte _currentPackingByte;
-    // private int _currentBitIndex;
+    private byte _currentPackingByte;
+    private int _currentBitIndex;
 
     public SaveWriter()
     {
@@ -78,34 +78,34 @@ public sealed class SaveWriter : IDisposable
     //     _writer.Write(value.w);
     // }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    // public void ResetPackingBools()
-    // {
-    //     _currentPackingByte = 0;
-    //     _currentBitIndex = 0;
-    // }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void ResetPackingBools()
+    {
+        _currentPackingByte = 0;
+        _currentBitIndex = 0;
+    }
 
-    // public void WritePackedBool(bool value)
-    // {
-    //     if (value)
-    //         _currentPackingByte |= (byte)(1 << _currentBitIndex);
+    public void WritePackedBool(bool value)
+    {
+        if (value)
+            _currentPackingByte |= (byte)(1 << _currentBitIndex);
 
-    //     _currentBitIndex++;
+        _currentBitIndex++;
 
-    //     if (_currentBitIndex == 8)
-    //     {
-    //         _writer.Write(_currentPackingByte);
-    //         ResetPackingBools();
-    //     }
-    // }
+        if (_currentBitIndex == 8)
+        {
+            _writer.Write(_currentPackingByte);
+            ResetPackingBools();
+        }
+    }
 
-    // public void EndPackingBools()
-    // {
-    //     if (_currentBitIndex > 0)
-    //         _writer.Write(_currentPackingByte);
+    public void EndPackingBools()
+    {
+        if (_currentBitIndex > 0)
+            _writer.Write(_currentPackingByte);
 
-    //     ResetPackingBools();
-    // }
+        ResetPackingBools();
+    }
 
     public void Dispose()
     {
@@ -132,8 +132,8 @@ public sealed class SaveReader : IDisposable
     private readonly MemoryStream _stream;
     private readonly BinaryReader _reader;
 
-    // private byte _currentPackedByte;
-    // private int _currentBitIndex = 8;
+    private byte _currentPackedByte;
+    private int _currentBitIndex = 8;
 
     /// <summary>
     /// Initializes a new instance of the SaveReader with a ulong array.
@@ -194,21 +194,21 @@ public sealed class SaveReader : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T ReadEnum<T>() where T : struct, Enum => Helpers.ParseEnum<T>(_reader.ReadString());
 
-    // public bool ReadPackedBool()
-    // {
-    //     if (_currentBitIndex >= 8)
-    //     {
-    //         _currentPackedByte = _reader.ReadByte();
-    //         _currentBitIndex = 0;
-    //     }
+    public bool ReadPackedBool()
+    {
+        if (_currentBitIndex >= 8)
+        {
+            _currentPackedByte = _reader.ReadByte();
+            _currentBitIndex = 0;
+        }
 
-    //     var value = (_currentPackedByte & (1 << _currentBitIndex)) != 0;
-    //     _currentBitIndex++;
-    //     return value;
-    // }
+        var value = (_currentPackedByte & (1 << _currentBitIndex)) != 0;
+        _currentBitIndex++;
+        return value;
+    }
 
-    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    // public void EndPackingBools() => _currentBitIndex = 8;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void EndPackingBools() => _currentBitIndex = 8;
 
     // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     // public void Skip(int count) => _stream.Position += count;

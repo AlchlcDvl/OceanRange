@@ -35,6 +35,7 @@
     "name": "Rosi Lantern",
     "appearances": [
       {
+        "largoProps": "UseSlime2ForFace",
         "bodyStruct": {
           "matOrigin": "LANTERN_SLIME"
         },
@@ -62,6 +63,7 @@
     "name": "Mine Lantern",
     "appearances": [
       {
+        "largoProps": "UseSlime2ForFace",
         "bodyStruct": { "matOrigin": "ROSI_MINE_LARGO" },
         "slime1Structs": [
           {

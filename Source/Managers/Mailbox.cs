@@ -13,8 +13,14 @@ public static class Mailbox
     public static void PreloadMailData()
     {
         Mail = Inventory.GetJsonArray<MailData>("mailbox");
-        MailMap = Mail.ToDictionary(x => x.Id);
-        Array.ForEach(Mail, PreloadMail);
+
+        MailMap = new(Mail.Length);
+
+        foreach (var item in Mail)
+        {
+            MailMap.Add(item.Id, item);
+            PreloadMail(item);
+        }
     }
 
     private static void PreloadMail(MailData mailData) => MailRegistry.RegisterMailEntry(new MailRegistry.MailEntry(mailData.Id).SetReadCallback((_, _) => mailData.Read = true));

@@ -49,14 +49,17 @@ public sealed class RancherData : JsonData
 
     public void HandleTranslationData(RancherLangData langData, Language lang)
     {
-        Rancher.numBlurbs = langData.Offers.Length;
-
-        for (var i = 0; i < langData.Offers.Length; i++)
+        if (Rancher.numBlurbs != langData.Offers.Length)
         {
-            var id = $"m.offer_{i + 1}.{RancherId}";
+            Rancher.numBlurbs = langData.Offers.Length;
 
-            if (OfferIds.Add(id)) // In case the number of offers changes between languages
-                ExchangeOfferRegistry.RegisterOfferID(id);
+            for (var i = 0; i < langData.Offers.Length; i++)
+            {
+                var id = $"m.offer_{i + 1}.{RancherId}";
+
+                if (OfferIds.Add(id)) // In case the number of offers changes between languages
+                    ExchangeOfferRegistry.RegisterOfferID(id);
+            }
         }
 
         var specId = $"m.bonusoffer.{RancherId}";

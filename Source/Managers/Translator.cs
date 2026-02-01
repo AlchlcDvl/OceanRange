@@ -120,9 +120,9 @@ public static class Translator
 
     private static List<DeferredTranslation> CurrentDeferredList;
 
-    public static void BeginGatherPass() => CurrentDeferredList = [];
+    public static void BeginGatherPhase() => CurrentDeferredList = [];
 
-    public static List<DeferredTranslation> EndGatherPass()
+    public static List<DeferredTranslation> EndGatherPhase()
     {
         var list = CurrentDeferredList;
         CurrentDeferredList = null;
@@ -197,6 +197,8 @@ public static class Translator
 
         return null;
     }
+
+    // The next set of methods are ripped straight from the game itself, because the original is patched
 
     private static ResourceBundle GetBundle(string prefix, string path, CultureInfo culture, string defaultLang)
     {

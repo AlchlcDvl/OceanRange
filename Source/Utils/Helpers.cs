@@ -677,4 +677,14 @@ public static class Helpers
         var callExpr = Expression.Call(method, arg1, arg2);
         return Expression.Lambda<Action<T1, T2>>(callExpr, arg1, arg2).Compile();
     }
+
+    // public static Action<T1, T2, T3> CompileAction<T1, T2, T3>(MethodInfo method)
+    // {
+    //     var arg1 = Expression.Parameter(typeof(T1), "arg1");
+    //     var arg2 = Expression.Parameter(typeof(T2), "arg2");
+    //     var arg3 = Expression.Parameter(typeof(T3), "arg3");
+
+    //     var callExpr = Expression.Call(method, arg1, arg2, arg3);
+    //     return Expression.Lambda<Action<T1, T2, T3>>(callExpr, arg1, arg2, arg3).Compile();
+    // }
 }

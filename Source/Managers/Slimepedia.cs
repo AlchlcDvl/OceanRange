@@ -71,8 +71,15 @@ public static class Slimepedia
         MoSsExists = SRModLoader.IsModPresent("mosecretstyles");
 
         Slimes = Inventory.GetJsonArray<SlimeData>("slimepedia");
-        SlimeDataMap = Slimes.ToDictionary(x => x.MainId, Identifiable.idComparer);
-        PlortDataMap = Slimes.ToDictionary(x => x.PlortId, Identifiable.idComparer);
+
+        SlimeDataMap = new(Identifiable.idComparer);
+        PlortDataMap = new(Identifiable.idComparer);
+
+        foreach (var slimeData in Slimes)
+        {
+            SlimeDataMap[slimeData.MainId] = slimeData;
+            PlortDataMap[slimeData.PlortId] = slimeData;
+        }
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
         SRCallbacks.OnSaveGameLoaded += OnSaveLoaded;
@@ -147,7 +154,7 @@ public static class Slimepedia
 
         var pinkAppearance = IdentifiableId.PINK_SLIME.GetSlimeDefinition().AppearancesDefault[0];
 
-        Sleeping = pinkAppearance.Face._expressionToFaceLookup[SlimeExpression.Blink];
+        Sleeping = pinkAppearance.Face._expressionToFaceLookup[SlimeExpression.Awe];
         Sleeping.SlimeExpression = Ids.Sleeping;
         Sleeping.Eyes = Sleeping.Eyes.Clone();
         Sleeping.Eyes.SetTexture(FaceAtlas, Inventory.GetTexture2D("sleeping_eyes"));
@@ -422,15 +429,15 @@ public static class Slimepedia
         var appearance = baseAppearance.Instantiate(); // Cloning our own appearance
         appearance.name = $"{slimeData.Name}Normal";
 
-        appearance.Face = appearance.Face.CloneInstance();
-        appearance.Face._expressionToFaceLookup = new(SlimeFace.DefaultSlimeExpressionComparer);
+        if (data.ChangedFace)
+        {
+            appearance.Face = appearance.Face.CloneInstance();
+            appearance.Face._expressionToFaceLookup = new(SlimeFace.DefaultSlimeExpressionComparer);
 
-        // Faces stuff
-        foreach (var face in appearance.Face.ExpressionFaces)
-            HandleFace(face, data, appearance.Face._expressionToFaceLookup);
-
-        HandleFace(Sleeping, data, appearance.Face._expressionToFaceLookup);
-        appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
+            // Faces stuff
+            foreach (var face in appearance.Face.ExpressionFaces)
+                HandleFace(face, data, appearance.Face._expressionToFaceLookup);
+        }
 
         var prevPalette = appearance.ColorPalette;
         appearance.ColorPalette = new()
@@ -447,7 +454,13 @@ public static class Slimepedia
 
         applicator.GenerateSlimeBones(appearance.Structures, slimeData.Jiggle);
 
-        slimeData.InitAppearanceDetails?.Invoke(appearance, data.IsSS);
+        slimeData.InitAppearanceDetails?.Invoke(appearance, data);
+
+        if (data.ChangedFace)
+            appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
+
+        if (data.IsSS)
+            definition.AppearancesDynamic.Add(appearance);
 
         SlimeRegistry.RegisterAppearance(definition, appearance);
         return appearance;
@@ -851,7 +864,7 @@ public static class Slimepedia
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition) => GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, definition.IdentifiableId];
 
     [UsedImplicitly]
-    public static void InitLanternAppearanceDetails(SlimeAppearance appearance, bool _)
+    public static void InitLanternAppearanceDetails(SlimeAppearance appearance, SlimeAppearanceData data)
     {
         var prefab = appearance.Structures[3].Element.Prefabs[0];
         prefab.transform.localScale /= 3f;
@@ -861,6 +874,10 @@ public static class Slimepedia
         var material = rend.sharedMaterial.Clone();
         material.SetColor(Color, "#EBDB6A".HexToColor());
         rend.sharedMaterial = material;
+
+        HandleFace(Sleeping, data, appearance.Face._expressionToFaceLookup);
+
+        data.ChangedFace = true;
     }
 
     [UsedImplicitly]
@@ -883,7 +900,7 @@ public static class Slimepedia
     public static void InitGoldfishPlortDetails(GameObject prefab, SlimeDefinition definition) => definition.IdentifiableId.GetPrefab().GetComponent<GoldSlimeProducePlorts>().plortPrefab = prefab;
 
     [UsedImplicitly]
-    public static void InitGoldfishAppearanceDetails(SlimeAppearance appearance, bool _) => appearance.ColorPalette = IdentifiableId.GOLD_SLIME.GetSlimeDefinition().AppearancesDefault[0].ColorPalette;
+    public static void InitGoldfishAppearanceDetails(SlimeAppearance appearance, SlimeAppearanceData _) => appearance.ColorPalette = IdentifiableId.GOLD_SLIME.GetSlimeDefinition().AppearancesDefault[0].ColorPalette;
 
 #if DEBUG
     [TimeDiagnostic("Slime Postload")]

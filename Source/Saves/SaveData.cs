@@ -2,9 +2,9 @@ using OceanRange.Patches;
 
 namespace OceanRange.Saves;
 
-public sealed class MailSaveData : ISaveData
+public sealed class MailSaveDataV01 : ISaveData
 {
-    public bool Deprecated => false;
+    public bool Deprecated => true;
 
     public ulong[] Write(out byte padding)
     {
@@ -38,6 +38,50 @@ public sealed class MailSaveData : ISaveData
             var mail = Mailbox.Mail[i];
             mail.Read = reader.ReadBool();
             mail.Sent = mail.Read || reader.ReadBool();
+        }
+    }
+}
+
+public sealed class MailSaveDataV02 : ISaveData
+{
+    public bool Deprecated => false;
+
+    public ulong[] Write(out byte padding)
+    {
+        using var writer = new SaveWriter();
+        writer.WriteInt(Mailbox.Mail.Length);
+
+        foreach (var mail in Mailbox.Mail)
+        {
+            writer.ResetPackingBools();
+            writer.WriteBool(mail.Read);
+
+            if (!mail.Read)
+                writer.WriteBool(mail.Sent);
+
+            writer.EndPackingBools();
+
+            if (EnsureAutoSaveDirectorData.IsAutoSave)
+                continue;
+
+            mail.Read = false;
+            mail.Sent = false;
+        }
+
+        return writer.ToArray(out padding);
+    }
+
+    public void Read(ulong[] data, byte padding)
+    {
+        using var reader = new SaveReader(data, padding);
+        var length = reader.ReadInt();
+
+        for (var i = 0; i < length; i++)
+        {
+            var mail = Mailbox.Mail[i];
+            mail.Read = reader.ReadPackedBool();
+            mail.Sent = mail.Read || reader.ReadPackedBool();
+            reader.EndPackingBools();
         }
     }
 }

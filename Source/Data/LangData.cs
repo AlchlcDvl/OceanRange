@@ -1,6 +1,8 @@
 // ReSharper disable UnassignedField.Global
 // ReSharper disable CollectionNeverUpdated.Global
 
+using System.Reflection;
+
 namespace OceanRange.Data;
 
 public sealed class Translations : JsonData
@@ -40,7 +42,7 @@ public sealed class Translations : JsonData
             return TranslatedTexts;
 
         TranslatedTexts = [];
-        Translator.BeginGatherPass();
+        Translator.BeginGatherPhase();
 
         foreach (var (bundleName, values) in Additional)
         {
@@ -53,7 +55,7 @@ public sealed class Translations : JsonData
         foreach (var langData in LangDatas)
             langData.AddTranslations(TranslatedTexts, lang);
 
-        var deferredItems = Translator.EndGatherPass();
+        var deferredItems = Translator.EndGatherPhase();
         var isFallback = lang == Config.FALLBACK_LANGUAGE;
 
         foreach (var item in deferredItems)
@@ -70,7 +72,7 @@ public sealed class Translations : JsonData
         if (ExoticTranslationsHandled)
             return;
 
-        Translator.BeginGatherPass();
+        Translator.BeginGatherPhase();
 
         if (AdditionalExotic != null)
         {
@@ -86,7 +88,7 @@ public sealed class Translations : JsonData
         foreach (var langData in LangDatas)
             langData.AddExoticTranslations(TranslatedTexts, lang);
 
-        var deferredItems = Translator.EndGatherPass();
+        var deferredItems = Translator.EndGatherPhase();
         var isFallback = lang == Config.FALLBACK_LANGUAGE;
 
         foreach (var item in deferredItems)
@@ -278,6 +280,7 @@ public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIME
     [JsonRequired] public string Diet;
     [JsonRequired] public string Favourite;
     [JsonRequired] public string Onomics;
+
     public string Exotic;
 
     public override void WhenFallback()
