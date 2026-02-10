@@ -179,6 +179,19 @@
         "Lisa bir kere bir Mesmer Slime’a kendi yansımasını göstermeye çalıştı. Slime saatlerce aynanın karşısında öylece durdu.",
         "Lisa sık sık Viktor'la bilimsel tartışmalara girer."
       ]
+    },
+    {
+      "name": "Lucia",
+      "translatedName": "Lucia Seagull",
+      "offers": [
+        "Pardon my sudden intrusion. I've received reports of certain slimes appearing in your region that I’m in need of for study. If it isn't too much trouble, I would greatly appreciate your assistance in sending a few my way.",
+        "Could you, perhaps, include a few snacks? I'd like to keep our guests comfortable during observation.",
+        "Pardon me, but I've received word that certain exotic foods can be found in your region. If you're able to retrieve some for my patients, it would be greatly appreciated."
+      ],
+      "specialOffer": "Please don’t overexert yourself — excessive stress is never good for your health. I would recommend taking a moment to rest and perhaps enjoy some Cotton Flower Tea. It’s known to help soothe the muscles and calm the nerves.",
+      "loadingTexts": [
+        "Rumour has it that Lucia once had to hunt someone down to give them a medical checkup."
+      ]
     }
   ],
   "largos": [
@@ -464,6 +477,12 @@
       "translatedName": "@exchange:m.rancher.lisa",
       "subject": "S.K.Ö.Y.S.U. Merkez’den Selamlar!",
       "body": "Merhaba, ben Lisa Erwin! Slimeolog, saha araştırmacısı ve S.K.Ö.Y.S.U.’ın gururlu bir üyesiyim (henüz bilmiyorsanız, Slime Koruma, Öğrenme, Yardım, Sığınak & Uyum demek). Bir bakıma bir slime fısıldayıcısı sayılabilirim. Far, Far Range’e ayak bastığımdan beri onların davranışlarını, tuhaflıklarını ve garip yönlerini inceliyorum. Eğer bir slime zıplıyor, titriyor ya da mırıldanıyorsa, büyük ihtimalle onun hakkında bir düzine sayfa kayıt tutmuşumdur.\n\nSon zamanlarda, senin arazinin yakınlarında garip slime aktiviteleri olduğuna dair raporlar akmaya başladı. Verilerde böyle bir şey görmemiştim — ve inanın, bu bir şey demek.\n\nO yüzden! Önümüzdeki birkaç gün içinde Range Exchange üzerinden seninle iletişime geçeceğim. Çok resmi bir şey değil — sadece kısa bir sohbet, belki bu tuhaf slime arkadaşlardan birkaçını gözlemleme şansı bulursun, eğer istersen. Belki de hiçbir şey değildir… ya da bu kuru taşın gördüğü en büyük slime gizemi olabilir.\n\nKorumaları gözden kaçırma, tamam mı?\n\nSevgiler,\n- Lisa\nFar, Far Range S.K.Ö.Y.S.U.\n\nNot: Eğer bir slime sana mırıldanmaya başlarsa… panik yapma. Sadece kaydet."
+    },
+    {
+      "mailKey": "exchangeintro_lucia",
+      "translatedName": "@exchange:m.rancher.lucia",
+      "subject": "Daily Checkup",
+      "body": "Hello Ms. LeBeau,\n\nI don’t believe we’ve had the pleasure of meeting yet. My name is Lucia Seagull, physician with Cotton Jude Hospital. During my routine regional review, I noticed you haven’t scheduled a medical checkup since arriving on the Far, Far Range.\n\nGiven your history of injuries back on Earth, I wanted to personally reach out and encourage you to book an appointment at your earliest convenience. I’d be more than happy to conduct the checkup myself — and if needed, I can even make a house call to your ranch.\n\nNo need to worry about the cost. You’re still fully covered under your 7Zee Corporation healthcare plan for another year, so all standard checkups are free of charge.\n\nPlease contact me whenever you’re able. Your health is important, even light-years away.\n\n- Dr. Lucia Seagull"
     }
   ]
 }
