@@ -36,7 +36,6 @@ public static class Largopedia
     */
 
     public static readonly HashSet<IdentifiableId> Mesmers = new(Identifiable.idComparer);
-
     public static readonly Dictionary<IdentifiableId, List<(IdentifiableId, IdentifiableId)>> LargoMaps = new(Identifiable.idComparer);
 
     private static readonly Func<List<(IdentifiableId, IdentifiableId)>> Create = () => [];
@@ -130,7 +129,9 @@ public static class Largopedia
         var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
         applicator.SlimeDefinition = definition;
 
-        definition.AppearancesDefault = [GenerateAppearance(appearance1, appearance2, largoData.Appearances[0], applicator, SlimeAppearance.AppearanceSaveSet.CLASSIC, largoData, definition)];
+        var appearance = GenerateAppearance(appearance1, appearance2, largoData.Appearances[0], applicator, SlimeAppearance.AppearanceSaveSet.CLASSIC, largoData, definition, false);
+        definition.AppearancesDefault = [appearance];
+        SlimeRegistry.RegisterAppearance(definition, appearance);
 
         LargoMaps.GetOrAdd(largoData.Slime1Id, Create).Add((largoData.MainId, largoData.Slime2Id));
         LargoMaps.GetOrAdd(largoData.Slime2Id, Create).Add((largoData.MainId, largoData.Slime1Id));
@@ -212,7 +213,7 @@ public static class Largopedia
     }
 
     private static SlimeAppearance GenerateAppearance(SlimeAppearance appearance1, SlimeAppearance appearance2, LargoAppearanceData appearanceData, SlimeAppearanceApplicator applicator, SlimeAppearance.AppearanceSaveSet set, LargoData largoData,
-        SlimeDefinition definition)
+        SlimeDefinition definition, bool register = true)
     {
         var useSlime2Body = appearanceData.LargoProps.HasFlagFast(LargoAppearanceProps.UseSlime2ForBody);
 
@@ -310,7 +311,9 @@ public static class Largopedia
         largoData.InitSlime1AppearanceDetails?.Invoke(appearance, appearanceData.AppProps);
         largoData.InitSlime2AppearanceDetails?.Invoke(appearance, appearanceData.AppProps);
 
-        SlimeRegistry.RegisterAppearance(definition, appearance);
+        if (register) // SSRML patches this method, and the AppearancesDefault array needs to be initialised before registering
+            SlimeRegistry.RegisterAppearance(definition, appearance);
+
         return appearance;
     }
 

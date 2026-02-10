@@ -1,6 +1,5 @@
 using SRML;
 using System.Globalization;
-using SRML.Utils;
 using System.Collections;
 using System.Reflection;
 using OceanRange.Saves;
@@ -57,6 +56,9 @@ public static class Helpers
         }
     }
 
+    private static readonly TryParseHtml<Color> ColorParser = ColorUtility.TryParseHtmlString;
+    // private static readonly TryParseHtml<Color32> Color32Parser = ColorUtility.DoTryParseHtmlColor;
+
     extension(string @string)
     {
         public string ReplaceAll(string newValue, string[] valuesToReplace)
@@ -71,15 +73,12 @@ public static class Helpers
 
         public List<string> TrueSplit(params char[] separators)
         {
-            var separatorSet = separators.ToHashSet();
-            var separatorCount = @string.Count(separatorSet.Contains);
-
-            var list = new List<string>(separatorCount + 1);
+            var list = new List<string>(@string.Count(separators.Contains) + 1);
             var start = 0;
 
             for (var i = 0; i < @string.Length; i++)
             {
-                if (!separatorSet.Contains(@string[i]))
+                if (!separators.Contains(@string[i]))
                     continue;
 
                 if (i > start)
@@ -104,29 +103,18 @@ public static class Helpers
             return list;
         }
 
-        // public bool TryHexToColor32(out Color32 color)
-        // {
-        //     if (HexToColor32s.TryGetValue(@string, out color))
-        //         return true;
+        // public bool TryHexToColor32(out Color32 color) => @string.TryHexToColor(HexToColor32s, Color32Parser, out color);
 
-        //     if (ColorUtility.DoTryParseHtmlColor(@string, out color))
-        //     {
-        //         HexToColor32s[@string] = color;
-        //         return true;
-        //     }
+        public bool TryHexToColor(out Color color) => @string.TryHexToColor(HexToColors, ColorParser, out color);
 
-        //     color = default;
-        //     return false;
-        // }
-
-        public bool TryHexToColor(out Color color)
+        private bool TryHexToColor<T>(Dictionary<string, T> cache, TryParseHtml<T> parser, out T color) where T : struct
         {
-            if (HexToColors.TryGetValue(@string, out color))
+            if (cache.TryGetValue(@string, out color))
                 return true;
 
-            if (ColorUtility.TryParseHtmlString(@string, out color))
+            if (parser(@string, out color))
             {
-                HexToColors[@string] = color;
+                cache[@string] = color;
                 return true;
             }
 
@@ -136,7 +124,7 @@ public static class Helpers
 
         public Color HexToColor() => @string.TryHexToColor(out var color) ? color : default;
 
-        public bool StartsWith(char character) => @string.Length > 0 && @string[0] == character;
+        public bool StartsWith(char character) => @string is { Length: > 0 } && @string[0] == character;
     }
 
     public static T ParseEnum<T>(string value) where T : struct, Enum => (T)Enum.Parse(typeof(T), value, true);
@@ -386,7 +374,7 @@ public static class Helpers
         value = pair.Value;
     }
 
-    extension<TKey, TValue>(IDictionary<TKey, TValue> dict)
+    extension<TKey, TValue>(Dictionary<TKey, TValue> dict)
     {
         public bool TryGetValue(TKey[] keys, out TValue result)
         {

@@ -97,3 +97,4 @@ Discord:
 ## Fixes
 - Gameplay: Fixed slimes and largos not eating custom foods when SSRML is installed
 - Visual*: Fixed largos turning invisible when one fo the component slimes has an active secret style
+- Visual: Fixed the appearances of a few largos

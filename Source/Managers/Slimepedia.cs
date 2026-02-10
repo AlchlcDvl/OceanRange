@@ -75,8 +75,8 @@ public static class Slimepedia
 
         Slimes = Inventory.GetJsonArray<SlimeData>("slimepedia");
 
-        SlimeDataMap = new(Identifiable.idComparer);
-        PlortDataMap = new(Identifiable.idComparer);
+        SlimeDataMap = [with(Identifiable.idComparer)];
+        PlortDataMap = [with(Identifiable.idComparer)];
 
         foreach (var slimeData in Slimes)
         {

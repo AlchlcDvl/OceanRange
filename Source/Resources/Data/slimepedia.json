@@ -76,7 +76,6 @@
     "diet": "MEAT",
     "basePrice": 20,
     "saturation": 26,
-    "plortType": "Plort",
     "gordoOri": "f -494.6969,-2.37,-241.9137,0,200,0",
     "gordoRewards": ["CRATE_REEF_01", "CRATE_REEF_01", "CRATE_REEF_01"],
     "gordoZone": "REEF",
@@ -381,7 +380,6 @@
     "gordoOri": "f -328.2128,14.33913,462.0742,0,270,0",
     "gordoZone": "MOSS",
     "gordoCell": "Moss_Forest",
-    "plortType": "Plort",
     "onomicsType": "plorts",
     "zones": ["MOSS"],
     "normalAppearance": {
@@ -501,7 +499,6 @@
     "gordoCell": "Reef_CliffCaves",
     "gordoRewards": ["CRATE_MOSS_01", "CRATE_MOSS_01", "CRATE_MOSS_01"],
     "toAdd": ["OceanRange.Slimes.HermitBehaviour, OceanRange", "OceanRange.Slimes.CanMoveHandler, OceanRange"],
-    "plortType": "Plort",
     "onomicsType": "plorts",
     "zones": ["REEF"],
     "normalAppearance": {
@@ -592,6 +589,70 @@
         {
           "meshData": { "mesh": "goldfish_fins_gordo" },
           "matData": { "sameAs": 1 }
+        }
+      ]
+    }
+  },
+  {
+    "name": "Mimic",
+    "favToy": "DISCO_BALL_TOY",
+    "favFood": "HEN",
+    "diet": "MEAT",
+    "basePlort": "TABBY_PLORT",
+    "basePrice": 20,
+    "saturation": 30,
+    "toAdd": ["StalkConsumable, Assembly-CSharp"],
+    "onomicsType": "plorts",
+    "zones": ["MOSS"],
+    "hasGordo": false,
+    "normalAppearance": {
+      "mainAmmoColor": "#a4e88e",
+      "plortAmmoColor": "#3c6c45",
+      "jiggle": 0.25,
+      "slimeFeatures": [
+        {
+          "matData": {
+            "pattern": "mimic",
+            "matOrigin": "TABBY_SLIME",
+            "gloss": 0.11,
+            "colorProps": {
+              "_TopColor": "#3c6c45",
+              "_BottomColor": "#a4e88e"
+            }
+          },
+          "meshData": { "mesh": "mimic_body" }
+        },
+        {
+          "meshData": { "mesh": "mimic_tail" },
+          "matData": {
+            "matOrigin": "TABBY_SLIME",
+            "pattern": "mimic_tail",
+            "colorProps": {
+              "_TopColor": "#73dcb3",
+              "_BottomColor": "#44928b"
+            }
+          }
+        }
+      ],
+      "gordoFeatures": [
+        {
+          "matData": { "sameAs": 0 },
+          "meshData": { "mesh": "mimic_body_gordo" }
+        },
+        {
+          "meshData": { "mesh": "mimic_tail_gordo" },
+          "matData": { "sameAs": 1 }
+        }
+      ],
+      "plortFeatures": [
+        {
+          "matData": {
+            "pattern": "mimic_plort",
+            "colorProps": {
+              "_TopColor": "#73dcb3",
+              "_BottomColor": "#a4e88e"
+            }
+          }
         }
       ]
     }
