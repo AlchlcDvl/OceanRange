@@ -179,6 +179,19 @@
         "Lisa a essayé de montrer sa réflection à un slime mesmeur dans un miroir, une fois. Le slime est resté devant le miroir pendant des heures.",
         "Lisa et Viktor se retrouvent souvent dans des disputes autour de sujets scientifiques."
       ]
+    },
+    {
+      "name": "Lucia",
+      "translatedName": "Lucia Seagull",
+      "offers": [
+        "Pardon my sudden intrusion. I've received reports of certain slimes appearing in your region that I’m in need of for study. If it isn't too much trouble, I would greatly appreciate your assistance in sending a few my way.",
+        "Could you, perhaps, include a few snacks? I'd like to keep our guests comfortable during observation.",
+        "Pardon me, but I've received word that certain exotic foods can be found in your region. If you're able to retrieve some for my patients, it would be greatly appreciated."
+      ],
+      "specialOffer": "Please don’t overexert yourself — excessive stress is never good for your health. I would recommend taking a moment to rest and perhaps enjoy some Cotton Flower Tea. It’s known to help soothe the muscles and calm the nerves.",
+      "loadingTexts": [
+        "Rumour has it that Lucia once had to hunt someone down to give them a medical checkup."
+      ]
     }
   ],
   "largos": [
@@ -464,6 +477,12 @@
       "translatedName": "@exchange:m.rancher.lisa",
       "subject": "Bien le bonjour du QG de S.P.L.A.S.H. !",
       "body": "Moi, c'est Lisa Erwin! Slimeologiste, scientifique de terrain, et membre de S.P.L.A.S.H. (ce qui veut dire Sanctuaire de Préservation, Logement et Assistance aux Slimes pour l'Harmonie, retenez-le !). Certains disent que je peux murmurer à l'oreille des slimes... C'est vrai que j'étudie leurs comportements, spécificités et étrangetés depuis que j'ai atterri au Far, Far Ouest. Si ça jigote, bondit, ou ronronne, j'ai sûrement des dizaines de pages à son sujet.\n\nRécemment, on a une tonne d'avertissements à propos de slimes étranges, tout près de chez vous ! J'avoue que j'avais jamais vu ça avant - et croyez-moi, si c'est moi qui vous le dis, c'est que c'est grave.\n\nAlors ! Je vais vous contacter à travers le Troc dans quelques jours. Rien de trop sérieux, juste une petite pause café, parler des ces nouveaux amis slimes, si vous en aperçevez, bien sûr... Ah, c'est peut-être rien. Ou peut-être que c'est le PLUS GRAND MYSTÈRE SLIME SUR CETTE PLANÈTE !!\n\nGardez l'oeil ouvert, ok ?\n\nÀ plus,\n- Lisa.\nS.P.L.A.S.H. au Far, Far, Ouest\n\nP.S. Si un slime se met à chantonner... ne paniquez surtout pas. Écrivez tout."
+    },
+    {
+      "mailKey": "exchangeintro_lucia",
+      "translatedName": "@exchange:m.rancher.lucia",
+      "subject": "Daily Checkup",
+      "body": "Hello Ms. LeBeau,\n\nI don’t believe we’ve had the pleasure of meeting yet. My name is Lucia Seagull, physician with Cotton Jude Hospital. During my routine regional review, I noticed you haven’t scheduled a medical checkup since arriving on the Far, Far Range.\n\nGiven your history of injuries back on Earth, I wanted to personally reach out and encourage you to book an appointment at your earliest convenience. I’d be more than happy to conduct the checkup myself — and if needed, I can even make a house call to your ranch.\n\nNo need to worry about the cost. You’re still fully covered under your 7Zee Corporation healthcare plan for another year, so all standard checkups are free of charge.\n\nPlease contact me whenever you’re able. Your health is important, even light-years away.\n\n- Dr. Lucia Seagull"
     }
   ]
 }
