@@ -4,5 +4,11 @@
     "requests": ["OCEAN"],
     "rewards": ["PLORTS", "MEAT"],
     "rareRewards": ["CRAFT_MATS"]
+  },
+  {
+    "name": "Lucia",
+    "requests": ["FRUIT", "VEGGIES", "MEAT", "PLORTS", "SLIMES", "OCEAN"],
+    "rewards": ["FRUIT", "VEGGIES", "MEAT", "PLORTS", "SLIMES", "OCEAN"],
+    "rareRewards": ["CRAFT_MATS"]
   }
 ]

@@ -8,5 +8,10 @@
     "name": "Lisa Intro",
     "id": "exchangeintro_lisa",
     "unlockAfter": 561600
+  },
+  {
+    "name": "Lucia Intro",
+    "id": "exchangeintro_lucia",
+    "unlockAfter": 648000
   }
 ]

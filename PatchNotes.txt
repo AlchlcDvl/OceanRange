@@ -93,6 +93,7 @@ Discord:
 ## New!
 - Mimic Slimes*: Mischievous little things that love to give people a scare!
 - Secret Styles*: The modded slimes now come with their own custom secret styles!
+- Lucia Seagull: The good doctor from 7Zee, ready to give you a medical checkup!
 
 ## Fixes
 - Gameplay: Fixed slimes and largos not eating custom foods when SSRML is installed

@@ -307,6 +307,18 @@ public static class Helpers
 
     public static bool TryParseEnum(Type enumType, string name, bool ignoreCase, out object result)
     {
+        if (Enum.IsDefined(enumType, name))
+        {
+            result = Enum.Parse(enumType, name);
+            return true;
+        }
+
+        if (!ignoreCase)
+        {
+            result = null;
+            return false;
+        }
+
         try
         {
             result = Enum.Parse(enumType, name, ignoreCase);
