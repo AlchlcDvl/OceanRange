@@ -184,11 +184,11 @@
       "name": "Lucia",
       "translatedName": "Lucia Seagull",
       "offers": [
-        "Pardon my sudden intrusion. I've received reports of certain slimes appearing in your region that I’m in need of for study. If it isn't too much trouble, I would greatly appreciate your assistance in sending a few my way.",
+        "Простите за внезапное вторжение, я получила отчеты о появлении некоторых слаймов в вашей области, в которых я нуждаюсь для исследований. Если это вас не затруднит, я буду очень благодарна если вы отправите мне парочку.",
         "Могли бы вы, по возможности, включить пару закусок? Я хотела бы чтобы наши гости чувствовали себя комфортно во время осмотров.",
-        "Pardon me, but I've received word that certain exotic foods can be found in your region. If you're able to retrieve some for my patients, it would be greatly appreciated."
+        "Простите, но я слышала что некоторые экзотические продукты могут быть найдены в вашей области. Если вы сможете заполучить пару штук для моих пациентов, я буду очень признательна."
       ],
-      "specialOffer": "Please don’t overexert yourself — excessive stress is never good for your health. I would recommend taking a moment to rest and perhaps enjoy some Cotton Flower Tea. It’s known to help soothe the muscles and calm the nerves.",
+      "specialOffer": "Пожалуйста, не перетрудитесь — лишний стресс никогда не полезен для здоровья. Я бы порекомендовала отдохнуть немного и насладиться чаем из хлопкоцвета. Он помогает расслабить мышцы и успокоить нервы.",
       "loadingTexts": [
         "Ходят слухи, что однажды Лусии пришлось выследить кого то, чтобы дать им медицинский осмотр."
       ]
@@ -462,7 +462,7 @@
       "translatedName": "Спиралеводный остров",
       "intro": "Дальние земли чудес для самых любопытных!",
       "presence": "Проходим через остров...",
-      "description": "Placeholder"
+      "description": "Плэйсхолдер"
     }
   ],
   "mail": [
