@@ -179,6 +179,19 @@
         "Lisa versuchte einmal, einem Mesmer-Schleim sein Spiegelbild zu zeigen... Er stand stundenlang vor dem Spiegel.",
         "Lisa gerät oft in wissenschaftliche Diskussionen mit Viktor.."
       ]
+    },
+    {
+      "name": "Lucia",
+      "translatedName": "Lucia Seagull",
+      "offers": [
+        "Pardon my sudden intrusion. I've received reports of certain slimes appearing in your region that I’m in need of for study. If it isn't too much trouble, I would greatly appreciate your assistance in sending a few my way.",
+        "Could you, perhaps, include a few snacks? I'd like to keep our guests comfortable during observation.",
+        "Pardon me, but I've received word that certain exotic foods can be found in your region. If you're able to retrieve some for my patients, it would be greatly appreciated."
+      ],
+      "specialOffer": "Please don’t overexert yourself — excessive stress is never good for your health. I would recommend taking a moment to rest and perhaps enjoy some Cotton Flower Tea. It’s known to help soothe the muscles and calm the nerves.",
+      "loadingTexts": [
+        "Rumour has it that Lucia once had to hunt someone down to give them a medical checkup."
+      ]
     }
   ],
   "largos": [
@@ -464,6 +477,12 @@
       "translatedName": "@exchange:m.rancher.lisa",
       "subject": "Grüß dich aus S.P.L.A.S.H. Zentrale!",
       "body": "Hey! Mein Name ist Lisa Erwin! Schleimologin, Feldforscherin und stolzes Mitglied der S.P.L.A.S.H. Stiftung (für alle Unwissenden: Schleim Pflege, Lernen, Assistenz, Schutz, Heilung). Man könnte sagen, ich bin eine Art Schleimflüsterin... Ich beobachte ihr Verhalten, ihre Eigenheiten, ihre Kuriositäten und das schon seit dem ich das erste Mal auf der Fernen, Fernen Weite gelandet bin. Wenn es wackelt, hüpft oder schnurrt, stehen die Chancen gut, dass ich schon Dutzende Seiten darüber notiert habe.\n\nIn letzer Zeit erreichen und Berichte über seltsame Schleimaktivitäten ganz in der Nähe deines Landstücks. Sowas habe ich in den Daten noch nie gesehen, und glaub mir, das soll was heißen.\n\nOkay also! In ein paar Tagen werd' ich mich nochmal über den Range Exchange bei dir melden. Nix Förmliches, nur ein kurzes Gespräch, vielleicht können wiur uns ja ein paar dieser komischen Schleimfreunde mal zusammen angucken falls du Lust hast. Könnte harmlos sein.. oder vielleicht wird es ja das größte Schleimrätsel das dieser staubige Felsen jemals gesehen hat. Behalte deine Gehege im Auge, alright?\n\nCheers\n\n- Lisa\nFernen, Fernen Weite S.P.L.A.S.H.\n\nPS: Wenn ein Schleim mal anfängt dich an anzusummen.. keine Panik. Einfach aufschreiben und alles sollte hoffentlich okay sein."
+    },
+    {
+      "mailKey": "exchangeintro_lucia",
+      "translatedName": "@exchange:m.rancher.lucia",
+      "subject": "Daily Checkup",
+      "body": "Hello Ms. LeBeau,\n\nI don’t believe we’ve had the pleasure of meeting yet. My name is Lucia Seagull, physician with Cotton Jude Hospital. During my routine regional review, I noticed you haven’t scheduled a medical checkup since arriving on the Far, Far Range.\n\nGiven your history of injuries back on Earth, I wanted to personally reach out and encourage you to book an appointment at your earliest convenience. I’d be more than happy to conduct the checkup myself — and if needed, I can even make a house call to your ranch.\n\nNo need to worry about the cost. You’re still fully covered under your 7Zee Corporation healthcare plan for another year, so all standard checkups are free of charge.\n\nPlease contact me whenever you’re able. Your health is important, even light-years away.\n\n- Dr. Lucia Seagull"
     }
   ]
 }

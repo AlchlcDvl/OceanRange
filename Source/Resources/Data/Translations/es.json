@@ -179,6 +179,19 @@
         "Lisa trato de mostrarle su propio reflejo a un slime mesmero una vez. Se mantuvo frente al espejo por horas.",
         "Lisa aveces se mete en debates cientificos con Viktor."
       ]
+    },
+    {
+      "name": "Lucia",
+      "translatedName": "Lucia Seagull",
+      "offers": [
+        "Pardon my sudden intrusion. I've received reports of certain slimes appearing in your region that I’m in need of for study. If it isn't too much trouble, I would greatly appreciate your assistance in sending a few my way.",
+        "Could you, perhaps, include a few snacks? I'd like to keep our guests comfortable during observation.",
+        "Pardon me, but I've received word that certain exotic foods can be found in your region. If you're able to retrieve some for my patients, it would be greatly appreciated."
+      ],
+      "specialOffer": "Please don’t overexert yourself — excessive stress is never good for your health. I would recommend taking a moment to rest and perhaps enjoy some Cotton Flower Tea. It’s known to help soothe the muscles and calm the nerves.",
+      "loadingTexts": [
+        "Rumour has it that Lucia once had to hunt someone down to give them a medical checkup."
+      ]
     }
   ],
   "largos": [
@@ -464,6 +477,12 @@
       "translatedName": "@exchange:m.rancher.lisa",
       "subject": "¡Buenos dias de la sede central de S.P.L.A.S.H.!",
       "body": "Lisa Erwin! Slimebiologa, investigadora de campo, y orgullosa miembro de S.P.L.A.S.H (significa: Santurario para la Protección, Localización y Asistencia de Slimes en Harmonía). Podrías decir que soy un poco una habladora con slimes.\n\nHe estado estudiando sus comportamientos, cualidades y comportamientos desde que pise la Lejana, Lejana Pradera. Si se agita, salta, o ronronea, lo más probable es que haya registrado docenas de páginas sobre eso. Últimamente, reportes han estado fluyendo sobre cierta actividad slime extraña pasando cerca de tu pedazo de tierra. No puedo decir que he visto algo parecido en los datos — y créeme, eso es decir mucho.\n\n¡Así que! Estaré hablándote mediante el Intercambio Pradera en algunos días. Nada muy formal — solo una pequeña charla rápida, tal vez podrías poner tus ojos en algunos de estos peculiares amigos slimes, si estás dispuesto. Podría ser nada... o podría ser el mayor misterio slime que esta roca polvorienta ha visto alguna vez, mantén un ojo en esos corrales ¿si? \n\nSaludos,\n- Lisa. \nLejana, Lejana Pradera S.P.L.A.S.H.\n\nP.S. Si un slime te empieza a zumbar, no entres en pánico. Sólo anótalo."
+    },
+    {
+      "mailKey": "exchangeintro_lucia",
+      "translatedName": "@exchange:m.rancher.lucia",
+      "subject": "Daily Checkup",
+      "body": "Hello Ms. LeBeau,\n\nI don’t believe we’ve had the pleasure of meeting yet. My name is Lucia Seagull, physician with Cotton Jude Hospital. During my routine regional review, I noticed you haven’t scheduled a medical checkup since arriving on the Far, Far Range.\n\nGiven your history of injuries back on Earth, I wanted to personally reach out and encourage you to book an appointment at your earliest convenience. I’d be more than happy to conduct the checkup myself — and if needed, I can even make a house call to your ranch.\n\nNo need to worry about the cost. You’re still fully covered under your 7Zee Corporation healthcare plan for another year, so all standard checkups are free of charge.\n\nPlease contact me whenever you’re able. Your health is important, even light-years away.\n\n- Dr. Lucia Seagull"
     }
   ]
 }
