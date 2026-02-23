@@ -186,11 +186,11 @@
       "offers": [
         "Ani müdahalem için özür dilerim. Bölgenizde incelemem gereken bazı slimeların ortaya çıktığına dair raporlar aldım. Eğer sakıncası yoksa, birkaç tanesini bana göndermenizde yardımcı olursanız çok memnun olurum.",
         "Birkaç atıştırmalık da ekleyebilir misiniz? Gözlem sırasında misafirlerimizin rahat etmesini istiyorum.",
-        "Pardon me, but I've received word that certain exotic foods can be found in your region. If you're able to retrieve some for my patients, it would be greatly appreciated."
+        "Affedersiniz, ancak bölgenizde bazı egzotik yiyeceklerin bulunabileceğine dair bilgi aldım. Hastalarım için bunlardan bazılarını temin edebilirseniz çok memnun olurum."
       ],
-      "specialOffer": "Please don’t overexert yourself — excessive stress is never good for your health. I would recommend taking a moment to rest and perhaps enjoy some Cotton Flower Tea. It’s known to help soothe the muscles and calm the nerves.",
+      "specialOffer": "Lütfen kendinizi fazla yormayın; aşırı stres sağlığınız için asla iyi değildir. Biraz dinlenmenizi ve belki de pamuk çiçeği çayı içmenizi tavsiye ederim. Kasları rahatlatmaya ve sinirleri yatıştırmaya yardımcı olduğu bilinmektedir.",
       "loadingTexts": [
-        "Rumour has it that Lucia once had to hunt someone down to give them a medical checkup."
+        "Söylentilere göre Lucia bir keresinde birini avlayıp tıbbi muayeneden geçmek zorunda bırakmıştır."
       ]
     }
   ],
@@ -481,8 +481,8 @@
     {
       "mailKey": "exchangeintro_lucia",
       "translatedName": "@exchange:m.rancher.lucia",
-      "subject": "Daily Checkup",
-      "body": "Hello Ms. LeBeau,\n\nI don’t believe we’ve had the pleasure of meeting yet. My name is Lucia Seagull, physician with Cotton Jude Hospital. During my routine regional review, I noticed you haven’t scheduled a medical checkup since arriving on the Far, Far Range.\n\nGiven your history of injuries back on Earth, I wanted to personally reach out and encourage you to book an appointment at your earliest convenience. I’d be more than happy to conduct the checkup myself — and if needed, I can even make a house call to your ranch.\n\nNo need to worry about the cost. You’re still fully covered under your 7Zee Corporation healthcare plan for another year, so all standard checkups are free of charge.\n\nPlease contact me whenever you’re able. Your health is important, even light-years away.\n\n- Dr. Lucia Seagull"
+      "subject": "Günlük Kontrol",
+      "body": "Merhaba Bayan LeBeau,\n\nHenüz tanışma fırsatımız olmadı sanırım. Ben Lucia Seagull, Cotton Jude Hastanesi'nde görev yapan bir doktorum. Rutin bölgesel incelemem sırasında, Far, Far Range'e geldiğinizden beri tıbbi kontrol randevusu almadığınızı fark ettim.\n\nDünya'daki yaralanma geçmişinizi göz önünde bulundurarak, şahsen sizinle iletişime geçmek ve en kısa sürede randevu almanızı teşvik etmek istedim. Muayeneyi kendim yapmaktan memnuniyet duyarım ve gerekirse çiftliğinize bile gelebilirim.\n\nMaliyet konusunda endişelenmenize gerek yok. 7Zee Corporation sağlık planınız kapsamında bir yıl daha tamamen güvence altındasınız, bu nedenle tüm standart kontroller ücretsizdir.\n\nLütfen müsait olduğunuzda benimle iletişime geçin. Sağlığınız, ışık yılları uzakta bile önemlidir.\n\n- Dr. Lucia Seagull"
     }
   ]
 }
