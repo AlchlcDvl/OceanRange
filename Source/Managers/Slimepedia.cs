@@ -848,19 +848,23 @@ public static class Slimepedia
 
     private static (Vector3, float) GetCenteredValues(Vector3[] vertices)
     {
-        var zero = Vector3.zero;
+        var count = vertices.Length;
+        var invCount = 1f / count;
+        var center = Vector3.zero;
 
-        foreach (var vector in vertices)
-            zero += vector;
+        for (var i = 0; i < count; i++)
+            center += vertices[i];
 
-        zero /= vertices.Length;
-        var num = 0f;
+        center *= invCount;
 
-        foreach (var vector in vertices)
-            num += (vector - zero).magnitude;
+        var totalDistance = 0f;
 
-        num /= vertices.Length;
-        return (zero, num);
+        for (var i = 0; i < count; i++)
+            totalDistance += Vector3.Distance(vertices[i], center);
+
+        totalDistance *= invCount;
+
+        return (center, totalDistance);
     }
 
     [UsedImplicitly]

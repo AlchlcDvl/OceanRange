@@ -213,6 +213,9 @@ public static class Cookbook
             Main.AddIconBypass(chickIcon);
         }
 
+        // TODO: Remove this fix when SRML v0.3.0 is out
+        FoodGroup.MEAT.UnregisterId(chimkenData.ChickId);
+
         // Compatibility
         if (!StmExists)
             return;

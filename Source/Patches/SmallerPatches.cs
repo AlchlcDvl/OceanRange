@@ -5,11 +5,10 @@ namespace OceanRange.Patches;
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
 public static class EatMapFix
 {
+    private static readonly Func<IdentifiableId, bool> IsPlort = Identifiable.IsPlort;
+
     public static void Postfix(SlimeDiet __instance, SlimeDefinitions definitions, SlimeDefinition definition)
     {
-        // This is such a goofy oversight lmao, SRML used Identifiable.IsAnimal instead of directly comparing with the Identifiable.MEAT_CLASS, leading to chicks being eaten as well lol
-        __instance.EatMap.RemoveAll(x => Identifiable.CHICK_CLASS.Contains(x.eats)); // TODO: Remove when SRML v0.3.0 comes out
-
         if (definition.IdentifiableId.ToString().Contains("SAND"))
         {
             __instance.EatMap.RemoveAll(x => x.eats == IdentifiableId.SILKY_SAND_CRAFT);
@@ -33,7 +32,7 @@ public static class EatMapFix
         {
             var slimeDef = definitions.GetSlimeByIdentifiableId(slimeId);
 
-            if (slimeDef.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !slimeDef.Diet.Produces.TryFinding(Identifiable.IsPlort, out var plortId))
+            if (slimeDef.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !slimeDef.Diet.Produces.TryFinding(IsPlort, out var plortId))
                 continue;
 
             __instance.EatMap.RemoveAll(x => x.eats == plortId);
@@ -60,15 +59,13 @@ public static class EnsureGordoStaysPopped
 [HarmonyPatch(typeof(AutoSaveDirector))]
 public static class EnsureAutoSaveDirectorData
 {
-    public static bool IsAutoSave => _isAutoSave;
-
-    private static bool _isAutoSave;
+    public static bool IsAutoSave { get; private set; }
 
     [HarmonyPatch(nameof(AutoSaveDirector.SaveAllNow))]
-    public static void Prefix() => _isAutoSave = true;
+    public static void Prefix() => IsAutoSave = true;
 
     [HarmonyPatch(nameof(AutoSaveDirector.SaveGame))]
-    public static void Postfix() => _isAutoSave = false;
+    public static void Postfix() => IsAutoSave = false;
 }
 
 [HarmonyPatch(typeof(ResourceBundle), nameof(ResourceBundle.LoadFromText))]

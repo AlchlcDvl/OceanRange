@@ -1,7 +1,11 @@
 <Project>
-    <!-- This will create new directories if you don't have them made already -->
+  <!-- This will create new directories if you don't have them made already -->
 
-    <Target Name="Copy" AfterTargets="Build">
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Test/SRML/Mods/" Condition="$(Configuration)!=Unity" />
-    </Target>
+  <Target Name="Copy" AfterTargets="Build">
+      <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/../../../../../SteamLibrary/steamapps/common/Slime Rancher/SRML/Mods/" Condition="$(Configuration)!=Unity" />
+  </Target>
+
+  <ItemGroup>
+    <Reference Include="$(MSBuildThisFileDirectory)/../SrLibs/*.dll" />
+  </ItemGroup>
 </Project>

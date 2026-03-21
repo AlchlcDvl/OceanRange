@@ -24,7 +24,7 @@
           "matData": { "colorProps": { "_TopColor": "#F46CB7" } }
         }
       ],
-      "mainAmmoColor": "#F9E5F0",
+      "mainAmmoColor": "#E6C7D2",
       "plortFeatures": [
         {
           "meshData": { "mesh": "pearl" },
