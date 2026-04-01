@@ -94,7 +94,7 @@ public static class Translator
         }
 
         if (lang == Config.FALLBACK_LANGUAGE)
-            throw new($"Fallback {langName} was null");
+            throw new ArgumentException($"Fallback {langName} was null");
 
         return Fallback ?? GenerateTranslations(Config.FALLBACK_LANGUAGE);
     }

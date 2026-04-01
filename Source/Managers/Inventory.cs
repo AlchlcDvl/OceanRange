@@ -20,7 +20,7 @@ public static class Inventory
     public static readonly Assembly Core = typeof(Main).Assembly;
 
     /// <summary>
-    /// Common json serialisation settings to avoid creating a new json settings instance for each json file.
+    /// Common JSON serialisation settings to avoid creating a new JSON settings instance for each JSON file.
     /// </summary>
     public static readonly JsonSerializerSettings JsonSettings = new()
     {
@@ -30,7 +30,7 @@ public static class Inventory
 #endif
 
         ContractResolver = new DefaultContractResolver() { NamingStrategy = new CamelCaseNamingStrategy(false, false) },
-        // Adding the json converters
+        // Adding the JSON converters
         Converters =
         [
             new EnumConverter(),
@@ -126,7 +126,10 @@ public static class Inventory
         {
             ReleaseHandles(handles);
         }
-        catch { }
+        catch
+        {
+            // ignored
+        }
     }
 
     /// <summary>
@@ -151,19 +154,19 @@ public static class Inventory
     public static void ReleaseUnusedHandles() => ReleaseHandles([.. Assets.Where(x => !x.Value.HasLoaded).Select(x => x.Key)]);
 
     /// <summary>
-    /// Gets and serialise json data from the asset associated with the provided name.
+    /// Gets and serialise JSON data from the asset associated with the provided name.
     /// </summary>
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
-    /// <returns>The read and converted json data.</returns>
+    /// <returns>The read and converted JSON data.</returns>
     public static T[] GetJsonArray<T>(string path) => GetJson<T[]>(path);
 
     /// <summary>
-    /// Gets and serialise json data from the asset associated with the provided name.
+    /// Gets and serialise JSON data from the asset associated with the provided name.
     /// </summary>
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
-    /// <returns>The read and converted json data.</returns>
+    /// <returns>The read and converted JSON data.</returns>
     public static T GetJson<T>(string path) => ToJson<T>(TryReadJson(path, out var contents) ? contents : Get<Json>(path).text);
 
     public static bool TryGetJson<T>(string name, bool writeJson, out T json)
@@ -298,13 +301,7 @@ public static class Inventory
     /// <param name="name">The name of the asset.</param>
     /// <inheritdoc cref="AssetHandle.Load{T}"/>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
-    private static T Get<T>(string name) where T : UObject
-    {
-        if (!Assets.TryGetValue(name, out var handle))
-            throw new FileNotFoundException($"{name}, {typeof(T).Name}");
-
-        return handle.Load<T>();
-    }
+    private static T Get<T>(string name) where T : UObject => Assets.TryGetValue(name, out var handle) ? handle.Load<T>() : throw new FileNotFoundException($"{name}, {typeof(T).Name}");
 
     // Legacy code, it's being kept around in case it's needed for more precise control
     // /// <summary>
@@ -323,10 +320,10 @@ public static class Inventory
     // }
 
     /// <summary>
-    /// Loads a json file from the provided path.
+    /// Loads a JSON file from the provided path.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
-    /// <returns>The json asset loaded from the path.</returns>
+    /// <returns>The JSON asset loaded from the path.</returns>
     private static Json LoadJson(string path)
     {
         using var stream = Core.GetManifestResourceStream(path)!;
@@ -335,10 +332,10 @@ public static class Inventory
     }
 
     /// <summary>
-    /// Loads a json file from the provided path.
+    /// Loads a JSON file from the provided path.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
-    /// <returns>The json asset loaded from the path.</returns>
+    /// <returns>The JSON asset loaded from the path.</returns>
     private static Mesh LoadMesh(string path)
     {
         // This method uses a specially serialised version of the models to save on disk space and to make it easier to ship the mod
