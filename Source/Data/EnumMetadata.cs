@@ -5,7 +5,7 @@ namespace OceanRange.Data;
 public sealed class EnumMetadata(Type enumType)
 {
     public readonly bool IsFlags = enumType.IsDefined<FlagsAttribute>();
-    public readonly Func<object, ulong> ToULong = CompileToULong(enumType);
+    private readonly Func<object, ulong> ToULong = CompileToULong(enumType);
     public readonly string ZeroName = Enum.ToObject(enumType, 0).ToString();
     public readonly List<(ulong, string)> Values = GenerateValues(enumType);
 

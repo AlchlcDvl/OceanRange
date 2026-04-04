@@ -17,7 +17,7 @@ public static class FloppyDisk
 #if DEBUG
     [TimeDiagnostic("Save Preload")]
 #endif
-    [PreloadMethod, UsedImplicitly]
+    [PreloadMethod]
     public static void PreloadSaveData()
     {
         SaveRegistry.RegisterWorldDataLoadDelegate(ReadSaveData);

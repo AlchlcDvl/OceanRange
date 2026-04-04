@@ -29,7 +29,7 @@ public static class Inventory
         Formatting = Formatting.Indented,
 #endif
 
-        ContractResolver = new DefaultContractResolver() { NamingStrategy = new CamelCaseNamingStrategy(false, false) },
+        ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy(false, false) },
         // Adding the JSON converters
         Converters =
         [
@@ -344,7 +344,7 @@ public static class Inventory
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
         using var reader = new BinaryReader(decompressor);
 
-        var mesh = new Mesh()
+        var mesh = new Mesh
         {
             indexFormat = (IndexFormat)reader.ReadByte(),
             vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),

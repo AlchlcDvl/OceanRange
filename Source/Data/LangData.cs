@@ -1,5 +1,6 @@
 // ReSharper disable UnassignedField.Global
 // ReSharper disable CollectionNeverUpdated.Global
+// ReSharper disable GrammarMistakeInComment
 
 namespace OceanRange.Data;
 

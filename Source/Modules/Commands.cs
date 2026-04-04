@@ -1,18 +1,17 @@
 #if DEBUG
+using System.Globalization;
 using SRML.Console;
 
 namespace OceanRange.Modules;
 
-public sealed class OceanCommand(string id, string usage, string description, string extendedDescription, Func<string[], bool> execute) : ConsoleCommand
+public sealed class OceanCommand(string id, string usage, string description, string extendedDescription, Func<string[], bool> executeFunc) : ConsoleCommand
 {
     public override string ID => id;
     public override string Usage => usage;
     public override string Description => description;
     public override string ExtendedDescription => extendedDescription;
 
-    private readonly Func<string[], bool> _execute = execute;
-
-    public override bool Execute(string[] args) => _execute(args);
+    public override bool Execute(string[] args) => executeFunc(args);
 }
 
 public static class Commands
@@ -63,7 +62,7 @@ public static class Commands
         for (var i = 0; i < 3; i++)
         {
             if (args[i] == "~")
-                args[i] = pos[i].ToString();
+                args[i] = pos[i].ToString(CultureInfo.InvariantCulture);
         }
 
         var vector = string.Join(",", args);

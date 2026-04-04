@@ -2,16 +2,10 @@
 
 namespace OceanRange.Data;
 
-public sealed class ModelData() : JsonData
+public sealed class ModelData : JsonData
 {
     public MatData MatData;
     public MeshData MeshData;
-
-    public ModelData(ModelData data) : this()
-    {
-        MatData = data.MatData;
-        MeshData = data.MeshData;
-    }
 
     protected override void OnDeserialise()
     {
@@ -56,8 +50,6 @@ public sealed class MatData : JsonData
             return;
         }
 
-        TempKeys.Clear();
-
         foreach (var key in ColorPropsJson.Keys)
         {
             if (key.EndsWith(Top, StringComparison.Ordinal))
@@ -84,7 +76,7 @@ public sealed class MatData : JsonData
     }
 }
 
-public sealed class MeshData() : JsonData
+public sealed class MeshData : JsonData
 {
     public string Mesh;
     public bool IgnoreLodIndex;

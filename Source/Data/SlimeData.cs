@@ -1,4 +1,7 @@
 // ReSharper disable UnassignedField.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable ConvertToConstant.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 using OceanRange.Saves;
 

@@ -3,7 +3,7 @@ using DLCPackage;
 
 namespace OceanRange.Managers;
 
-// All hail the json gods, for they look upon me favourably
+// All hail the JSON gods, for they look upon me favourably
 [Manager(ManagerType.Largopedia)]
 public static class Largopedia
 {
@@ -47,16 +47,18 @@ public static class Largopedia
     private static LargoData[] Largos;
     private static readonly int GhostToggle = ShaderUtils.GetOrSet("_GhostToggle");
 
+    private static readonly Dictionary<int, SlimeAppearanceElement> LargoElementCache = [];
+
 #if DEBUG
     [TimeDiagnostic("Largos Preload")]
 #endif
-    [PreloadMethod, UsedImplicitly]
+    [PreloadMethod]
     public static void PreloadLargoData() => Largos = Inventory.GetJsonArray<LargoData>("largopedia");
 
 #if DEBUG
     [TimeDiagnostic("Largos Load")]
 #endif
-    [LoadMethod, UsedImplicitly]
+    [LoadMethod]
     public static void LoadAllLargos()
     {
         QuantumMat = IdentifiableId.QUANTUM_SLIME.GetSlimeDefinition().AppearancesDefault[0].QubitAppearance.Structures[0].DefaultMaterials[0];
@@ -153,7 +155,7 @@ public static class Largopedia
         if (definition.Sounds)
             prefab.GetComponent<SlimeAudio>().slimeSounds = definition.Sounds;
 
-        if (prefab.TryGetComponent<SphereCollider>(out var collider) && slime2Prefab.TryGetComponent<SphereCollider>(out var collider2) && collider.radius == DefaultRadius && collider2.radius != DefaultRadius)
+        if (prefab.TryGetComponent<SphereCollider>(out var collider) && slime2Prefab.TryGetComponent<SphereCollider>(out var collider2) && Mathf.Approximately(collider.radius, DefaultRadius) && !Mathf.Approximately(collider2.radius, DefaultRadius))
         {
             collider.radius = collider2.radius;
             collider.center = collider2.center;
@@ -204,11 +206,11 @@ public static class Largopedia
         var appearance1 = slime1.AppearancesDefault[0];
         var appearance2 = slime2.AppearancesDefault[0];
 
-        if (ss1 != null && ss2 != null && ssAppearance3Data != null)
+        if (ss1 && ss2 && ssAppearance3Data != null)
             GenerateAppearance(ss1, ss2, ssAppearance3Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
-        else if (ss1 != null && ssAppearance1Data != null)
+        else if (ss1 && ssAppearance1Data != null)
             GenerateAppearance(ss1, appearance2, ssAppearance1Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
-        else if (ss2 != null && ssAppearance2Data != null)
+        else if (ss2 && ssAppearance2Data != null)
             GenerateAppearance(appearance1, ss2, ssAppearance2Data, applicator, SlimeAppearance.AppearanceSaveSet.SECRET_STYLE, largoData, definition);
     }
 
@@ -260,7 +262,7 @@ public static class Largopedia
             {
                 DefaultMaterials =
                 {
-                    [0] = (props.HasFlagFast(LargoAppearanceProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone()
+                    [0] = ((props.HasFlagFast(LargoAppearanceProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body)!).DefaultMaterials[0].Clone()
                 }
             };
         }
@@ -271,7 +273,7 @@ public static class Largopedia
         GenerateStructures(appearance2.Structures, appearanceData.Slime2Structs, props, LargoAppearanceProps.ExcludeSlime2Structures, list, slime2Body, modelMap);
 
         appearance.Structures = [.. list];
-        applicator.GenerateSlimeBones(appearance.Structures, appearanceData.Jiggle.Value);
+        applicator.GenerateSlimeBones(appearance.Structures, appearanceData.Jiggle!.Value);
 
         appearance.ColorPalette = SlimeAppearance.Palette.FromMaterial(appearance.Structures[0].DefaultMaterials[0]);
         appearance.CrystalAppearance = appearance1.CrystalAppearance ?? appearance2.CrystalAppearance;
@@ -351,29 +353,39 @@ public static class Largopedia
         {
             for (var i = 0; i < baseStructs.Length; i++)
             {
-                if (i == avoid)
-                    continue;
-
-                var newStruct = new SlimeAppearanceStructure(baseStructs[i]);
-                var formerPrefabs = newStruct.Element.Prefabs;
-                var formerName = newStruct.Element.Name;
-                newStruct.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
-                newStruct.Element.Prefabs = new SlimeAppearanceObject[formerPrefabs.Length];
-                newStruct.Element.name = newStruct.Element.Name = formerName;
-
-                for (var j = 0; j < formerPrefabs.Length; j++)
-                {
-                    var prefab = formerPrefabs[j].CreatePrefab();
-
-                    if (prefab.TryGetComponent<SkinnedMeshRenderer>(out var rend))
-                        rend.sharedMesh = rend.sharedMesh.Clone();
-
-                    newStruct.Element.Prefabs[j] = prefab;
-                }
-
-                list.Add(newStruct);
+                if (i != avoid)
+                    list.Add(GetOrCreateLargoElement(baseStructs[i]));
             }
         }
+    }
+
+    private static SlimeAppearanceStructure GetOrCreateLargoElement(SlimeAppearanceStructure baseStruct)
+    {
+        var cacheKey = baseStruct.Element.name.GetHashCode();
+
+        if (LargoElementCache.TryGetValue(cacheKey, out var cachedElem))
+            return new SlimeAppearanceStructure(baseStruct) { Element = cachedElem };
+
+        var newStruct = new SlimeAppearanceStructure(baseStruct);
+        var formerPrefabs = newStruct.Element.Prefabs;
+        var formerName = newStruct.Element.Name;
+        var elem = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
+        elem.Prefabs = new SlimeAppearanceObject[formerPrefabs.Length];
+        elem.name = elem.Name = formerName;
+
+        for (var j = 0; j < formerPrefabs.Length; j++)
+        {
+            var prefab = formerPrefabs[j].CreatePrefab();
+
+            if (prefab.TryGetComponent<SkinnedMeshRenderer>(out var rend))
+                rend.sharedMesh = rend.sharedMesh.Clone();
+
+            elem.Prefabs[j] = prefab;
+        }
+
+        LargoElementCache[cacheKey] = elem;
+        newStruct.Element = elem;
+        return newStruct;
     }
 
     [UsedImplicitly]

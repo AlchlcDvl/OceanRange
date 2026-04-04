@@ -134,7 +134,7 @@ public static class Slimepedia
 #if DEBUG
     [TimeDiagnostic("Slimes Preload")]
 #endif
-    [PreloadMethod, UsedImplicitly]
+    [PreloadMethod]
     public static void PreloadSlimeData()
     {
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
@@ -219,7 +219,7 @@ public static class Slimepedia
 #if DEBUG
     [TimeDiagnostic("Slimes Load")]
 #endif
-    [LoadMethod, UsedImplicitly]
+    [LoadMethod]
     public static void LoadAllSlimes()
     {
         GameContext.Instance.DLCDirector.onPackageInstalled += HandleSecretStyles;
@@ -1043,7 +1043,7 @@ public static class Slimepedia
 #if DEBUG
     [TimeDiagnostic("Slime Postload")]
 #endif
-    [PostloadMethod, UsedImplicitly]
+    [PostloadMethod]
     public static void PostLoadSlimes()
     {
         AweTowardsMesmers.InitCalculator();

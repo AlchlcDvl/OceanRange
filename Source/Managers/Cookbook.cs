@@ -36,7 +36,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
 #endif
-    [PreloadMethod, UsedImplicitly]
+    [PreloadMethod]
     public static void PreloadFoodData()
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
@@ -162,7 +162,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Load")]
 #endif
-    [LoadMethod, UsedImplicitly]
+    [LoadMethod]
     public static void LoadAllFoods()
     {
         Array.ForEach(Fruits, BaseCreatePlant);
@@ -207,14 +207,14 @@ public static class Cookbook
 
         FoodGroup.MEAT.RegisterId(chimkenData.MainId);
 
+        // TODO: Remove this fix when SRML v0.3.0 is out
+        FoodGroup.MEAT.UnregisterId(chimkenData.ChickId);
+
         if (Main.ClsExists)
         {
             Main.AddIconBypass(henIcon);
             Main.AddIconBypass(chickIcon);
         }
-
-        // TODO: Remove this fix when SRML v0.3.0 is out
-        FoodGroup.MEAT.UnregisterId(chimkenData.ChickId);
 
         // Compatibility
         if (!StmExists)
@@ -309,17 +309,17 @@ public static class Cookbook
                 var max = Mathf.Max(size.x, size.y, size.z);
                 capsule.height = max;
 
-                if (max == size.x)
+                if (Mathf.Approximately(max, size.x))
                 {
                     capsule.direction = 0;
                     capsule.radius = Mathf.Max(size.y, size.z) / 2f;
                 }
-                else if (max == size.y)
+                else if (Mathf.Approximately(max, size.y))
                 {
                     capsule.direction = 1;
                     capsule.radius = Mathf.Max(size.x, size.z) / 2f;
                 }
-                else if (max == size.z)
+                else if (Mathf.Approximately(max, size.z))
                 {
                     capsule.direction = 0;
                     capsule.radius = Mathf.Max(size.y, size.x) / 2f;

@@ -1,4 +1,6 @@
 // ReSharper disable UnassignedField.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable ConvertToConstant.Global
 
 namespace OceanRange.Data;
 

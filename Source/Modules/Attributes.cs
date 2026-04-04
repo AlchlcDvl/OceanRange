@@ -22,6 +22,7 @@ public enum ManagerType : byte
 }
 
 [AttributeUsage(AttributeTargets.Class)]
+[MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
 public sealed class ManagerAttribute(ManagerType manager) : Attribute
 {
     public readonly ManagerType Manager = manager;
@@ -40,4 +41,4 @@ public sealed class LoadMethodAttribute(int order = int.MaxValue) : ManagerMetho
 
 public sealed class PostloadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Postload);
 
-public sealed class UnloadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Unload);
+// public sealed class UnloadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Unload);

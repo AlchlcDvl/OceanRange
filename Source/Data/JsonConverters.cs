@@ -6,11 +6,11 @@ namespace OceanRange.Data;
 // Parsing validation delegate for byte, float etc
 public delegate bool TryParseDelegate<T>(string value, NumberStyles style, CultureInfo culture, out T component) where T : struct;
 
-// Unity's try parse methods for html strings, much faster and simpler using a delegate pointing to native code than doing it myself
+// Unity's try parse methods for HTML strings, much faster and simpler using a delegate pointing to native code than doing it myself
 public delegate bool TryParseHtml<T>(string valString, out T color) where T : struct;
 
 /// <summary>
-/// Main base class for all json converters for all json serialised values. Provides wrappers for the read and write methods because the additional params are never used.
+/// Main base class for all JSON converters for all JSON serialised values. Provides wrappers for the read and write methods because the additional params are never used.
 /// </summary>
 public abstract class OceanJsonConverter : JsonConverter
 {
@@ -44,15 +44,15 @@ public abstract class OceanJsonConverter : JsonConverter
     }
 
     /// <summary>
-    /// A converter's implementation of reading from json.
+    /// A converter's implementation of reading from JSON.
     /// </summary>
-    /// <param name="reader">The json reader.</param>
+    /// <param name="reader">The JSON reader.</param>
     /// <param name="objectType">The type of the object (used for non generics).</param>
     /// <returns>The deserialised value.</returns>
     protected abstract object ParseFromJson(JsonReader reader, Type objectType);
 
     /// <summary>
-    /// Converts the value to a string representation to be entered into the json.
+    /// Converts the value to a string representation to be entered into the JSON.
     /// </summary>
     /// <param name="value">The value to convert.</param>
     /// <returns>A string representation of the passed value.</returns>
@@ -67,7 +67,7 @@ public abstract class OceanJsonConverter : JsonConverter
 }
 
 /// <summary>
-/// Generic json converter for <typeparamref name="T"/> with a simplified CanConvert check.
+/// Generic JSON converter for <typeparamref name="T"/> with a simplified CanConvert check.
 /// </summary>
 /// <typeparam name="T">The type of the value being handled.</typeparam>
 public abstract class OceanJsonConverter<T> : OceanJsonConverter
@@ -293,7 +293,7 @@ public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentCon
     /// <param name="style">The accepted number style.</param>
     /// <param name="tryParse">The number parsing delegate.</param>
     /// <param name="defaultValue">The default value for missing values.</param>
-    /// <param name="htmlParser">The delegate for the unity html parsing method.</param>
+    /// <param name="htmlParser">The delegate for the unity HTML parsing method.</param>
     protected BaseColorConverter(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : base("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
     {
         var tType = typeof(TColor);
@@ -335,7 +335,7 @@ public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberSt
 /// <summary>
 /// Enum converter.
 /// </summary>
-/// <remarks>Made because srml's enum patching is causing errors with patched enum types being read by newtonsoft, will be removed if and when a fix is administered.</remarks>
+/// <remarks>Made because SRML's enum patching is causing errors with patched enum types being read by newtonsoft, will be removed if and when a fix is administered.</remarks>
 public sealed class EnumConverter : OceanJsonConverter
 {
     protected override bool CustomSerialisation => true;

@@ -10,7 +10,7 @@ public static class Contacts
 #if DEBUG
     [TimeDiagnostic("Contacts Preload")]
 #endif
-    [PreloadMethod, UsedImplicitly]
+    [PreloadMethod]
     public static void PreloadRancherData()
     {
         Ranchers = Inventory.GetJsonArray<RancherData>("contacts");
@@ -36,7 +36,7 @@ public static class Contacts
 #if DEBUG
     [TimeDiagnostic("Contacts Load")]
 #endif
-    [LoadMethod, UsedImplicitly]
+    [LoadMethod]
     public static void LoadAllRanchers() => Array.ForEach(Ranchers, LoadRancher);
 
     private static void LoadRancher(RancherData rancher)

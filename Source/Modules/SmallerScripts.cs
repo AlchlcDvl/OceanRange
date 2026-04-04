@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 namespace OceanRange.Modules;
 
 public sealed class PersistentIdHandler : MonoBehaviour

@@ -66,13 +66,13 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
 
     public static bool operator !=(Orientation left, Orientation right) => !(left == right);
 
-    public override readonly bool Equals(object obj) => obj is Orientation orientation && Equals(orientation);
+    public readonly override bool Equals(object obj) => obj is Orientation orientation && Equals(orientation);
 
     public readonly bool Equals(Orientation other) => Position.Equals(other.Position) && Rotation.Equals(other.Rotation) && Scale.Equals(other.Scale);
 
-    public override readonly string ToString() => $"Position: {Position}, Rotation: {Rotation}, Scale: {Scale}";
+    public readonly override string ToString() => $"Position: {Position}, Rotation: {Rotation}, Scale: {Scale}";
 
-    public override readonly int GetHashCode() => Position.GetHashCode() ^ (Rotation.GetHashCode() << 5) ^ (Scale.GetHashCode() >> 2); // Mimics the Vector3 hash code calculation with x, y and z components
+    public readonly override int GetHashCode() => Position.GetHashCode() ^ (Rotation.GetHashCode() << 5) ^ (Scale.GetHashCode() >> 2); // Mimics the Vector3 hash code calculation with x, y and z components
 
     // public readonly Orientation WithPosition(Vector3 newPosition) => new(newPosition, Rotation, Scale);
 

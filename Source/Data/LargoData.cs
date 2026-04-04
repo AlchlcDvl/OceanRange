@@ -23,6 +23,7 @@ public sealed class LargoData : ActorData
 
     public DefinitionProps DefProps;
 
+    // ReSharper disable once MemberCanBePrivate.Global
     public float? Jiggle;
 
     [JsonIgnore] public string Slime1;

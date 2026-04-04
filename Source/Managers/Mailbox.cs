@@ -9,7 +9,7 @@ public static class Mailbox
 #if DEBUG
     [TimeDiagnostic("Mail Preload")]
 #endif
-    [PreloadMethod, UsedImplicitly]
+    [PreloadMethod]
     public static void PreloadMailData()
     {
         Mail = Inventory.GetJsonArray<MailData>("mailbox");
