@@ -60,9 +60,7 @@
         ],
         "slime2Structs": [
           { "meshData": { "mesh": "rosi_lantern_fins" } },
-          { "meshData": { "instantiatePrefabs": true } },
-          { "meshData": { "instantiatePrefabs": true } },
-          { "meshData": { "instantiatePrefabs": true } }
+          {}, {}, {}
         ]
       }
     ]
@@ -97,7 +95,7 @@
               "matOrigin": "MINE_SLIME"
             }
           },
-          { "meshData": { "instantiatePrefabs": true } },
+          {},
           { "matData": { "colorProps": { "_TopColor": "#9EA16F" } } }
         ]
       }
@@ -611,8 +609,7 @@
                 "_Color": "#340ca1",
                 "_EdgeColor": "#340ca1"
               }
-            },
-            "meshData": { "instantiatePrefabs": true }
+            }
           },
           {
             "matData": {
@@ -620,8 +617,7 @@
                 "_Color": "#340ca1",
                 "_EdgeColor": "#340ca1"
               }
-            },
-            "meshData": { "instantiatePrefabs": true }
+            }
           }
         ],
         "slime2Structs": [
@@ -806,9 +802,6 @@
       {
         "slime1Structs": [
           {
-            "meshData": {
-              "instantiatePrefabs": true
-            }
           },
           { "meshData": { "skip": true } },
           { "meshData": { "skip": true } },
@@ -905,8 +898,7 @@
       {
         "slime1Structs": [
           { "meshData": { "mesh": "hermit_phosphor_anten" } },
-          { "meshData": { "instantiatePrefabs": true } },
-          { "meshData": { "instantiatePrefabs": true } }
+          {}, {}
         ],
         "slime2Structs": [
           {
@@ -1015,7 +1007,7 @@
             },
             "meshData": { "mesh": "rock_hermit_spine" }
           },
-          { "meshData": { "instantiatePrefabs": true } }
+          {}
         ],
         "slime2Structs": [
           {
@@ -1104,7 +1096,7 @@
           { "matData": { "colorsOrigin": "CRYSTAL_SLIME" } }
         ],
         "slime1Structs": [
-          { "meshData": { "instantiatePrefabs": true } },
+          {},
           {
             "matData": {
               "matSameAs": 1,

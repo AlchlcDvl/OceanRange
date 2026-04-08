@@ -79,23 +79,14 @@ public sealed class MatData : JsonData
 public sealed class MeshData : JsonData
 {
     public string Mesh;
+
     public bool IgnoreLodIndex;
 
     public bool Skip;
-    public bool SkipNull;
     public bool UseBaseStruct;
-    public bool InstantiatePrefabs;
 
     public float? Jiggle;
     public int? PrefabLength;
 
-    public bool SkipRigging;
-
     [JsonIgnore] public bool IsBody;
-
-    protected override void OnDeserialise()
-    {
-        if (InstantiatePrefabs)
-            SkipNull = true;
-    }
 }

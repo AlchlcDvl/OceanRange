@@ -114,6 +114,7 @@ public sealed class SlimeData : SpawnedActorData
     {
         Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;
         PediaId = data.PediaId;
+        data.SsExists = SSAppearance != null;
     }
 }
 

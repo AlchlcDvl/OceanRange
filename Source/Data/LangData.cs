@@ -281,6 +281,7 @@ public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIME
     [JsonRequired] public string Onomics;
 
     public string Exotic;
+    public bool SsExists;
 
     public override void WhenFallback()
     {
@@ -301,7 +302,10 @@ public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIME
     }
 
     public override void AddExoticTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
-        => translations.GetBundle("actor").AddTranslation("t.secret_style_" + PediaKey, Exotic, "actor");
+    {
+        if (SsExists)
+            translations.GetBundle("actor").AddTranslation("t.secret_style_" + PediaKey, Exotic, "actor");
+    }
 }
 
 public abstract class ResourceLangData(string suffix) : ActorLangData(suffix, PediaCategory.RESOURCES)
