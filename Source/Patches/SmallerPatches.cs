@@ -132,3 +132,23 @@ public static class FixOnEnableFromRunningEarly
 {
     public static bool Prefix(SlimeFace __instance) => __instance.ExpressionFaces != null && __instance._expressionToFaceLookup != null;
 }
+
+[HarmonyPatch(typeof(DLCDirector), nameof(DLCDirector.RegisterPackages))]
+public static class ClearMeshes
+{
+    private static bool Uploaded;
+
+    public static void Postfix()
+    {
+        if (Uploaded)
+            return;
+
+        foreach (var mesh in Helpers.ClonedMeshes)
+            mesh.UploadMeshData(true);
+
+        foreach (var mesh in Inventory.GetAllMeshes())
+            mesh.UploadMeshData(true);
+
+        Uploaded = true;
+    }
+}

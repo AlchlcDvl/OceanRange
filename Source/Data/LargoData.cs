@@ -43,6 +43,10 @@ public sealed class LargoData : ActorData
     [JsonIgnore] public Action<SlimeAppearance, AppearanceType> InitSlime2AppearanceDetails;
     [JsonIgnore] public Action<SlimeAppearance, AppearanceType> InitLargoAppearanceDetails;
 
+    [JsonIgnore] public DLCContentMetadata_SlimeAppearance SS1Appearance;
+    [JsonIgnore] public DLCContentMetadata_SlimeAppearance SS2Appearance;
+    [JsonIgnore] public DLCContentMetadata_SlimeAppearance SSBothAppearance;
+
     protected override void OnDeserialise()
     {
         var parts = Name.TrueSplit(' ');
@@ -87,14 +91,7 @@ public sealed class LargoAppearanceData : JsonData
 
     public float? Jiggle;
 
-    protected override void OnDeserialise()
-    {
-        if (BodyStruct == null)
-            return;
-
-        BodyStruct.MeshData.IsBody = true;
-        // BodyStruct.MeshData.Mesh ??= "slime_default";
-    }
+    protected override void OnDeserialise() => BodyStruct?.MeshData.IsBody = true;
 
     public void SetJiggle(float jiggle)
     {

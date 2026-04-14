@@ -277,7 +277,8 @@ public static class Cookbook
     private static void BaseCreatePlant(PlantData plantData)
     {
         var prefab = plantData.BasePlant!.Value.GetPrefab().CreatePrefab();
-        prefab.name = plantData.Type.ToLowerInvariant() + plantData.Name;
+        var typeLower = plantData.Type.ToLowerInvariant();
+        prefab.name = typeLower + plantData.Name;
         prefab.GetComponent<Identifiable>().id = plantData.MainId;
         prefab.GetComponent<Vacuumable>().size = 0;
 
@@ -285,7 +286,7 @@ public static class Cookbook
 
         var lower = plantData.Name.ToLowerInvariant();
 
-        var mesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
+        var mesh = Inventory.GetMesh(lower + "_" + typeLower);
 
         meshModel.GetComponent<MeshFilter>().sharedMesh = mesh;
         prefab.GetComponent<MeshFilter>().sharedMesh = mesh;
@@ -325,6 +326,8 @@ public static class Cookbook
                     capsule.radius = Mathf.Max(size.y, size.x) / 2f;
                 }
             }
+
+            Helpers.UpdateMeshCollider(prefab, mesh);
 
             prefab.GetComponent<Rigidbody>().WakeUp();
         }

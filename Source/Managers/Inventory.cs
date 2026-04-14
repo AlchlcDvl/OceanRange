@@ -240,22 +240,11 @@ public static class Inventory
     /// Gets a Mesh from the assets associated with the provided name.
     /// </summary>
     /// <inheritdoc cref="Get{T}(string)"/>
-    public static Mesh GetMesh(string name)
-    {
-        var mesh = Get<Mesh>(name);
-        return mesh.bindposes.IsNullOrEmpty() ? mesh : mesh.Clone();
-    }
+    public static Mesh GetMesh(string name) => Get<Mesh>(name);
 
-    public static bool TryGetMesh(string name, out Mesh mesh)
-    {
-        if (!TryGet(name, out mesh))
-            return false;
+    public static bool TryGetMesh(string name, out Mesh mesh) => TryGet(name, out mesh);
 
-        if (!mesh.bindposes.IsNullOrEmpty())
-            mesh = mesh.Clone();
-
-        return true;
-    }
+    public static IEnumerable<Mesh> GetAllMeshes() => GetAll<Mesh>();
 
     // /// <summary>
     // /// Gets a Shader from the assets associated with the provided name.
@@ -272,7 +261,16 @@ public static class Inventory
     //
     // public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
 
-    private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
+    private static IEnumerable<T> GetAll<T>(string[] names) where T : UObject => names.Select(Get<T>);
+
+    public static IEnumerable<T> GetAll<T>() where T : UObject
+    {
+        foreach (var handle in Assets.Values)
+        {
+            if (handle.TryLoad<T>(out var asset))
+                yield return asset;
+        }
+    }
 
     /// <summary>
     /// Attempts to fetch an asset of type <typeparamref name="T"/> associated with the provided name.
@@ -332,10 +330,10 @@ public static class Inventory
     }
 
     /// <summary>
-    /// Loads a JSON file from the provided path.
+    /// Loads a mesh file from the provided path.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
-    /// <returns>The JSON asset loaded from the path.</returns>
+    /// <returns>The mesh asset loaded from the path.</returns>
     private static Mesh LoadMesh(string path)
     {
         // This method uses a specially serialised version of the models to save on disk space and to make it easier to ship the mod
@@ -347,33 +345,116 @@ public static class Inventory
         var mesh = new Mesh
         {
             indexFormat = (IndexFormat)reader.ReadByte(),
-            vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4),
-            bounds = new()
-            {
-                center = BinaryUtils.ReadVector3(reader),
-                extents = BinaryUtils.ReadVector3(reader)
-            },
-            subMeshCount = reader.ReadInt32(),
-            bindposes = []
+            bounds = ReadBounds(reader),
+            subMeshCount = ReadPackedInt(reader)
         };
 
+        var vertexCount = ReadPackedInt(reader);
+        mesh.vertices = ReadArrayContents(reader, vertexCount, BinaryUtils.ReadVector3);
+
+        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, BinaryUtils.ReadVector3), (m, v) => m.normals = v);
+        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, BinaryUtils.ReadVector4), (m, v) => m.tangents = v);
+        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadColor32), (m, v) => m.colors32 = v);
+
         for (var i = 0; i < mesh.subMeshCount; i++)
-            mesh.SetTriangles(BinaryUtils.ReadArray(reader, ReadInt), i);
+        {
+            var topology = (MeshTopology)reader.ReadByte();
+            var subMeshBounds = ReadBounds(reader);
+            var indices = ReadArray(reader, ReadPackedInt);
+
+            mesh.SetIndices(indices, topology, i, false);
+
+            var descriptor = mesh.GetSubMesh(i);
+            descriptor.bounds = subMeshBounds;
+            mesh.SetSubMesh(i, descriptor);
+        }
+
+        var uvs2 = new List<Vector2>(vertexCount);
+        var uvs3 = new List<Vector3>(vertexCount);
+        var uvs4 = new List<Vector4>(vertexCount);
 
         for (var i = 0; i < 8; i++)
         {
-            var uvs = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2);
+            var dimension = reader.ReadByte();
 
-            if (!uvs.IsNullOrEmpty())
-                mesh.SetUVs(i, uvs);
+            if (dimension == 2)
+                ReadUVs(reader, i, vertexCount, uvs2, BinaryUtils.ReadVector2, mesh.SetUVs);
+            else if (dimension == 3)
+                ReadUVs(reader, i, vertexCount, uvs3, BinaryUtils.ReadVector3, mesh.SetUVs);
+            else if (dimension == 4)
+                ReadUVs(reader, i, vertexCount, uvs4, BinaryUtils.ReadVector4, mesh.SetUVs);
         }
 
         return mesh;
     }
 
-    private static int ReadInt(BinaryReader reader) => reader.ReadInt32();
+    private static Bounds ReadBounds(BinaryReader reader) => new()
+    {
+        center = BinaryUtils.ReadVector3(reader),
+        extents = BinaryUtils.ReadVector3(reader)
+    };
+
+    private static Color32 ReadColor32(BinaryReader reader) => new(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+
+    private static T[] ReadAttributeData<T>(BinaryReader reader, int count, Func<BinaryReader, T> readFunc)
+    {
+        if (reader.ReadBoolean())
+            return ReadArrayContents(reader, count, readFunc);
+
+        return null;
+    }
+
+    private static void AssignAttribute<T>(Mesh mesh, T[] data, Action<Mesh, T[]> assignAction)
+    {
+        if (!data.IsNullOrEmpty())
+            assignAction(mesh, data);
+    }
+
+    private static void ReadUVs<T>(BinaryReader reader, int index, int count, List<T> uvs, Func<BinaryReader, T> readFunc, Action<int, List<T>> setUVs)
+    {
+        ReadListContents(reader, uvs, count, readFunc);
+        setUVs(index, uvs);
+        uvs.Clear();
+    }
+
+    private static T[] ReadArray<T>(BinaryReader reader, Func<BinaryReader, T> readFunc) => ReadArrayContents(reader, ReadPackedInt(reader), readFunc);
+
+    private static T[] ReadArrayContents<T>(BinaryReader reader, int count, Func<BinaryReader, T> readFunc)
+    {
+        var array = new T[count];
+
+        for (var i = 0; i < count; i++)
+            array[i] = readFunc(reader);
+
+        return array;
+    }
+
+    private static void ReadListContents<T>(BinaryReader reader, List<T> list, int count, Func<BinaryReader, T> readFunc)
+    {
+        for (var i = 0; i < count; i++)
+            list.Add(readFunc(reader));
+    }
+
+    private static int ReadPackedInt(BinaryReader reader) => (int)ReadVarInt(reader);
+
+    private static ulong ReadVarInt(BinaryReader reader)
+    {
+        var result = 0ul;
+        var shift = 0;
+
+        while (true)
+        {
+            var b = reader.ReadByte();
+            result |= (ulong)(b & 0x7F) << shift;
+
+            if ((b & 0x80) == 0)
+                break;
+
+            shift += 7;
+        }
+
+        return result;
+    }
 
     /// <summary>
     /// Loads a texture from the provided path.

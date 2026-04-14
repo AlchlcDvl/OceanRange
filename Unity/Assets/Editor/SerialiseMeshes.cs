@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 static class ExportMeshes
 {
@@ -57,32 +58,92 @@ static class ExportMeshes
     static void WriteMesh(BinaryWriter writer, Mesh mesh)
     {
         writer.Write((byte)mesh.indexFormat);
-        WriteArray(writer, mesh.vertices, WriteVector3);
-        WriteArray(writer, mesh.normals, WriteVector3);
-        WriteArray(writer, mesh.tangents, WriteVector4);
 
-        var bounds = mesh.bounds;
-        WriteVector3(writer, bounds.center);
-        WriteVector3(writer, bounds.extents);
+        WriteBounds(writer, mesh.bounds);
+        WritePackedInt(writer, mesh.subMeshCount);
 
-        WriteInt(writer, mesh.subMeshCount);
+        var vertices = mesh.vertices;
+        var vertexCount = vertices.Length;
+
+        WritePackedInt(writer, vertexCount);
+        WriteArrayContents(writer, vertices, WriteVector3);
+
+        WriteAttributeData(writer, VertexAttribute.Normal, mesh, m => m.normals, WriteVector3);
+        WriteAttributeData(writer, VertexAttribute.Tangent, mesh, m => m.tangents, WriteVector4);
+        WriteAttributeData(writer, VertexAttribute.Color, mesh, m => m.colors32, WriteColor32);
 
         for (var i = 0; i < mesh.subMeshCount; i++)
-            WriteArray(writer, mesh.GetTriangles(i), WriteInt);
+        {
+            var descriptor = mesh.GetSubMesh(i);
 
-        var uvs = new List<Vector2>();
+            writer.Write((byte)descriptor.topology);
+            WriteBounds(writer, descriptor.bounds);
+            WriteArray(writer, mesh.GetIndices(i), WritePackedInt);
+        }
+
+        var uvs2 = new List<Vector2>(vertexCount);
+        var uvs3 = new List<Vector3>(vertexCount);
+        var uvs4 = new List<Vector4>(vertexCount);
 
         for (var i = 0; i < 8; i++)
         {
-            mesh.GetUVs(i, uvs);
-            WriteList(writer, uvs, WriteVector2);
-            uvs.Clear();
+            var attr = VertexAttribute.TexCoord0 + i;
+
+            if (mesh.HasVertexAttribute(attr))
+            {
+                var dimension = mesh.GetVertexAttributeDimension(attr);
+                writer.Write((byte)dimension);
+
+                if (dimension == 2)
+                    WriteUVs(writer, i, uvs2, WriteVector2, mesh.GetUVs);
+                else if (dimension == 3)
+                    WriteUVs(writer, i, uvs3, WriteVector3, mesh.GetUVs);
+                else if (dimension == 4)
+                    WriteUVs(writer, i, uvs4, WriteVector4, mesh.GetUVs);
+            }
+            else
+            {
+                writer.Write((byte)0);
+            }
         }
 
         writer.Flush();
     }
 
-    static void WriteInt(BinaryWriter writer, int value) => writer.Write(value);
+    static void WriteAttributeData<T>(BinaryWriter writer, VertexAttribute attribute, Mesh mesh, Func<Mesh, T[]> fetcher, Action<BinaryWriter, T> writeAction)
+    {
+        if (mesh.HasVertexAttribute(attribute))
+        {
+            writer.Write(true);
+            WriteArrayContents(writer, fetcher(mesh), writeAction);
+        }
+        else
+        {
+            writer.Write(false);
+        }
+    }
+
+    static void WriteUVs<T>(BinaryWriter writer, int index, List<T> uvs, Action<BinaryWriter, T> writeAction, Action<int, List<T>> getUVs)
+    {
+        getUVs(index, uvs);
+        WriteListContents(writer, uvs, writeAction);
+        uvs.Clear();
+    }
+
+    // static uint ZigZagEncode(int value) => (uint)((value << 1) ^ (value >> 31));
+
+    static void WriteVarInt(BinaryWriter writer, ulong value)
+    {
+        while (value >= 0x80)
+        {
+            writer.Write((byte)(value | 0x80));
+            value >>= 7;
+        }
+
+        writer.Write((byte)value);
+    }
+
+    static void WritePackedInt(BinaryWriter writer, int value) => WriteVarInt(writer, (ulong)value);
 
     static void WriteVector3(BinaryWriter writer, Vector3 vec)
     {
@@ -101,28 +162,36 @@ static class ExportMeshes
     {
         if (array == null)
         {
-            writer.Write(0);
+            WritePackedInt(writer, 0);
             return;
         }
 
-        writer.Write(array.Length);
+        WritePackedInt(writer, array.Length);
+        WriteArrayContents(writer, array, writeAction);
+    }
 
+    static void WriteArrayContents<T>(BinaryWriter writer, T[] array, Action<BinaryWriter, T> writeAction)
+    {
         for (var i = 0; i < array.Length; i++)
             writeAction(writer, array[i]);
     }
 
-    static void WriteList<T>(BinaryWriter writer, List<T> array, Action<BinaryWriter, T> writeAction)
+    static void WriteList<T>(BinaryWriter writer, List<T> list, Action<BinaryWriter, T> writeAction)
     {
-        if (array == null)
+        if (list == null)
         {
-            writer.Write(0);
+            WritePackedInt(writer, 0);
             return;
         }
 
-        writer.Write(array.Count);
+        WritePackedInt(writer, list.Count);
+        WriteListContents(writer, list, writeAction);
+    }
 
-        for (var i = 0; i < array.Count; i++)
-            writeAction(writer, array[i]);
+    static void WriteListContents<T>(BinaryWriter writer, List<T> list, Action<BinaryWriter, T> writeAction)
+    {
+        for (var i = 0; i < list.Count; i++)
+            writeAction(writer, list[i]);
     }
 
     static void WriteVector4(BinaryWriter writer, Vector4 vec)
@@ -131,5 +200,19 @@ static class ExportMeshes
         writer.Write(vec.y);
         writer.Write(vec.z);
         writer.Write(vec.w);
+    }
+
+    static void WriteColor32(BinaryWriter writer, Color32 col)
+    {
+        writer.Write(col.r);
+        writer.Write(col.g);
+        writer.Write(col.b);
+        writer.Write(col.a);
+    }
+
+    static void WriteBounds(BinaryWriter writer, Bounds bounds)
+    {
+        WriteVector3(writer, bounds.center);
+        WriteVector3(writer, bounds.extents);
     }
 }

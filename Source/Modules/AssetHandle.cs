@@ -119,6 +119,20 @@ public sealed class AssetHandle(string name) : IDisposable
         return (T)asset.DontDestroy();
     }
 
+    public bool TryLoad<T>(out T asset) where T : UObject
+    {
+        try
+        {
+            asset = Load<T>();
+            return true;
+        }
+        catch
+        {
+            asset = null;
+            return false;
+        }
+    }
+
     // Legacy code, retained for potential future use
     // /// <summary>
     // /// Unloads the asset of the requested type to free up some memory.

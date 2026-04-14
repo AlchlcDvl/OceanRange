@@ -6,6 +6,7 @@ using OceanRange.Saves;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text;
+using UnityEngine.Rendering;
 
 namespace OceanRange.Utils;
 
@@ -189,32 +190,69 @@ public static class Helpers
 
     public static Mesh Clone(this Mesh originalMesh)
     {
+        var name = originalMesh.name;
+
+        if (!name.EndsWith("_Clone", StringComparison.Ordinal))
+            name += "_Clone";
+
         var mesh = new Mesh
         {
+            name = name,
             indexFormat = originalMesh.indexFormat,
-            vertices = originalMesh.vertices,
-            normals = originalMesh.normals,
-            tangents = originalMesh.tangents,
             bounds = originalMesh.bounds,
-            colors32 = originalMesh.colors32,
-            name = originalMesh.name + "_Clone",
-            subMeshCount = originalMesh.subMeshCount
+            subMeshCount = originalMesh.subMeshCount,
+            vertices = originalMesh.vertices
         };
 
-        var uvs = new List<Vector2>();
+        if (originalMesh.HasVertexAttribute(VertexAttribute.Normal))
+            mesh.normals = originalMesh.normals;
+
+        if (originalMesh.HasVertexAttribute(VertexAttribute.Tangent))
+            mesh.tangents = originalMesh.tangents;
+
+        if (originalMesh.HasVertexAttribute(VertexAttribute.Color))
+            mesh.colors32 = originalMesh.colors32;
+
+        for (var i = 0; i < originalMesh.subMeshCount; i++)
+        {
+            var topology = originalMesh.GetTopology(i);
+            var indices = originalMesh.GetIndices(i);
+            mesh.SetIndices(indices, topology, i);
+        }
+
+        var vertexCount = originalMesh.vertexCount;
+        var uvs2 = new List<Vector2>(vertexCount);
+        var uvs3 = new List<Vector3>(vertexCount);
+        var uvs4 = new List<Vector4>(vertexCount);
 
         for (var i = 0; i < 8; i++)
         {
-            originalMesh.GetUVs(i, uvs);
+            var attr = VertexAttribute.TexCoord0 + i;
 
-            if (uvs.Count > 0)
-                mesh.SetUVs(i, uvs);
+            if (originalMesh.HasVertexAttribute(attr))
+            {
+                var dimension = originalMesh.GetVertexAttributeDimension(attr);
 
-            uvs.Clear();
+                if (dimension == 2)
+                {
+                    originalMesh.GetUVs(i, uvs2);
+                    mesh.SetUVs(i, uvs2);
+                    uvs2.Clear();
+                }
+                else if (dimension == 3)
+                {
+                    originalMesh.GetUVs(i, uvs3);
+                    mesh.SetUVs(i, uvs3);
+                    uvs3.Clear();
+                }
+                else if (dimension == 4)
+                {
+                    originalMesh.GetUVs(i, uvs4);
+                    mesh.SetUVs(i, uvs4);
+                    uvs4.Clear();
+                }
+            }
         }
-
-        for (var i = 0; i < originalMesh.subMeshCount; i++)
-            mesh.SetTriangles(originalMesh.GetTriangles(i), i);
 
         ClonedMeshes.Add(mesh);
         return mesh.DontDestroy();
@@ -686,5 +724,17 @@ public static class Helpers
 
         if (clear)
             collection.Clear();
+    }
+
+    public static void UpdateMeshCollider(GameObject prefab, Mesh mesh)
+    {
+        if (!prefab || !mesh || !prefab.TryGetComponent<MeshCollider>(out var collider))
+            return;
+
+        collider.enabled = false;
+        collider.sharedMesh = null;
+        Physics.BakeMesh(mesh.GetInstanceID(), collider.convex);
+        collider.sharedMesh = mesh;
+        collider.enabled = true;
     }
 }

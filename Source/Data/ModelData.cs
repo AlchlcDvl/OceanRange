@@ -36,7 +36,7 @@ public sealed class MatData : JsonData
     [JsonIgnore] public readonly Dictionary<int, Color> ColorProps = [];
 
     private const string Top = "TopColor";
-    private static readonly int TopLength = Top.Length;
+    private const int TopLength = 8;
 
     private static readonly List<string> TempKeys = [];
 
@@ -71,8 +71,8 @@ public sealed class MatData : JsonData
 
         TempKeys.Clear();
 
-        foreach (var kvp in ColorPropsJson)
-            ColorProps[ShaderUtils.GetOrSet(kvp.Key)] = kvp.Value;
+        foreach (var (id, color) in ColorPropsJson)
+            ColorProps[ShaderUtils.GetOrSet(id)] = color;
     }
 }
 

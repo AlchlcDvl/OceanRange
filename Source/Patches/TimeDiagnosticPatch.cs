@@ -16,6 +16,9 @@ public static class TimeDiagnosticPatch
 
         foreach (var type in AccessTools.GetTypesFromAssembly(Inventory.Core))
         {
+            if (type.GetCustomAttribute<HarmonyPatch>() != null) // Patches themselves aren't supposed to be timed
+                continue;
+
             foreach (var method in AccessTools.GetDeclaredMethods(type))
             {
                 var timeDiagnostic = method.GetCustomAttribute<TimeDiagnosticAttribute>();
@@ -51,7 +54,7 @@ public static class TimeDiagnosticPatch
         var (_, _, watch, _, _) = Watches[__originalMethod];
         watch.Stop();
         Main.Console.Log($"{__state}ed in {watch.ElapsedMilliseconds}ms!");
-        watch.Restart(); // Since some methods are executed repeatedly, restart the watch for recyclability
+        watch.Reset(); // Since some methods are executed repeatedly, reset the watch for recyclability
     }
 }
 #endif

@@ -164,15 +164,6 @@ public sealed class SlimeAppearanceData : JsonData
 
         PlortAmmoColor ??= MainAmmoColor;
 
-        // foreach (var feature in SlimeFeatures)
-        //     feature.MeshData.Mesh ??= "slime_default";
-
-        // foreach (var feature in GordoFeatures)
-        //     feature.MeshData.Mesh ??= "slime_gordo";
-
-        // foreach (var feature in PlortFeatures)
-        //     feature.MeshData.Mesh ??= "plort";
-
         HasMouthColors = TopMouthColor.HasValue || MiddleMouthColor.HasValue || BottomMouthColor.HasValue;
         HasEyeColors = RedEyeColor.HasValue || GreenEyeColor.HasValue || BlueEyeColor.HasValue;
         ChangedFace = HasMouthColors || HasEyeColors;

@@ -14,7 +14,7 @@ internal sealed class Main : ModEntryPoint
     public override void PreLoad()
     {
 #if DEBUG
-        // This method is already running, so the time diagnostic patch doesn't work for it
+        // This method is already running, so the time diagnostic attribute doesn't work for it
         var watch = new System.Diagnostics.Stopwatch();
         watch.Start();
 
@@ -31,13 +31,14 @@ internal sealed class Main : ModEntryPoint
 #if DEBUG
         harmonyWatch.Stop();
         ConsoleInstance.Log($"Game Patched in {harmonyWatch.ElapsedMilliseconds}ms!");
+        harmonyWatch.Reset();
 #endif
 
         ClsExists = SRModLoader.IsModPresent("custom.loading"); // Checks if Custom Loading Screens is present in the mods folder
 
         Inventory.InitialiseAssets(); // Initialises everything relating to the assets by creating the handles and setting up the JSON settings
 
-        var gameObject = new GameObject("OceanPrefabs").DontDestroy();
+        var gameObject = new GameObject("OceanPrefabs").DontDestroy(); // A "folder" object to categorise created prefabs
         gameObject.SetActive(false);
         PrefabParent = gameObject.transform;
 
@@ -51,6 +52,7 @@ internal sealed class Main : ModEntryPoint
 
         watch.Stop();
         ConsoleInstance.Log($"Mod Preloaded in {watch.ElapsedMilliseconds}ms!");
+        watch.Reset();
 #endif
     }
 

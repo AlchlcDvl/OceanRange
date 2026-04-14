@@ -3,26 +3,19 @@
     "name": "Rosi Mine",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForFace",
-        "bodyStruct": {
-          "matData": {
-            "matOrigin": "PINK_SLIME",
-            "gloss": 1,
-            "colorProps": { "_TopColor": "#445660" }
-          }
-        },
+        "bodyStruct": { "matData": { "matOrigin": "ROSI_SLIME" } },
         "slime1Structs": [
           {
             "matData": {
-              "gloss": 1,
-              "colorProps": { "_TopColor": "#445660" }
+              "matSameAs": 1,
+              "matOrigin": "ROSI_SLIME"
             },
             "meshData": { "mesh": "rosi_mine_stalk" }
           },
           {
             "matData": {
-              "matSameAs": 1,
-              "matOrigin": "MINE_SLIME"
+              "matSameAs": 2,
+              "matOrigin": "ROSI_SLIME"
             },
             "meshData": { "mesh": "rosi_mine_frills" }
           }
@@ -30,8 +23,8 @@
         "slime2Structs": [
           {
             "matData": {
-              "matSameAs": 1,
-              "matOrigin": "MINE_SLIME"
+              "matSameAs": 2,
+              "matOrigin": "ROSI_SLIME"
             },
             "meshData": { "mesh": "rosi_mine_exterior" }
           }
@@ -44,23 +37,43 @@
     "appearances": [
       {
         "largoProps": "UseSlime2ForFace",
-        "bodyStruct": { "matData": { "matOrigin": "LANTERN_SLIME" } },
+        "bodyStruct": { "matData": { "matOrigin": "ROSI_SLIME" } },
         "slime1Structs": [
           {
-            "matData": { "matOrigin": "LANTERN_SLIME" },
+            "matData": {
+              "matSameAs": 1,
+              "matOrigin": "ROSI_SLIME"
+            },
             "meshData": { "mesh": "rosi_mine_stalk" }
           },
           {
             "matData": {
-              "matOrigin": "PINK_SLIME",
-              "colorProps": { "_TopColor": "#752C86" }
+              "matSameAs": 2,
+              "matOrigin": "ROSI_SLIME"
             },
             "meshData": { "mesh": "rosi_mine_frills" }
           }
         ],
         "slime2Structs": [
-          { "meshData": { "mesh": "rosi_lantern_fins" } },
-          {}, {}, {}
+          {
+            "matData": {
+              "matSameAs": 1,
+              "matOrigin": "ROSI_SLIME"
+            }
+          },
+          {
+            "matData": {
+              "matSameAs": 1,
+              "matOrigin": "ROSI_SLIME"
+            }
+          },
+          { "matData": { "colorProps": { "_Color": "#F46CB7" } } },
+          {
+            "matData": {
+              "matOrigin": "PHOSPHOR_SLIME",
+              "colorProps": { "_TopColor": "#F46CB7" }
+            }
+          }
         ]
       }
     ]
