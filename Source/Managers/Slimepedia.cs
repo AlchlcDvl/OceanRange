@@ -891,14 +891,9 @@ public static class Slimepedia
         foreach (var (rend, mesh, jiggleFactor) in list)
         {
             if (!mesh || !rend)
-            {
                 Debug.LogWarning("One of the meshes or mesh rends provided is null");
-                continue;
-            }
-
-            var riggedMesh = GetRiggedMesh(RiggedSlimeMeshCache, RigType.Slime, mesh, jiggleFactor ?? jiggleAmount, zero, num, poses);
-            rend.sharedMesh = riggedMesh;
-            rend.localBounds = riggedMesh.bounds;
+            else
+                rend.sharedMesh = GetRiggedMesh(RiggedSlimeMeshCache, RigType.Slime, mesh, jiggleFactor ?? jiggleAmount, zero, num, poses);
         }
     }
 

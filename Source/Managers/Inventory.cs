@@ -342,25 +342,26 @@ public static class Inventory
         using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
         using var reader = new BinaryReader(decompressor);
 
-        var mesh = new Mesh
-        {
-            indexFormat = (IndexFormat)reader.ReadByte(),
-            bounds = ReadBounds(reader),
-            subMeshCount = ReadPackedInt(reader)
-        };
+        var mesh = new Mesh { indexFormat = (IndexFormat)reader.ReadByte() };
+
+        var bounds = ReadBounds(reader);
+
+        mesh.bounds = bounds;
+        mesh.subMeshCount = ReadPackedInt(reader);
 
         var vertexCount = ReadPackedInt(reader);
-        mesh.vertices = ReadArrayContents(reader, vertexCount, BinaryUtils.ReadVector3);
+        mesh.vertices = ReadArrayContents(reader, vertexCount, r => ReadQuantizedPosition(r, bounds));
 
-        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, BinaryUtils.ReadVector3), (m, v) => m.normals = v);
-        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, BinaryUtils.ReadVector4), (m, v) => m.tangents = v);
+        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedNormal), (m, v) => m.normals = v);
+        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedTangent), (m, v) => m.tangents = v);
+
         AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadColor32), (m, v) => m.colors32 = v);
 
         for (var i = 0; i < mesh.subMeshCount; i++)
         {
             var topology = (MeshTopology)reader.ReadByte();
             var subMeshBounds = ReadBounds(reader);
-            var indices = ReadArray(reader, ReadPackedInt);
+            var indices = ReadIndices(reader);
 
             mesh.SetIndices(indices, topology, i, false);
 
@@ -378,7 +379,7 @@ public static class Inventory
             var dimension = reader.ReadByte();
 
             if (dimension == 2)
-                ReadUVs(reader, i, vertexCount, uvs2, BinaryUtils.ReadVector2, mesh.SetUVs);
+                ReadUVs(reader, i, vertexCount, uvs2, ReadQuantizedUV2, mesh.SetUVs);
             else if (dimension == 3)
                 ReadUVs(reader, i, vertexCount, uvs3, BinaryUtils.ReadVector3, mesh.SetUVs);
             else if (dimension == 4)
@@ -455,6 +456,68 @@ public static class Inventory
 
         return result;
     }
+
+    private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
+
+    private static int[] ReadIndices(BinaryReader reader)
+    {
+        var count = ReadPackedInt(reader);
+
+        if (count == 0)
+            return Array.Empty<int>();
+
+        var indices = new int[count];
+        var previousIndex = 0;
+
+        for (var i = 0; i < count; i++)
+        {
+            var zigZagDelta = (uint)ReadVarInt(reader);
+            var delta = ZigZagDecode(zigZagDelta);
+            var currentIndex = previousIndex + delta;
+            indices[i] = currentIndex;
+            previousIndex = currentIndex;
+        }
+
+        return indices;
+    }
+
+    private static Vector3 ReadQuantizedPosition(BinaryReader reader, Bounds bounds)
+    {
+        var nx = reader.ReadUInt16() / 65535f;
+        var ny = reader.ReadUInt16() / 65535f;
+        var nz = reader.ReadUInt16() / 65535f;
+
+        var min = bounds.min;
+        var size = bounds.size;
+
+        return new(
+            min.x + (nx * size.x),
+            min.y + (ny * size.y),
+            min.z + (nz * size.z)
+        );
+    }
+
+    private static Vector3 ReadQuantizedNormal(BinaryReader reader)
+    {
+        var x = reader.ReadSByte() / 127f;
+        var y = reader.ReadSByte() / 127f;
+        var z = reader.ReadSByte() / 127f;
+        return new Vector3(x, y, z).normalized;
+    }
+
+    private static Vector4 ReadQuantizedTangent(BinaryReader reader)
+    {
+        var x = reader.ReadSByte() / 127f;
+        var y = reader.ReadSByte() / 127f;
+        var z = reader.ReadSByte() / 127f;
+        var w = reader.ReadSByte() / 127f;
+        return new(x, y, z, w);
+    }
+
+    private static Vector2 ReadQuantizedUV2(BinaryReader reader) => new(
+        reader.ReadUInt16() / 65535f,
+        reader.ReadUInt16() / 65535f
+    );
 
     /// <summary>
     /// Loads a texture from the provided path.

@@ -59,26 +59,28 @@ static class ExportMeshes
     {
         writer.Write((byte)mesh.indexFormat);
 
-        WriteBounds(writer, mesh.bounds);
+        var bounds = mesh.bounds;
+
+        WriteBounds(writer, bounds);
         WritePackedInt(writer, mesh.subMeshCount);
 
         var vertices = mesh.vertices;
         var vertexCount = vertices.Length;
 
         WritePackedInt(writer, vertexCount);
-        WriteArrayContents(writer, vertices, WriteVector3);
 
-        WriteAttributeData(writer, VertexAttribute.Normal, mesh, m => m.normals, WriteVector3);
-        WriteAttributeData(writer, VertexAttribute.Tangent, mesh, m => m.tangents, WriteVector4);
+        WriteArrayContents(writer, vertices, (w, v) => WriteQuantizedPosition(w, v, bounds));
+
+        WriteAttributeData(writer, VertexAttribute.Normal, mesh, m => m.normals, WriteQuantizedNormal);
+        WriteAttributeData(writer, VertexAttribute.Tangent, mesh, m => m.tangents, WriteQuantizedTangent);
         WriteAttributeData(writer, VertexAttribute.Color, mesh, m => m.colors32, WriteColor32);
 
         for (var i = 0; i < mesh.subMeshCount; i++)
         {
             var descriptor = mesh.GetSubMesh(i);
-
             writer.Write((byte)descriptor.topology);
             WriteBounds(writer, descriptor.bounds);
-            WriteArray(writer, mesh.GetIndices(i), WritePackedInt);
+            WriteIndices(writer, mesh.GetIndices(i));
         }
 
         var uvs2 = new List<Vector2>(vertexCount);
@@ -95,16 +97,14 @@ static class ExportMeshes
                 writer.Write((byte)dimension);
 
                 if (dimension == 2)
-                    WriteUVs(writer, i, uvs2, WriteVector2, mesh.GetUVs);
+                    WriteUVs(writer, i, uvs2, WriteQuantizedUV2, mesh.GetUVs);
                 else if (dimension == 3)
                     WriteUVs(writer, i, uvs3, WriteVector3, mesh.GetUVs);
                 else if (dimension == 4)
                     WriteUVs(writer, i, uvs4, WriteVector4, mesh.GetUVs);
             }
             else
-            {
                 writer.Write((byte)0);
-            }
         }
 
         writer.Flush();
@@ -123,6 +123,63 @@ static class ExportMeshes
         }
     }
 
+    static void WriteIndices(BinaryWriter writer, int[] indices)
+    {
+        if (indices == null || indices.Length == 0)
+        {
+            WritePackedInt(writer, 0);
+            return;
+        }
+
+        WritePackedInt(writer, indices.Length);
+
+        var previousIndex = 0;
+
+        for (var i = 0; i < indices.Length; i++)
+        {
+            var currentIndex = indices[i];
+            var delta = currentIndex - previousIndex;
+            var zigZagDelta = ZigZagEncode(delta);
+            WriteVarInt(writer, zigZagDelta);
+            previousIndex = currentIndex;
+        }
+    }
+
+    static void WriteQuantizedPosition(BinaryWriter writer, Vector3 pos, Bounds bounds)
+    {
+        var min = bounds.min;
+        var size = bounds.size;
+
+        var nx = size.x > 0 ? (pos.x - min.x) / size.x : 0f;
+        var ny = size.y > 0 ? (pos.y - min.y) / size.y : 0f;
+        var nz = size.z > 0 ? (pos.z - min.z) / size.z : 0f;
+
+        writer.Write((ushort)(Mathf.Clamp01(nx) * 65535f));
+        writer.Write((ushort)(Mathf.Clamp01(ny) * 65535f));
+        writer.Write((ushort)(Mathf.Clamp01(nz) * 65535f));
+    }
+
+    static void WriteQuantizedUV2(BinaryWriter writer, Vector2 uv)
+    {
+        writer.Write((ushort)(Mathf.Clamp01(uv.x) * 65535f));
+        writer.Write((ushort)(Mathf.Clamp01(uv.y) * 65535f));
+    }
+
+    static void WriteQuantizedNormal(BinaryWriter writer, Vector3 normal)
+    {
+        writer.Write((sbyte)(Mathf.Clamp(normal.x, -1f, 1f) * 127f));
+        writer.Write((sbyte)(Mathf.Clamp(normal.y, -1f, 1f) * 127f));
+        writer.Write((sbyte)(Mathf.Clamp(normal.z, -1f, 1f) * 127f));
+    }
+
+    static void WriteQuantizedTangent(BinaryWriter writer, Vector4 tangent)
+    {
+        writer.Write((sbyte)(Mathf.Clamp(tangent.x, -1f, 1f) * 127f));
+        writer.Write((sbyte)(Mathf.Clamp(tangent.y, -1f, 1f) * 127f));
+        writer.Write((sbyte)(Mathf.Clamp(tangent.z, -1f, 1f) * 127f));
+        writer.Write((sbyte)(Mathf.Clamp(tangent.w, -1f, 1f) * 127f));
+    }
+
     static void WriteUVs<T>(BinaryWriter writer, int index, List<T> uvs, Action<BinaryWriter, T> writeAction, Action<int, List<T>> getUVs)
     {
         getUVs(index, uvs);
@@ -130,7 +187,7 @@ static class ExportMeshes
         uvs.Clear();
     }
 
-    // static uint ZigZagEncode(int value) => (uint)((value << 1) ^ (value >> 31));
+    static uint ZigZagEncode(int value) => (uint)((value << 1) ^ (value >> 31));
 
     static void WriteVarInt(BinaryWriter writer, ulong value)
     {
