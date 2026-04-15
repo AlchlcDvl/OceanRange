@@ -92,6 +92,16 @@
       "favourite": "@m.favorite.gold_slime",
       "onomics": "Goldfisch-Plorts sind noch seltener als Gold-Plorts und sogar doppelt so wertvoll, was sie zu einer begehrten Ressource macht. Ihre Herkunft aus dem Wasser verleiht ihnen einzigartige energetische Eigenschaften, die häufig in modernster Aquatiktechnologie und der Herstellung von luxuriösem Hologlas genutzt werden. Aufgrund ihrer Seltenheit empfehlt Slime Science Lab, sie mit äußerster Vorsicht zu behandeln und sich glücklich zu schätzen, überhaupt einen gefunden zu haben.",
       "intro": "Der Schleim mit dem feinen Schein!"
+    },
+    {
+      "translatedName": "Mimic Slime",
+      "name": "Mimic",
+      "risks": "TBU",
+      "slimeology": "TBU",
+      "diet": "@m.diet.boom_slime",
+      "favourite": "TBU",
+      "onomics": "TBU",
+      "intro": "TBU"
     }
   ],
   "hens": [

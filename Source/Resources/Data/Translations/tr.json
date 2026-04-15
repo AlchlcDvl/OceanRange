@@ -92,6 +92,16 @@
       "favourite": "@m.favorite.gold_slime",
       "onomics": "Goldfish plortları gold plortlardan bile daha nadir ve iki kat daha değerli olduğundan, oldukça aranan bir kaynaktır. Sucul kökenleri onlara benzersiz enerji özellikleri kazandırır; genellikle ileri teknoloji sucul cihazlar ve lüks hologlass üretiminde kullanılır. Nadiren bulunmaları nedeniyle, Slime Science Lab bunların dikkatle ele alınmasını ve bulmuş olmanızı büyük bir şans olarak görmenizi tavsiye eder.",
       "intro": "Lüks bir parlaklığa sahip kaygan slime!"
+    },
+    {
+      "translatedName": "Mimic Slime",
+      "name": "Mimic",
+      "risks": "TBU",
+      "slimeology": "TBU",
+      "diet": "@m.diet.boom_slime",
+      "favourite": "TBU",
+      "onomics": "TBU",
+      "intro": "TBU"
     }
   ],
   "hens": [
