@@ -17,7 +17,9 @@ public enum LargoAppearanceProps : byte
     UseSlime2ForBodyMaterial = 1 << 3,
 
     // Combines the above values so you don't have to write a long array just with the above values
-    UseSlime2AsBase = UseSlime2ForFace | UseSlime2ForBody | UseSlime2ForBodyMaterial,
+    UseSlime2AsBodyBase = UseSlime2ForBody | UseSlime2ForBodyMaterial,
+
+    UseSlime2AsBase = UseSlime2ForFace | UseSlime2AsBodyBase,
 
     ExcludeSlime1Structures = 1 << 4,
     ExcludeSlime2Structures = 1 << 5,

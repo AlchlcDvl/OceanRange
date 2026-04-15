@@ -1,4 +1,7 @@
 // ReSharper disable UnassignedField.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable ConvertToConstant.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 using OceanRange.Saves;
 
@@ -111,6 +114,7 @@ public sealed class SlimeData : SpawnedActorData
     {
         Translator.SlimeToOnomicsMap[data.PediaKey] = OnomicsType;
         PediaId = data.PediaId;
+        data.SsExists = SSAppearance != null;
     }
 }
 
@@ -159,15 +163,6 @@ public sealed class SlimeAppearanceData : JsonData
             BottomPaletteColor = bottomColor;
 
         PlortAmmoColor ??= MainAmmoColor;
-
-        // foreach (var feature in SlimeFeatures)
-        //     feature.MeshData.Mesh ??= "slime_default";
-
-        // foreach (var feature in GordoFeatures)
-        //     feature.MeshData.Mesh ??= "slime_gordo";
-
-        // foreach (var feature in PlortFeatures)
-        //     feature.MeshData.Mesh ??= "plort";
 
         HasMouthColors = TopMouthColor.HasValue || MiddleMouthColor.HasValue || BottomMouthColor.HasValue;
         HasEyeColors = RedEyeColor.HasValue || GreenEyeColor.HasValue || BlueEyeColor.HasValue;

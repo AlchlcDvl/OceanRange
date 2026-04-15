@@ -92,6 +92,16 @@
       "favourite": "@m.favorite.gold_slime",
       "onomics": "Goldfish plorts are even rarer than gold plorts and twice as valuable, making them a highly sought-after resource. Their underwater origin gives them unique energetic properties, often used in cutting-edge aquatic tech and luxury hologlass manufacturing. Due to their rarity, the Slime Science Lab recommends handling with extreme care, and counting yourself lucky to have found one at all.",
       "intro": "The slippery slime with a luxurious shine!"
+    },
+    {
+      "translatedName": "Mimic Slime",
+      "name": "Mimic",
+      "risks": "TBU",
+      "slimeology": "TBU",
+      "diet": "@m.diet.boom_slime",
+      "favourite": "TBU",
+      "onomics": "TBU",
+      "intro": "TBU"
     }
   ],
   "hens": [

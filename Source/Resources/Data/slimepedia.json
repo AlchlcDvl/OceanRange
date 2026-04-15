@@ -24,7 +24,7 @@
           "matData": { "colorProps": { "_TopColor": "#F46CB7" } }
         }
       ],
-      "mainAmmoColor": "#F9E5F0",
+      "mainAmmoColor": "#E6C7D2",
       "plortFeatures": [
         {
           "meshData": { "mesh": "pearl" },
@@ -333,10 +333,8 @@
     "normalAppearance": {
       "mainAmmoColor": "#EDA960",
       "plortAmmoColor": "#E8C499",
-      "jiggle": 0.125,
       "slimeFeatures": [
         {
-          "meshData": { "skipNull": true },
           "matData": {
             "colorProps": {
               "_TopColor": "#E2DFD2",
@@ -346,7 +344,10 @@
           }
         },
         {
-          "meshData": { "mesh": "sand_shells" },
+          "meshData": {
+            "mesh": "sand_shells",
+            "jiggle": 0.125
+          },
           "matData": {
             "gloss": 1,
             "colorProps": { "_TopColor": "#E8C499" }

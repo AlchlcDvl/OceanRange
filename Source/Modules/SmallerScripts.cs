@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 namespace OceanRange.Modules;
 
 public sealed class PersistentIdHandler : MonoBehaviour
@@ -17,7 +19,6 @@ public sealed class PediaOnomicsHandler : MonoBehaviour
 public sealed class ModelDataHandler : MonoBehaviour
 {
     public float? Jiggle;
-    public bool SkipRigging;
 }
 
 public abstract class AppearanceFixer : MonoBehaviour

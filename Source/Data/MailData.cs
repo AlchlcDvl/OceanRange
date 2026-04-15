@@ -36,7 +36,7 @@ public sealed class MailData : JsonData
         // if (Methods.TryGetValue("Init" + Name.Replace(" ", string.Empty) + "Details", out var method))
         //     method.Invoke(null, [this]);
 
-        Subscribers = UnlockFuncAnd?.GetInvocationList()?.Cast<Func<double, bool>>()?.ToArray();
+        Subscribers = UnlockFuncAnd?.GetInvocationList().Cast<Func<double, bool>>().ToArray();
 
         NoSubscribers = Subscribers.IsNullOrEmpty();
     }

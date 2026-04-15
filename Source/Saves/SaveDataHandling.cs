@@ -58,8 +58,8 @@ public sealed class SaveWriter : IDisposable
     // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     // public void WriteString(string value) => _writer.Write(value ?? string.Empty);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void WriteEnum<T>(T value) where T : struct, Enum => _writer.Write(value.ToString());
+    // [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    // public void WriteEnum<T>(T value) where T : struct, Enum => _writer.Write(value.ToString());
 
     // [MethodImpl(MethodImplOptions.AggressiveInlining)]
     // public void WriteVector3(Vector3 value)

@@ -82,11 +82,11 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
 
 public sealed class StealthFixerController
 {
-    private struct RendererEntry
+    private readonly struct RendererEntry(Renderer renderer, Material original, Material cloak)
     {
-        public Renderer Renderer;
-        public Material Original;
-        public Material Cloak;
+        public readonly Renderer Renderer = renderer;
+        public readonly Material Original = original;
+        public readonly Material Cloak = cloak;
     }
 
     private static readonly int Alpha = ShaderUtils.GetOrSet("_Alpha");
@@ -124,12 +124,7 @@ public sealed class StealthFixerController
                 cloakMat.SetColor(Slimepedia.BottomColor, regularMat.GetColor(Slimepedia.BottomColor));
             }
 
-            Entries.Add(new RendererEntry
-            {
-                Renderer = renderer,
-                Original = regularMat,
-                Cloak = cloakMat
-            });
+            Entries.Add(new RendererEntry(renderer, regularMat, cloakMat));
         }
     }
 

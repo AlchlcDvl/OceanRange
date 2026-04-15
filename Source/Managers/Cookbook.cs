@@ -36,7 +36,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Preload")]
 #endif
-    [PreloadMethod, UsedImplicitly]
+    [PreloadMethod]
     public static void PreloadFoodData()
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
@@ -162,7 +162,7 @@ public static class Cookbook
 #if DEBUG
     [TimeDiagnostic("Foods Load")]
 #endif
-    [LoadMethod, UsedImplicitly]
+    [LoadMethod]
     public static void LoadAllFoods()
     {
         Array.ForEach(Fruits, BaseCreatePlant);
@@ -206,6 +206,9 @@ public static class Cookbook
         RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor, chimkenData.MainId, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
         FoodGroup.MEAT.RegisterId(chimkenData.MainId);
+
+        // TODO: Remove this fix when SRML v0.3.0 is out
+        FoodGroup.MEAT.UnregisterId(chimkenData.ChickId);
 
         if (Main.ClsExists)
         {
@@ -274,7 +277,8 @@ public static class Cookbook
     private static void BaseCreatePlant(PlantData plantData)
     {
         var prefab = plantData.BasePlant!.Value.GetPrefab().CreatePrefab();
-        prefab.name = plantData.Type.ToLowerInvariant() + plantData.Name;
+        var typeLower = plantData.Type.ToLowerInvariant();
+        prefab.name = typeLower + plantData.Name;
         prefab.GetComponent<Identifiable>().id = plantData.MainId;
         prefab.GetComponent<Vacuumable>().size = 0;
 
@@ -282,7 +286,7 @@ public static class Cookbook
 
         var lower = plantData.Name.ToLowerInvariant();
 
-        var mesh = Inventory.GetMesh(lower + "_" + plantData.Type.ToLowerInvariant());
+        var mesh = Inventory.GetMesh(lower + "_" + typeLower);
 
         meshModel.GetComponent<MeshFilter>().sharedMesh = mesh;
         prefab.GetComponent<MeshFilter>().sharedMesh = mesh;
@@ -306,22 +310,24 @@ public static class Cookbook
                 var max = Mathf.Max(size.x, size.y, size.z);
                 capsule.height = max;
 
-                if (max == size.x)
+                if (Mathf.Approximately(max, size.x))
                 {
                     capsule.direction = 0;
                     capsule.radius = Mathf.Max(size.y, size.z) / 2f;
                 }
-                else if (max == size.y)
+                else if (Mathf.Approximately(max, size.y))
                 {
                     capsule.direction = 1;
                     capsule.radius = Mathf.Max(size.x, size.z) / 2f;
                 }
-                else if (max == size.z)
+                else if (Mathf.Approximately(max, size.z))
                 {
                     capsule.direction = 0;
                     capsule.radius = Mathf.Max(size.y, size.x) / 2f;
                 }
             }
+
+            Helpers.UpdateMeshCollider(prefab, mesh);
 
             prefab.GetComponent<Rigidbody>().WakeUp();
         }

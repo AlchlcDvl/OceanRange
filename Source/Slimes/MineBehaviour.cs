@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 using System.Collections;
 
 namespace OceanRange.Slimes;

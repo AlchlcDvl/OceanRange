@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 using System.Collections;
 using SRML.SR.SaveSystem;
 using SRML.SR.SaveSystem.Data;

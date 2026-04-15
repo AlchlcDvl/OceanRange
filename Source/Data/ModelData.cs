@@ -2,16 +2,10 @@
 
 namespace OceanRange.Data;
 
-public sealed class ModelData() : JsonData
+public sealed class ModelData : JsonData
 {
     public MatData MatData;
     public MeshData MeshData;
-
-    public ModelData(ModelData data) : this()
-    {
-        MatData = data.MatData;
-        MeshData = data.MeshData;
-    }
 
     protected override void OnDeserialise()
     {
@@ -42,7 +36,7 @@ public sealed class MatData : JsonData
     [JsonIgnore] public readonly Dictionary<int, Color> ColorProps = [];
 
     private const string Top = "TopColor";
-    private static readonly int TopLength = Top.Length;
+    private const int TopLength = 8;
 
     private static readonly List<string> TempKeys = [];
 
@@ -55,8 +49,6 @@ public sealed class MatData : JsonData
 
             return;
         }
-
-        TempKeys.Clear();
 
         foreach (var key in ColorPropsJson.Keys)
         {
@@ -79,31 +71,22 @@ public sealed class MatData : JsonData
 
         TempKeys.Clear();
 
-        foreach (var kvp in ColorPropsJson)
-            ColorProps[ShaderUtils.GetOrSet(kvp.Key)] = kvp.Value;
+        foreach (var (id, color) in ColorPropsJson)
+            ColorProps[ShaderUtils.GetOrSet(id)] = color;
     }
 }
 
-public sealed class MeshData() : JsonData
+public sealed class MeshData : JsonData
 {
     public string Mesh;
+
     public bool IgnoreLodIndex;
 
     public bool Skip;
-    public bool SkipNull;
     public bool UseBaseStruct;
-    public bool InstantiatePrefabs;
 
     public float? Jiggle;
     public int? PrefabLength;
 
-    public bool SkipRigging;
-
     [JsonIgnore] public bool IsBody;
-
-    protected override void OnDeserialise()
-    {
-        if (InstantiatePrefabs)
-            SkipNull = true;
-    }
 }

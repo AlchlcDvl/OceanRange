@@ -15,6 +15,7 @@ global using SlimeExpression = SlimeFace.SlimeExpression;
 global using ProgressType = ProgressDirector.ProgressType;
 global using PediaCategory = SRML.SR.PediaRegistry.PediaCategory;
 global using RancherName = RancherChatMetadata.Entry.RancherName;
+global using AppearanceSaveSet = SlimeAppearance.AppearanceSaveSet;
 // global using RegionId = MonomiPark.SlimeRancher.Regions.RegionRegistry.RegionSetId;
 
 global using SRML.SR;

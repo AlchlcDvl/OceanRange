@@ -1,19 +1,19 @@
 // namespace OceanRange.Patches;
-//
+
 // [HarmonyPatch(typeof(ZoneDirector), nameof(ZoneDirector.GetRegionSetId))]
 // public static class SetModdedRegionId
 // {
 //     public static bool Prefix(ref RegionId __result, Zone zone)
 //     {
 //         var isModded = Atlas.ZoneToDataMap.TryGetValue(zone, out var data);
-//
+
 //         if (isModded)
 //             __result = data.Region;
-//
+
 //         return !isModded;
 //     }
 // }
-//
+
 // [HarmonyPatch(typeof(PlayerZoneTracker), nameof(PlayerZoneTracker.OnEntered))]
 // public static class ShowZonePediaPopUp
 // {

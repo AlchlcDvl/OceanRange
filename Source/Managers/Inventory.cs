@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Text;
 using Newtonsoft.Json.Serialization;
 using UnityEngine.Rendering;
+using System.Runtime.CompilerServices;
 
 namespace OceanRange.Managers;
 
@@ -20,7 +21,7 @@ public static class Inventory
     public static readonly Assembly Core = typeof(Main).Assembly;
 
     /// <summary>
-    /// Common json serialisation settings to avoid creating a new json settings instance for each json file.
+    /// Common JSON serialisation settings to avoid creating a new JSON settings instance for each JSON file.
     /// </summary>
     public static readonly JsonSerializerSettings JsonSettings = new()
     {
@@ -29,8 +30,8 @@ public static class Inventory
         Formatting = Formatting.Indented,
 #endif
 
-        ContractResolver = new DefaultContractResolver() { NamingStrategy = new CamelCaseNamingStrategy(false, false) },
-        // Adding the json converters
+        ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy(false, false) },
+        // Adding the JSON converters
         Converters =
         [
             new EnumConverter(),
@@ -126,7 +127,10 @@ public static class Inventory
         {
             ReleaseHandles(handles);
         }
-        catch { }
+        catch
+        {
+            // ignored
+        }
     }
 
     /// <summary>
@@ -151,19 +155,19 @@ public static class Inventory
     public static void ReleaseUnusedHandles() => ReleaseHandles([.. Assets.Where(x => !x.Value.HasLoaded).Select(x => x.Key)]);
 
     /// <summary>
-    /// Gets and serialise json data from the asset associated with the provided name.
+    /// Gets and serialise JSON data from the asset associated with the provided name.
     /// </summary>
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
-    /// <returns>The read and converted json data.</returns>
+    /// <returns>The read and converted JSON data.</returns>
     public static T[] GetJsonArray<T>(string path) => GetJson<T[]>(path);
 
     /// <summary>
-    /// Gets and serialise json data from the asset associated with the provided name.
+    /// Gets and serialise JSON data from the asset associated with the provided name.
     /// </summary>
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
-    /// <returns>The read and converted json data.</returns>
+    /// <returns>The read and converted JSON data.</returns>
     public static T GetJson<T>(string path) => ToJson<T>(TryReadJson(path, out var contents) ? contents : Get<Json>(path).text);
 
     public static bool TryGetJson<T>(string name, bool writeJson, out T json)
@@ -237,22 +241,11 @@ public static class Inventory
     /// Gets a Mesh from the assets associated with the provided name.
     /// </summary>
     /// <inheritdoc cref="Get{T}(string)"/>
-    public static Mesh GetMesh(string name)
-    {
-        var mesh = Get<Mesh>(name);
-        return mesh.bindposes.IsNullOrEmpty() ? mesh : mesh.Clone();
-    }
+    public static Mesh GetMesh(string name) => Get<Mesh>(name);
 
-    public static bool TryGetMesh(string name, out Mesh mesh)
-    {
-        if (!TryGet(name, out mesh))
-            return false;
+    public static bool TryGetMesh(string name, out Mesh mesh) => TryGet(name, out mesh);
 
-        if (!mesh.bindposes.IsNullOrEmpty())
-            mesh = mesh.Clone();
-
-        return true;
-    }
+    public static IEnumerable<Mesh> GetAllMeshes() => GetAll<Mesh>();
 
     // /// <summary>
     // /// Gets a Shader from the assets associated with the provided name.
@@ -269,7 +262,16 @@ public static class Inventory
     //
     // public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
 
-    private static IEnumerable<T> GetAll<T>(params string[] names) where T : UObject => names.Select(Get<T>);
+    private static IEnumerable<T> GetAll<T>(string[] names) where T : UObject => names.Select(Get<T>);
+
+    public static IEnumerable<T> GetAll<T>() where T : UObject
+    {
+        foreach (var handle in Assets.Values)
+        {
+            if (handle.TryLoad<T>(out var asset))
+                yield return asset;
+        }
+    }
 
     /// <summary>
     /// Attempts to fetch an asset of type <typeparamref name="T"/> associated with the provided name.
@@ -298,13 +300,7 @@ public static class Inventory
     /// <param name="name">The name of the asset.</param>
     /// <inheritdoc cref="AssetHandle.Load{T}"/>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
-    private static T Get<T>(string name) where T : UObject
-    {
-        if (!Assets.TryGetValue(name, out var handle))
-            throw new FileNotFoundException($"{name}, {typeof(T).Name}");
-
-        return handle.Load<T>();
-    }
+    private static T Get<T>(string name) where T : UObject => Assets.TryGetValue(name, out var handle) ? handle.Load<T>() : throw new FileNotFoundException($"{name}, {typeof(T).Name}");
 
     // Legacy code, it's being kept around in case it's needed for more precise control
     // /// <summary>
@@ -323,10 +319,10 @@ public static class Inventory
     // }
 
     /// <summary>
-    /// Loads a json file from the provided path.
+    /// Loads a JSON file from the provided path.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
-    /// <returns>The json asset loaded from the path.</returns>
+    /// <returns>The JSON asset loaded from the path.</returns>
     private static Json LoadJson(string path)
     {
         using var stream = Core.GetManifestResourceStream(path)!;
@@ -335,48 +331,234 @@ public static class Inventory
     }
 
     /// <summary>
-    /// Loads a json file from the provided path.
+    /// Loads a mesh file from the provided path.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
-    /// <returns>The json asset loaded from the path.</returns>
+    /// <returns>The mesh asset loaded from the path.</returns>
     private static Mesh LoadMesh(string path)
     {
         // This method uses a specially serialised version of the models to save on disk space and to make it easier to ship the mod
 
         using var stream = Core.GetManifestResourceStream(path)!;
-        using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
+        using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
         using var reader = new BinaryReader(decompressor);
 
-        var mesh = new Mesh()
-        {
-            indexFormat = (IndexFormat)reader.ReadByte(),
-            vertices = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            normals = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector3),
-            tangents = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector4),
-            bounds = new()
-            {
-                center = BinaryUtils.ReadVector3(reader),
-                extents = BinaryUtils.ReadVector3(reader)
-            },
-            subMeshCount = reader.ReadInt32(),
-            bindposes = []
-        };
+        var mesh = new Mesh { indexFormat = (IndexFormat)reader.ReadByte() };
+
+        var bounds = ReadBounds(reader);
+
+        mesh.bounds = bounds;
+        mesh.subMeshCount = ReadPackedInt(reader);
+
+        var vertexCount = ReadPackedInt(reader);
+        mesh.vertices = ReadArrayContents(reader, vertexCount, r => ReadQuantizedPosition(r, bounds));
+
+        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedNormal), (m, v) => m.normals = v);
+        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedTangent), (m, v) => m.tangents = v);
+
+        ReadAndAssignColorData(reader, mesh, vertexCount);
 
         for (var i = 0; i < mesh.subMeshCount; i++)
-            mesh.SetTriangles(BinaryUtils.ReadArray(reader, ReadInt), i);
+        {
+            var topology = (MeshTopology)reader.ReadByte();
+            var subMeshBounds = ReadBounds(reader);
+            var indices = ReadIndices(reader);
+
+            mesh.SetIndices(indices, topology, i, false);
+
+            var descriptor = mesh.GetSubMesh(i);
+            descriptor.bounds = subMeshBounds;
+            mesh.SetSubMesh(i, descriptor);
+        }
+
+        var uvs2 = new List<Vector2>(vertexCount);
+        var uvs3 = new List<Vector3>(vertexCount);
+        var uvs4 = new List<Vector4>(vertexCount);
 
         for (var i = 0; i < 8; i++)
         {
-            var uvs = BinaryUtils.ReadArray(reader, BinaryUtils.ReadVector2);
+            var dimension = reader.ReadByte();
 
-            if (!uvs.IsNullOrEmpty())
-                mesh.SetUVs(i, uvs);
+            if (dimension == 2)
+                ReadUVs(reader, i, vertexCount, uvs2, ReadQuantizedUV2, mesh.SetUVs);
+            else if (dimension == 3)
+                ReadUVs(reader, i, vertexCount, uvs3, BinaryUtils.ReadVector3, mesh.SetUVs);
+            else if (dimension == 4)
+                ReadUVs(reader, i, vertexCount, uvs4, BinaryUtils.ReadVector4, mesh.SetUVs);
         }
 
         return mesh;
     }
 
-    private static int ReadInt(BinaryReader reader) => reader.ReadInt32();
+    private static void ReadAndAssignColorData(BinaryReader reader, Mesh mesh, int vertexCount)
+    {
+        var state = reader.ReadByte();
+
+        if (state == 1)
+        {
+            var uniformColor = ReadColor32(reader);
+            var colors = new Color32[vertexCount];
+
+            for (var i = 0; i < vertexCount; i++)
+                colors[i] = uniformColor;
+
+            mesh.colors32 = colors;
+        }
+        else if (state == 2)
+            mesh.colors32 = ReadArrayContents(reader, vertexCount, ReadColor32);
+        // Ignore if anything else
+    }
+
+    private static Bounds ReadBounds(BinaryReader reader) => new()
+    {
+        center = BinaryUtils.ReadVector3(reader),
+        extents = BinaryUtils.ReadVector3(reader)
+    };
+
+    private static Color32 ReadColor32(BinaryReader reader) => new(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+
+    private static T[] ReadAttributeData<T>(BinaryReader reader, int count, Func<BinaryReader, T> readFunc)
+    {
+        if (reader.ReadBoolean())
+            return ReadArrayContents(reader, count, readFunc);
+
+        return null;
+    }
+
+    private static void AssignAttribute<T>(Mesh mesh, T[] data, Action<Mesh, T[]> assignAction)
+    {
+        if (!data.IsNullOrEmpty())
+            assignAction(mesh, data);
+    }
+
+    private static void ReadUVs<T>(BinaryReader reader, int index, int count, List<T> uvs, Func<BinaryReader, T> readFunc, Action<int, List<T>> setUVs)
+    {
+        ReadListContents(reader, uvs, count, readFunc);
+        setUVs(index, uvs);
+        uvs.Clear();
+    }
+
+    private static T[] ReadArray<T>(BinaryReader reader, Func<BinaryReader, T> readFunc) => ReadArrayContents(reader, ReadPackedInt(reader), readFunc);
+
+    private static T[] ReadArrayContents<T>(BinaryReader reader, int count, Func<BinaryReader, T> readFunc)
+    {
+        var array = new T[count];
+
+        for (var i = 0; i < count; i++)
+            array[i] = readFunc(reader);
+
+        return array;
+    }
+
+    private static void ReadListContents<T>(BinaryReader reader, List<T> list, int count, Func<BinaryReader, T> readFunc)
+    {
+        for (var i = 0; i < count; i++)
+            list.Add(readFunc(reader));
+    }
+
+    private static int ReadPackedInt(BinaryReader reader) => (int)ReadVarInt(reader);
+
+    private static ulong ReadVarInt(BinaryReader reader)
+    {
+        var result = 0ul;
+        var shift = 0;
+
+        while (true)
+        {
+            var b = reader.ReadByte();
+            result |= (ulong)(b & 0x7F) << shift;
+
+            if ((b & 0x80) == 0)
+                break;
+
+            shift += 7;
+        }
+
+        return result;
+    }
+
+    private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
+
+    private static int[] ReadIndices(BinaryReader reader)
+    {
+        var count = ReadPackedInt(reader);
+
+        if (count == 0)
+            return Array.Empty<int>();
+
+        var indices = new int[count];
+        var previousIndex = 0;
+
+        for (var i = 0; i < count; i++)
+        {
+            var zigZagDelta = (uint)ReadVarInt(reader);
+            var delta = ZigZagDecode(zigZagDelta);
+            var currentIndex = previousIndex + delta;
+            indices[i] = currentIndex;
+            previousIndex = currentIndex;
+        }
+
+        return indices;
+    }
+
+    private static Vector3 ReadQuantizedPosition(BinaryReader reader, Bounds bounds)
+    {
+        var nx = Mathf.HalfToFloat(reader.ReadUInt16());
+        var ny = Mathf.HalfToFloat(reader.ReadUInt16());
+        var nz = Mathf.HalfToFloat(reader.ReadUInt16());
+
+        var min = bounds.min;
+        var size = bounds.size;
+
+        return new(
+            min.x + (nx * size.x),
+            min.y + (ny * size.y),
+            min.z + (nz * size.z)
+        );
+    }
+
+    private static Vector3 ReadQuantizedNormal(BinaryReader reader)
+    {
+        var x = reader.ReadSByte() / 127f;
+        var y = reader.ReadSByte() / 127f;
+        return OctDecode(new(x, y));
+    }
+
+    private static Vector4 ReadQuantizedTangent(BinaryReader reader)
+    {
+        var x = reader.ReadSByte() / 127f;
+        var y = reader.ReadSByte() / 127f;
+        var w = reader.ReadByte() > 0 ? 1f : -1f;
+
+        var dir = OctDecode(new(x, y));
+        return new(dir.x, dir.y, dir.z, w);
+    }
+
+    private static Vector2 ReadQuantizedUV2(BinaryReader reader)
+    {
+        var x = Mathf.HalfToFloat(reader.ReadUInt16());
+        var y = Mathf.HalfToFloat(reader.ReadUInt16());
+        return new Vector2(x, y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static float SignNotZero(float v) => v >= 0f ? 1f : -1f;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Vector3 OctDecode(Vector2 encoded)
+    {
+        var v = new Vector3(encoded.x, encoded.y, 1f - Mathf.Abs(encoded.x) - Mathf.Abs(encoded.y));
+
+        if (v.z < 0f)
+        {
+            var x = v.x;
+            var y = v.y;
+            v.x = (1f - Mathf.Abs(y)) * SignNotZero(x);
+            v.y = (1f - Mathf.Abs(x)) * SignNotZero(y);
+        }
+
+        return v.normalized;
+    }
 
     /// <summary>
     /// Loads a texture from the provided path.

@@ -25,13 +25,13 @@ public static class Translator
 #if DEBUG
     [TimeDiagnostic("Pedia Preload")]
 #endif
-    [PreloadMethod, UsedImplicitly]
+    [PreloadMethod]
     public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
 
 #if DEBUG
     [TimeDiagnostic("Pedia Load")]
 #endif
-    [LoadMethod, UsedImplicitly]
+    [LoadMethod]
     public static void LoadLangData() => GameContext.Instance.DLCDirector.onPackageInstalled += HandleDefaultExotics;
 
     public static void MessageDirectorHook(MessageDirector __instance)
@@ -94,7 +94,7 @@ public static class Translator
         }
 
         if (lang == Config.FALLBACK_LANGUAGE)
-            throw new($"Fallback {langName} was null");
+            throw new ArgumentException($"Fallback {langName} was null");
 
         return Fallback ?? GenerateTranslations(Config.FALLBACK_LANGUAGE);
     }
@@ -109,13 +109,8 @@ public static class Translator
 
     public readonly struct DeferredTranslation(Dictionary<string, string> bundle, string id, string text, string bundleName)
     {
-        private readonly string Id = id;
-        private readonly string Text = text;
-        private readonly string BundleName = bundleName;
-        private readonly Dictionary<string, string> Bundle = bundle;
-
         public void AddComplexTranslation(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback) =>
-            Bundle[Id] = GetTranslationValue(Id, Text, BundleName, translations, lang, isFallback) ?? $"STRMSS: {Id}";
+            bundle[id] = GetTranslationValue(id, text, bundleName, translations, lang, isFallback) ?? $"STRMSS: {id}";
     }
 
     private static List<DeferredTranslation> CurrentDeferredList;
@@ -133,7 +128,10 @@ public static class Translator
     {
         public void AddTranslation(string id, string text, string bundleName)
         {
-            if (text?.StartsWith('@') == true)
+            if (text == null)
+                throw new ArgumentNullException(nameof(text), $"Translation for {bundleName}:{id} was null!");
+
+            if (text.StartsWith('@'))
                 bundle.AddComplexTranslation(id, text, bundleName);
             else
                 bundle.AddSimpleTranslation(id, text);
@@ -212,7 +210,7 @@ public static class Translator
     {
         var textAsset = Resources.Load<TextAsset>(culturePath) ?? Resources.Load<TextAsset>(langPath) ?? Resources.Load<TextAsset>(defaultPath);
 
-        if (textAsset == null)
+        if (!textAsset)
         {
             Log.Warning("Failed to read file.", "culturePath", culturePath, "langPath", langPath, "defaultPath", defaultPath);
             return [];

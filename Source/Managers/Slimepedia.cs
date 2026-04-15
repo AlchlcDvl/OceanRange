@@ -15,24 +15,27 @@ public static class Slimepedia
     public static SlimeData[] Slimes;
     public static bool MgExists;
     public static bool MvExists;
-    public static bool SstExists;
-    public static bool MoSsExists;
-    public static bool SsExists;
+    // public static bool SstExists;
+    // public static bool MoSsExists;
+    private static bool SsExists;
 
-    // private static Mesh GordoMesh;
     private static bool SamExists;
     private static bool FixerExists;
     private static Transform RocksPrefab;
     private static SlimeDefinition TarrDef;
     private static SlimeExpressionFace Sleeping;
-    // private static SlimeAppearanceElement BaseElement;
     private static SlimeAppearanceObject SkinnedPrefab;
+
+    private static readonly Dictionary<RigCacheKey, Mesh> RiggedSlimeMeshCache = [];
+    private static readonly Dictionary<RigCacheKey, Mesh> RiggedGordoMeshCache = [];
+
+    private static readonly Dictionary<ElementCacheKey, SlimeAppearanceElement> PrefabElementCache = [];
 
     public static readonly int TopColor = ShaderUtils.GetOrSet("_TopColor");
     public static readonly int MiddleColor = ShaderUtils.GetOrSet("_MiddleColor");
     public static readonly int BottomColor = ShaderUtils.GetOrSet("_BottomColor");
 
-    public static readonly int Color = ShaderUtils.GetOrSet("_Color");
+    private static readonly int Color = ShaderUtils.GetOrSet("_Color");
     private static readonly int Gloss = ShaderUtils.GetOrSet("_Gloss");
     private static readonly int EyeRed = ShaderUtils.GetOrSet("_EyeRed");
     private static readonly int EyeBlue = ShaderUtils.GetOrSet("_EyeBlue");
@@ -47,8 +50,6 @@ public static class Slimepedia
     private static readonly int VertexOffset = ShaderUtils.GetOrSet("_VertexOffset");
     private static readonly int StripeTexture = ShaderUtils.GetOrSet("_StripeTexture");
 
-    // private static readonly Dictionary<string, SlimeAppearanceElement> CachedElements = [];
-
     private static readonly SlimeAppearance.SlimeBone[] AttachedBones =
     [
         SlimeAppearance.SlimeBone.Slime,
@@ -60,17 +61,85 @@ public static class Slimepedia
         SlimeAppearance.SlimeBone.JiggleBack
     ];
 
+    private enum RigType : byte
+    {
+        Slime,
+        Gordo
+    }
+
+    private readonly struct RigCacheKey(int sourceMeshId, RigType type, int jiggleBits, int zeroXBits, int zeroYBits, int zeroZBits, int numBits, ulong matrixHash1, ulong matrixHash2)
+        : IEquatable<RigCacheKey>
+    {
+        private readonly int SourceMeshId = sourceMeshId;
+        private readonly RigType Type = type;
+        private readonly int JiggleBits = jiggleBits;
+        private readonly int ZeroXBits = zeroXBits;
+        private readonly int ZeroYBits = zeroYBits;
+        private readonly int ZeroZBits = zeroZBits;
+        private readonly int NumBits = numBits;
+        private readonly ulong MatrixHash1 = matrixHash1;
+        private readonly ulong MatrixHash2 = matrixHash2;
+
+        public bool Equals(RigCacheKey other) => SourceMeshId == other.SourceMeshId && Type == other.Type && JiggleBits == other.JiggleBits && ZeroXBits == other.ZeroXBits && ZeroYBits == other.ZeroYBits && ZeroZBits == other.ZeroZBits && NumBits == other.NumBits && MatrixHash1 == other.MatrixHash1 && MatrixHash2 == other.MatrixHash2;
+
+        public override bool Equals(object obj) => obj is RigCacheKey other && Equals(other);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = 17;
+                hash = (hash * 31) + SourceMeshId;
+                hash = (hash * 31) + (int)Type;
+                hash = (hash * 31) + JiggleBits;
+                hash = (hash * 31) + ZeroXBits;
+                hash = (hash * 31) + ZeroYBits;
+                hash = (hash * 31) + ZeroZBits;
+                hash = (hash * 31) + NumBits;
+                hash = (hash * 31) + (int)(MatrixHash1 ^ (MatrixHash1 >> 32));
+                hash = (hash * 31) + (int)(MatrixHash2 ^ (MatrixHash2 >> 32));
+                return hash;
+            }
+        }
+    }
+
+    private readonly struct ElementCacheKey(uint meshNameHash, int jiggleBits, bool ignoreLodIndex, int prefabLength)
+        : IEquatable<ElementCacheKey>
+    {
+        private readonly uint MeshNameHash = meshNameHash;
+        private readonly int JiggleBits = jiggleBits;
+        private readonly bool IgnoreLodIndex = ignoreLodIndex;
+        private readonly int PrefabLength = prefabLength;
+
+        public bool Equals(ElementCacheKey other) => MeshNameHash == other.MeshNameHash && JiggleBits == other.JiggleBits && IgnoreLodIndex == other.IgnoreLodIndex && PrefabLength == other.PrefabLength;
+
+        public override bool Equals(object obj) => obj is ElementCacheKey other && Equals(other);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = 17;
+                hash = (hash * 31) + (int)MeshNameHash;
+                hash = (hash * 31) + JiggleBits;
+                hash = (hash * 31) + (IgnoreLodIndex ? 1 : 0);
+                hash = (hash * 31) + PrefabLength;
+                return hash;
+            }
+        }
+    }
+
 #if DEBUG
     [TimeDiagnostic("Slimes Preload")]
 #endif
-    [PreloadMethod, UsedImplicitly]
+    [PreloadMethod]
     public static void PreloadSlimeData()
     {
         SamExists = SRModLoader.IsModPresent("slimesandmarket");
         MgExists = SRModLoader.IsModPresent("luckygordo");
         MvExists = SRModLoader.IsModPresent("more_vaccing");
-        SstExists = SRModLoader.IsModPresent("secretstylethings");
-        MoSsExists = SRModLoader.IsModPresent("mosecretstyles");
+        // SstExists = SRModLoader.IsModPresent("secretstylethings");
+        // MoSsExists = SRModLoader.IsModPresent("mosecretstyles");
         FixerExists = SRModLoader.IsModPresent("appearancefixer");
 
         Slimes = Inventory.GetJsonArray<SlimeData>("slimepedia");
@@ -90,10 +159,13 @@ public static class Slimepedia
 
     private static void HandleSecretStyles(Id id)
     {
-        if (id != Id.SECRET_STYLE || SsExists)
+        if (id != Id.SECRET_STYLE)
             return;
 
-        SsExists = true;
+        if (!SsExists)
+        {
+            SsExists = true;
+        }
 
         // foreach (var slimeData in Slimes)
         // {
@@ -148,7 +220,7 @@ public static class Slimepedia
 #if DEBUG
     [TimeDiagnostic("Slimes Load")]
 #endif
-    [LoadMethod, UsedImplicitly]
+    [LoadMethod]
     public static void LoadAllSlimes()
     {
         GameContext.Instance.DLCDirector.onPackageInstalled += HandleSecretStyles;
@@ -162,14 +234,9 @@ public static class Slimepedia
         Sleeping.Eyes = Sleeping.Eyes.Clone();
         Sleeping.Eyes.SetTexture(FaceAtlas, Inventory.GetTexture2D("sleeping_eyes"));
 
-        // CachedElements["slime_default_1.000"] = BaseElement = pinkAppearance.Structures[0].Element;
-
         SkinnedPrefab = pinkAppearance.Structures[0].Element.Prefabs[0];
 
         TarrDef = IdentifiableId.TARR_SLIME.GetSlimeDefinition();
-
-        // GordoMesh = IdentifiableId.PINK_GORDO.GetPrefab().transform.Find("Vibrating/slime_gordo").GetComponent<SkinnedMeshRenderer>().sharedMesh.Clone();
-        // GordoMesh.name = "slime_gordo";
 
         Array.ForEach(Slimes, BaseLoadSlime);
     }
@@ -489,13 +556,13 @@ public static class Slimepedia
 
     private static void BasicInitSlimeAppearance(SlimeAppearance appearance, SlimeAppearanceData slimeData, SlimeAppearance baseAppearance)
     {
-        var baseStruct = appearance.Structures[0];
+        var mainStruct = appearance.Structures[0];
         appearance.Structures = new SlimeAppearanceStructure[slimeData.SlimeFeatures.Length];
 
         for (var i = 0; i < slimeData.SlimeFeatures.Length; i++)
         {
             var modelData = slimeData.SlimeFeatures[i];
-            appearance.Structures[i] = GenerateStructure(modelData.MeshData.UseBaseStruct && baseAppearance.Structures.TryGetItem(i, out var structure) ? structure : baseStruct, modelData, modelData.MeshData, slimeData.SlimeFeatures);
+            appearance.Structures[i] = GenerateStructure(modelData.MeshData.UseBaseStruct && baseAppearance.Structures.TryGetItem(i, out var structure) ? structure : mainStruct, modelData, modelData.MeshData, slimeData.SlimeFeatures);
         }
     }
 
@@ -509,11 +576,24 @@ public static class Slimepedia
         if (!structure.DefaultMaterials.IsNullOrEmpty())
             structure.DefaultMaterials[0] = GenerateMaterial(modelData.MatData, modelDatas, structure.DefaultMaterials[0]);
 
+        var cacheKey = new ElementCacheKey(
+            (meshData.Mesh ?? baseStruct.Element.Prefabs[0].name).ComputeHashOfString(),
+            GetFloatBits(meshData.Jiggle ?? 0),
+            meshData.IgnoreLodIndex,
+            meshData.PrefabLength ?? (meshData.IsBody ? 4 : 2));
+
+        if (PrefabElementCache.TryGetValue(cacheKey, out var cachedElem))
+        {
+            structure.Element = cachedElem;
+            structure.SupportsFaces = meshData.IsBody;
+            return structure;
+        }
+
         var isNull = meshData.Mesh == null;
 
-        if (isNull && meshData.SkipNull)
+        if (isNull)
         {
-            if (!meshData.InstantiatePrefabs)
+            if (!meshData.Jiggle.HasValue)
                 return structure;
 
             var elemInner = structure.Element = structure.Element.Instantiate();
@@ -525,10 +605,10 @@ public static class Slimepedia
                 var prefab = oldPrefabs[i].CreatePrefab();
                 var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
                 handler.Jiggle = meshData.Jiggle;
-                handler.SkipRigging = meshData.SkipRigging;
                 elemInner.Prefabs[i] = prefab;
             }
 
+            PrefabElementCache[cacheKey] = elemInner;
             return structure;
         }
 
@@ -542,7 +622,6 @@ public static class Slimepedia
             prefab.IgnoreLODIndex = true;
             var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
             handler.Jiggle = meshData.Jiggle;
-            handler.SkipRigging = meshData.SkipRigging;
             var rend = prefab.GetComponent<SkinnedMeshRenderer>();
             rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(meshData.Mesh);
             elem.Prefabs = [prefab];
@@ -557,21 +636,14 @@ public static class Slimepedia
                 if (!baseStruct.Element.Prefabs.TryGetItem(j, out var prefab))
                     break;
 
-                var isFirst = j == 0;
-
-                if (isFirst || !isNull)
+                if (j == 0 || !isNull)
                     prefab = prefab.CreatePrefab();
 
                 if (prefab.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                 {
                     rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(meshData.Mesh + "_LOD0");
-
-                    if (isFirst)
-                    {
-                        var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
-                        handler.Jiggle = meshData.Jiggle;
-                        handler.SkipRigging = meshData.SkipRigging;
-                    }
+                    var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
+                    handler.Jiggle = meshData.Jiggle;
                 }
                 else if (!isNull && prefab.TryGetComponent<MeshFilter>(out var filter))
                     filter.sharedMesh = Inventory.GetMesh(meshData.Mesh + "_LOD" + j);
@@ -588,6 +660,7 @@ public static class Slimepedia
             }
         }
 
+        PrefabElementCache[cacheKey] = elem;
         return structure;
     }
 
@@ -626,7 +699,7 @@ public static class Slimepedia
         if (Identifiable.IsSlime(source))
         {
             var def = source.GetSlimeDefinition();
-            return (useSS && SsExists ? def.GetAppearanceForSet(SlimeAppearance.AppearanceSaveSet.SECRET_STYLE) : def.AppearancesDefault[0]).Structures[index ?? 0].DefaultMaterials[0];
+            return (useSS && SsExists ? (def.GetAppearanceForSet(AppearanceSaveSet.SECRET_STYLE) ?? def.AppearancesDefault[0]) : def.AppearancesDefault[0]).Structures[index ?? 0].DefaultMaterials[0];
         }
 
         var prefab = source.GetPrefab();
@@ -705,29 +778,21 @@ public static class Slimepedia
 
         var (zero, num) = GetCenteredValues(sharedMesh.vertices);
 
+        Mesh body = null;
+
         for (var i = 0; i < slimeData.GordoFeatures.Length; i++)
         {
             var feature = slimeData.GordoFeatures[i];
             var meshName = feature.MeshData;
             var isNull = meshName.Mesh == null;
             var isFirst = i == 0;
-            var mesh = isNull
-                ? sharedMesh.Clone()
-                // : (meshName.Mesh == "slime_gordo" // WIP
-                //     ? GordoMesh
-                    : (isFirst || meshName.Mesh.EndsWith("_gordo", StringComparison.Ordinal)
-                        ? Inventory.GetMesh(meshName.Mesh)
-                        : Inventory.GetMesh(meshName.Mesh + "_LOD0"));
-
-            var vertices2 = mesh.vertices;
-            var weights = new BoneWeight[vertices2.Length];
-            var jiggle = meshName.Jiggle ?? 1f;
-
-            for (var n = 0; n < vertices2.Length; n++)
-                weights[n] = HandleBoneWeight(vertices2[n] - zero, num, jiggle);
-
-            mesh.boneWeights = weights;
-            mesh.bindposes = poses;
+            var sourceMesh = isNull
+                ? sharedMesh
+                : (isFirst || meshName.Mesh.EndsWith("_gordo", StringComparison.Ordinal)
+                    ? Inventory.GetMesh(meshName.Mesh)
+                    : Inventory.GetMesh(meshName.Mesh + "_LOD0"));
+            var jiggle = meshName.Jiggle ?? 0.25f;
+            var mesh = GetRiggedMesh(RiggedGordoMeshCache, RigType.Gordo, sourceMesh, jiggle, zero, num, poses);
 
             var meshRend = isFirst ? prefabRend : prefabRend.Instantiate(parent);
             meshRend.sharedMesh = mesh;
@@ -737,6 +802,8 @@ public static class Slimepedia
 
             if (!isNull && !isFirst)
                 meshRend.name = meshName.Mesh;
+            else if (isFirst)
+                body = mesh;
 
             var material = GenerateMaterial(feature.MatData, slimeData.SlimeFeatures, meshRend.sharedMaterial);
 
@@ -745,6 +812,8 @@ public static class Slimepedia
             else
                 meshRend.sharedMaterials = [material];
         }
+
+        Helpers.UpdateMeshCollider(gordo.gameObject, body);
     }
 
     private static BoneWeight HandleBoneWeight(Vector3 diff, float num, float jiggleFactor)
@@ -781,7 +850,7 @@ public static class Slimepedia
     public static void GenerateSlimeBones(this SlimeAppearanceApplicator applicator, SlimeAppearanceStructure[] structures, float jiggleAmount)
     {
         Mesh sharedMesh = null;
-        var list = new List<(SkinnedMeshRenderer, Mesh, float?, bool)>(structures.Length);
+        var list = new List<(SkinnedMeshRenderer, Mesh, float?)>(structures.Length);
 
         foreach (var structure in structures)
         {
@@ -798,7 +867,7 @@ public static class Slimepedia
 
                 var mesh = rend.sharedMesh;
                 var handler = appearanceObject.GetComponent<ModelDataHandler>();
-                list.Add((rend, mesh, handler?.Jiggle, handler?.SkipRigging ?? false));
+                list.Add((rend, mesh, handler?.Jiggle));
                 handler?.Destroy();
 
                 if (isBody && !sharedMesh)
@@ -822,46 +891,96 @@ public static class Slimepedia
 
         var (zero, num) = GetCenteredValues(sharedMesh.vertices);
 
-        foreach (var (rend, mesh, jiggleFactor, skip) in list)
+        foreach (var (rend, mesh, jiggleFactor) in list)
         {
-            if (skip)
-                continue;
-
             if (!mesh || !rend)
-            {
                 Debug.LogWarning("One of the meshes or mesh rends provided is null");
-                continue;
-            }
-
-            var vertices2 = mesh.vertices;
-            var weights = new BoneWeight[vertices2.Length];
-
-            for (var n = 0; n < vertices2.Length; n++)
-                weights[n] = HandleBoneWeight(vertices2[n] - zero, num, jiggleFactor ?? jiggleAmount);
-
-            mesh.boneWeights = weights;
-            mesh.bindposes = poses;
-
-            rend.localBounds = mesh.bounds;
+            else
+                rend.sharedMesh = GetRiggedMesh(RiggedSlimeMeshCache, RigType.Slime, mesh, jiggleFactor ?? jiggleAmount, zero, num, poses);
         }
     }
 
     private static (Vector3, float) GetCenteredValues(Vector3[] vertices)
     {
-        var zero = Vector3.zero;
+        var count = vertices.Length;
+        var invCount = 1f / count;
+        var center = Vector3.zero;
 
-        foreach (var vector in vertices)
-            zero += vector;
+        for (var i = 0; i < count; i++)
+            center += vertices[i];
 
-        zero /= vertices.Length;
-        var num = 0f;
+        center *= invCount;
 
-        foreach (var vector in vertices)
-            num += (vector - zero).magnitude;
+        var totalDistance = 0f;
 
-        num /= vertices.Length;
-        return (zero, num);
+        for (var i = 0; i < count; i++)
+            totalDistance += Vector3.Distance(vertices[i], center);
+
+        totalDistance *= invCount;
+
+        return (center, totalDistance);
     }
+
+    private static Mesh GetRiggedMesh(Dictionary<RigCacheKey, Mesh> cache, RigType rigType, Mesh sourceMesh, float jiggle, Vector3 zero, float num, Matrix4x4[] poses)
+    {
+        var key = GetRigCacheKey(rigType, sourceMesh, jiggle, zero, num, poses);
+
+        if (cache.TryGetValue(key, out var cached))
+            return cached;
+
+        var mesh = sourceMesh.Clone();
+        var vertices = mesh.vertices;
+        var weights = new BoneWeight[vertices.Length];
+
+        for (var i = 0; i < vertices.Length; i++)
+            weights[i] = HandleBoneWeight(vertices[i] - zero, num, jiggle);
+
+        mesh.boneWeights = weights;
+        mesh.bindposes = poses;
+        cache[key] = mesh;
+        return mesh;
+    }
+
+    private static RigCacheKey GetRigCacheKey(RigType rigType, Mesh sourceMesh, float jiggle, Vector3 zero, float num, Matrix4x4[] poses)
+    {
+        var (matrixHash1, matrixHash2) = GetMatrixHash(poses);
+
+        return new(
+            sourceMesh.GetInstanceID(),
+            rigType,
+            GetFloatBits(jiggle),
+            GetFloatBits(zero.x),
+            GetFloatBits(zero.y),
+            GetFloatBits(zero.z),
+            GetFloatBits(num),
+            matrixHash1,
+            matrixHash2);
+    }
+
+    private static (ulong, ulong) GetMatrixHash(Matrix4x4[] poses)
+    {
+        const ulong prime = 1099511628211UL;
+
+        var hash1 = 1469598103934665603UL;
+        var hash2 = prime;
+
+        foreach (var matrix in poses)
+        {
+            for (var i = 0; i < 16; i++)
+            {
+                var bits = unchecked((ulong)GetFloatBits(matrix[i]));
+
+                hash1 ^= bits;
+                hash1 *= prime;
+
+                hash2 ^= bits + 0x9E3779B97F4A7C15UL + (hash2 << 6) + (hash2 >> 2);
+            }
+        }
+
+        return (hash1, hash2);
+    }
+
+    private static unsafe int GetFloatBits(float value) => *(int*)&value;
 
     [UsedImplicitly]
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition) => GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, definition.IdentifiableId];
@@ -908,7 +1027,7 @@ public static class Slimepedia
 #if DEBUG
     [TimeDiagnostic("Slime Postload")]
 #endif
-    [PostloadMethod, UsedImplicitly]
+    [PostloadMethod]
     public static void PostLoadSlimes()
     {
         AweTowardsMesmers.InitCalculator();

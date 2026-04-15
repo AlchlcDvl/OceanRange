@@ -10,8 +10,7 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
     private bool waitForPhysicsUpdate;
     private CanMoveHandler canMove;
 
-    public bool Fleeing => _fleeing;
-    private bool _fleeing;
+    public bool Fleeing { get; private set; }
 
     public void Awake()
     {
@@ -27,9 +26,9 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
     {
         waitForPhysicsUpdate = false;
 
-        if (_fleeing)
+        if (Fleeing)
         {
-            _fleeing = Time.fixedTime < fleeingUntil;
+            Fleeing = Time.fixedTime < fleeingUntil;
             applicator.SetExpression(SlimeExpression.Alarm);
             return;
         }
@@ -60,9 +59,9 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
         if (canMove.CanMove)
             return;
 
-        canMove.CanMove = _fleeing = gameObj == SceneContext.Instance.Player;
+        canMove.CanMove = Fleeing = gameObj == SceneContext.Instance.Player;
 
-        if (_fleeing)
+        if (Fleeing)
             fleeingUntil = Time.fixedTime + 10f;
     }
 

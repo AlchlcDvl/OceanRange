@@ -6,27 +6,7 @@ public sealed class MailSaveDataV01 : ISaveData
 {
     public bool Deprecated => true;
 
-    public ulong[] Write(out byte padding)
-    {
-        using var writer = new SaveWriter();
-        writer.WriteInt(Mailbox.Mail.Length);
-
-        foreach (var mail in Mailbox.Mail)
-        {
-            writer.WriteBool(mail.Read);
-
-            if (!mail.Read)
-                writer.WriteBool(mail.Sent);
-
-            if (EnsureAutoSaveDirectorData.IsAutoSave)
-                continue;
-
-            mail.Read = false;
-            mail.Sent = false;
-        }
-
-        return writer.ToArray(out padding);
-    }
+    public ulong[] Write(out byte padding) => throw new NotSupportedException();
 
     public void Read(ulong[] data, byte padding)
     {
@@ -50,24 +30,20 @@ public sealed class MailSaveDataV02 : ISaveData
     {
         using var writer = new SaveWriter();
         writer.WriteInt(Mailbox.Mail.Length);
+        writer.ResetPackingBools();
 
         foreach (var mail in Mailbox.Mail)
         {
-            writer.ResetPackingBools();
-            writer.WriteBool(mail.Read);
+            writer.WritePackedBool(mail.Read);
 
             if (!mail.Read)
-                writer.WriteBool(mail.Sent);
+                writer.WritePackedBool(mail.Sent);
 
-            writer.EndPackingBools();
-
-            if (EnsureAutoSaveDirectorData.IsAutoSave)
-                continue;
-
-            mail.Read = false;
-            mail.Sent = false;
+            if (!EnsureAutoSaveDirectorData.IsAutoSave)
+                mail.Read = mail.Sent = false;
         }
 
+        writer.EndPackingBools();
         return writer.ToArray(out padding);
     }
 
@@ -81,8 +57,9 @@ public sealed class MailSaveDataV02 : ISaveData
             var mail = Mailbox.Mail[i];
             mail.Read = reader.ReadPackedBool();
             mail.Sent = mail.Read || reader.ReadPackedBool();
-            reader.EndPackingBools();
         }
+
+        reader.EndPackingBools();
     }
 }
 
@@ -90,22 +67,7 @@ public sealed class GordoSaveDataV01 : ISaveData
 {
     public bool Deprecated => true;
 
-    public ulong[] Write(out byte padding)
-    {
-        using var writer = new SaveWriter();
-        writer.WriteInt(GordoSaveDataV02.Lookup.Count);
-
-        foreach (var (id, flag) in GordoSaveDataV02.Lookup)
-        {
-            writer.WriteEnum(id);
-            writer.WriteBool(flag.IsPopped);
-
-            if (!EnsureAutoSaveDirectorData.IsAutoSave)
-                flag.IsPopped = false;
-        }
-
-        return writer.ToArray(out padding);
-    }
+    public ulong[] Write(out byte padding) => throw new NotSupportedException();
 
     public void Read(ulong[] data, byte padding)
     {
