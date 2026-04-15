@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Text;
 using Newtonsoft.Json.Serialization;
 using UnityEngine.Rendering;
+using System.Runtime.CompilerServices;
 
 namespace OceanRange.Managers;
 
@@ -339,7 +340,7 @@ public static class Inventory
         // This method uses a specially serialised version of the models to save on disk space and to make it easier to ship the mod
 
         using var stream = Core.GetManifestResourceStream(path)!;
-        using var decompressor = new GZipStream(stream, CompressionMode.Decompress);
+        using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
         using var reader = new BinaryReader(decompressor);
 
         var mesh = new Mesh { indexFormat = (IndexFormat)reader.ReadByte() };
@@ -355,7 +356,7 @@ public static class Inventory
         AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedNormal), (m, v) => m.normals = v);
         AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedTangent), (m, v) => m.tangents = v);
 
-        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadColor32), (m, v) => m.colors32 = v);
+        ReadAndAssignColorData(reader, mesh, vertexCount);
 
         for (var i = 0; i < mesh.subMeshCount; i++)
         {
@@ -387,6 +388,25 @@ public static class Inventory
         }
 
         return mesh;
+    }
+
+    private static void ReadAndAssignColorData(BinaryReader reader, Mesh mesh, int vertexCount)
+    {
+        var state = reader.ReadByte();
+
+        if (state == 1)
+        {
+            var uniformColor = ReadColor32(reader);
+            var colors = new Color32[vertexCount];
+
+            for (var i = 0; i < vertexCount; i++)
+                colors[i] = uniformColor;
+
+            mesh.colors32 = colors;
+        }
+        else if (state == 2)
+            mesh.colors32 = ReadArrayContents(reader, vertexCount, ReadColor32);
+        // Ignore if anything else
     }
 
     private static Bounds ReadBounds(BinaryReader reader) => new()
@@ -483,9 +503,9 @@ public static class Inventory
 
     private static Vector3 ReadQuantizedPosition(BinaryReader reader, Bounds bounds)
     {
-        var nx = reader.ReadUInt16() / 65535f;
-        var ny = reader.ReadUInt16() / 65535f;
-        var nz = reader.ReadUInt16() / 65535f;
+        var nx = Mathf.HalfToFloat(reader.ReadUInt16());
+        var ny = Mathf.HalfToFloat(reader.ReadUInt16());
+        var nz = Mathf.HalfToFloat(reader.ReadUInt16());
 
         var min = bounds.min;
         var size = bounds.size;
@@ -501,23 +521,44 @@ public static class Inventory
     {
         var x = reader.ReadSByte() / 127f;
         var y = reader.ReadSByte() / 127f;
-        var z = reader.ReadSByte() / 127f;
-        return new Vector3(x, y, z).normalized;
+        return OctDecode(new(x, y));
     }
 
     private static Vector4 ReadQuantizedTangent(BinaryReader reader)
     {
         var x = reader.ReadSByte() / 127f;
         var y = reader.ReadSByte() / 127f;
-        var z = reader.ReadSByte() / 127f;
-        var w = reader.ReadSByte() / 127f;
-        return new(x, y, z, w);
+        var w = reader.ReadByte() > 0 ? 1f : -1f;
+
+        var dir = OctDecode(new(x, y));
+        return new(dir.x, dir.y, dir.z, w);
     }
 
-    private static Vector2 ReadQuantizedUV2(BinaryReader reader) => new(
-        reader.ReadUInt16() / 65535f,
-        reader.ReadUInt16() / 65535f
-    );
+    private static Vector2 ReadQuantizedUV2(BinaryReader reader)
+    {
+        var x = Mathf.HalfToFloat(reader.ReadUInt16());
+        var y = Mathf.HalfToFloat(reader.ReadUInt16());
+        return new Vector2(x, y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static float SignNotZero(float v) => v >= 0f ? 1f : -1f;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Vector3 OctDecode(Vector2 encoded)
+    {
+        var v = new Vector3(encoded.x, encoded.y, 1f - Mathf.Abs(encoded.x) - Mathf.Abs(encoded.y));
+
+        if (v.z < 0f)
+        {
+            var x = v.x;
+            var y = v.y;
+            v.x = (1f - Mathf.Abs(y)) * SignNotZero(x);
+            v.y = (1f - Mathf.Abs(x)) * SignNotZero(y);
+        }
+
+        return v.normalized;
+    }
 
     /// <summary>
     /// Loads a texture from the provided path.

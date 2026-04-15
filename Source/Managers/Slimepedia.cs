@@ -159,10 +159,13 @@ public static class Slimepedia
 
     private static void HandleSecretStyles(Id id)
     {
-        if (id != Id.SECRET_STYLE || SsExists)
+        if (id != Id.SECRET_STYLE)
             return;
 
-        SsExists = true;
+        if (!SsExists)
+        {
+            SsExists = true;
+        }
 
         // foreach (var slimeData in Slimes)
         // {

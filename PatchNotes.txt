@@ -93,12 +93,14 @@ Discord:
 
 ## Changes!
 - Reduced the number of times new objects that are created; hopefully this avoids ram bombing lower end PCs
+- Compressed mesh assets further to occupy lesser space and be easier to load
 
 ## Fixes
 - Gameplay: Fixed slimes and largos not eating custom foods when SSRML is installed
 - Visual: Fixed Sand, Puddle and Fire slimes learning invisibility when thrown
-- Visual*: Fixed largos turning invisible when one fo the component slimes has an active secret style
+- Visual: Fixed largos turning invisible when one fo the component slimes has an active secret style
 - Visual: Fixed the appearances of a few largos
+- Visual: Fixed slimes disappearing when moving to the end of the screen
 
 0.3.0
 Discord:

@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using UnityEngine.Rendering;
+using System.Runtime.CompilerServices;
 
 static class ExportMeshes
 {
@@ -39,7 +40,7 @@ static class ExportMeshes
 
                 using (Stream stream = File.OpenWrite(filePath))
                 {
-                    using (GZipStream compressor = new GZipStream(stream, System.IO.Compression.CompressionLevel.Optimal))
+                    using (DeflateStream compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal))
                     {
                         using (BinaryWriter writer = new BinaryWriter(compressor))
                             WriteMesh(writer, mesh);
@@ -73,7 +74,8 @@ static class ExportMeshes
 
         WriteAttributeData(writer, VertexAttribute.Normal, mesh, m => m.normals, WriteQuantizedNormal);
         WriteAttributeData(writer, VertexAttribute.Tangent, mesh, m => m.tangents, WriteQuantizedTangent);
-        WriteAttributeData(writer, VertexAttribute.Color, mesh, m => m.colors32, WriteColor32);
+
+        WriteColorData(writer, mesh);
 
         for (var i = 0; i < mesh.subMeshCount; i++)
         {
@@ -123,6 +125,28 @@ static class ExportMeshes
         }
     }
 
+    static void WriteColorData(BinaryWriter writer, Mesh mesh)
+    {
+        if (!mesh.HasVertexAttribute(VertexAttribute.Color))
+        {
+            writer.Write((byte)0); // State 0: None
+            return;
+        }
+
+        var colors = mesh.colors32;
+
+        if (IsUniformColor(colors, out Color32 uniformColor))
+        {
+            writer.Write((byte)1); // State 1: Uniform
+            WriteColor32(writer, uniformColor);
+        }
+        else
+        {
+            writer.Write((byte)2); // State 2: Variable
+            WriteArrayContents(writer, colors, WriteColor32);
+        }
+    }
+
     static void WriteIndices(BinaryWriter writer, int[] indices)
     {
         if (indices == null || indices.Length == 0)
@@ -147,37 +171,89 @@ static class ExportMeshes
 
     static void WriteQuantizedPosition(BinaryWriter writer, Vector3 pos, Bounds bounds)
     {
-        var min = bounds.min;
-        var size = bounds.size;
-
-        var nx = size.x > 0 ? (pos.x - min.x) / size.x : 0f;
-        var ny = size.y > 0 ? (pos.y - min.y) / size.y : 0f;
-        var nz = size.z > 0 ? (pos.z - min.z) / size.z : 0f;
-
-        writer.Write((ushort)(Mathf.Clamp01(nx) * 65535f));
-        writer.Write((ushort)(Mathf.Clamp01(ny) * 65535f));
-        writer.Write((ushort)(Mathf.Clamp01(nz) * 65535f));
+        writer.Write(Mathf.FloatToHalf(NormalizeWithinBounds(pos.x, bounds.min.x, bounds.size.x)));
+        writer.Write(Mathf.FloatToHalf(NormalizeWithinBounds(pos.y, bounds.min.y, bounds.size.y)));
+        writer.Write(Mathf.FloatToHalf(NormalizeWithinBounds(pos.z, bounds.min.z, bounds.size.z)));
     }
 
     static void WriteQuantizedUV2(BinaryWriter writer, Vector2 uv)
     {
-        writer.Write((ushort)(Mathf.Clamp01(uv.x) * 65535f));
-        writer.Write((ushort)(Mathf.Clamp01(uv.y) * 65535f));
+        writer.Write(Mathf.FloatToHalf(uv.x));
+        writer.Write(Mathf.FloatToHalf(uv.y));
     }
 
     static void WriteQuantizedNormal(BinaryWriter writer, Vector3 normal)
     {
-        writer.Write((sbyte)(Mathf.Clamp(normal.x, -1f, 1f) * 127f));
-        writer.Write((sbyte)(Mathf.Clamp(normal.y, -1f, 1f) * 127f));
-        writer.Write((sbyte)(Mathf.Clamp(normal.z, -1f, 1f) * 127f));
+        var octNormal = OctEncode(normal);
+        writer.Write(QuantizeMinus1To1ToSbyte(octNormal.x));
+        writer.Write(QuantizeMinus1To1ToSbyte(octNormal.y));
     }
 
     static void WriteQuantizedTangent(BinaryWriter writer, Vector4 tangent)
     {
-        writer.Write((sbyte)(Mathf.Clamp(tangent.x, -1f, 1f) * 127f));
-        writer.Write((sbyte)(Mathf.Clamp(tangent.y, -1f, 1f) * 127f));
-        writer.Write((sbyte)(Mathf.Clamp(tangent.z, -1f, 1f) * 127f));
-        writer.Write((sbyte)(Mathf.Clamp(tangent.w, -1f, 1f) * 127f));
+        var tangentDir = new Vector3(tangent.x, tangent.y, tangent.z);
+        var octTangent = OctEncode(tangentDir);
+
+        writer.Write(QuantizeMinus1To1ToSbyte(octTangent.x));
+        writer.Write(QuantizeMinus1To1ToSbyte(octTangent.y));
+
+        writer.Write(tangent.w > 0 ? (byte)1 : (byte)0);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static float NormalizeWithinBounds(float value, float min, float size) => size > 0f ? (value - min) / size : 0f;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static sbyte QuantizeMinus1To1ToSbyte(float value) => (sbyte)(Mathf.Clamp(value, -1f, 1f) * 127f);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static Vector2 OctEncode(Vector3 v)
+    {
+        var l1Norm = Mathf.Abs(v.x) + Mathf.Abs(v.y) + Mathf.Abs(v.z);
+
+        if (l1Norm < 0.0001f)
+            return Vector2.zero;
+
+        var res = new Vector2(v.x / l1Norm, v.y / l1Norm);
+
+        if (v.z < 0f)
+        {
+            var x = res.x;
+            var y = res.y;
+            res.x = (1f - Mathf.Abs(y)) * SignNotZero(x);
+            res.y = (1f - Mathf.Abs(x)) * SignNotZero(y);
+        }
+
+        return res;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static float SignNotZero(float v) => v >= 0f ? 1f : -1f;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static bool IsUniformColor(Color32[] colors, out Color32 uniformColor)
+    {
+        uniformColor = default;
+
+        if (colors == null || colors.Length == 0)
+            return false;
+
+        uniformColor = colors[0];
+
+        for (var i = 1; i < colors.Length; i++)
+        {
+            var color = colors[i];
+
+            if (color.r != uniformColor.r ||
+                color.g != uniformColor.g ||
+                color.b != uniformColor.b ||
+                color.a != uniformColor.a)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     static void WriteUVs<T>(BinaryWriter writer, int index, List<T> uvs, Action<BinaryWriter, T> writeAction, Action<int, List<T>> getUVs)

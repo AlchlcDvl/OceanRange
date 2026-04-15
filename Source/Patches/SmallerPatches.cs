@@ -152,3 +152,18 @@ public static class ClearMeshes
         Uploaded = true;
     }
 }
+
+// TODO: Remove when SRML implements this
+[HarmonyPatch(typeof(SlimeAppearanceUI), nameof(SlimeAppearanceUI.ShouldShowSlimeInList))]
+public static class CorrectlyCheckSlimes
+{
+    public static bool Prefix(SlimeDefinition slime, ref bool __result)
+    {
+        if (Identifiable.IsLargo(slime.IdentifiableId) || Identifiable.IsGordo(slime.IdentifiableId))
+            __result = false;
+        else
+            __result = slime.Appearances.Count() > 1;
+
+        return false;
+    }
+}
