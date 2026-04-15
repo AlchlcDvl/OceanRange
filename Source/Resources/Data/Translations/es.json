@@ -92,6 +92,16 @@
       "favourite": "@m.favorite.gold_slime",
       "onomics": "Los plorts pez dorado son más raros que un plort dorado y el doble de valiosos que uno, haciéndolos un recurso muy solicitado. Su origen acuático les da únicas propiedades energéticas, generalmente usados en innovadora tecnología acuática y costosa fabricación de hologramas. Debido a su rareza, los científicos slimes recomiendan tratarlos con extremo, y considerarte suertudo si encuentras uno.",
       "intro": "¡El slime somnoliento con un lujoso brillo!"
+    },
+    {
+      "translatedName": "Mimic Slime",
+      "name": "Mimic",
+      "risks": "TBU",
+      "slimeology": "TBU",
+      "diet": "@m.diet.boom_slime",
+      "favourite": "TBU",
+      "onomics": "TBU",
+      "intro": "TBU"
     }
   ],
   "hens": [
