@@ -162,7 +162,7 @@ public static class CorrectlyCheckSlimes
         if (Identifiable.IsLargo(slime.IdentifiableId) || Identifiable.IsGordo(slime.IdentifiableId))
             __result = false;
         else
-            __result = slime.Appearances.Count() > 1;
+            __result = slime.AppearancesDynamic.Count > 0;
 
         return false;
     }

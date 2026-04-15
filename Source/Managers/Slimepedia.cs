@@ -396,8 +396,8 @@ public static class Slimepedia
         var lower = slimeData.Name.ToLowerInvariant();
 
         // Create a copy for our slimes and populate with info
-        var definition = baseDefinition.CloneInstance();
-        var previousDiet = definition.Diet;
+        var definition = ScriptableObject.CreateInstance<SlimeDefinition>();
+        var previousDiet = baseDefinition.Diet;
         definition.Diet = new()
         {
             Produces = [slimeData.PlortId],
@@ -410,6 +410,8 @@ public static class Slimepedia
         definition.FavoriteToys = [slimeData.FavToy];
         definition.Name = slimeData.Name + " Slime";
         definition.IdentifiableId = slimeData.MainId;
+        definition.PrefabScale = 1f;
+        definition.Sounds = baseDefinition.Sounds;
         definition.name = slimeData.Name;
 
         if (slimeData.Diet.HasValue)
