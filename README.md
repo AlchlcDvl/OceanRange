@@ -33,7 +33,8 @@ Make sure to read the known issues before reporting bugs! Duplicates will be rem
 - Genetic Incompatibility: Pearl producing slimes cannot create largos with plort producing ones!
 
 ## Team
-- Programmers: AlchlcSystm and GeilDBL
+- Programmers: [AlchlcSystm](https://github.com/AlchlcDvl) and [GeilDBL](https://github.com/bliksemgiel)
+- Contributors: [PinkTarrLargo](https://github.com/TheanMcGarity) and [AmorphousSystem](https://github.com/AmorphousSystem)
 - 3D Modelers: Jack Z and Miramation
 - Artists: DiegoBA, Sir.UWU, Ghostly and LoyalRancher128
 - Translators - Tanqueiron27𝟎7 (Spanish), Leo and EgeK (Turkish), catweazel123 (German), TheFireDragon (French), sl1m1v4d (Russian)
