@@ -92,6 +92,16 @@
       "favourite": "@m.favorite.gold_slime",
       "onomics": "Les plortes poisson doré sont encore plus rares que les plortes doré et ainsi doublement précieux, faisant d'eux une resource extrêmement convoitée. Leur origine aquatique leur donne des propriétés énergétiques unique, souvent utilisées dans des technologies sous-marines dernier cri ou dans la fabrication d'holo-montres de luxe. Le comité de Science Slime recommande de manier cet objet suprêmement rare avec précaution, et de vous considérer chanceux d'en avoir obtenu ne serait-ce qu'un.",
       "intro": "Ce slime vous glissera des doigts avec brillance !"
+    },
+    {
+      "translatedName": "Mimic Slime",
+      "name": "Mimic",
+      "risks": "TBU",
+      "slimeology": "TBU",
+      "diet": "@m.diet.boom_slime",
+      "favourite": "TBU",
+      "onomics": "TBU",
+      "intro": "TBU"
     }
   ],
   "hens": [
