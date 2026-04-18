@@ -860,8 +860,6 @@ public static class Slimepedia
 
             foreach (var appearanceObject in structure.Element.Prefabs)
             {
-                applicator.name.LogIf(!appearanceObject);
-
                 if (!appearanceObject || !appearanceObject.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                     continue;
 
