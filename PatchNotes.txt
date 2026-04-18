@@ -117,6 +117,17 @@ Visual Fix: Fixed the appearances of a few largos
 Visual Fix: Fixed a unity rendering bug that made slimes disappear when they approach the edge of the screen
 Misc Fix: Fixed a couple of smaller misc bugs that weren't very visible
 
+0.2.3
+Discord:
+
+## Fixes!
+- Critical: Fixed a crashing incompatibility bug with SSRML
+- Gameplay: Fixed an incompatibility that somehow broke storm slimes from Slime Collection 2
+
+Nexus:
+Critical Fix: Fixed a crashing incompatibility bug with SSRML
+Gameplay Fix: Fixed an incompatibility that somehow broke storm slimes from Slime Collection 2
+
 0.3.0
 Discord:
 ## New!
