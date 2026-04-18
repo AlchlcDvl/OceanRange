@@ -464,6 +464,7 @@ public static class Slimepedia
         var baseAppearance = baseDefinition.AppearancesDefault[0]; // Getting the base appearance
         var appearance = GenerateAppearance(slimeData, slimeData.NormalAppearance, baseAppearance, lower, applicator, definition);
         definition.AppearancesDefault = [appearance];
+        SlimeRegistry.RegisterAppearance(definition, appearance);
 
         // Tarrs should love these guys
         TarrDef.Diet.EatMap.Add(new()
@@ -531,7 +532,6 @@ public static class Slimepedia
         if (data.ChangedFace)
             appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
 
-        SlimeRegistry.RegisterAppearance(definition, appearance);
         return appearance;
     }
 

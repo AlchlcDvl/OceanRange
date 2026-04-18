@@ -143,9 +143,6 @@ public static class ClearMeshes
         if (Uploaded)
             return;
 
-        foreach (var mesh in Helpers.ClonedMeshes)
-            mesh.UploadMeshData(true);
-
         foreach (var mesh in Inventory.GetAllMeshes())
             mesh.UploadMeshData(true);
 
