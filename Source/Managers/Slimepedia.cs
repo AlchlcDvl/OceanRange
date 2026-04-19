@@ -248,9 +248,6 @@ public static class Slimepedia
 
         if (slimeData.HasGordo)
             CreateGordo(slimeData);
-
-        if (SamExists)
-            RegisterSlimeBypass(slimeData);
     }
 
 #if DEBUG
@@ -367,7 +364,7 @@ public static class Slimepedia
         PlortRegistry.AddEconomyEntry(slimeData.PlortId, slimeData.BasePrice, slimeData.Saturation);
         PlortRegistry.AddPlortEntry(slimeData.PlortId, slimeData.Progress);
         DroneRegistry.RegisterBasicTarget(slimeData.PlortId);
-        var silo = new HashSet<StorageType> { StorageType.NON_SLIMES, StorageType.PLORT };
+        var silo = new HashSet<StorageType>(3) { StorageType.NON_SLIMES, StorageType.PLORT };
 
         if (slimeData.CanBeRefined)
             silo.Add(StorageType.CRAFTING);
@@ -461,8 +458,7 @@ public static class Slimepedia
 
         slimeData.InitSlimeDetails?.Invoke(prefab, definition); // Slime specific details being put here
 
-        var baseAppearance = baseDefinition.AppearancesDefault[0]; // Getting the base appearance
-        var appearance = GenerateAppearance(slimeData, slimeData.NormalAppearance, baseAppearance, lower, applicator, definition);
+        var appearance = GenerateAppearance(slimeData, slimeData.NormalAppearance, baseDefinition.AppearancesDefault[0], lower, applicator, definition);
         definition.AppearancesDefault = [appearance];
         SlimeRegistry.RegisterAppearance(definition, appearance);
 
@@ -493,6 +489,9 @@ public static class Slimepedia
 
         if (Main.ClsExists)
             Main.AddIconBypass(appearance.Icon);
+
+        if (SamExists)
+            RegisterSlimeBypass(slimeData);
     }
 
     private static void RegisterSlimeBypass(SlimeData slimeData) => SlimesAndMarket.MarketRegistry.RegisterSlime(slimeData.MainId, slimeData.PlortId, progress: slimeData.Progress);
@@ -504,11 +503,11 @@ public static class Slimepedia
 
         if (data.ChangedFace)
         {
-            appearance.Face = appearance.Face.CloneInstance();
-            appearance.Face._expressionToFaceLookup = new(SlimeFace.DefaultSlimeExpressionComparer);
+            var oldFace = appearance.Face;
+            appearance.Face = ScriptableObject.CreateInstance<SlimeFace>();
 
             // Faces stuff
-            foreach (var face in appearance.Face.ExpressionFaces)
+            foreach (var face in oldFace.ExpressionFaces)
                 HandleFace(face, data, appearance.Face._expressionToFaceLookup);
         }
 
@@ -537,7 +536,7 @@ public static class Slimepedia
 
     private static void HandleFace(SlimeExpressionFace face, SlimeAppearanceData data, Dictionary<SlimeExpression, SlimeExpressionFace> expressionToFaceLookup)
     {
-        if (face.Mouth && data.HasMouthColors)
+        if (data.HasMouthColors && face.Mouth)
         {
             face.Mouth = face.Mouth.Clone();
             face.Mouth.SetColor(MouthTop, data.TopMouthColor);
@@ -545,7 +544,7 @@ public static class Slimepedia
             face.Mouth.SetColor(MouthBottom, data.BottomMouthColor);
         }
 
-        if (face.Eyes && data.HasEyeColors)
+        if (data.HasEyeColors && face.Eyes)
         {
             face.Eyes = face.Eyes.Clone();
             face.Eyes.SetColor(EyeRed, data.RedEyeColor);

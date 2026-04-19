@@ -255,7 +255,7 @@ public static class Largopedia
         var appearance = ScriptableObject.CreateInstance<SlimeAppearance>();
         appearance.AnimatorOverride = appearance1.AnimatorOverride ?? appearance2.AnimatorOverride;
         appearance.DependentAppearances = [appearance1, appearance2];
-        appearance.Face = appearance1.Face.CloneInstance();
+        appearance.Face = ScriptableObject.CreateInstance<SlimeFace>();
         appearance.Face._expressionToFaceLookup = new(SlimeFace.DefaultSlimeExpressionComparer);
         appearance.name = largoData.Slime1 + largoData.Slime2 + (appearanceData.AppProps.HasFlagFast(AppearanceType.SS1) ? "Exotic" : "Normal") + (appearanceData.AppProps.HasFlagFast(AppearanceType.SS2) ? "Exotic" : "Normal");
 

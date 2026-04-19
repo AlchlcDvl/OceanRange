@@ -123,10 +123,12 @@ Discord:
 ## Fixes!
 - Critical: Fixed a crashing incompatibility bug with SSRML
 - Gameplay: Fixed an incompatibility that somehow broke storm slimes from Slime Collection 2
+- Visual: Fixed a visual bug that made the mod appear as version 0.3.0 instead of 0.2.2
 
 Nexus:
 Critical Fix: Fixed a crashing incompatibility bug with SSRML
 Gameplay Fix: Fixed an incompatibility that somehow broke storm slimes from Slime Collection 2
+Visual Fix: Fixed a visual bug that made the mod appear as version 0.3.0 instead of 0.2.2 (now it's 0.2.3)
 
 0.3.0
 Discord:
