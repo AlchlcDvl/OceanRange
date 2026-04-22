@@ -9,5 +9,8 @@
     <Reference Include="$(MSBuildThisFileDirectory)/../SrLibs/*.dll">
       <Private>false</Private>
     </Reference>
+    <Reference Include="$(MSBuildThisFileDirectory)/../SrmlLibs/*.dll">
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 </Project>

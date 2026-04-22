@@ -501,15 +501,17 @@ public static class Slimepedia
         var appearance = baseAppearance.Instantiate(); // Cloning our own appearance
         appearance.name = $"{slimeData.Name}Normal";
 
+        var oldFace = appearance.Face;
+        appearance.Face = ScriptableObject.CreateInstance<SlimeFace>();
+
         if (data.ChangedFace)
         {
-            var oldFace = appearance.Face;
-            appearance.Face = ScriptableObject.CreateInstance<SlimeFace>();
-
             // Faces stuff
             foreach (var face in oldFace.ExpressionFaces)
                 HandleFace(face, data, appearance.Face._expressionToFaceLookup);
         }
+        else foreach (var face in oldFace.ExpressionFaces)
+            appearance.Face._expressionToFaceLookup[face.SlimeExpression] = face;
 
         var prevPalette = appearance.ColorPalette;
         appearance.ColorPalette = new()

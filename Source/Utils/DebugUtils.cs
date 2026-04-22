@@ -5,7 +5,9 @@ namespace OceanRange.Utils;
 
 public static class DebugUtils
 {
-    extension(object message)
+#nullable enable
+    extension<T>(T? message)
+#nullable disable
     {
         public void DoLog() => Main.Console.Log(message?.ToString() ?? "message was null");
 
