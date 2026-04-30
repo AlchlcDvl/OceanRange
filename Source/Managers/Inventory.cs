@@ -34,7 +34,7 @@ public static class Inventory
         // Adding the JSON converters
         Converters =
         [
-            new EnumConverter(),
+            // new EnumConverter(),
             new TypeConverter(),
             new ColorConverter(),
             // new Color32Converter(), // Unused at the moment, but kept around if needed
@@ -438,7 +438,7 @@ public static class Inventory
         uvs.Clear();
     }
 
-    private static T[] ReadArray<T>(BinaryReader reader, Func<BinaryReader, T> readFunc) => ReadArrayContents(reader, ReadPackedInt(reader), readFunc);
+    // private static T[] ReadArray<T>(BinaryReader reader, Func<BinaryReader, T> readFunc) => ReadArrayContents(reader, ReadPackedInt(reader), readFunc);
 
     private static T[] ReadArrayContents<T>(BinaryReader reader, int count, Func<BinaryReader, T> readFunc)
     {

@@ -20,7 +20,7 @@ public abstract class OceanJsonConverter : JsonConverter
     public sealed override object ReadJson(JsonReader reader, Type objectType, [AllowNull] object _1, JsonSerializer _2)
     {
         if (reader.TokenType == JsonToken.Null)
-            return null;
+            return objectType.IsValueType ? Activator.CreateInstance(objectType) : null;
 
         try
         {
@@ -332,127 +332,127 @@ public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberSt
 //     protected override string ToValueString(Color32 value) => value.ToHexRGBA(); // Using hex code here because it's a simpler representation
 // }
 
-/// <summary>
-/// Enum converter.
-/// </summary>
-/// <remarks>Made because SRML's enum patching is causing errors with patched enum types being read by newtonsoft, will be removed if and when a fix is administered.</remarks>
-public sealed class EnumConverter : OceanJsonConverter
-{
-    protected override bool CustomSerialisation => true;
+// /// <summary>
+// /// Enum converter.
+// /// </summary>
+// /// <remarks>Made because SRML's enum patching is causing errors with patched enum types being read by newtonsoft, will be removed if and when a fix is administered.</remarks>
+// public sealed class EnumConverter : OceanJsonConverter
+// {
+//     protected override bool CustomSerialisation => true;
 
-    public override bool CanConvert(Type objectType) => objectType.IsEnum || objectType.IsNullableEnum();
+//     public override bool CanConvert(Type objectType) => objectType.IsEnum || objectType.IsNullableEnum();
 
-    protected override object ParseFromJson(JsonReader reader, Type objectType)
-    {
-        var targetType = Nullable.GetUnderlyingType(objectType) ?? objectType;
-        return EnumMetadata.Get(targetType).IsFlags ? ParseFlags(reader, targetType) : ParseSingle(reader, targetType, false);
-    }
+//     protected override object ParseFromJson(JsonReader reader, Type objectType)
+//     {
+//         var targetType = Nullable.GetUnderlyingType(objectType) ?? objectType;
+//         return EnumMetadata.Get(targetType).IsFlags ? ParseFlags(reader, targetType) : ParseSingle(reader, targetType, false);
+//     }
 
-    private static object ParseSingle(JsonReader reader, Type enumType, bool partOfArray) => reader.TokenType switch
-    {
-        JsonToken.Null when partOfArray => null, // Only check null when in an array, because normal null values are handled outside this method
-        JsonToken.String when Helpers.TryParseEnum(enumType, reader.Value!.ToString() , true, out var parsed) => parsed, // Attempt to parse the string, make sure to use this arm
-        JsonToken.String when reader.Value is string name && name.StartsWith('+') => Helpers.ParseOrAddEnumValue(name, enumType), // Attempt to use the string as a new enum value, alternative use of strings
-        JsonToken.Integer => Enum.ToObject(enumType, Convert.ToUInt64(reader.Value)), // Avoid adding numbers, they're hard to understand in JSON when you don't have access to the relevant enum
-        _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {enumType.Name}. Expected {(partOfArray ? "a valid array of defined strings or ints, " : string.Empty)}a defined string or an integer.") // Throw an error if an unsupported value type is given
-    };
+//     private static object ParseSingle(JsonReader reader, Type enumType, bool partOfArray) => reader.TokenType switch
+//     {
+//         JsonToken.Null when partOfArray => null, // Only check null when in an array, because normal null values are handled outside this method
+//         JsonToken.String when Helpers.TryParseEnum(enumType, reader.Value!.ToString() , true, out var parsed) => parsed, // Attempt to parse the string, make sure to use this arm
+//         JsonToken.String when reader.Value is string name && name.StartsWith('+') => Helpers.ParseOrAddEnumValue(name, enumType), // Attempt to use the string as a new enum value, alternative use of strings
+//         JsonToken.Integer => Enum.ToObject(enumType, Convert.ToUInt64(reader.Value)), // Avoid adding numbers, they're hard to understand in JSON when you don't have access to the relevant enum
+//         _ => throw new InvalidDataException($"Cannot convert value '{reader.Value}' ({reader.TokenType}) to {enumType.Name}. Expected {(partOfArray ? "a valid array of defined strings or ints, " : string.Empty)}a defined string or an integer.") // Throw an error if an unsupported value type is given
+//     };
 
-    private static object ParseFlags(JsonReader reader, Type enumType)
-    {
-        if (reader.TokenType != JsonToken.StartArray)
-            return ParseSingle(reader, enumType, false);
+//     private static object ParseFlags(JsonReader reader, Type enumType)
+//     {
+//         if (reader.TokenType != JsonToken.StartArray)
+//             return ParseSingle(reader, enumType, false);
 
-        var combined = 0UL;
+//         var combined = 0UL;
 
-        while (reader.Read() && reader.TokenType != JsonToken.EndArray)
-            combined |= Convert.ToUInt64(ParseSingle(reader, enumType, true));
+//         while (reader.Read() && reader.TokenType != JsonToken.EndArray)
+//             combined |= Convert.ToUInt64(ParseSingle(reader, enumType, true));
 
-        return Enum.ToObject(enumType, combined);
-    }
+//         return Enum.ToObject(enumType, combined);
+//     }
 
-    /// <inheritdoc/>
-    protected override void WriteJson(JsonWriter writer, [AllowNull] object value)
-    {
-        if (value == null)
-        {
-            writer.WriteNull();
-            return;
-        }
+//     /// <inheritdoc/>
+//     protected override void WriteJson(JsonWriter writer, [AllowNull] object value)
+//     {
+//         if (value == null)
+//         {
+//             writer.WriteNull();
+//             return;
+//         }
 
-        var type = value.GetType();
-        var enumType = Nullable.GetUnderlyingType(type) ?? type;
-        var metadata = EnumMetadata.Get(enumType);
+//         var type = value.GetType();
+//         var enumType = Nullable.GetUnderlyingType(type) ?? type;
+//         var metadata = EnumMetadata.Get(enumType);
 
-        if (!metadata.IsFlags)
-        {
-            var name = Enum.GetName(enumType, value);
+//         if (!metadata.IsFlags)
+//         {
+//             var name = Enum.GetName(enumType, value);
 
-            if (name != null)
-                writer.WriteValue(name);
-            else
-                writer.WriteValue(Convert.ToUInt64(value));
+//             if (name != null)
+//                 writer.WriteValue(name);
+//             else
+//                 writer.WriteValue(Convert.ToUInt64(value));
 
-            return;
-        }
+//             return;
+//         }
 
-        var underlying = Convert.ToUInt64(value);
+//         var underlying = Convert.ToUInt64(value);
 
-        if (underlying == 0)
-        {
-            writer.WriteValue(metadata.ZeroName);
-            return;
-        }
+//         if (underlying == 0)
+//         {
+//             writer.WriteValue(metadata.ZeroName);
+//             return;
+//         }
 
-        var exactMatchName = Enum.GetName(enumType, value);
+//         var exactMatchName = Enum.GetName(enumType, value);
 
-        if (exactMatchName != null)
-        {
-            writer.WriteValue(exactMatchName);
-            return;
-        }
+//         if (exactMatchName != null)
+//         {
+//             writer.WriteValue(exactMatchName);
+//             return;
+//         }
 
-        var setFlags = new List<string>();
-        var matchedBits = 0UL;
+//         var setFlags = new List<string>();
+//         var matchedBits = 0UL;
 
-        foreach (var (flag, name) in metadata.Values.OrderByDescending(x => x.Item1))
-        {
-            if (flag == 0 || (underlying & flag) != flag || (matchedBits & flag) != 0)
-                continue;
+//         foreach (var (flag, name) in metadata.Values.OrderByDescending(x => x.Item1))
+//         {
+//             if (flag == 0 || (underlying & flag) != flag || (matchedBits & flag) != 0)
+//                 continue;
 
-            setFlags.Add(name);
-            matchedBits |= flag;
-        }
+//             setFlags.Add(name);
+//             matchedBits |= flag;
+//         }
 
-        var leftoverBits = underlying & ~matchedBits;
+//         var leftoverBits = underlying & ~matchedBits;
 
-        switch (setFlags.Count)
-        {
-            case 0 when leftoverBits != 0:
-            {
-                writer.WriteValue(underlying);
-                break;
-            }
-            case 1 when leftoverBits == 0:
-            {
-                writer.WriteValue(setFlags[0]);
-                break;
-            }
-            default:
-            {
-                writer.WriteStartArray();
+//         switch (setFlags.Count)
+//         {
+//             case 0 when leftoverBits != 0:
+//             {
+//                 writer.WriteValue(underlying);
+//                 break;
+//             }
+//             case 1 when leftoverBits == 0:
+//             {
+//                 writer.WriteValue(setFlags[0]);
+//                 break;
+//             }
+//             default:
+//             {
+//                 writer.WriteStartArray();
 
-                foreach (var flag in setFlags)
-                    writer.WriteValue(flag);
+//                 foreach (var flag in setFlags)
+//                     writer.WriteValue(flag);
 
-                if (leftoverBits != 0)
-                    writer.WriteValue(leftoverBits);
+//                 if (leftoverBits != 0)
+//                     writer.WriteValue(leftoverBits);
 
-                writer.WriteEndArray();
-                break;
-            }
-        }
-    }
-}
+//                 writer.WriteEndArray();
+//                 break;
+//             }
+//         }
+//     }
+// }
 
 /// <summary>
 /// Type converter.

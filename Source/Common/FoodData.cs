@@ -10,15 +10,46 @@ public sealed class Ingredients : JsonData
     [JsonRequired] public FruitData[] Fruits;
     [JsonRequired] public VeggieData[] Veggies;
     [JsonRequired] public ChimkenData[] Chimkens;
+
+#if UNITY
+    public override void FindStrings(DataWriter writer)
+    {
+        base.FindStrings(writer);
+
+        foreach (var group in Groups)
+            group.FindStrings(writer);
+
+        foreach (var fruit in Fruits)
+            fruit.FindStrings(writer);
+
+        foreach (var veggie in Veggies)
+            veggie.FindStrings(writer);
+
+        foreach (var chimken in Chimkens)
+            chimken.FindStrings(writer);
+    }
+#endif
 }
 
 public sealed class GroupData : JsonData
 {
+#if !UNITY
     [JsonRequired] public IdentifiableId[] Foods;
+#else
+    [JsonRequired] public string[] Foods;
+#endif
 
     [JsonIgnore] public FoodGroup Group;
 
     protected override void OnDeserialise() => Group = Helpers.ParseOrAddEnumValue<FoodGroup>(Name.ToUpperInvariant());
+
+#if UNITY
+    public override void FindStrings(DataWriter writer)
+    {
+        base.FindStrings(writer);
+        writer.PoolStrings(Foods);
+    }
+#endif
 }
 
 public abstract class FoodData : SpawnedActorData
@@ -45,11 +76,16 @@ public abstract class FoodData : SpawnedActorData
 
 public sealed class ChimkenData : FoodData
 {
+#if !UNITY
     [JsonRequired] public Zone[] Zones;
+#else
+    [JsonRequired] public string[] Zones;
+#endif
 
     public float SpawnAmount = 1f;
     public float ChickSpawnAmount = 1f;
 
+#if !UNITY
     [JsonIgnore] public IdentifiableId ChickId;
 
     [JsonIgnore] public Action<GameObject> InitHenDetails;
@@ -67,6 +103,14 @@ public sealed class ChimkenData : FoodData
         Methods.TryGetValue("Init" + Name + "HenDetails", out InitHenDetails);
         Methods.TryGetValue("Init" + Name + "ChickDetails", out InitChickDetails);
     }
+
+#if UNITY
+    public override void FindStrings(DataWriter writer)
+    {
+        base.FindStrings(writer);
+        writer.PoolStrings(Zones);
+    }
+#endif
 }
 
 public abstract class PlantData : FoodData
@@ -110,6 +154,16 @@ public abstract class PlantData : FoodData
 
         BaseResourceDlx = Helpers.ParseEnum<SpawnResourceId>(BaseResource + "_DLX");
     }
+
+#if UNITY
+    public override void FindStrings(DataWriter writer)
+    {
+        base.FindStrings(writer);
+        writer.PoolString(BasePlant);
+        writer.PoolString(BaseResource);
+        writer.PoolStrings(SpawnLocations.Keys);
+    }
+#endif
 }
 
 public sealed class VeggieData : PlantData

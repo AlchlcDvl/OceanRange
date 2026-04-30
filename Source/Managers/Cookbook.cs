@@ -200,10 +200,10 @@ public static class Cookbook
 
         // Register both chicks and hens
         var chickIcon = Inventory.GetSprite($"{lower}_chick");
-        RegisterFood(chickPrefab, chickIcon, chimkenData.MainAmmoColor, chimkenData.ChickId, -1, chimkenData.Progress, StorageType.NON_SLIMES);
+        RegisterFood(chickPrefab, chickIcon, chimkenData.MainAmmoColor!.Value, chimkenData.ChickId, -1, chimkenData.Progress, StorageType.NON_SLIMES);
 
         var henIcon = Inventory.GetSprite($"{lower}_hen");
-        RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor, chimkenData.MainId, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
+        RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor!.Value, chimkenData.MainId, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
         FoodGroup.MEAT.RegisterId(chimkenData.MainId);
 
@@ -371,7 +371,7 @@ public static class Cookbook
 
         plantData.InitFoodDetails?.Invoke(prefab);
 
-        RegisterFood(prefab, Inventory.GetSprite(lower), plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
+        RegisterFood(prefab, Inventory.GetSprite(lower), plantData.MainAmmoColor!.Value, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
         var resource = CreateFarmSetup(plantData.BaseResource!.Value, lower, plantData.ResourceIdSuffix, plantData.ResourceId, prefab, mesh, plantData.IsFruit, mat);
         var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, lower, plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, mesh, plantData.IsFruit, mat);
