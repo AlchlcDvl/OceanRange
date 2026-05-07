@@ -87,7 +87,7 @@ public static class Translator
     {
         var langName = lang.ToString().ToLowerInvariant();
 
-        if (Inventory.TryGetJson<Translations>(langName, Config.DUMP_TRANSLATIONS, out var translations))
+        if (Inventory.TryGetTranslation(langName, out var translations))
         {
             Inventory.TryReleaseHandles(langName);
             return translations;

@@ -8,26 +8,35 @@ public abstract class JsonData
 {
     public string Name;
 
-    public virtual void ReadFrom(DataReader reader) => Name = reader.ReadString();
-
 #if UNITY
     public virtual void FindStrings(DataWriter writer) => writer.PoolString(Name);
 
     public virtual void WriteTo(DataWriter writer) => writer.WriteString(Name);
+#else
+    public virtual void ReadFrom(DataReader reader) => Name = reader.ReadString();
+
+    public virtual void OnDeserialise() { }
 #endif
 }
 
 public abstract class ActorData : JsonData
 {
-    [JsonIgnore] public IdentifiableId MainId;
+#if !UNITY
+    [JsonIgnore]
+    public IdentifiableId MainId;
+#endif
 }
 
 public abstract class SpawnedActorData : ActorData
 {
 #if !UNITY
     public ProgressType[] Progress;
+
+    public Color? MainAmmoColor;
 #else
     public string[] Progress;
+
+    public string MainAmmoColor;
 #endif
 
     public int ExchangeWeight = 20;
@@ -35,45 +44,50 @@ public abstract class SpawnedActorData : ActorData
     [JsonRequired] public float BasePrice;
     [JsonRequired] public float Saturation;
 
-    public Color? MainAmmoColor;
-
-    public override void ReadFrom(DataReader reader)
+#if UNITY
+    public override void WriteTo(DataWriter writer)
     {
-        base.ReadFrom(reader);
-        ExchangeWeight = (int)reader.ReadPackedInt();
-        BasePrice = reader.ReadPackedFloat();
-        Saturation = reader.ReadPackedFloat();
-
-        if (reader.ReadBool())
-        MainAmmoColor = reader.ReadColor();
-
-        var count = reader.ReadPackedInt();
-        Progress = new ProgressType[count];
-
-        for (var i = 0; i < count; i++)
-            Progress[i] = Helpers.ParseEnum<ProgressType>(reader.ReadString());
-    }
-
-    public void WriteTo(DataWriter writer)
-    {
-        // base.WriteTo(writer);
-        writer.WritePackedInt((uint)ExchangeWeight);
+        base.WriteTo(writer);
+        writer.WritePackedUInt((uint)ExchangeWeight);
         writer.WritePackedFloat(BasePrice);
         writer.WritePackedFloat(Saturation);
-        writer.WriteBool(MainAmmoColor.HasValue);
+        writer.WriteString(MainAmmoColor?.Replace("#", string.Empty));
 
-        if (MainAmmoColor.HasValue)
-            writer.WriteColor(MainAmmoColor.Value);
+        if (Progress.IsNullOrEmpty())
+        {
+            writer.WritePackedUInt(0);
+            return;
+        }
+
+        writer.WritePackedUInt((uint)Progress.Length);
+
+        for (int i = 0; i < Progress.Length; i++)
+            writer.WriteString(Progress[i]);
     }
 
-#if UNITY
     public override void FindStrings(DataWriter writer)
     {
         base.FindStrings(writer);
         writer.PoolStrings(Progress);
+        writer.PoolString(MainAmmoColor.Replace("#", string.Empty));
+    }
+#else
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+        ExchangeWeight = (int)reader.ReadPackedUInt();
+        BasePrice = reader.ReadPackedFloat();
+        Saturation = reader.ReadPackedFloat();
+
+        var col = reader.ReadString();
+        MainAmmoColor = string.IsNullOrEmpty(col) ? null : ("#" + col).HexToColor();
+
+        Progress = reader.ReadEnumArray<ProgressType>();
     }
 #endif
 }
 
-// To be removed later since this is no longer an asset to be loaded, technically
-public sealed class Json(string text) : TextAsset(text);
+public sealed class Json(byte[] data) : UObject
+{
+    public readonly byte[] Data = data;
+}

@@ -1,3 +1,4 @@
+using System.Text;
 using SRML;
 
 using static SRML.Console.Console;
@@ -90,7 +91,25 @@ internal sealed class Main : ModEntryPoint
     public override void Unload()
     {
 #if DEBUG
-        File.WriteAllText(Path.Combine(Inventory.DumpPath, "Positions.json"), JsonConvert.SerializeObject(Commands.SavedPositions, Inventory.JsonSettings));
+        var path = Path.Combine(Inventory.DumpPath, "Positions.txt");
+        var builder = new StringBuilder();
+        const string indent = "  ";
+
+        foreach (var (zone, locs) in Commands.SavedPositions)
+        {
+            builder.AppendLine(zone + ":");
+
+            foreach (var (loc, poses) in locs)
+            {
+                builder.AppendLine(indent + loc + ":");
+
+                foreach (var pos in poses)
+                    builder.AppendLine(indent + indent + pos);
+            }
+        }
+
+        var debug = builder.ToString();
+        File.WriteAllText(path, debug);
 #endif
         BootStrapper.ExecuteLoadState(LoadState.Unload); // Executes the unload methods of all the manager classes
 

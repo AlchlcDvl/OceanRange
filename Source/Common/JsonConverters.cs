@@ -276,49 +276,49 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
     }
 }
 
-/// <summary>
-/// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
-/// </summary>
-/// <typeparam name="TColor">The type of the color being handled (Color/Color32).</typeparam>
-/// <typeparam name="TComponent">The type of the values that make up <typeparamref name="TColor"/>.</typeparam>
-public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentConverter<TColor, TComponent>
-    where TColor : struct // Color or Color32, but I don't know how to limit to only those two types
-    where TComponent : struct // float or byte, same as above
-{
-    private readonly TryParseHtml<TColor> TryParseHtmlColor; // Unity parsing delegate
+// /// <summary>
+// /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+// /// </summary>
+// /// <typeparam name="TColor">The type of the color being handled (Color/Color32).</typeparam>
+// /// <typeparam name="TComponent">The type of the values that make up <typeparamref name="TColor"/>.</typeparam>
+// public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentConverter<TColor, TComponent>
+//     where TColor : struct // Color or Color32, but I don't know how to limit to only those two types
+//     where TComponent : struct // float or byte, same as above
+// {
+//     private readonly TryParseHtml<TColor> TryParseHtmlColor; // Unity parsing delegate
 
-    /// <summary>
-    /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
-    /// </summary>
-    /// <param name="style">The accepted number style.</param>
-    /// <param name="tryParse">The number parsing delegate.</param>
-    /// <param name="defaultValue">The default value for missing values.</param>
-    /// <param name="htmlParser">The delegate for the unity HTML parsing method.</param>
-    protected BaseColorConverter(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : base("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
-    {
-        var tType = typeof(TColor);
+//     /// <summary>
+//     /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+//     /// </summary>
+//     /// <param name="style">The accepted number style.</param>
+//     /// <param name="tryParse">The number parsing delegate.</param>
+//     /// <param name="defaultValue">The default value for missing values.</param>
+//     /// <param name="htmlParser">The delegate for the unity HTML parsing method.</param>
+//     protected BaseColorConverter(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : base("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
+//     {
+//         var tType = typeof(TColor);
 
-        if (tType != typeof(Color) && tType != typeof(Color32))
-            throw new InvalidOperationException($"Invalid color type: {tType.Name}. Only UnityEngine.Color or UnityEngine.Color32 are supported.");
+//         if (tType != typeof(Color) && tType != typeof(Color32))
+//             throw new InvalidOperationException($"Invalid color type: {tType.Name}. Only UnityEngine.Color or UnityEngine.Color32 are supported.");
 
-        TryParseHtmlColor = htmlParser;
-    }
+//         TryParseHtmlColor = htmlParser;
+//     }
 
-    /// <inheritdoc/>
-    protected sealed override bool ParseOtherFormat(string valString, out TColor result) => valString.StartsWith('#') ? TryParseHtmlColor(valString, out result) :  base.ParseOtherFormat(valString, out result);
-}
+//     /// <inheritdoc/>
+//     protected sealed override bool ParseOtherFormat(string valString, out TColor result) => valString.StartsWith('#') ? TryParseHtmlColor(valString, out result) :  base.ParseOtherFormat(valString, out result);
+// }
 
-/// <summary>
-/// Color converter.
-/// </summary>
-public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberStyles.Float, float.TryParse, 1f, Helpers.TryHexToColor)
-{
-    /// <inheritdoc/>
-    protected override Color FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
+// /// <summary>
+// /// Color converter.
+// /// </summary>
+// public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberStyles.Float, float.TryParse, 1f, Helpers.TryHexToColor)
+// {
+//     /// <inheritdoc/>
+//     protected override Color FillFromArray(float[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
 
-    /// <inheritdoc/>
-    protected override string ToValueString(Color value) => value.ToColorString();
-}
+//     /// <inheritdoc/>
+//     protected override string ToValueString(Color value) => value.ToColorString();
+// }
 
 // /// <summary>
 // /// Color32 converter.
@@ -454,26 +454,26 @@ public sealed class ColorConverter() : BaseColorConverter<Color, float>(NumberSt
 //     }
 // }
 
-/// <summary>
-/// Type converter.
-/// </summary>
-public sealed class TypeConverter : OceanJsonConverter<Type>
-{
-    private static readonly Dictionary<string, Type> CachedTypes = [];
-    private static readonly Func<string, Type> TypeGettingFunc = Type.GetType;
+// /// <summary>
+// /// Type converter.
+// /// </summary>
+// public sealed class TypeConverter : OceanJsonConverter<Type>
+// {
+//     private static readonly Dictionary<string, Type> CachedTypes = [];
+//     private static readonly Func<string, Type> TypeGettingFunc = Type.GetType;
 
-    /// <inheritdoc/>
-    protected override Type ParseFromJson(JsonReader reader)
-    {
-        if (reader.TokenType != JsonToken.String)
-            throw new InvalidDataException("Expected a string of the format as 'Namespace.TypeName, Assembly' or 'Namespace.TypeName' or full qualified name"); // Throw if invalid
+//     /// <inheritdoc/>
+//     protected override Type ParseFromJson(JsonReader reader)
+//     {
+//         if (reader.TokenType != JsonToken.String)
+//             throw new InvalidDataException("Expected a string of the format as 'Namespace.TypeName, Assembly' or 'Namespace.TypeName' or full qualified name"); // Throw if invalid
 
-        var name = reader.Value as string; // Convert to string
+//         var name = reader.Value as string; // Convert to string
 
-        // Try to find the type, throw if not found
-        return CachedTypes.GetOrAdd(name, TypeGettingFunc) ?? throw new ArgumentException($"Cannot find type {name}!");
-    }
+//         // Try to find the type, throw if not found
+//         return CachedTypes.GetOrAdd(name, TypeGettingFunc) ?? throw new ArgumentException($"Cannot find type {name}!");
+//     }
 
-    /// <inheritdoc/>
-    protected override string ToValueString(Type value) => value.FullName + ", " + value.Assembly.GetName().Name;
-}
+//     /// <inheritdoc/>
+//     protected override string ToValueString(Type value) => value.FullName + ", " + value.Assembly.GetName().Name;
+// }

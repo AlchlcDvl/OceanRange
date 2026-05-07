@@ -47,7 +47,7 @@ public sealed class LargoData : ActorData
     [JsonIgnore] public DLCContentMetadata_SlimeAppearance SS2Appearance;
     [JsonIgnore] public DLCContentMetadata_SlimeAppearance SSBothAppearance;
 
-    protected override void OnDeserialise()
+    public override void OnDeserialise()
     {
         var parts = Name.TrueSplit(' ');
 
@@ -81,8 +81,13 @@ public sealed class LargoData : ActorData
 
 public sealed class LargoAppearanceData : JsonData
 {
+#if !UNITY
     public LargoAppearanceProps LargoProps;
     public AppearanceType AppProps;
+#else
+    public string[] LargoProps;
+    public string[] AppProps;
+#endif
 
     public ModelData BodyStruct;
 
@@ -91,7 +96,144 @@ public sealed class LargoAppearanceData : JsonData
 
     public float? Jiggle;
 
-    protected override void OnDeserialise() => BodyStruct?.MeshData.IsBody = true;
+#if !UNITY
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+
+        var flagCount = reader.ReadPackedUInt();
+        var flags = new string[flagCount];
+
+        for (var i = 0; i < flagCount; i++)
+            flags[i] = reader.ReadString();
+
+        LargoProps = CombineFlagStrings<LargoAppearanceProps>(flags);
+
+        flagCount = reader.ReadPackedUInt();
+        flags = new string[flagCount];
+
+        for (var i = 0; i < flagCount; i++)
+            flags[i] = reader.ReadString();
+
+        AppProps = CombineFlagStrings<AppearanceType>(flags);
+
+        if (reader.ReadBool())
+        {
+            BodyStruct = new ModelData();
+            BodyStruct.ReadFrom(reader);
+        }
+
+        var count = reader.ReadPackedUInt();
+
+        if (count > 0)
+        {
+            Slime1Structs = new ModelData[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                Slime1Structs[i] = new ModelData();
+                Slime1Structs[i].ReadFrom(reader);
+            }
+        }
+
+        count = reader.ReadPackedUInt();
+
+        if (count > 0)
+        {
+            Slime2Structs = new ModelData[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                Slime2Structs[i] = new ModelData();
+                Slime2Structs[i].ReadFrom(reader);
+            }
+        }
+
+            if (reader.ReadBool())
+            Jiggle = reader.ReadPackedFloat();
+    }
+
+    public override void OnDeserialise()
+    {
+        base.OnDeserialise();
+        BodyStruct?.MeshData.IsBody = true;
+    }
+
+    private static T CombineFlagStrings<T>(string[] names) where T : struct, Enum
+    {
+        if (names == null || names.Length == 0)
+            return default;
+
+        var combined = 0;
+        foreach (var name in names)
+        {
+            if (Enum.TryParse<T>(name, out var val))
+                combined |= (int)(object)val;
+        }
+        return (T)(object)combined;
+    }
+#else
+    public override void FindStrings(DataWriter writer)
+    {
+        base.FindStrings(writer);
+
+        writer.PoolStrings(LargoProps);
+        writer.PoolStrings(AppProps);
+
+        BodyStruct?.FindStrings(writer);
+
+        if (Slime1Structs != null)
+        {
+            foreach (var s in Slime1Structs)
+                s.FindStrings(writer);
+        }
+
+        if (Slime2Structs != null)
+        {
+            foreach (var s in Slime2Structs)
+                s.FindStrings(writer);
+        }
+    }
+
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+
+        writer.WritePackedUInt((uint)LargoProps.Length);
+
+        foreach (var flag in LargoProps)
+            writer.WriteString(flag);
+
+        writer.WritePackedUInt((uint)AppProps.Length);
+
+        foreach (var flag in AppProps)
+            writer.WriteString(flag);
+
+        writer.WriteBool(BodyStruct != null);
+        BodyStruct?.WriteTo(writer);
+
+        writer.WritePackedUInt((uint)(Slime1Structs?.Length ?? 0));
+
+        if (Slime1Structs != null)
+        {
+            foreach (var s in Slime1Structs)
+                s.WriteTo(writer);
+        }
+
+        writer.WritePackedUInt((uint)(Slime2Structs?.Length ?? 0));
+
+        if (Slime2Structs != null)
+        {
+            foreach (var s in Slime2Structs)
+                s.WriteTo(writer);
+        }
+
+        writer.WriteBool(Jiggle.HasValue);
+
+        if (Jiggle.HasValue)
+            writer.WritePackedFloat(Jiggle.Value);
+    }
+#endif
 
     public void SetJiggle(float jiggle)
     {

@@ -1,10 +1,10 @@
-using System.Reflection;
-using SRML.Utils;
 using System.IO.Compression;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Newtonsoft.Json.Serialization;
+using SRML.Utils;
 using UnityEngine.Rendering;
-using System.Runtime.CompilerServices;
 
 namespace OceanRange.Managers;
 
@@ -20,30 +20,6 @@ public static class Inventory
     /// </summary>
     public static readonly Assembly Core = typeof(Main).Assembly;
 
-    /// <summary>
-    /// Common JSON serialisation settings to avoid creating a new JSON settings instance for each JSON file.
-    /// </summary>
-    public static readonly JsonSerializerSettings JsonSettings = new()
-    {
-#if DEBUG
-        // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
-        Formatting = Formatting.Indented,
-#endif
-
-        ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy(false, false) },
-        // Adding the JSON converters
-        Converters =
-        [
-            // new EnumConverter(),
-            new TypeConverter(),
-            new ColorConverter(),
-            // new Color32Converter(), // Unused at the moment, but kept around if needed
-            new Vector3Converter(),
-            new OrientationConverter(),
-        ]
-    };
-
-    private static readonly JsonSerializer OrJsonSerializer = JsonSerializer.Create(JsonSettings);
     private static readonly Func<string, AssetHandle> Create = name => new(name);
 
     // private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
@@ -160,7 +136,7 @@ public static class Inventory
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted JSON data.</returns>
-    public static T[] GetJsonArray<T>(string path) => GetJson<T[]>(path);
+    public static T[] GetJsonArray<T>(string path) where T : JsonData, new() => ToJsonArray<T>(Get<Json>(path));
 
     /// <summary>
     /// Gets and serialise JSON data from the asset associated with the provided name.
@@ -168,52 +144,51 @@ public static class Inventory
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted JSON data.</returns>
-    public static T GetJson<T>(string path) => ToJson<T>(TryReadJson(path, out var contents) ? contents : Get<Json>(path).text);
+    public static T GetJson<T>(string path) where T : JsonData, new() => ToJson<T>(Get<Json>(path));
 
-    public static bool TryGetJson<T>(string name, bool writeJson, out T json)
+    public static bool TryGetTranslation(string name, out Translations json)
     {
-        var path = Path.Combine(DumpPath, name + ".json");
-
-        if (File.Exists(path))
-        {
-            json = ToJson<T>(File.ReadAllText(path));
-            return true;
-        }
-
-        if (!TryGet<Json>(name, out var jsonText))
+        if (!TryGet<Json>(name, out var jsonData))
         {
             json = default;
             return false;
         }
 
-        var raw = jsonText.text;
-        json = ToJson<T>(raw);
-
-        if (writeJson)
-            File.WriteAllText(path, raw);
-
+        json = ToJson<Translations>(jsonData);
         return true;
     }
 
-    private static T ToJson<T>(string jsonText)
+    private static T ToJson<T>(Json json) where T : JsonData, new()
     {
-        using var stringReader = new StringReader(jsonText);
-        using var jsonTextReader = new JsonTextReader(stringReader);
-        return OrJsonSerializer.Deserialize<T>(jsonTextReader);
+        using var stream = new MemoryStream(json.Data);
+        using var binary = new BinaryReader(stream);
+        using var reader = new DataReader(binary);
+
+        var data = new T();
+        data.ReadFrom(reader);
+        data.OnDeserialise();
+
+        return data;
     }
 
-    private static bool TryReadJson(string fileName, out string contents)
+    private static T[] ToJsonArray<T>(Json json) where T : JsonData, new()
     {
-        var path = Path.Combine(DumpPath, fileName + ".json");
+        using var stream = new MemoryStream(json.Data);
+        using var binary = new BinaryReader(stream);
+        using var reader = new DataReader(binary);
 
-        if (!File.Exists(path))
+        var count = reader.ReadPackedUInt();
+        var array = new T[count];
+
+        for (var i = 0; i < count; i++)
         {
-            contents = null;
-            return false;
+            var data = new T();
+            data.ReadFrom(reader);
+            data.OnDeserialise();
+            array[i] = data;
         }
 
-        contents = File.ReadAllText(path);
-        return true;
+        return array;
     }
 
     /// <summary>
@@ -323,12 +298,7 @@ public static class Inventory
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     /// <returns>The JSON asset loaded from the path.</returns>
-    private static Json LoadJson(string path)
-    {
-        using var stream = Core.GetManifestResourceStream(path)!;
-        using var reader = new StreamReader(stream, Encoding.UTF8, false);
-        return new(reader.ReadToEnd());
-    }
+    private static Json LoadJson(string path) => new(path.ReadBytes());
 
     /// <summary>
     /// Loads a mesh file from the provided path.

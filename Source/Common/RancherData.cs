@@ -4,6 +4,7 @@ namespace OceanRange.Data;
 
 public sealed class RancherData : JsonData
 {
+#if !UNITY
     [JsonRequired] public Category[] Rewards;
     [JsonRequired] public Category[] Requests;
     [JsonRequired] public Category[] RareRewards;
@@ -18,10 +19,21 @@ public sealed class RancherData : JsonData
 
     private static ProgressType ExchangeThreshold = ProgressType.EXCHANGE_BOB;
 
-    protected override void OnDeserialise()
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+
+        Rewards = reader.ReadEnumArray<Category>();
+        Requests = reader.ReadEnumArray<Category>();
+        RareRewards = reader.ReadEnumArray<Category>();
+        IndivRewards = reader.ReadEnumArray<IdentifiableId>();
+        IndivRequests = reader.ReadEnumArray<IdentifiableId>();
+        IndivRareRewards = reader.ReadEnumArray<IdentifiableId>();
+    }
+
+    public override void OnDeserialise()
     {
         RancherId = Name.ToLowerInvariant();
-
         var upper = Name.ToUpperInvariant();
 
         RancherName = Helpers.AddEnumValue<RancherName>(upper);
@@ -34,14 +46,48 @@ public sealed class RancherData : JsonData
             requestCategories = Requests,
             rewardCategories = Rewards,
             rareRewardCategories = RareRewards,
-            indivRequests = IndivRequests ?? [],
-            indivRewards = IndivRewards ?? [],
-            indivRareRewards = IndivRareRewards ?? []
+            indivRequests = IndivRequests,
+            indivRewards = IndivRewards,
+            indivRareRewards = IndivRareRewards
         };
 
         var exchange = Helpers.AddEnumValue("EXCHANGE_" + upper, ++ExchangeThreshold);
-        Mailbox.MailMap["exchangeintro_" + RancherId].UnlockFuncAnd += _ => SceneContext.Instance.ProgressDirector.HasProgress(exchange);
+        Mailbox.MailMap["exchangeintro_" + RancherId].UnlockFuncAnd += _ =>
+            SceneContext.Instance.ProgressDirector.HasProgress(exchange);
     }
+#else
+    [JsonRequired] public string[] Rewards;
+    [JsonRequired] public string[] Requests;
+    [JsonRequired] public string[] RareRewards;
+
+    public string[] IndivRewards;
+    public string[] IndivRequests;
+    public string[] IndivRareRewards;
+
+    public override void FindStrings(DataWriter writer)
+    {
+        base.FindStrings(writer);
+
+        writer.PoolStrings(Rewards);
+        writer.PoolStrings(Requests);
+        writer.PoolStrings(RareRewards);
+        writer.PoolStrings(IndivRewards);
+        writer.PoolStrings(IndivRequests);
+        writer.PoolStrings(IndivRareRewards);
+    }
+
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+
+        writer.WriteStringArray(Rewards);
+        writer.WriteStringArray(Requests);
+        writer.WriteStringArray(RareRewards);
+        writer.WriteStringArray(IndivRewards);
+        writer.WriteStringArray(IndivRequests);
+        writer.WriteStringArray(IndivRareRewards);
+    }
+#endif
 
     private static readonly HashSet<string> OfferIds = [];
     private static readonly Dictionary<Language, HashSet<int>> LoadingIndices = new(LanguageComparer.Instance);

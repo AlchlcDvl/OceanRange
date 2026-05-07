@@ -4,12 +4,12 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
 {
     private readonly BinaryWriter Writer = writer;
     private readonly Dictionary<string, uint> PooledStrings = [];
-    private int Index = 1;
+    private uint Index = 1;
 
     public void PoolString(string value)
     {
         if (!string.IsNullOrEmpty(value) && !PooledStrings.ContainsKey(value))
-            PooledStrings[value] = (uint)Index++;
+            PooledStrings[value] = Index++;
     }
 
     public void PoolStrings(string[] values)
@@ -39,7 +39,7 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
         if (!pooledStringsExist)
             return;
 
-        WritePackedInt((uint)Index);
+        WritePackedUInt(Index);
 
         foreach (var value in PooledStrings.Keys)
             Writer.Write(value);
@@ -47,7 +47,7 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
 
     public void WriteBool(bool value) => Writer.Write(value);
 
-    private static uint ZigZagEncode(int value) => (uint)((value << 1) ^ (value >> 31));
+    // private static uint ZigZagEncode(int value) => (uint)((value << 1) ^ (value >> 31));
 
     private void WriteVarInt(ulong value)
     {
@@ -60,7 +60,7 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
         Writer.Write((byte)value);
     }
 
-    public void WritePackedInt(uint value) => WriteVarInt(value);
+    public void WritePackedUInt(uint value) => WriteVarInt(value);
 
     public void WriteString(string value)
     {
@@ -72,14 +72,14 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
 
         if (string.IsNullOrEmpty(value))
         {
-            WritePackedInt(0);
+            WritePackedUInt(0);
             return;
         }
 
         if (!PooledStrings.TryGetValue(value, out var index))
             throw new ArgumentException(value + " was not pooled!");
 
-        WritePackedInt(index);
+        WritePackedUInt(index);
     }
 
     public void WritePackedFloat(float value) => Writer.Write(Mathf.FloatToHalf(value));
@@ -98,6 +98,77 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
         WritePackedFloat(value.g);
         WritePackedFloat(value.b);
         WritePackedFloat(value.a);
+    }
+
+    public void WriteVector3(Vector3 value)
+    {
+        WritePackedFloat(value.x);
+        WritePackedFloat(value.y);
+        WritePackedFloat(value.z);
+    }
+
+    public void WriteOrientation(Orientation value)
+    {
+        WriteVector3(value.Position);
+        WriteVector3(value.Rotation);
+        WriteVector3(value.Scale);
+    }
+
+    public void WriteStringArray(string[] array)
+    {
+        WritePackedUInt((uint)(array?.Length ?? 0));
+        if (array == null)
+            return;
+
+        foreach (var s in array)
+            WriteString(s);
+    }
+
+    public void WriteDouble(double value) => Writer.Write(value);
+
+    public void WriteNullableDouble(double? value)
+    {
+        WriteBool(value.HasValue);
+
+        if (value.HasValue)
+            WriteDouble(value.Value);
+    }
+
+    public void WriteStringDictionary(Dictionary<string, string> dict)
+    {
+        WritePackedUInt((uint)(dict?.Count ?? 0));
+
+        if (dict == null)
+            return;
+
+        foreach (var kvp in dict)
+        {
+            WriteString(kvp.Key);
+            WriteString(kvp.Value);
+        }
+    }
+
+    public void WriteStringToStringDictionary(Dictionary<string, Dictionary<string, string>> dict)
+    {
+        WritePackedUInt((uint)(dict?.Count ?? 0));
+
+        if (dict == null)
+            return;
+
+        foreach (var kvp in dict)
+        {
+            WriteString(kvp.Key);
+            WriteStringDictionary(kvp.Value);
+        }
+    }
+
+    public void WriteNullableStringToStringDictionary(Dictionary<string, Dictionary<string, string>> dict)
+    {
+        var hasValue = dict != null;
+        WriteBool(hasValue);
+
+        if (hasValue)
+            WriteStringToStringDictionary(dict);
     }
 
     public void Dispose() => Writer.Dispose();

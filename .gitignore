@@ -8,7 +8,7 @@ Test*/
 *.DotSettings.user
 Ignore/
 .qodo
-Libs/
+*Libs
 Ignore.*
 Dev*/
 UnusedAssets/
@@ -18,3 +18,5 @@ ExternalAnnotations/
 SlimeRancher.props
 cspell.json
 Logs/
+Logs
+Mods

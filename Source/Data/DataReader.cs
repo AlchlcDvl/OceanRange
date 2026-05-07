@@ -16,7 +16,7 @@ public sealed class DataReader : IDisposable
         if (!HasPooledStrings)
             return;
 
-        var count = ReadPackedInt();
+        var count = ReadPackedUInt();
         PooledStrings = new string[count];
         PooledStrings[0] = string.Empty;
 
@@ -24,7 +24,7 @@ public sealed class DataReader : IDisposable
             PooledStrings[i] = Reader.ReadString();
     }
 
-    public uint ReadPackedInt() => (uint)ReadVarInt();
+    public uint ReadPackedUInt() => (uint)ReadVarInt();
 
     private ulong ReadVarInt()
     {
@@ -50,7 +50,7 @@ public sealed class DataReader : IDisposable
         if (!HasPooledStrings)
             return Reader.ReadString();
 
-        var index = ReadPackedInt();
+        var index = ReadPackedUInt();
         return index == 0 && returnNullOnZero ? null : PooledStrings[index];
     }
 
@@ -66,7 +66,7 @@ public sealed class DataReader : IDisposable
 
     public T[] ReadArray<T>(Func<DataReader, T> reader, bool returnNullOnZero = true)
     {
-        var count = ReadPackedInt();
+        var count = ReadPackedUInt();
 
         if (count == 0 && returnNullOnZero)
             return null;
@@ -79,7 +79,74 @@ public sealed class DataReader : IDisposable
         return array;
     }
 
-    private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
+    public Vector3 ReadVector3() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
+
+    public Orientation ReadOrientation() => new(ReadVector3(), ReadVector3(), ReadVector3());
+
+    // private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
+
+    public T[] ReadEnumArray<T>() where T : struct, Enum
+    {
+        var count = ReadPackedUInt();
+        var array = new T[count];
+
+        for (var i = 0; i < count; i++)
+            array[i] = Helpers.ParseEnum<T>(ReadString());
+
+        return array;
+    }
+
+    private static readonly Dictionary<string, Type> CachedTypes = [];
+
+    public Type ReadType()
+    {
+        var name = ReadString();
+
+        if (string.IsNullOrEmpty(name))
+            return null;
+
+        if (CachedTypes.TryGetValue(name, out var cached))
+            return cached;
+
+        var type = Type.GetType(name) ?? throw new ArgumentException($"Cannot find type {name}!");
+        CachedTypes[name] = type;
+        return type;
+    }
+
+    public T? ReadNullableEnum<T>() where T : struct, Enum
+    {
+        var value = ReadString();
+        return string.IsNullOrEmpty(value) ? null : Helpers.ParseEnum<T>(value);
+    }
+
+    public double ReadDouble() => Reader.ReadDouble();
+
+    public double? ReadNullableDouble() => ReadBool() ? ReadDouble() : null;
+
+    public Dictionary<string, string> ReadStringDictionary()
+    {
+        var count = ReadPackedUInt();
+        var dict = new Dictionary<string, string>((int)count);
+
+        for (var i = 0; i < count; i++)
+            dict[ReadString()] = ReadString();
+
+        return dict;
+    }
+
+    public Dictionary<string, Dictionary<string, string>> ReadStringToStringDictionary()
+    {
+        var count = ReadPackedUInt();
+        var dict = new Dictionary<string, Dictionary<string, string>>((int)count);
+
+        for (var i = 0; i < count; i++)
+            dict[ReadString()] = ReadStringDictionary();
+
+        return dict;
+    }
+
+    public Dictionary<string, Dictionary<string, string>> ReadNullableStringToStringDictionary()
+        => ReadBool() ? ReadStringToStringDictionary() : null;
 
     public void Dispose() => Reader.Dispose();
 }
