@@ -62,7 +62,7 @@ public static class Inventory
     /// <summary>
     /// Handles the mapping of extensions that essentially mean the same thing.
     /// </summary>
-    public static readonly Dictionary<string, string> ExclusiveExtensions = new()
+    public static readonly Dictionary<string, string> ExclusiveExtensions = new(StringComparer.Ordinal)
     {
         ["png"] = "jpg",
         ["jpg"] = "png"
@@ -71,9 +71,9 @@ public static class Inventory
     /// <summary>
     /// Dictionary to hold handles for mod assets.
     /// </summary>
-    private static readonly Dictionary<string, AssetHandle> Assets = [];
+    private static readonly Dictionary<string, AssetHandle> Assets = new(StringComparer.Ordinal);
 
-    private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*.Concat(Platforms.Select(x => "bundle_" + x))*/)];
+    private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*.Concat(Platforms.Select(x => "bundle_" + x))*/, StringComparer.Ordinal)];
 
     /// <summary>
     /// Debug string path for the mod to dump assets.
@@ -161,7 +161,8 @@ public static class Inventory
     private static T ToJson<T>(Json json) where T : JsonData, new()
     {
         using var stream = new MemoryStream(json.Data);
-        using var binary = new BinaryReader(stream);
+        using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
+        using var binary = new BinaryReader(decompressor);
         using var reader = new DataReader(binary);
 
         var data = new T();
@@ -174,7 +175,8 @@ public static class Inventory
     private static T[] ToJsonArray<T>(Json json) where T : JsonData, new()
     {
         using var stream = new MemoryStream(json.Data);
-        using var binary = new BinaryReader(stream);
+        using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
+        using var binary = new BinaryReader(decompressor);
         using var reader = new DataReader(binary);
 
         var count = reader.ReadPackedUInt();

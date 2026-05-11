@@ -459,7 +459,7 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
 // /// </summary>
 // public sealed class TypeConverter : OceanJsonConverter<Type>
 // {
-//     private static readonly Dictionary<string, Type> CachedTypes = [];
+//     private static readonly Dictionary<string, Type> CachedTypes = new(StringComparer.Ordinal);
 //     private static readonly Func<string, Type> TypeGettingFunc = Type.GetType;
 
 //     /// <inheritdoc/>

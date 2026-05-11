@@ -12,8 +12,8 @@ namespace OceanRange.Utils;
 
 public static class Helpers
 {
-    // private static readonly Dictionary<string, Color32> HexToColor32s = [];
-    private static readonly Dictionary<string, Color> HexToColors = [];
+    // private static readonly Dictionary<string, Color32> HexToColor32s = new(StringComparer.Ordinal);
+    private static readonly Dictionary<string, Color> HexToColors = new(StringComparer.Ordinal);
 
     extension<T1>(IEnumerable<T1> source1)
     {

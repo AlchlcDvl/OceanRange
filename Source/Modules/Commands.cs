@@ -16,7 +16,7 @@ public sealed class OceanCommand(string id, string usage, string description, st
 
 public static class Commands
 {
-    public static readonly Dictionary<string, Dictionary<string, List<string>>> SavedPositions = [];
+    public static readonly Dictionary<string, Dictionary<string, List<string>>> SavedPositions = new(StringComparer.Ordinal);
 
     public static readonly OceanCommand[] OceanCommands =
     [
@@ -28,7 +28,7 @@ public static class Commands
 
     private static bool Echo(string[] _) => true;
 
-    private static readonly Func<Dictionary<string, List<string>>> Create1 = () => [];
+    private static readonly Func<Dictionary<string, List<string>>> Create1 = () => new(StringComparer.Ordinal);
     private static readonly Func<List<string>> Create2 = () => [];
 
     private static bool SavePos(string[] args)

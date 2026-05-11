@@ -7,10 +7,10 @@ namespace OceanRange.Managers;
 [Manager(ManagerType.Translator)]
 public static class Translator
 {
-    public static readonly Dictionary<string, string> SlimeToOnomicsMap = [];
+    public static readonly Dictionary<string, string> SlimeToOnomicsMap = new(StringComparer.Ordinal);
     public static readonly Dictionary<Language, List<string>> LoadingIds = new(LanguageComparer.Instance);
 
-    private static readonly Dictionary<string, Dictionary<string, string>> FallbackTranslations = [];
+    private static readonly Dictionary<string, Dictionary<string, string>> FallbackTranslations = new(StringComparer.Ordinal);
     private static readonly Dictionary<Language, Translations> TranslationsHolder = new(LanguageComparer.Instance);
     private static readonly Dictionary<Language, Dictionary<string, Dictionary<string, string>>> VanillaFallbackTranslations = new(LanguageComparer.Instance);
 
@@ -102,7 +102,7 @@ public static class Translator
     public static Dictionary<string, string> GetBundle(this Dictionary<string, Dictionary<string, string>> translations, string key)
     {
         if (!translations.TryGetValue(key, out var bundle))
-            translations[key] = bundle = [];
+            translations[key] = bundle = new(StringComparer.Ordinal);
 
         return bundle;
     }

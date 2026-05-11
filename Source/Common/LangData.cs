@@ -40,7 +40,7 @@ public sealed class Translations : JsonData
         if (TranslatedTexts != null)
             return TranslatedTexts;
 
-        TranslatedTexts = [];
+        TranslatedTexts = new(StringComparer.Ordinal);
         Translator.BeginGatherPhase();
 
         foreach (var (bundleName, values) in Additional)

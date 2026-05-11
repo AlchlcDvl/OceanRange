@@ -81,22 +81,18 @@ public sealed class MatData : JsonData
     {
         base.ReadFrom(reader);
 
-        if (reader.ReadBool())
-            Gloss = reader.ReadPackedFloat();
-
         Pattern = reader.ReadString();
 
-        SameAs = reader.ReadBool() ? (int?)reader.ReadPackedUInt() : null;
-        MatSameAs = reader.ReadBool() ? (int?)reader.ReadPackedUInt() : null;
-        ColorsSameAs = reader.ReadBool() ? (int?)reader.ReadPackedUInt() : null;
+        Gloss = reader.ReadNullablePackedFloat();
+
+        SameAs = (int?)reader.ReadNullablePackedUInt();
+        MatSameAs = (int?)reader.ReadNullablePackedUInt();
+        ColorsSameAs = (int?)reader.ReadNullablePackedUInt();
 
         UseSSMat = reader.ReadBool();
 
-        var matOriginStr = reader.ReadString();
-        MatOrigin = string.IsNullOrEmpty(matOriginStr) ? null : Helpers.ParseEnum<IdentifiableId>(matOriginStr);
-
-        var colorsOriginStr = reader.ReadString();
-        ColorsOrigin = string.IsNullOrEmpty(colorsOriginStr) ? null : Helpers.ParseEnum<IdentifiableId>(colorsOriginStr);
+        MatOrigin = reader.ReadNullableEnum<IdentifiableId>();
+        ColorsOrigin = reader.ReadNullableEnum<IdentifiableId>();
 
         InvertColorOriginColors = reader.ReadBool();
 
@@ -165,35 +161,21 @@ public sealed class MatData : JsonData
         if (ColorProps.IsNullOrEmpty())
             return;
 
-        writer.PoolStrings(ColorProps.Keys.Select(x => x.Substring(1)));
-        writer.PoolStrings(ColorProps.Values.Select(x => x.Replace("#", string.Empty)));
+        writer.PoolSubstrings(ColorProps.Keys, 1);
+        writer.PoolSubstrings(ColorProps.Values, 1);
     }
 
     public override void WriteTo(DataWriter writer)
     {
         base.WriteTo(writer);
 
-        writer.WriteBool(Gloss.HasValue);
-
-        if (Gloss.HasValue)
-            writer.WritePackedFloat(Gloss.Value);
-
         writer.WriteString(Pattern);
 
-        writer.WriteBool(SameAs.HasValue);
+        writer.WriteNullablePackedFloat(Gloss);
 
-        if (SameAs.HasValue)
-            writer.WritePackedUInt((uint)SameAs.Value);
-
-        writer.WriteBool(MatSameAs.HasValue);
-
-        if (MatSameAs.HasValue)
-            writer.WritePackedUInt((uint)MatSameAs.Value);
-
-        writer.WriteBool(ColorsSameAs.HasValue);
-
-        if (ColorsSameAs.HasValue)
-            writer.WritePackedUInt((uint)ColorsSameAs.Value);
+        writer.WriteNullablePackedUInt((uint?)SameAs);
+        writer.WriteNullablePackedUInt((uint?)MatSameAs);
+        writer.WriteNullablePackedUInt((uint?)ColorsSameAs);
 
         writer.WriteBool(UseSSMat);
 
@@ -202,20 +184,16 @@ public sealed class MatData : JsonData
 
         writer.WriteBool(InvertColorOriginColors);
 
+        writer.WritePackedUInt((uint)(ColorProps?.Count ?? 0));
+
         if (ColorProps.IsNullOrEmpty())
-        {
-            writer.WritePackedUInt(0);
-        }
-        else
-        {
-            writer.WritePackedUInt((uint)ColorProps.Count);
+            return;
 
-            foreach (var key in ColorProps.Keys)
-                writer.WriteString(key.Substring(1));
+        foreach (var key in ColorProps.Keys)
+            writer.WriteSubstring(key, 1);
 
-            foreach (var value in ColorProps.Values)
-                writer.WriteString(value.Replace("#", string.Empty));
-        }
+        foreach (var val in ColorProps.Values)
+            writer.WriteSubstring(val, 1);
     }
 #endif
 }
@@ -242,12 +220,8 @@ public sealed class MeshData : JsonData
         IgnoreLodIndex = reader.ReadBool();
         Skip = reader.ReadBool();
         UseBaseStruct = reader.ReadBool();
-
-        if (reader.ReadBool())
-            Jiggle = reader.ReadPackedFloat();
-
-        if (reader.ReadBool())
-            PrefabLength = (int?)reader.ReadPackedUInt();
+        Jiggle = reader.ReadNullablePackedFloat();
+        PrefabLength = (int?)reader.ReadNullablePackedUInt();
     }
 #else
     public override void FindStrings(DataWriter writer)
@@ -266,15 +240,9 @@ public sealed class MeshData : JsonData
         writer.WriteBool(Skip);
         writer.WriteBool(UseBaseStruct);
 
-        writer.WriteBool(Jiggle.HasValue);
+        writer.WriteNullablePackedFloat(Jiggle);
 
-        if (Jiggle.HasValue)
-            writer.WritePackedFloat(Jiggle.Value);
-
-        writer.WriteBool(PrefabLength.HasValue);
-
-        if (PrefabLength.HasValue)
-            writer.WritePackedInt((uint)PrefabLength.Value);
+        writer.WriteNullablePackedUInt((uint?)PrefabLength);
     }
 #endif
 }

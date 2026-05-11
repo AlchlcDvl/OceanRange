@@ -7,23 +7,11 @@ using OceanRange.Saves;
 
 namespace OceanRange.Data;
 
-using System;
-using System.Collections.Generic;
-using System.Reflection; // For Type.GetType, may be needed
-using OceanRange.Data;   // Adjust namespace as needed
-
-#if !UNITY
-using HarmonyLib;        // For AccessTools – runtime only
-#endif
-
 public sealed class SlimeData : SpawnedActorData
 {
 #if !UNITY
-    // ------------------------------------------------------------------
-    // Runtime‑only static cache and delegate maps (from Slimepedia)
-    // ------------------------------------------------------------------
-    private static readonly Dictionary<string, Action<SlimeAppearance, SlimeAppearanceData>> AppearanceMethods = new();
-    private static readonly Dictionary<string, Action<GameObject, SlimeDefinition>> DefinitionMethods = new();
+    private static readonly Dictionary<string, Action<SlimeAppearance, SlimeAppearanceData>> AppearanceMethods = new(StringComparer.Ordinal);
+    private static readonly Dictionary<string, Action<GameObject, SlimeDefinition>> DefinitionMethods = new(StringComparer.Ordinal);
 
     static SlimeData()
     {
@@ -36,7 +24,6 @@ public sealed class SlimeData : SpawnedActorData
         }
     }
 
-    // Runtime‑only fields (JsonIgnore)
     [JsonIgnore] public IdentifiableId GordoId;
     [JsonIgnore] public IdentifiableId PlortId;
     [JsonIgnore] public PediaId PediaId;
@@ -87,9 +74,8 @@ public sealed class SlimeData : SpawnedActorData
     public string[] ComponentsToAdd;
     public string[] ComponentsToRemove;
 #else
-    // Runtime side – actual enum/Type fields, no defaults on enums
-    [JsonRequired] public IdentifiableId FavToy;
-    [JsonRequired] public Zone[] Zones;
+    public IdentifiableId FavToy;
+    public Zone[] Zones;
 
     public IdentifiableId? FavFood;
     public FoodGroup? Diet;
@@ -137,7 +123,7 @@ public sealed class SlimeData : SpawnedActorData
         base.WriteTo(writer);
 
         writer.WriteString(FavToy);
-        writer.WriteArray(Zones, (w, s) => w.WriteString(s));
+        writer.WriteStringArray(Zones);
         writer.WriteString(FavFood);
         writer.WriteString(Diet);
         writer.WriteString(BaseSlime);
@@ -150,7 +136,7 @@ public sealed class SlimeData : SpawnedActorData
         writer.WriteString(GordoZone);
         writer.WritePackedFloat(SpawnAmount);
         writer.WriteBool(HasGordo);
-        writer.WriteArray(GordoRewards, (w, s) => w.WriteString(s));
+        writer.WriteStringArray(GordoRewards);
 
         writer.WriteBool(Vaccable);
         writer.WriteBool(Exchangeable);
@@ -164,14 +150,14 @@ public sealed class SlimeData : SpawnedActorData
 
         writer.WriteString(OnomicsType);
 
-        writer.WriteArray(ComponentsToAdd, (w, s) => w.WriteString(s));
-        writer.WriteArray(ComponentsToRemove, (w, s) => w.WriteString(s));
+        writer.WriteStringArray(ComponentsToAdd);
+        writer.WriteStringArray(ComponentsToRemove);
 
         writer.WritePackedUInt((uint)GordoEatAmount);
 
         NormalAppearance.WriteTo(writer);
-        bool hasSS = SSAppearance != null;
 
+        var hasSS = SSAppearance != null;
         writer.WriteBool(hasSS);
 
         if (hasSS)
@@ -182,21 +168,21 @@ public sealed class SlimeData : SpawnedActorData
     {
         base.ReadFrom(reader);
 
-        FavToy = Helpers.ParseEnum<IdentifiableId>(reader.ReadString());
-        Zones = reader.ReadArray(r => Helpers.ParseEnum<Zone>(r.ReadString()), false);
+        FavToy = reader.ReadEnum<IdentifiableId>();
+        Zones = reader.ReadEnumArray<Zone>();
         FavFood = reader.ReadNullableEnum<IdentifiableId>();
         Diet = reader.ReadNullableEnum<FoodGroup>();
-        BaseSlime = Helpers.ParseEnum<IdentifiableId>(reader.ReadString());
-        BasePlort = Helpers.ParseEnum<IdentifiableId>(reader.ReadString());
-        BaseGordo = Helpers.ParseEnum<IdentifiableId>(reader.ReadString());
+        BaseSlime = reader.ReadEnum<IdentifiableId>();
+        BasePlort = reader.ReadEnum<IdentifiableId>();
+        BaseGordo = reader.ReadEnum<IdentifiableId>();
 
         CanBeRefined = reader.ReadBool();
 
         ComponentBase = reader.ReadNullableEnum<IdentifiableId>();
-        GordoZone = Helpers.ParseEnum<Zone>(reader.ReadString());
+        GordoZone = reader.ReadEnum<Zone>();
         SpawnAmount = reader.ReadPackedFloat();
         HasGordo = reader.ReadBool();
-        GordoRewards = reader.ReadArray(r => Helpers.ParseEnum<IdentifiableId>(r.ReadString()), false);
+        GordoRewards = reader.ReadEnumArray<IdentifiableId>();
 
         Vaccable = reader.ReadBool();
         Exchangeable = reader.ReadBool();
@@ -228,6 +214,9 @@ public sealed class SlimeData : SpawnedActorData
     public override void OnDeserialise()
     {
         base.OnDeserialise();
+
+        NormalAppearance.OnDeserialise();
+        SSAppearance?.OnDeserialise();
 
         var upper = Name.ToUpperInvariant();
 
@@ -322,122 +311,81 @@ public sealed class SlimeAppearanceData : JsonData
     {
         base.FindStrings(writer);
 
-        PoolColor(writer, MainAmmoColor);
-        PoolColor(writer, TopMouthColor);
-        PoolColor(writer, MiddleMouthColor);
-        PoolColor(writer, BottomMouthColor);
-        PoolColor(writer, RedEyeColor);
-        PoolColor(writer, GreenEyeColor);
-        PoolColor(writer, BlueEyeColor);
-        PoolColor(writer, TopPaletteColor);
-        PoolColor(writer, MiddlePaletteColor);
-        PoolColor(writer, BottomPaletteColor);
-        PoolColor(writer, PlortAmmoColor);
+        writer.PoolSubstring(MainAmmoColor, 1);
 
-        foreach (var feature in SlimeFeatures)
-            feature.FindStrings(writer);
+        writer.PoolSubstring(TopMouthColor, 1);
+        writer.PoolSubstring(MiddleMouthColor, 1);
+        writer.PoolSubstring(BottomMouthColor, 1);
 
-        foreach (var feature in GordoFeatures)
-            feature.FindStrings(writer);
+        writer.PoolSubstring(RedEyeColor, 1);
+        writer.PoolSubstring(GreenEyeColor, 1);
+        writer.PoolSubstring(BlueEyeColor, 1);
 
-        foreach (var feature in PlortFeatures)
-            feature.FindStrings(writer);
-    }
+        writer.PoolSubstring(TopPaletteColor, 1);
+        writer.PoolSubstring(MiddlePaletteColor, 1);
+        writer.PoolSubstring(BottomPaletteColor, 1);
 
-    private static void PoolColor(DataWriter writer, string colorHex)
-    {
-        if (!string.IsNullOrEmpty(colorHex))
-            writer.PoolString(colorHex.Replace("#", string.Empty));
+        writer.PoolSubstring(PlortAmmoColor, 1);
+
+        Array.ForEach(SlimeFeatures, f => f.FindStrings(writer));
+        Array.ForEach(GordoFeatures, f => f.FindStrings(writer));
+        Array.ForEach(PlortFeatures, f => f.FindStrings(writer));
     }
 
     public override void WriteTo(DataWriter writer)
     {
-        base.WriteTo(writer); // writes Name
+        base.WriteTo(writer);
 
-        WriteColor(writer, MainAmmoColor);
-        WriteColor(writer, TopMouthColor);
-        WriteColor(writer, MiddleMouthColor);
-        WriteColor(writer, BottomMouthColor);
-        WriteColor(writer, RedEyeColor);
-        WriteColor(writer, GreenEyeColor);
-        WriteColor(writer, BlueEyeColor);
-        WriteColor(writer, TopPaletteColor);
-        WriteColor(writer, MiddlePaletteColor);
-        WriteColor(writer, BottomPaletteColor);
-        WriteColor(writer, PlortAmmoColor);
+        writer.WriteSubstring(MainAmmoColor, 1);
 
-        WriteModelArray(writer, SlimeFeatures);
-        WriteModelArray(writer, GordoFeatures);
-        WriteModelArray(writer, PlortFeatures);
+        writer.WriteSubstring(TopMouthColor, 1);
+        writer.WriteSubstring(MiddleMouthColor, 1);
+        writer.WriteSubstring(BottomMouthColor, 1);
 
-        writer.WriteBool(Jiggle.HasValue);
+        writer.WriteSubstring(RedEyeColor, 1);
+        writer.WriteSubstring(GreenEyeColor, 1);
+        writer.WriteSubstring(BlueEyeColor, 1);
 
-        if (Jiggle.HasValue)
-            writer.WritePackedFloat(Jiggle.Value);
-    }
+        writer.WriteSubstring(TopPaletteColor, 1);
+        writer.WriteSubstring(MiddlePaletteColor, 1);
+        writer.WriteSubstring(BottomPaletteColor, 1);
 
-    private static void WriteColor(DataWriter writer, string colorHex)
-    {
-        writer.WriteString(colorHex?.Replace("#", string.Empty) ?? string.Empty);
-    }
+        writer.WriteSubstring(PlortAmmoColor, 1);
 
-    private static void WriteModelArray(DataWriter writer, ModelData[] array)
-    {
-        writer.WritePackedUInt((uint)array.Length);
+        writer.WriteArray(SlimeFeatures, (w, f) => f.WriteTo(w));
+        writer.WriteArray(GordoFeatures, (w, f) => f.WriteTo(w));
+        writer.WriteArray(PlortFeatures, (w, f) => f.WriteTo(w));
 
-        foreach (var model in array)
-            model.WriteTo(writer);
+        writer.WriteNullablePackedFloat(Jiggle);
     }
 #else
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
 
-        MainAmmoColor = ReadColorNonNull(reader);
-        TopMouthColor = ReadColorNullable(reader);
-        MiddleMouthColor = ReadColorNullable(reader);
-        BottomMouthColor = ReadColorNullable(reader);
-        RedEyeColor = ReadColorNullable(reader);
-        GreenEyeColor = ReadColorNullable(reader);
-        BlueEyeColor = ReadColorNullable(reader);
-        TopPaletteColor = ReadColorNullable(reader);
-        MiddlePaletteColor = ReadColorNullable(reader);
-        BottomPaletteColor = ReadColorNullable(reader);
-        PlortAmmoColor = ReadColorNullable(reader);
+        MainAmmoColor = ReadHex(reader) ?? Color.white;
+        TopMouthColor = ReadHex(reader);
+        MiddleMouthColor = ReadHex(reader);
+        BottomMouthColor = ReadHex(reader);
+        RedEyeColor = ReadHex(reader);
+        GreenEyeColor = ReadHex(reader);
+        BlueEyeColor = ReadHex(reader);
+        TopPaletteColor = ReadHex(reader);
+        MiddlePaletteColor = ReadHex(reader);
+        BottomPaletteColor = ReadHex(reader);
+        PlortAmmoColor = ReadHex(reader);
 
-        SlimeFeatures = ReadModelArray(reader);
-        GordoFeatures = ReadModelArray(reader);
-        PlortFeatures = ReadModelArray(reader);
+        SlimeFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; });
+        GordoFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; });
+        PlortFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; });
 
-        if (reader.ReadBool())
-            Jiggle = reader.ReadPackedFloat();
+        Jiggle = reader.ReadNullablePackedFloat();
     }
 
-    private static Color ReadColorNonNull(DataReader reader)
-    {
-        var col = reader.ReadString();
-        return string.IsNullOrEmpty(col) ? Color.white : ("#" + col).HexToColor();
-    }
-
-    private static Color? ReadColorNullable(DataReader reader)
+    private static Color? ReadHex(DataReader reader)
     {
         var col = reader.ReadString();
         return string.IsNullOrEmpty(col) ? null : ("#" + col).HexToColor();
-    }
-
-    private static ModelData[] ReadModelArray(DataReader reader)
-    {
-        var count = reader.ReadPackedUInt();
-        var array = new ModelData[count];
-
-        for (var i = 0; i < count; i++)
-        {
-            // Assumes ModelData has a parameterless constructor
-            array[i] = new ModelData();
-            array[i].ReadFrom(reader);
-        }
-
-        return array;
     }
 
     public override void OnDeserialise()

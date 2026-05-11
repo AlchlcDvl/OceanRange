@@ -8,7 +8,7 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <summary>
     /// Contains the manifest paths of the assets.
     /// </summary>
-    private readonly Dictionary<string, string> Paths = [];
+    private readonly Dictionary<string, string> Paths = new(StringComparer.Ordinal);
 
     /// <summary>
     /// The collective name of the assets contained by this handle.

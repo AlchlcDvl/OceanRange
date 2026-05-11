@@ -51,18 +51,8 @@ public abstract class SpawnedActorData : ActorData
         writer.WritePackedUInt((uint)ExchangeWeight);
         writer.WritePackedFloat(BasePrice);
         writer.WritePackedFloat(Saturation);
-        writer.WriteString(MainAmmoColor?.Replace("#", string.Empty));
-
-        if (Progress.IsNullOrEmpty())
-        {
-            writer.WritePackedUInt(0);
-            return;
-        }
-
-        writer.WritePackedUInt((uint)Progress.Length);
-
-        for (int i = 0; i < Progress.Length; i++)
-            writer.WriteString(Progress[i]);
+        writer.WriteSubstring(MainAmmoColor, 1);
+        writer.WriteStringArray(Progress);
     }
 
     public override void FindStrings(DataWriter writer)

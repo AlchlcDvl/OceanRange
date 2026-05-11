@@ -55,41 +55,8 @@ public sealed class RancherData : JsonData
         Mailbox.MailMap["exchangeintro_" + RancherId].UnlockFuncAnd += _ =>
             SceneContext.Instance.ProgressDirector.HasProgress(exchange);
     }
-#else
-    [JsonRequired] public string[] Rewards;
-    [JsonRequired] public string[] Requests;
-    [JsonRequired] public string[] RareRewards;
 
-    public string[] IndivRewards;
-    public string[] IndivRequests;
-    public string[] IndivRareRewards;
-
-    public override void FindStrings(DataWriter writer)
-    {
-        base.FindStrings(writer);
-
-        writer.PoolStrings(Rewards);
-        writer.PoolStrings(Requests);
-        writer.PoolStrings(RareRewards);
-        writer.PoolStrings(IndivRewards);
-        writer.PoolStrings(IndivRequests);
-        writer.PoolStrings(IndivRareRewards);
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-
-        writer.WriteStringArray(Rewards);
-        writer.WriteStringArray(Requests);
-        writer.WriteStringArray(RareRewards);
-        writer.WriteStringArray(IndivRewards);
-        writer.WriteStringArray(IndivRequests);
-        writer.WriteStringArray(IndivRareRewards);
-    }
-#endif
-
-    private static readonly HashSet<string> OfferIds = [];
+    private static readonly HashSet<string> OfferIds = new(StringComparer.Ordinal);
     private static readonly Dictionary<Language, HashSet<int>> LoadingIndices = new(LanguageComparer.Instance);
 
     public void HandleTranslationData(RancherLangData langData, Language lang)
@@ -132,4 +99,37 @@ public sealed class RancherData : JsonData
     private static string GetNextLoadingIdBypass(Language lang) => CLS.AddToLoading.GetNextLoadingId(lang);
 
     private static void AddLocalTipTextBypass(string id, Language lang) => CLS.AddToLoading.AddLocalTipText(id, lang);
+#else
+    [JsonRequired] public string[] Rewards;
+    [JsonRequired] public string[] Requests;
+    [JsonRequired] public string[] RareRewards;
+
+    public string[] IndivRewards;
+    public string[] IndivRequests;
+    public string[] IndivRareRewards;
+
+    public override void FindStrings(DataWriter writer)
+    {
+        base.FindStrings(writer);
+
+        writer.PoolStrings(Rewards);
+        writer.PoolStrings(Requests);
+        writer.PoolStrings(RareRewards);
+        writer.PoolStrings(IndivRewards);
+        writer.PoolStrings(IndivRequests);
+        writer.PoolStrings(IndivRareRewards);
+    }
+
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+
+        writer.WriteStringArray(Rewards);
+        writer.WriteStringArray(Requests);
+        writer.WriteStringArray(RareRewards);
+        writer.WriteStringArray(IndivRewards);
+        writer.WriteStringArray(IndivRequests);
+        writer.WriteStringArray(IndivRareRewards);
+    }
+#endif
 }

@@ -3,13 +3,33 @@ namespace OceanRange.Data;
 public sealed class DataWriter(BinaryWriter writer) : IDisposable
 {
     private readonly BinaryWriter Writer = writer;
-    private readonly Dictionary<string, uint> PooledStrings = [];
-    private uint Index = 1;
+    private readonly Dictionary<string, uint> PooledStrings = new(StringComparer.Ordinal);
+    private uint Index = 1u;
+
+    public void PoolSubstring(string value, int startIndex) => PoolString(value?.Substring(startIndex));
 
     public void PoolString(string value)
     {
         if (!string.IsNullOrEmpty(value) && !PooledStrings.ContainsKey(value))
             PooledStrings[value] = Index++;
+    }
+
+    public void PoolSubstrings(string[] values, int startIndex)
+    {
+        if (values.IsNullOrEmpty())
+            return;
+
+        for (var i = 0; i < values.Length; i++)
+            PoolString(values[i]?.Substring(startIndex));
+    }
+
+    public void PoolSubstrings(ICollection<string> values, int startIndex)
+    {
+        if (values.IsNullOrEmpty())
+            return;
+
+        foreach (var value in values)
+            PoolString(value?.Substring(startIndex));
     }
 
     public void PoolStrings(string[] values)
@@ -114,15 +134,7 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
         WriteVector3(value.Scale);
     }
 
-    public void WriteStringArray(string[] array)
-    {
-        WritePackedUInt((uint)(array?.Length ?? 0));
-        if (array == null)
-            return;
-
-        foreach (var s in array)
-            WriteString(s);
-    }
+    public void WriteStringArray(string[] array) => WriteArray(array, (w, v) => w.WriteString(v));
 
     public void WriteDouble(double value) => Writer.Write(value);
 
@@ -134,33 +146,9 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
             WriteDouble(value.Value);
     }
 
-    public void WriteStringDictionary(Dictionary<string, string> dict)
-    {
-        WritePackedUInt((uint)(dict?.Count ?? 0));
+    public void WriteStringDictionary(Dictionary<string, string> dict) => WriteDictionary(dict, (w, v) => w.WriteString(v), (w, v) => w.WriteString(v));
 
-        if (dict == null)
-            return;
-
-        foreach (var kvp in dict)
-        {
-            WriteString(kvp.Key);
-            WriteString(kvp.Value);
-        }
-    }
-
-    public void WriteStringToStringDictionary(Dictionary<string, Dictionary<string, string>> dict)
-    {
-        WritePackedUInt((uint)(dict?.Count ?? 0));
-
-        if (dict == null)
-            return;
-
-        foreach (var kvp in dict)
-        {
-            WriteString(kvp.Key);
-            WriteStringDictionary(kvp.Value);
-        }
-    }
+    public void WriteStringToStringDictionary(Dictionary<string, Dictionary<string, string>> dict) => WriteDictionary(dict, (w, v) => w.WriteString(v), (w, v) => w.WriteStringDictionary(v));
 
     public void WriteNullableStringToStringDictionary(Dictionary<string, Dictionary<string, string>> dict)
     {
@@ -170,6 +158,50 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
         if (hasValue)
             WriteStringToStringDictionary(dict);
     }
+
+    public void WriteArray<T>(T[] array, Action<DataWriter, T> elementWriter)
+    {
+        var count = (uint)(array?.Length ?? 0);
+        WritePackedUInt(count);
+
+        if (count == 0)
+            return;
+
+        for (var i = 0; i < count; i++)
+            elementWriter(this, array[i]);
+    }
+
+    public void WriteDictionary<TKey, TValue>(Dictionary<TKey, TValue> dict, Action<DataWriter, TKey> keyWriter, Action<DataWriter, TValue> valueWriter)
+    {
+        WritePackedUInt((uint)(dict?.Count ?? 0));
+
+        if (dict == null)
+            return;
+
+        foreach (var (key, value) in dict)
+        {
+            keyWriter(this, key);
+            valueWriter(this, value);
+        }
+    }
+
+    public void WriteNullablePackedFloat(float? value)
+    {
+        WriteBool(value.HasValue);
+
+        if (value.HasValue)
+            WritePackedFloat(value.Value);
+    }
+
+    public void WriteNullablePackedUInt(uint? value)
+    {
+        WriteBool(value.HasValue);
+
+        if (value.HasValue)
+            WritePackedUInt(value.Value);
+    }
+
+    public void WriteSubstring(string value, int startIndex) => WriteString(value?.Substring(startIndex));
 
     public void Dispose() => Writer.Dispose();
 

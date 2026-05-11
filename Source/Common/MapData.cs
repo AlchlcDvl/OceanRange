@@ -11,8 +11,35 @@
 //     [JsonProperty("rancherProgress")] public int ExchangeProgress;
 
 //     [JsonRequired] public string PathToGameObject;
+
+// #if UNITY
+//     public override void FindStrings(DataWriter writer)
+//     {
+//         base.FindStrings(writer);
+//         writer.PoolString(PathToGameObject);
+//     }
+
+//     public override void WriteTo(DataWriter writer)
+//     {
+//         base.WriteTo(writer);
+//         writer.WritePackedUInt((uint)CorporateLevelMin);
+//         writer.WritePackedUInt((uint)CorporateLevelMax);
+//         writer.WritePackedUInt((uint)ExchangeProgress);
+//         writer.WriteString(PathToGameObject);
+//     }
+// #else
+//     public override void ReadFrom(DataReader reader)
+//     {
+//         base.ReadFrom(reader);
+//         CorporateLevelMin = (int)reader.ReadPackedUInt();
+//         CorporateLevelMax = (int)reader.ReadPackedUInt();
+//         ExchangeProgress = (int)reader.ReadPackedUInt();
+//         PathToGameObject = reader.ReadString();
+//     }
+// #endif
 // }
 
+// #if !UNITY
 // public enum RequirementType : byte
 // {
 //     CorporateLevel,
@@ -21,17 +48,23 @@
 
 //     // add more?
 // }
+// #endif
 
 // public sealed class ZoneData : JsonData
 // {
+// #if UNITY
+//     [JsonRequired] public string Region;
+//     public Dictionary<string, ZoneRequirementData> Requirements;
+// #else
 //     [JsonRequired] public RegionId Region;
+//     public Dictionary<RequirementType, ZoneRequirementData> Requirements;
+// #endif
 
 //     [JsonProperty("teleporterOri"), JsonRequired] public Orientation TeleporterOrientation;
 //     [JsonProperty("teleporterLoc"), JsonRequired] public string TeleporterLocation;
 //     [JsonProperty("prefab"), JsonRequired] public string AssetName;
 
-//     public Dictionary<RequirementType, ZoneRequirementData> Requirements;
-
+// #if !UNITY
 //     [JsonIgnore] public Zone Zone;
 //     [JsonIgnore] public PediaId PediaId;
 //     [JsonIgnore] public Ambiance Ambiance;
@@ -39,14 +72,65 @@
 //     [JsonIgnore] public GameObject Prefab;
 //     [JsonIgnore] public AmbianceDirectorZoneSetting AmbianceSetting;
 
-//     protected override void OnDeserialise()
+//     public override void ReadFrom(DataReader reader)
 //     {
+//         base.ReadFrom(reader);
+//         Region = reader.ReadEnum<RegionId>();
+//         TeleporterOrientation = reader.ReadOrientation();
+//         TeleporterLocation = reader.ReadString();
+//         AssetName = reader.ReadString();
+
+//         Requirements = reader.ReadDictionary(
+//             r => r.ReadEnum<RequirementType>(),
+//             r => { var z = new ZoneRequirementData(); z.ReadFrom(r); return z; }
+//         );
+//     }
+
+//     public override void OnDeserialise()
+//     {
+//         if (Requirements != null)
+//         {
+//             foreach (var req in Requirements.Values)
+//                 req.OnDeserialise();
+//         }
+
 //         var upper = Name.ToUpperInvariant();
 
 //         Zone = Helpers.AddEnumValue<Zone>(upper);
 //         PediaId = Helpers.AddEnumValue<PediaId>(upper + "_ENTRY");
 //         Ambiance = Helpers.AddEnumValue<Ambiance>(upper + "_AMBIANCE");
 //     }
+// #else
+//     public override void FindStrings(DataWriter writer)
+//     {
+//         base.FindStrings(writer);
+//         writer.PoolString(Region);
+//         writer.PoolString(TeleporterLocation);
+//         writer.PoolString(AssetName);
+
+//         if (Requirements.IsNullOrEmpty())
+//             return;
+
+//         writer.PoolStrings(Requirements.Keys);
+
+//         foreach (var req in Requirements.Values)
+//             req.FindStrings(writer);
+//     }
+
+//     public override void WriteTo(DataWriter writer)
+//     {
+//         base.WriteTo(writer);
+//         writer.WriteString(Region);
+//         writer.WriteOrientation(TeleporterOrientation);
+//         writer.WriteString(TeleporterLocation);
+//         writer.WriteString(AssetName);
+
+//         writer.WriteDictionary(Requirements,
+//             (w, k) => w.WriteString(k),
+//             (w, v) => v.WriteTo(w)
+//         );
+//     }
+// #endif
 // }
 
 // public sealed class RegionData : JsonData
@@ -57,13 +141,67 @@
 
 //     [JsonRequired] public Vector3 InitialWorldPos;
 
+// #if !UNITY
 //     [JsonIgnore] public RegionId Region;
 
-//     protected override void OnDeserialise() => Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
+//     public override void ReadFrom(DataReader reader)
+//     {
+//         base.ReadFrom(reader);
+//         MinNodeSize = reader.ReadPackedFloat();
+//         LoosenessVal = reader.ReadPackedFloat();
+//         InitialWorldSize = reader.ReadPackedFloat();
+//         InitialWorldPos = reader.ReadVector3();
+//     }
+
+//     public override void OnDeserialise()
+//     {
+//         base.OnDeserialise();
+//         Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
+//     }
+// #else
+//     public override void WriteTo(DataWriter writer)
+//     {
+//         base.WriteTo(writer);
+//         writer.WritePackedFloat(MinNodeSize);
+//         writer.WritePackedFloat(LoosenessVal);
+//         writer.WritePackedFloat(InitialWorldSize);
+//         writer.WriteVector3(InitialWorldPos);
+//     }
+// #endif
 // }
 
 // public sealed class World : JsonData
 // {
 //     [JsonRequired] public RegionData[] Regions;
 //     [JsonRequired] public ZoneData[] Zones;
+
+// #if UNITY
+//     public override void FindStrings(DataWriter writer)
+//     {
+//         base.FindStrings(writer);
+//         Array.ForEach(Regions, r => r.FindStrings(writer));
+//         Array.ForEach(Zones, z => z.FindStrings(writer));
+//     }
+
+//     public override void WriteTo(DataWriter writer)
+//     {
+//         base.WriteTo(writer);
+//         writer.WriteArray(Regions, (w, r) => r.WriteTo(w));
+//         writer.WriteArray(Zones, (w, z) => z.WriteTo(w));
+//     }
+// #else
+//     public override void ReadFrom(DataReader reader)
+//     {
+//         base.ReadFrom(reader);
+//         Regions = reader.ReadArray(r => { var d = new RegionData(); d.ReadFrom(r); return d; });
+//         Zones = reader.ReadArray(r => { var d = new ZoneData(); d.ReadFrom(r); return d; });
+//     }
+
+//     public override void OnDeserialise()
+//     {
+//         base.OnDeserialise();
+//         Array.ForEach(Regions, r => r.OnDeserialise());
+//         Array.ForEach(Zones, z => z.OnDeserialise());
+//     }
+// #endif
 // }

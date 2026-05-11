@@ -2,8 +2,6 @@ namespace OceanRange.Data;
 
 public sealed class DataReader : IDisposable
 {
-    public static readonly Func<DataReader, string> String = reader => reader.ReadString();
-
     private readonly BinaryReader Reader;
     private readonly string[] PooledStrings;
     private readonly bool HasPooledStrings;
@@ -96,7 +94,7 @@ public sealed class DataReader : IDisposable
         return array;
     }
 
-    private static readonly Dictionary<string, Type> CachedTypes = [];
+    private static readonly Dictionary<string, Type> CachedTypes = new(StringComparer.Ordinal);
 
     public Type ReadType()
     {
@@ -119,34 +117,49 @@ public sealed class DataReader : IDisposable
         return string.IsNullOrEmpty(value) ? null : Helpers.ParseEnum<T>(value);
     }
 
+    public T ReadEnum<T>() where T : struct, Enum => Helpers.ParseEnum<T>(ReadString());
+
     public double ReadDouble() => Reader.ReadDouble();
 
     public double? ReadNullableDouble() => ReadBool() ? ReadDouble() : null;
 
-    public Dictionary<string, string> ReadStringDictionary()
-    {
-        var count = ReadPackedUInt();
-        var dict = new Dictionary<string, string>((int)count);
+    public Dictionary<string, string> ReadStringDictionary() => ReadDictionary(r => r.ReadString(), r => r.ReadString(), StringComparer.Ordinal);
 
-        for (var i = 0; i < count; i++)
-            dict[ReadString()] = ReadString();
-
-        return dict;
-    }
-
-    public Dictionary<string, Dictionary<string, string>> ReadStringToStringDictionary()
-    {
-        var count = ReadPackedUInt();
-        var dict = new Dictionary<string, Dictionary<string, string>>((int)count);
-
-        for (var i = 0; i < count; i++)
-            dict[ReadString()] = ReadStringDictionary();
-
-        return dict;
-    }
+    public Dictionary<string, Dictionary<string, string>> ReadStringToStringDictionary() => ReadDictionary(r => r.ReadString(), r => r.ReadStringDictionary(), StringComparer.Ordinal);
 
     public Dictionary<string, Dictionary<string, string>> ReadNullableStringToStringDictionary()
         => ReadBool() ? ReadStringToStringDictionary() : null;
+
+    public Dictionary<TKey, TValue> ReadDictionary<TKey, TValue>(Func<DataReader, TKey> keyReader, Func<DataReader, TValue> valueReader, IEqualityComparer<TKey> comparer = null)
+    {
+        var dictCount = ReadPackedUInt();
+        var dict = new Dictionary<TKey, TValue>((int)dictCount, comparer ?? EqualityComparer<TKey>.Default);
+
+        for (var i = 0; i < dictCount; i++)
+            dict[keyReader(this)] = valueReader(this);
+
+        return dict;
+    }
+
+    public float? ReadNullablePackedFloat() => ReadBool() ? ReadPackedFloat() : null;
+
+    public uint? ReadNullablePackedUInt() => ReadBool() ? ReadPackedUInt() : null;
+
+    public T ReadFlagEnum<T>() where T : struct, Enum
+    {
+        var count = ReadPackedUInt();
+        var combined = 0;
+
+        for (var i = 0; i < count; i++)
+        {
+            var name = ReadString();
+
+            if (Enum.TryParse<T>(name, out var val))
+                combined |= (int)(object)val;
+        }
+
+        return (T)(object)combined;
+}
 
     public void Dispose() => Reader.Dispose();
 }

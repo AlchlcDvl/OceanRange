@@ -15,97 +15,37 @@ public sealed class Ingredients : JsonData
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
-
-        Groups = new GroupData[reader.ReadPackedUInt()];
-
-        for (var i = 0; i < Groups.Length; i++)
-        {
-            Groups[i] = new GroupData();
-            Groups[i].ReadFrom(reader);
-        }
-
-        Fruits = new FruitData[reader.ReadPackedUInt()];
-
-        for (var i = 0; i < Fruits.Length; i++)
-        {
-            Fruits[i] = new FruitData();
-            Fruits[i].ReadFrom(reader);
-        }
-
-        Veggies = new VeggieData[reader.ReadPackedUInt()];
-
-        for (var i = 0; i < Veggies.Length; i++)
-        {
-            Veggies[i] = new VeggieData();
-            Veggies[i].ReadFrom(reader);
-        }
-
-        Chimkens = new ChimkenData[reader.ReadPackedUInt()];
-
-        for (var i = 0; i < Chimkens.Length; i++)
-        {
-            Chimkens[i] = new ChimkenData();
-            Chimkens[i].ReadFrom(reader);
-        }
+        Groups = reader.ReadArray(r => { var d = new GroupData(); d.ReadFrom(r); return d; });
+        Fruits = reader.ReadArray(r => { var d = new FruitData(); d.ReadFrom(r); return d; });
+        Veggies = reader.ReadArray(r => { var d = new VeggieData(); d.ReadFrom(r); return d; });
+        Chimkens = reader.ReadArray(r => { var d = new ChimkenData(); d.ReadFrom(r); return d; });
     }
 
     public override void OnDeserialise()
     {
         base.OnDeserialise();
-
-        foreach (var group in Groups)
-            group.OnDeserialise();
-
-        foreach (var fruit in Fruits)
-            fruit.OnDeserialise();
-
-        foreach (var veggie in Veggies)
-            veggie.OnDeserialise();
-
-        foreach (var chimken in Chimkens)
-            chimken.OnDeserialise();
+        Array.ForEach(Groups, x => x.OnDeserialise());
+        Array.ForEach(Fruits, x => x.OnDeserialise());
+        Array.ForEach(Veggies, x => x.OnDeserialise());
+        Array.ForEach(Chimkens, x => x.OnDeserialise());
     }
-#else
+    #else
     public override void FindStrings(DataWriter writer)
     {
         base.FindStrings(writer);
-
-        foreach (var group in Groups)
-            group.FindStrings(writer);
-
-        foreach (var fruit in Fruits)
-            fruit.FindStrings(writer);
-
-        foreach (var veggie in Veggies)
-            veggie.FindStrings(writer);
-
-        foreach (var chimken in Chimkens)
-            chimken.FindStrings(writer);
+        Array.ForEach(Groups, x => x.FindStrings(writer));
+        Array.ForEach(Fruits, x => x.FindStrings(writer));
+        Array.ForEach(Veggies, x => x.FindStrings(writer));
+        Array.ForEach(Chimkens, x => x.FindStrings(writer));
     }
 
     public override void WriteTo(DataWriter writer)
     {
         base.WriteTo(writer);
-
-        writer.WritePackedUInt((uint)Groups.Length);
-
-        foreach (var g in Groups)
-            g.WriteTo(writer);
-
-        writer.WritePackedUInt((uint)Fruits.Length);
-
-        foreach (var f in Fruits)
-            f.WriteTo(writer);
-
-        writer.WritePackedUInt((uint)Veggies.Length);
-
-        foreach (var v in Veggies)
-            v.WriteTo(writer);
-
-        writer.WritePackedUInt((uint)Chimkens.Length);
-
-        foreach (var c in Chimkens)
-            c.WriteTo(writer);
+        writer.WriteArray(Groups, (w, g) => g.WriteTo(w));
+        writer.WriteArray(Fruits, (w, f) => f.WriteTo(w));
+        writer.WriteArray(Veggies, (w, v) => v.WriteTo(w));
+        writer.WriteArray(Chimkens, (w, c) => c.WriteTo(w));
     }
 #endif
 }
@@ -126,12 +66,7 @@ public sealed class GroupData : JsonData
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
-
-        var count = reader.ReadPackedUInt();
-        Foods = new IdentifiableId[count];
-
-        for (var i = 0; i < count; i++)
-            Foods[i] = Helpers.ParseEnum<IdentifiableId>(reader.ReadString());
+        Foods = reader.ReadEnumArray<IdentifiableId>();
     }
 #else
     public override void FindStrings(DataWriter writer)
@@ -143,9 +78,7 @@ public sealed class GroupData : JsonData
     public override void WriteTo(DataWriter writer)
     {
         base.WriteTo(writer);
-        writer.WritePackedUInt((uint)Foods.Length);
-        foreach (var food in Foods)
-            writer.WriteString(food);
+        writer.WriteStringArray(Foods);
     }
 #endif
 }
@@ -153,7 +86,7 @@ public sealed class GroupData : JsonData
 public abstract class FoodData : SpawnedActorData
 {
 #if !UNITY
-    protected static readonly Dictionary<string, Action<GameObject>> Methods = [];
+    protected static readonly Dictionary<string, Action<GameObject>> Methods = new(StringComparer.Ordinal);
 
     static FoodData()
     {
@@ -208,11 +141,7 @@ public sealed class ChimkenData : FoodData
         base.ReadFrom(reader);
         SpawnAmount = reader.ReadPackedFloat();
         ChickSpawnAmount = reader.ReadPackedFloat();
-        var count = reader.ReadPackedUInt();
-        Zones = new Zone[count];
-
-        for (var i = 0; i < count; i++)
-            Zones[i] = Helpers.ParseEnum<Zone>(reader.ReadString());
+        Zones = reader.ReadEnumArray<Zone>();
     }
 #else
     public override void FindStrings(DataWriter writer)
@@ -226,10 +155,7 @@ public sealed class ChimkenData : FoodData
         base.WriteTo(writer);
         writer.WritePackedFloat(SpawnAmount);
         writer.WritePackedFloat(ChickSpawnAmount);
-        writer.WritePackedUInt((uint)Zones.Length);
-
-        foreach (var zone in Zones)
-            writer.WriteString(zone);
+        writer.WriteStringArray(Zones);
     }
 #endif
 }
@@ -287,36 +213,19 @@ public abstract class PlantData : FoodData
     {
         base.ReadFrom(reader);
 
-        if (reader.ReadBool())
-            BasePlant = Helpers.ParseEnum<IdentifiableId>(reader.ReadString());
-
-        if (reader.ReadBool())
-            BaseResource = Helpers.ParseEnum<SpawnResourceId>(reader.ReadString());
+        BasePlant = reader.ReadNullableEnum<IdentifiableId>();
+        BaseResource = reader.ReadNullableEnum<SpawnResourceId>();
 
         AdjustColliders = reader.ReadBool();
-
-        var dictCount = reader.ReadPackedUInt();
-        SpawnLocations = new Dictionary<string, Orientation[]>((int)dictCount);
-
-        for (var i = 0; i < dictCount; i++)
-        {
-            var key = reader.ReadString();
-            var arrLength = reader.ReadPackedUInt();
-            var orientations = new Orientation[arrLength];
-
-            for (var j = 0; j < arrLength; j++)
-                orientations[j] = reader.ReadOrientation();
-
-            SpawnLocations[key] = orientations;
-        }
+        SpawnLocations = reader.ReadDictionary(r => r.ReadString(), r => r.ReadArray(r2 => r2.ReadOrientation()), StringComparer.Ordinal);
     }
 #else
     public override void FindStrings(DataWriter writer)
     {
         base.FindStrings(writer);
 
-        writer.PoolString(BasePlant?.ToString());
-        writer.PoolString(BaseResource?.ToString());
+        writer.PoolString(BasePlant);
+        writer.PoolString(BaseResource);
 
         if (SpawnLocations != null)
             writer.PoolStrings(SpawnLocations.Keys);
@@ -331,23 +240,7 @@ public abstract class PlantData : FoodData
 
         writer.WriteBool(AdjustColliders);
 
-        if (SpawnLocations.IsNullOrEmpty())
-        {
-            writer.WritePackedUInt(0);
-        }
-        else
-        {
-            writer.WritePackedUInt((uint)SpawnLocations.Count);
-
-            foreach (var kvp in SpawnLocations)
-            {
-                writer.WriteString(kvp.Key);
-                writer.WritePackedUInt((uint)kvp.Value.Length);
-
-                foreach (var orientation in kvp.Value)
-                    writer.WriteString(orientation.ToString());
-            }
-        }
+        writer.WriteDictionary(SpawnLocations, (w, v) => w.WriteString(v), (w, v) => w.WriteArray(v, (w2, v2) => w2.WriteOrientation(v2)));
     }
 #endif
 }
