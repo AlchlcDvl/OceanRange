@@ -42,7 +42,7 @@ public static class Inventory
     public static readonly SoftTypeDictionary<(string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
     {
         // Embedded resources
-        [typeof(Json)] = (["json"], LoadJson),
+        [typeof(Json)] = (["cjson"], LoadJson),
         [typeof(Mesh)] = (["cmesh"], LoadMesh),
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
@@ -73,7 +73,7 @@ public static class Inventory
     /// </summary>
     private static readonly Dictionary<string, AssetHandle> Assets = new(StringComparer.Ordinal);
 
-    private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*.Concat(Platforms.Select(x => "bundle_" + x))*/, StringComparer.Ordinal)];
+    private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*.Concat(Platforms.Select(x => "bundle_" + x))*/, StringComparer.Ordinal), "json"];
 
     /// <summary>
     /// Debug string path for the mod to dump assets.
@@ -186,9 +186,11 @@ public static class Inventory
         {
             var data = new T();
             data.ReadFrom(reader);
-            data.OnDeserialise();
             array[i] = data;
         }
+
+        for (var i = 0; i < count; i++)
+            array[i].OnDeserialise();
 
         return array;
     }
@@ -300,7 +302,12 @@ public static class Inventory
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     /// <returns>The JSON asset loaded from the path.</returns>
-    private static Json LoadJson(string path) => new(path.ReadBytes());
+    private static Json LoadJson(string path)
+    {
+        var json = ScriptableObject.CreateInstance<Json>();
+        json.Initialise(path.ReadBytes());
+        return json;
+    }
 
     /// <summary>
     /// Loads a mesh file from the provided path.

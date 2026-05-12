@@ -20,24 +20,25 @@ global using AppearanceSaveSet = SlimeAppearance.AppearanceSaveSet;
 
 global using SRML.SR;
 
-global using UnityEngine;
-
 global using HarmonyLib;
 
 global using OceanRange.Managers;
 global using OceanRange.Modules;
 global using OceanRange.Slimes;
-global using OceanRange.Utils;
-global using OceanRange.Data;
 
 global using MonomiPark.SlimeRancher.Regions;
+
+global using JetBrains.Annotations;
+#endif
+
+global using UnityEngine;
+
+global using OceanRange.Data;
+global using OceanRange.Utils;
+
+global using Newtonsoft.Json;
 
 global using System;
 global using System.IO;
 global using System.Linq;
 global using System.Collections.Generic;
-
-global using JetBrains.Annotations;
-#endif
-
-global using Newtonsoft.Json;

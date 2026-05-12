@@ -141,7 +141,7 @@ public sealed class MatData : JsonData
         if (!ColorProps.IsNullOrEmpty())
             return;
 
-        if (Pattern == null && !Gloss.HasValue && !ColorsOrigin.HasValue && !InvertColorOriginColors)
+        if (string.IsNullOrEmpty(Pattern) && !Gloss.HasValue && !ColorsOrigin.HasValue && !InvertColorOriginColors)
             IsModified = false;
     }
 #else

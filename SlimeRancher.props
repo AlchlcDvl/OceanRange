@@ -3,9 +3,17 @@
 
   <Target Name="Copy" AfterTargets="Build">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Mods/" Condition="$(Configuration)!=Unity" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Unity/Assets/Plugins" Condition="$(Configuration)==Unity" />
   </Target>
 
   <ItemGroup>
+    <Reference Include="$(MSBuildThisFileDirectory)/SrLibs/*.dll">
+      <Private>false</Private>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="$(Configuration)!=Unity">
     <Reference Include="$(MSBuildThisFileDirectory)/Libs/*.dll">
       <Private>false</Private>
       <ExcludeAssets>runtime</ExcludeAssets>
@@ -15,6 +23,13 @@
       <ExcludeAssets>runtime</ExcludeAssets>
     </Reference>
     <Reference Include="$(MSBuildThisFileDirectory)/SrmlLibs/*.dll">
+      <Private>false</Private>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="$(Configuration)==Unity">
+    <Reference Include="$(MSBuildThisFileDirectory)/SrmlLibs/Newtonsoft.Json.dll">
       <Private>false</Private>
       <ExcludeAssets>runtime</ExcludeAssets>
     </Reference>

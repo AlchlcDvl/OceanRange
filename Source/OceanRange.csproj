@@ -4,7 +4,6 @@
     <RootNamespace>OceanRange</RootNamespace>
     <TargetFramework>net4.7.2</TargetFramework>
     <Version>0.3.0</Version>
-    <DebugType>none</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>preview</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -20,10 +19,16 @@
 
   <PropertyGroup Condition="$(Configuration)==Unity">
     <DefineConstants>UNITY</DefineConstants>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration)==Debug">
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration)==Release">
     <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup Condition="$(Configuration)!=Unity">
@@ -36,16 +41,21 @@
     <EmbeddedResource Include="Resources\*\*" />
     <EmbeddedResource Include="Resources\*\*\*" />
 
-    <EmbeddedResource Remove="Resources\Data\atlas.json" />
-
     <Publicize Include="Assembly-CSharp" IncludeCompilerGeneratedMembers="false" />
     <Publicize Include="UnityEngine.CoreModule" />
+
+    <Compile Remove="Unity\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="$(Configuration)==Unity">
     <Compile Remove="**\*.cs" />
 
+    <Compile Include="GlobalUsings.cs" />
+    <Compile Include="Data\DataWriter.cs" />
+    <Compile Include="Utils\UnityUtils.cs" />
     <Compile Include="Unity\*.cs" />
+    <Compile Include="Common\*.cs" />
+    <Compile Include="System\*.cs" />
   </ItemGroup>
 
   <Import Project="../SlimeRancher.props" />

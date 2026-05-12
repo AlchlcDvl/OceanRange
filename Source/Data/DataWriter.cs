@@ -1,3 +1,4 @@
+#if UNITY
 namespace OceanRange.Data;
 
 public sealed class DataWriter(BinaryWriter writer) : IDisposable
@@ -207,3 +208,4 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
 
     public void Flush() => Writer?.Flush();
 }
+#endif

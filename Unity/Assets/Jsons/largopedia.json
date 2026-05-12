@@ -36,7 +36,7 @@
     "name": "Rosi Lantern",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForFace",
+        "largoProps": ["UseSlime2ForFace"],
         "bodyStruct": { "matData": { "matOrigin": "ROSI_SLIME" } },
         "slime1Structs": [
           {
@@ -82,7 +82,7 @@
     "name": "Mine Lantern",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForFace",
+        "largoProps": ["UseSlime2ForFace"],
         "bodyStruct": { "matData": { "matOrigin": "ROSI_MINE_LARGO" } },
         "slime1Structs": [
           {
@@ -141,7 +141,7 @@
     "name": "Coco Saber",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForBody",
+        "largoProps": ["UseSlime2ForBody"],
         "bodyStruct": { "matData": { "matOrigin": "COCO_SLIME" } }
       }
     ]
@@ -280,7 +280,7 @@
     "name": "Coco Tabby",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForMouth",
+        "largoProps": ["UseSlime2ForMouth"],
         "slime2Structs": [
           { "matData": { "matOrigin": "COCO_SLIME" } },
           { "matData": { "matOrigin": "COCO_SLIME" } }
@@ -293,7 +293,7 @@
     "name": "Coco Hunter",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForFace",
+        "largoProps": ["UseSlime2ForFace"],
         "slime2Structs": [
           {
             "matData": {
@@ -379,7 +379,7 @@
     "name": "Pink Mesmer",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForBody",
+        "largoProps": ["UseSlime2ForBody"],
         "bodyStruct": { "matData": { "colorsOrigin": "PINK_SLIME" } },
         "slime2Structs": [
           { "matData": { "colorsOrigin": "PINK_SLIME" } },
@@ -393,7 +393,7 @@
   },
   {
     "name": "Saber Mesmer",
-    "appearances": [ { "largoProps": "UseSlime2ForBodyMaterial" } ]
+    "appearances": [ { "largoProps": ["UseSlime2ForBodyMaterial"] } ]
   },
   {
     "name": "Quantum Mesmer",
@@ -530,7 +530,7 @@
     "name": "Mosaic Mesmer",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForBodyMaterial"
+        "largoProps": ["UseSlime2ForBodyMaterial"]
       }
     ]
   },
@@ -718,7 +718,7 @@
     "name": "Tabby Mesmer",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForBodyMaterial",
+        "largoProps": ["UseSlime2ForBodyMaterial"],
         "slime1Structs": [
           {
             "matData": {
@@ -736,7 +736,7 @@
     "name": "Hunter Mesmer",
     "appearances": [
       {
-        "largoProps": "UseSlime2ForBodyMaterial",
+        "largoProps": ["UseSlime2ForBodyMaterial"],
         "slime1Structs": [
           {
             "matData": {

@@ -1,13 +1,11 @@
+#if UNITY
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace OceanRange.Data;
+namespace OceanRange.Unity;
 
 // Parsing validation delegate for byte, float etc
 public delegate bool TryParseDelegate<T>(string value, NumberStyles style, CultureInfo culture, out T component) where T : struct;
-
-// Unity's try parse methods for HTML strings, much faster and simpler using a delegate pointing to native code than doing it myself
-public delegate bool TryParseHtml<T>(string valString, out T color) where T : struct;
 
 /// <summary>
 /// Main base class for all JSON converters for all JSON serialised values. Provides wrappers for the read and write methods because the additional params are never used.
@@ -252,7 +250,7 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
     /// Orientation converter using a grouped Vector3 format.
     /// </summary>
     /// <remarks>Uses Vector3Converter under the hood.</remarks>
-    private sealed class OrientationConverterVector3() : MultiComponentConverter<Orientation, Vector3>("'x,y' or 'x,y,z' in groups of two or three separated by ;", NumberStyles.Float | NumberStyles.AllowThousands, Helpers.TryParseVector, 3,
+    private sealed class OrientationConverterVector3() : MultiComponentConverter<Orientation, Vector3>("'x,y' or 'x,y,z' in groups of two or three separated by ;", NumberStyles.Float | NumberStyles.AllowThousands, UnityUtils.TryParseVector, 3,
         2, Vector3.one, ';')
     {
         /// <inheritdoc/>
@@ -477,3 +475,4 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
 //     /// <inheritdoc/>
 //     protected override string ToValueString(Type value) => value.FullName + ", " + value.Assembly.GetName().Name;
 // }
+#endif

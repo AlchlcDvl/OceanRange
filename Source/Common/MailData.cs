@@ -55,36 +55,36 @@ public sealed class MailData : JsonData
         NoAndSubscribers = AndSubscribers.Length == 0;
     }
 
-    private Func<double, bool> _unlockFuncOr;
-    public event Func<double, bool> UnlockFuncOr
-    {
-        add
-        {
-            _unlockFuncOr += value;
-            UpdateOrCache();
-        }
-        remove
-        {
-            _unlockFuncOr -= value;
-            UpdateOrCache();
-        }
-    }
+    // private Func<double, bool> _unlockFuncOr;
+    // public event Func<double, bool> UnlockFuncOr
+    // {
+    //     add
+    //     {
+    //         _unlockFuncOr += value;
+    //         UpdateOrCache();
+    //     }
+    //     remove
+    //     {
+    //         _unlockFuncOr -= value;
+    //         UpdateOrCache();
+    //     }
+    // }
 
-    private Func<double, bool>[] OrSubscribers = [];
-    private bool NoOrSubscribers = true;
+    // private Func<double, bool>[] OrSubscribers = [];
+    // private bool NoOrSubscribers = true;
 
-    private void UpdateOrCache()
-    {
-        if (_unlockFuncOr == null)
-        {
-            OrSubscribers = [];
-            NoOrSubscribers = true;
-            return;
-        }
+    // private void UpdateOrCache()
+    // {
+    //     if (_unlockFuncOr == null)
+    //     {
+    //         OrSubscribers = [];
+    //         NoOrSubscribers = true;
+    //         return;
+    //     }
 
-        OrSubscribers = [.. _unlockFuncOr.GetInvocationList().Cast<Func<double, bool>>()];
-        NoOrSubscribers = OrSubscribers.Length == 0;
-    }
+    //     OrSubscribers = [.. _unlockFuncOr.GetInvocationList().Cast<Func<double, bool>>()];
+    //     NoOrSubscribers = OrSubscribers.Length == 0;
+    // }
 
     public override void ReadFrom(DataReader reader)
     {
@@ -104,14 +104,14 @@ public sealed class MailData : JsonData
         if (Sent || Read || UnlockAfter.GetValueOrDefault() > time)
             return false;
 
-        if (!NoOrSubscribers)
-        {
-            for (var i = 0; i < OrSubscribers.Length; i++)
-            {
-                if (OrSubscribers[i](time))
-                    return true;
-            }
-        }
+        // if (!NoOrSubscribers)
+        // {
+        //     for (var i = 0; i < OrSubscribers.Length; i++)
+        //     {
+        //         if (OrSubscribers[i](time))
+        //             return true;
+        //     }
+        // }
 
         if (NoAndSubscribers)
             return true;

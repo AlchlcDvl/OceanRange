@@ -317,7 +317,11 @@ public static class Helpers
 
     private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
-    public static Vector3 ParseVector(string value) => Vector3Converter.Instance.Parse(value);
+    public static Vector3 ParseVector(string value)
+    {
+        var values = value.TrueSplit(' ', ',', ';').Select(float.Parse).ToArray();
+        return new(values[0], values[1], values[2]);
+    }
 
     public static bool TryParseVector(string value, NumberStyles _1, CultureInfo _2, out Vector3 result)
     {
@@ -393,18 +397,7 @@ public static class Helpers
         // public Vector3 Abs() => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
     }
 
-    public static string ToColorString(this Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
-
-    extension(Type type)
-    {
-        public bool IsNullableOf<T>()
-        {
-            var tType = typeof(T);
-            return tType.IsValueType && tType.IsAssignableFrom(Nullable.GetUnderlyingType(type));
-        }
-
-        public bool IsNullableEnum() => Nullable.GetUnderlyingType(type) is { IsEnum: true };
-    }
+    // public static string ToColorString(this Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
 
     public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> pair, out TKey key, out TValue value)
     {

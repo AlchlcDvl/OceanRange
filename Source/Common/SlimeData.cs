@@ -3,7 +3,9 @@
 // ReSharper disable ConvertToConstant.Global
 // ReSharper disable MemberCanBePrivate.Global
 
+#if !UNITY
 using OceanRange.Saves;
+#endif
 
 namespace OceanRange.Data;
 
@@ -46,15 +48,15 @@ public sealed class SlimeData : SpawnedActorData
     public bool Exchangeable = true;
     public string GordoCell;
 
-    public Orientation GordoOrientation;
-    public bool NaturalGordoSpawn = true;
+    [JsonProperty("gordoOri")] public Orientation GordoOrientation;
+    [JsonProperty("natGordoSpawn")] public bool NaturalGordoSpawn = true;
 
     public int PlortExchangeWeight = 16;
     public float Jiggle = 1f;
 
-    private string OnomicsType = "pearls";
+    [JsonProperty] private string OnomicsType = "pearls";
 
-    public int GordoEatAmount = 25;
+    [JsonProperty("gordoEat")] public int GordoEatAmount = 25;
 
 #if UNITY
     [JsonRequired] public string FavToy;
@@ -71,8 +73,8 @@ public sealed class SlimeData : SpawnedActorData
     public string GordoZone;
     public string[] GordoRewards;
 
-    public string[] ComponentsToAdd;
-    public string[] ComponentsToRemove;
+    [JsonProperty("toAdd")] public string[] ComponentsToAdd;
+    [JsonProperty("toRemove")] public string[] ComponentsToRemove;
 #else
     public IdentifiableId FavToy;
     public Zone[] Zones;
@@ -85,7 +87,7 @@ public sealed class SlimeData : SpawnedActorData
     public IdentifiableId BaseGordo;
 
     public IdentifiableId? ComponentBase;
-    public Zone GordoZone;
+    public Zone? GordoZone;
     public IdentifiableId[] GordoRewards;
 
     public Type[] ComponentsToAdd;
@@ -172,6 +174,7 @@ public sealed class SlimeData : SpawnedActorData
         Zones = reader.ReadEnumArray<Zone>();
         FavFood = reader.ReadNullableEnum<IdentifiableId>();
         Diet = reader.ReadNullableEnum<FoodGroup>();
+
         BaseSlime = reader.ReadEnum<IdentifiableId>();
         BasePlort = reader.ReadEnum<IdentifiableId>();
         BaseGordo = reader.ReadEnum<IdentifiableId>();
@@ -179,7 +182,7 @@ public sealed class SlimeData : SpawnedActorData
         CanBeRefined = reader.ReadBool();
 
         ComponentBase = reader.ReadNullableEnum<IdentifiableId>();
-        GordoZone = reader.ReadEnum<Zone>();
+        GordoZone = reader.ReadNullableEnum<Zone>();
         SpawnAmount = reader.ReadPackedFloat();
         HasGordo = reader.ReadBool();
         GordoRewards = reader.ReadEnumArray<IdentifiableId>();
@@ -390,6 +393,10 @@ public sealed class SlimeAppearanceData : JsonData
 
     public override void OnDeserialise()
     {
+        Array.ForEach(SlimeFeatures, x => x.OnDeserialise());
+        Array.ForEach(GordoFeatures, x => x.OnDeserialise());
+        Array.ForEach(PlortFeatures, x => x.OnDeserialise());
+
         var modelData = SlimeFeatures[0];
         modelData.MeshData.IsBody = true;
         var matData = modelData.MatData;

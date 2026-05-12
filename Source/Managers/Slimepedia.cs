@@ -273,7 +273,7 @@ public static class Slimepedia
 
         var identifiable = prefab.GetComponent<GordoIdentifiable>();
         identifiable.id = slimeData.GordoId;
-        identifiable.nativeZones = slimeData.NaturalGordoSpawn ? [slimeData.GordoZone] : Helpers.GetEnumValues<Zone>();
+        identifiable.nativeZones = slimeData.NaturalGordoSpawn ? [slimeData.GordoZone.Value] : Helpers.GetEnumValues<Zone>();
 
         var gordoEat = prefab.GetComponent<GordoEat>();
         var gordoDefinition = gordoEat.slimeDefinition.CloneInstance();
@@ -433,16 +433,24 @@ public static class Slimepedia
         if (prefab.TryGetComponent<PinkSlimeFoodTypeTracker>(out var tracker))
             tracker.Destroy();
 
-        if (slimeData.ComponentsToAdd != null)
+        if (!slimeData.ComponentsToAdd.IsNullOrEmpty())
         {
             foreach (var type in slimeData.ComponentsToAdd)
+            {
+                type.Name.DoLog();
                 prefab.AddComponent(type);
+            }
+                // prefab.AddComponent(type);
         }
 
-        if (slimeData.ComponentsToRemove != null)
+        if (!slimeData.ComponentsToRemove.IsNullOrEmpty())
         {
             foreach (var type in slimeData.ComponentsToRemove)
+            {
+                type.Name.DoLog();
                 prefab.RemoveComponent(type);
+            }
+                // prefab.RemoveComponent(type);
         }
 
         if (slimeData.ComponentBase.HasValue)
@@ -687,6 +695,9 @@ public static class Slimepedia
         else
             material = fallback;
 
+        if (!material)
+            material = fallback;
+
         if (isModified)
         {
             material = material.Clone();
@@ -706,7 +717,7 @@ public static class Slimepedia
         }
 
         var prefab = source.GetPrefab();
-        return (prefab.GetComponent<MeshRenderer>() ?? prefab.GetComponentInChildren<MeshRenderer>()).sharedMaterials[index ?? 0];
+        return (prefab.GetComponent<MeshRenderer>() ?? prefab.GetComponentInChildren<MeshRenderer>()).sharedMaterials[index ?? 0] ?? throw new InvalidDataException($"source={source}, index={index}, useSS={useSS}");
     }
 
     public static void SetMatProperties(MatData matData, Material material)

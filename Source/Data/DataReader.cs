@@ -62,6 +62,8 @@ public sealed class DataReader : IDisposable
 
     public Color ReadColor() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
 
+    public string[] ReadStringArray() => ReadArray(r => r.ReadString());
+
     public T[] ReadArray<T>(Func<DataReader, T> reader, bool returnNullOnZero = true)
     {
         var count = ReadPackedUInt();
@@ -114,7 +116,7 @@ public sealed class DataReader : IDisposable
     public T? ReadNullableEnum<T>() where T : struct, Enum
     {
         var value = ReadString();
-        return string.IsNullOrEmpty(value) ? null : Helpers.ParseEnum<T>(value);
+        return string.IsNullOrEmpty(value) ? null : Helpers.ParseOrAddEnumValue<T>(value);
     }
 
     public T ReadEnum<T>() where T : struct, Enum => Helpers.ParseEnum<T>(ReadString());
@@ -145,21 +147,39 @@ public sealed class DataReader : IDisposable
 
     public uint? ReadNullablePackedUInt() => ReadBool() ? ReadPackedUInt() : null;
 
-    public T ReadFlagEnum<T>() where T : struct, Enum
+    public T ReadFlagEnum<T>() where T : unmanaged, Enum
     {
         var count = ReadPackedUInt();
-        var combined = 0;
+        var combined = 0L;
 
         for (var i = 0; i < count; i++)
         {
             var name = ReadString();
 
             if (Enum.TryParse<T>(name, out var val))
-                combined |= (int)(object)val;
+                combined |= FastCastToLong(val);
         }
 
-        return (T)(object)combined;
-}
+        return FastCastFromLong<T>(combined);
+    }
+
+    private unsafe static long FastCastToLong<T>(T enumValue) where T : unmanaged, Enum
+    {
+        var size = sizeof(T);
+        var ptr = &enumValue;
+
+        return size switch
+        {
+            1 => *(byte*)ptr,
+            2 => *(short*)ptr,
+            4 => *(int*)ptr,
+            8 => *(long*)ptr,
+            _ => throw new NotSupportedException($"Unsupported enum size: {size} bytes"),
+        };
+    }
+
+    private unsafe static T FastCastFromLong<T>(long longValue) where T : unmanaged, Enum
+        => *(T*)&longValue;
 
     public void Dispose() => Reader.Dispose();
 }

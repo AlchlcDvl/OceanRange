@@ -59,7 +59,7 @@ public abstract class SpawnedActorData : ActorData
     {
         base.FindStrings(writer);
         writer.PoolStrings(Progress);
-        writer.PoolString(MainAmmoColor.Replace("#", string.Empty));
+        writer.PoolSubstring(MainAmmoColor, 1);
     }
 #else
     public override void ReadFrom(DataReader reader)
@@ -77,7 +77,11 @@ public abstract class SpawnedActorData : ActorData
 #endif
 }
 
-public sealed class Json(byte[] data) : UObject
+#if !UNITY
+public sealed class Json : ScriptableObject
 {
-    public readonly byte[] Data = data;
+    public byte[] Data;
+
+    public void Initialise(byte[] data) => Data = data;
 }
+#endif

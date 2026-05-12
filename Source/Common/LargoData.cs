@@ -1,9 +1,11 @@
 // ReSharper disable UnassignedField.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace OceanRange.Data;
 
 public sealed class LargoData : ActorData
 {
+#if !UNITY
     private static readonly Dictionary<string, Action<GameObject, SlimeDefinition>> DefinitionMethods = new(StringComparer.Ordinal);
     private static readonly Dictionary<string, Action<SlimeAppearance, AppearanceType>> AppearanceMethods = new(StringComparer.Ordinal);
 
@@ -17,15 +19,20 @@ public sealed class LargoData : ActorData
                 DefinitionMethods[method.Name] = Helpers.CompileAction<GameObject, SlimeDefinition>(method);
         }
     }
+#endif
 
     // TODO: Awaiting models for indices 1, 2 and 3 - Stick to index 0 for normal appearance for now
     [JsonRequired] public LargoAppearanceData[] Appearances;
 
+#if UNITY
+    public string[] DefProps; // Assumed to be a Flag Enum (like AppProps). If standard enum, use 'string'.
+#else
     public DefinitionProps DefProps;
+#endif
 
-    // ReSharper disable once MemberCanBePrivate.Global
     public float? Jiggle;
 
+#if !UNITY
     [JsonIgnore] public string Slime1;
     [JsonIgnore] public string Slime2;
 
@@ -47,6 +54,15 @@ public sealed class LargoData : ActorData
     [JsonIgnore] public DLCContentMetadata_SlimeAppearance SS2Appearance;
     [JsonIgnore] public DLCContentMetadata_SlimeAppearance SSBothAppearance;
 
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+
+        Appearances = reader.ReadArray(r => { var a = new LargoAppearanceData(); a.ReadFrom(r); return a; });
+        DefProps = reader.ReadFlagEnum<DefinitionProps>();
+        Jiggle = reader.ReadNullablePackedFloat();
+    }
+
     public override void OnDeserialise()
     {
         var parts = Name.TrueSplit(' ');
@@ -57,7 +73,7 @@ public sealed class LargoData : ActorData
         var slime1Upper = Slime1.ToUpperInvariant();
         var slime2Upper = Slime2.ToUpperInvariant();
 
-        MainId = Helpers.AddEnumValue<IdentifiableId>(slime1Upper + "_" + slime2Upper + "_LARGO");
+        MainId = Helpers.ParseOrAddEnumValue<IdentifiableId>(slime1Upper + "_" + slime2Upper + "_LARGO");
         Slime1Id = Helpers.ParseEnum<IdentifiableId>(slime1Upper + "_SLIME");
         Slime2Id = Helpers.ParseEnum<IdentifiableId>(slime2Upper + "_SLIME");
 
@@ -76,7 +92,26 @@ public sealed class LargoData : ActorData
 
         foreach (var appearance in Appearances)
             appearance.SetJiggle(Jiggle.Value);
+
+        Array.ForEach(Appearances, a => a.OnDeserialise());
     }
+#else
+    public override void FindStrings(DataWriter writer)
+    {
+        base.FindStrings(writer);
+        writer.PoolStrings(DefProps);
+        Array.ForEach(Appearances, a => a.FindStrings(writer));
+    }
+
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+
+        writer.WriteArray(Appearances, (w, a) => a.WriteTo(w));
+        writer.WriteStringArray(DefProps);
+        writer.WriteNullablePackedFloat(Jiggle);
+    }
+#endif
 }
 
 public sealed class LargoAppearanceData : JsonData
@@ -116,11 +151,7 @@ public sealed class LargoAppearanceData : JsonData
         Jiggle = reader.ReadNullablePackedFloat();
     }
 
-    public override void OnDeserialise()
-    {
-        base.OnDeserialise();
-        BodyStruct?.MeshData.IsBody = true;
-    }
+    public override void OnDeserialise() => BodyStruct?.MeshData.IsBody = true;
 #else
     public override void FindStrings(DataWriter writer)
     {
@@ -131,10 +162,10 @@ public sealed class LargoAppearanceData : JsonData
 
         BodyStruct?.FindStrings(writer);
 
-        if (Slime1Structs != null)
+        if (!Slime1Structs.IsNullOrEmpty())
             Array.ForEach(Slime1Structs, s => s.FindStrings(writer));
 
-        if (Slime2Structs != null)
+        if (!Slime2Structs.IsNullOrEmpty())
             Array.ForEach(Slime2Structs, s => s.FindStrings(writer));
     }
 
