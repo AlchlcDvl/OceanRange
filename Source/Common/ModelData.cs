@@ -85,9 +85,9 @@ public sealed class MatData : JsonData
 
         Gloss = reader.ReadNullablePackedFloat();
 
-        SameAs = (int?)reader.ReadNullablePackedUInt();
-        MatSameAs = (int?)reader.ReadNullablePackedUInt();
-        ColorsSameAs = (int?)reader.ReadNullablePackedUInt();
+        SameAs = reader.ReadNullablePackedInt();
+        MatSameAs = reader.ReadNullablePackedInt();
+        ColorsSameAs = reader.ReadNullablePackedInt();
 
         UseSSMat = reader.ReadBool();
 
@@ -173,9 +173,9 @@ public sealed class MatData : JsonData
 
         writer.WriteNullablePackedFloat(Gloss);
 
-        writer.WriteNullablePackedUInt((uint?)SameAs);
-        writer.WriteNullablePackedUInt((uint?)MatSameAs);
-        writer.WriteNullablePackedUInt((uint?)ColorsSameAs);
+        writer.WriteNullablePackedInt(SameAs);
+        writer.WriteNullablePackedInt(MatSameAs);
+        writer.WriteNullablePackedInt(ColorsSameAs);
 
         writer.WriteBool(UseSSMat);
 
@@ -221,7 +221,7 @@ public sealed class MeshData : JsonData
         Skip = reader.ReadBool();
         UseBaseStruct = reader.ReadBool();
         Jiggle = reader.ReadNullablePackedFloat();
-        PrefabLength = (int?)reader.ReadNullablePackedUInt();
+        PrefabLength = reader.ReadNullablePackedInt();
     }
 #else
     public override void FindStrings(DataWriter writer)
@@ -242,7 +242,7 @@ public sealed class MeshData : JsonData
 
         writer.WriteNullablePackedFloat(Jiggle);
 
-        writer.WriteNullablePackedUInt((uint?)PrefabLength);
+        writer.WriteNullablePackedInt(PrefabLength);
     }
 #endif
 }

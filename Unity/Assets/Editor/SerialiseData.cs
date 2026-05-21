@@ -102,9 +102,8 @@ static class ExportData
             data.FindStrings(writer);
             writer.PushPooledStrings();
             data.WriteTo(writer);
+            writer.Flush();
         }
-
-        Debug.Log($"Successfully exported {fileName}.cjson");
     }
 
     static void WriteArrayData<T>(string sourcePath, string destPath, string fileName) where T : JsonData
@@ -132,24 +131,16 @@ static class ExportData
         using (var binary = new BinaryWriter(compressor))
         using (var writer = new DataWriter(binary))
         {
-            // Find strings for pooling
             foreach (var item in data)
-            {
-                item?.FindStrings(writer);
-            }
+                item.FindStrings(writer);
 
             writer.PushPooledStrings();
-
-            // Write array length using your optimized VarInt writer
             writer.WritePackedUInt((uint)data.Length);
 
-            // Write each item's data
             foreach (var item in data)
-            {
-                item?.WriteTo(writer);
-            }
-        }
+                item.WriteTo(writer);
 
-        Debug.Log($"Successfully exported {fileName}.cjson ({data.Length} items)");
+            writer.Flush();
+        }
     }
 }

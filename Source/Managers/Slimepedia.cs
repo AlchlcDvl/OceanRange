@@ -67,66 +67,37 @@ public static class Slimepedia
         Gordo
     }
 
-    private readonly struct RigCacheKey(int sourceMeshId, RigType type, int jiggleBits, int zeroXBits, int zeroYBits, int zeroZBits, int numBits, ulong matrixHash1, ulong matrixHash2)
+    private readonly struct RigCacheKey(string sourceMeshName, RigType type, int jiggleBits)
         : IEquatable<RigCacheKey>
     {
-        private readonly int SourceMeshId = sourceMeshId;
+        private readonly string SourceMeshName = sourceMeshName;
         private readonly RigType Type = type;
         private readonly int JiggleBits = jiggleBits;
-        private readonly int ZeroXBits = zeroXBits;
-        private readonly int ZeroYBits = zeroYBits;
-        private readonly int ZeroZBits = zeroZBits;
-        private readonly int NumBits = numBits;
-        private readonly ulong MatrixHash1 = matrixHash1;
-        private readonly ulong MatrixHash2 = matrixHash2;
 
-        public bool Equals(RigCacheKey other) => SourceMeshId == other.SourceMeshId && Type == other.Type && JiggleBits == other.JiggleBits && ZeroXBits == other.ZeroXBits && ZeroYBits == other.ZeroYBits && ZeroZBits == other.ZeroZBits && NumBits == other.NumBits && MatrixHash1 == other.MatrixHash1 && MatrixHash2 == other.MatrixHash2;
+        public bool Equals(RigCacheKey other) => SourceMeshName == other.SourceMeshName && Type == other.Type && JiggleBits == other.JiggleBits;
+
+        public override string ToString() => SourceMeshName + Type + JiggleBits;
 
         public override bool Equals(object obj) => obj is RigCacheKey other && Equals(other);
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = (hash * 31) + SourceMeshId;
-                hash = (hash * 31) + (int)Type;
-                hash = (hash * 31) + JiggleBits;
-                hash = (hash * 31) + ZeroXBits;
-                hash = (hash * 31) + ZeroYBits;
-                hash = (hash * 31) + ZeroZBits;
-                hash = (hash * 31) + NumBits;
-                hash = (hash * 31) + (int)(MatrixHash1 ^ (MatrixHash1 >> 32));
-                hash = (hash * 31) + (int)(MatrixHash2 ^ (MatrixHash2 >> 32));
-                return hash;
-            }
-        }
+        public override int GetHashCode() => ToString().GetHashCode();
     }
 
-    private readonly struct ElementCacheKey(uint meshNameHash, int jiggleBits, bool ignoreLodIndex, int prefabLength)
+    private readonly struct ElementCacheKey(string sourceMeshName, int jiggleBits, bool ignoreLodIndex, int prefabLength)
         : IEquatable<ElementCacheKey>
     {
-        private readonly uint MeshNameHash = meshNameHash;
+        private readonly string SourceMeshName = sourceMeshName;
         private readonly int JiggleBits = jiggleBits;
         private readonly bool IgnoreLodIndex = ignoreLodIndex;
         private readonly int PrefabLength = prefabLength;
 
-        public bool Equals(ElementCacheKey other) => MeshNameHash == other.MeshNameHash && JiggleBits == other.JiggleBits && IgnoreLodIndex == other.IgnoreLodIndex && PrefabLength == other.PrefabLength;
+        public bool Equals(ElementCacheKey other) => SourceMeshName == other.SourceMeshName && JiggleBits == other.JiggleBits && IgnoreLodIndex == other.IgnoreLodIndex && PrefabLength == other.PrefabLength;
 
         public override bool Equals(object obj) => obj is ElementCacheKey other && Equals(other);
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hash = 17;
-                hash = (hash * 31) + (int)MeshNameHash;
-                hash = (hash * 31) + JiggleBits;
-                hash = (hash * 31) + (IgnoreLodIndex ? 1 : 0);
-                hash = (hash * 31) + PrefabLength;
-                return hash;
-            }
-        }
+        public override string ToString() => SourceMeshName + IgnoreLodIndex + JiggleBits + PrefabLength;
+
+        public override int GetHashCode() => ToString().GetHashCode();
     }
 
 #if DEBUG
@@ -436,21 +407,13 @@ public static class Slimepedia
         if (!slimeData.ComponentsToAdd.IsNullOrEmpty())
         {
             foreach (var type in slimeData.ComponentsToAdd)
-            {
-                type.Name.DoLog();
                 prefab.AddComponent(type);
-            }
-                // prefab.AddComponent(type);
         }
 
         if (!slimeData.ComponentsToRemove.IsNullOrEmpty())
         {
             foreach (var type in slimeData.ComponentsToRemove)
-            {
-                type.Name.DoLog();
                 prefab.RemoveComponent(type);
-            }
-                // prefab.RemoveComponent(type);
         }
 
         if (slimeData.ComponentBase.HasValue)
@@ -588,7 +551,7 @@ public static class Slimepedia
             structure.DefaultMaterials[0] = GenerateMaterial(modelData.MatData, modelDatas, structure.DefaultMaterials[0]);
 
         var cacheKey = new ElementCacheKey(
-            (meshData.Mesh ?? baseStruct.Element.Prefabs[0].name).ComputeHashOfString(),
+            meshData.Mesh ?? baseStruct.Element.Prefabs[0].name,
             GetFloatBits(meshData.Jiggle ?? 0),
             meshData.IgnoreLodIndex,
             meshData.PrefabLength ?? (meshData.IsBody ? 4 : 2));
@@ -935,7 +898,7 @@ public static class Slimepedia
 
     private static Mesh GetRiggedMesh(Dictionary<RigCacheKey, Mesh> cache, RigType rigType, Mesh sourceMesh, float jiggle, Vector3 zero, float num, Matrix4x4[] poses)
     {
-        var key = GetRigCacheKey(rigType, sourceMesh, jiggle, zero, num, poses);
+        var key = GetRigCacheKey(rigType, sourceMesh.name, jiggle);
 
         if (cache.TryGetValue(key, out var cached))
             return cached;
@@ -953,44 +916,7 @@ public static class Slimepedia
         return mesh;
     }
 
-    private static RigCacheKey GetRigCacheKey(RigType rigType, Mesh sourceMesh, float jiggle, Vector3 zero, float num, Matrix4x4[] poses)
-    {
-        var (matrixHash1, matrixHash2) = GetMatrixHash(poses);
-
-        return new(
-            sourceMesh.GetInstanceID(),
-            rigType,
-            GetFloatBits(jiggle),
-            GetFloatBits(zero.x),
-            GetFloatBits(zero.y),
-            GetFloatBits(zero.z),
-            GetFloatBits(num),
-            matrixHash1,
-            matrixHash2);
-    }
-
-    private static (ulong, ulong) GetMatrixHash(Matrix4x4[] poses)
-    {
-        const ulong prime = 1099511628211UL;
-
-        var hash1 = 1469598103934665603UL;
-        var hash2 = prime;
-
-        foreach (var matrix in poses)
-        {
-            for (var i = 0; i < 16; i++)
-            {
-                var bits = unchecked((ulong)GetFloatBits(matrix[i]));
-
-                hash1 ^= bits;
-                hash1 *= prime;
-
-                hash2 ^= bits + 0x9E3779B97F4A7C15UL + (hash2 << 6) + (hash2 >> 2);
-            }
-        }
-
-        return (hash1, hash2);
-    }
+    private static RigCacheKey GetRigCacheKey(RigType rigType, string sourceMesh, float jiggle) => new(sourceMesh, rigType, GetFloatBits(jiggle));
 
     private static unsafe int GetFloatBits(float value) => *(int*)&value;
 

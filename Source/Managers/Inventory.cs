@@ -75,6 +75,7 @@ public static class Inventory
 
     private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*.Concat(Platforms.Select(x => "bundle_" + x))*/, StringComparer.Ordinal), "json"];
 
+#if DEBUG
     /// <summary>
     /// Debug string path for the mod to dump assets.
     /// </summary>
@@ -83,7 +84,6 @@ public static class Inventory
     /// <summary>
     /// Initialises the asset handling by creating relevant handles.
     /// </summary>
-#if DEBUG
     [TimeDiagnostic("Assets Initialis")]
 #endif
     public static void InitialiseAssets()
@@ -92,9 +92,6 @@ public static class Inventory
 
         // Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
         // Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
-
-        if (!Directory.Exists(DumpPath))
-            Directory.CreateDirectory(DumpPath);
     }
 
     public static void TryReleaseHandles(params string[] handles)
@@ -320,28 +317,29 @@ public static class Inventory
 
         using var stream = Core.GetManifestResourceStream(path)!;
         using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
-        using var reader = new BinaryReader(decompressor);
+        using var binaryReader = new BinaryReader(decompressor);
+        using var reader = new DataReader(binaryReader);
 
         var mesh = new Mesh { indexFormat = (IndexFormat)reader.ReadByte() };
 
-        var bounds = ReadBounds(reader);
+        var bounds = reader.ReadBounds();
 
         mesh.bounds = bounds;
-        mesh.subMeshCount = ReadPackedInt(reader);
+        mesh.subMeshCount = reader.ReadPackedInt();
 
-        var vertexCount = ReadPackedInt(reader);
-        mesh.vertices = ReadArrayContents(reader, vertexCount, r => ReadQuantizedPosition(r, bounds));
+        var vertexCount = reader.ReadPackedInt();
+        mesh.vertices = reader.ReadArrayContents(vertexCount, r => r.ReadQuantizedPosition(bounds));
 
-        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedNormal), (m, v) => m.normals = v);
-        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedTangent), (m, v) => m.tangents = v);
+        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, r => r.ReadQuantizedNormal()), (m, v) => m.normals = v);
+        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, r => r.ReadQuantizedTangent()), (m, v) => m.tangents = v);
 
         ReadAndAssignColorData(reader, mesh, vertexCount);
 
         for (var i = 0; i < mesh.subMeshCount; i++)
         {
             var topology = (MeshTopology)reader.ReadByte();
-            var subMeshBounds = ReadBounds(reader);
-            var indices = ReadIndices(reader);
+            var subMeshBounds = reader.ReadBounds();
+            var indices = reader.ReadDeltaEncodedIndices();
 
             mesh.SetIndices(indices, topology, i, false);
 
@@ -359,23 +357,23 @@ public static class Inventory
             var dimension = reader.ReadByte();
 
             if (dimension == 2)
-                ReadUVs(reader, i, vertexCount, uvs2, ReadQuantizedUV2, mesh.SetUVs);
+                ReadUVs(reader, i, vertexCount, uvs2, r => r.ReadQuantizedUV2(), mesh.SetUVs);
             else if (dimension == 3)
-                ReadUVs(reader, i, vertexCount, uvs3, BinaryUtils.ReadVector3, mesh.SetUVs);
+                ReadUVs(reader, i, vertexCount, uvs3, r => r.ReadVector3(), mesh.SetUVs);
             else if (dimension == 4)
-                ReadUVs(reader, i, vertexCount, uvs4, BinaryUtils.ReadVector4, mesh.SetUVs);
+                ReadUVs(reader, i, vertexCount, uvs4, r => r.ReadVector4(), mesh.SetUVs);
         }
 
         return mesh;
     }
 
-    private static void ReadAndAssignColorData(BinaryReader reader, Mesh mesh, int vertexCount)
+    private static void ReadAndAssignColorData(DataReader reader, Mesh mesh, int vertexCount)
     {
         var state = reader.ReadByte();
 
         if (state == 1)
         {
-            var uniformColor = ReadColor32(reader);
+            var uniformColor = reader.ReadColor32();
             var colors = new Color32[vertexCount];
 
             for (var i = 0; i < vertexCount; i++)
@@ -384,22 +382,14 @@ public static class Inventory
             mesh.colors32 = colors;
         }
         else if (state == 2)
-            mesh.colors32 = ReadArrayContents(reader, vertexCount, ReadColor32);
+            mesh.colors32 = reader.ReadArrayContents(vertexCount, r => r.ReadColor32());
         // Ignore if anything else
     }
 
-    private static Bounds ReadBounds(BinaryReader reader) => new()
+    private static T[] ReadAttributeData<T>(DataReader reader, int count, Func<DataReader, T> readFunc)
     {
-        center = BinaryUtils.ReadVector3(reader),
-        extents = BinaryUtils.ReadVector3(reader)
-    };
-
-    private static Color32 ReadColor32(BinaryReader reader) => new(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-
-    private static T[] ReadAttributeData<T>(BinaryReader reader, int count, Func<BinaryReader, T> readFunc)
-    {
-        if (reader.ReadBoolean())
-            return ReadArrayContents(reader, count, readFunc);
+        if (reader.ReadBool())
+            return reader.ReadArrayContents(count, readFunc);
 
         return null;
     }
@@ -410,133 +400,11 @@ public static class Inventory
             assignAction(mesh, data);
     }
 
-    private static void ReadUVs<T>(BinaryReader reader, int index, int count, List<T> uvs, Func<BinaryReader, T> readFunc, Action<int, List<T>> setUVs)
+    private static void ReadUVs<T>(DataReader reader, int index, int count, List<T> uvs, Func<DataReader, T> readFunc, Action<int, List<T>> setUVs)
     {
-        ReadListContents(reader, uvs, count, readFunc);
+        reader.ReadListContents(uvs, count, readFunc);
         setUVs(index, uvs);
         uvs.Clear();
-    }
-
-    // private static T[] ReadArray<T>(BinaryReader reader, Func<BinaryReader, T> readFunc) => ReadArrayContents(reader, ReadPackedInt(reader), readFunc);
-
-    private static T[] ReadArrayContents<T>(BinaryReader reader, int count, Func<BinaryReader, T> readFunc)
-    {
-        var array = new T[count];
-
-        for (var i = 0; i < count; i++)
-            array[i] = readFunc(reader);
-
-        return array;
-    }
-
-    private static void ReadListContents<T>(BinaryReader reader, List<T> list, int count, Func<BinaryReader, T> readFunc)
-    {
-        for (var i = 0; i < count; i++)
-            list.Add(readFunc(reader));
-    }
-
-    private static int ReadPackedInt(BinaryReader reader) => (int)ReadVarInt(reader);
-
-    private static ulong ReadVarInt(BinaryReader reader)
-    {
-        var result = 0ul;
-        var shift = 0;
-
-        while (true)
-        {
-            var b = reader.ReadByte();
-            result |= (ulong)(b & 0x7F) << shift;
-
-            if ((b & 0x80) == 0)
-                break;
-
-            shift += 7;
-        }
-
-        return result;
-    }
-
-    private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
-
-    private static int[] ReadIndices(BinaryReader reader)
-    {
-        var count = ReadPackedInt(reader);
-
-        if (count == 0)
-            return Array.Empty<int>();
-
-        var indices = new int[count];
-        var previousIndex = 0;
-
-        for (var i = 0; i < count; i++)
-        {
-            var zigZagDelta = (uint)ReadVarInt(reader);
-            var delta = ZigZagDecode(zigZagDelta);
-            var currentIndex = previousIndex + delta;
-            indices[i] = currentIndex;
-            previousIndex = currentIndex;
-        }
-
-        return indices;
-    }
-
-    private static Vector3 ReadQuantizedPosition(BinaryReader reader, Bounds bounds)
-    {
-        var nx = Mathf.HalfToFloat(reader.ReadUInt16());
-        var ny = Mathf.HalfToFloat(reader.ReadUInt16());
-        var nz = Mathf.HalfToFloat(reader.ReadUInt16());
-
-        var min = bounds.min;
-        var size = bounds.size;
-
-        return new(
-            min.x + (nx * size.x),
-            min.y + (ny * size.y),
-            min.z + (nz * size.z)
-        );
-    }
-
-    private static Vector3 ReadQuantizedNormal(BinaryReader reader)
-    {
-        var x = reader.ReadSByte() / 127f;
-        var y = reader.ReadSByte() / 127f;
-        return OctDecode(new(x, y));
-    }
-
-    private static Vector4 ReadQuantizedTangent(BinaryReader reader)
-    {
-        var x = reader.ReadSByte() / 127f;
-        var y = reader.ReadSByte() / 127f;
-        var w = reader.ReadByte() > 0 ? 1f : -1f;
-
-        var dir = OctDecode(new(x, y));
-        return new(dir.x, dir.y, dir.z, w);
-    }
-
-    private static Vector2 ReadQuantizedUV2(BinaryReader reader)
-    {
-        var x = Mathf.HalfToFloat(reader.ReadUInt16());
-        var y = Mathf.HalfToFloat(reader.ReadUInt16());
-        return new Vector2(x, y);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static float SignNotZero(float v) => v >= 0f ? 1f : -1f;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Vector3 OctDecode(Vector2 encoded)
-    {
-        var v = new Vector3(encoded.x, encoded.y, 1f - Mathf.Abs(encoded.x) - Mathf.Abs(encoded.y));
-
-        if (v.z < 0f)
-        {
-            var x = v.x;
-            var y = v.y;
-            v.x = (1f - Mathf.Abs(y)) * SignNotZero(x);
-            v.y = (1f - Mathf.Abs(x)) * SignNotZero(y);
-        }
-
-        return v.normalized;
     }
 
     /// <summary>

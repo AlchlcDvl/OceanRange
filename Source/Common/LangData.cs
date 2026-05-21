@@ -132,9 +132,10 @@ public sealed class Translations : JsonData
             .. Slimes, .. Hens, .. Chicks,
             .. Veggies, .. Fruits, .. Ranchers,
             .. Gordos, .. Largos, .. Plorts,
-            .. Mail//, .. Lamps, .. Warps,
-            // .. Teleporters, .. Zones, .. Crafts,
-            // .. EdibleCrafts
+            .. Mail,
+            // .. Lamps, .. Warps, .. Teleporters,
+            // .. Crafts, .. EdibleCrafts,
+            // .. Zones,
         ];
 
         Array.ForEach(LangDatas, x => x.OnDeserialise());

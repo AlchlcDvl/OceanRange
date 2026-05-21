@@ -18,15 +18,15 @@ class CreateAssetBundles
     {
         Debug.Log("Bundles building...");
 
-        string assetBundleDirectory = Path.Combine("Assets", "StreamingAssets");
+        var assetBundleDirectory = Path.Combine("Assets", "StreamingAssets");
         PrepDirectory(assetBundleDirectory);
 
-        string bundles = Path.Combine("Assets", "..", "..", "Source", "Resources", "Bundles");
+        var bundles = Path.Combine("Assets", "..", "..", "Source", "Resources", "Bundles");
         PrepDirectory(bundles);
 
         foreach ((string dir, string suffix, BuildTarget target) in _targets)
         {
-            string directory = Path.Combine(assetBundleDirectory, dir);
+            var directory = Path.Combine(assetBundleDirectory, dir);
             PrepDirectory(directory);
 
             BuildPipeline.BuildAssetBundles(directory, BuildAssetBundleOptions.None, target);
@@ -36,7 +36,7 @@ class CreateAssetBundles
 
         Directory.Delete(assetBundleDirectory, true);
 
-        string metaPath = assetBundleDirectory + ".meta";
+        var metaPath = assetBundleDirectory + ".meta";
 
         if (File.Exists(metaPath))
             File.Delete(metaPath);
@@ -54,7 +54,7 @@ class CreateAssetBundles
 
     static void MoveAndRenameSpecificBundle(string sourceDir, string targetDir, string newExtension)
     {
-        string sourceBundlePath = Path.Combine(sourceDir, "oceanrange");
+        var sourceBundlePath = Path.Combine(sourceDir, "oceanrange");
 
         if (!File.Exists(sourceBundlePath))
         {
@@ -62,7 +62,7 @@ class CreateAssetBundles
             return;
         }
 
-        string destBundlePath = Path.Combine(targetDir, "ocean_range.bundle_" + newExtension);
+        var destBundlePath = Path.Combine(targetDir, "ocean_range.bundle_" + newExtension);
 
         if (File.Exists(destBundlePath))
             File.Delete(destBundlePath);
@@ -71,7 +71,7 @@ class CreateAssetBundles
 
         Directory.Delete(sourceDir, true);
 
-        string metaPath = sourceDir + ".meta";
+        var metaPath = sourceDir + ".meta";
 
         if (File.Exists(metaPath))
             File.Delete(metaPath);

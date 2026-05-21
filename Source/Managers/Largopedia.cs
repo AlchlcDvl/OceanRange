@@ -66,7 +66,6 @@ public static class Largopedia
 
         Array.ForEach(Largos, CreateLargo);
 
-        // TODO: Implement and test the invisible largos bug fix
         GameContext.Instance.DLCDirector.onPackageInstalled += CreateSecretStyles;
     }
 
@@ -75,6 +74,7 @@ public static class Largopedia
 #endif
     private static void CreateSecretStyles(Id id)
     {
+        // TODO: Implement largo secret styles
         if (id != Id.SECRET_STYLE)
             return;
 

@@ -91,25 +91,37 @@ internal sealed class Main : ModEntryPoint
     public override void Unload()
     {
 #if DEBUG
-        var path = Path.Combine(Inventory.DumpPath, "Positions.txt");
-        var builder = new StringBuilder();
-        const string indent = "  ";
-
-        foreach (var (zone, locs) in Commands.SavedPositions)
+        if (Commands.SavedPositions.Count > 0)
         {
-            builder.AppendLine(zone + ":");
+            if (!Directory.Exists(Inventory.DumpPath))
+                Directory.CreateDirectory(Inventory.DumpPath);
 
-            foreach (var (loc, poses) in locs)
+            var path = Path.Combine(Inventory.DumpPath, "Positions.txt");
+            var builder = new StringBuilder();
+            const string indent = "  ";
+
+            foreach (var (zone, locs) in Commands.SavedPositions)
             {
-                builder.AppendLine(indent + loc + ":");
+                builder.AppendLine(zone + ":");
 
-                foreach (var pos in poses)
-                    builder.AppendLine(indent + indent + pos);
+                foreach (var (loc, poses) in locs)
+                {
+                    builder.AppendLine(indent + loc + ":");
+
+                    foreach (var pos in poses)
+                        builder.AppendLine(indent + indent + pos);
+
+                    poses.Clear();
+                }
+
+                locs.Clear();
             }
-        }
 
-        var debug = builder.ToString();
-        File.WriteAllText(path, debug);
+            var debug = builder.ToString();
+            File.WriteAllText(path, debug);
+
+            Commands.SavedPositions.Clear();
+        }
 #endif
         BootStrapper.ExecuteLoadState(LoadState.Unload); // Executes the unload methods of all the manager classes
 

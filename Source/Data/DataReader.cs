@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace OceanRange.Data;
 
 public sealed class DataReader : IDisposable
@@ -23,6 +25,8 @@ public sealed class DataReader : IDisposable
     }
 
     public uint ReadPackedUInt() => (uint)ReadVarInt();
+
+    public int ReadPackedInt() => ZigZagDecode((uint)ReadVarInt());
 
     private ulong ReadVarInt()
     {
@@ -58,6 +62,10 @@ public sealed class DataReader : IDisposable
 
     public bool ReadBool() => Reader.ReadBoolean();
 
+    public byte ReadByte() => Reader.ReadByte();
+
+    public sbyte ReadSByte() => Reader.ReadSByte();
+
     public Color32 ReadColor32() => new(Reader.ReadByte(), Reader.ReadByte(), Reader.ReadByte(), Reader.ReadByte());
 
     public Color ReadColor() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
@@ -79,11 +87,33 @@ public sealed class DataReader : IDisposable
         return array;
     }
 
+    public T[] ReadArrayContents<T>(int count, Func<DataReader, T> readFunc)
+    {
+        var array = new T[count];
+
+        for (var i = 0; i < count; i++)
+            array[i] = readFunc(this);
+
+        return array;
+    }
+
+    public void ReadListContents<T>(List<T> list, int count, Func<DataReader, T> readFunc)
+    {
+        for (var i = 0; i < count; i++)
+            list.Add(readFunc(this));
+    }
+
+    public Vector2 ReadVector2() => new(ReadPackedFloat(), ReadPackedFloat());
+
     public Vector3 ReadVector3() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
+
+    public Vector4 ReadVector4() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
+
+    public Bounds ReadBounds() => new(ReadVector3(), ReadVector3());
 
     public Orientation ReadOrientation() => new(ReadVector3(), ReadVector3(), ReadVector3());
 
-    // private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
+    private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
 
     public T[] ReadEnumArray<T>() where T : struct, Enum
     {
@@ -147,6 +177,8 @@ public sealed class DataReader : IDisposable
 
     public uint? ReadNullablePackedUInt() => ReadBool() ? ReadPackedUInt() : null;
 
+    public int? ReadNullablePackedInt() => ReadBool() ? ReadPackedInt() : null;
+
     public T ReadFlagEnum<T>() where T : unmanaged, Enum
     {
         var count = ReadPackedUInt();
@@ -180,6 +212,86 @@ public sealed class DataReader : IDisposable
 
     private unsafe static T FastCastFromLong<T>(long longValue) where T : unmanaged, Enum
         => *(T*)&longValue;
+
+    public int[] ReadDeltaEncodedIndices()
+    {
+        var count = ReadPackedUInt();
+
+        if (count == 0)
+            return [];
+
+        var indices = new int[count];
+        var previousIndex = 0;
+
+        for (var i = 0; i < count; i++)
+        {
+            var delta = ReadPackedInt();
+            var currentIndex = previousIndex + delta;
+            indices[i] = currentIndex;
+            previousIndex = currentIndex;
+        }
+
+        return indices;
+    }
+
+    public Vector3 ReadQuantizedPosition(Bounds bounds)
+    {
+        var nx = ReadPackedFloat();
+        var ny = ReadPackedFloat();
+        var nz = ReadPackedFloat();
+
+        var min = bounds.min;
+        var size = bounds.size;
+
+        return new Vector3(
+            min.x + (nx * size.x),
+            min.y + (ny * size.y),
+            min.z + (nz * size.z)
+        );
+    }
+
+    public Vector3 ReadQuantizedNormal()
+    {
+        var x = ReadSByte() / 127f;
+        var y = ReadSByte() / 127f;
+        return OctDecode(new Vector2(x, y));
+    }
+
+    public Vector4 ReadQuantizedTangent()
+    {
+        var x = ReadSByte() / 127f;
+        var y = ReadSByte() / 127f;
+        var w = ReadByte() > 0 ? 1f : -1f;
+
+        var dir = OctDecode(new Vector2(x, y));
+        return new Vector4(dir.x, dir.y, dir.z, w);
+    }
+
+    public Vector2 ReadQuantizedUV2()
+    {
+        var x = ReadPackedFloat();
+        var y = ReadPackedFloat();
+        return new Vector2(x, y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static float SignNotZero(float v) => v >= 0f ? 1f : -1f;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Vector3 OctDecode(Vector2 encoded)
+    {
+        var v = new Vector3(encoded.x, encoded.y, 1f - Mathf.Abs(encoded.x) - Mathf.Abs(encoded.y));
+
+        if (v.z < 0f)
+        {
+            var x = v.x;
+            var y = v.y;
+            v.x = (1f - Mathf.Abs(y)) * SignNotZero(x);
+            v.y = (1f - Mathf.Abs(x)) * SignNotZero(y);
+        }
+
+        return v.normalized;
+    }
 
     public void Dispose() => Reader.Dispose();
 }
