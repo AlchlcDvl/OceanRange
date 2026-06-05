@@ -281,15 +281,22 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
 
     public void WriteQuantizedPosition(Vector3 pos, Bounds bounds)
     {
-        WritePackedFloat(NormalizeWithinBounds(pos.x, bounds.min.x, bounds.size.x));
-        WritePackedFloat(NormalizeWithinBounds(pos.y, bounds.min.y, bounds.size.y));
-        WritePackedFloat(NormalizeWithinBounds(pos.z, bounds.min.z, bounds.size.z));
+        float nx = NormalizeWithinBounds(pos.x, bounds.min.x, bounds.size.x);
+        float ny = NormalizeWithinBounds(pos.y, bounds.min.y, bounds.size.y);
+        float nz = NormalizeWithinBounds(pos.z, bounds.min.z, bounds.size.z);
+
+        uint qx = (uint)(nx * 1023f) & 0x3FF;
+        uint qy = (uint)(ny * 1023f) & 0x3FF;
+        uint qz = (uint)(nz * 1023f) & 0x3FF;
+
+        uint packed = qx | (qy << 10) | (qz << 20);
+        Writer.Write(packed);
     }
 
     public void WriteQuantizedUV2(Vector2 uv)
     {
-        WritePackedFloat(uv.x);
-        WritePackedFloat(uv.y);
+        Writer.Write((ushort)(Mathf.Clamp01(uv.x) * 65535f));
+        Writer.Write((ushort)(Mathf.Clamp01(uv.y) * 65535f));
     }
 
     public void WriteQuantizedNormal(Vector3 normal)

@@ -43,10 +43,7 @@ static class ExportMeshes
                 using (var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal))
                 using (var binary = new BinaryWriter(compressor))
                 using (var writer = new DataWriter(binary))
-                {
-                    writer.PushPooledStrings();
                     WriteMesh(writer, mesh);
-                }
             }
         }
         catch (Exception ex)
@@ -59,6 +56,8 @@ static class ExportMeshes
 
     static void WriteMesh(DataWriter writer, Mesh mesh)
     {
+        writer.PushPooledStrings();
+
         writer.WriteByte((byte)mesh.indexFormat);
 
         var bounds = mesh.bounds;

@@ -236,17 +236,16 @@ public sealed class DataReader : IDisposable
 
     public Vector3 ReadQuantizedPosition(Bounds bounds)
     {
-        var nx = ReadPackedFloat();
-        var ny = ReadPackedFloat();
-        var nz = ReadPackedFloat();
+        var packed = Reader.ReadUInt32();
 
-        var min = bounds.min;
-        var size = bounds.size;
+        var nx = (packed & 0x3FF) / 1023f;
+        var ny = ((packed >> 10) & 0x3FF) / 1023f;
+        var nz = ((packed >> 20) & 0x3FF) / 1023f;
 
-        return new Vector3(
-            min.x + (nx * size.x),
-            min.y + (ny * size.y),
-            min.z + (nz * size.z)
+        return new(
+            bounds.min.x + (nx * bounds.size.x),
+            bounds.min.y + (ny * bounds.size.y),
+            bounds.min.z + (nz * bounds.size.z)
         );
     }
 
@@ -269,9 +268,10 @@ public sealed class DataReader : IDisposable
 
     public Vector2 ReadQuantizedUV2()
     {
-        var x = ReadPackedFloat();
-        var y = ReadPackedFloat();
-        return new Vector2(x, y);
+        return new Vector2(
+            Reader.ReadUInt16() / 65535f,
+            Reader.ReadUInt16() / 65535f
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
