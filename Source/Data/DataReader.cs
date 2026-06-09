@@ -20,8 +20,13 @@ public sealed class DataReader : IDisposable
         PooledStrings = new string[count];
         PooledStrings[0] = string.Empty;
 
+        Main.Console.Log($"Pooled strings:");
         for (var i = 1; i < count; i++)
+        {
             PooledStrings[i] = Reader.ReadString();
+            Main.Console.Log($"String[{i}]: {PooledStrings[i]}");
+        }
+        Main.Console.Log($"Pooled strings count: {count}");
     }
 
     public uint ReadPackedUInt() => (uint)ReadVarInt();

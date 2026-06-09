@@ -383,6 +383,8 @@ public sealed class SlimeAppearanceData : JsonData
         PlortFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; });
 
         Jiggle = reader.ReadNullablePackedFloat();
+
+        Main.Console.Log($"Read appearance data for {Name}");
     }
 
     private static Color? ReadHex(DataReader reader)
@@ -405,8 +407,10 @@ public sealed class SlimeAppearanceData : JsonData
             TopPaletteColor = topColor;
 
         if (!MiddlePaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.MiddleColor, out var middleColor))
+        {
             MiddlePaletteColor = middleColor;
-
+            Main.Console.Log($"Overwriting middle color - {(Color32)middleColor}");
+        }
         if (!BottomPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.BottomColor, out var bottomColor))
             BottomPaletteColor = bottomColor;
 

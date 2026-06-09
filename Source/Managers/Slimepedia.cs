@@ -470,6 +470,7 @@ public static class Slimepedia
     private static SlimeAppearance GenerateAppearance(SlimeData slimeData, SlimeAppearanceData data, SlimeAppearance baseAppearance, string lower, SlimeAppearanceApplicator applicator, SlimeDefinition definition)
     {
         var appearance = baseAppearance.Instantiate(); // Cloning our own appearance
+        Main.Console.Log($"Slime {slimeData.Name} cloned {appearance.name} for its appearance");
         appearance.name = $"{slimeData.Name}Normal";
 
         var oldFace = appearance.Face;
@@ -492,6 +493,7 @@ public static class Slimepedia
             Bottom = data.BottomPaletteColor ?? prevPalette.Bottom,
             Ammo = data.MainAmmoColor
         };
+        Main.Console.Log($"Slime color is {(Color32)appearance.ColorPalette.Middle}\nSlime Data color is {data.MiddlePaletteColor}\nSlime Ammo color is {(Color32)appearance.ColorPalette.Ammo}");
 
         appearance.Icon = Inventory.GetSprite($"{lower}_slime");
 

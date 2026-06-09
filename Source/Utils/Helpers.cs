@@ -115,10 +115,12 @@ public static class Helpers
 
             if (parser(@string, out color))
             {
+                Main.Console.Log($"Successfully parsed {@string} into ({color})");
                 cache[@string] = color;
                 return true;
             }
 
+            Main.Console.Log($"Failed to parse {@string} as a color.");
             color = default;
             return false;
         }

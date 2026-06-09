@@ -288,6 +288,8 @@ public static class Largopedia
         {
             body = Slimepedia.GenerateStructure(baseBody, appearanceData.BodyStruct, appearanceData.BodyStruct.MeshData, null);
             modelMap[0] = appearanceData.BodyStruct;
+            Main.Console.Log($"[BodyStruct was null!] Body Color for {appearance1.name}{appearance2.name} is {(Color32)body.DefaultMaterials[0].GetColor("_MiddleColor")}");
+            
         }
         else
         {
@@ -298,6 +300,7 @@ public static class Largopedia
                     [0] = (props.HasFlagFast(LargoAppearanceProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body)!.DefaultMaterials[0].Clone()
                 }
             };
+            Main.Console.Log($"Body Color for {appearance1.name}{appearance2.name} is {(Color32)body.DefaultMaterials[0].GetColor("_MiddleColor")}");
         }
 
         var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
@@ -317,6 +320,8 @@ public static class Largopedia
         appearance.TornadoAppearance = appearance1.TornadoAppearance ?? appearance2.TornadoAppearance;
         appearance.VineAppearance = appearance1.VineAppearance ?? appearance2.VineAppearance;
 
+        
+        
         if (appearance1.QubitAppearance != null || appearance2.QubitAppearance != null)
         {
             var qubitAppearance = appearance.QubitAppearance = appearance.Instantiate();
