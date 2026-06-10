@@ -99,7 +99,10 @@ public sealed class MatData : JsonData
         var count = reader.ReadPackedUInt();
 
         if (count == 0)
+        {
+            Main.Console.Log("ColorProps was empty!");
             return;
+        }
 
         var jsonProps = new string[count];
 
@@ -132,6 +135,7 @@ public sealed class MatData : JsonData
             if (!ColorProps.ContainsKey(bottomKey))
                 ColorProps[bottomKey] = middleColor;
         }
+        Main.Console.Log($"ColorProps: {string.Join("\n", ColorProps.Select(kvp => $"({kvp.Key})={(Color32)kvp.Value}\\(#{ColorUtility.ToHtmlStringRGB(kvp.Value)})"))}");
     }
 
     public override void OnDeserialise()
@@ -148,7 +152,7 @@ public sealed class MatData : JsonData
     public string MatOrigin;
     public string ColorsOrigin;
 
-    private Dictionary<string, string> ColorProps;
+    [JsonProperty("colorProps")] private Dictionary<string, string> ColorProps;
 
     public override void FindStrings(DataWriter writer)
     {
