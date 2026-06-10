@@ -83,33 +83,18 @@
     "appearances": [
       {
         "largoProps": ["UseSlime2ForFace"],
-        "bodyStruct": { "matData": { "matOrigin": "ROSI_MINE_LARGO" } },
+        "bodyStruct": { "matData": { "matOrigin": "LANTERN_SLIME" } },
         "slime1Structs": [
           {
-            "matData": {
-              "matSameAs": 1,
-              "matOrigin": "MINE_SLIME"
-            },
+            "matData": { "colorProps": { "_TopColor": "#632671" } },
             "meshData": { "mesh": "mine_lantern_exterior" }
           }
         ],
         "slime2Structs": [
-          {
-            "matData": {
-              "colorProps": {
-                "_TopColor": "#212A2F",
-                "_BottomColor": "#445660"
-              }
-            }
-          },
-          {
-            "matData": {
-              "matSameAs": 1,
-              "matOrigin": "MINE_SLIME"
-            }
-          },
           {},
-          { "matData": { "colorProps": { "_TopColor": "#9EA16F" } } }
+          {},
+          {},
+          { "matData": { "colorProps": { "_TopColor": "#A372AE" } } }
         ]
       }
     ]
@@ -346,8 +331,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#dafe7a",
-                "_BottomColor": "#e034c9"
+                "_TopColor": "#DAfE7A",
+                "_BottomColor": "#E034C9"
               }
             }
           }
@@ -365,7 +350,7 @@
             "matData": {
               "colorProps": {
                 "_TopColor": "#744D11",
-                "_BottomColor": "#f6d599"
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -404,7 +389,7 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#340ca1",
+                "_TopColor": "#340CA1",
                 "_BottomColor": "#320047"
               },
               "matOrigin": "QUANTUM_SLIME"
@@ -413,7 +398,7 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#33169a",
+                "_TopColor": "#33169A",
                 "_BottomColor": "#320047"
               },
               "matOrigin": "QUANTUM_SLIME"
@@ -422,8 +407,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#821ed6",
-                "_BottomColor": "#33169a"
+                "_TopColor": "#821ED6",
+                "_BottomColor": "#33169A"
               },
               "matOrigin": "QUANTUM_SLIME"
             }
@@ -431,8 +416,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#e034c9",
-                "_BottomColor": "#821ed6"
+                "_TopColor": "#E034C9",
+                "_BottomColor": "#821ED6"
               },
               "matOrigin": "QUANTUM_SLIME"
             }
@@ -440,8 +425,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#dafe7a",
-                "_BottomColor": "#e034c9"
+                "_TopColor": "#DAFE7A",
+                "_BottomColor": "#E034C9"
               },
               "matOrigin": "QUANTUM_SLIME"
             }
@@ -460,7 +445,7 @@
             "matOrigin": "HONEY_SLIME"
           }
         },
-        "slime1Structs": [ { "matData": { "colorProps": { "_TopColor": "#dafe7a" } } } ],
+        "slime1Structs": [ { "matData": { "colorProps": { "_TopColor": "#DAFE7A" } } } ],
         "slime2Structs": [
           {
             "matData": {
@@ -543,8 +528,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#e034c9",
-                "_MiddleColor": "#340ca1",
+                "_TopColor": "#E034C9",
+                "_MiddleColor": "#340CA1",
                 "_BottomColor": "#320047"
               }
             }
@@ -619,16 +604,16 @@
           {
             "matData": {
               "colorProps": {
-                "_Color": "#340ca1",
-                "_EdgeColor": "#340ca1"
+                "_Color": "#340CA1",
+                "_EdgeColor": "#340CA1"
               }
             }
           },
           {
             "matData": {
               "colorProps": {
-                "_Color": "#340ca1",
-                "_EdgeColor": "#340ca1"
+                "_Color": "#340CA1",
+                "_EdgeColor": "#340CA1"
               }
             }
           }
@@ -705,8 +690,8 @@
             "matData": {
               "matOrigin": "PINK_SLIME",
               "colorProps": {
-                "_TopColor": "#dafe7a",
-                "_BottomColor": "#e034c9"
+                "_TopColor": "#DAFE7A",
+                "_BottomColor": "#E034C9"
               }
             }
           }
@@ -782,8 +767,8 @@
             "matData": {
               "matOrigin": "PINK_SLIME",
               "colorProps": {
-                "_TopColor": "#dafe7a",
-                "_BottomColor": "#e034c9"
+                "_TopColor": "#DAFE7A",
+                "_BottomColor": "#E034C9"
               }
             }
           }
@@ -800,7 +785,7 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#340ca1",
+                "_TopColor": "#340CA1",
                 "_BottomColor": "#320047"
               }
             }
@@ -825,8 +810,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#e034c9",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#E034C9",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -843,8 +828,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#d03e5e",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#D03E5E",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -861,8 +846,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#916a43",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#916A43",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -879,7 +864,7 @@
           {
             "matData": {
               "matOrigin": "QUANTUM_SLIME",
-              "colorProps": { "_TopColor": "#f6d599" }
+              "colorProps": { "_TopColor": "#F6D599" }
             }
           },
           { "matData": { "matOrigin": "QUANTUM_SLIME" } }
@@ -895,8 +880,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#b47d00",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#B47D00",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -917,8 +902,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#5f5fb5",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#5F5FB5",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -935,8 +920,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#f6ae54",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#f6AE54",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -962,8 +947,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#228d75",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#228D75",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -981,7 +966,7 @@
             "matData": {
               "colorProps": {
                 "_TopColor": "#d40100",
-                "_BottomColor": "#f6d599"
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -998,8 +983,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#88ff00",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#88FF00",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -1026,8 +1011,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#034f93",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#034F93",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -1054,8 +1039,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#5c5d56",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#5C5D56",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -1082,8 +1067,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#653c33",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#653C33",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -1101,8 +1086,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#40218d",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#40218D",
+                "_BottomColor": "#F6D599"
               }
             }
           },
@@ -1129,8 +1114,8 @@
           {
             "matData": {
               "colorProps": {
-                "_TopColor": "#5c567c",
-                "_BottomColor": "#f6d599"
+                "_TopColor": "#5C567C",
+                "_BottomColor": "#F6D599"
               }
             }
           },

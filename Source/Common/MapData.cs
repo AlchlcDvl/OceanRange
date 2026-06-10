@@ -13,10 +13,10 @@
 //     [JsonRequired] public string PathToGameObject;
 
 // #if UNITY
-//     public override void FindStrings(DataWriter writer)
+//     public override void FindStrings(StringPooler pooler)
 //     {
-//         base.FindStrings(writer);
-//         writer.PoolString(PathToGameObject);
+//         base.FindStrings(pooler);
+//         pooler.PoolString(PathToGameObject);
 //     }
 
 //     public override void WriteTo(DataWriter writer)
@@ -101,20 +101,20 @@
 //         Ambiance = Helpers.AddEnumValue<Ambiance>(upper + "_AMBIANCE");
 //     }
 // #else
-//     public override void FindStrings(DataWriter writer)
+//     public override void FindStrings(StringPooler pooler)
 //     {
-//         base.FindStrings(writer);
-//         writer.PoolString(Region);
-//         writer.PoolString(TeleporterLocation);
-//         writer.PoolString(AssetName);
+//         base.FindStrings(pooler);
+//         pooler.PoolString(Region);
+//         pooler.PoolString(TeleporterLocation);
+//         pooler.PoolString(AssetName);
 
 //         if (Requirements.IsNullOrEmpty())
 //             return;
 
-//         writer.PoolStrings(Requirements.Keys);
+//         pooler.PoolStrings(Requirements.Keys);
 
 //         foreach (var req in Requirements.Values)
-//             req.FindStrings(writer);
+//             req.FindStrings(pooler);
 //     }
 
 //     public override void WriteTo(DataWriter writer)
@@ -176,11 +176,11 @@
 //     [JsonRequired] public ZoneData[] Zones;
 
 // #if UNITY
-//     public override void FindStrings(DataWriter writer)
+//     public override void FindStrings(StringPooler pooler)
 //     {
-//         base.FindStrings(writer);
-//         Array.ForEach(Regions, r => r.FindStrings(writer));
-//         Array.ForEach(Zones, z => z.FindStrings(writer));
+//         base.FindStrings(pooler);
+//         Array.ForEach(Regions, r => r.FindStrings(pooler));
+//         Array.ForEach(Zones, z => z.FindStrings(pooler));
 //     }
 
 //     public override void WriteTo(DataWriter writer)

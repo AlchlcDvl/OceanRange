@@ -24,9 +24,21 @@ static class ExportData
         Converters = new List<JsonConverter>()
         {
             new Vector3Converter(),
-            new OrientationConverter(),
+            new OrientationConverter()
         }
     };
+
+    struct SingleExport
+    {
+        public string DestPath;
+        public JsonData Data;
+    }
+
+    struct ArrayExport
+    {
+        public string DestPath;
+        public JsonData[] Data;
+    }
 
     [MenuItem("Ocean Range/Export Jsons as .cjson")]
     static void ExportSelectedData()
@@ -35,28 +47,95 @@ static class ExportData
 
         var jsonDirectory = Path.Combine("Assets", "Jsons");
         var translations = Path.Combine(jsonDirectory, "Translations");
+        var exportDirectory = Path.Combine("Assets", "..", "..", "Source", "Resources", "Data");
+        var exportTranslationsDirectory = Path.Combine(exportDirectory, "Translations");
 
         try
         {
-            var exportDirectory = Path.Combine("Assets", "..", "..", "Source", "Resources", "Data");
             PrepDir(exportDirectory);
-
-            var exportTranslationsDirectory = Path.Combine(exportDirectory, "Translations");
             PrepDir(exportTranslationsDirectory);
 
-            // Export arrays
-            WriteArrayData<SlimeData>(jsonDirectory, exportDirectory, "slimepedia");
-            WriteArrayData<LargoData>(jsonDirectory, exportDirectory, "largopedia");
-            WriteArrayData<RancherData>(jsonDirectory, exportDirectory, "contacts");
-            WriteArrayData<MailData>(jsonDirectory, exportDirectory, "mailbox");
+            var singleInstances = new List<SingleExport>();
+            var arrayInstances = new List<ArrayExport>();
 
-            // Export single instances
-            // WriteData<World>(jsonDirectory, exportDirectory, "atlas");
-            WriteData<Ingredients>(jsonDirectory, exportDirectory, "cookbook");
+            // Load arrays
+            LoadArrayData<SlimeData>(jsonDirectory, exportDirectory, "slimepedia", arrayInstances);
+            LoadArrayData<LargoData>(jsonDirectory, exportDirectory, "largopedia", arrayInstances);
+            LoadArrayData<RancherData>(jsonDirectory, exportDirectory, "contacts", arrayInstances);
+            LoadArrayData<MailData>(jsonDirectory, exportDirectory, "mailbox", arrayInstances);
 
-            // Export translations
+            // Load single instances
+            // LoadSingleData<World>(jsonDirectory, exportDirectory, "atlas", singleInstances);
+            LoadSingleData<Ingredients>(jsonDirectory, exportDirectory, "cookbook", singleInstances);
+
+            // Load translations
             foreach (var lang in Translations)
-                WriteData<Translations>(translations, exportTranslationsDirectory, lang);
+                LoadSingleData<Translations>(translations, exportTranslationsDirectory, lang, singleInstances);
+
+            // Pool strings
+            var globalStrings = new HashSet<string>(StringComparer.Ordinal);
+            var pooler = new StringPooler(globalStrings);
+
+            foreach (var export in singleInstances)
+                export.Data.FindStrings(pooler);
+
+            foreach (var export in arrayInstances)
+            {
+                foreach (var item in export.Data)
+                    item.FindStrings(pooler);
+            }
+
+            // Convert HashSet to an ordered Dictionary
+            var stringDict = new Dictionary<string, uint>(StringComparer.Ordinal);
+            var poolIndex = 1u;
+            var sortedStrings = globalStrings.OrderBy(x => x, StringComparer.Ordinal).ToArray();
+
+            foreach (var str in sortedStrings)
+                stringDict[str] = poolIndex++;
+
+            // Export the global string.pool file
+            var poolPath = Path.Combine(exportDirectory, "string.pool");
+
+            using (var stream = File.OpenWrite(poolPath))
+            using (var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal))
+            using (var binary = new BinaryWriter(compressor))
+            using (var writer = new DataWriter(binary))
+            {
+                writer.WritePackedUInt((uint)sortedStrings.Length);
+
+                foreach (var str in sortedStrings)
+                    writer.WriteString(str);
+            }
+
+            // Export instances
+            foreach (var export in singleInstances)
+            {
+                using (var stream = File.OpenWrite(export.DestPath))
+                using (var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal))
+                using (var binary = new BinaryWriter(compressor))
+                using (var writer = new DataWriter(binary, stringDict))
+                {
+                    export.Data.WriteTo(writer);
+                    writer.Flush();
+                }
+            }
+
+            // Export arrays
+            foreach (var export in arrayInstances)
+            {
+                using (var stream = File.OpenWrite(export.DestPath))
+                using (var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal))
+                using (var binary = new BinaryWriter(compressor))
+                using (var writer = new DataWriter(binary, stringDict))
+                {
+                    writer.WritePackedUInt((uint)export.Data.Length);
+
+                    foreach (var item in export.Data)
+                        item.WriteTo(writer);
+
+                    writer.Flush();
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -74,10 +153,9 @@ static class ExportData
             Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
     }
 
-    static void WriteData<T>(string sourcePath, string destPath, string fileName) where T : JsonData
+    static void LoadSingleData<T>(string sourcePath, string destPath, string fileName, List<SingleExport> list) where T : JsonData
     {
         var source = Path.Combine(sourcePath, fileName + ".json");
-        var dest = Path.Combine(destPath, fileName + ".cjson");
 
         if (!File.Exists(source))
         {
@@ -85,31 +163,15 @@ static class ExportData
             return;
         }
 
-        var jsonStr = File.ReadAllText(source);
-        var data = JsonConvert.DeserializeObject<T>(jsonStr, JsonSettings);
+        var data = JsonConvert.DeserializeObject<T>(File.ReadAllText(source), JsonSettings);
 
-        if (data == null)
-        {
-            Debug.LogError($"Failed to deserialize {fileName}.json");
-            return;
-        }
-
-        using (var stream = File.OpenWrite(dest))
-        using (var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal))
-        using (var binary = new BinaryWriter(compressor))
-        using (var writer = new DataWriter(binary))
-        {
-            data.FindStrings(writer);
-            writer.PushPooledStrings();
-            data.WriteTo(writer);
-            writer.Flush();
-        }
+        if (data != null)
+            list.Add(new SingleExport { DestPath = Path.Combine(destPath, fileName + ".cjson"), Data = data });
     }
 
-    static void WriteArrayData<T>(string sourcePath, string destPath, string fileName) where T : JsonData
+    static void LoadArrayData<T>(string sourcePath, string destPath, string fileName, List<ArrayExport> list) where T : JsonData
     {
         var source = Path.Combine(sourcePath, fileName + ".json");
-        var dest = Path.Combine(destPath, fileName + ".cjson");
 
         if (!File.Exists(source))
         {
@@ -117,30 +179,9 @@ static class ExportData
             return;
         }
 
-        var jsonStr = File.ReadAllText(source);
-        var data = JsonConvert.DeserializeObject<T[]>(jsonStr, JsonSettings);
+        var data = JsonConvert.DeserializeObject<T[]>(File.ReadAllText(source), JsonSettings);
 
-        if (data == null)
-        {
-            Debug.LogError($"Failed to deserialize {fileName}.json");
-            return;
-        }
-
-        using (var stream = File.OpenWrite(dest))
-        using (var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal))
-        using (var binary = new BinaryWriter(compressor))
-        using (var writer = new DataWriter(binary))
-        {
-            foreach (var item in data)
-                item.FindStrings(writer);
-
-            writer.PushPooledStrings();
-            writer.WritePackedUInt((uint)data.Length);
-
-            foreach (var item in data)
-                item.WriteTo(writer);
-
-            writer.Flush();
-        }
+        if (data != null)
+            list.Add(new ArrayExport { DestPath = Path.Combine(destPath, fileName + ".cjson"), Data = data });
     }
 }

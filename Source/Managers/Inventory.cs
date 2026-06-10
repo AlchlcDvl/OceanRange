@@ -1,9 +1,5 @@
 using System.IO.Compression;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using Newtonsoft.Json.Serialization;
-using SRML.Utils;
 using UnityEngine.Rendering;
 
 namespace OceanRange.Managers;
@@ -81,6 +77,8 @@ public static class Inventory
     /// </summary>
     public static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath)!, "OceanRange");
 
+    public static string[] StringPool;
+
     /// <summary>
     /// Initialises the asset handling by creating relevant handles.
     /// </summary>
@@ -89,6 +87,27 @@ public static class Inventory
     public static void InitialiseAssets()
     {
         Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles for embedded resources
+
+        using var stream = Core.GetManifestResourceStream("OceanRange.Resources.Data.string.pool");
+        using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
+        using var binary = new BinaryReader(decompressor);
+        using var reader = new DataReader(binary, null);
+
+        var count = reader.ReadPackedUInt();
+        StringPool = new string[(int)count];
+        StringPool[0] = string.Empty;
+
+        for (var i = 1; i < count; i++)
+            StringPool[i] = reader.ReadString();
+
+#if DEBUG
+        Main.Console.Log("Pooled strings:");
+
+        for (var i = 1; i < count; i++)
+            Main.Console.Log($"String[{i}]: {StringPool[i]}");
+
+        Main.Console.Log($"Pooled strings count: {count}");
+#endif
 
         // Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
         // Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
@@ -160,7 +179,7 @@ public static class Inventory
         using var stream = new MemoryStream(json.Data);
         using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
         using var binary = new BinaryReader(decompressor);
-        using var reader = new DataReader(binary);
+        using var reader = new DataReader(binary, StringPool);
 
         var data = new T();
         data.ReadFrom(reader);
@@ -174,7 +193,7 @@ public static class Inventory
         using var stream = new MemoryStream(json.Data);
         using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
         using var binary = new BinaryReader(decompressor);
-        using var reader = new DataReader(binary);
+        using var reader = new DataReader(binary, StringPool);
 
         var count = reader.ReadPackedUInt();
         var array = new T[count];
@@ -318,7 +337,7 @@ public static class Inventory
         using var stream = Core.GetManifestResourceStream(path)!;
         using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
         using var binaryReader = new BinaryReader(decompressor);
-        using var reader = new DataReader(binaryReader);
+        using var reader = new DataReader(binaryReader, null);
 
         var mesh = new Mesh { indexFormat = (IndexFormat)reader.ReadByte() };
 
@@ -450,7 +469,11 @@ public static class Inventory
     /// Creates an asset handle for the provided asset.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
-    private static void CreateAssetHandle(string path) => Assets.GetOrAdd(path.SanitisePath(), Create).AddPath(path);
+    private static void CreateAssetHandle(string path)
+    {
+        if (!path.EndsWith("string.pool"))
+            Assets.GetOrAdd(path.SanitisePath(), Create).AddPath(path);
+    }
 
     // /// <summary>
     // /// Creates an asset handle for the provided asset.

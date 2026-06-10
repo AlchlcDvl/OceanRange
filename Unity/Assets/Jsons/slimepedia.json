@@ -133,7 +133,7 @@
             "colorProps": {
               "_TopColor": "#FEFCFF",
               "_MiddleColor": "#DCDADD",
-              "_BottomColor": "#ada08e"
+              "_BottomColor": "#ADA08E"
             }
           }
         }
@@ -253,14 +253,17 @@
             "pattern": "lantern",
             "matOrigin": "TABBY_SLIME",
             "colorProps": {
-              "_TopColor": "#752C86",
-              "_BottomColor": "#B15EC8"
+              "_TopColor": "#4F1E5A",
+              "_BottomColor": "#752C86"
             }
           }
         },
         {
           "meshData": { "mesh": "lantern_stalk" },
-          "matData": { "sameAs": 0 }
+          "matData": {
+            "matOrigin": "PINK_SLIME",
+            "colorProps": { "_TopColor": "#632671" }
+          }
         },
         {
           "meshData": {
@@ -384,7 +387,7 @@
     "onomicsType": "plorts",
     "zones": ["MOSS"],
     "normalAppearance": {
-      "mainAmmoColor": "#0a094f",
+      "mainAmmoColor": "#0A094F",
       "jiggle": 0.25,
       "slimeFeatures": [
         {
@@ -393,9 +396,9 @@
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11,
             "colorProps": {
-              "_TopColor": "#340ca1",
-              "_MiddleColor": "#e034c9",
-              "_BottomColor": "#0a094f"
+              "_TopColor": "#340CA1",
+              "_MiddleColor": "#E034C9",
+              "_BottomColor": "#0A094F"
             }
           }
         },
@@ -405,7 +408,7 @@
             "matOrigin": "TABBY_SLIME",
             "pattern": "mesmer_pincer",
             "colorProps": {
-              "_TopColor": "#340ca1",
+              "_TopColor": "#340CA1",
               "_BottomColor": "#431158"
             }
           }
@@ -415,7 +418,7 @@
           "matData": {
             "matOrigin": "PINK_SLIME",
             "colorProps": {
-              "_TopColor": "#33169a",
+              "_TopColor": "#33169A",
               "_BottomColor": "#431158"
             }
           }
@@ -425,8 +428,8 @@
           "matData": {
             "matOrigin": "PINK_SLIME",
             "colorProps": {
-              "_TopColor": "#821ed6",
-              "_BottomColor": "#33169a"
+              "_TopColor": "#821ED6",
+              "_BottomColor": "#33169A"
             }
           }
         },
@@ -435,8 +438,8 @@
           "matData": {
             "matOrigin": "PINK_SLIME",
             "colorProps": {
-              "_TopColor": "#e034c9",
-              "_BottomColor": "#821ed6"
+              "_TopColor": "#E034C9",
+              "_BottomColor": "#821ED6"
             }
           }
         },
@@ -445,8 +448,8 @@
           "matData": {
             "matOrigin": "PINK_SLIME",
             "colorProps": {
-              "_TopColor": "#dafe7a",
-              "_BottomColor": "#e034c9"
+              "_TopColor": "#DAFE7A",
+              "_BottomColor": "#E034C9"
             }
           }
         }
@@ -478,9 +481,9 @@
         {
           "matData": {
             "colorProps": {
-              "_TopColor": "#0a094f",
+              "_TopColor": "#0A094F",
               "_MiddleColor": "#2F2251",
-              "_BottomColor": "#1e1140"
+              "_BottomColor": "#1E1140"
             }
           }
         }
@@ -503,8 +506,8 @@
     "onomicsType": "plorts",
     "zones": ["REEF"],
     "normalAppearance": {
-      "mainAmmoColor": "#e75651",
-      "plortAmmoColor": "#e0945e",
+      "mainAmmoColor": "#E75651",
+      "plortAmmoColor": "#E0945E",
       "jiggle": 0.25,
       "slimeFeatures": [
         {
@@ -513,8 +516,8 @@
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11,
             "colorProps": {
-              "_TopColor": "#f09695",
-              "_BottomColor": "#e65954"
+              "_TopColor": "#F09695",
+              "_BottomColor": "#E65954"
             }
           }
         },
@@ -524,14 +527,14 @@
             "matOrigin": "TABBY_SLIME",
             "pattern": "hermit_shell",
             "colorProps": {
-              "_TopColor": "#f68c65",
-              "_BottomColor": "#f6d599"
+              "_TopColor": "#F68C65",
+              "_BottomColor": "#F6D599"
             }
           }
         },
         {
           "meshData": { "mesh": "hermit_claws" },
-          "matData": { "colorProps": { "_TopColor": "#b53a35" } }
+          "matData": { "colorProps": { "_TopColor": "#B53A35" } }
         }
       ],
       "plortFeatures": [
@@ -572,7 +575,7 @@
     "gordoEat": 3,
     "exchangeable": false,
     "normalAppearance": {
-      "mainAmmoColor": "#ffdf00",
+      "mainAmmoColor": "#FFDF00",
       "jiggle": 0.5,
       "slimeFeatures": [
         { "matData": { "matOrigin": "GOLD_SLIME" } },
@@ -580,7 +583,7 @@
           "meshData": { "mesh": "goldfish_fins" },
           "matData": {
             "matOrigin": "PUDDLE_SLIME",
-            "colorProps": { "_TopColor": "#dbc777" }
+            "colorProps": { "_TopColor": "#DBC777" }
           }
         }
       ],
@@ -607,8 +610,8 @@
     "zones": ["MOSS"],
     "hasGordo": false,
     "normalAppearance": {
-      "mainAmmoColor": "#a4e88e",
-      "plortAmmoColor": "#3c6c45",
+      "mainAmmoColor": "#A4E88E",
+      "plortAmmoColor": "#3C6C45",
       "jiggle": 0.25,
       "slimeFeatures": [
         {
@@ -617,8 +620,8 @@
             "matOrigin": "TABBY_SLIME",
             "gloss": 0.11,
             "colorProps": {
-              "_TopColor": "#3c6c45",
-              "_BottomColor": "#a4e88e"
+              "_TopColor": "#3C6C45",
+              "_BottomColor": "#A4E88E"
             }
           },
           "meshData": { "mesh": "mimic_body" }
@@ -629,8 +632,8 @@
             "matOrigin": "TABBY_SLIME",
             "pattern": "mimic_tail",
             "colorProps": {
-              "_TopColor": "#73dcb3",
-              "_BottomColor": "#44928b"
+              "_TopColor": "#73DCB3",
+              "_BottomColor": "#44928B"
             }
           }
         }
@@ -650,8 +653,8 @@
           "matData": {
             "pattern": "mimic_plort",
             "colorProps": {
-              "_TopColor": "#73dcb3",
-              "_BottomColor": "#a4e88e"
+              "_TopColor": "#73DCB3",
+              "_BottomColor": "#A4E88E"
             }
           }
         }

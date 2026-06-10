@@ -3,70 +3,11 @@ using System.Runtime.CompilerServices;
 
 namespace OceanRange.Data;
 
-public sealed class DataWriter(BinaryWriter writer) : IDisposable
+public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sharedStringPool = null) : IDisposable
 {
     private readonly BinaryWriter Writer = writer;
-    private readonly Dictionary<string, uint> PooledStrings = new(StringComparer.Ordinal);
-    private uint Index = 1u;
-
-    public void PoolSubstring(string value, int startIndex) => PoolString(value?.Substring(startIndex));
-
-    public void PoolString(string value)
-    {
-        if (!string.IsNullOrEmpty(value) && !PooledStrings.ContainsKey(value))
-            PooledStrings[value] = Index++;
-    }
-
-    public void PoolSubstrings(string[] values, int startIndex)
-    {
-        if (values.IsNullOrEmpty())
-            return;
-
-        for (var i = 0; i < values.Length; i++)
-            PoolString(values[i]?.Substring(startIndex));
-    }
-
-    public void PoolSubstrings(ICollection<string> values, int startIndex)
-    {
-        if (values.IsNullOrEmpty())
-            return;
-
-        foreach (var value in values)
-            PoolString(value?.Substring(startIndex));
-    }
-
-    public void PoolStrings(string[] values)
-    {
-        if (values.IsNullOrEmpty())
-            return;
-
-        for (var i = 0; i < values.Length; i++)
-            PoolString(values[i]);
-    }
-
-    public void PoolStrings(ICollection<string> values)
-    {
-        if (values.IsNullOrEmpty())
-            return;
-
-        foreach (var value in values)
-            PoolString(value);
-    }
-
-    public void PushPooledStrings()
-    {
-        var pooledStringsExist = PooledStrings.Count > 0;
-
-        Writer.Write(pooledStringsExist);
-
-        if (!pooledStringsExist)
-            return;
-
-        WritePackedUInt(Index);
-
-        foreach (var value in PooledStrings.Keys)
-            Writer.Write(value);
-    }
+    private readonly Dictionary<string, uint> PooledStrings = sharedStringPool;
+    private readonly bool HasSharedPool = sharedStringPool != null;
 
     public void WriteBool(bool value) => Writer.Write(value);
 
@@ -93,7 +34,7 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
 
     public void WriteString(string value)
     {
-        if (PooledStrings.Count == 0)
+        if (!HasSharedPool)
         {
             Writer.Write(value ?? string.Empty);
             return;
@@ -106,7 +47,7 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
         }
 
         if (!PooledStrings.TryGetValue(value, out var index))
-            throw new ArgumentException(value + " was not pooled!");
+            throw new ArgumentException($"'{value}' was not found in the global string pool!");
 
         WritePackedUInt(index);
     }

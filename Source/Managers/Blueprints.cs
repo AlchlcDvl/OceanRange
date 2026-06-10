@@ -11,12 +11,12 @@
 //     [JsonRequired] public TeleporterData[] Teleporters;
 
 // #if UNITY
-//     public override void FindStrings(DataWriter writer)
+//     public override void FindStrings(StringPooler pooler)
 //     {
-//         base.FindStrings(writer);
-//         Array.ForEach(Lamps, x => x.FindStrings(writer));
-//         Array.ForEach(WarpDepots, x => x.FindStrings(writer));
-//         Array.ForEach(Teleporters, x => x.FindStrings(writer));
+//         base.FindStrings(pooler);
+//         Array.ForEach(Lamps, x => x.FindStrings(pooler));
+//         Array.ForEach(WarpDepots, x => x.FindStrings(pooler));
+//         Array.ForEach(Teleporters, x => x.FindStrings(pooler));
 //     }
 
 //     public override void WriteTo(DataWriter writer)
@@ -78,13 +78,13 @@
 
 //     public string ColorHex;
 
-//     public override void FindStrings(DataWriter writer)
+//     public override void FindStrings(StringPooler pooler)
 //     {
-//         base.FindStrings(writer);
-//         writer.PoolString(PlortId);
-//         writer.PoolString(ResourceId);
-//         writer.PoolString(SlimeId);
-//         writer.PoolSubstring(ColorHex, 1);
+//         base.FindStrings(pooler);
+//         pooler.PoolString(PlortId);
+//         pooler.PoolString(ResourceId);
+//         pooler.PoolString(SlimeId);
+//         pooler.PoolSubstring(ColorHex, 1);
 //     }
 
 //     public override void WriteTo(DataWriter writer)

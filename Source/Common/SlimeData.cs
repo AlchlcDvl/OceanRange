@@ -98,29 +98,29 @@ public sealed  class SlimeData : SpawnedActorData
 #endif
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
+        base.FindStrings(pooler);
 
-        writer.PoolString(FavToy);
-        writer.PoolStrings(Zones);
-        writer.PoolString(FavFood);
-        writer.PoolString(Diet);
-        writer.PoolString(BaseSlime);
-        writer.PoolString(BasePlort);
-        writer.PoolString(BaseGordo);
-        writer.PoolString(ComponentBase);
-        writer.PoolString(GordoZone);
-        writer.PoolStrings(GordoRewards);
-        writer.PoolString(GordoCell);
+        pooler.PoolString(FavToy);
+        pooler.PoolStrings(Zones);
+        pooler.PoolString(FavFood);
+        pooler.PoolString(Diet);
+        pooler.PoolString(BaseSlime);
+        pooler.PoolString(BasePlort);
+        pooler.PoolString(BaseGordo);
+        pooler.PoolString(ComponentBase);
+        pooler.PoolString(GordoZone);
+        pooler.PoolStrings(GordoRewards);
+        pooler.PoolString(GordoCell);
 
-        writer.PoolString(OnomicsType);
+        pooler.PoolString(OnomicsType);
 
-        writer.PoolStrings(ComponentsToAdd);
-        writer.PoolStrings(ComponentsToRemove);
+        pooler.PoolStrings(ComponentsToAdd);
+        pooler.PoolStrings(ComponentsToRemove);
 
-        NormalAppearance.FindStrings(writer);
-        SSAppearance?.FindStrings(writer);
+        NormalAppearance.FindStrings(pooler);
+        SSAppearance?.FindStrings(pooler);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -316,29 +316,29 @@ public sealed  class SlimeAppearanceData : JsonData
 #endif
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
+        base.FindStrings(pooler);
 
-        writer.PoolSubstring(MainAmmoColor, 1);
+        pooler.PoolSubstring(MainAmmoColor, 1);
 
-        writer.PoolSubstring(TopMouthColor, 1);
-        writer.PoolSubstring(MiddleMouthColor, 1);
-        writer.PoolSubstring(BottomMouthColor, 1);
+        pooler.PoolSubstring(TopMouthColor, 1);
+        pooler.PoolSubstring(MiddleMouthColor, 1);
+        pooler.PoolSubstring(BottomMouthColor, 1);
 
-        writer.PoolSubstring(RedEyeColor, 1);
-        writer.PoolSubstring(GreenEyeColor, 1);
-        writer.PoolSubstring(BlueEyeColor, 1);
+        pooler.PoolSubstring(RedEyeColor, 1);
+        pooler.PoolSubstring(GreenEyeColor, 1);
+        pooler.PoolSubstring(BlueEyeColor, 1);
 
-        writer.PoolSubstring(TopPaletteColor, 1);
-        writer.PoolSubstring(MiddlePaletteColor, 1);
-        writer.PoolSubstring(BottomPaletteColor, 1);
+        pooler.PoolSubstring(TopPaletteColor, 1);
+        pooler.PoolSubstring(MiddlePaletteColor, 1);
+        pooler.PoolSubstring(BottomPaletteColor, 1);
 
-        writer.PoolSubstring(PlortAmmoColor, 1);
+        pooler.PoolSubstring(PlortAmmoColor, 1);
 
-        Array.ForEach(SlimeFeatures, f => f.FindStrings(writer));
-        Array.ForEach(GordoFeatures, f => f.FindStrings(writer));
-        Array.ForEach(PlortFeatures, f => f.FindStrings(writer));
+        Array.ForEach(SlimeFeatures, f => f.FindStrings(pooler));
+        Array.ForEach(GordoFeatures, f => f.FindStrings(pooler));
+        Array.ForEach(PlortFeatures, f => f.FindStrings(pooler));
     }
 
     public override void WriteTo(DataWriter writer)

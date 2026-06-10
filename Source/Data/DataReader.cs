@@ -2,32 +2,11 @@ using System.Runtime.CompilerServices;
 
 namespace OceanRange.Data;
 
-public sealed class DataReader : IDisposable
+public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
 {
-    private readonly BinaryReader Reader;
-    private readonly string[] PooledStrings;
-    private readonly bool HasPooledStrings;
-
-    public DataReader(BinaryReader reader)
-    {
-        Reader = reader;
-        HasPooledStrings = reader.ReadBoolean();
-
-        if (!HasPooledStrings)
-            return;
-
-        var count = ReadPackedUInt();
-        PooledStrings = new string[count];
-        PooledStrings[0] = string.Empty;
-
-        Main.Console.Log($"Pooled strings:");
-        for (var i = 1; i < count; i++)
-        {
-            PooledStrings[i] = Reader.ReadString();
-            Main.Console.Log($"String[{i}]: {PooledStrings[i]}");
-        }
-        Main.Console.Log($"Pooled strings count: {count}");
-    }
+    private readonly BinaryReader Reader = reader;
+    private readonly string[] PooledStrings = pool;
+    private readonly bool HasPooledStrings = pool != null;
 
     public uint ReadPackedUInt() => (uint)ReadVarInt();
 

@@ -128,10 +128,10 @@ public sealed  class MailData : JsonData
         return true;
     }
 #else
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolString(Id);
+        base.FindStrings(pooler);
+        pooler.PoolString(Id);
     }
 
     public override void WriteTo(DataWriter writer)

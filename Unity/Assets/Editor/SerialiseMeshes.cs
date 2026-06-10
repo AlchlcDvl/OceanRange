@@ -62,8 +62,6 @@ static class ExportMeshes
 
     static void WriteMesh(DataWriter writer, Mesh mesh)
     {
-        writer.PushPooledStrings();
-
         writer.WriteByte((byte)mesh.indexFormat);
 
         var bounds = mesh.bounds;

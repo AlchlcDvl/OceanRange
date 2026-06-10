@@ -33,13 +33,13 @@ public sealed  class Ingredients : JsonData
         Array.ForEach(Chimkens, x => x.OnDeserialise());
     }
 #else
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        Array.ForEach(Groups, x => x.FindStrings(writer));
-        Array.ForEach(Fruits, x => x.FindStrings(writer));
-        Array.ForEach(Veggies, x => x.FindStrings(writer));
-        Array.ForEach(Chimkens, x => x.FindStrings(writer));
+        base.FindStrings(pooler);
+        Array.ForEach(Groups, x => x.FindStrings(pooler));
+        Array.ForEach(Fruits, x => x.FindStrings(pooler));
+        Array.ForEach(Veggies, x => x.FindStrings(pooler));
+        Array.ForEach(Chimkens, x => x.FindStrings(pooler));
     }
 
     public override void WriteTo(DataWriter writer)
@@ -75,10 +75,10 @@ public sealed  class GroupData : JsonData
         Foods = reader.ReadEnumArray<IdentifiableId>();
     }
 #else
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolStrings(Foods);
+        base.FindStrings(pooler);
+        pooler.PoolStrings(Foods);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -155,10 +155,10 @@ public sealed  class ChimkenData : FoodData
         Zones = reader.ReadEnumArray<Zone>();
     }
 #else
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolStrings(Zones);
+        base.FindStrings(pooler);
+        pooler.PoolStrings(Zones);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -231,15 +231,15 @@ public abstract class PlantData : FoodData
         SpawnLocations = reader.ReadDictionary(r => r.ReadString(), r => r.ReadArray(r2 => r2.ReadOrientation()), StringComparer.Ordinal);
     }
 #else
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
+        base.FindStrings(pooler);
 
-        writer.PoolString(BasePlant);
-        writer.PoolString(BaseResource);
+        pooler.PoolString(BasePlant);
+        pooler.PoolString(BaseResource);
 
         if (SpawnLocations != null)
-            writer.PoolStrings(SpawnLocations.Keys);
+            pooler.PoolStrings(SpawnLocations.Keys);
     }
 
     public override void WriteTo(DataWriter writer)

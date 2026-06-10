@@ -9,7 +9,7 @@ public abstract class JsonData
     public string Name;
 
 #if UNITY
-    public virtual void FindStrings(DataWriter writer) => writer.PoolString(Name);
+    public virtual void FindStrings(StringPooler pooler) => pooler.PoolString(Name);
 
     public virtual void WriteTo(DataWriter writer) => writer.WriteString(Name);
 #else
@@ -55,11 +55,11 @@ public abstract class SpawnedActorData : ActorData
         writer.WriteStringArray(Progress);
     }
 
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolStrings(Progress);
-        writer.PoolSubstring(MainAmmoColor, 1);
+        base.FindStrings(pooler);
+        pooler.PoolStrings(Progress);
+        pooler.PoolSubstring(MainAmmoColor, 1);
     }
 #else
     public override void ReadFrom(DataReader reader)

@@ -30,45 +30,45 @@ public sealed  class Translations : JsonData
     public Dictionary<string, Dictionary<string, string>> AdditionalExotic;
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
+        base.FindStrings(pooler);
 
-        writer.PoolStrings(Additional.Keys);
+        pooler.PoolStrings(Additional.Keys);
 
         foreach (var dict in Additional.Values)
         {
-            writer.PoolStrings(dict.Keys);
-            writer.PoolStrings(dict.Values);
+            pooler.PoolStrings(dict.Keys);
+            pooler.PoolStrings(dict.Values);
         }
 
         if (!AdditionalExotic.IsNullOrEmpty())
         {
-            writer.PoolStrings(AdditionalExotic.Keys);
+            pooler.PoolStrings(AdditionalExotic.Keys);
 
             foreach (var dict in AdditionalExotic.Values)
             {
-                writer.PoolStrings(dict.Keys);
-                writer.PoolStrings(dict.Values);
+                pooler.PoolStrings(dict.Keys);
+                pooler.PoolStrings(dict.Values);
             }
         }
 
-        Array.ForEach(Slimes, x => x.FindStrings(writer));
-        Array.ForEach(Hens, x => x.FindStrings(writer));
-        Array.ForEach(Chicks, x => x.FindStrings(writer));
-        Array.ForEach(Fruits, x => x.FindStrings(writer));
-        Array.ForEach(Veggies, x => x.FindStrings(writer));
-        // Array.ForEach(Crafts, x => x.FindStrings(writer));
-        // Array.ForEach(EdibleCrafts, x => x.FindStrings(writer));
-        Array.ForEach(Ranchers, x => x.FindStrings(writer));
-        Array.ForEach(Plorts, x => x.FindStrings(writer));
-        Array.ForEach(Largos, x => x.FindStrings(writer));
-        Array.ForEach(Gordos, x => x.FindStrings(writer));
-        // Array.ForEach(Zones, x => x.FindStrings(writer));
-        Array.ForEach(Mail, x => x.FindStrings(writer));
-        // Array.ForEach(Lamps, x => x.FindStrings(writer));
-        // Array.ForEach(Warps, x => x.FindStrings(writer));
-        // Array.ForEach(Teleporters, x => x.FindStrings(writer));
+        Array.ForEach(Slimes, x => x.FindStrings(pooler));
+        Array.ForEach(Hens, x => x.FindStrings(pooler));
+        Array.ForEach(Chicks, x => x.FindStrings(pooler));
+        Array.ForEach(Fruits, x => x.FindStrings(pooler));
+        Array.ForEach(Veggies, x => x.FindStrings(pooler));
+        // Array.ForEach(Crafts, x => x.FindStrings(pooler));
+        // Array.ForEach(EdibleCrafts, x => x.FindStrings(pooler));
+        Array.ForEach(Ranchers, x => x.FindStrings(pooler));
+        Array.ForEach(Plorts, x => x.FindStrings(pooler));
+        Array.ForEach(Largos, x => x.FindStrings(pooler));
+        Array.ForEach(Gordos, x => x.FindStrings(pooler));
+        // Array.ForEach(Zones, x => x.FindStrings(pooler));
+        Array.ForEach(Mail, x => x.FindStrings(pooler));
+        // Array.ForEach(Lamps, x => x.FindStrings(pooler));
+        // Array.ForEach(Warps, x => x.FindStrings(pooler));
+        // Array.ForEach(Teleporters, x => x.FindStrings(pooler));
     }
 
     public override void WriteTo(DataWriter writer)
@@ -225,10 +225,10 @@ public abstract class LangData : JsonData
     [JsonRequired] public string TranslatedName;
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolString(TranslatedName);
+        base.FindStrings(pooler);
+        pooler.PoolString(TranslatedName);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -260,12 +260,12 @@ public sealed  class MailLangData : LangData
     [JsonRequired] public string MailKey;
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolString(Subject);
-        writer.PoolString(Body);
-        writer.PoolString(MailKey);
+        base.FindStrings(pooler);
+        pooler.PoolString(Subject);
+        pooler.PoolString(Body);
+        pooler.PoolString(MailKey);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -303,12 +303,12 @@ public sealed  class RancherLangData : LangData
     [JsonRequired] public string SpecialOffer;
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolStrings(Offers);
-        writer.PoolStrings(LoadingTexts);
-        writer.PoolString(SpecialOffer);
+        base.FindStrings(pooler);
+        pooler.PoolStrings(Offers);
+        pooler.PoolStrings(LoadingTexts);
+        pooler.PoolString(SpecialOffer);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -406,10 +406,10 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
     [JsonRequired] public string Intro;
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolString(Intro);
+        base.FindStrings(pooler);
+        pooler.PoolString(Intro);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -464,11 +464,11 @@ public abstract class PediaLangData(string suffix, PediaCategory category) : Lan
 //     [JsonRequired] public string Presence;
 
 // #if UNITY
-//     public override void FindStrings(DataWriter writer)
+//     public override void FindStrings(StringPooler pooler)
 //     {
-//         base.FindStrings(writer);
-//         writer.PoolString(Description);
-//         writer.PoolString(Presence);
+//         base.FindStrings(pooler);
+//         pooler.PoolString(Description);
+//         pooler.PoolString(Presence);
 //     }
 
 //     public override void WriteTo(DataWriter writer)
@@ -541,15 +541,15 @@ public sealed  class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIM
     public bool SsExists;
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolString(Risks);
-        writer.PoolString(Slimeology);
-        writer.PoolString(Diet);
-        writer.PoolString(Favourite);
-        writer.PoolString(Onomics);
-        writer.PoolString(Exotic);
+        base.FindStrings(pooler);
+        pooler.PoolString(Risks);
+        pooler.PoolString(Slimeology);
+        pooler.PoolString(Diet);
+        pooler.PoolString(Favourite);
+        pooler.PoolString(Onomics);
+        pooler.PoolString(Exotic);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -613,12 +613,12 @@ public abstract class ResourceLangData(string suffix) : ActorLangData(suffix, Pe
     [JsonRequired] public string About;
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolString(Type);
-        writer.PoolString(Ranch);
-        writer.PoolString(About);
+        base.FindStrings(pooler);
+        pooler.PoolString(Type);
+        pooler.PoolString(Ranch);
+        pooler.PoolString(About);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -664,10 +664,10 @@ public abstract class FoodLangData(string suffix) : ResourceLangData(suffix)
     [JsonRequired] public string FavouredBy;
 
 #if UNITY
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolString(FavouredBy);
+        base.FindStrings(pooler);
+        pooler.PoolString(FavouredBy);
     }
 
     public override void WriteTo(DataWriter writer)

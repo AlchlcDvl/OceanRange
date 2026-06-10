@@ -52,6 +52,7 @@
 
     <Compile Include="GlobalUsings.cs" />
     <Compile Include="Data\DataWriter.cs" />
+    <Compile Include="Data\StringPooler.cs" />
     <Compile Include="Utils\UnityUtils.cs" />
     <Compile Include="Unity\*.cs" />
     <Compile Include="Common\*.cs" />

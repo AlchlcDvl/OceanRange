@@ -33,11 +33,11 @@ public sealed  class ModelData : JsonData
         MeshData.OnDeserialise();
     }
 #else
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        MatData?.FindStrings(writer);
-        MeshData?.FindStrings(writer);
+        base.FindStrings(pooler);
+        MatData?.FindStrings(pooler);
+        MeshData?.FindStrings(pooler);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -160,19 +160,19 @@ public sealed  class MatData : JsonData
 
     [JsonProperty("colorProps")] private Dictionary<string, string> ColorProps;
 
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
+        base.FindStrings(pooler);
 
-        writer.PoolString(Pattern);
-        writer.PoolString(MatOrigin);
-        writer.PoolString(ColorsOrigin);
+        pooler.PoolString(Pattern);
+        pooler.PoolString(MatOrigin);
+        pooler.PoolString(ColorsOrigin);
 
         if (ColorProps.IsNullOrEmpty())
             return;
 
-        writer.PoolSubstrings(ColorProps.Keys, 1);
-        writer.PoolSubstrings(ColorProps.Values, 1);
+        pooler.PoolSubstrings(ColorProps.Keys, 1);
+        pooler.PoolSubstrings(ColorProps.Values, 1);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -237,10 +237,10 @@ public sealed  class MeshData : JsonData
         PrefabLength = reader.ReadNullablePackedInt();
     }
 #else
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolString(Mesh);
+        base.FindStrings(pooler);
+        pooler.PoolString(Mesh);
     }
 
     public override void WriteTo(DataWriter writer)

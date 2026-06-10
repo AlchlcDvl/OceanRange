@@ -100,11 +100,11 @@ public sealed  class LargoData : ActorData
         Array.ForEach(Appearances, a => a.OnDeserialise());
     }
 #else
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
-        writer.PoolStrings(DefProps);
-        Array.ForEach(Appearances, a => a.FindStrings(writer));
+        base.FindStrings(pooler);
+        pooler.PoolStrings(DefProps);
+        Array.ForEach(Appearances, a => a.FindStrings(pooler));
     }
 
     public override void WriteTo(DataWriter writer)
@@ -160,20 +160,20 @@ public sealed  class LargoAppearanceData : JsonData
 
     public override void OnDeserialise() => BodyStruct?.MeshData.IsBody = true;
 #else
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
+        base.FindStrings(pooler);
 
-        writer.PoolStrings(LargoProps);
-        writer.PoolStrings(AppProps);
+        pooler.PoolStrings(LargoProps);
+        pooler.PoolStrings(AppProps);
 
-        BodyStruct?.FindStrings(writer);
+        BodyStruct?.FindStrings(pooler);
 
         if (!Slime1Structs.IsNullOrEmpty())
-            Array.ForEach(Slime1Structs, s => s.FindStrings(writer));
+            Array.ForEach(Slime1Structs, s => s.FindStrings(pooler));
 
         if (!Slime2Structs.IsNullOrEmpty())
-            Array.ForEach(Slime2Structs, s => s.FindStrings(writer));
+            Array.ForEach(Slime2Structs, s => s.FindStrings(pooler));
     }
 
     public override void WriteTo(DataWriter writer)

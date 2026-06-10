@@ -112,16 +112,16 @@ public sealed  class RancherData : JsonData
     public string[] IndivRequests;
     public string[] IndivRareRewards;
 
-    public override void FindStrings(DataWriter writer)
+    public override void FindStrings(StringPooler pooler)
     {
-        base.FindStrings(writer);
+        base.FindStrings(pooler);
 
-        writer.PoolStrings(Rewards);
-        writer.PoolStrings(Requests);
-        writer.PoolStrings(RareRewards);
-        writer.PoolStrings(IndivRewards);
-        writer.PoolStrings(IndivRequests);
-        writer.PoolStrings(IndivRareRewards);
+        pooler.PoolStrings(Rewards);
+        pooler.PoolStrings(Requests);
+        pooler.PoolStrings(RareRewards);
+        pooler.PoolStrings(IndivRewards);
+        pooler.PoolStrings(IndivRequests);
+        pooler.PoolStrings(IndivRareRewards);
     }
 
     public override void WriteTo(DataWriter writer)
