@@ -330,11 +330,6 @@ public static class Inventory
         var vertexCount = reader.ReadPackedInt();
         mesh.vertices = reader.ReadArrayContents(vertexCount, r => r.ReadQuantizedPosition(bounds));
 
-        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, r => r.ReadQuantizedNormal()), (m, v) => m.normals = v);
-        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, r => r.ReadQuantizedTangent()), (m, v) => m.tangents = v);
-
-        ReadAndAssignColorData(reader, mesh, vertexCount);
-
         for (var i = 0; i < mesh.subMeshCount; i++)
         {
             var topology = (MeshTopology)reader.ReadByte();
@@ -364,40 +359,10 @@ public static class Inventory
                 ReadUVs(reader, i, vertexCount, uvs4, r => r.ReadVector4(), mesh.SetUVs);
         }
 
+        mesh.RecalculateNormals();
+        mesh.RecalculateTangents();
+
         return mesh;
-    }
-
-    private static void ReadAndAssignColorData(DataReader reader, Mesh mesh, int vertexCount)
-    {
-        var state = reader.ReadByte();
-
-        if (state == 1)
-        {
-            var uniformColor = reader.ReadColor32();
-            var colors = new Color32[vertexCount];
-
-            for (var i = 0; i < vertexCount; i++)
-                colors[i] = uniformColor;
-
-            mesh.colors32 = colors;
-        }
-        else if (state == 2)
-            mesh.colors32 = reader.ReadArrayContents(vertexCount, r => r.ReadColor32());
-        // Ignore if anything else
-    }
-
-    private static T[] ReadAttributeData<T>(DataReader reader, int count, Func<DataReader, T> readFunc)
-    {
-        if (reader.ReadBool())
-            return reader.ReadArrayContents(count, readFunc);
-
-        return null;
-    }
-
-    private static void AssignAttribute<T>(Mesh mesh, T[] data, Action<Mesh, T[]> assignAction)
-    {
-        if (!data.IsNullOrEmpty())
-            assignAction(mesh, data);
     }
 
     private static void ReadUVs<T>(DataReader reader, int index, int count, List<T> uvs, Func<DataReader, T> readFunc, Action<int, List<T>> setUVs)

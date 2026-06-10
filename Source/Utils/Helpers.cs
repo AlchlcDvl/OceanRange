@@ -557,11 +557,11 @@ public static class Helpers
         public T EnsureComponent<T>() where T : Component => obj.GetComponent<T>() ?? obj.AddComponent<T>();
     }
 
-    extension<T>(MemberInfo info) where T : Attribute
+    extension(MemberInfo info)
     {
-        public bool IsDefined() => info.IsDefined(typeof(T), false);
+        public bool IsDefined<T>() where T : Attribute => info.IsDefined(typeof(T), false);
 
-        public bool TryGetAttribute(out T attribute, bool inherit = true)
+        public bool TryGetAttribute<T>(out T attribute, bool inherit = true) where T : Attribute
         {
             attribute = info.GetCustomAttribute<T>(inherit);
             return attribute != null;
