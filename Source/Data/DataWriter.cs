@@ -153,7 +153,7 @@ public sealed class DataWriter(BinaryWriter writer) : IDisposable
     public void WriteBounds(Bounds bounds)
     {
         WriteVector3(bounds.center);
-        WriteVector3(bounds.extents);
+        WriteVector3(bounds.size);
     }
 
     public void WriteOrientation(Orientation value)

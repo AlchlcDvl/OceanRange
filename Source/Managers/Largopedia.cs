@@ -289,7 +289,6 @@ public static class Largopedia
             body = Slimepedia.GenerateStructure(baseBody, appearanceData.BodyStruct, appearanceData.BodyStruct.MeshData, null);
             modelMap[0] = appearanceData.BodyStruct;
             Main.Console.Log($"[BodyStruct was null!] Body Color for {appearance1.name}{appearance2.name} is {(Color32)body.DefaultMaterials[0].GetColor("_MiddleColor")}");
-            
         }
         else
         {
@@ -320,8 +319,6 @@ public static class Largopedia
         appearance.TornadoAppearance = appearance1.TornadoAppearance ?? appearance2.TornadoAppearance;
         appearance.VineAppearance = appearance1.VineAppearance ?? appearance2.VineAppearance;
 
-        
-        
         if (appearance1.QubitAppearance != null || appearance2.QubitAppearance != null)
         {
             var qubitAppearance = appearance.QubitAppearance = appearance.Instantiate();
