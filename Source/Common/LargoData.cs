@@ -3,7 +3,11 @@
 
 namespace OceanRange.Data;
 
-public sealed class LargoData : ActorData
+
+#if UNITY
+[Serializable]
+#endif
+public sealed  class LargoData : ActorData
 {
 #if !UNITY
     private static readonly Dictionary<string, Action<GameObject, SlimeDefinition>> DefinitionMethods = new(StringComparer.Ordinal);
@@ -114,7 +118,10 @@ public sealed class LargoData : ActorData
 #endif
 }
 
-public sealed class LargoAppearanceData : JsonData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class LargoAppearanceData : JsonData
 {
 #if !UNITY
     public LargoAppearanceProps LargoProps;

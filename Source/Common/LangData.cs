@@ -4,7 +4,8 @@
 
 namespace OceanRange.Data;
 
-public sealed class Translations : JsonData
+[Serializable]
+public sealed  class Translations : JsonData
 {
     [JsonRequired] public Dictionary<string, Dictionary<string, string>> Additional;
     //                               ^ Bundle           ^ Id    ^ Text
@@ -250,7 +251,8 @@ public abstract class LangData : JsonData
 #endif
 }
 
-public sealed class MailLangData : LangData
+[Serializable]
+public sealed  class MailLangData : LangData
 {
     [JsonRequired] public string Subject;
     [JsonRequired] public string Body;
@@ -292,7 +294,8 @@ public sealed class MailLangData : LangData
 #endif
 }
 
-public sealed class RancherLangData : LangData
+[Serializable]
+public sealed  class RancherLangData : LangData
 {
     [JsonRequired] public string[] Offers;
     [JsonRequired] public string[] LoadingTexts;
@@ -362,21 +365,24 @@ public abstract class IdentifiableLangData : LangData
 #endif
 }
 
-public sealed class PlortLangData : IdentifiableLangData
+[Serializable]
+public sealed  class PlortLangData : IdentifiableLangData
 {
 #if !UNITY
     public override void OnDeserialise() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant() + "_PLORT");
 #endif
 }
 
-public sealed class LargoLangData : IdentifiableLangData
+[Serializable]
+public sealed  class LargoLangData : IdentifiableLangData
 {
 #if !UNITY
     public override void OnDeserialise() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name.ToUpperInvariant().Replace(' ', '_') + "_LARGO");
 #endif
 }
 
-public sealed class GordoLangData : IdentifiableLangData
+[Serializable]
+public sealed  class GordoLangData : IdentifiableLangData
 {
 #if !UNITY
     [JsonIgnore] private bool Exists;
@@ -519,9 +525,10 @@ public abstract class ActorLangData(string suffix, PediaCategory category) : Ped
 }
 
 #if UNITY
-public sealed class SlimeLangData : ActorLangData
+[Serializable]
+public sealed  class SlimeLangData : ActorLangData
 #else
-public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIMES)
+public sealed  class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIMES)
 #endif
 {
     [JsonRequired] public string Risks;
@@ -684,21 +691,28 @@ public abstract class FoodLangData(string suffix) : ResourceLangData(suffix)
 }
 
 #if UNITY
-public sealed class HenLangData : FoodLangData;
+[Serializable]
+public sealed  class HenLangData : FoodLangData;
 
-public sealed class ChickLangData : FoodLangData;
+[Serializable]
+public sealed  class ChickLangData : FoodLangData;
 
-public sealed class FruitLangData : FoodLangData;
+[Serializable]
+public sealed  class FruitLangData : FoodLangData;
 
-public sealed class VeggieLangData : FoodLangData;
+[Serializable]
+public sealed  class VeggieLangData : FoodLangData;
 
 // public sealed class EdibleCraftLangData : FoodLangData;
 #else
-public sealed class HenLangData() : FoodLangData("HEN");
+[Serializable]
+public sealed  class HenLangData() : FoodLangData("HEN");
 
-public sealed class ChickLangData() : FoodLangData("CHICK");
+[Serializable]
+public sealed  class ChickLangData() : FoodLangData("CHICK");
 
-public sealed class FruitLangData() : FoodLangData("FRUIT");
+[Serializable]
+public sealed  class FruitLangData() : FoodLangData("FRUIT");
 
 public sealed class VeggieLangData() : FoodLangData("VEGGIE");
 

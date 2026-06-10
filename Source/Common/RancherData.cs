@@ -2,7 +2,11 @@
 
 namespace OceanRange.Data;
 
-public sealed class RancherData : JsonData
+
+#if UNITY
+[Serializable]
+#endif
+public sealed  class RancherData : JsonData
 {
 #if !UNITY
     [JsonRequired] public Category[] Rewards;

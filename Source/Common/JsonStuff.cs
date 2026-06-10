@@ -78,7 +78,10 @@ public abstract class SpawnedActorData : ActorData
 }
 
 #if !UNITY
-public sealed class Json : ScriptableObject
+#if UNITY
+[Serializable]
+#endif
+public sealed  class Json : ScriptableObject
 {
     public byte[] Data;
 

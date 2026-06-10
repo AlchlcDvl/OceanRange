@@ -4,7 +4,10 @@
 
 namespace OceanRange.Data;
 
-public sealed class Ingredients : JsonData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class Ingredients : JsonData
 {
     [JsonRequired] public GroupData[] Groups;
     [JsonRequired] public FruitData[] Fruits;
@@ -50,7 +53,10 @@ public sealed class Ingredients : JsonData
 #endif
 }
 
-public sealed class GroupData : JsonData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class GroupData : JsonData
 {
 #if !UNITY
     public IdentifiableId[] Foods;
@@ -82,7 +88,9 @@ public sealed class GroupData : JsonData
     }
 #endif
 }
-
+#if UNITY
+[Serializable]
+#endif
 public abstract class FoodData : SpawnedActorData
 {
 #if !UNITY
@@ -107,7 +115,10 @@ public abstract class FoodData : SpawnedActorData
 #endif
 }
 
-public sealed class ChimkenData : FoodData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class ChimkenData : FoodData
 {
 #if !UNITY
     public Zone[] Zones;
@@ -245,7 +256,10 @@ public abstract class PlantData : FoodData
 #endif
 }
 
-public sealed class VeggieData : PlantData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class VeggieData : PlantData
 {
 #if !UNITY
     public override bool IsFruit => false;
@@ -256,7 +270,10 @@ public sealed class VeggieData : PlantData
 #endif
 }
 
-public sealed class FruitData : PlantData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class FruitData : PlantData
 {
 #if !UNITY
     public override bool IsFruit => true;

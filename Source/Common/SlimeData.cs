@@ -9,7 +9,10 @@ using OceanRange.Saves;
 
 namespace OceanRange.Data;
 
-public sealed class SlimeData : SpawnedActorData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class SlimeData : SpawnedActorData
 {
 #if !UNITY
     private static readonly Dictionary<string, Action<SlimeAppearance, SlimeAppearanceData>> AppearanceMethods = new(StringComparer.Ordinal);
@@ -263,7 +266,10 @@ public sealed class SlimeData : SpawnedActorData
 #endif
 }
 
-public sealed class SlimeAppearanceData : JsonData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class SlimeAppearanceData : JsonData
 {
     [JsonRequired] public ModelData[] SlimeFeatures;
     [JsonRequired] public ModelData[] GordoFeatures;

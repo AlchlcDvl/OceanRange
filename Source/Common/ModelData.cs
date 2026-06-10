@@ -2,7 +2,10 @@
 
 namespace OceanRange.Data;
 
-public sealed class ModelData : JsonData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class ModelData : JsonData
 {
     public MatData MatData;
     public MeshData MeshData;
@@ -52,7 +55,10 @@ public sealed class ModelData : JsonData
 #endif
 }
 
-public sealed class MatData : JsonData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class MatData : JsonData
 {
     public float? Gloss;
     public string Pattern;
@@ -202,7 +208,10 @@ public sealed class MatData : JsonData
 #endif
 }
 
-public sealed class MeshData : JsonData
+#if UNITY
+[Serializable]
+#endif
+public sealed  class MeshData : JsonData
 {
     public string Mesh;
 
