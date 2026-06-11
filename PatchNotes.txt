@@ -134,10 +134,12 @@ Visual Fix: Fixed a visual bug that made the mod appear as version 0.3.0 instead
 Discord:
 
 ## Fixes!
-- Critical*: Fixed crashing incompatibility bugs with several mods
+- Critical: Fixed incompatibility bugs with several mods, with SSRML being the worst offender
+- Visual: Fixed the visual appearance of slimes to match their artwork
 
 Nexus:
-Critical Fix*: Fixed crashing incompatibility bugs with several mods
+Critical Fix: Fixed incompatibility bugs with several mods, with SSRML being the worst offender
+Visual: Fixed the visual appearance of slimes to match their artwork
 
 0.3.0
 Discord:

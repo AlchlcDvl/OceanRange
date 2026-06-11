@@ -7,7 +7,6 @@ packages.lock.json
 Test*/
 *.DotSettings.user
 Ignore/
-.qodo
 *Libs
 Ignore.*
 Dev*/
