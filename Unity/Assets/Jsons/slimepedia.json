@@ -4,6 +4,7 @@
     "zones": ["REEF"],
     "favToy": "OCTO_BUDDY_TOY",
     "normalAppearance": {
+      "redEyeColor": "#4457A4",
       "slimeFeatures": [
         {
           "meshData": { "mesh": "rosi_body" },
