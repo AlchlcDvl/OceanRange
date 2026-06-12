@@ -3,10 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace OceanRange.Data;
 
-public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sharedStringPool = null) : IDisposable
+public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sharedStringPool = null) : IDisposable
 {
     private readonly BinaryWriter Writer = writer;
-    private readonly Dictionary<string, uint> PooledStrings = sharedStringPool;
+    private readonly Dictionary<string, uint>? PooledStrings = sharedStringPool;
     private readonly bool HasSharedPool = sharedStringPool != null;
 
     public void WriteBool(bool value) => Writer.Write(value);
@@ -32,7 +32,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sha
 
     public void WritePackedInt(int value) => WriteVarInt(ZigZagEncode(value));
 
-    public void WriteString(string value)
+    public void WriteString(string? value)
     {
         if (!HasSharedPool)
         {
@@ -46,8 +46,8 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sha
             return;
         }
 
-        if (!PooledStrings.TryGetValue(value, out var index))
-            throw new ArgumentException($"'{value}' was not found in the global string pool!");
+        if (!PooledStrings!.TryGetValue(value!, out var index))
+            throw new ArgumentException($"'{value!}' was not found in the global string pool!");
 
         WritePackedUInt(index);
     }
@@ -116,11 +116,11 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sha
             WriteDouble(value.Value);
     }
 
-    public void WriteStringDictionary(Dictionary<string, string> dict) => WriteDictionary(dict, (w, v) => w.WriteString(v), (w, v) => w.WriteString(v));
+    public void WriteStringDictionary(Dictionary<string, string>? dict) => WriteDictionary(dict, (w, v) => w.WriteString(v), (w, v) => w.WriteString(v));
 
-    public void WriteStringToStringDictionary(Dictionary<string, Dictionary<string, string>> dict) => WriteDictionary(dict, (w, v) => w.WriteString(v), (w, v) => w.WriteStringDictionary(v));
+    public void WriteStringToStringDictionary(Dictionary<string, Dictionary<string, string>>? dict) => WriteDictionary(dict, (w, v) => w.WriteString(v), (w, v) => w.WriteStringDictionary(v));
 
-    public void WriteNullableStringToStringDictionary(Dictionary<string, Dictionary<string, string>> dict)
+    public void WriteNullableStringToStringDictionary(Dictionary<string, Dictionary<string, string>>? dict)
     {
         var hasValue = dict != null;
         WriteBool(hasValue);
@@ -129,7 +129,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sha
             WriteStringToStringDictionary(dict);
     }
 
-    public void WriteArray<T>(T[] array, Action<DataWriter, T> elementWriter)
+    public void WriteArray<T>(T[]? array, Action<DataWriter, T> elementWriter)
     {
         var count = (uint)(array?.Length ?? 0);
         WritePackedUInt(count);
@@ -138,10 +138,10 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sha
             return;
 
         for (var i = 0; i < count; i++)
-            elementWriter(this, array[i]);
+            elementWriter(this, array![i]);
     }
 
-    public void WriteArrayContents<T>(T[] array, Action<DataWriter, T> elementWriter)
+    public void WriteArrayContents<T>(T[]? array, Action<DataWriter, T> elementWriter)
     {
         if (array == null)
             return;
@@ -150,7 +150,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sha
             elementWriter(this, array[i]);
     }
 
-    public void WriteListContents<T>(List<T> list, Action<DataWriter, T> elementWriter)
+    public void WriteListContents<T>(List<T>? list, Action<DataWriter, T> elementWriter)
     {
         if (list == null)
             return;
@@ -159,7 +159,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sha
             elementWriter(this, list[i]);
     }
 
-    public void WriteDictionary<TKey, TValue>(Dictionary<TKey, TValue> dict, Action<DataWriter, TKey> keyWriter, Action<DataWriter, TValue> valueWriter)
+    public void WriteDictionary<TKey, TValue>(Dictionary<TKey, TValue>? dict, Action<DataWriter, TKey> keyWriter, Action<DataWriter, TValue> valueWriter)
     {
         WritePackedUInt((uint)(dict?.Count ?? 0));
 
@@ -197,7 +197,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint> sha
             WritePackedInt(value.Value);
     }
 
-    public void WriteSubstring(string value, int startIndex) => WriteString(value?.Substring(startIndex));
+    public void WriteSubstring(string? value, int startIndex) => WriteString(value?.Substring(startIndex));
 
     public void WriteDeltaEncodedIndices(int[] indices)
     {

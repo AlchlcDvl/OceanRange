@@ -17,7 +17,7 @@ public static class Helpers
 
     extension<T1>(IEnumerable<T1> source1)
     {
-        public bool TryFinding(Func<T1, bool> predicate, out T1 value)
+        public bool TryFinding(Func<T1, bool> predicate, out T1? value)
         {
             foreach (var item in source1)
             {
@@ -34,27 +34,27 @@ public static class Helpers
 
         public IEnumerable<T1> Except(Func<T1, bool> predicate) => source1.Where(x => !predicate(x));
 
-        public IEnumerable<(T1, T2)> Zip<T2>(IEnumerable<T2> source2)
-        {
-            using var e1 = source1.GetEnumerator();
-            using var e2 = source2.GetEnumerator();
+        // public IEnumerable<(T1, T2)> Zip<T2>(IEnumerable<T2> source2)
+        // {
+        //     using var e1 = source1.GetEnumerator();
+        //     using var e2 = source2.GetEnumerator();
 
-            while (true)
-            {
-                var has1 = e1.MoveNext();
-                var has2 = e2.MoveNext();
+        //     while (true)
+        //     {
+        //         var has1 = e1.MoveNext();
+        //         var has2 = e2.MoveNext();
 
-                if (!has1 || !has2)
-                {
-                    if (has1 != has2)
-                        throw new ArgumentException("Sequences have different lengths.");
+        //         if (!has1 || !has2)
+        //         {
+        //             if (has1 != has2)
+        //                 throw new ArgumentException("Sequences have different lengths.");
+        //
+        //             yield break;
+        //         }
 
-                    yield break;
-                }
-
-                yield return (e1.Current, e2.Current);
-            }
-        }
+        //         yield return (e1.Current, e2.Current);
+        //     }
+        // }
     }
 
     private static readonly TryParseHtml<Color> ColorParser = ColorUtility.TryParseHtmlString;
@@ -106,7 +106,7 @@ public static class Helpers
 
         // public bool TryHexToColor32(out Color32 color) => @string.TryHexToColor(HexToColor32s, Color32Parser, out color);
 
-        public bool TryHexToColor(out Color color) => @string.TryHexToColor(HexToColors, ColorParser, out color);
+        private bool TryHexToColor(out Color color) => @string.TryHexToColor(HexToColors, ColorParser, out color);
 
         private bool TryHexToColor<T>(Dictionary<string, T> cache, TryParseHtml<T> parser, out T color) where T : struct
         {
@@ -267,7 +267,7 @@ public static class Helpers
 
     public static T AddEnumValue<T>(string name) where T : struct, Enum => (T)AddEnumValue(name, typeof(T));
 
-    public static object ParseOrAddEnumValue(string name, Type enumType) => TryParseEnum(enumType, name, true, out var result) ? result : AddEnumValue(name, enumType);
+    public static object ParseOrAddEnumValue(string name, Type enumType) => TryParseEnum(enumType, name, true, out var result) ? result! : AddEnumValue(name, enumType);
 
     public static object AddEnumValue(string name, Type enumType) => AddEnumValue(name, enumType, EnumPatcher.GetFirstFreeValue(enumType));
 
@@ -349,7 +349,7 @@ public static class Helpers
 
     // public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used, but it's better to be safe than sorry
 
-    public static bool TryParseEnum(Type enumType, string name, bool ignoreCase, out object result)
+    public static bool TryParseEnum(Type enumType, string name, bool ignoreCase, out object? result)
     {
         try
         {
@@ -407,9 +407,9 @@ public static class Helpers
         value = pair.Value;
     }
 
-    extension<TKey, TValue>(Dictionary<TKey, TValue> dict)
+    extension<TKey, TValue>(Dictionary<TKey, TValue> dict) where TKey : notnull
     {
-        public bool TryGetValue(TKey[] keys, out TValue result)
+        public bool TryGetValue(TKey[] keys, out TValue? result)
         {
             foreach (var key in keys)
             {
@@ -445,7 +445,7 @@ public static class Helpers
             }
         }
 
-        public bool TryRemove(TKey key, out TValue value)
+        public bool TryRemove(TKey key, out TValue? value)
         {
             try
             {
@@ -568,11 +568,11 @@ public static class Helpers
         }
     }
 
-    public static T[] GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
+    public static T[]? GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
 
     // public static string[] GetEnumNames<T>() where T : struct, Enum => Enum.GetNames(typeof(T));
 
-    public static bool TryGetItem<T>(this T[] array, int index, out T value)
+    public static bool TryGetItem<T>(this T[] array, int index, out T? value)
     {
         if (array.IsNullOrEmpty())
         {

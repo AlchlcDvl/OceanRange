@@ -46,8 +46,10 @@ public static class Largopedia
 
     private static LargoData[] Largos;
     private static readonly int GhostToggle = ShaderUtils.GetOrSet("_GhostToggle");
+    private static readonly int MiddleColor = ShaderUtils.GetOrSet("_MiddleColor");
 
     private static readonly Dictionary<int, SlimeAppearanceElement> LargoElementCache = [];
+    private static readonly int MiddleColor1 = Shader.PropertyToID("_MiddleColor");
 
 #if DEBUG
     [TimeDiagnostic("Largos Preload")]
@@ -175,13 +177,13 @@ public static class Largopedia
                 slime2Prefab.GetChildCopy(item.name).transform.SetParent(prefab.transform);
         }
 
-        if (largoData.Slime1Data?.ComponentsToRemove?.IsNullOrEmpty() == false)
+        if (largoData.Slime1Data?.ComponentsToRemove.IsNullOrEmpty() == false)
         {
             foreach (var component in largoData.Slime1Data.ComponentsToRemove)
                 prefab.RemoveComponent(component);
         }
 
-        if (largoData.Slime2Data?.ComponentsToRemove?.IsNullOrEmpty() == false)
+        if (largoData.Slime2Data?.ComponentsToRemove.IsNullOrEmpty() == false)
         {
             foreach (var component in largoData.Slime2Data.ComponentsToRemove)
                 prefab.RemoveComponent(component);
@@ -286,9 +288,9 @@ public static class Largopedia
 
         if (appearanceData.BodyStruct != null)
         {
-            body = Slimepedia.GenerateStructure(baseBody, appearanceData.BodyStruct, appearanceData.BodyStruct.MeshData, null);
+            body = Slimepedia.GenerateStructure(baseBody!, appearanceData.BodyStruct, appearanceData.BodyStruct.MeshData, null!)!;
             modelMap[0] = appearanceData.BodyStruct;
-            Main.Console.Log($"[BodyStruct was null!] Body Color for {appearance1.name}{appearance2.name} is {(Color32)body.DefaultMaterials[0].GetColor("_MiddleColor")}");
+            Main.Console.Log($"[BodyStruct was null!] Body Color for {appearance1.name}{appearance2.name} is {(Color32)body.DefaultMaterials[0].GetColor(MiddleColor)}");
         }
         else
         {
@@ -299,7 +301,7 @@ public static class Largopedia
                     [0] = (props.HasFlagFast(LargoAppearanceProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body)!.DefaultMaterials[0].Clone()
                 }
             };
-            Main.Console.Log($"Body Color for {appearance1.name}{appearance2.name} is {(Color32)body.DefaultMaterials[0].GetColor("_MiddleColor")}");
+            Main.Console.Log($"Body Color for {appearance1.name}{appearance2.name} is {(Color32)body.DefaultMaterials[0].GetColor(MiddleColor1)}");
         }
 
         var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
@@ -351,7 +353,7 @@ public static class Largopedia
         return appearance;
     }
 
-    private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[] modelDatas, LargoAppearanceProps props, LargoAppearanceProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure body,
+    private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[]? modelDatas, LargoAppearanceProps props, LargoAppearanceProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure? body,
         Dictionary<int, ModelData> modelMap)
     {
         var avoid = baseStructs.IndexOfItem(body);
@@ -365,7 +367,7 @@ public static class Largopedia
                 if (i == avoid)
                     continue;
 
-                var modelData = modelDatas[j];
+                var modelData = modelDatas![j];
                 var meshData = modelData.MeshData;
                 j++;
 

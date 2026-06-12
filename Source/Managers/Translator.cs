@@ -16,17 +16,17 @@ public static class Translator
 
     private static readonly string[] Bundles = ["achieve", "actor", "build", "exchange", "global", "keys", "mail", "pedia", "range", "tutorial", "ui"];
 
-    private static Translations Fallback;
+    private static Translations? Fallback;
     private static bool FallbackHandled;
     private static bool ExoticsLoaded;
 
-    private static readonly Func<Language, Translations> GenerateTranslationsFunc = GenerateTranslations;
+    private static readonly Func<Language, Translations?> GenerateTranslationsFunc = GenerateTranslations;
 
 #if DEBUG
     [TimeDiagnostic("Pedia Preload")]
 #endif
     [PreloadMethod]
-    public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
+    public static void PreloadLangData() => Fallback = TranslationsHolder!.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
 
 #if DEBUG
     [TimeDiagnostic("Pedia Load")]
@@ -41,7 +41,7 @@ public static class Translator
 
         StoreVanillaTranslations(__instance, Config.FALLBACK_LANGUAGE);
 
-        foreach (var (key, texts) in Fallback.GetTranslations(Config.FALLBACK_LANGUAGE))
+        foreach (var (key, texts) in Fallback!.GetTranslations(Config.FALLBACK_LANGUAGE))
             FallbackTranslations[key] = texts;
 
         Fallback.WhenFallback();
@@ -54,7 +54,7 @@ public static class Translator
         if (id != Id.SECRET_STYLE || ExoticsLoaded)
             return;
 
-        Fallback.AddExoticTranslations(Config.FALLBACK_LANGUAGE);
+        Fallback!.AddExoticTranslations(Config.FALLBACK_LANGUAGE);
         ExoticsLoaded = true;
     }
 
@@ -72,8 +72,8 @@ public static class Translator
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
-        var holder = TranslationsHolder.GetOrAdd(lang, GenerateTranslationsFunc);
-        holder.OnLanguageChanged(lang);
+        var holder = TranslationsHolder!.GetOrAdd(lang, GenerateTranslationsFunc);
+        holder!.OnLanguageChanged(lang);
         StoreVanillaTranslations(GameContext.Instance.MessageDirector, lang);
         var translations = holder.GetTranslations(lang);
 
@@ -83,7 +83,7 @@ public static class Translator
         return translations;
     }
 
-    private static Translations GenerateTranslations(Language lang)
+    private static Translations? GenerateTranslations(Language lang)
     {
         var langName = lang.ToString().ToLowerInvariant();
 
@@ -113,7 +113,7 @@ public static class Translator
             bundle[id] = GetTranslationValue(id, text, bundleName, translations, lang, isFallback) ?? $"STRMSS: {id}";
     }
 
-    private static List<DeferredTranslation> CurrentDeferredList;
+    private static List<DeferredTranslation>? CurrentDeferredList;
 
     public static void BeginGatherPhase() => CurrentDeferredList = [];
 
@@ -121,7 +121,7 @@ public static class Translator
     {
         var list = CurrentDeferredList;
         CurrentDeferredList = null;
-        return list;
+        return list!;
     }
 
     extension(Dictionary<string, string> bundle)
@@ -139,10 +139,10 @@ public static class Translator
 
         private void AddSimpleTranslation(string id, string text) => bundle[id] = text.IsNullOrWhiteSpace() ? $"STRMSS: {id}" : text;
 
-        private void AddComplexTranslation(string id, string text, string bundleName) => CurrentDeferredList.Add(new(bundle, id, text, bundleName));
+        private void AddComplexTranslation(string id, string text, string bundleName) => CurrentDeferredList!.Add(new(bundle, id, text, bundleName));
     }
 
-    private static string GetTranslationValue(string id, string text, string bundleName, Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
+    private static string? GetTranslationValue(string id, string text, string bundleName, Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
     {
         var resolvedText = ResolveReference(text, bundleName, translations) ?? ResolveReference(text, bundleName, VanillaFallbackTranslations[lang]);
 
@@ -177,7 +177,7 @@ public static class Translator
         return null;
     }
 
-    private static string ResolveReference(string referenceText, string currentBundleName, Dictionary<string, Dictionary<string, string>> translations)
+    private static string? ResolveReference(string referenceText, string currentBundleName, Dictionary<string, Dictionary<string, string>> translations)
     {
         var refKey = referenceText.Substring(1);
         var refBundleName = currentBundleName;

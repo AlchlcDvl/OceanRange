@@ -33,14 +33,14 @@ public sealed  class SlimeData : SpawnedActorData
     [JsonIgnore] public IdentifiableId PlortId;
     [JsonIgnore] public PediaId PediaId;
 
-    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitSlimeDetails;
-    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitPlortDetails;
-    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitGordoDetails;
-    [JsonIgnore] public Action<SlimeAppearance, SlimeAppearanceData> InitAppearanceDetails;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition>? InitSlimeDetails;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition>? InitPlortDetails;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition>? InitGordoDetails;
+    [JsonIgnore] public Action<SlimeAppearance, SlimeAppearanceData>? InitAppearanceDetails;
 #endif
 
     [JsonRequired] public SlimeAppearanceData NormalAppearance;
-    public SlimeAppearanceData SSAppearance;
+    public SlimeAppearanceData? SSAppearance;
 
     public bool NightSpawn;
     public bool CanBeRefined;
@@ -57,7 +57,7 @@ public sealed  class SlimeData : SpawnedActorData
     public int PlortExchangeWeight = 16;
     public float Jiggle = 1f;
 
-    [JsonProperty] private string OnomicsType = "pearls";
+    [JsonProperty] public string OnomicsType = "pearls";
 
     [JsonProperty("gordoEat")] public int GordoEatAmount = 25;
 
@@ -131,6 +131,7 @@ public sealed  class SlimeData : SpawnedActorData
         writer.WriteStringArray(Zones);
         writer.WriteString(FavFood);
         writer.WriteString(Diet);
+
         writer.WriteString(BaseSlime);
         writer.WriteString(BasePlort);
         writer.WriteString(BaseGordo);
@@ -166,7 +167,7 @@ public sealed  class SlimeData : SpawnedActorData
         writer.WriteBool(hasSS);
 
         if (hasSS)
-            SSAppearance.WriteTo(writer);
+            SSAppearance?.WriteTo(writer);
     }
 #else
     public override void ReadFrom(DataReader reader)
@@ -192,7 +193,7 @@ public sealed  class SlimeData : SpawnedActorData
 
         Vaccable = reader.ReadBool();
         Exchangeable = reader.ReadBool();
-        GordoCell = reader.ReadString();
+        GordoCell = reader.ReadString()!;
 
         GordoOrientation = reader.ReadOrientation();
         NaturalGordoSpawn = reader.ReadBool();
@@ -200,10 +201,10 @@ public sealed  class SlimeData : SpawnedActorData
         PlortExchangeWeight = (int)reader.ReadPackedUInt();
         Jiggle = reader.ReadPackedFloat();
 
-        OnomicsType = reader.ReadString();
+        OnomicsType = reader.ReadString()!;
 
-        ComponentsToAdd = reader.ReadArray(r => r.ReadType());
-        ComponentsToRemove = reader.ReadArray(r => r.ReadType());
+        ComponentsToAdd = reader.ReadArray(r => r.ReadType())!;
+        ComponentsToRemove = reader.ReadArray(r => r.ReadType())!;
 
         GordoEatAmount = (int)reader.ReadPackedUInt();
 
@@ -224,7 +225,7 @@ public sealed  class SlimeData : SpawnedActorData
         NormalAppearance.OnDeserialise();
         SSAppearance?.OnDeserialise();
 
-        var upper = Name.ToUpperInvariant();
+        var upper = Name!.ToUpperInvariant();
 
         MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_SLIME");
         PlortId = Helpers.AddEnumValue<IdentifiableId>(upper + "_PLORT");
@@ -288,6 +289,8 @@ public sealed  class SlimeAppearanceData : JsonData
     public string MiddlePaletteColor;
     public string BottomPaletteColor;
     public string PlortAmmoColor;
+    public string EyesOrigin;
+    public string MouthOrigin;
 
     public float? Jiggle;
 #else
@@ -306,6 +309,9 @@ public sealed  class SlimeAppearanceData : JsonData
     public Color? BottomPaletteColor;
 
     public Color? PlortAmmoColor;
+
+    public IdentifiableId? EyesOrigin;
+    public IdentifiableId? MouthOrigin;
 
     public float? Jiggle;
 
@@ -335,6 +341,9 @@ public sealed  class SlimeAppearanceData : JsonData
         pooler.PoolSubstring(BottomPaletteColor, 1);
 
         pooler.PoolSubstring(PlortAmmoColor, 1);
+
+        pooler.PoolString(EyesOrigin);
+        pooler.PoolString(MouthOrigin);
 
         Array.ForEach(SlimeFeatures, f => f.FindStrings(pooler));
         Array.ForEach(GordoFeatures, f => f.FindStrings(pooler));
@@ -366,6 +375,9 @@ public sealed  class SlimeAppearanceData : JsonData
         writer.WriteArray(PlortFeatures, (w, f) => f.WriteTo(w));
 
         writer.WriteNullablePackedFloat(Jiggle);
+
+        writer.WriteString(EyesOrigin);
+        writer.WriteString(MouthOrigin);
     }
 #else
     public override void ReadFrom(DataReader reader)
@@ -384,11 +396,14 @@ public sealed  class SlimeAppearanceData : JsonData
         BottomPaletteColor = ReadHex(reader);
         PlortAmmoColor = ReadHex(reader);
 
-        SlimeFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; });
-        GordoFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; });
-        PlortFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; });
+        SlimeFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; })!;
+        GordoFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; })!;
+        PlortFeatures = reader.ReadArray(r => { var m = new ModelData(); m.ReadFrom(r); return m; })!;
 
         Jiggle = reader.ReadNullablePackedFloat();
+
+        EyesOrigin = reader.ReadNullableEnum<IdentifiableId>();
+        MouthOrigin = reader.ReadNullableEnum<IdentifiableId>();
 
         Main.Console.Log($"Read appearance data for {Name}");
     }

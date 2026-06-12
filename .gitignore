@@ -6,6 +6,7 @@ TODO.txt
 packages.lock.json
 Test*/
 *.DotSettings.user
+*.DotSettings
 Ignore/
 *Libs
 Ignore.*

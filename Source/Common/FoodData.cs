@@ -18,10 +18,10 @@ public sealed  class Ingredients : JsonData
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
-        Groups = reader.ReadArray(r => { var d = new GroupData(); d.ReadFrom(r); return d; });
-        Fruits = reader.ReadArray(r => { var d = new FruitData(); d.ReadFrom(r); return d; });
-        Veggies = reader.ReadArray(r => { var d = new VeggieData(); d.ReadFrom(r); return d; });
-        Chimkens = reader.ReadArray(r => { var d = new ChimkenData(); d.ReadFrom(r); return d; });
+        Groups = reader.ReadArray(r => { var d = new GroupData(); d.ReadFrom(r); return d; })!;
+        Fruits = reader.ReadArray(r => { var d = new FruitData(); d.ReadFrom(r); return d; })!;
+        Veggies = reader.ReadArray(r => { var d = new VeggieData(); d.ReadFrom(r); return d; })!;
+        Chimkens = reader.ReadArray(r => { var d = new ChimkenData(); d.ReadFrom(r); return d; })!;
     }
 
     public override void OnDeserialise()
@@ -67,7 +67,7 @@ public sealed  class GroupData : JsonData
 #endif
 
 #if !UNITY
-    public override void OnDeserialise() => Group = Helpers.ParseOrAddEnumValue<FoodGroup>(Name.ToUpperInvariant());
+    public override void OnDeserialise() => Group = Helpers.ParseOrAddEnumValue<FoodGroup>(Name!.ToUpperInvariant());
 
     public override void ReadFrom(DataReader reader)
     {
@@ -105,7 +105,7 @@ public abstract class FoodData : SpawnedActorData
         }
     }
 
-    public Action<GameObject> InitFoodDetails;
+    public Action<GameObject>? InitFoodDetails;
 
     public override void OnDeserialise()
     {
@@ -131,14 +131,14 @@ public sealed  class ChimkenData : FoodData
 
 #if !UNITY
     public IdentifiableId ChickId;
-    public Action<GameObject> InitHenDetails;
-    public Action<GameObject> InitChickDetails;
+    public Action<GameObject>? InitHenDetails;
+    public Action<GameObject>? InitChickDetails;
 
     public override void OnDeserialise()
     {
         base.OnDeserialise();
 
-        var upper = Name.ToUpperInvariant();
+        var upper = Name!.ToUpperInvariant();
 
         MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_HEN");
         ChickId = Helpers.AddEnumValue<IdentifiableId>(upper + "_CHICK");
@@ -190,7 +190,6 @@ public abstract class PlantData : FoodData
 
     // public bool HasOriginalSpawners = true; // TODO: Implement this in the future
 
-    // ReSharper disable once CollectionNeverUpdated.Global
     public Dictionary<string, Orientation[]> SpawnLocations;
 
     public bool AdjustColliders = true;
@@ -205,7 +204,7 @@ public abstract class PlantData : FoodData
     {
         base.OnDeserialise();
 
-        var upper = Name.ToUpperInvariant();
+        var upper = Name!.ToUpperInvariant();
 
         var typeUpper = Type.ToUpperInvariant();
         MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_" + typeUpper);
@@ -228,7 +227,7 @@ public abstract class PlantData : FoodData
         BaseResource = reader.ReadNullableEnum<SpawnResourceId>();
 
         AdjustColliders = reader.ReadBool();
-        SpawnLocations = reader.ReadDictionary(r => r.ReadString(), r => r.ReadArray(r2 => r2.ReadOrientation()), StringComparer.Ordinal);
+        SpawnLocations = reader.ReadDictionary(r => r.ReadString(), r => r.ReadArray(r2 => r2.ReadOrientation()), StringComparer.Ordinal)!;
     }
 #else
     public override void FindStrings(StringPooler pooler)

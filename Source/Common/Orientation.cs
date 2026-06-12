@@ -66,7 +66,7 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
 
     public static bool operator !=(Orientation left, Orientation right) => !(left == right);
 
-    public readonly override bool Equals(object obj) => obj is Orientation orientation && Equals(orientation);
+    public readonly override bool Equals(object? obj) => obj is Orientation orientation && Equals(orientation);
 
     public readonly bool Equals(Orientation other) => Position.Equals(other.Position) && Rotation.Equals(other.Rotation) && Scale.Equals(other.Scale);
 
@@ -97,7 +97,7 @@ public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<
     //         t.localEulerAngles = Rotation;
     //     }
 
-    //     t.localScale = Scale; // Can't really do world scale easily, but the general use case is local scale anyways
+    //     t.localScale = Scale; // Can't really do world scale easily, but the general use case is local scale anyway
     // }
 
     // public static Orientation Lerp(Orientation a, Orientation b, float t) => new(Vector3.Lerp(a.Position, b.Position, t), ClampAngles(LerpAngle(a.Rotation, b.Rotation, t)), Vector3.Lerp(a.Scale, b.Scale, t));

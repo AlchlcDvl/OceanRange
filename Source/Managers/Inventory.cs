@@ -35,7 +35,7 @@ public static class Inventory
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
     /// </summary>
-    public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
+    public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject?> LoadAsset)> AssetTypeExtensions = new()
     {
         // Embedded resources
         [typeof(Json)] = (["cjson"], LoadJson),
@@ -49,7 +49,7 @@ public static class Inventory
         [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
         [typeof(Material)] = (["mat"], GetBundleAsset<Material>),
         [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
-        [typeof(ScriptableObject)] = (["asset"], null), // Has its own internal handling
+        [typeof(ScriptableObject)] = (["asset"], null!), // Has its own internal handling
 
         // AudioClip is not currently in use
         // [typeof(AudioClip)] = (["wav"], LoadAudioClip),
@@ -77,7 +77,7 @@ public static class Inventory
     /// </summary>
     public static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath)!, "OceanRange");
 
-    public static string[] StringPool;
+    private static string[] StringPool;
 
     /// <summary>
     /// Initialises the asset handling by creating relevant handles.
@@ -88,7 +88,7 @@ public static class Inventory
     {
         Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles for embedded resources
 
-        using var stream = Core.GetManifestResourceStream("OceanRange.Resources.Data.string.pool");
+        using var stream = Core.GetManifestResourceStream("OceanRange.Resources.Data.string.pool")!;
         using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
         using var binary = new BinaryReader(decompressor);
         using var reader = new DataReader(binary, null);
@@ -98,7 +98,7 @@ public static class Inventory
         StringPool[0] = string.Empty;
 
         for (var i = 1; i < count; i++)
-            StringPool[i] = reader.ReadString();
+            StringPool[i] = reader.ReadString()!;
 
         Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
         Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
@@ -129,7 +129,7 @@ public static class Inventory
         foreach (var handleName in handles)
         {
             if (Assets.TryRemove(handleName, out var handle))
-                handle.Dispose(); // Releasing the handles
+                handle!.Dispose(); // Releasing the handles
             else
                 throw new FileNotFoundException(handleName);
         }
@@ -151,13 +151,13 @@ public static class Inventory
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted JSON data.</returns>
-    public static T GetJson<T>(string path) where T : JsonData, new() => ToJson<T>(Get<Json>(path));
+    public static T? GetJson<T>(string path) where T : JsonData, new() => ToJson<T>(Get<Json>(path));
 
-    public static bool TryGetTranslation(string name, out Translations json)
+    public static bool TryGetTranslation(string name, out Translations? json)
     {
         if (!TryGet<Json>(name, out var jsonData))
         {
-            json = default;
+            json = null;
             return false;
         }
 
@@ -165,8 +165,11 @@ public static class Inventory
         return true;
     }
 
-    private static T ToJson<T>(Json json) where T : JsonData, new()
+    private static T? ToJson<T>(Json? json) where T : JsonData, new()
     {
+        if (json == null)
+            return null;
+
         using var stream = new MemoryStream(json.Data);
         using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
         using var binary = new BinaryReader(decompressor);
@@ -208,7 +211,7 @@ public static class Inventory
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Texture2D GetTexture2D(string name) => Get<Texture2D>(name);
 
-    public static bool TryGetTexture2D(string name, out Texture2D asset) => TryGet(name, out asset);
+    public static bool TryGetTexture2D(string name, out Texture2D? asset) => TryGet(name, out asset);
 
     /// <summary>
     /// Gets a Sprite from the assets associated with the provided name.
@@ -229,7 +232,7 @@ public static class Inventory
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Mesh GetMesh(string name) => Get<Mesh>(name);
 
-    public static bool TryGetMesh(string name, out Mesh mesh) => TryGet(name, out mesh);
+    public static bool TryGetMesh(string name, out Mesh? mesh) => TryGet(name, out mesh);
 
     public static IEnumerable<Mesh> GetAllMeshes() => GetAll<Mesh>();
 
@@ -250,12 +253,12 @@ public static class Inventory
 
     private static IEnumerable<T> GetAll<T>(string[] names) where T : UObject => names.Select(Get<T>);
 
-    public static IEnumerable<T> GetAll<T>() where T : UObject
+    private static IEnumerable<T> GetAll<T>() where T : UObject
     {
         foreach (var handle in Assets.Values)
         {
             if (handle.TryLoad<T>(out var asset))
-                yield return asset;
+                yield return asset!;
         }
     }
 
@@ -266,7 +269,7 @@ public static class Inventory
     /// <param name="name">The name of the asset.</param>
     /// <param name="result">The fetched asset, if any.</param>
     /// <returns>true if an asset was found with the name.</returns>
-    private static bool TryGet<T>(string name, out T result) where T : UObject
+    private static bool TryGet<T>(string name, out T? result) where T : UObject
     {
         try
         {
@@ -388,7 +391,7 @@ public static class Inventory
     /// <param name="path">The path of the asset.</param>
     /// <param name="forSprite">Flag indicating whether the texture is being made for a sprite, so that the texture's name is preset.</param>
     /// <returns>The texture asset loaded from the path.</returns>
-    private static Texture2D LoadTexture2D(string path, bool forSprite)
+    private static Texture2D? LoadTexture2D(string path, bool forSprite)
     {
         var texture = new Texture2D(2, 2, TextureFormat.RGBA32, true, false);
 
@@ -407,7 +410,7 @@ public static class Inventory
         return texture;
     }
 
-    private static Texture2D LoadTexture2D(string path) => LoadTexture2D(path, false);
+    private static Texture2D? LoadTexture2D(string path) => LoadTexture2D(path, false);
 
     // Texture optimisation stuff
     private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
@@ -417,10 +420,10 @@ public static class Inventory
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     /// <returns>The sprite asset loaded from the path.</returns>
-    private static Sprite LoadSprite(string path)
+    private static Sprite? LoadSprite(string path)
     {
         var tex = LoadTexture2D(path, true);
-        return tex ? Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
+        return tex ? Sprite.Create(tex, new(0, 0, tex!.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
     }
 
     private static T GetBundleAsset<T>(string path) where T : UObject => Bundle.LoadAsset<T>(path);

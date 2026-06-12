@@ -21,13 +21,13 @@ public sealed  class MailData : JsonData
     // }
 
     [JsonRequired] public string Id;
-    public double? UnlockAfter;
+    [JsonProperty] public double? UnlockAfter;
 
 #if !UNITY
     [JsonIgnore] public bool Sent;
     [JsonIgnore] public bool Read;
 
-    private Func<double, bool> _unlockFuncAnd;
+    private Func<double, bool>? _unlockFuncAnd;
     public event Func<double, bool> UnlockFuncAnd
     {
         add
@@ -42,23 +42,23 @@ public sealed  class MailData : JsonData
         }
     }
 
-    private Func<double, bool>[] AndSubscribers = [];
-    private bool NoAndSubscribers = true;
+    private Func<double, bool>[] andSubscribers = [];
+    private bool noAndSubscribers = true;
 
     private void UpdateAndCache()
     {
         if (_unlockFuncAnd == null)
         {
-            AndSubscribers = [];
-            NoAndSubscribers = true;
+            andSubscribers = [];
+            noAndSubscribers = true;
             return;
         }
 
-        AndSubscribers = [.. _unlockFuncAnd.GetInvocationList().Cast<Func<double, bool>>()];
-        NoAndSubscribers = AndSubscribers.Length == 0;
+        andSubscribers = [.. _unlockFuncAnd.GetInvocationList().Cast<Func<double, bool>>()];
+        noAndSubscribers = andSubscribers.Length == 0;
     }
 
-    // private Func<double, bool> _unlockFuncOr;
+    // private Func<double, bool>? _unlockFuncOr;
     // public event Func<double, bool> UnlockFuncOr
     // {
     //     add
@@ -73,26 +73,26 @@ public sealed  class MailData : JsonData
     //     }
     // }
 
-    // private Func<double, bool>[] OrSubscribers = [];
-    // private bool NoOrSubscribers = true;
+    // private Func<double, bool>[] orSubscribers = [];
+    // private bool noOrSubscribers = true;
 
     // private void UpdateOrCache()
     // {
     //     if (_unlockFuncOr == null)
     //     {
-    //         OrSubscribers = [];
-    //         NoOrSubscribers = true;
+    //         orSubscribers = [];
+    //         noOrSubscribers = true;
     //         return;
     //     }
 
-    //     OrSubscribers = [.. _unlockFuncOr.GetInvocationList().Cast<Func<double, bool>>()];
-    //     NoOrSubscribers = OrSubscribers.Length == 0;
+    //     orSubscribers = [.. _unlockFuncOr.GetInvocationList().Cast<Func<double, bool>>()];
+    //     noOrSubscribers = orSubscribers.Length == 0;
     // }
 
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
-        Id = reader.ReadString();
+        Id = reader.ReadString()!;
         UnlockAfter = reader.ReadNullableDouble();
     }
 
@@ -107,21 +107,21 @@ public sealed  class MailData : JsonData
         if (Sent || Read || UnlockAfter.GetValueOrDefault() > time)
             return false;
 
-        // if (!NoOrSubscribers)
+        // if (!noOrSubscribers)
         // {
-        //     for (var i = 0; i < OrSubscribers.Length; i++)
+        //     for (var i = 0; i < orSubscribers.Length; i++)
         //     {
-        //         if (OrSubscribers[i](time))
+        //         if (orSubscribers[i](time))
         //             return true;
         //     }
         // }
 
-        if (NoAndSubscribers)
+        if (noAndSubscribers)
             return true;
 
-        for (var i = 0; i < AndSubscribers.Length; i++)
+        for (var i = 0; i < andSubscribers.Length; i++)
         {
-            if (!AndSubscribers[i](time))
+            if (!andSubscribers[i](time))
                 return false;
         }
 

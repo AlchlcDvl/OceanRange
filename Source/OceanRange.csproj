@@ -6,6 +6,7 @@
     <Version>0.3.0</Version>
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>preview</LangVersion>
+    <nullable>enable</nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Authors>TheRanchExchange</Authors>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>

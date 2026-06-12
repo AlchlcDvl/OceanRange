@@ -1,5 +1,6 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnassignedReadonlyField
+// ReSharper disable InconsistentNaming
 
 using SRML.Utils.Enum;
 

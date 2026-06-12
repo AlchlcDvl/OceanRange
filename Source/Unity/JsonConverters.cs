@@ -15,7 +15,7 @@ public abstract class OceanJsonConverter : JsonConverter
     protected virtual bool CustomSerialisation => false;
 
     /// <inheritdoc/>
-    public sealed override object ReadJson(JsonReader reader, Type objectType, [AllowNull] object _1, JsonSerializer _2)
+    public sealed override object? ReadJson(JsonReader reader, Type objectType, object? _1, JsonSerializer _2)
     {
         if (reader.TokenType == JsonToken.Null)
             return objectType.IsValueType ? Activator.CreateInstance(objectType) : null;
@@ -31,7 +31,7 @@ public abstract class OceanJsonConverter : JsonConverter
     }
 
     /// <inheritdoc/>
-    public sealed override void WriteJson(JsonWriter writer, [AllowNull] object value, JsonSerializer _)
+    public sealed override void WriteJson(JsonWriter writer, object? value, JsonSerializer _)
     {
         if (value == null)
             writer.WriteNull();
@@ -47,21 +47,21 @@ public abstract class OceanJsonConverter : JsonConverter
     /// <param name="reader">The JSON reader.</param>
     /// <param name="objectType">The type of the object (used for non generics).</param>
     /// <returns>The deserialised value.</returns>
-    protected abstract object ParseFromJson(JsonReader reader, Type objectType);
+    protected abstract object? ParseFromJson(JsonReader reader, Type objectType);
 
     /// <summary>
     /// Converts the value to a string representation to be entered into the JSON.
     /// </summary>
     /// <param name="value">The value to convert.</param>
     /// <returns>A string representation of the passed value.</returns>
-    protected virtual string ToValueString(object value) => value.ToString();
+    protected virtual string? ToValueString(object? value) => value?.ToString();
 
     /// <summary>
     /// Writes the JSON representation of the object.
     /// </summary>
     /// <param name="writer">The JsonWriter to write to.</param>
     /// <param name="value">The value to write.</param>
-    protected virtual void WriteJson(JsonWriter writer, [AllowNull] object value) { }
+    protected virtual void WriteJson(JsonWriter writer, object? value) { }
 }
 
 /// <summary>
@@ -74,7 +74,7 @@ public abstract class OceanJsonConverter<T> : OceanJsonConverter
     public sealed override bool CanConvert(Type objectType) => typeof(T).IsAssignableFrom(objectType) || objectType.IsNullableOf<T>();
 
     /// <inheritdoc/>
-    protected sealed override string ToValueString(object value)
+    protected sealed override string? ToValueString(object? value)
     {
         if (value is T tValue)
             return ToValueString(tValue);
@@ -83,10 +83,10 @@ public abstract class OceanJsonConverter<T> : OceanJsonConverter
     }
 
     /// <inheritdoc/>
-    protected sealed override object ParseFromJson(JsonReader reader, Type _) => ParseFromJson(reader);
+    protected sealed override object? ParseFromJson(JsonReader reader, Type _) => ParseFromJson(reader);
 
     /// <inheritdoc/>
-    protected sealed override void WriteJson(JsonWriter writer, [AllowNull] object value)
+    protected sealed override void WriteJson(JsonWriter writer, object? value)
     {
         if (value is T tValue)
             WriteJson(writer, tValue);
@@ -104,13 +104,13 @@ public abstract class OceanJsonConverter<T> : OceanJsonConverter
     /// Type safe wrapper.
     /// </summary>
     /// <inheritdoc cref="ToValueString(object)"/>
-    protected virtual string ToValueString(T value) => value.ToString();
+    protected virtual string? ToValueString(T? value) => value?.ToString();
 
     /// <summary>
     /// Type safe wrapper.
     /// </summary>
     /// <inheritdoc cref="WriteJson(JsonWriter, object)"/>
-    protected virtual void WriteJson(JsonWriter writer, [AllowNull] T value) { }
+    protected virtual void WriteJson(JsonWriter writer, T? value) { }
 }
 
 /// <summary>

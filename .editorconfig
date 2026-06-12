@@ -176,3 +176,6 @@ dotnet_diagnostic.IDE0130.severity = none
 
 # IDE0051: Remove unused private members
 dotnet_diagnostic.IDE0051.severity = none
+
+# CS8618: Non-nullable field is uninitialized
+dotnet_diagnostic.CS8618.severity = none

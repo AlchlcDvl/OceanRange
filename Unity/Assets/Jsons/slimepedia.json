@@ -5,6 +5,7 @@
     "favToy": "OCTO_BUDDY_TOY",
     "normalAppearance": {
       "redEyeColor": "#4457A4",
+      "mouthOrigin": "TABBY_SLIME",
       "slimeFeatures": [
         {
           "meshData": { "mesh": "rosi_body" },
@@ -613,6 +614,7 @@
     "normalAppearance": {
       "mainAmmoColor": "#A4E88E",
       "plortAmmoColor": "#3C6C45",
+      "mouthOrigin": "TABBY_SLIME",
       "jiggle": 0.25,
       "slimeFeatures": [
         {

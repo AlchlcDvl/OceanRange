@@ -17,7 +17,7 @@ public static class Atlas
     [PreloadMethod]
     public static void PreloadMapData()
     {
-        var world = Inventory.GetJson<World>("atlas");
+        var world = Inventory.GetJson<World>("atlas")!;
 
         Regions = world.Regions;
         Zones = world.Zones;

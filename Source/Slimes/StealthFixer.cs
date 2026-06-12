@@ -10,7 +10,7 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
     private float targetOpacity = 1f;
     private float lastOpacity = 1f;
 
-    private readonly StealthFixerController StealthController = new();
+    private readonly StealthFixerController stealthController = new();
 
     public void Awake()
     {
@@ -27,7 +27,7 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
     public override void OnDestroy()
     {
         base.OnDestroy();
-        StealthController.DestroyMats();
+        stealthController.DestroyMats();
     }
 
     public void RegistryUpdate() => UpdateStealthOpacity();
@@ -46,7 +46,7 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
 
     public void SetOpacity(float opacity)
     {
-        StealthController.SetOpacity(opacity);
+        stealthController.SetOpacity(opacity);
         lastOpacity = opacity;
     }
 
@@ -58,7 +58,7 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
 
     public void UpdateMaterialStealthController()
     {
-        StealthController.UpdateMaterials(gameObject);
+        stealthController.UpdateMaterials(gameObject);
         lastOpacity = 1f;
     }
 
@@ -92,17 +92,17 @@ public sealed class StealthFixerController
     private static readonly int Alpha = ShaderUtils.GetOrSet("_Alpha");
     private static readonly Material CloakMaterial = GameContext.Instance.SlimeShaders.cloakMaterial;
 
-    private readonly List<RendererEntry> Entries = [];
+    private readonly List<RendererEntry> entries = [];
 
     public void DestroyMats()
     {
-        foreach (var entry in Entries)
+        foreach (var entry in entries)
         {
             if (entry.Cloak)
                 entry.Cloak.Destroy();
         }
 
-        Entries.Clear();
+        entries.Clear();
     }
 
     public void UpdateMaterials(GameObject gameObject)
@@ -124,7 +124,7 @@ public sealed class StealthFixerController
                 cloakMat.SetColor(Slimepedia.BottomColor, regularMat.GetColor(Slimepedia.BottomColor));
             }
 
-            Entries.Add(new RendererEntry(renderer, regularMat, cloakMat));
+            entries.Add(new RendererEntry(renderer, regularMat, cloakMat));
         }
     }
 
@@ -132,16 +132,16 @@ public sealed class StealthFixerController
     {
         var isOpaque = opacity >= 0.99f;
 
-        for (var i = Entries.Count - 1; i >= 0; i--)
+        for (var i = entries.Count - 1; i >= 0; i--)
         {
-            var entry = Entries[i];
+            var entry = entries[i];
 
             if (!entry.Renderer)
             {
                 if (entry.Cloak)
                     entry.Cloak.Destroy();
 
-                Entries.RemoveAt(i);
+                entries.RemoveAt(i);
                 continue;
             }
 

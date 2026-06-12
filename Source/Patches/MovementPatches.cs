@@ -41,8 +41,8 @@ public static class StopMovingTowardsFoodOrFlying
     }
 
     [HarmonyPatch(typeof(GotoConsumable), nameof(SlimeHover.Relevancy))]
-    private static bool Prefix(GotoConsumable __instance, ref float __result) => CommonPrefix(__instance, ref __result);
+    public static bool Prefix(GotoConsumable __instance, ref float __result) => CommonPrefix(__instance, ref __result);
 
     [HarmonyPatch(typeof(SlimeHover), nameof(SlimeHover.Relevancy))]
-    private static bool Prefix(SlimeHover __instance, ref float __result) => CommonPrefix(__instance, ref __result);
+    public static bool Prefix(SlimeHover __instance, ref float __result) => CommonPrefix(__instance, ref __result);
 }

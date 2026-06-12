@@ -6,7 +6,7 @@ namespace OceanRange.Data;
 
 public abstract class JsonData
 {
-    public string Name;
+    public string? Name;
 
 #if UNITY
     public virtual void FindStrings(StringPooler pooler) => pooler.PoolString(Name);

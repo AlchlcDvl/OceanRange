@@ -9,13 +9,13 @@ namespace OceanRange.Data;
 public sealed  class RancherData : JsonData
 {
 #if !UNITY
-    [JsonRequired] public Category[] Rewards;
-    [JsonRequired] public Category[] Requests;
-    [JsonRequired] public Category[] RareRewards;
+    [JsonRequired, JsonProperty] public Category[] Rewards;
+    [JsonRequired, JsonProperty] public Category[] Requests;
+    [JsonRequired, JsonProperty] public Category[] RareRewards;
 
-    public IdentifiableId[] IndivRewards;
-    public IdentifiableId[] IndivRequests;
-    public IdentifiableId[] IndivRareRewards;
+    [JsonProperty] public IdentifiableId[] IndivRewards;
+    [JsonProperty] public IdentifiableId[] IndivRequests;
+    [JsonProperty] public IdentifiableId[] IndivRareRewards;
 
     [JsonIgnore] public string RancherId;
     [JsonIgnore] public RancherName RancherName;
@@ -37,7 +37,7 @@ public sealed  class RancherData : JsonData
 
     public override void OnDeserialise()
     {
-        RancherId = Name.ToLowerInvariant();
+        RancherId = Name!.ToLowerInvariant();
         var upper = Name.ToUpperInvariant();
 
         RancherName = Helpers.AddEnumValue<RancherName>(upper);

@@ -46,7 +46,7 @@ public static class Commands
         return true;
     }
 
-    private static bool Teleport(string[] args)
+    private static bool Teleport(string[]? args)
     {
         if (args?.Length is 1)
             args = [.. args[0].TrueSplit(',', ' ', ';')];

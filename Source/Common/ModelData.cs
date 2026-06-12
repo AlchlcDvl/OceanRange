@@ -61,7 +61,7 @@ public sealed  class ModelData : JsonData
 public sealed  class MatData : JsonData
 {
     public float? Gloss;
-    public string Pattern;
+    public string? Pattern;
 
     public int? SameAs;
     public int? MatSameAs;
@@ -113,7 +113,7 @@ public sealed  class MatData : JsonData
         var jsonProps = new string[count];
 
         for (var i = 0; i < count; i++)
-            jsonProps[i] = reader.ReadString();
+            jsonProps[i] = reader.ReadString()!;
 
         var keySet = new HashSet<string>(jsonProps, StringComparer.Ordinal);
         var tempKeys = new HashSet<string>((int)count, StringComparer.Ordinal);
@@ -199,10 +199,10 @@ public sealed  class MatData : JsonData
         if (ColorProps.IsNullOrEmpty())
             return;
 
-        foreach (var key in ColorProps.Keys)
+        foreach (var key in ColorProps!.Keys)
             writer.WriteSubstring(key, 1);
 
-        foreach (var val in ColorProps.Values)
+        foreach (var val in ColorProps!.Values)
             writer.WriteSubstring(val, 1);
     }
 #endif
@@ -213,7 +213,7 @@ public sealed  class MatData : JsonData
 #endif
 public sealed  class MeshData : JsonData
 {
-    public string Mesh;
+    public string? Mesh;
 
     public bool Skip;
     public bool UseBaseStruct;

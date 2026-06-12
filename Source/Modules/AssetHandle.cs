@@ -8,17 +8,17 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <summary>
     /// Contains the manifest paths of the assets.
     /// </summary>
-    private readonly Dictionary<string, string> Paths = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string> paths = new(StringComparer.Ordinal);
 
     /// <summary>
     /// The collective name of the assets contained by this handle.
     /// </summary>
-    private readonly string Name = name;
+    private readonly string name = name;
 
     /// <summary>
     /// Handles loaded assets, by design assets can have the same name, but no two assets can have the same type (eg, there can't be two of Plort.png anywhere).
     /// </summary>
-    private readonly Dictionary<Type, UObject> Assets = [];
+    private readonly Dictionary<Type, UObject> assets = [];
 
     /// <summary>
     /// Flag that indicates whether at least one asset has been loaded.
@@ -28,18 +28,18 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <summary>
     /// Flag that indicates whether the handle is disposed of.
     /// </summary>
-    private bool Disposed;
+    private bool disposed;
 
     /// <inheritdoc/>
     public void Dispose()
     {
-        if (Disposed)
+        if (disposed)
             return;
 
-        Paths.Clear();
-        Assets.Values.CleanupResources(false);
-        Assets.Clear();
-        Disposed = true;
+        paths.Clear();
+        assets.Values.CleanupResources(false);
+        assets.Clear();
+        disposed = true;
     }
 
     /// <summary>
@@ -49,19 +49,19 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <exception cref="ArgumentException">Thrown if the path contains a file extension that's already been added.</exception>
     public void AddPath(string path)
     {
-        if (Disposed)
-            throw new ObjectDisposedException(Name);
+        if (disposed)
+            throw new ObjectDisposedException(name);
 
         var extension = Path.GetExtension(path).Replace(".", string.Empty);
 
         if (string.IsNullOrWhiteSpace(extension))
             throw new ArgumentException($"Cannot add a path with an empty extension! (path: {path})");
 
-        if (Inventory.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other))
-            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing! (path: {path}, step: TryGetValue/ContainsKey)");
+        if (Inventory.ExclusiveExtensions.TryGetValue(extension, out var other) && paths.ContainsKey(other))
+            throw new ArgumentException($"Cannot add another {name}.{extension} asset, because {name}.{other} is already registered! Please correct your asset typing! (path: {path}, step: TryGetValue/ContainsKey)");
 
-        if (!Paths.TryAdd(extension, path))
-            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing! (path: {path}, step: TryAdd)");
+        if (!paths.TryAdd(extension, path))
+            throw new ArgumentException($"Cannot add another {name}.{extension} asset, please correct your asset naming and typing! (path: {path}, step: TryAdd)");
     }
 
     // /// <summary>
@@ -92,12 +92,12 @@ public sealed class AssetHandle(string name) : IDisposable
     /// <exception cref="InvalidOperationException">Thrown if the asset was not loaded properly for reasons unknown.</exception>
     public T Load<T>() where T : UObject
     {
-        if (Disposed)
-            throw new ObjectDisposedException(Name);
+        if (disposed)
+            throw new ObjectDisposedException(name);
 
         var tType = typeof(T);
 
-        if (Assets.TryGetValue(tType, out var asset)) // Try to fetch the asset if it's already loaded
+        if (assets.TryGetValue(tType, out var asset)) // Try to fetch the asset if it's already loaded
             return (T)asset;
 
         var lookupType = tType;
@@ -108,27 +108,27 @@ public sealed class AssetHandle(string name) : IDisposable
         if (!Inventory.AssetTypeExtensions.TryGetValue(lookupType, out var generator)) // Check if the requested type is valid
             throw new NotSupportedException($"{tType.Name} is not a valid asset type to load");
 
-        if (!Paths.TryGetValue(generator.Extensions, out var path)) // Check if there's an asset path that maps to the relevant file extension
-            throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}");
+        if (!paths.TryGetValue(generator.Extensions, out var path)) // Check if there's an asset path that maps to the relevant file extension
+            throw new FileNotFoundException($"There's no such {tType.Name} asset for {name}");
 
         // Create/load the asset
         if (lookupType == typeof(ScriptableObject))
-            asset = Inventory.Bundle.LoadAsset<T>(Name);
+            asset = Inventory.Bundle.LoadAsset<T>(name);
         else
-            asset = generator.LoadAsset(path);
+            asset = generator.LoadAsset(path!);
 
         // Save the asset if not null, otherwise throw an error
         if (!asset)
-            throw new InvalidOperationException($"The load function for asset '{Name}' of type '{tType.Name}' returned null. Path: {path}");
+            throw new InvalidOperationException($"The load function for asset '{name}' of type '{tType.Name}' returned null. Path: {path}");
 
-        HasLoaded = Assets.TryAdd(tType, asset);
+        HasLoaded = assets!.TryAdd(tType, asset);
 
         // Set name and allow persistence
-        asset.name = Name;
+        asset!.name = name;
         return (T)asset.DontDestroy();
     }
 
-    public bool TryLoad<T>(out T asset) where T : UObject
+    public bool TryLoad<T>(out T? asset) where T : UObject
     {
         try
         {

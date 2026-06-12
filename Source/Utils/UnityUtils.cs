@@ -8,7 +8,7 @@ public static class UnityUtils
 {
     private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
-    public static bool IsNullOrEmpty<T>(this T[] array)
+    public static bool IsNullOrEmpty<T>(this T[]? array)
     {
         if (array == null)
             return true;
@@ -16,7 +16,7 @@ public static class UnityUtils
         return array.Length == 0;
     }
 
-    public static bool IsNullOrEmpty<T>(this ICollection<T> collection)
+    public static bool IsNullOrEmpty<T>(this ICollection<T>? collection)
     {
         if (collection == null)
             return true;
@@ -24,7 +24,7 @@ public static class UnityUtils
         return collection.Count == 0;
     }
 
-    public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
+    public static bool IsNullOrEmpty<T>(this IEnumerable<T>? enumerable)
     {
         if (enumerable == null)
             return true;

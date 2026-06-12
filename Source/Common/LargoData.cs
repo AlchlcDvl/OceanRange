@@ -43,16 +43,16 @@ public sealed  class LargoData : ActorData
     [JsonIgnore] public IdentifiableId Slime1Id;
     [JsonIgnore] public IdentifiableId Slime2Id;
 
-    [JsonIgnore] public SlimeData Slime1Data;
-    [JsonIgnore] public SlimeData Slime2Data;
+    [JsonIgnore] public SlimeData? Slime1Data;
+    [JsonIgnore] public SlimeData? Slime2Data;
 
-    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitSlime1Details;
-    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitSlime2Details;
-    [JsonIgnore] public Action<GameObject, SlimeDefinition> InitLargoDetails;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition>? InitSlime1Details;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition>? InitSlime2Details;
+    [JsonIgnore] public Action<GameObject, SlimeDefinition>? InitLargoDetails;
 
-    [JsonIgnore] public Action<SlimeAppearance, AppearanceType> InitSlime1AppearanceDetails;
-    [JsonIgnore] public Action<SlimeAppearance, AppearanceType> InitSlime2AppearanceDetails;
-    [JsonIgnore] public Action<SlimeAppearance, AppearanceType> InitLargoAppearanceDetails;
+    [JsonIgnore] public Action<SlimeAppearance, AppearanceType>? InitSlime1AppearanceDetails;
+    [JsonIgnore] public Action<SlimeAppearance, AppearanceType>? InitSlime2AppearanceDetails;
+    [JsonIgnore] public Action<SlimeAppearance, AppearanceType>? InitLargoAppearanceDetails;
 
     [JsonIgnore] public DLCContentMetadata_SlimeAppearance SS1Appearance;
     [JsonIgnore] public DLCContentMetadata_SlimeAppearance SS2Appearance;
@@ -62,14 +62,14 @@ public sealed  class LargoData : ActorData
     {
         base.ReadFrom(reader);
 
-        Appearances = reader.ReadArray(r => { var a = new LargoAppearanceData(); a.ReadFrom(r); return a; });
+        Appearances = reader.ReadArray(r => { var a = new LargoAppearanceData(); a.ReadFrom(r); return a; })!;
         DefProps = reader.ReadFlagEnum<DefinitionProps>();
         Jiggle = reader.ReadNullablePackedFloat();
     }
 
     public override void OnDeserialise()
     {
-        var parts = Name.TrueSplit(' ');
+        var parts = Name!.TrueSplit(' ');
 
         Slime1 = parts[0];
         Slime2 = parts[1];
@@ -131,10 +131,10 @@ public sealed  class LargoAppearanceData : JsonData
     public string[] AppProps;
 #endif
 
-    public ModelData BodyStruct;
+    public ModelData? BodyStruct;
 
-    public ModelData[] Slime1Structs;
-    public ModelData[] Slime2Structs;
+    public ModelData[]? Slime1Structs;
+    public ModelData[]? Slime2Structs;
 
     public float? Jiggle;
 
@@ -201,13 +201,13 @@ public sealed  class LargoAppearanceData : JsonData
 
         if (!Slime1Structs.IsNullOrEmpty())
         {
-            foreach (var feature in Slime1Structs)
+            foreach (var feature in Slime1Structs!)
                 feature.MeshData.Jiggle ??= Jiggle;
         }
 
         if (!Slime2Structs.IsNullOrEmpty())
         {
-            foreach (var feature in Slime2Structs)
+            foreach (var feature in Slime2Structs!)
                 feature.MeshData.Jiggle ??= Jiggle;
         }
     }

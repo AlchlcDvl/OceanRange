@@ -2,7 +2,7 @@ namespace OceanRange.Slimes;
 
 public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener, CaveTrigger.Listener
 {
-    private readonly HashSet<GameObject> Caves = [];
+    private readonly HashSet<GameObject> caves = [];
 
     private TimeDirector timeDir;
     private SlimeAppearanceApplicator applicator;
@@ -33,7 +33,7 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
             return;
         }
 
-        if (Caves.Count > 0)
+        if (caves.Count > 0)
         {
             canMove.CanMove = true;
             return;
@@ -50,8 +50,8 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
         if (waitForPhysicsUpdate)
             return;
 
-        if (Caves.Count > 0)
-            UnityWorkarounds.SafeRemoveAllNulls(Caves);
+        if (caves.Count > 0)
+            UnityWorkarounds.SafeRemoveAllNulls(caves);
     }
 
     public void OnControllerCollision(GameObject gameObj)
@@ -65,7 +65,7 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
             fleeingUntil = Time.fixedTime + 10f;
     }
 
-    public void OnCaveEnter(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => Caves.Add(caveObj);
+    public void OnCaveEnter(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => caves.Add(caveObj);
 
-    public void OnCaveExit(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => Caves.Remove(caveObj);
+    public void OnCaveExit(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => caves.Remove(caveObj);
 }

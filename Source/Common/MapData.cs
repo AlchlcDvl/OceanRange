@@ -34,7 +34,7 @@ public sealed class ZoneRequirementData : JsonData
         CorporateLevelMin = (int)reader.ReadPackedUInt();
         CorporateLevelMax = (int)reader.ReadPackedUInt();
         ExchangeProgress = (int)reader.ReadPackedUInt();
-        PathToGameObject = reader.ReadString();
+        PathToGameObject = reader.ReadString()!;
     }
 #endif
 }
@@ -57,7 +57,7 @@ public sealed class ZoneData : JsonData
     public Dictionary<string, ZoneRequirementData> Requirements;
 #else
     [JsonRequired] public RegionId Region;
-    public Dictionary<RequirementType, ZoneRequirementData> Requirements;
+    public Dictionary<RequirementType, ZoneRequirementData>? Requirements;
 #endif
 
     [JsonProperty("teleporterOri"), JsonRequired] public Orientation TeleporterOrientation;
@@ -77,8 +77,8 @@ public sealed class ZoneData : JsonData
         base.ReadFrom(reader);
         Region = reader.ReadEnum<RegionId>();
         TeleporterOrientation = reader.ReadOrientation();
-        TeleporterLocation = reader.ReadString();
-        AssetName = reader.ReadString();
+        TeleporterLocation = reader.ReadString()!;
+        AssetName = reader.ReadString()!;
 
         Requirements = reader.ReadDictionary(
             r => r.ReadEnum<RequirementType>(),
@@ -94,7 +94,7 @@ public sealed class ZoneData : JsonData
                 req.OnDeserialise();
         }
 
-        var upper = Name.ToUpperInvariant();
+        var upper = Name!.ToUpperInvariant();
 
         Zone = Helpers.AddEnumValue<Zone>(upper);
         PediaId = Helpers.AddEnumValue<PediaId>(upper + "_ENTRY");
@@ -154,14 +154,14 @@ public sealed class RegionData : JsonData
         // have to put it here bc Az put the thing that
         // grabs this enum inside the ZoneData.ReadFrom,
         // which happens before OnDeserialize on this class.
-        Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
+        Region = Helpers.AddEnumValue<RegionId>(Name!.ToUpperInvariant());
     }
 
-    public override void OnDeserialise()
-    {
-        base.OnDeserialise();
-        // Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
-    }
+    // public override void OnDeserialise()
+    // {
+    //     base.OnDeserialise();
+    //     Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
+    // }
 #else
     public override void WriteTo(DataWriter writer)
     {
@@ -197,8 +197,8 @@ public sealed class World : JsonData
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
-        Regions = reader.ReadArray(r => { var d = new RegionData(); d.ReadFrom(r); return d; });
-        Zones = reader.ReadArray(r => { var d = new ZoneData(); d.ReadFrom(r); return d; });
+        Regions = reader.ReadArray(r => { var d = new RegionData(); d.ReadFrom(r); return d; })!;
+        Zones = reader.ReadArray(r => { var d = new ZoneData(); d.ReadFrom(r); return d; })!;
     }
 
     public override void OnDeserialise()

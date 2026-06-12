@@ -8,12 +8,12 @@ public sealed class StringPooler(HashSet<string> pool)
 {
     private readonly HashSet<string> Pool = pool;
 
-    public void PoolSubstring(string value, int startIndex) => PoolString(value?.Substring(startIndex));
+    public void PoolSubstring(string? value, int startIndex) => PoolString(value?.Substring(startIndex));
 
-    public void PoolString(string value)
+    public void PoolString(string? value)
     {
         if (!string.IsNullOrEmpty(value))
-            Pool.Add(value);
+            Pool.Add(value!);
     }
 
     public void PoolSubstrings(string[] values, int startIndex)

@@ -2,11 +2,9 @@ using System.Runtime.CompilerServices;
 
 namespace OceanRange.Data;
 
-public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
+public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposable
 {
-    private readonly BinaryReader Reader = reader;
-    private readonly string[] PooledStrings = pool;
-    private readonly bool HasPooledStrings = pool != null;
+    private readonly bool hasPooledStrings = pool != null;
 
     public uint ReadPackedUInt() => (uint)ReadVarInt();
 
@@ -19,7 +17,7 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
 
         while (true)
         {
-            var b = Reader.ReadByte();
+            var b = reader.ReadByte();
             result |= (ulong)(b & 0x7F) << shift;
 
             if ((b & 0x80) == 0)
@@ -31,32 +29,32 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
         return result;
     }
 
-    public string ReadString(bool returnNullOnZero = true)
+    public string? ReadString(bool returnNullOnZero = true)
     {
-        if (!HasPooledStrings)
-            return Reader.ReadString();
+        if (!hasPooledStrings)
+            return reader.ReadString();
 
         var index = ReadPackedUInt();
-        return index == 0 && returnNullOnZero ? null : PooledStrings[index];
+        return index == 0 && returnNullOnZero ? null : pool![index];
     }
 
-    public float ReadPackedFloat() => Mathf.HalfToFloat(Reader.ReadUInt16());
+    public float ReadPackedFloat() => Mathf.HalfToFloat(reader.ReadUInt16());
 
-    public float ReadFloat() => Reader.ReadSingle();
+    // public float ReadFloat() => reader.ReadSingle();
 
-    public bool ReadBool() => Reader.ReadBoolean();
+    public bool ReadBool() => reader.ReadBoolean();
 
-    public byte ReadByte() => Reader.ReadByte();
+    public byte ReadByte() => reader.ReadByte();
 
-    public sbyte ReadSByte() => Reader.ReadSByte();
+    private sbyte ReadSByte() => reader.ReadSByte();
 
-    public Color32 ReadColor32() => new(Reader.ReadByte(), Reader.ReadByte(), Reader.ReadByte(), Reader.ReadByte());
+    // public Color32 ReadColor32() => new(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
 
-    public Color ReadColor() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
+    // public Color ReadColor() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
 
-    public string[] ReadStringArray() => ReadArray(r => r.ReadString());
+    public string?[]? ReadStringArray() => ReadArray(r => r.ReadString());
 
-    public T[] ReadArray<T>(Func<DataReader, T> reader, bool returnNullOnZero = true)
+    public T[]? ReadArray<T>(Func<DataReader, T> readerDel, bool returnNullOnZero = true)
     {
         var count = ReadPackedUInt();
 
@@ -66,7 +64,7 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
         var array = new T[count];
 
         for (var i = 0; i < count; i++)
-            array[i] = reader(this);
+            array[i] = readerDel(this);
 
         return array;
     }
@@ -87,7 +85,7 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
             list.Add(readFunc(this));
     }
 
-    public Vector2 ReadVector2() => new(ReadPackedFloat(), ReadPackedFloat());
+    // public Vector2 ReadVector2() => new(ReadPackedFloat(), ReadPackedFloat());
 
     public Vector3 ReadVector3() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
 
@@ -105,16 +103,16 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
         var array = new T[count];
 
         for (var i = 0; i < count; i++)
-            array[i] = Helpers.ParseEnum<T>(ReadString());
+            array[i] = Helpers.ParseEnum<T>(ReadString()!);
 
         return array;
     }
 
     private static readonly Dictionary<string, Type> CachedTypes = new(StringComparer.Ordinal);
 
-    public Type ReadType()
+    public Type? ReadType()
     {
-        var name = ReadString();
+        var name = ReadString()!;
 
         if (string.IsNullOrEmpty(name))
             return null;
@@ -130,25 +128,29 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
     public T? ReadNullableEnum<T>() where T : struct, Enum
     {
         var value = ReadString();
-        return string.IsNullOrEmpty(value) ? null : Helpers.ParseOrAddEnumValue<T>(value);
+        return string.IsNullOrEmpty(value) ? null : Helpers.ParseOrAddEnumValue<T>(value!);
     }
 
-    public T ReadEnum<T>() where T : struct, Enum => Helpers.ParseEnum<T>(ReadString());
+    public T ReadEnum<T>() where T : struct, Enum => Helpers.ParseEnum<T>(ReadString()!);
 
-    public double ReadDouble() => Reader.ReadDouble();
+    private double ReadDouble() => reader.ReadDouble();
 
     public double? ReadNullableDouble() => ReadBool() ? ReadDouble() : null;
 
-    public Dictionary<string, string> ReadStringDictionary() => ReadDictionary(r => r.ReadString(), r => r.ReadString(), StringComparer.Ordinal);
+    private Dictionary<string?, string?>? ReadStringDictionary() => ReadDictionary(r => r.ReadString(), r => r.ReadString(), StringComparer.Ordinal);
 
-    public Dictionary<string, Dictionary<string, string>> ReadStringToStringDictionary() => ReadDictionary(r => r.ReadString(), r => r.ReadStringDictionary(), StringComparer.Ordinal);
+    public Dictionary<string?, Dictionary<string?, string?>?>? ReadStringToStringDictionary() => ReadDictionary(r => r.ReadString(), r => r.ReadStringDictionary(), StringComparer.Ordinal);
 
-    public Dictionary<string, Dictionary<string, string>> ReadNullableStringToStringDictionary()
+    public Dictionary<string?, Dictionary<string?, string?>?>? ReadNullableStringToStringDictionary()
         => ReadBool() ? ReadStringToStringDictionary() : null;
 
-    public Dictionary<TKey, TValue> ReadDictionary<TKey, TValue>(Func<DataReader, TKey> keyReader, Func<DataReader, TValue> valueReader, IEqualityComparer<TKey> comparer = null)
+    public Dictionary<TKey, TValue>? ReadDictionary<TKey, TValue>(Func<DataReader, TKey> keyReader, Func<DataReader, TValue> valueReader, IEqualityComparer<TKey>? comparer = null, bool returnNullOnZero = true)
     {
         var dictCount = ReadPackedUInt();
+
+        if (dictCount == 0)
+            return returnNullOnZero ? null : [];
+
         var dict = new Dictionary<TKey, TValue>((int)dictCount, comparer ?? EqualityComparer<TKey>.Default);
 
         for (var i = 0; i < dictCount; i++)
@@ -159,7 +161,7 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
 
     public float? ReadNullablePackedFloat() => ReadBool() ? ReadPackedFloat() : null;
 
-    public uint? ReadNullablePackedUInt() => ReadBool() ? ReadPackedUInt() : null;
+    // public uint? ReadNullablePackedUInt() => ReadBool() ? ReadPackedUInt() : null;
 
     public int? ReadNullablePackedInt() => ReadBool() ? ReadPackedInt() : null;
 
@@ -179,7 +181,7 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
         return FastCastFromLong<T>(combined);
     }
 
-    private unsafe static long FastCastToLong<T>(T enumValue) where T : unmanaged, Enum
+    private static unsafe long FastCastToLong<T>(T enumValue) where T : unmanaged, Enum
     {
         var size = sizeof(T);
         var ptr = &enumValue;
@@ -194,7 +196,7 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
         };
     }
 
-    private unsafe static T FastCastFromLong<T>(long longValue) where T : unmanaged, Enum
+    private static unsafe T FastCastFromLong<T>(long longValue) where T : unmanaged, Enum
         => *(T*)&longValue;
 
     public int[] ReadDeltaEncodedIndices()
@@ -220,7 +222,7 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
 
     public Vector3 ReadQuantizedPosition(Bounds bounds)
     {
-        var packed = Reader.ReadUInt32();
+        var packed = reader.ReadUInt32();
 
         var nx = (packed & 0x3FF) / 1023f;
         var ny = ((packed >> 10) & 0x3FF) / 1023f;
@@ -253,8 +255,8 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
     public Vector2 ReadQuantizedUV2()
     {
         return new Vector2(
-            Reader.ReadUInt16() / 65535f,
-            Reader.ReadUInt16() / 65535f
+            reader.ReadUInt16() / 65535f,
+            reader.ReadUInt16() / 65535f
         );
     }
 
@@ -277,5 +279,5 @@ public sealed class DataReader(BinaryReader reader, string[] pool) : IDisposable
         return v.normalized;
     }
 
-    public void Dispose() => Reader.Dispose();
+    public void Dispose() => reader.Dispose();
 }
