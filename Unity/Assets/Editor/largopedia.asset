@@ -1,0 +1,2879 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff92bae8a63842f6a6cc0ebbfe1d8901, type: 3}
+  m_Name: largopedia
+  m_EditorClassIdentifier: 
+  largos:
+  - Name: Rosi Mine
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_mine_stalk
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_mine_frills
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_mine_exterior
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Rosi Lantern
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForFace
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_mine_stalk
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_mine_frills
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PHOSPHOR_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Mine Lantern
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForFace
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROSI_MINE_LARGO
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: MINE_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mine_lantern_exterior
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: MINE_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Pink Coco
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 1
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: PINK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: PINK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Coco Saber
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForBody
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs: []
+    DefProps: []
+  - Name: Coco Quantum
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 1
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Coco Honey
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HONEY_SLIME
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: coco_honey_plate
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Coco Phosphor
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 1
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: PHOSPHOR_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: PHOSPHOR_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Coco Mosaic
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs: []
+    DefProps: []
+  - Name: Coco Tangle
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 1
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: TANGLE_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: TANGLE_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Coco Boom
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: BOOM_SLIME
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs: []
+    DefProps: []
+  - Name: Coco Rad
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 1
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: RAD_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: RAD_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Coco Rock
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 1
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: ROCK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: ROCK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Coco Tabby
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForMouth
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Coco Hunter
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForFace
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Coco Crystal
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 1
+          MatOrigin: COCO_SLIME
+          ColorsOrigin: CRYSTAL_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: CRYSTAL_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Coco Dervish
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Coco Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: MESMER_SLIME
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Coco Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: COCO_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Pink Mesmer
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForBody
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: PINK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: PINK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Saber Mesmer
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForBodyMaterial
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs: []
+    DefProps: []
+  - Name: Quantum Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Honey Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HONEY_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HONEY_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HONEY_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HONEY_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HONEY_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HONEY_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Phosphor Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: mesmer_pincer
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: PHOSPHOR_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: PHOSPHOR_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PHOSPHOR_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Mosaic Mesmer
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForBodyMaterial
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs: []
+    DefProps: []
+  - Name: Tangle Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: MESMER_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Boom Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: BOOM_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: BOOM_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: BOOM_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: BOOM_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: BOOM_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: BOOM_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Rad Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: RAD_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: RAD_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: RAD_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: RAD_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: RAD_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: RAD_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Rock Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: mesmer
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: ROCK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: mesmer_pincer
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: ROCK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: ROCK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Tabby Mesmer
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForBodyMaterial
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: tabby_ears
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Hunter Mesmer
+    Appearances:
+    - Name: 
+      LargoProps:
+      - UseSlime2ForBodyMaterial
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HUNTER_SLIME
+          ColorsOrigin: MESMER_SLIME
+        MeshData:
+          Name: 
+          Mesh: hunter_ears
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Crystal Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: mesmer
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: CRYSTAL_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: mesmer_pincer
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: CRYSTAL_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: CRYSTAL_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Dervish Mesmer
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: MESMER_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs: []
+    DefProps: []
+  - Name: Mesmer Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 1
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 1
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 1
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 1
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 1
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Pink Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: PINK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Saber Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: SABER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Quantum Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: QUANTUM_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Honey Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HONEY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Phosphor Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: hermit_phosphor_anten
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: PHOSPHOR_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Mosaic Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: MOSAIC_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Tangle Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TANGLE_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: tangle_hermit_flower
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: TANGLE_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Boom Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: BOOM_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Rad Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: RAD_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Rock Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: ROCK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rock_hermit_spine
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: ROCK_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Tabby Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: tabby_ears
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: TABBY_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Hunter Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HUNTER_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: HUNTER_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: hunter_ears
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: HUNTER_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Crystal Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: CRYSTAL_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: CRYSTAL_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: crystal_hermit_spine
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: CRYSTAL_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []
+  - Name: Dervish Hermit
+    Appearances:
+    - Name: 
+      LargoProps: []
+      AppProps: []
+      BodyStruct:
+        Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      Slime1Structs: []
+      Slime2Structs:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: DERVISH_SLIME
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+    DefProps: []

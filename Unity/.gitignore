@@ -112,3 +112,11 @@ ShaderForge/
 ShaderForge.meta
 Shader/
 Shader.meta
+
+# SR Assets
+CS/
+Mesh/
+Shader/
+Shader.meta
+Mesh.meta
+CS.meta

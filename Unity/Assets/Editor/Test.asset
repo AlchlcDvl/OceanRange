@@ -1,0 +1,1569 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f267762709257dc4fb949e5a3167b4da, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::Slimepedia
+  slimes:
+  - Name: Rosi
+    Progress: []
+    MainAmmoColor: 
+    ExchangeWeight: 20
+    BasePrice: 7
+    Saturation: 40
+    NormalAppearance:
+      Name: 
+      SlimeFeatures:
+      - Name: Body
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_body
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: Stalk
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_stalk
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: Frills
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_frills
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      GordoFeatures:
+      - Name: Body
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_body_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: Stalk
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_stalk_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: Frills
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_frills_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      PlortFeatures:
+      - Name: Pearl
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: Pearl Stalk
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_stalk_pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: Pearl Frills
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: rosi_frills_pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      MainAmmoColor: '#E6C7D2'
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    SSAppearance:
+      Name: 
+      SlimeFeatures: []
+      GordoFeatures: []
+      PlortFeatures: []
+      MainAmmoColor: 
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Reef_Intro
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    GordoEatAmount: 25
+    FavToy: OCTO_BUDDY_TOY
+    Zones:
+    - REEF
+    FavFood: 
+    Diet: 
+    BaseSlime: PINK_SLIME
+    BasePlort: PINK_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase: 
+    GordoZone: REEF
+    GordoRewards:
+    - CRATE_REEF_01
+    - CRATE_REEF_01
+    - CRATE_REEF_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.RosiBehaviour, OceanRange
+    ComponentsToRemove: []
+  - Name: Coco
+    Progress: []
+    MainAmmoColor: 
+    ExchangeWeight: 20
+    BasePrice: 20
+    Saturation: 26
+    NormalAppearance:
+      Name: 
+      SlimeFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: coco
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: coco_brows
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      GordoFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: coco_gordo
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: coco_brows
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      PlortFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      MainAmmoColor: '#966F33'
+      TopMouthColor: '#FFFFFF'
+      MiddleMouthColor: '#888888'
+      BottomMouthColor: '#FEFCFF'
+      RedEyeColor: '#888888'
+      GreenEyeColor: '#000000'
+      BlueEyeColor: '#FFFFFF'
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: '#DCDADD'
+    SSAppearance:
+      Name: 
+      SlimeFeatures: []
+      GordoFeatures: []
+      PlortFeatures: []
+      MainAmmoColor: 
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Reef_RingIsland
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    GordoEatAmount: 25
+    FavToy: BEACH_BALL_TOY
+    Zones:
+    - REEF
+    - MOSS
+    FavFood: SANDY_HEN
+    Diet: MEAT
+    BaseSlime: PINK_SLIME
+    BasePlort: PINK_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase: 
+    GordoZone: REEF
+    GordoRewards:
+    - CRATE_REEF_01
+    - CRATE_REEF_01
+    - CRATE_REEF_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.CocoBehaviour, OceanRange
+    - DamagePlayerOnTouch, Assembly-CSharp
+    ComponentsToRemove: []
+  - Name: Mine
+    Progress:
+    - UNLOCK_QUARRY
+    - UNLOCK_RUINS
+    MainAmmoColor: 
+    ExchangeWeight: 20
+    BasePrice: 30
+    Saturation: 20
+    NormalAppearance:
+      Name: 
+      SlimeFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: mine
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mine_exterior
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      GordoFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mine_exterior_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      PlortFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mine_pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      MainAmmoColor: '#445660'
+      TopMouthColor: '#FFFFFF'
+      MiddleMouthColor: '#888888'
+      BottomMouthColor: '#FFFFFF'
+      RedEyeColor: '#888888'
+      GreenEyeColor: '#000000'
+      BlueEyeColor: '#FFFFFF'
+      TopPaletteColor: '#9EA16f'
+      MiddlePaletteColor: '#445660'
+      BottomPaletteColor: '#212A2F'
+      PlortAmmoColor: '#9EA16f'
+    SSAppearance:
+      Name: 
+      SlimeFeatures: []
+      GordoFeatures: []
+      PlortFeatures: []
+      MainAmmoColor: 
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Quarry_VolcanoTransition
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    GordoEatAmount: 25
+    FavToy: BOMB_BALL_TOY
+    Zones:
+    - QUARRY
+    - RUINS
+    FavFood: BLOWTATO_VEGGIE
+    Diet: VEGGIES
+    BaseSlime: BOOM_SLIME
+    BasePlort: BOOM_PLORT
+    BaseGordo: BOOM_GORDO
+    ComponentBase: 
+    GordoZone: QUARRY
+    GordoRewards:
+    - CRATE_QUARRY_01
+    - CRATE_QUARRY_01
+    - CRATE_QUARRY_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.MineBehaviour, OceanRange
+    ComponentsToRemove:
+    - BoomSlimeExplode, Assembly-CSharp
+    - BoomMaterialAnimator, Assembly-CSharp
+  - Name: Lantern
+    Progress:
+    - UNLOCK_MOSS
+    - UNLOCK_RUINS
+    MainAmmoColor: 
+    ExchangeWeight: 20
+    BasePrice: 25
+    Saturation: 24
+    NormalAppearance:
+      Name: 
+      SlimeFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: lantern
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: lantern_fins
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: lantern_stalk
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 1
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PHOSPHOR_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: lantern_lure
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      GordoFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: lantern_fins_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: lantern_stalk
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: lantern_lure
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      PlortFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: lantern_stalk_pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: lantern_lure_pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      MainAmmoColor: '#B15EC8'
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: '#752C86'
+      MiddlePaletteColor: '#EBDB6A'
+      BottomPaletteColor: '#B15EC8'
+      PlortAmmoColor: '#752C86'
+    SSAppearance:
+      Name: 
+      SlimeFeatures: []
+      GordoFeatures: []
+      PlortFeatures: []
+      MainAmmoColor: 
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    NightSpawn: 1
+    CanBeRefined: 0
+    SpawnAmount: 1
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Moss_NorthPass
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    GordoEatAmount: 25
+    FavToy: NIGHT_LIGHT_TOY
+    Zones:
+    - MOSS
+    - RUINS
+    FavFood: RADIANT_HEN
+    Diet: MEAT
+    BaseSlime: PHOSPHOR_SLIME
+    BasePlort: PHOSPHOR_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase: 
+    GordoZone: MOSS
+    GordoRewards:
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.LanternBehaviour, OceanRange
+    - OceanRange.Slimes.CanMoveHandler, OceanRange
+    ComponentsToRemove:
+    - SlimeHover, Assembly-CSharp
+    - DestroyOutsideHoursOfDay, Assembly-CSharp
+  - Name: Sand
+    Progress: []
+    MainAmmoColor: 
+    ExchangeWeight: 20
+    BasePrice: 8
+    Saturation: 40
+    NormalAppearance:
+      Name: 
+      SlimeFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: sand_shells
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      GordoFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: puddle_body_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      PlortFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      MainAmmoColor: '#EDA960'
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: '#E8C499'
+    SSAppearance:
+      Name: 
+      SlimeFeatures: []
+      GordoFeatures: []
+      PlortFeatures: []
+      MainAmmoColor: 
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.15
+    HasGordo: 0
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: 
+    NaturalGordoSpawn: 0
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    GordoEatAmount: 25
+    FavToy: BEACH_BALL_TOY
+    Zones:
+    - REEF
+    - DESERT
+    FavFood: SILKY_SAND_CRAFT
+    Diet: DIRT
+    BaseSlime: PUDDLE_SLIME
+    BasePlort: PINK_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase: 
+    GordoZone: RANCH
+    GordoRewards:
+    - SILKY_SAND_CRAFT
+    - SILKY_SAND_CRAFT
+    - SILKY_SAND_CRAFT
+    ComponentsToAdd:
+    - OceanRange.Slimes.SandBehaviour, OceanRange
+    ComponentsToRemove:
+    - GotoWater, Assembly-CSharp
+    - GotoConsumable, Assembly-CSharp
+    - DestroyOnTouching, Assembly-CSharp
+    - SlimeEatWater, Assembly-CSharp
+  - Name: Mesmer
+    Progress: []
+    MainAmmoColor: 
+    ExchangeWeight: 20
+    BasePrice: 20
+    Saturation: 30
+    NormalAppearance:
+      Name: 
+      SlimeFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: mesmer
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: mesmer_pincer
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_pincers
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_tail_base
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_tail_stem_1
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_tail_stem_2
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PINK_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_tail_tip
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      GordoFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_pincers_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_tail_base_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_tail_stem_1_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_tail_stem_2_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mesmer_tail_tip_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      PlortFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      MainAmmoColor: '#0a094f'
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    SSAppearance:
+      Name: 
+      SlimeFeatures: []
+      GordoFeatures: []
+      PlortFeatures: []
+      MainAmmoColor: 
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Moss_Forest
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    GordoEatAmount: 25
+    FavToy: DISCO_BALL_TOY
+    Zones:
+    - MOSS
+    FavFood: STICKY_FRUIT
+    Diet: FRUIT
+    BaseSlime: PINK_SLIME
+    BasePlort: TABBY_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase: 
+    GordoZone: MOSS
+    GordoRewards:
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    ComponentsToAdd:
+    - StalkConsumable, Assembly-CSharp
+    ComponentsToRemove: []
+  - Name: Hermit
+    Progress: []
+    MainAmmoColor: 
+    ExchangeWeight: 20
+    BasePrice: 30
+    Saturation: 25
+    NormalAppearance:
+      Name: 
+      SlimeFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: hermit
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: hermit_shell
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: hermit_shell
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: hermit_claws
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      GordoFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: hermit_shell_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: hermit_claws
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      PlortFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: hermit_shell_plort
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      MainAmmoColor: '#e75651'
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: '#e0945e'
+    SSAppearance:
+      Name: 
+      SlimeFeatures: []
+      GordoFeatures: []
+      PlortFeatures: []
+      MainAmmoColor: 
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Reef_CliffCaves
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    GordoEatAmount: 25
+    FavToy: BEACH_BALL_TOY
+    Zones:
+    - REEF
+    FavFood: CORAL_FRUIT
+    Diet: FRUIT
+    BaseSlime: PINK_SLIME
+    BasePlort: TABBY_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase: 
+    GordoZone: REEF
+    GordoRewards:
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.HermitBehaviour, OceanRange
+    - OceanRange.Slimes.CanMoveHandler, OceanRange
+    ComponentsToRemove: []
+  - Name: Goldfish
+    Progress: []
+    MainAmmoColor: 
+    ExchangeWeight: 20
+    BasePrice: 400
+    Saturation: 50000
+    NormalAppearance:
+      Name: 
+      SlimeFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: GOLD_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: PUDDLE_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: goldfish_fins
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      GordoFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: goldfish_fins_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      PlortFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: pearl
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      MainAmmoColor: '#ffdf00'
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    SSAppearance:
+      Name: 
+      SlimeFeatures: []
+      GordoFeatures: []
+      PlortFeatures: []
+      MainAmmoColor: 
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.00125
+    HasGordo: 1
+    Vaccable: 0
+    Exchangeable: 0
+    GordoCell: 
+    NaturalGordoSpawn: 0
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    GordoEatAmount: 3
+    FavToy: BEACH_BALL_TOY
+    Zones:
+    - REEF
+    - QUARRY
+    - DESERT
+    - MOSS
+    - RUINS
+    - WILDS
+    FavFood: GINGER_VEGGIE
+    Diet: GINGER
+    BaseSlime: PINK_SLIME
+    BasePlort: GOLD_PLORT
+    BaseGordo: GOLD_GORDO
+    ComponentBase: GOLD_SLIME
+    GordoZone: 
+    GordoRewards:
+    - CRATE_MOSS_01
+    - CRATE_REEF_01
+    - CRATE_RUINS_01
+    - CRATE_QUARRY_01
+    - CRATE_DESERT_01
+    ComponentsToAdd: []
+    ComponentsToRemove: []
+  - Name: Mimic
+    Progress: []
+    MainAmmoColor: 
+    ExchangeWeight: 20
+    BasePrice: 20
+    Saturation: 30
+    NormalAppearance:
+      Name: 
+      SlimeFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: mimic
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mimic_body
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: mimic_tail
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: TABBY_SLIME
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mimic_tail
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      GordoFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mimic_body_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: 
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: mimic_tail_gordo
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      PlortFeatures:
+      - Name: 
+        MatData:
+          Name: 
+          Pattern: mimic_plort
+          UseSSMat: 0
+          InvertColorOriginColors: 0
+          MatOrigin: 
+          ColorsOrigin: 
+        MeshData:
+          Name: 
+          Mesh: 
+          Skip: 0
+          UseBaseStruct: 0
+          IgnoreLodIndex: 0
+      MainAmmoColor: '#a4e88e'
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: '#3c6c45'
+    SSAppearance:
+      Name: 
+      SlimeFeatures: []
+      GordoFeatures: []
+      PlortFeatures: []
+      MainAmmoColor: 
+      TopMouthColor: 
+      MiddleMouthColor: 
+      BottomMouthColor: 
+      RedEyeColor: 
+      GreenEyeColor: 
+      BlueEyeColor: 
+      TopPaletteColor: 
+      MiddlePaletteColor: 
+      BottomPaletteColor: 
+      PlortAmmoColor: 
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 0
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: 
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    GordoEatAmount: 25
+    FavToy: DISCO_BALL_TOY
+    Zones:
+    - MOSS
+    FavFood: HEN
+    Diet: MEAT
+    BaseSlime: PINK_SLIME
+    BasePlort: TABBY_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase: 
+    GordoZone: 
+    GordoRewards: []
+    ComponentsToAdd:
+    - StalkConsumable, Assembly-CSharp
+    ComponentsToRemove: []

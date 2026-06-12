@@ -65,7 +65,7 @@ static class ExportData
             LoadArrayData<MailData>(jsonDirectory, exportDirectory, "mailbox", arrayInstances);
 
             // Load single instances
-            // LoadSingleData<World>(jsonDirectory, exportDirectory, "atlas", singleInstances);
+            LoadSingleData<World>(jsonDirectory, exportDirectory, "atlas", singleInstances);
             LoadSingleData<Ingredients>(jsonDirectory, exportDirectory, "cookbook", singleInstances);
 
             // Load translations
@@ -129,10 +129,6 @@ static class ExportData
                 using (var writer = new DataWriter(binary, stringDict))
                 {
                     writer.WritePackedUInt((uint)export.Data.Length);
-
-                    foreach (var item in export.Data)
-                        item.WriteTo(writer);
-
                     writer.Flush();
                 }
             }

@@ -59,5 +59,9 @@
     <Compile Include="System\*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Bundles\" />
+  </ItemGroup>
+
   <Import Project="../SlimeRancher.props" />
 </Project>
