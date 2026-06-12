@@ -79,8 +79,8 @@ internal sealed class Main : ModEntryPoint
         BootStrapper.ExecuteLoadState(LoadState.Postload); // Executes the postload methods of all the manager classes
 
         // Unload assets that are no longer needed
-        // Inventory.Bundle.Unload(false);
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "modinfo", "largopedia", "contacts"/*, "atlas", "ocean_range", "blueprints"*/);
+        Inventory.Bundle.Unload(false);
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "largopedia", "contacts", "atlas", "ocean_range"/*, "blueprints"*/);
         Inventory.ReleaseUnusedHandles();
     }
 

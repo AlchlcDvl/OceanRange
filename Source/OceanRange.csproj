@@ -19,7 +19,7 @@
 
   <PropertyGroup Condition="$(Configuration)==Unity">
     <DefineConstants>UNITY</DefineConstants>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration)==Debug">

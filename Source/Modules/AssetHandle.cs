@@ -100,13 +100,22 @@ public sealed class AssetHandle(string name) : IDisposable
         if (Assets.TryGetValue(tType, out var asset)) // Try to fetch the asset if it's already loaded
             return (T)asset;
 
-        if (!Inventory.AssetTypeExtensions.TryGetEquivalentValue(tType, out var generator)) // Check if the requested type is valid
+        var lookupType = tType;
+
+        if (typeof(ScriptableObject).IsAssignableFrom(lookupType) && lookupType != typeof(Json))
+            lookupType = typeof(ScriptableObject);
+
+        if (!Inventory.AssetTypeExtensions.TryGetValue(lookupType, out var generator)) // Check if the requested type is valid
             throw new NotSupportedException($"{tType.Name} is not a valid asset type to load");
 
         if (!Paths.TryGetValue(generator.Extensions, out var path)) // Check if there's an asset path that maps to the relevant file extension
             throw new FileNotFoundException($"There's no such {tType.Name} asset for {Name}");
 
-        asset = generator.LoadAsset(path); // Create the asset
+        // Create/load the asset
+        if (lookupType == typeof(ScriptableObject))
+            asset = Inventory.Bundle.LoadAsset<T>(Name);
+        else
+            asset = generator.LoadAsset(path);
 
         // Save the asset if not null, otherwise throw an error
         if (!asset)
