@@ -14,6 +14,7 @@ public static class Atlas
 #if DEBUG
     [TimeDiagnostic("Atlas Preload")]
 #endif
+    [PreloadMethod]
     public static void PreloadMapData()
     {
         var world = Inventory.GetJson<World>("atlas");
@@ -27,7 +28,6 @@ public static class Atlas
 #if DEBUG
     [TimeDiagnostic("Atlas PreOnSaveLoad")]
 #endif
-    [PreloadMethod]
     private static void PreOnSaveLoad(SceneContext context)
     {
         // Load regions before the zones or the game implodes
@@ -93,7 +93,7 @@ public static class Atlas
                     progress.minProgress = value.CorporateLevelMin;
 
                     break;
-                    // TODO: Do other requirements.
+                // TODO: Do other requirements.
             }
         }
     }

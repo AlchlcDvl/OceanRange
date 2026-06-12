@@ -151,12 +151,16 @@ public sealed class RegionData : JsonData
         LoosenessVal = reader.ReadPackedFloat();
         InitialWorldSize = reader.ReadPackedFloat();
         InitialWorldPos = reader.ReadVector3();
+        // have to put it here bc Az put the thing that
+        // grabs this enum inside the ZoneData.ReadFrom,
+        // which happens before OnDeserialize on this class.
+        Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
     }
 
     public override void OnDeserialise()
     {
         base.OnDeserialise();
-        Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
+        // Region = Helpers.AddEnumValue<RegionId>(Name.ToUpperInvariant());
     }
 #else
     public override void WriteTo(DataWriter writer)

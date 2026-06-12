@@ -129,6 +129,10 @@ static class ExportData
                 using (var writer = new DataWriter(binary, stringDict))
                 {
                     writer.WritePackedUInt((uint)export.Data.Length);
+
+                    foreach (var item in export.Data)
+                        item.WriteTo(writer);
+
                     writer.Flush();
                 }
             }
