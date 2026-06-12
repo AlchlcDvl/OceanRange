@@ -1,13 +1,13 @@
 namespace OceanRange.Modules;
 
-public sealed class PlatformComparer : IEqualityComparer<RuntimePlatform>
-{
-    public static readonly PlatformComparer Instance = new();
+// public sealed class PlatformComparer : IEqualityComparer<RuntimePlatform>
+// {
+//     public static readonly PlatformComparer Instance = new();
 
-    public bool Equals(RuntimePlatform id1, RuntimePlatform id2) => id1 == id2;
+//     public bool Equals(RuntimePlatform id1, RuntimePlatform id2) => id1 == id2;
 
-    public int GetHashCode(RuntimePlatform id) => (int)id;
-}
+//     public int GetHashCode(RuntimePlatform id) => (int)id;
+// }
 
 public sealed class RancherNameComparer : IEqualityComparer<RancherName>
 {

@@ -58,17 +58,10 @@ public sealed class AssetHandle(string name) : IDisposable
             throw new ArgumentException($"Cannot add a path with an empty extension! (path: {path})");
 
         if (Inventory.ExclusiveExtensions.TryGetValue(extension, out var other) && Paths.ContainsKey(other))
-        {
-            var exception = new ArgumentException(
-                $"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing! (path: {path}, step: TryGetValue/ContainsKey)");
-            Main.Console.LogWarning($"{exception}");
-            return;
-        }
+            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, because {Name}.{other} is already registered! Please correct your asset typing! (path: {path}, step: TryGetValue/ContainsKey)");
+
         if (!Paths.TryAdd(extension, path))
-        {
-            var exception = new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing! (path: {path}, step: TryAdd)");
-            Main.Console.LogWarning($"{exception}");
-        }
+            throw new ArgumentException($"Cannot add another {Name}.{extension} asset, please correct your asset naming and typing! (path: {path}, step: TryAdd)");
     }
 
     // /// <summary>

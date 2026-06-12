@@ -10,7 +10,7 @@ public enum LoadState : byte
 
 public enum ManagerType : byte
 {
-    Atlas,
+    // Atlas,
     FloppyDisk,
     Cookbook,
     Slimepedia,

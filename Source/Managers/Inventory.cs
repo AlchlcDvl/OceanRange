@@ -9,7 +9,7 @@ namespace OceanRange.Managers;
 /// </summary>
 public static class Inventory
 {
-    public static AssetBundle Bundle;
+    // public static AssetBundle Bundle;
 
     /// <summary>
     /// Assembly data for the mod's dll.
@@ -18,19 +18,19 @@ public static class Inventory
 
     private static readonly Func<string, AssetHandle> Create = name => new(name);
 
-    private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
-    {
-        [RuntimePlatform.OSXPlayer] = "mac",
-        [RuntimePlatform.LinuxPlayer] = "lin",
-        [RuntimePlatform.WindowsPlayer] = "win",
-    };
+    // private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
+    // {
+    //     [RuntimePlatform.OSXPlayer] = "mac",
+    //     [RuntimePlatform.LinuxPlayer] = "lin",
+    //     [RuntimePlatform.WindowsPlayer] = "win",
+    // };
 
-    private static readonly string BundleSuffix = "bundle_" +
-    (
-        Platforms.TryGetValue(Application.platform, out var suffix)
-        ? suffix
-        : throw new PlatformNotSupportedException(Application.platform.ToString())
-    );
+    // private static readonly string BundleSuffix = "bundle_" +
+    // (
+    //     Platforms.TryGetValue(Application.platform, out var suffix)
+    //     ? suffix
+    //     : throw new PlatformNotSupportedException(Application.platform.ToString())
+    // );
 
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
@@ -43,13 +43,13 @@ public static class Inventory
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
 
-        [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
+        // [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
 
         // Bundle resources
-        [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
-        [typeof(Material)] = (["mat"], GetBundleAsset<Material>),
-        [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
-        [typeof(ScriptableObject)] = (["asset"], GetBundleAsset<ScriptableObject>),
+        // [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
+        // [typeof(Material)] = (["mat"], GetBundleAsset<Material>),
+        // [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
+        // [typeof(ScriptableObject)] = (["asset"], GetBundleAsset<ScriptableObject>),
 
         // AudioClip is not currently in use
         // [typeof(AudioClip)] = (["wav"], LoadAudioClip),
@@ -109,8 +109,8 @@ public static class Inventory
         Main.Console.Log($"Pooled strings count: {count}");
 #endif
 
-        Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
-        Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
+        // Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
+        // Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
     }
 
     public static void TryReleaseHandles(params string[] handles)
@@ -248,14 +248,14 @@ public static class Inventory
     // /// <inheritdoc cref="Get{T}(string)"/>
     // public static Shader GetShader(string name) => Get<Shader>(name);
 
-    /// <summary>
-    /// Gets a ScriptableObject instance associated with the provided type and name.
-    /// </summary>
-    /// <typeparam name="T">The type of the data.</typeparam>
-    /// <inheritdoc cref="Get{T}(string)"/>
-    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
-    
-    public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
+    // /// <summary>
+    // /// Gets a ScriptableObject instance associated with the provided type and name.
+    // /// </summary>
+    // /// <typeparam name="T">The type of the data.</typeparam>
+    // /// <inheritdoc cref="Get{T}(string)"/>
+    // public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
+    //
+    // public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
 
     private static IEnumerable<T> GetAll<T>(string[] names) where T : UObject => names.Select(Get<T>);
 
@@ -295,13 +295,8 @@ public static class Inventory
     /// <param name="name">The name of the asset.</param>
     /// <inheritdoc cref="AssetHandle.Load{T}"/>
     /// <exception cref="FileNotFoundException">Thrown if there is no such asset with the provided name or type.</exception>
-    private static T Get<T>(string name) where T : UObject => Assets.TryGetValue(name, out var handle) ? handle.Load<T>() : test<T>(name);
+    private static T Get<T>(string name) where T : UObject => Assets.TryGetValue(name, out var handle) ? handle.Load<T>() : throw new FileNotFoundException($"{name}, {typeof(T).Name}");
 
-    private static T test<T>(string name) where T : UObject
-    {
-        Main.Console.LogError("Assets loaded:\n"+string.Join(", ", Assets.Select(kvp => $"{kvp.Key}")));
-        throw new FileNotFoundException($"{name}, {typeof(T).Name}");
-    }
     // Legacy code, it's being kept around in case it's needed for more precise control
     // /// <summary>
     // /// Unloads an asset to free up memory.
@@ -437,9 +432,9 @@ public static class Inventory
         return tex ? Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
     }
 
-    private static T GetBundleAsset<T>(string path) where T : UObject => Bundle.LoadAsset<T>(path);
+    // private static T GetBundleAsset<T>(string path) where T : UObject => Bundle.LoadAsset<T>(path);
 
-    private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
+    // private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
 
     /// <summary>
     /// Reads all the bytes from the provided stream.
@@ -477,12 +472,7 @@ public static class Inventory
     private static void CreateAssetHandle(string path)
     {
         if (!path.EndsWith("string.pool"))
-        {
-#if DEBUG
-            Main.Console.Log($"Creating asset handle for {path}");
-#endif
             Assets.GetOrAdd(path.SanitisePath(), Create).AddPath(path);
-        }
     }
 
     // /// <summary>
