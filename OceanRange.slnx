@@ -1,4 +1,3 @@
 <Solution>
-  <Project Path="OceanRange.Generator/Generator.csproj" />
   <Project Path="Source/OceanRange.csproj" />
 </Solution>
