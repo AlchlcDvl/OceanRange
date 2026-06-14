@@ -963,6 +963,9 @@ public static class Slimepedia
     public static void InitSandSlimeDetails(GameObject _1, SlimeDefinition _2) => SandBehaviour.ProduceFX = IdentifiableId.PUDDLE_SLIME.GetPrefab().GetComponent<SlimeEatWater>().produceFX;
 
     [UsedImplicitly]
+    public static void InitLanternSlimeDetails(GameObject _1, SlimeDefinition _2) => LanternBehaviour.FlashbangPrefab = Inventory.GetPrefab("flashbangcanvas");
+
+    [UsedImplicitly]
     public static void InitSandPlortDetails(GameObject prefab, SlimeDefinition _) => SandBehaviour.PlortPrefab = prefab;
 
     [UsedImplicitly]
