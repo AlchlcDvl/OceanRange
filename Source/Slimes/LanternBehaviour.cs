@@ -2,6 +2,8 @@ namespace OceanRange.Slimes;
 
 public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener, CaveTrigger.Listener
 {
+    public static GameObject FlashbangPrefab;
+
     private readonly HashSet<GameObject> caves = [];
 
     private TimeDirector timeDir;
@@ -10,6 +12,9 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
     private bool waitForPhysicsUpdate;
     private bool wasFleeing;
     private bool wasSleeping;
+
+    public float FlashDuration = 3.5f;
+    public float FadeDuration = 3.5f;
 
     public CanMoveHandler CanMove;
 
@@ -43,11 +48,7 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
         }
 
         wasFleeing = false;
-
-        if (caves.Count > 0)
-            CanMove.CanMove = true;
-        else
-            CanMove.CanMove = timeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
+        CanMove.CanMove = caves.Count > 0 || timeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
 
         if (!CanMove.CanMove)
         {
@@ -74,15 +75,17 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
 
     public void OnControllerCollision(GameObject gameObj)
     {
-        if (CanMove.CanMove || Fleeing)
+        if (CanMove.CanMove || gameObj != SceneContext.Instance.Player)
             return;
 
-        CanMove.CanMove = Fleeing = gameObj == SceneContext.Instance.Player;
-
-        if (!Fleeing)
-            return;
-
+        CanMove.CanMove = Fleeing = true;
         fleeingUntil = Time.fixedTime + 10f;
+
+        var flash = Instantiate(FlashbangPrefab);
+        flash.transform.localScale *= 25f;
+        flash.AddComponent<FlashbangEffect>().SetFlashDuration(FlashDuration);
+        flash.AddComponent<FlashbangEffect>().SetFadeDuration(FadeDuration);
+        DontDestroyOnLoad(flash);
     }
 
     public void OnCaveEnter(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => caves.Add(caveObj);
