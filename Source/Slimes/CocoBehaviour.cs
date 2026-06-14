@@ -1,7 +1,7 @@
 namespace OceanRange.Slimes;
 
 // Had to recreate DamagePlayerOnTouch because using Rock slimes as a base just no longer allowed Coco slimes to move
-// Az from the future here; attempting to add my own hook did not work, and just worked knockouts instead
+// Az from the future here; attempting to add my own hook did not work, as it would just knockout players instead of damaging them
 public sealed class CocoBehaviour : SRBehaviour, ControllerCollisionListener
 {
     private const int DamagePerTouch = 10;

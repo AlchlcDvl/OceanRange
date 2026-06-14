@@ -11,6 +11,8 @@ public static class Ids
 {
     public static readonly SlimeExpression Sleeping;
 
+    public static readonly IdentifiableId SAND_SLIME;
+
     public static readonly Category OCEAN;
 
     // public static readonly Zone GREAT_REEF;

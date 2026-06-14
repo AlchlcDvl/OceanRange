@@ -305,7 +305,7 @@ public static class Slimepedia
             var rocks = first ? prefab.transform : RocksPrefab.Instantiate(prefab.transform);
             var filter = rocks.GetComponent<MeshFilter>();
             var isNull = meshName.Mesh == null;
-            filter.sharedMesh = isNull ? filter.mesh.Clone() : Inventory.GetMesh(meshName.Mesh!);
+            filter.sharedMesh = isNull ? filter.sharedMesh.Clone() : Inventory.GetMesh(meshName.Mesh!);
 
             var rend = rocks.GetComponent<MeshRenderer>();
             var material = GenerateMaterial(normal.PlortFeatures[i].MatData, normal.SlimeFeatures, rend.sharedMaterial);
@@ -603,7 +603,7 @@ public static class Slimepedia
         }
 
         var elem = structure.Element = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
-        elem.name = elem.Name = meshData.Name?.Replace("(Clone)", string.Empty) ?? (meshData.IsBody ? "Body" : "Structure");
+        elem.name = elem.Name = meshData.Name?.Replace("(Clone)", string.Empty) ?? meshData.Mesh ?? (meshData.IsBody ? "Body" : "Structure");
         structure.SupportsFaces = meshData.IsBody;
 
         if (meshData.IgnoreLodIndex)
@@ -994,5 +994,9 @@ public static class Slimepedia
             if (Identifiable.IsSlime(id) && !Largopedia.Mesmers.Contains(id)) // Ensuring that only non-mesmer slimes are affected
                 prefab.AddComponent<AweTowardsMesmers>();
         }
+
+        RiggedGordoMeshCache.Clear();
+        RiggedSlimeMeshCache.Clear();
+        PrefabElementCache.Clear();
     }
 }

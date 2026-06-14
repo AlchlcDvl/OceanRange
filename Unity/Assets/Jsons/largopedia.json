@@ -322,7 +322,7 @@
     "name": "Coco Mesmer",
     "appearances": [
       {
-        "bodyStruct": { "matData": { "matOrigin": "MESMER_SLIME", "colorsOrigin": "COCO_SLIME" } },
+        "bodyStruct": { "matData": { "matOrigin": "COCO_SLIME" } },
         "slime2Structs": [
           { "matData": { "colorsOrigin": "COCO_SLIME" } },
           { "matData": { "colorsOrigin": "COCO_SLIME" } },

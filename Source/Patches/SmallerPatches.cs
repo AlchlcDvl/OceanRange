@@ -5,44 +5,19 @@ namespace OceanRange.Patches;
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
 public static class EatMapFix
 {
-    private static readonly Func<IdentifiableId, bool> IsPlort = Identifiable.IsPlort;
-
-    public static void Postfix(SlimeDiet __instance, SlimeDefinitions definitions, SlimeDefinition definition)
+    public static void Postfix(SlimeDiet __instance, SlimeDefinition definition)
     {
-        if (definition.IdentifiableId.ToString().Contains("SAND"))
-        {
-            __instance.EatMap.RemoveAll(x => x.eats == IdentifiableId.SILKY_SAND_CRAFT);
-            __instance.EatMap.Add(new()
-            {
-                eats = IdentifiableId.SILKY_SAND_CRAFT,
-                producesId = definition.Diet.Produces[0],
-                isFavorite = true,
-                favoriteProductionCount = __instance.FavoriteProductionCount,
-                driver = SlimeEmotions.Emotion.NONE,
-                minDrive = 0f,
-                extraDrive = 0f,
-                becomesId = IdentifiableId.NONE
-            });
-        }
-
-        if (definition.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !Largopedia.LargoMaps.TryGetValue(definition.IdentifiableId, out var maps))
+        if (definition.IdentifiableId != Ids.SAND_SLIME)
             return;
 
-        foreach (var (largoId, slimeId) in maps)
+        __instance.EatMap.RemoveAll(x => x.eats == IdentifiableId.SILKY_SAND_CRAFT);
+        __instance.EatMap.Add(new()
         {
-            var slimeDef = definitions.GetSlimeByIdentifiableId(slimeId);
-
-            if (slimeDef.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !slimeDef.Diet.Produces.TryFinding(IsPlort, out var plortId))
-                continue;
-
-            __instance.EatMap.RemoveAll(x => x.eats == plortId);
-            __instance.EatMap.Add(new()
-            {
-                becomesId = largoId,
-                eats = plortId,
-                minDrive = 1f
-            });
-        }
+            eats = IdentifiableId.SILKY_SAND_CRAFT,
+            producesId = definition.Diet.Produces[0],
+            isFavorite = true,
+            driver = SlimeEmotions.Emotion.NONE
+        });
     }
 }
 

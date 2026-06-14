@@ -227,7 +227,7 @@ public sealed  class SlimeData : SpawnedActorData
 
         var upper = Name!.ToUpperInvariant();
 
-        MainId = Helpers.AddEnumValue<IdentifiableId>(upper + "_SLIME");
+        MainId = Helpers.ParseOrAddEnumValue<IdentifiableId>(upper + "_SLIME");
         PlortId = Helpers.AddEnumValue<IdentifiableId>(upper + "_PLORT");
 
         var init = "Init" + Name;

@@ -1,6 +1,8 @@
 namespace OceanRange.Slimes;
 
 // Had to copy and paste base game code because there's too many entry points to worry about otherwise
+// And also because the original system was designed for one consistent material, rather than multiple unique ones
+// This attempts to (and works) add support for multiple materials
 public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable, SpawnListener
 {
     private Vacuumable vacuumable;
