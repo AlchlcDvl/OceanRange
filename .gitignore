@@ -20,3 +20,6 @@ cspell.json
 Logs/
 Logs
 Mods
+Source/Generated/
+OceanRange.Generator/
+Test/

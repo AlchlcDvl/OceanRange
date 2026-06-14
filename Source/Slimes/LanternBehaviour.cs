@@ -83,9 +83,11 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
 
         var flash = Instantiate(FlashbangPrefab);
         flash.transform.localScale *= 25f;
-        flash.AddComponent<FlashbangEffect>().SetFlashDuration(FlashDuration);
-        flash.AddComponent<FlashbangEffect>().SetFadeDuration(FadeDuration);
         DontDestroyOnLoad(flash);
+
+        var effect = flash.AddComponent<FlashbangEffect>();
+        effect.SetFlashDuration(FlashDuration);
+        effect.SetFadeDuration(FadeDuration);
     }
 
     public void OnCaveEnter(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => caves.Add(caveObj);

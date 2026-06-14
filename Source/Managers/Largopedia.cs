@@ -134,7 +134,7 @@ public static class Largopedia
         var applicator = prefab.GetComponent<SlimeAppearanceApplicator>();
         applicator.SlimeDefinition = definition;
 
-        var appearance = GenerateAppearance(appearance1, appearance2, largoData.Appearances[0], applicator, definition, largoData, AppearanceSaveSet.CLASSIC);
+        var appearance = GenerateAppearance(appearance1, appearance2, largoData.Appearances[0], applicator, largoData, AppearanceSaveSet.CLASSIC);
         definition.AppearancesDefault = [appearance];
         SlimeRegistry.RegisterAppearance(definition, appearance);
 
@@ -211,13 +211,13 @@ public static class Largopedia
         var appearance2 = slime2.AppearancesDefault[0];
 
         if (ss1 && ss2)
-            largoData.SSBothAppearance = CreateContent(GenerateAppearance(ss1, ss2, ssAppearance3Data, applicator, definition, largoData), definition);
+            largoData.SSBothAppearance = CreateContent(GenerateAppearance(ss1, ss2, ssAppearance3Data, applicator, largoData), definition);
 
         if (ss1)
-            largoData.SS1Appearance = CreateContent(GenerateAppearance(ss1, appearance2, ssAppearance1Data, applicator, definition, largoData), definition);
+            largoData.SS1Appearance = CreateContent(GenerateAppearance(ss1, appearance2, ssAppearance1Data, applicator, largoData), definition);
 
         if (ss2)
-            largoData.SS2Appearance = CreateContent(GenerateAppearance(appearance1, ss2, ssAppearance2Data, applicator, definition, largoData), definition);
+            largoData.SS2Appearance = CreateContent(GenerateAppearance(appearance1, ss2, ssAppearance2Data, applicator, largoData), definition);
     }
 
     private static DLCContentMetadata_SlimeAppearance CreateContent(SlimeAppearance appearance, SlimeDefinition definition)
@@ -244,7 +244,7 @@ public static class Largopedia
         SceneContext.Instance.SlimeAppearanceDirector.UpdateChosenSlimeAppearance(content.definition, content.appearance);
     }
 
-    private static SlimeAppearance GenerateAppearance(SlimeAppearance appearance1, SlimeAppearance appearance2, LargoAppearanceData appearanceData, SlimeAppearanceApplicator applicator, SlimeDefinition definition, LargoData largoData,
+    private static SlimeAppearance GenerateAppearance(SlimeAppearance appearance1, SlimeAppearance appearance2, LargoAppearanceData appearanceData, SlimeAppearanceApplicator applicator, LargoData largoData,
         AppearanceSaveSet set = AppearanceSaveSet.SECRET_STYLE)
     {
         var appearance = ScriptableObject.CreateInstance<SlimeAppearance>();
