@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TeleporterPrototype
-  m_Shader: {fileID: 4800000, guid: ed81dfbc10b613948a6f645a0399cec6, type: 3}
+  m_Shader: {fileID: 4800000, guid: dea81989d83f8a243a29bc52aa54c24c, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -64,8 +64,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Noise:
-        m_Texture: {fileID: 2800000, guid: 72ce118a9752d4d4aaa0ce0b25bb797c, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 4ce59f1f8d24bc24fa385c097f32ee57, type: 3}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _Normal:
         m_Texture: {fileID: 0}
@@ -102,11 +102,11 @@ Material:
     - _DstBlend: 0
     - _Gloss: 0
     - _GlossMapScale: 1
-    - _GlossPower: 0
+    - _GlossPower: 0.271
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _GlowMax: 1
-    - _GlowMin: 0
+    - _GlowMin: 0.014
     - _GlowSpeed: 0.8
     - _HitFlash: 0
     - _LightingUVContribution: 1
@@ -117,7 +117,7 @@ Material:
     - _NormalUV1: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RadExoticCore: 0
+    - _RadExoticCore: 0.285
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -131,7 +131,7 @@ Material:
     - _BottomColor: {r: 0.068396226, g: 0.1879017, b: 0.2735849, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlowTop: {r: 1, g: 1, b: 0, a: 1}
+    - _GlowTop: {r: 0.062094487, g: 2.6390157, b: 0, a: 1}
     - _MiddleColor: {r: 0.2672659, g: 0.5182925, b: 0.735849, a: 1}
     - _NormalPanSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _TopColor: {r: 0.33490568, g: 0.81497383, b: 1, a: 1}

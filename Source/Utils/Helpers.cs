@@ -732,4 +732,12 @@ public static class Helpers
         collider.sharedMesh = mesh;
         collider.enabled = true;
     }
+
+    public static (CellDirector, Region)[] GetCells(this ZoneDirector zone)
+    {
+        var result = new List<(CellDirector, Region)>();
+        foreach (var cell in zone.GetComponentsInChildren<CellDirector>())
+            result.Add((cell, cell.GetComponent<Region>()));
+        return result.ToArray();
+    }
 }

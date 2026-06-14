@@ -11,6 +11,8 @@ public static class Atlas
     private static GameObject WaterSourceBase;
     private static GameObject TeleporterPrefab;
 
+    public static Dictionary<Zone, ZoneData> ZoneToDataMap;
+
 #if DEBUG
     [TimeDiagnostic("Atlas Preload")]
 #endif
@@ -21,6 +23,13 @@ public static class Atlas
 
         Regions = world.Regions;
         Zones = world.Zones;
+
+        ZoneToDataMap = new Dictionary<Zone, ZoneData>();
+
+        foreach (var zone in Zones)
+        {
+            ZoneToDataMap.Add(zone.Zone, zone);
+        }
 
         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
     }
@@ -76,6 +85,9 @@ public static class Atlas
 
         zoneObject.SetActive(true);
 
+        foreach (var (_, region) in zoneObject.GetComponent<ZoneDirector>().GetCells())
+            SceneContext.Instance.RegionRegistry.managedWithSets[zoneData.Region].Add(region.gameObject);
+
         if (zoneData.Requirements == null)
             return;
 
@@ -122,12 +134,14 @@ public static class Atlas
         zoneData.Prefab = Inventory.GetPrefab("zone" + zoneData.AssetName);
         zoneData.Prefab.SetActive(false);
 
-        zoneData.Prefab.GetComponent<ZoneDirector>().zone = zoneData.Zone;
+        var zone = zoneData.Prefab.GetComponent<ZoneDirector>();
+        zone.zone = zoneData.Zone;
 
-        foreach (var cell in zoneData.Prefab.GetComponentsInChildren<CellDirector>())
+        foreach (var (cell, region) in zone.GetCells())
         {
             cell.ambianceZone = zoneData.Ambiance;
-            cell.GetComponent<Region>().bounds.center += cell.transform.position;
+            region.bounds.center += cell.transform.position;
+            region.setId = zoneData.Region;
         }
     }
 
