@@ -1,5 +1,5 @@
 #if !UNITY
-// global using GadgetId = Gadget.Id;
+global using GadgetId = Gadget.Id;
 global using Zone = ZoneDirector.Zone;
 global using PediaId = PediaDirector.Id;
 global using UObject = UnityEngine.Object;

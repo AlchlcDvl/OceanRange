@@ -1,0 +1,244 @@
+namespace OceanRange.Data;
+
+[Serializable]
+public sealed class Schematics : JsonData
+{
+    [JsonRequired] public DecorationData[] Decorations;
+    [JsonRequired] public LampData[] Lamps;
+    [JsonRequired] public WarpDepotData[] WarpDepots;
+    [JsonRequired] public TeleporterData[] Teleporters;
+
+#if UNITY
+    public override void FindStrings(StringPooler pooler)
+    {
+        base.FindStrings(pooler);
+        Array.ForEach(Lamps, x => x.FindStrings(pooler));
+        Array.ForEach(WarpDepots, x => x.FindStrings(pooler));
+        Array.ForEach(Teleporters, x => x.FindStrings(pooler));
+        Array.ForEach(Decorations, x => x.FindStrings(pooler));
+    }
+
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+        writer.WriteArray(Lamps, (w, x) => x.WriteTo(w));
+        writer.WriteArray(WarpDepots, (w, x) => x.WriteTo(w));
+        writer.WriteArray(Teleporters, (w, x) => x.WriteTo(w));
+        writer.WriteArray(Decorations, (w, x) => x.WriteTo(w));
+    }
+#else
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+        Lamps = reader.ReadArray(r => { var x = new LampData(); x.ReadFrom(r); return x; });
+        WarpDepots = reader.ReadArray(r => { var x = new WarpDepotData(); x.ReadFrom(r); return x; });
+        Teleporters = reader.ReadArray(r => { var x = new TeleporterData(); x.ReadFrom(r); return x; });
+        Decorations = reader.ReadArray(r => { var x = new DecorationData(); x.ReadFrom(r); return x; });
+    }
+
+    public override void OnDeserialise()
+    {
+        base.OnDeserialise();
+        Array.ForEach(Lamps, x => x.OnDeserialise());
+        Array.ForEach(WarpDepots, x => x.OnDeserialise());
+        Array.ForEach(Teleporters, x => x.OnDeserialise());
+        Array.ForEach(Decorations, x => x.OnDeserialise());
+    }
+#endif
+}
+
+public abstract class GadgetData : JsonData
+{
+    [Serializable]
+    public sealed class CraftCost : JsonData
+    {
+        public static implicit operator GadgetDefinition.CraftCost(CraftCost self)
+            => new GadgetDefinition.CraftCost() { amount = self.Amount, id = self.Id };
+        
+        [JsonProperty("id")] public string StringId;
+        [JsonProperty("amount")] public int Amount;
+#if !UNITY
+    [JsonIgnore] public Identifiable.Id Id;
+
+    public override void OnDeserialise()
+    {
+        base.OnDeserialise();
+        Id = Helpers.ParseEnum<Identifiable.Id>(StringId);
+    }
+#else
+        public override void FindStrings(StringPooler pooler)
+        {
+            pooler.PoolString(StringId);
+        }
+#endif
+    }
+    public CraftCost[] CraftCosts;
+
+#if !UNITY
+    protected virtual string Prefix => string.Empty;
+
+    [JsonIgnore] public GadgetId Id;
+
+    public override void OnDeserialise()
+    {
+        base.OnDeserialise();
+        Id = Helpers.AddEnumValue<GadgetId>(Prefix + (Prefix.Length > 0 ? "_" : string.Empty) + Name.ToUpperInvariant());
+    }
+#endif
+}
+
+// rename later to PrefabGadgetData incase we need to use it for more than deco
+[Serializable]
+public sealed class DecorationData : GadgetData
+{
+#if !UNITY
+    // remove this if we do rename it
+    protected override string Prefix => "DECO";
+#endif
+    //todo: for az, please adjust this for the reading and writing
+    [JsonProperty("path")] public string PrefabPath;
+    [JsonProperty("centerName")] public string PrefabCenterPath;
+}
+
+public abstract class VariantGadgetData : GadgetData
+{
+#if !UNITY
+    public abstract GadgetId BaseGadget { get; }
+#endif
+}
+
+public abstract class SlimeGadgetData : VariantGadgetData
+{
+#if UNITY
+    [JsonRequired] public string PlortId;
+    [JsonRequired] public string ResourceId;
+    [JsonRequired] public string SlimeId;
+
+    public string ColorHex;
+
+    public override void FindStrings(StringPooler pooler)
+    {
+        base.FindStrings(pooler);
+        pooler.PoolString(PlortId);
+        pooler.PoolString(ResourceId);
+        pooler.PoolString(SlimeId);
+        pooler.PoolSubstring(ColorHex, 1);
+    }
+
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+        writer.WriteString(PlortId);
+        writer.WriteString(ResourceId);
+        writer.WriteString(SlimeId);
+        writer.WriteSubstring(ColorHex, 1);
+    }
+#else
+    protected abstract CreateCraftCosts CostCreator { get; }
+
+    public abstract string TypePrefix { get; }
+
+    [JsonRequired] public IdentifiableId PlortId;
+    [JsonRequired] public IdentifiableId ResourceId;
+    [JsonRequired] public IdentifiableId SlimeId;
+
+    public Color Color;
+
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+        PlortId = reader.ReadEnum<IdentifiableId>();
+        ResourceId = reader.ReadEnum<IdentifiableId>();
+        SlimeId = reader.ReadEnum<IdentifiableId>();
+
+        var hex = reader.ReadString();
+        if (!string.IsNullOrEmpty(hex))
+            Color = ("#" + hex).HexToColor();
+    }
+
+    public override void OnDeserialise()
+    {
+        base.OnDeserialise();
+        CraftCosts ??= CostCreator(PlortId, ResourceId).Cast<CraftCost>().ToArray();
+    }
+#endif
+}
+
+[Serializable]
+public sealed class LampData : SlimeGadgetData
+{
+#if !UNITY
+    public override GadgetId BaseGadget => GadgetId.LAMP_RED;
+    public override string TypePrefix => "decorSlimeLamp";
+
+    protected override string Prefix => "LAMP";
+    protected override CreateCraftCosts CostCreator => Blueprints.CreateLampCraftCosts;
+#endif
+}
+
+[Serializable]
+public sealed class WarpDepotData : SlimeGadgetData
+{
+#if !UNITY
+    public override GadgetId BaseGadget => GadgetId.WARP_DEPOT_RED;
+    public override string TypePrefix => "gadgetWarpDepot";
+
+    protected override string Prefix => "WARP_DEPOT";
+    protected override CreateCraftCosts CostCreator => Blueprints.CreateWarpDepotCraftCosts;
+#endif
+}
+
+[Serializable]
+public sealed class TeleporterData : SlimeGadgetData
+{
+#if !UNITY
+    public override GadgetId BaseGadget => GadgetId.TELEPORTER_PINK;
+    public override string TypePrefix => "gadgetTeleport";
+
+    protected override string Prefix => "TELEPORTER";
+    protected override CreateCraftCosts CostCreator => Blueprints.CreateTeleporterCraftCosts;
+#endif
+}
+
+public abstract class GadgetLangData : LangData
+{
+#if !UNITY
+    protected virtual string Prefix => string.Empty;
+    protected virtual string DescId => string.Empty;
+
+    public override sealed void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+    {
+        var pedia = translations.GetBundle("pedia");
+        var part = Prefix + (Prefix.Length > 0 ? "_" : string.Empty) + Name.ToLowerInvariant();
+        pedia.AddTranslation("m.gadget.name." + part, TranslatedName, "pedia");
+        pedia.AddTranslation("m.gadget.desc." + part, "@m.gadget.desc." + DescId, "pedia");
+    }
+#endif
+}
+
+[Serializable]
+public sealed class LampLangData : GadgetLangData
+{
+#if !UNITY
+    protected override string DescId => "lamp_pink";
+    protected override string Prefix => "lamp";
+#endif
+}
+
+[Serializable]
+public sealed class WarpLangData : GadgetLangData
+{
+#if !UNITY
+    protected override string DescId => "warp_depot_pink";
+    protected override string Prefix => "warp_depot";
+#endif
+}
+
+[Serializable]
+public sealed class TeleporterLangData : GadgetLangData
+{
+#if !UNITY
+    protected override string DescId => "teleporter_pink";
+    protected override string Prefix => "teleporter";
+#endif
+}

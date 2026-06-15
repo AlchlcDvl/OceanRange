@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c7e9981bc2455299f5704b3ae0bbc0, type: 3}
+  m_Name: cookbook
+  m_EditorClassIdentifier: 
+  ingredients:
+    Name: 
+    Groups:
+    - Name: Dirt
+      Foods:
+      - SILKY_SAND_CRAFT
+      - LAVA_DUST_CRAFT
+    Fruits:
+    - Name: Sticky
+      Progress: []
+      MainAmmoColor: '#efca76'
+      ExchangeWeight: 20
+      BasePrice: 5
+      Saturation: 10
+      BasePlant: OCAOCA_VEGGIE
+      BaseResource: 
+      AdjustColliders: 1
+    - Name: Coral
+      Progress: []
+      MainAmmoColor: '#833296'
+      ExchangeWeight: 20
+      BasePrice: 4
+      Saturation: 10
+      BasePlant: 
+      BaseResource: 
+      AdjustColliders: 0
+    Veggies:
+    - Name: Blowtato
+      Progress: []
+      MainAmmoColor: '#AB9E7E'
+      ExchangeWeight: 20
+      BasePrice: 4
+      Saturation: 10
+      BasePlant: 
+      BaseResource: 
+      AdjustColliders: 1
+    Chimkens:
+    - Name: Sandy
+      Progress: []
+      MainAmmoColor: '#C2B280'
+      ExchangeWeight: 20
+      BasePrice: 20
+      Saturation: 10
+      Zones:
+      - REEF
+      - RUINS
+      - MOSS
+      SpawnAmount: 1
+      ChickSpawnAmount: 1
+    - Name: Radiant
+      Progress: []
+      MainAmmoColor: '#040454'
+      ExchangeWeight: 20
+      BasePrice: 30
+      Saturation: 15
+      Zones:
+      - RUINS
+      - QUARRY
+      - MOSS
+      SpawnAmount: 1
+      ChickSpawnAmount: 1

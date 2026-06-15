@@ -17,7 +17,7 @@ public enum ManagerType : byte
     Largopedia,
     Mailbox,
     Contacts,
-    // Blueprints,
+    Blueprints,
     Translator
 }
 

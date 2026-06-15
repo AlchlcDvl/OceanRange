@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f267762709257dc4fb949e5a3167b4da, type: 3}
-  m_Name: Test
+  m_Name: slimepedia
   m_EditorClassIdentifier: Assembly-CSharp-Editor::Slimepedia
   slimes:
   - Name: Rosi
@@ -22,7 +22,7 @@ MonoBehaviour:
     NormalAppearance:
       Name: 
       SlimeFeatures:
-      - Name: Body
+      - Name: 
         MatData:
           Name: 
           Pattern: 
@@ -36,7 +36,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      - Name: Stalk
+      - Name: 
         MatData:
           Name: 
           Pattern: 
@@ -50,7 +50,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      - Name: Frills
+      - Name: 
         MatData:
           Name: 
           Pattern: 
@@ -65,7 +65,7 @@ MonoBehaviour:
           UseBaseStruct: 0
           IgnoreLodIndex: 0
       GordoFeatures:
-      - Name: Body
+      - Name: 
         MatData:
           Name: 
           Pattern: 
@@ -79,7 +79,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      - Name: Stalk
+      - Name: 
         MatData:
           Name: 
           Pattern: 
@@ -93,7 +93,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      - Name: Frills
+      - Name: 
         MatData:
           Name: 
           Pattern: 
@@ -108,7 +108,7 @@ MonoBehaviour:
           UseBaseStruct: 0
           IgnoreLodIndex: 0
       PlortFeatures:
-      - Name: Pearl
+      - Name: 
         MatData:
           Name: 
           Pattern: 
@@ -122,7 +122,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      - Name: Pearl Stalk
+      - Name: 
         MatData:
           Name: 
           Pattern: 
@@ -136,7 +136,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      - Name: Pearl Frills
+      - Name: 
         MatData:
           Name: 
           Pattern: 
@@ -154,13 +154,15 @@ MonoBehaviour:
       TopMouthColor: 
       MiddleMouthColor: 
       BottomMouthColor: 
-      RedEyeColor: 
+      RedEyeColor: '#4457A4'
       GreenEyeColor: 
       BlueEyeColor: 
       TopPaletteColor: 
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: TABBY_SLIME
     SSAppearance:
       Name: 
       SlimeFeatures: []
@@ -177,6 +179,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -187,6 +191,7 @@ MonoBehaviour:
     NaturalGordoSpawn: 1
     PlortExchangeWeight: 16
     Jiggle: 1
+    OnomicsType: pearls
     GordoEatAmount: 25
     FavToy: OCTO_BUDDY_TOY
     Zones:
@@ -297,6 +302,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: '#DCDADD'
+      EyesOrigin: 
+      MouthOrigin: 
     SSAppearance:
       Name: 
       SlimeFeatures: []
@@ -313,6 +320,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -323,6 +332,7 @@ MonoBehaviour:
     NaturalGordoSpawn: 1
     PlortExchangeWeight: 16
     Jiggle: 1
+    OnomicsType: plorts
     GordoEatAmount: 25
     FavToy: BEACH_BALL_TOY
     Zones:
@@ -451,6 +461,8 @@ MonoBehaviour:
       MiddlePaletteColor: '#445660'
       BottomPaletteColor: '#212A2F'
       PlortAmmoColor: '#9EA16f'
+      EyesOrigin: 
+      MouthOrigin: 
     SSAppearance:
       Name: 
       SlimeFeatures: []
@@ -467,6 +479,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -477,6 +491,7 @@ MonoBehaviour:
     NaturalGordoSpawn: 1
     PlortExchangeWeight: 16
     Jiggle: 1
+    OnomicsType: pearls
     GordoEatAmount: 25
     FavToy: BOMB_BALL_TOY
     Zones:
@@ -543,7 +558,7 @@ MonoBehaviour:
           Pattern: 
           UseSSMat: 0
           InvertColorOriginColors: 0
-          MatOrigin: 
+          MatOrigin: PINK_SLIME
           ColorsOrigin: 
         MeshData:
           Name: 
@@ -690,6 +705,8 @@ MonoBehaviour:
       MiddlePaletteColor: '#EBDB6A'
       BottomPaletteColor: '#B15EC8'
       PlortAmmoColor: '#752C86'
+      EyesOrigin: 
+      MouthOrigin: 
     SSAppearance:
       Name: 
       SlimeFeatures: []
@@ -706,6 +723,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     NightSpawn: 1
     CanBeRefined: 0
     SpawnAmount: 1
@@ -716,6 +735,7 @@ MonoBehaviour:
     NaturalGordoSpawn: 1
     PlortExchangeWeight: 16
     Jiggle: 1
+    OnomicsType: pearls
     GordoEatAmount: 25
     FavToy: NIGHT_LIGHT_TOY
     Zones:
@@ -816,6 +836,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: '#E8C499'
+      EyesOrigin: 
+      MouthOrigin: 
     SSAppearance:
       Name: 
       SlimeFeatures: []
@@ -832,6 +854,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.15
@@ -842,6 +866,7 @@ MonoBehaviour:
     NaturalGordoSpawn: 0
     PlortExchangeWeight: 16
     Jiggle: 1
+    OnomicsType: pearls
     GordoEatAmount: 25
     FavToy: BEACH_BALL_TOY
     Zones:
@@ -1058,7 +1083,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      MainAmmoColor: '#0a094f'
+      MainAmmoColor: '#0A094F'
       TopMouthColor: 
       MiddleMouthColor: 
       BottomMouthColor: 
@@ -1069,6 +1094,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     SSAppearance:
       Name: 
       SlimeFeatures: []
@@ -1085,6 +1112,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -1095,6 +1124,7 @@ MonoBehaviour:
     NaturalGordoSpawn: 1
     PlortExchangeWeight: 16
     Jiggle: 1
+    OnomicsType: plorts
     GordoEatAmount: 25
     FavToy: DISCO_BALL_TOY
     Zones:
@@ -1236,7 +1266,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      MainAmmoColor: '#e75651'
+      MainAmmoColor: '#E75651'
       TopMouthColor: 
       MiddleMouthColor: 
       BottomMouthColor: 
@@ -1246,7 +1276,9 @@ MonoBehaviour:
       TopPaletteColor: 
       MiddlePaletteColor: 
       BottomPaletteColor: 
-      PlortAmmoColor: '#e0945e'
+      PlortAmmoColor: '#E0945E'
+      EyesOrigin: 
+      MouthOrigin: 
     SSAppearance:
       Name: 
       SlimeFeatures: []
@@ -1263,6 +1295,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -1273,6 +1307,7 @@ MonoBehaviour:
     NaturalGordoSpawn: 1
     PlortExchangeWeight: 16
     Jiggle: 1
+    OnomicsType: plorts
     GordoEatAmount: 25
     FavToy: BEACH_BALL_TOY
     Zones:
@@ -1373,7 +1408,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      MainAmmoColor: '#ffdf00'
+      MainAmmoColor: '#FFDF00'
       TopMouthColor: 
       MiddleMouthColor: 
       BottomMouthColor: 
@@ -1384,6 +1419,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     SSAppearance:
       Name: 
       SlimeFeatures: []
@@ -1400,6 +1437,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.00125
@@ -1410,6 +1449,7 @@ MonoBehaviour:
     NaturalGordoSpawn: 0
     PlortExchangeWeight: 16
     Jiggle: 1
+    OnomicsType: pearls
     GordoEatAmount: 3
     FavToy: BEACH_BALL_TOY
     Zones:
@@ -1515,7 +1555,7 @@ MonoBehaviour:
           Skip: 0
           UseBaseStruct: 0
           IgnoreLodIndex: 0
-      MainAmmoColor: '#a4e88e'
+      MainAmmoColor: '#A4E88E'
       TopMouthColor: 
       MiddleMouthColor: 
       BottomMouthColor: 
@@ -1525,7 +1565,9 @@ MonoBehaviour:
       TopPaletteColor: 
       MiddlePaletteColor: 
       BottomPaletteColor: 
-      PlortAmmoColor: '#3c6c45'
+      PlortAmmoColor: '#3C6C45'
+      EyesOrigin: 
+      MouthOrigin: TABBY_SLIME
     SSAppearance:
       Name: 
       SlimeFeatures: []
@@ -1542,6 +1584,8 @@ MonoBehaviour:
       MiddlePaletteColor: 
       BottomPaletteColor: 
       PlortAmmoColor: 
+      EyesOrigin: 
+      MouthOrigin: 
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -1552,6 +1596,7 @@ MonoBehaviour:
     NaturalGordoSpawn: 1
     PlortExchangeWeight: 16
     Jiggle: 1
+    OnomicsType: plorts
     GordoEatAmount: 25
     FavToy: DISCO_BALL_TOY
     Zones:

@@ -640,17 +640,17 @@ public static class Helpers
             return mat;
         }
 
-        // public void SetColors(params (int, Color)[] values)
-        // {
-        //     foreach (var (prop, color) in values)
-        //         material.SetColor(prop, color);
-        // }
+        public void SetColors(params (int, Color)[] values)
+        {
+            foreach (var (prop, color) in values)
+                material.SetColor(prop, color);
+        }
 
-        // public void SetColors(Color color, params int[] props)
-        // {
-        //     foreach (var prop in props)
-        //         material.SetColor(prop, color);
-        // }
+        public void SetColors(Color color, params int[] props)
+        {
+            foreach (var prop in props)
+                material.SetColor(prop, color);
+        }
 
         public void SetColor(int nameId, Color? color)
         {

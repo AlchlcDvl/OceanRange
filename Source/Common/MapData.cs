@@ -3,6 +3,7 @@
 
 namespace OceanRange.Data;
 
+[Serializable]
 public sealed class ZoneRequirementData : JsonData
 {
     [JsonProperty("minLevel")] public int CorporateLevelMin;
@@ -50,6 +51,7 @@ public enum RequirementType : byte
 }
 #endif
 
+[Serializable]
 public sealed class ZoneData : JsonData
 {
 #if UNITY
@@ -133,6 +135,7 @@ public sealed class ZoneData : JsonData
 #endif
 }
 
+[Serializable]
 public sealed class RegionData : JsonData
 {
     [JsonRequired] public float MinNodeSize;
@@ -174,6 +177,7 @@ public sealed class RegionData : JsonData
 #endif
 }
 
+[Serializable]
 public sealed class World : JsonData
 {
     [JsonRequired] public RegionData[] Regions;
