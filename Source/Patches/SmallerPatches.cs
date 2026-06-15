@@ -78,14 +78,14 @@ public static class StalkConsumablePatch
     [HarmonyPatch(nameof(StalkConsumable.SetStealth))]
     public static void Postfix(StalkConsumable __instance, bool isStealthed)
     {
-        if (__instance.TryGetComponent<StealthFixer>(out var fixer))
+        if (__instance.TryGetComponent<StealthFixer>(out var fixer) && !__instance.HasComponent<MimicBehaviour>())
             fixer.SetStealth(isStealthed);
     }
 
     [HarmonyPatch(nameof(StalkConsumable.ProcessCollisionEnter))]
     public static bool Prefix(StalkConsumable __instance, Collision col)
     {
-        if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.HasComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player)
+        if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.HasComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player && !__instance.HasComponent<MimicBehaviour>())
         {
             var vector = col.gameObject.transform.InverseTransformPoint(col.contacts[0].point);
 

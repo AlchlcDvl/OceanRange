@@ -433,4 +433,10 @@ public static class Largopedia
 
     [UsedImplicitly]
     public static void InitPhosphorHermitDetails(GameObject prefab, SlimeDefinition _) => prefab.AddComponent<PhosphorHermitAppearanceFixer>();
+
+    public static void InitMimicDetails(GameObject prefab, SlimeDefinition _)
+    {
+        if (prefab.TryGetComponent<MimicBehaviour>(out var component))
+            component.Destroy();
+    }
 }

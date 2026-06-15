@@ -2,13 +2,14 @@ namespace OceanRange.Slimes;
 
 // Had to copy and paste base game code because there's too many entry points to worry about otherwise
 // And also because the original system was designed for one consistent material, rather than multiple unique ones
-// This attempts to (and works) add support for multiple materials
+// This attempts to (and it works) add support for multiple materials
 public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable, SpawnListener
 {
+    public float CurrentOpacity = 1f;
+
     private Vacuumable vacuumable;
     private SlimeAudio slimeAudio;
     private float initStealthUntil;
-    private float currentOpacity = 1f;
     private float targetOpacity = 1f;
     private float lastOpacity = 1f;
 
@@ -36,7 +37,7 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
 
     public void DidSpawn()
     {
-        currentOpacity = 0f;
+        CurrentOpacity = 0f;
         initStealthUntil = Time.time + 5f;
     }
 
@@ -69,16 +70,17 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
         if (vacuumable == null)
             return;
 
-        var target = (Time.time < initStealthUntil) ? 0f : targetOpacity;
+        var target = vacuumable.isHeld()
+            ? 1f
+            : (Time.time < initStealthUntil
+                ? 0f
+                : targetOpacity);
 
-        if (vacuumable.isHeld())
-            target = 1f;
+        if (!Mathf.Approximately(CurrentOpacity, target))
+            CurrentOpacity = Mathf.MoveTowards(CurrentOpacity, target, 2f * Time.deltaTime);
 
-        if (!Mathf.Approximately(currentOpacity, target))
-            currentOpacity = Mathf.MoveTowards(currentOpacity, target, 2f * Time.deltaTime);
-
-        if (Mathf.Abs(currentOpacity - lastOpacity) > 0.001f)
-            SetOpacity(currentOpacity);
+        if (Mathf.Abs(CurrentOpacity - lastOpacity) > 0.001f)
+            SetOpacity(CurrentOpacity);
     }
 }
 

@@ -313,14 +313,13 @@ public static class Slimepedia
             if (first)
             {
                 rend.sharedMaterial = material;
+                continue;
             }
-            else
-            {
-                rend.sharedMaterials = [material];
 
-                if (!isNull)
-                    rocks.name = meshName.Mesh!;
-            }
+            rend.sharedMaterials = [material];
+
+            if (!isNull)
+                rocks.name = meshName.Mesh!;
         }
 
         var definition = slimeData.MainId.GetSlimeDefinition();
@@ -500,7 +499,7 @@ public static class Slimepedia
             Bottom = data.BottomPaletteColor ?? prevPalette.Bottom,
             Ammo = data.MainAmmoColor
         };
-        Main.Console.Log($"Slime color is {(Color32)appearance.ColorPalette.Middle}\nSlime Data color is {data.MiddlePaletteColor}\nSlime Ammo color is {(Color32)appearance.ColorPalette.Ammo}");
+        // Main.Console.Log($"Slime color is {(Color32)appearance.ColorPalette.Middle}\nSlime Data color is {data.MiddlePaletteColor}\nSlime Ammo color is {(Color32)appearance.ColorPalette.Ammo}");
 
         appearance.Icon = Inventory.GetSprite($"{lower}_slime");
 
@@ -991,12 +990,27 @@ public static class Slimepedia
     public static void PostLoadSlimes()
     {
         AweTowardsMesmers.InitCalculator();
+        MimicBehaviour.Initialise();
 
         foreach (var (id, prefab) in GameContext.Instance.LookupDirector.identifiablePrefabDict)
         {
             if (Identifiable.IsSlime(id) && !Largopedia.Mesmers.Contains(id)) // Ensuring that only non-mesmer slimes are affected
                 prefab.AddComponent<AweTowardsMesmers>();
         }
+
+        var tempHash = Identifiable.LARGO_CLASS.Where(x => x.ToString().Contains("HUNTER")).ToHashSet(Identifiable.idComparer);
+        tempHash.Add(IdentifiableId.HUNTER_SLIME);
+
+        foreach (var hunterId in tempHash)
+        {
+            var prefab = hunterId.GetPrefab();
+            prefab.RemoveComponent<SlimeStealth>();
+
+            if (!prefab.HasComponent<StealthFixer>())
+                prefab.AddComponent<StealthFixer>();
+        }
+
+        tempHash.Clear();
 
         RiggedGordoMeshCache.Clear();
         RiggedSlimeMeshCache.Clear();

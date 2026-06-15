@@ -607,7 +607,7 @@
     "basePlort": "TABBY_PLORT",
     "basePrice": 20,
     "saturation": 30,
-    "toAdd": ["StalkConsumable, Assembly-CSharp"],
+    "toAdd": ["StalkConsumable, Assembly-CSharp", "OceanRange.Slimes.StealthFixer, OceanRange", "OceanRange.Slimes.MimicBehaviour, OceanRange"],
     "onomicsType": "plorts",
     "zones": ["MOSS"],
     "hasGordo": false,
