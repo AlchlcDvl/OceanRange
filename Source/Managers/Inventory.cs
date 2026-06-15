@@ -71,13 +71,13 @@ public static class Inventory
 
     private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions).Concat(Platforms.Select(x => "bundle_" + x.Value)), StringComparer.Ordinal)];
 
+    private static string[] StringPool;
+
 #if DEBUG
     /// <summary>
     /// Debug string path for the mod to dump assets.
     /// </summary>
     public static readonly string DumpPath = Path.Combine(Path.GetDirectoryName(Application.dataPath)!, "OceanRange");
-
-    private static string[] StringPool;
 
     /// <summary>
     /// Initialises the asset handling by creating relevant handles.

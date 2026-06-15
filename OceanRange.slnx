@@ -1,9 +1,9 @@
 <Solution>
   <Configurations>
     <Platform Name="Any CPU" />
-    <Configuration Name="Debug" />
-    <Configuration Name="Release" />
-    <Configuration Name="Unity" />
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <BuildType Name="Unity" />
   </Configurations>
 
   <Project Path="Source/OceanRange.csproj" />

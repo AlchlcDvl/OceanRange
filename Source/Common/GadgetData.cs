@@ -52,19 +52,19 @@ public abstract class GadgetData : JsonData
     [Serializable]
     public sealed class CraftCost : JsonData
     {
-        public static implicit operator GadgetDefinition.CraftCost(CraftCost self)
-            => new GadgetDefinition.CraftCost() { amount = self.Amount, id = self.Id };
-        
         [JsonProperty("id")] public string StringId;
         [JsonProperty("amount")] public int Amount;
 #if !UNITY
-    [JsonIgnore] public Identifiable.Id Id;
+        [JsonIgnore] public Identifiable.Id Id;
 
-    public override void OnDeserialise()
-    {
-        base.OnDeserialise();
-        Id = Helpers.ParseEnum<Identifiable.Id>(StringId);
-    }
+        public static implicit operator GadgetDefinition.CraftCost(CraftCost self)
+            => new GadgetDefinition.CraftCost() { amount = self.Amount, id = self.Id };
+
+        public override void OnDeserialise()
+        {
+            base.OnDeserialise();
+            Id = Helpers.ParseEnum<Identifiable.Id>(StringId);
+        }
 #else
         public override void FindStrings(StringPooler pooler)
         {
