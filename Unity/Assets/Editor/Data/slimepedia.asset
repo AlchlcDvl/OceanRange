@@ -20,7 +20,7 @@ MonoBehaviour:
     BasePrice: 7
     Saturation: 40
     NormalAppearance:
-      Name: 
+      Name: Normal
       SlimeFeatures:
       - Name: 
         MatData:
@@ -1611,4 +1611,6 @@ MonoBehaviour:
     GordoRewards: []
     ComponentsToAdd:
     - StalkConsumable, Assembly-CSharp
+    - OceanRange.Slimes.StealthFixer, OceanRange
+    - OceanRange.Slimes.MimicBehaviour, OceanRange
     ComponentsToRemove: []

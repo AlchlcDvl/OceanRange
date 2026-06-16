@@ -8,12 +8,26 @@ public abstract class JsonData
 {
     public string? Name;
 
-#if UNITY
-    public virtual void FindStrings(StringPooler pooler) => pooler.PoolString(Name);
+    protected virtual bool SerialiseName => true;
 
-    public virtual void WriteTo(DataWriter writer) => writer.WriteString(Name);
+#if UNITY
+    public virtual void FindStrings(StringPooler pooler)
+    {
+        if (SerialiseName)
+            pooler.PoolString(Name);
+    }
+
+    public virtual void WriteTo(DataWriter writer)
+    {
+        if (SerialiseName)
+            writer.WriteString(Name);
+    }
 #else
-    public virtual void ReadFrom(DataReader reader) => Name = reader.ReadString();
+    public virtual void ReadFrom(DataReader reader)
+    {
+        if (SerialiseName)
+            Name = reader.ReadString();
+    }
 
     public virtual void OnDeserialise() { }
 #endif
@@ -78,9 +92,6 @@ public abstract class SpawnedActorData : ActorData
 }
 
 #if !UNITY
-#if UNITY
-[Serializable]
-#endif
 public sealed  class Json : ScriptableObject
 {
     public byte[] Data;

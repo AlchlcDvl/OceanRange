@@ -717,4 +717,47 @@ public sealed  class FruitLangData() : FoodLangData("FRUIT");
 public sealed class VeggieLangData() : FoodLangData("VEGGIE");
 
 // public sealed class EdibleCraftLangData() : FoodLangData("CRAFT");
+
+public abstract class GadgetLangData : LangData
+{
+#if !UNITY
+    protected virtual string Prefix => string.Empty;
+    protected virtual string DescId => string.Empty;
+
+    public override sealed void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
+    {
+        var pedia = translations.GetBundle("pedia");
+        var part = Prefix + (string.IsNullOrEmpty(Prefix) ? string.Empty : "_") + Name!.ToLowerInvariant();
+        pedia.AddTranslation("m.gadget.name." + part, TranslatedName, "pedia");
+        pedia.AddTranslation("m.gadget.desc." + part, "@m.gadget.desc." + DescId, "pedia");
+    }
+#endif
+}
+
+[Serializable]
+public sealed class LampLangData : GadgetLangData
+{
+#if !UNITY
+    protected override string DescId => "lamp_pink";
+    protected override string Prefix => "lamp";
+#endif
+}
+
+[Serializable]
+public sealed class WarpLangData : GadgetLangData
+{
+#if !UNITY
+    protected override string DescId => "warp_depot_pink";
+    protected override string Prefix => "warp_depot";
+#endif
+}
+
+[Serializable]
+public sealed class TeleporterLangData : GadgetLangData
+{
+#if !UNITY
+    protected override string DescId => "teleporter_pink";
+    protected override string Prefix => "teleporter";
+#endif
+}
 #endif

@@ -90,7 +90,7 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
         effect.SetFadeDuration(FadeDuration);
     }
 
-    public void OnCaveEnter(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => caves.Add(caveObj);
+    public void OnCaveEnter(GameObject caveObj, bool _1, Ambiance _2) => caves.Add(caveObj);
 
-    public void OnCaveExit(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => caves.Remove(caveObj);
+    public void OnCaveExit(GameObject caveObj, bool _1, Ambiance _2) => caves.Remove(caveObj);
 }
