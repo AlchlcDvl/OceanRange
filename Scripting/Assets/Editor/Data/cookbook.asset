@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: cookbook
   m_EditorClassIdentifier: 
   ingredients:
-    Name: Ingredients
+    Name: 
     Groups:
     - Name: Dirt
       Foods:
@@ -28,6 +28,7 @@ MonoBehaviour:
       Saturation: 10
       BasePlant: OCAOCA_VEGGIE
       BaseResource: 
+      SpawnLocations: []
       AdjustColliders: 1
     - Name: Coral
       Progress: []
@@ -37,6 +38,7 @@ MonoBehaviour:
       Saturation: 10
       BasePlant: 
       BaseResource: 
+      SpawnLocations: []
       AdjustColliders: 0
     Veggies:
     - Name: Blowtato
@@ -47,6 +49,7 @@ MonoBehaviour:
       Saturation: 10
       BasePlant: 
       BaseResource: 
+      SpawnLocations: []
       AdjustColliders: 1
     Chimkens:
     - Name: Sandy

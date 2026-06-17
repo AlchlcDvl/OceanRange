@@ -9,9 +9,7 @@ using OceanRange.Saves;
 
 namespace OceanRange.Data;
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class SlimeData : SpawnedActorData
 {
 #if !UNITY
@@ -267,9 +265,7 @@ public sealed  class SlimeData : SpawnedActorData
 #endif
 }
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class SlimeAppearanceData : JsonData
 {
     [JsonRequired] public ModelData[] SlimeFeatures;

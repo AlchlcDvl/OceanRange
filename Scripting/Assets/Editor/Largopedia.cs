@@ -31,7 +31,7 @@ public class Largopedia : ScriptableObject
     [ContextMenu("Serialize to Json")]
     public void Serialize()
     {
-        var json = JsonConvert.SerializeObject(slimes, JsonSettings);
+        var json = JsonConvert.SerializeObject(largos, JsonSettings);
         var asset = new TextAsset(json);
         AssetDatabase.CreateAsset(asset, JsonAssetPath);
     }

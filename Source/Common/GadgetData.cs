@@ -1,4 +1,4 @@
-/*namespace OceanRange.Data;
+namespace OceanRange.Data;
 
 [Serializable]
 public sealed class Schematics : JsonData
@@ -204,4 +204,4 @@ public sealed class TeleporterData : SlimeGadgetData
     protected override string Prefix => "TELEPORTER";
     protected override CreateCraftCosts CostCreator => Blueprints.CreateTeleporterCraftCosts;
 #endif
-}*/
+}

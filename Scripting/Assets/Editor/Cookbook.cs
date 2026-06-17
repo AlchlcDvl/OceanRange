@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using UnityEditor;
@@ -6,8 +6,8 @@ using UnityEngine;
 using OceanRange.Data;
 using OceanRange.Unity;
 
-[CreateAssetMenu(menuName = "OceanRange/Data/atlas.json", fileName = "atlas.asset")]
-public class Atlas : ScriptableObject
+[CreateAssetMenu(menuName = "OceanRange/Data/cookbook.json", fileName = "cookbook.asset")]
+public class Cookbook : ScriptableObject
 {
     private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
     {
@@ -24,14 +24,14 @@ public class Atlas : ScriptableObject
             new OrientationConverter(),
         }
     };
-    private const string JsonAssetPath = "Assets/Jsons/atlas.json";
+    private const string JsonAssetPath = "Assets/Jsons/cookbook.json";
 
-    public World world;
+    public Ingredients ingredients;
 
     [ContextMenu("Serialize to Json")]
     public void Serialize()
     {
-        var json = JsonConvert.SerializeObject(slimes, JsonSettings);
+        var json = JsonConvert.SerializeObject(ingredients, JsonSettings);
         var asset = new TextAsset(json);
         AssetDatabase.CreateAsset(asset, JsonAssetPath);
     }
@@ -40,6 +40,6 @@ public class Atlas : ScriptableObject
     public void Deserialize()
     {
         var text = AssetDatabase.LoadAssetAtPath<TextAsset>(JsonAssetPath).text;
-        world = JsonConvert.DeserializeObject<World>(text, JsonSettings);
+        ingredients = JsonConvert.DeserializeObject<Ingredients>(text, JsonSettings);
     }
 }

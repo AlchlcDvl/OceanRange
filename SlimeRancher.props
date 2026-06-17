@@ -4,6 +4,7 @@
   <Target Name="Copy" AfterTargets="Build">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Mods/" Condition="$(Configuration)!=Unity" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Unity/Assets/Plugins" Condition="$(Configuration)==Unity" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Scripting/Assets/Plugins" Condition="$(Configuration)==Unity" />
   </Target>
 
   <ItemGroup>

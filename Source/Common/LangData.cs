@@ -7,7 +7,7 @@ namespace OceanRange.Data;
 [Serializable]
 public sealed  class Translations : JsonData
 {
-    [JsonRequired] public Dictionary<string, Dictionary<string, string>> Additional;
+    [JsonRequired, SerializeField] public Dictionary<string, Dictionary<string, string>> Additional;
     //                               ^ Bundle           ^ Id    ^ Text
 
     [JsonRequired] public SlimeLangData[] Slimes;
@@ -27,7 +27,7 @@ public sealed  class Translations : JsonData
     // [JsonRequired] public WarpLangData[] Warps;
     // [JsonRequired] public TeleporterLangData[] Teleporters;
 
-    public Dictionary<string, Dictionary<string, string>> AdditionalExotic;
+    [SerializeField] public Dictionary<string, Dictionary<string, string>> AdditionalExotic;
 
 #if UNITY
     public override void FindStrings(StringPooler pooler)

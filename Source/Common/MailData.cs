@@ -4,9 +4,7 @@
 
 namespace OceanRange.Data;
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class MailData : JsonData
 {
     // private static readonly Dictionary<string, Action<MailData>> Methods = new(StringComparer.Ordinal);

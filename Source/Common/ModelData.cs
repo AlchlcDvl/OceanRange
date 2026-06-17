@@ -2,9 +2,7 @@
 
 namespace OceanRange.Data;
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class ModelData : JsonData
 {
     public MatData MatData;
@@ -55,9 +53,7 @@ public sealed  class ModelData : JsonData
 #endif
 }
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class MatData : JsonData
 {
     public float? Gloss;
@@ -158,7 +154,7 @@ public sealed  class MatData : JsonData
     public string MatOrigin;
     public string ColorsOrigin;
 
-    [JsonProperty("colorProps")] private Dictionary<string, string> ColorProps;
+    [JsonProperty("colorProps"), SerializeField] private Dictionary<string, string> ColorProps;
 
     public override void FindStrings(StringPooler pooler)
     {
@@ -208,9 +204,7 @@ public sealed  class MatData : JsonData
 #endif
 }
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class MeshData : JsonData
 {
     public string? Mesh;

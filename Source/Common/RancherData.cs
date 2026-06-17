@@ -3,9 +3,7 @@
 namespace OceanRange.Data;
 
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class RancherData : JsonData
 {
 #if !UNITY

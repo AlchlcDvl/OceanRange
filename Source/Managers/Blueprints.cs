@@ -1,4 +1,4 @@
-/*// ReSharper disable UnassignedField.Global
+// ReSharper disable UnassignedField.Global
 
 namespace OceanRange.Managers;
 
@@ -39,7 +39,7 @@ public static class Blueprints
         else if (gadgetData is TeleporterData teleporterData)
             CreateTeleporter(teleporterData, prefab);
 
-        LookupRegistry.RegisterGadget(CopyGadgetDefinition(gadgetDefinition, gadgetData.Id, Inventory.GetSprite($"{gadgetData.Name}_icon"), prefab, gadgetData.CraftCosts.Cast<GadgetDefinition.CraftCost>().ToArray()));
+        LookupRegistry.RegisterGadget(CopyGadgetDefinition(gadgetDefinition, gadgetData.Id, Inventory.GetSprite($"{gadgetData.Name}_icon"), prefab, [.. gadgetData.CraftCosts]));
     }
 
     private static void CreateTeleporter(TeleporterData teleporterData, GameObject prefab)
@@ -165,4 +165,4 @@ public static class Blueprints
             amount = 1
         }
     ];
-}*/
+}

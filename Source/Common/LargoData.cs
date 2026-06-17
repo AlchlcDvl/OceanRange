@@ -4,9 +4,7 @@
 namespace OceanRange.Data;
 
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class LargoData : ActorData
 {
 #if !UNITY
@@ -118,9 +116,7 @@ public sealed  class LargoData : ActorData
 #endif
 }
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class LargoAppearanceData : JsonData
 {
 #if !UNITY

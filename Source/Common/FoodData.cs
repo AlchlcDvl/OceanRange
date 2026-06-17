@@ -4,9 +4,7 @@
 
 namespace OceanRange.Data;
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class Ingredients : JsonData
 {
     [JsonRequired] public GroupData[] Groups;
@@ -53,9 +51,7 @@ public sealed  class Ingredients : JsonData
 #endif
 }
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class GroupData : JsonData
 {
 #if !UNITY
@@ -88,9 +84,7 @@ public sealed  class GroupData : JsonData
     }
 #endif
 }
-#if UNITY
-[Serializable]
-#endif
+
 public abstract class FoodData : SpawnedActorData
 {
 #if !UNITY
@@ -115,9 +109,7 @@ public abstract class FoodData : SpawnedActorData
 #endif
 }
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class ChimkenData : FoodData
 {
 #if !UNITY
@@ -190,6 +182,9 @@ public abstract class PlantData : FoodData
 
     // public bool HasOriginalSpawners = true; // TODO: Implement this in the future
 
+#if UNITY
+    [SerializeField]
+#endif
     public Dictionary<string, Orientation[]> SpawnLocations;
 
     public bool AdjustColliders = true;
@@ -255,9 +250,7 @@ public abstract class PlantData : FoodData
 #endif
 }
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class VeggieData : PlantData
 {
 #if !UNITY
@@ -269,9 +262,7 @@ public sealed  class VeggieData : PlantData
 #endif
 }
 
-#if UNITY
 [Serializable]
-#endif
 public sealed  class FruitData : PlantData
 {
 #if !UNITY

@@ -56,7 +56,7 @@ public sealed class ZoneData : JsonData
 {
 #if UNITY
     [JsonRequired] public string Region;
-    public Dictionary<string, ZoneRequirementData> Requirements;
+    [SerializeField] public Dictionary<string, ZoneRequirementData> Requirements;
 #else
     [JsonRequired] public RegionId Region;
     public Dictionary<RequirementType, ZoneRequirementData>? Requirements;

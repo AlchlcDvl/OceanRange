@@ -1,6 +1,7 @@
 namespace OceanRange.Data;
 
 // A lot of the code in this struct is to maintain parity with Unity's behaviour for structs like Vectors, Quaternions and Colors
+[Serializable]
 public struct Orientation(Vector3 pos, Vector3 rot, Vector3 scale) : IEquatable<Orientation>
 {
     public Vector3 Position = pos;
