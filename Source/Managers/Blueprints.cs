@@ -1,4 +1,4 @@
-// ReSharper disable UnassignedField.Global
+/*// ReSharper disable UnassignedField.Global
 
 namespace OceanRange.Managers;
 
@@ -165,4 +165,4 @@ public static class Blueprints
             amount = 1
         }
     ];
-}
+}*/

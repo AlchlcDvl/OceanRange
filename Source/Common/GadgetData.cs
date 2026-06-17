@@ -1,4 +1,4 @@
-namespace OceanRange.Data;
+/*namespace OceanRange.Data;
 
 [Serializable]
 public sealed class Schematics : JsonData
@@ -241,4 +241,4 @@ public sealed class TeleporterLangData : GadgetLangData
     protected override string DescId => "teleporter_pink";
     protected override string Prefix => "teleporter";
 #endif
-}
+}*/
