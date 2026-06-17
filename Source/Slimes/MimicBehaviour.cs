@@ -10,10 +10,12 @@ public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
     private bool transformed;
     private bool transforming;
 
-    public float minNormalTime = 15f;
-    public float maxNormalTime = 30f;
-    public float minDisguiseTime = 5f;
-    public float maxDisguiseTime = 10f;
+    private float minNormalTime = 15f;
+    private float maxNormalTime = 30f;
+    private float minDisguiseTime = 5f;
+    private float maxDisguiseTime = 10f;
+
+    private float scanRadius = 20f;
 
     private float nextStateChangeTime;
 
@@ -60,8 +62,7 @@ public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
         applicator = GetComponent<SlimeAppearanceApplicator>();
         fixer = this.EnsureComponent<StealthFixer>();
 
-        var health = GetComponent<SlimeHealth>();
-        health.onDamage = (SlimeHealth.OnDamage)Delegate.Combine(health.onDamage, (SlimeHealth.OnDamage)(_ => Revert()));
+        GetComponent<SlimeHealth>().onDamage = _ => Revert();
     }
 
     public void Start()
@@ -98,9 +99,35 @@ public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
 
     public void Transform()
     {
-        var availableIds = CachedAppearances.Keys.ToList();
-        var randomId = availableIds[UnityEngine.Random.Range(0, availableIds.Count)];
-        StartCoroutine(CoTransform(true, randomId));
+        var targetId = IdentifiableId.NONE;
+        var closestDistanceSqr = float.MaxValue;
+        var myPosition = transform.position;
+
+        foreach (var col in Physics.OverlapSphere(myPosition, scanRadius))
+        {
+            var identifiable = col.GetComponentInParent<Identifiable>() ?? col.GetComponentInChildren<Identifiable>();
+
+            if (identifiable == null)
+                continue;
+
+            var id = identifiable.id;
+
+            if (!Identifiable.IsSlime(id) || id == Ids.MIMIC_SLIME || id == IdentifiableId.TARR_SLIME || !CachedAppearances.ContainsKey(id))
+                continue;
+
+            var distanceSqr = (col.transform.position - myPosition).sqrMagnitude;
+
+            if (distanceSqr >= closestDistanceSqr)
+                continue;
+
+            closestDistanceSqr = distanceSqr;
+            targetId = id;
+        }
+
+        if (targetId != IdentifiableId.NONE)
+            StartCoroutine(CoTransform(true, targetId));
+        else
+            SetNextStateTime();
     }
 
     public void Revert() => StartCoroutine(CoTransform(false, IdentifiableId.NONE));

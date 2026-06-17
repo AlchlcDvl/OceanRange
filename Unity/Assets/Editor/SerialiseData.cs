@@ -16,6 +16,7 @@ static class ExportData
 
     static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
     {
+        NullValueHandling = NullValueHandling.Ignore,
         Formatting = Formatting.Indented,
         ContractResolver = new DefaultContractResolver()
         {
@@ -24,6 +25,7 @@ static class ExportData
         Converters = new List<JsonConverter>()
         {
             new Vector3Converter(),
+            new OptionalConverter(),
             new OrientationConverter()
         }
     };

@@ -475,4 +475,31 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
 //     /// <inheritdoc/>
 //     protected override string ToValueString(Type value) => value.FullName + ", " + value.Assembly.GetName().Name;
 // }
+
+public sealed class OptionalConverter : JsonConverter
+{
+    public override bool CanConvert(Type objectType)
+        => objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(Optional<>);
+
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+    {
+        var optional = (value as IOptional)!;
+
+        if (optional.HasValue)
+            serializer.Serialize(writer, optional.Value!);
+        else
+            writer.WriteNull();
+    }
+
+    public override object? ReadJson(JsonReader reader, Type objectType, object? _, JsonSerializer serializer)
+    {
+        if (reader.TokenType == JsonToken.Null)
+            return Activator.CreateInstance(objectType);
+
+        var valueType = objectType.GetGenericArguments()[0];
+        var parsedValue = serializer.Deserialize(reader, valueType);
+
+        return Activator.CreateInstance(objectType, parsedValue);
+    }
+}
 #endif

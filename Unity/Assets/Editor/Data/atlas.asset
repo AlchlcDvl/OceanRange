@@ -12,3 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 118459ba6612dd3449608e9568fb967c, type: 3}
   m_Name: atlas
   m_EditorClassIdentifier: 
+  world:
+    Name: World
+    Regions:
+    - Name: Underwater
+      MinNodeSize: 250
+      LoosenessVal: 1.2
+      InitialWorldSize: 2000
+      InitialWorldPos: {x: 0, y: 0, z: 0}
+    Zones:
+    - Name: Swirlpool_Island
+      Region: UNDERWATER
+      TeleporterLocation: zoneRANCH/cellRanch_Docks/Sector/Upgrades/
+      AssetName: SWIRLPOOL

@@ -2,7 +2,6 @@
   <PropertyGroup>
     <AssemblyName>OceanRange</AssemblyName>
     <RootNamespace>OceanRange</RootNamespace>
-    <TargetFramework>net4.7.2</TargetFramework>
     <Version>0.3.0</Version>
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>preview</LangVersion>
@@ -21,15 +20,18 @@
   <PropertyGroup Condition="$(Configuration)==Unity">
     <DefineConstants>UNITY</DefineConstants>
     <DebugType>embedded</DebugType>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration)==Debug">
     <DebugType>none</DebugType>
+    <TargetFramework>net4.7.2</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration)==Release">
     <Optimize>true</Optimize>
     <DebugType>none</DebugType>
+    <TargetFramework>net4.7.2</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup Condition="$(Configuration)!=Unity">
