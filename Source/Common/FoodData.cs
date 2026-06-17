@@ -5,7 +5,7 @@
 namespace OceanRange.Data;
 
 [Serializable]
-public sealed  class Ingredients : JsonData
+public sealed class Ingredients : JsonData
 {
     [JsonRequired] public GroupData[] Groups;
     [JsonRequired] public FruitData[] Fruits;
@@ -52,8 +52,10 @@ public sealed  class Ingredients : JsonData
 }
 
 [Serializable]
-public sealed  class GroupData : JsonData
+public sealed class GroupData : JsonData
 {
+    protected override bool SerialiseName => true;
+
 #if !UNITY
     public IdentifiableId[] Foods;
 
@@ -68,7 +70,7 @@ public sealed  class GroupData : JsonData
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
-        Foods = reader.ReadEnumArray<IdentifiableId>();
+        Foods = reader.ReadEnumArray<IdentifiableId>()!;
     }
 #else
     public override void FindStrings(StringPooler pooler)
@@ -87,6 +89,8 @@ public sealed  class GroupData : JsonData
 
 public abstract class FoodData : SpawnedActorData
 {
+    protected override bool SerialiseName => true;
+
 #if !UNITY
     protected static readonly Dictionary<string, Action<GameObject>> Methods = new(StringComparer.Ordinal);
 
@@ -110,7 +114,7 @@ public abstract class FoodData : SpawnedActorData
 }
 
 [Serializable]
-public sealed  class ChimkenData : FoodData
+public sealed class ChimkenData : FoodData
 {
 #if !UNITY
     public Zone[] Zones;
@@ -144,7 +148,7 @@ public sealed  class ChimkenData : FoodData
         base.ReadFrom(reader);
         SpawnAmount = reader.ReadPackedFloat();
         ChickSpawnAmount = reader.ReadPackedFloat();
-        Zones = reader.ReadEnumArray<Zone>();
+        Zones = reader.ReadEnumArray<Zone>()!;
     }
 #else
     public override void FindStrings(StringPooler pooler)
@@ -176,8 +180,8 @@ public abstract class PlantData : FoodData
     public IdentifiableId? BasePlant;
     public SpawnResourceId? BaseResource;
 #else
-    public string BasePlant;
-    public string BaseResource;
+    public Optional<string> BasePlant;
+    public Optional<string> BaseResource;
 #endif
 
     // public bool HasOriginalSpawners = true; // TODO: Implement this in the future
@@ -251,7 +255,7 @@ public abstract class PlantData : FoodData
 }
 
 [Serializable]
-public sealed  class VeggieData : PlantData
+public sealed class VeggieData : PlantData
 {
 #if !UNITY
     public override bool IsFruit => false;
@@ -263,7 +267,7 @@ public sealed  class VeggieData : PlantData
 }
 
 [Serializable]
-public sealed  class FruitData : PlantData
+public sealed class FruitData : PlantData
 {
 #if !UNITY
     public override bool IsFruit => true;

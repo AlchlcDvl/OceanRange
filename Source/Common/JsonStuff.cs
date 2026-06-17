@@ -6,21 +6,25 @@ namespace OceanRange.Data;
 
 public abstract class JsonData
 {
+#if UNITY
+    public Optional<string> Name;
+#else
     public string? Name;
+#endif
 
-    protected virtual bool SerialiseName => true;
+    protected virtual bool SerialiseName => false;
 
 #if UNITY
     public virtual void FindStrings(StringPooler pooler)
     {
-        if (SerialiseName)
-            pooler.PoolString(Name);
+        if (SerialiseName && Name.HasValue)
+            pooler.PoolString(Name.Value);
     }
 
     public virtual void WriteTo(DataWriter writer)
     {
-        if (SerialiseName)
-            writer.WriteString(Name);
+        if (SerialiseName && Name.HasValue)
+            writer.WriteString(Name.Value);
     }
 #else
     public virtual void ReadFrom(DataReader reader)
@@ -50,7 +54,7 @@ public abstract class SpawnedActorData : ActorData
 #else
     public string[] Progress;
 
-    public string MainAmmoColor;
+    public Optional<string> MainAmmoColor;
 #endif
 
     public int ExchangeWeight = 20;
@@ -86,13 +90,13 @@ public abstract class SpawnedActorData : ActorData
         var col = reader.ReadString();
         MainAmmoColor = string.IsNullOrEmpty(col) ? null : ("#" + col).HexToColor();
 
-        Progress = reader.ReadEnumArray<ProgressType>();
+        Progress = reader.ReadEnumArray<ProgressType>()!;
     }
 #endif
 }
 
 #if !UNITY
-public sealed  class Json : ScriptableObject
+public sealed class Json : ScriptableObject
 {
     public byte[] Data;
 

@@ -5,8 +5,10 @@
 namespace OceanRange.Data;
 
 [Serializable]
-public sealed  class Translations : JsonData
+public sealed class Translations : JsonData
 {
+    protected override bool SerialiseName => true;
+
     [JsonRequired, SerializeField] public Dictionary<string, Dictionary<string, string>> Additional;
     //                               ^ Bundle           ^ Id    ^ Text
 
@@ -222,6 +224,8 @@ public sealed  class Translations : JsonData
 
 public abstract class LangData : JsonData
 {
+    protected override bool SerialiseName => true;
+
     [JsonRequired, JsonProperty] protected string TranslatedName;
 
 #if UNITY
@@ -252,7 +256,7 @@ public abstract class LangData : JsonData
 }
 
 [Serializable]
-public sealed  class MailLangData : LangData
+public sealed class MailLangData : LangData
 {
     [JsonRequired] public string Subject;
     [JsonRequired] public string Body;
@@ -295,7 +299,7 @@ public sealed  class MailLangData : LangData
 }
 
 [Serializable]
-public sealed  class RancherLangData : LangData
+public sealed class RancherLangData : LangData
 {
     [JsonRequired] public string[] Offers;
     [JsonRequired] public string[] LoadingTexts;
@@ -366,7 +370,7 @@ public abstract class IdentifiableLangData : LangData
 }
 
 [Serializable]
-public sealed  class PlortLangData : IdentifiableLangData
+public sealed class PlortLangData : IdentifiableLangData
 {
 #if !UNITY
     public override void OnDeserialise() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name!.ToUpperInvariant() + "_PLORT");
@@ -374,7 +378,7 @@ public sealed  class PlortLangData : IdentifiableLangData
 }
 
 [Serializable]
-public sealed  class LargoLangData : IdentifiableLangData
+public sealed class LargoLangData : IdentifiableLangData
 {
 #if !UNITY
     public override void OnDeserialise() => IdentId = Helpers.ParseEnum<IdentifiableId>(Name!.ToUpperInvariant().Replace(' ', '_') + "_LARGO");
@@ -382,7 +386,7 @@ public sealed  class LargoLangData : IdentifiableLangData
 }
 
 [Serializable]
-public sealed  class GordoLangData : IdentifiableLangData
+public sealed class GordoLangData : IdentifiableLangData
 {
 #if !UNITY
     [JsonIgnore] private bool exists;
@@ -526,9 +530,9 @@ public abstract class ActorLangData(string suffix, PediaCategory category) : Ped
 
 #if UNITY
 [Serializable]
-public sealed  class SlimeLangData : ActorLangData
+public sealed class SlimeLangData : ActorLangData
 #else
-public sealed  class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIMES)
+public sealed class SlimeLangData() : ActorLangData("SLIME", PediaCategory.SLIMES)
 #endif
 {
     [JsonRequired, JsonProperty] public string Risks;
@@ -692,31 +696,35 @@ public abstract class FoodLangData(string suffix) : ResourceLangData(suffix)
 
 #if UNITY
 [Serializable]
-public sealed  class HenLangData : FoodLangData;
+public sealed class HenLangData : FoodLangData;
 
 [Serializable]
-public sealed  class ChickLangData : FoodLangData;
+public sealed class ChickLangData : FoodLangData;
 
 [Serializable]
-public sealed  class FruitLangData : FoodLangData;
+public sealed class FruitLangData : FoodLangData;
 
 [Serializable]
-public sealed  class VeggieLangData : FoodLangData;
+public sealed class VeggieLangData : FoodLangData;
 
+// [Serializable]
 // public sealed class EdibleCraftLangData : FoodLangData;
 #else
 [Serializable]
-public sealed  class HenLangData() : FoodLangData("HEN");
+public sealed class HenLangData() : FoodLangData("HEN");
 
 [Serializable]
-public sealed  class ChickLangData() : FoodLangData("CHICK");
+public sealed class ChickLangData() : FoodLangData("CHICK");
 
 [Serializable]
-public sealed  class FruitLangData() : FoodLangData("FRUIT");
+public sealed class FruitLangData() : FoodLangData("FRUIT");
 
+[Serializable]
 public sealed class VeggieLangData() : FoodLangData("VEGGIE");
 
+// [Serializable]
 // public sealed class EdibleCraftLangData() : FoodLangData("CRAFT");
+#endif
 
 public abstract class GadgetLangData : LangData
 {
@@ -760,4 +768,3 @@ public sealed class TeleporterLangData : GadgetLangData
     protected override string Prefix => "teleporter";
 #endif
 }
-#endif

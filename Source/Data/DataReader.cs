@@ -97,9 +97,13 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
 
     private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
 
-    public T[] ReadEnumArray<T>() where T : struct, Enum
+    public T[]? ReadEnumArray<T>(bool returnNullOnZero = false) where T : struct, Enum
     {
         var count = ReadPackedUInt();
+
+        if (count == 0)
+            return returnNullOnZero ? null : [];
+
         var array = new T[count];
 
         for (var i = 0; i < count; i++)

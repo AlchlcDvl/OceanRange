@@ -49,7 +49,7 @@ public static class Blueprints
         var component = prefab.transform.Find("model_telepad/mesh_telepad").GetComponent<SkinnedMeshRenderer>();
         var material = component.sharedMaterial.Clone();
         material.name = "Telepad_" + teleporterData.Name;
-        material.SetColors(teleporterData.Color, Color00, Color01, Color20, Color21);
+        material.SetColors(teleporterData.Color!.Value, Color00, Color01, Color20, Color21);
         component.sharedMaterial = material;
     }
 
@@ -58,7 +58,7 @@ public static class Blueprints
         var component = prefab.transform.Find("warpdepot").GetComponent<MeshRenderer>();
         var material = component.sharedMaterial.Clone();
         material.name = "WarpDepot_" + warpDepotData.Name;
-        material.SetColors(warpDepotData.Color, Color11, Color20, Color21, Color30, Color31);
+        material.SetColors(warpDepotData.Color!.Value, Color11, Color20, Color21, Color30, Color31);
         component.sharedMaterial = material;
     }
 

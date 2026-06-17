@@ -4,8 +4,10 @@ namespace OceanRange.Data;
 
 
 [Serializable]
-public sealed  class RancherData : JsonData
+public sealed class RancherData : JsonData
 {
+    protected override bool SerialiseName => true;
+
 #if !UNITY
     [JsonRequired, JsonProperty] public Category[] Rewards;
     [JsonRequired, JsonProperty] public Category[] Requests;
@@ -25,12 +27,12 @@ public sealed  class RancherData : JsonData
     {
         base.ReadFrom(reader);
 
-        Rewards = reader.ReadEnumArray<Category>();
-        Requests = reader.ReadEnumArray<Category>();
-        RareRewards = reader.ReadEnumArray<Category>();
-        IndivRewards = reader.ReadEnumArray<IdentifiableId>();
-        IndivRequests = reader.ReadEnumArray<IdentifiableId>();
-        IndivRareRewards = reader.ReadEnumArray<IdentifiableId>();
+        Rewards = reader.ReadEnumArray<Category>()!;
+        Requests = reader.ReadEnumArray<Category>()!;
+        RareRewards = reader.ReadEnumArray<Category>()!;
+        IndivRewards = reader.ReadEnumArray<IdentifiableId>()!;
+        IndivRequests = reader.ReadEnumArray<IdentifiableId>()!;
+        IndivRareRewards = reader.ReadEnumArray<IdentifiableId>()!;
     }
 
     public override void OnDeserialise()

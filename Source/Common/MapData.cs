@@ -54,6 +54,8 @@ public enum RequirementType : byte
 [Serializable]
 public sealed class ZoneData : JsonData
 {
+    protected override bool SerialiseName => true;
+
 #if UNITY
     [JsonRequired] public string Region;
     [SerializeField] public Dictionary<string, ZoneRequirementData> Requirements;
@@ -138,6 +140,8 @@ public sealed class ZoneData : JsonData
 [Serializable]
 public sealed class RegionData : JsonData
 {
+    protected override bool SerialiseName => true;
+
     [JsonRequired] public float MinNodeSize;
     [JsonRequired] public float LoosenessVal;
     [JsonRequired] public float InitialWorldSize;

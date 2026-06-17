@@ -8,8 +8,6 @@ public sealed class Schematics : JsonData
     [JsonRequired] public WarpDepotData[] WarpDepots;
     [JsonRequired] public TeleporterData[] Teleporters;
 
-    protected override bool SerialiseName => false;
-
 #if UNITY
     public override void FindStrings(StringPooler pooler)
     {
@@ -49,34 +47,38 @@ public sealed class Schematics : JsonData
 #endif
 }
 
+[Serializable]
+public sealed class CraftCost : JsonData
+{
+    public int Amount;
+
+#if !UNITY
+    public IdentifiableId Id;
+
+    public static implicit operator GadgetDefinition.CraftCost(CraftCost self)
+        => new() { amount = self.Amount, id = self.Id };
+
+    public static implicit operator CraftCost(GadgetDefinition.CraftCost self)
+        => new() { Amount = self.amount, Id = self.id };
+
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+        Id = reader.ReadEnum<IdentifiableId>();
+    }
+#else
+    public string Id;
+
+    public override void FindStrings(StringPooler pooler) => pooler.PoolString(Id);
+
+    public override void WriteTo(DataWriter writer) => writer.WriteString(Id);
+#endif
+}
+
 public abstract class GadgetData : JsonData
 {
-    [Serializable]
-    public sealed class CraftCost : JsonData
-    {
-        [JsonProperty("id")] public string StringId;
-        [JsonProperty("amount")] public int Amount;
-#if !UNITY
-        [JsonIgnore] public IdentifiableId Id;
+    protected override bool SerialiseName => true;
 
-        public static implicit operator GadgetDefinition.CraftCost(CraftCost self)
-            => new() { amount = self.Amount, id = self.Id };
-
-        public static implicit operator CraftCost(GadgetDefinition.CraftCost self)
-            => new() { Amount = self.amount, Id = self.id };
-
-        public override void OnDeserialise()
-        {
-            base.OnDeserialise();
-            Id = Helpers.ParseEnum<IdentifiableId>(StringId);
-        }
-#else
-        public override void FindStrings(StringPooler pooler)
-        {
-            pooler.PoolString(StringId);
-        }
-#endif
-    }
     public CraftCost[] CraftCosts;
 
 #if !UNITY
@@ -96,13 +98,27 @@ public abstract class GadgetData : JsonData
 [Serializable]
 public sealed class DecorationData : GadgetData
 {
+    [JsonProperty("path")] public string PrefabPath;
+    [JsonProperty("centerName")] public string PrefabCenterPath;
+
 #if !UNITY
     // Remove this if we do rename it
     protected override string Prefix => "DECO";
+
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+        PrefabPath = reader.ReadString()!;
+        PrefabCenterPath = reader.ReadString()!;
+    }
+#else
+    public override void FindStrings(StringPooler pooler)
+    {
+        base.FindStrings(pooler);
+        pooler.PoolString(PrefabPath);
+        pooler.PoolString(PrefabCenterPath);
+    }
 #endif
-    // TODO: for az, please adjust this for the reading and writing
-    [JsonProperty("path")] public string PrefabPath;
-    [JsonProperty("centerName")] public string PrefabCenterPath;
 }
 
 public abstract class VariantGadgetData : GadgetData
@@ -119,7 +135,7 @@ public abstract class SlimeGadgetData : VariantGadgetData
     [JsonRequired] public string ResourceId;
     [JsonRequired] public string SlimeId;
 
-    public string ColorHex;
+    public Optional<string> ColorHex;
 
     public override void FindStrings(StringPooler pooler)
     {
@@ -147,7 +163,7 @@ public abstract class SlimeGadgetData : VariantGadgetData
     [JsonRequired] public IdentifiableId ResourceId;
     [JsonRequired] public IdentifiableId SlimeId;
 
-    public Color Color;
+    public Color? Color;
 
     public override void ReadFrom(DataReader reader)
     {

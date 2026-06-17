@@ -10,7 +10,7 @@ using OceanRange.Saves;
 namespace OceanRange.Data;
 
 [Serializable]
-public sealed  class SlimeData : SpawnedActorData
+public sealed class SlimeData : SpawnedActorData
 {
 #if !UNITY
     private static readonly Dictionary<string, Action<SlimeAppearance, SlimeAppearanceData>> AppearanceMethods = new(StringComparer.Ordinal);
@@ -37,8 +37,7 @@ public sealed  class SlimeData : SpawnedActorData
     [JsonIgnore] public Action<SlimeAppearance, SlimeAppearanceData>? InitAppearanceDetails;
 #endif
 
-    [JsonRequired] public SlimeAppearanceData NormalAppearance;
-    public SlimeAppearanceData? SSAppearance;
+    protected override bool SerialiseName => true;
 
     public bool NightSpawn;
     public bool CanBeRefined;
@@ -63,19 +62,22 @@ public sealed  class SlimeData : SpawnedActorData
     [JsonRequired] public string FavToy;
     [JsonRequired] public string[] Zones;
 
-    public string FavFood;
-    public string Diet;
+    public Optional<string> FavFood;
+    public Optional<string> Diet;
 
     public string BaseSlime = "PINK_SLIME";
     public string BasePlort = "PINK_PLORT";
     public string BaseGordo = "PINK_GORDO";
 
-    public string ComponentBase;
-    public string GordoZone;
+    public Optional<string> ComponentBase;
+    public Optional<string> GordoZone;
     public string[] GordoRewards;
 
     [JsonProperty("toAdd")] public string[] ComponentsToAdd;
     [JsonProperty("toRemove")] public string[] ComponentsToRemove;
+
+    [JsonRequired] public SlimeAppearanceData NormalAppearance;
+    public Optional<SlimeAppearanceData> SSAppearance;
 #else
     public IdentifiableId FavToy;
     public Zone[] Zones;
@@ -93,6 +95,9 @@ public sealed  class SlimeData : SpawnedActorData
 
     public Type[] ComponentsToAdd;
     public Type[] ComponentsToRemove;
+
+    public SlimeAppearanceData NormalAppearance;
+    public SlimeAppearanceData? SSAppearance;
 #endif
 
 #if UNITY
@@ -118,7 +123,9 @@ public sealed  class SlimeData : SpawnedActorData
         pooler.PoolStrings(ComponentsToRemove);
 
         NormalAppearance.FindStrings(pooler);
-        SSAppearance?.FindStrings(pooler);
+
+        if (SSAppearance.HasValue)
+            SSAppearance.Value.FindStrings(pooler);
     }
 
     public override void WriteTo(DataWriter writer)
@@ -161,11 +168,11 @@ public sealed  class SlimeData : SpawnedActorData
 
         NormalAppearance.WriteTo(writer);
 
-        var hasSS = SSAppearance != null;
+        var hasSS = SSAppearance.HasValue;
         writer.WriteBool(hasSS);
 
         if (hasSS)
-            SSAppearance?.WriteTo(writer);
+            SSAppearance.Value.WriteTo(writer);
     }
 #else
     public override void ReadFrom(DataReader reader)
@@ -173,7 +180,7 @@ public sealed  class SlimeData : SpawnedActorData
         base.ReadFrom(reader);
 
         FavToy = reader.ReadEnum<IdentifiableId>();
-        Zones = reader.ReadEnumArray<Zone>();
+        Zones = reader.ReadEnumArray<Zone>()!;
         FavFood = reader.ReadNullableEnum<IdentifiableId>();
         Diet = reader.ReadNullableEnum<FoodGroup>();
 
@@ -187,7 +194,7 @@ public sealed  class SlimeData : SpawnedActorData
         GordoZone = reader.ReadNullableEnum<Zone>();
         SpawnAmount = reader.ReadPackedFloat();
         HasGordo = reader.ReadBool();
-        GordoRewards = reader.ReadEnumArray<IdentifiableId>();
+        GordoRewards = reader.ReadEnumArray<IdentifiableId>()!;
 
         Vaccable = reader.ReadBool();
         Exchangeable = reader.ReadBool();
@@ -266,7 +273,7 @@ public sealed  class SlimeData : SpawnedActorData
 }
 
 [Serializable]
-public sealed  class SlimeAppearanceData : JsonData
+public sealed class SlimeAppearanceData : JsonData
 {
     [JsonRequired] public ModelData[] SlimeFeatures;
     [JsonRequired] public ModelData[] GordoFeatures;

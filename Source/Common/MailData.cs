@@ -5,7 +5,7 @@
 namespace OceanRange.Data;
 
 [Serializable]
-public sealed  class MailData : JsonData
+public sealed class MailData : JsonData
 {
     // private static readonly Dictionary<string, Action<MailData>> Methods = new(StringComparer.Ordinal);
 
@@ -17,6 +17,8 @@ public sealed  class MailData : JsonData
     //             Methods[method.Name] = Helpers.CompileAction<MailData>(method);
     //     }
     // }
+
+    // protected override bool SerialiseName => true;
 
     [JsonRequired] public string Id;
     [JsonProperty] public double? UnlockAfter;

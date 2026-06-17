@@ -120,3 +120,7 @@ Shader/
 Shader.meta
 Mesh.meta
 CS.meta
+Settings/
+Settings.meta
+InputSystem_Actions.inputactions
+InputSystem_Actions.inputactions.meta

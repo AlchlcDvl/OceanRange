@@ -3,12 +3,12 @@
 namespace OceanRange.Data;
 
 [Serializable]
-public sealed  class ModelData : JsonData
+public sealed class ModelData : JsonData
 {
+#if !UNITY
     public MatData MatData;
     public MeshData MeshData;
 
-#if !UNITY
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
@@ -31,38 +31,42 @@ public sealed  class ModelData : JsonData
         MeshData.OnDeserialise();
     }
 #else
+    public Optional<MatData> MatData;
+    public Optional<MeshData> MeshData;
+
     public override void FindStrings(StringPooler pooler)
     {
         base.FindStrings(pooler);
-        MatData?.FindStrings(pooler);
-        MeshData?.FindStrings(pooler);
+
+        if (MatData.HasValue)
+            MatData.Value.FindStrings(pooler);
+
+        if (MeshData.HasValue)
+            MeshData.Value.FindStrings(pooler);
     }
 
     public override void WriteTo(DataWriter writer)
     {
         base.WriteTo(writer);
 
-        var matExists = MatData != null;
+        var matExists = MatData.HasValue;
         writer.WriteBool(matExists);
-        MatData?.WriteTo(writer);
 
-        var meshExists = MeshData != null;
+        if (matExists)
+            MatData.Value.WriteTo(writer);
+
+        var meshExists = MeshData.HasValue;
         writer.WriteBool(meshExists);
-        MeshData?.WriteTo(writer);
+
+        if (meshExists)
+            MeshData.Value.WriteTo(writer);
     }
 #endif
 }
 
 [Serializable]
-public sealed  class MatData : JsonData
+public sealed class MatData : JsonData
 {
-    public float? Gloss;
-    public string? Pattern;
-
-    public int? SameAs;
-    public int? MatSameAs;
-    public int? ColorsSameAs;
-
     public bool UseSSMat;
 
     [JsonProperty("invert")] public bool InvertColorOriginColors;
@@ -70,6 +74,13 @@ public sealed  class MatData : JsonData
 #if !UNITY
     public IdentifiableId? MatOrigin;
     public IdentifiableId? ColorsOrigin;
+
+    public float? Gloss;
+    public string? Pattern;
+
+    public int? SameAs;
+    public int? MatSameAs;
+    public int? ColorsSameAs;
 
     public readonly Dictionary<int, Color> ColorProps = [];
 
@@ -151,10 +162,17 @@ public sealed  class MatData : JsonData
             IsModified = false;
     }
 #else
-    public string MatOrigin;
-    public string ColorsOrigin;
+    public Optional<string> MatOrigin;
+    public Optional<string> ColorsOrigin;
 
-    [JsonProperty("colorProps"), SerializeField] private Dictionary<string, string> ColorProps;
+    public Optional<float> Gloss;
+    public Optional<string> Pattern;
+
+    public Optional<int> SameAs;
+    public Optional<int> MatSameAs;
+    public Optional<int> ColorsSameAs;
+
+    [JsonProperty("colorProps"), SerializeField] public Dictionary<string, string> ColorProps;
 
     public override void FindStrings(StringPooler pooler)
     {
@@ -205,19 +223,19 @@ public sealed  class MatData : JsonData
 }
 
 [Serializable]
-public sealed  class MeshData : JsonData
+public sealed class MeshData : JsonData
 {
-    public string? Mesh;
-
     public bool Skip;
     public bool UseBaseStruct;
     public bool IgnoreLodIndex;
 
-    public float? Jiggle;
-    public int? PrefabLength;
-
 #if !UNITY
     public bool IsBody;
+
+    public string? Mesh;
+
+    public float? Jiggle;
+    public int? PrefabLength;
 
     public override void ReadFrom(DataReader reader)
     {
@@ -231,6 +249,11 @@ public sealed  class MeshData : JsonData
         PrefabLength = reader.ReadNullablePackedInt();
     }
 #else
+    public Optional<string> Mesh;
+
+    public Optional<float> Jiggle;
+    public Optional<int> PrefabLength;
+
     public override void FindStrings(StringPooler pooler)
     {
         base.FindStrings(pooler);
