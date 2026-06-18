@@ -566,7 +566,7 @@ public static class Slimepedia
             structure.DefaultMaterials[0] = GenerateMaterial(modelData.MatData, modelDatas, structure.DefaultMaterials[0]);
 
         var cacheKey = new ElementCacheKey(
-            meshData.Mesh ?? baseStruct.Element.Prefabs[0].name,
+            meshData.Mesh ?? (baseStruct.Element.Prefabs.Length > 0 ? baseStruct.Element.Prefabs[0].name : "Empty"),
             GetFloatBits(meshData.Jiggle ?? 0),
             meshData.IgnoreLodIndex,
             meshData.PrefabLength ?? (meshData.IsBody ? 4 : 2));
@@ -668,7 +668,7 @@ public static class Slimepedia
         }
         else if (matData.MatOrigin.HasValue)
             material = GetMat(matData.MatOrigin.Value, matData.MatSameAs, matData.UseSSMat);
-        else if (matData.SameAs.HasValue && !mainMatData.IsNullOrEmpty())
+        else if (matData.SameAs.HasValue && !mainMatData.IsNullOrEmpty() && matData.SameAs.Value >= 0 && matData.SameAs.Value < mainMatData.Length)
             material = mainMatData[matData.SameAs.Value].MatData.CachedMaterial;
         else
             material = fallback;
@@ -691,11 +691,23 @@ public static class Slimepedia
         if (Identifiable.IsSlime(source))
         {
             var def = source.GetSlimeDefinition();
-            return (useSS && SsExists ? (def.GetAppearanceForSet(AppearanceSaveSet.SECRET_STYLE) ?? def.AppearancesDefault[0]) : def.AppearancesDefault[0]).Structures[index ?? 0].DefaultMaterials[0];
+            var appearance = useSS && SsExists ? (def.GetAppearanceForSet(AppearanceSaveSet.SECRET_STYLE) ?? def.AppearancesDefault[0]) : def.AppearancesDefault[0];
+            var idx = index ?? 0;
+
+            if (idx >= 0 && idx < appearance.Structures.Length && appearance.Structures[idx].DefaultMaterials.Length > 0)
+                return appearance.Structures[idx].DefaultMaterials[0];
+
+            return appearance.Structures[0].DefaultMaterials[0];
         }
 
         var prefab = source.GetPrefab();
-        return (prefab.GetComponent<MeshRenderer>() ?? prefab.GetComponentInChildren<MeshRenderer>()).sharedMaterials[index ?? 0] ?? throw new InvalidDataException($"source={source}, index={index}, useSS={useSS}");
+        var rend = prefab.GetComponent<MeshRenderer>() ?? prefab.GetComponentInChildren<MeshRenderer>();
+        var matIdx = index ?? 0;
+
+        if (rend != null && matIdx >= 0 && matIdx < rend.sharedMaterials.Length)
+            return rend.sharedMaterials[matIdx] ?? throw new InvalidDataException($"source={source}, index={index}, useSS={useSS}");
+
+        return rend?.sharedMaterial ?? throw new InvalidDataException($"source={source}, index={index}, useSS={useSS}");
     }
 
     public static void SetMatProperties(MatData matData, Material material)

@@ -65,13 +65,23 @@ public sealed class CraftCost : JsonData
     {
         base.ReadFrom(reader);
         Id = reader.ReadEnum<IdentifiableId>();
+        Amount = (int)reader.ReadPackedUInt();
     }
 #else
     public string Id;
 
-    public override void FindStrings(StringPooler pooler) => pooler.PoolString(Id);
+    public override void FindStrings(StringPooler pooler)
+    {
+        base.FindStrings(pooler);
+        pooler.PoolString(Id);
+    }
 
-    public override void WriteTo(DataWriter writer) => writer.WriteString(Id);
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+        writer.WriteString(Id);
+        writer.WritePackedUInt((uint)Amount);
+    }
 #endif
 }
 
@@ -117,6 +127,13 @@ public sealed class DecorationData : GadgetData
         base.FindStrings(pooler);
         pooler.PoolString(PrefabPath);
         pooler.PoolString(PrefabCenterPath);
+    }
+
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+        writer.WriteString(PrefabPath);
+        writer.WriteString(PrefabCenterPath);
     }
 #endif
 }

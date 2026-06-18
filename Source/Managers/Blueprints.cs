@@ -21,7 +21,7 @@ public static class Blueprints
     [PreloadMethod]
     public static void PreloadBlueprintData()
     {
-        var schematics = Inventory.GetJson<Schematics>("blueprints");
+        // var schematics = Inventory.GetJson<Schematics>("blueprints");
     }
 
     private static void CreateGadget(SlimeGadgetData gadgetData)

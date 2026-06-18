@@ -13,39 +13,61 @@ MonoBehaviour:
   m_Name: schematics
   m_EditorClassIdentifier: 
   schematics:
-    Name: Schematics
+    Name:
+      HasValue: 0
+      Value: 
     Decorations:
-    - Name: Large Water Tree
+    - Name:
+        HasValue: 0
+        Value: 
       CraftCosts:
-      - Name: 15 Rosi Plort
-        StringId: ROSI_PLORT
+      - Name:
+          HasValue: 0
+          Value: 
         Amount: 15
-      - Name: 5 Deep Brine
-        StringId: DEEP_BRINE_CRAFT
+        Id: 
+      - Name:
+          HasValue: 0
+          Value: 
         Amount: 5
-      - Name: 5 Slime Fossil
-        StringId: SLIME_FOSSIL_CRAFT
+        Id: 
+      - Name:
+          HasValue: 0
+          Value: 
         Amount: 5
+        Id: 
       PrefabPath: 
       PrefabCenterPath: 
     Lamps:
-    - Name: Rosi
+    - Name:
+        HasValue: 0
+        Value: 
       CraftCosts:
-      - Name: 12 Phosphor Plort
-        StringId: PHOSPHOR_PLORT
+      - Name:
+          HasValue: 0
+          Value: 
         Amount: 12
-      - Name: 12 Rosi Plort
-        StringId: ROSI_PLORT
+        Id: 
+      - Name:
+          HasValue: 0
+          Value: 
         Amount: 12
-      - Name: 
-        StringId: DEEP_BRINE_CRAFT
+        Id: 
+      - Name:
+          HasValue: 0
+          Value: 
         Amount: 0
-      - Name: 
-        StringId: 
+        Id: 
+      - Name:
+          HasValue: 0
+          Value: 
         Amount: 0
+        Id: 
       PlortId: 
       ResourceId: 
       SlimeId: 
-      ColorHex: 
+      ColorHex:
+        HasValue: 0
+        Value: 
     WarpDepots: []
     Teleporters: []

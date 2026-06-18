@@ -354,13 +354,14 @@ public static class Largopedia
         if (!modelDatas.IsNullOrEmpty())
         {
             var j = 0;
+            var min = Mathf.Min(modelDatas!.Length, baseStructs.Length);
 
-            for (var i = 0; i < baseStructs.Length; i++)
+            for (var i = 0; i < min; i++)
             {
                 if (i == avoid)
                     continue;
 
-                var modelData = modelDatas![j];
+                var modelData = modelDatas[j];
                 var meshData = modelData.MeshData;
                 j++;
 
@@ -374,6 +375,15 @@ public static class Largopedia
 
                 modelMap[list.Count] = modelData;
                 list.Add(structure);
+            }
+
+            if (baseStructs.Length < modelDatas.Length || props.HasFlagFast(exclude))
+                return;
+
+            for (var i = min; i < baseStructs.Length; i++)
+            {
+                if (i != avoid)
+                    list.Add(GetOrCreateLargoElement(baseStructs[i]));
             }
         }
         else if (!props.HasFlagFast(exclude))

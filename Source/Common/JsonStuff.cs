@@ -17,14 +17,14 @@ public abstract class JsonData
 #if UNITY
     public virtual void FindStrings(StringPooler pooler)
     {
-        if (SerialiseName && Name.HasValue)
-            pooler.PoolString(Name.Value);
+        if (SerialiseName)
+            pooler.PoolString(Name);
     }
 
     public virtual void WriteTo(DataWriter writer)
     {
-        if (SerialiseName && Name.HasValue)
-            writer.WriteString(Name.Value);
+        if (SerialiseName)
+            writer.WriteString(Name);
     }
 #else
     public virtual void ReadFrom(DataReader reader)

@@ -13,15 +13,35 @@ MonoBehaviour:
   m_Name: atlas
   m_EditorClassIdentifier: 
   world:
-    Name: World
+    Name:
+      HasValue: 0
+      Value: 
     Regions:
-    - Name: Underwater
+    - Name:
+        HasValue: 1
+        Value: Underwater
       MinNodeSize: 250
       LoosenessVal: 1.2
       InitialWorldSize: 2000
       InitialWorldPos: {x: 0, y: 0, z: 0}
     Zones:
-    - Name: Swirlpool_Island
+    - Name:
+        HasValue: 1
+        Value: Swirlpool_Island
       Region: UNDERWATER
+      Requirements:
+      - key: CorporateLevel
+        value:
+          Name:
+            HasValue: 0
+            Value: 
+          CorporateLevelMin: 15
+          CorporateLevelMax: 2147483647
+          ExchangeProgress: 0
+          PathToGameObject: zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)
+      TeleporterOrientation:
+        Position: {x: -119.7111, y: -0.0307, z: -260.243}
+        Rotation: {x: 0, y: 234.398, z: 0}
+        Scale: {x: 1, y: 1, z: 1}
       TeleporterLocation: zoneRANCH/cellRanch_Docks/Sector/Upgrades/
       AssetName: SWIRLPOOL

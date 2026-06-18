@@ -13,48 +13,221 @@ MonoBehaviour:
   m_Name: cookbook
   m_EditorClassIdentifier: 
   ingredients:
-    Name: 
+    Name:
+      HasValue: 0
+      Value: 
     Groups:
-    - Name: Dirt
+    - Name:
+        HasValue: 1
+        Value: Dirt
       Foods:
       - SILKY_SAND_CRAFT
       - LAVA_DUST_CRAFT
     Fruits:
-    - Name: Sticky
+    - Name:
+        HasValue: 1
+        Value: Sticky
       Progress: []
-      MainAmmoColor: '#efca76'
+      MainAmmoColor:
+        HasValue: 1
+        Value: '#efca76'
       ExchangeWeight: 20
       BasePrice: 5
       Saturation: 10
-      BasePlant: OCAOCA_VEGGIE
-      BaseResource: 
-      SpawnLocations: []
+      BasePlant:
+        HasValue: 1
+        Value: OCAOCA_VEGGIE
+      BaseResource:
+        HasValue: 0
+        Value: 
+      SpawnLocations:
+      - key: Moss_Forest
+        value:
+        - Position: {x: -214.9234, y: 5.807864, z: 446.1582}
+          Rotation: {x: 0, y: 180, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: -240.6054, y: 5.807864, z: 433.4074}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: -344.0912, y: 14.63913, z: 453.1197}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Moss_HoneyPerch
+        value:
+        - Position: {x: -330.8238, y: 0.3800001, z: 370.8058}
+          Rotation: {x: 0, y: 280, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Moss_Coast
+        value:
+        - Position: {x: -472.9316, y: 1.320001, z: 503.3163}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Moss_RampUp
+        value:
+        - Position: {x: -439.1094, y: 5.995141, z: 596.1249}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: -357.7896, y: -2.520001, z: 526.7007}
+          Rotation: {x: 0, y: 280, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Moss_FlowerField
+        value:
+        - Position: {x: -298.8794, y: 21.06228, z: 497.0838}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: -269.3811, y: -0.06999975, z: 551.0914}
+          Rotation: {x: 0, y: 180, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Moss_NorthPass
+        value:
+        - Position: {x: -204.8524, y: 8.62, z: 662.1788}
+          Rotation: {x: 0, y: 220, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
       AdjustColliders: 1
-    - Name: Coral
+    - Name:
+        HasValue: 1
+        Value: Coral
       Progress: []
-      MainAmmoColor: '#833296'
+      MainAmmoColor:
+        HasValue: 1
+        Value: '#833296'
       ExchangeWeight: 20
       BasePrice: 4
       Saturation: 10
-      BasePlant: 
-      BaseResource: 
-      SpawnLocations: []
+      BasePlant:
+        HasValue: 0
+        Value: 
+      BaseResource:
+        HasValue: 0
+        Value: 
+      SpawnLocations:
+      - key: Reef_Roundabout
+        value:
+        - Position: {x: 49.39415, y: 11.58, z: 44.54964}
+          Rotation: {x: 0, y: 180, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Reef_Hill
+        value:
+        - Position: {x: -31.17579, y: 12.09, z: 96.38797}
+          Rotation: {x: 0, y: 120, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: -95.97266, y: -2.04, z: 112.5155}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Reef_SandyPass
+        value:
+        - Position: {x: -164.6863, y: 8.762481, z: 123.427}
+          Rotation: {x: 0, y: 130, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: -194.01, y: 8.564718, z: 121.617}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Reef_BigTree
+        value:
+        - Position: {x: -236.3024, y: 5.600001, z: 152.5864}
+          Rotation: {x: 0, y: 90, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: -233.1797, y: -1.92, z: 171.1271}
+          Rotation: {x: 0, y: 180, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Reef_FeralCanyon
+        value:
+        - Position: {x: -241.3698, y: 9.719997, z: -13.66986}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Reef_SandTrap
+        value:
+        - Position: {x: -247.5576, y: 12.65952, z: -51.78951}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: -292.9451, y: 12.45002, z: -104.4336}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Moss_Entrance
+        value:
+        - Position: {x: -150.6489, y: 0.4600004, z: 448.5404}
+          Rotation: {x: 0, y: 80, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: -172.7966, y: 2.71, z: 405.7998}
+          Rotation: {x: 0, y: 260, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Moss_Forest
+        value:
+        - Position: {x: -233.6821, y: 0.2800001, z: 387.338}
+          Rotation: {x: 0, y: 260, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
       AdjustColliders: 0
     Veggies:
-    - Name: Blowtato
+    - Name:
+        HasValue: 1
+        Value: Blowtato
       Progress: []
-      MainAmmoColor: '#AB9E7E'
+      MainAmmoColor:
+        HasValue: 1
+        Value: '#AB9E7E'
       ExchangeWeight: 20
       BasePrice: 4
       Saturation: 10
-      BasePlant: 
-      BaseResource: 
-      SpawnLocations: []
+      BasePlant:
+        HasValue: 0
+        Value: 
+      BaseResource:
+        HasValue: 0
+        Value: 
+      SpawnLocations:
+      - key: Quarry_MirrorIsland
+        value:
+        - Position: {x: 423.2861, y: 4.848886, z: 392.4289}
+          Rotation: {x: 0, y: 150, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: 398.6912, y: 8.63, z: 390.1494}
+          Rotation: {x: 0, y: 330, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Quarry_Onsen
+        value:
+        - Position: {x: 400.6062, y: -0.5811567, z: 261.8384}
+          Rotation: {x: 0, y: 320, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Quarry_DonutHole
+        value:
+        - Position: {x: 409.2976, y: 12.62, z: 193.0241}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Quarry_VolcanoTransition
+        value:
+        - Position: {x: 468.4546, y: 4.458002, z: 127.1277}
+          Rotation: {x: 0, y: 120, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: 521.6997, y: 5.340591, z: 188.349}
+          Rotation: {x: 0, y: 340, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+        - Position: {x: 484.1953, y: 4.196061, z: 168.518}
+          Rotation: {x: 0, y: 0, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Quarry_CaveHub
+        value:
+        - Position: {x: 262.9261, y: 4.459999, z: 205.8598}
+          Rotation: {x: 0, y: 325, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Quarry_Entrance
+        value:
+        - Position: {x: 82.3009, y: 8.319999, z: 226.9288}
+          Rotation: {x: 0, y: 229, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
+      - key: Moss_GreenPillars
+        value:
+        - Position: {x: -58.94876, y: 5.090622, z: 395.8648}
+          Rotation: {x: 0, y: 18, z: 0}
+          Scale: {x: 1, y: 1, z: 1}
       AdjustColliders: 1
     Chimkens:
-    - Name: Sandy
+    - Name:
+        HasValue: 1
+        Value: Sandy
       Progress: []
-      MainAmmoColor: '#C2B280'
+      MainAmmoColor:
+        HasValue: 1
+        Value: '#C2B280'
       ExchangeWeight: 20
       BasePrice: 20
       Saturation: 10
@@ -64,9 +237,13 @@ MonoBehaviour:
       - MOSS
       SpawnAmount: 1
       ChickSpawnAmount: 1
-    - Name: Radiant
+    - Name:
+        HasValue: 1
+        Value: Radiant
       Progress: []
-      MainAmmoColor: '#040454'
+      MainAmmoColor:
+        HasValue: 1
+        Value: '#040454'
       ExchangeWeight: 20
       BasePrice: 30
       Saturation: 15

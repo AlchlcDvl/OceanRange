@@ -21,8 +21,7 @@ public enum ManagerType : byte
     Translator
 }
 
-[AttributeUsage(AttributeTargets.Class)]
-[MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
+[AttributeUsage(AttributeTargets.Class), MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
 public sealed class ManagerAttribute(ManagerType manager) : Attribute
 {
     public readonly ManagerType Manager = manager;

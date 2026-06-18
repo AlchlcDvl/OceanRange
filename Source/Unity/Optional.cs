@@ -17,6 +17,7 @@ public struct Optional<T> : IOptional
     }
 
     public static implicit operator T?(Optional<T> value) => value.HasValue ? value.Value! : default;
+    public static implicit operator Optional<T>(T? value) => new() { Value = value! };
 }
 
 public interface IOptional
