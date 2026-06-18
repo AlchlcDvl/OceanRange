@@ -47,6 +47,8 @@ public static class Largopedia
 
     private static readonly Dictionary<int, SlimeAppearanceElement> LargoElementCache = [];
 
+    private static readonly Func<SlimeAppearanceStructure, bool> FindBody = x => x.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0;
+
 #if DEBUG
     [TimeDiagnostic("Largos Preload")]
 #endif
@@ -252,7 +254,9 @@ public static class Largopedia
         appearance.DependentAppearances = [appearance1, appearance2];
         appearance.Face = ScriptableObject.CreateInstance<SlimeFace>();
         appearance.Face._expressionToFaceLookup = new(SlimeFace.DefaultSlimeExpressionComparer);
-        appearance.name = largoData.Slime1 + largoData.Slime2 + (appearanceData.AppProps.HasFlagFast(AppearanceType.SS1) ? "Exotic" : "Normal") + (appearanceData.AppProps.HasFlagFast(AppearanceType.SS2) ? "Exotic" : "Normal");
+        appearance.name = largoData.Slime1 + largoData.Slime2 +
+                            (appearanceData.AppProps.HasFlagFast(AppearanceType.SS1) ? "Exotic" : "Normal") +
+                            (appearanceData.AppProps.HasFlagFast(AppearanceType.SS2) ? "Exotic" : "Normal");
 
         var props = appearanceData.LargoProps;
         var eyes = props.HasFlagFast(LargoAppearanceProps.UseSlime2ForEyes) ? appearance2.Face._expressionToFaceLookup : appearance1.Face._expressionToFaceLookup;
@@ -272,8 +276,8 @@ public static class Largopedia
         appearance.NameXlateKey = appearance1.NameXlateKey;
         appearance.SaveSet = set;
 
-        var slime1Body = appearance1.Structures.FirstOrDefault(x => x.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0);
-        var slime2Body = appearance2.Structures.FirstOrDefault(x => x.Element.Name.IndexOf("body", StringComparison.OrdinalIgnoreCase) >= 0);
+        var slime1Body = appearance1.Structures.FirstOrDefault(FindBody);
+        var slime2Body = appearance2.Structures.FirstOrDefault(FindBody);
         var baseBody = props.HasFlagFast(LargoAppearanceProps.UseSlime2ForBody) ? slime2Body : slime1Body;
 
         var modelMap = new Dictionary<int, ModelData>();
@@ -281,7 +285,7 @@ public static class Largopedia
 
         if (appearanceData.BodyStruct != null)
         {
-            body = Slimepedia.GenerateStructure(baseBody!, appearanceData.BodyStruct, appearanceData.BodyStruct.MeshData, null!)!;
+            body = Slimepedia.GenerateStructure(baseBody, appearanceData.BodyStruct, appearanceData.BodyStruct.MeshData, null!)!;
             modelMap[0] = appearanceData.BodyStruct;
             // Main.Console.Log($"[BodyStruct was null!] Body Color for {appearance1.name}{appearance2.name} is {(Color32)body.DefaultMaterials[0].GetColor(MiddleColor)}");
         }
@@ -354,14 +358,13 @@ public static class Largopedia
         if (!modelDatas.IsNullOrEmpty())
         {
             var j = 0;
-            var min = Mathf.Min(modelDatas!.Length, baseStructs.Length);
 
-            for (var i = 0; i < min; i++)
+            for (var i = 0; i < baseStructs.Length; i++)
             {
                 if (i == avoid)
                     continue;
 
-                var modelData = modelDatas[j];
+                var modelData = modelDatas![j];
                 var meshData = modelData.MeshData;
                 j++;
 
@@ -375,15 +378,6 @@ public static class Largopedia
 
                 modelMap[list.Count] = modelData;
                 list.Add(structure);
-            }
-
-            if (baseStructs.Length < modelDatas.Length || props.HasFlagFast(exclude))
-                return;
-
-            for (var i = min; i < baseStructs.Length; i++)
-            {
-                if (i != avoid)
-                    list.Add(GetOrCreateLargoElement(baseStructs[i]));
             }
         }
         else if (!props.HasFlagFast(exclude))
@@ -444,9 +438,16 @@ public static class Largopedia
     [UsedImplicitly]
     public static void InitPhosphorHermitDetails(GameObject prefab, SlimeDefinition _) => prefab.AddComponent<PhosphorHermitAppearanceFixer>();
 
+    [UsedImplicitly]
     public static void InitMimicDetails(GameObject prefab, SlimeDefinition _)
     {
         if (prefab.TryGetComponent<MimicBehaviour>(out var component))
             component.Destroy();
     }
+
+#if DEBUG
+    [TimeDiagnostic("Largos Postload")]
+#endif
+    [PostloadMethod]
+    public static void PostloadLargos() => LargoElementCache.Clear();
 }

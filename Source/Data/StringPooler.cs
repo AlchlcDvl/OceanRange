@@ -51,5 +51,14 @@ public sealed class StringPooler(HashSet<string> pool)
         foreach (var value in values)
             PoolString(value);
     }
+
+    public void PoolStrings(IEnumerable<string> values)
+    {
+        if (values.IsNullOrEmpty())
+            return;
+
+        foreach (var value in values)
+            PoolString(value);
+    }
 }
 #endif

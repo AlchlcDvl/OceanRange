@@ -103,5 +103,58 @@ public static class UnityUtils
 
         public bool StartsWith(char character) => @string is { Length: > 0 } && @string[0] == character;
     }
+
+    public static string ToHex(this Color32 color) => $"{color.r:X2}{color.g:X2}{color.b:X2}";
+
+    public static string? ToHex(this Optional<Color32> color) => color.HasValue ? color.Value.ToHex() : null;
+
+    public static bool TryParseColor32(string value, out Color32 result)
+    {
+        if (value.StartsWith('#'))
+            value = value.Substring(1);
+
+        switch (value.Length)
+        {
+            case 3:
+            {
+                var r = byte.Parse(value[0].ToString(), NumberStyles.AllowHexSpecifier);
+                var g = byte.Parse(value[1].ToString(), NumberStyles.AllowHexSpecifier);
+                var b = byte.Parse(value[2].ToString(), NumberStyles.AllowHexSpecifier);
+                result = new((byte)((r << 4) | r), (byte)((g << 4) | g), (byte)((b << 4) | b), 255);
+                return true;
+            }
+            case 4:
+            {
+                var r = byte.Parse(value[0].ToString(), NumberStyles.AllowHexSpecifier);
+                var g = byte.Parse(value[1].ToString(), NumberStyles.AllowHexSpecifier);
+                var b = byte.Parse(value[2].ToString(), NumberStyles.AllowHexSpecifier);
+                var a = byte.Parse(value[3].ToString(), NumberStyles.AllowHexSpecifier);
+                result = new((byte)((r << 4) | r), (byte)((g << 4) | g), (byte)((b << 4) | b), (byte)((a << 4) | a));
+                return true;
+            }
+            case 6:
+            {
+                var r = byte.Parse(value.Substring(0, 2), NumberStyles.AllowHexSpecifier);
+                var g = byte.Parse(value.Substring(2, 2), NumberStyles.AllowHexSpecifier);
+                var b = byte.Parse(value.Substring(4, 2), NumberStyles.AllowHexSpecifier);
+                result = new(r, g, b, 255);
+                return true;
+            }
+            case 8:
+            {
+                var r = byte.Parse(value.Substring(0, 2), NumberStyles.AllowHexSpecifier);
+                var g = byte.Parse(value.Substring(2, 2), NumberStyles.AllowHexSpecifier);
+                var b = byte.Parse(value.Substring(4, 2), NumberStyles.AllowHexSpecifier);
+                var a = byte.Parse(value.Substring(6, 2), NumberStyles.AllowHexSpecifier);
+                result = new(r, g, b, a);
+                return true;
+            }
+            default:
+            {
+                result = default;
+                return false;
+            }
+        }
+    }
 }
 #endif

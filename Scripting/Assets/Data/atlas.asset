@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 118459ba6612dd3449608e9568fb967c, type: 3}
   m_Name: atlas
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::Atlas
   world:
     Name:
       HasValue: 0

@@ -9,21 +9,6 @@ using OceanRange.Unity;
 [CreateAssetMenu(menuName = "OceanRange/Data/cookbook.json", fileName = "cookbook.asset")]
 public class Cookbook : ScriptableObject
 {
-    private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
-    {
-        NullValueHandling = NullValueHandling.Ignore,
-        Formatting = Formatting.Indented,
-        ContractResolver = new DefaultContractResolver()
-        {
-            NamingStrategy = new CamelCaseNamingStrategy(false, false)
-        },
-        Converters = new List<JsonConverter>()
-        {
-            new Vector3Converter(),
-            new OptionalConverter(),
-            new OrientationConverter(),
-        }
-    };
     private const string JsonAssetPath = "Assets/Jsons/cookbook.json";
 
     public Ingredients ingredients;
@@ -31,7 +16,7 @@ public class Cookbook : ScriptableObject
     [ContextMenu("Serialize to Json")]
     public void Serialize()
     {
-        var json = JsonConvert.SerializeObject(ingredients, JsonSettings);
+        var json = JsonConvert.SerializeObject(ingredients, JsonSettings.JsonSerialisationSettings);
         var asset = new TextAsset(json);
         AssetDatabase.CreateAsset(asset, JsonAssetPath);
     }
@@ -40,6 +25,6 @@ public class Cookbook : ScriptableObject
     public void Deserialize()
     {
         var text = AssetDatabase.LoadAssetAtPath<TextAsset>(JsonAssetPath).text;
-        ingredients = JsonConvert.DeserializeObject<Ingredients>(text, JsonSettings);
+        ingredients = JsonConvert.DeserializeObject<Ingredients>(text, JsonSettings.JsonSerialisationSettings);
     }
 }

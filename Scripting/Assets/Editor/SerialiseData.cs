@@ -14,22 +14,6 @@ static class ExportData
 {
     static readonly string[] Translations = { "de", "en", "es", "fr", "ru", "tr" };
 
-    static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
-    {
-        NullValueHandling = NullValueHandling.Ignore,
-        Formatting = Formatting.Indented,
-        ContractResolver = new DefaultContractResolver()
-        {
-            NamingStrategy = new CamelCaseNamingStrategy(false, false)
-        },
-        Converters = new List<JsonConverter>()
-        {
-            new Vector3Converter(),
-            new OptionalConverter(),
-            new OrientationConverter()
-        }
-    };
-
     struct SingleExport
     {
         public string DestPath;
@@ -69,6 +53,7 @@ static class ExportData
             // Load single instances
             LoadSingleData<World>(jsonDirectory, exportDirectory, "atlas", singleInstances);
             LoadSingleData<Ingredients>(jsonDirectory, exportDirectory, "cookbook", singleInstances);
+            // LoadSingleData<Schematics>(jsonDirectory, exportDirectory, "blueprints", singleInstances);
 
             // Load translations
             foreach (var lang in Translations)
@@ -165,7 +150,7 @@ static class ExportData
             return;
         }
 
-        var data = JsonConvert.DeserializeObject<T>(File.ReadAllText(source), JsonSettings);
+        var data = JsonConvert.DeserializeObject<T>(File.ReadAllText(source), JsonSettings.JsonSerialisationSettings);
 
         if (data != null)
             list.Add(new SingleExport { DestPath = Path.Combine(destPath, fileName + ".cjson"), Data = data });
@@ -181,7 +166,7 @@ static class ExportData
             return;
         }
 
-        var data = JsonConvert.DeserializeObject<T[]>(File.ReadAllText(source), JsonSettings);
+        var data = JsonConvert.DeserializeObject<T[]>(File.ReadAllText(source), JsonSettings.JsonSerialisationSettings);
 
         if (data != null)
             list.Add(new ArrayExport { DestPath = Path.Combine(destPath, fileName + ".cjson"), Data = data });

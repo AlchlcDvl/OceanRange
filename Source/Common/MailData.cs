@@ -21,9 +21,10 @@ public sealed class MailData : JsonData
     // protected override bool SerialiseName => true;
 
     [JsonRequired] public string Id;
-    [JsonProperty] public double? UnlockAfter;
 
 #if !UNITY
+    [JsonProperty] public double? UnlockAfter;
+
     [JsonIgnore] public bool Sent;
     [JsonIgnore] public bool Read;
 
@@ -128,6 +129,8 @@ public sealed class MailData : JsonData
         return true;
     }
 #else
+    [JsonProperty] public Optional<double> UnlockAfter;
+
     public override void FindStrings(StringPooler pooler)
     {
         base.FindStrings(pooler);

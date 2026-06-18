@@ -280,22 +280,26 @@ public sealed class SlimeAppearanceData : JsonData
     [JsonRequired] public ModelData[] PlortFeatures;
 
 #if UNITY
-    [JsonRequired] public string MainAmmoColor;
+    [JsonRequired] public Color32 MainAmmoColor;
 
-    public string TopMouthColor;
-    public string MiddleMouthColor;
-    public string BottomMouthColor;
-    public string RedEyeColor;
-    public string GreenEyeColor;
-    public string BlueEyeColor;
-    public string TopPaletteColor;
-    public string MiddlePaletteColor;
-    public string BottomPaletteColor;
-    public string PlortAmmoColor;
-    public string EyesOrigin;
-    public string MouthOrigin;
+    public Optional<Color32> TopMouthColor;
+    public Optional<Color32> MiddleMouthColor;
+    public Optional<Color32> BottomMouthColor;
+    
+    public Optional<Color32> RedEyeColor;
+    public Optional<Color32> GreenEyeColor;
+    public Optional<Color32> BlueEyeColor;
 
-    public float? Jiggle;
+    public Optional<Color32> TopPaletteColor;
+    public Optional<Color32> MiddlePaletteColor;
+    public Optional<Color32> BottomPaletteColor;
+
+    public Optional<Color32> PlortAmmoColor;
+
+    public Optional<string> EyesOrigin;
+    public Optional<string> MouthOrigin;
+
+    public Optional<float> Jiggle;
 #else
     [JsonRequired] public Color MainAmmoColor;
 
@@ -329,21 +333,21 @@ public sealed class SlimeAppearanceData : JsonData
     {
         base.FindStrings(pooler);
 
-        pooler.PoolSubstring(MainAmmoColor, 1);
+        pooler.PoolString(MainAmmoColor.ToHex());
 
-        pooler.PoolSubstring(TopMouthColor, 1);
-        pooler.PoolSubstring(MiddleMouthColor, 1);
-        pooler.PoolSubstring(BottomMouthColor, 1);
+        pooler.PoolString(TopMouthColor.ToHex());
+        pooler.PoolString(MiddleMouthColor.ToHex());
+        pooler.PoolString(BottomMouthColor.ToHex());
 
-        pooler.PoolSubstring(RedEyeColor, 1);
-        pooler.PoolSubstring(GreenEyeColor, 1);
-        pooler.PoolSubstring(BlueEyeColor, 1);
+        pooler.PoolString(RedEyeColor.ToHex());
+        pooler.PoolString(GreenEyeColor.ToHex());
+        pooler.PoolString(BlueEyeColor.ToHex());
 
-        pooler.PoolSubstring(TopPaletteColor, 1);
-        pooler.PoolSubstring(MiddlePaletteColor, 1);
-        pooler.PoolSubstring(BottomPaletteColor, 1);
+        pooler.PoolString(TopPaletteColor.ToHex());
+        pooler.PoolString(MiddlePaletteColor.ToHex());
+        pooler.PoolString(BottomPaletteColor.ToHex());
 
-        pooler.PoolSubstring(PlortAmmoColor, 1);
+        pooler.PoolString(PlortAmmoColor.ToHex());
 
         pooler.PoolString(EyesOrigin);
         pooler.PoolString(MouthOrigin);
@@ -357,21 +361,21 @@ public sealed class SlimeAppearanceData : JsonData
     {
         base.WriteTo(writer);
 
-        writer.WriteSubstring(MainAmmoColor, 1);
+        writer.WriteString(MainAmmoColor.ToHex());
 
-        writer.WriteSubstring(TopMouthColor, 1);
-        writer.WriteSubstring(MiddleMouthColor, 1);
-        writer.WriteSubstring(BottomMouthColor, 1);
+        writer.WriteString(TopMouthColor.ToHex());
+        writer.WriteString(MiddleMouthColor.ToHex());
+        writer.WriteString(BottomMouthColor.ToHex());
 
-        writer.WriteSubstring(RedEyeColor, 1);
-        writer.WriteSubstring(GreenEyeColor, 1);
-        writer.WriteSubstring(BlueEyeColor, 1);
+        writer.WriteString(RedEyeColor.ToHex());
+        writer.WriteString(GreenEyeColor.ToHex());
+        writer.WriteString(BlueEyeColor.ToHex());
 
-        writer.WriteSubstring(TopPaletteColor, 1);
-        writer.WriteSubstring(MiddlePaletteColor, 1);
-        writer.WriteSubstring(BottomPaletteColor, 1);
+        writer.WriteString(TopPaletteColor.ToHex());
+        writer.WriteString(MiddlePaletteColor.ToHex());
+        writer.WriteString(BottomPaletteColor.ToHex());
 
-        writer.WriteSubstring(PlortAmmoColor, 1);
+        writer.WriteString(PlortAmmoColor.ToHex());
 
         writer.WriteArray(SlimeFeatures, (w, f) => f.WriteTo(w));
         writer.WriteArray(GordoFeatures, (w, f) => f.WriteTo(w));

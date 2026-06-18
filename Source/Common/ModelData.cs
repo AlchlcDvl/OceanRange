@@ -113,7 +113,7 @@ public sealed class MatData : JsonData
 
         if (count == 0)
         {
-            Main.Console.Log("ColorProps was empty!");
+            // Main.Console.Log("ColorProps was empty!");
             return;
         }
 
@@ -148,7 +148,7 @@ public sealed class MatData : JsonData
             if (!ColorProps.ContainsKey(bottomKey))
                 ColorProps[bottomKey] = middleColor;
         }
-        Main.Console.Log($"ColorProps: {string.Join("\n", ColorProps.Select(kvp => $"({kvp.Key})={(Color32)kvp.Value}\\(#{ColorUtility.ToHtmlStringRGB(kvp.Value)})"))}");
+        // Main.Console.Log($"ColorProps: {string.Join("\n", ColorProps.Select(kvp => $"({kvp.Key})={(Color32)kvp.Value}\\(#{ColorUtility.ToHtmlStringRGB(kvp.Value)})"))}");
     }
 
     public override void OnDeserialise()
@@ -172,7 +172,7 @@ public sealed class MatData : JsonData
     public Optional<int> MatSameAs;
     public Optional<int> ColorsSameAs;
 
-    [JsonProperty("colorProps"), SerializeField] public Dictionary<string, string> ColorProps;
+    [JsonProperty("colorProps"), SerializeField] public Dictionary<string, Color32> ColorProps;
 
     public override void FindStrings(StringPooler pooler)
     {
@@ -186,7 +186,7 @@ public sealed class MatData : JsonData
             return;
 
         pooler.PoolSubstrings(ColorProps.Keys, 1);
-        pooler.PoolSubstrings(ColorProps.Values, 1);
+        pooler.PoolStrings(ColorProps.Values.Select(x => x.ToHex()));
     }
 
     public override void WriteTo(DataWriter writer)
@@ -217,7 +217,7 @@ public sealed class MatData : JsonData
             writer.WriteSubstring(key, 1);
 
         foreach (var val in ColorProps!.Values)
-            writer.WriteSubstring(val, 1);
+            writer.WriteString(val.ToHex());
     }
 #endif
 }

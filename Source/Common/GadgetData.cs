@@ -3,10 +3,10 @@ namespace OceanRange.Data;
 [Serializable]
 public sealed class Schematics : JsonData
 {
-    [JsonRequired] public DecorationData[] Decorations;
     [JsonRequired] public LampData[] Lamps;
     [JsonRequired] public WarpDepotData[] WarpDepots;
     [JsonRequired] public TeleporterData[] Teleporters;
+    [JsonRequired] public DecorationData[] Decorations;
 
 #if UNITY
     public override void FindStrings(StringPooler pooler)
@@ -152,7 +152,7 @@ public abstract class SlimeGadgetData : VariantGadgetData
     [JsonRequired] public string ResourceId;
     [JsonRequired] public string SlimeId;
 
-    public Optional<string> ColorHex;
+    public Optional<Color32> Color;
 
     public override void FindStrings(StringPooler pooler)
     {
@@ -160,7 +160,7 @@ public abstract class SlimeGadgetData : VariantGadgetData
         pooler.PoolString(PlortId);
         pooler.PoolString(ResourceId);
         pooler.PoolString(SlimeId);
-        pooler.PoolSubstring(ColorHex, 1);
+        pooler.PoolString(Color.ToHex());
     }
 
     public override void WriteTo(DataWriter writer)
@@ -169,7 +169,7 @@ public abstract class SlimeGadgetData : VariantGadgetData
         writer.WriteString(PlortId);
         writer.WriteString(ResourceId);
         writer.WriteString(SlimeId);
-        writer.WriteSubstring(ColorHex, 1);
+        writer.WriteString(Color.ToHex());
     }
 #else
     protected abstract CreateCraftCosts CostCreator { get; }

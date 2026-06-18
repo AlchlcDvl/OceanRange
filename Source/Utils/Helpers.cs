@@ -115,12 +115,12 @@ public static class Helpers
 
             if (parser(@string, out color))
             {
-                Main.Console.Log($"Successfully parsed {@string} into ({color})");
+                // Main.Console.Log($"Successfully parsed {@string} into ({color})");
                 cache[@string] = color;
                 return true;
             }
 
-            Main.Console.Log($"Failed to parse {@string} as a color.");
+            // Main.Console.Log($"Failed to parse {@string} as a color.");
             color = default;
             return false;
         }
@@ -231,28 +231,28 @@ public static class Helpers
         {
             var attr = VertexAttribute.TexCoord0 + i;
 
-            if (originalMesh.HasVertexAttribute(attr))
-            {
-                var dimension = originalMesh.GetVertexAttributeDimension(attr);
+            if (!originalMesh.HasVertexAttribute(attr))
+                continue;
 
-                if (dimension == 2)
-                {
-                    originalMesh.GetUVs(i, uvs2);
-                    mesh.SetUVs(i, uvs2);
-                    uvs2.Clear();
-                }
-                else if (dimension == 3)
-                {
-                    originalMesh.GetUVs(i, uvs3);
-                    mesh.SetUVs(i, uvs3);
-                    uvs3.Clear();
-                }
-                else if (dimension == 4)
-                {
-                    originalMesh.GetUVs(i, uvs4);
-                    mesh.SetUVs(i, uvs4);
-                    uvs4.Clear();
-                }
+            var dimension = originalMesh.GetVertexAttributeDimension(attr);
+
+            if (dimension == 2)
+            {
+                originalMesh.GetUVs(i, uvs2);
+                mesh.SetUVs(i, uvs2);
+                uvs2.Clear();
+            }
+            else if (dimension == 3)
+            {
+                originalMesh.GetUVs(i, uvs3);
+                mesh.SetUVs(i, uvs3);
+                uvs3.Clear();
+            }
+            else if (dimension == 4)
+            {
+                originalMesh.GetUVs(i, uvs4);
+                mesh.SetUVs(i, uvs4);
+                uvs4.Clear();
             }
         }
 
@@ -261,7 +261,7 @@ public static class Helpers
     }
 
     private static readonly HashSet<IdentifiableId> IdentifiableIds = new(Identifiable.idComparer);
-    // private static readonly HashSet<GadgetId> GadgetIds = new(Gadget.idComparer);
+    private static readonly HashSet<GadgetId> GadgetIds = new(Gadget.idComparer);
 
     public static T ParseOrAddEnumValue<T>(string name) where T : struct, Enum => Enum.TryParse<T>(name, out var result) ? result : AddEnumValue<T>(name);
 
@@ -287,11 +287,11 @@ public static class Helpers
                 IdentifiableIds.Add(identifiableId);
                 break;
             }
-            // case GadgetId gadgetId: // TODO: Uncomment once we add gadgets
-            // {
-            //     GadgetIds.Add(gadgetId);
-            //     break;
-            // }
+            case GadgetId gadgetId:
+            {
+                GadgetIds.Add(gadgetId);
+                break;
+            }
         }
 
         // if (EnumMetadata.TryGet(enumType, out var metadata))
@@ -306,7 +306,7 @@ public static class Helpers
     public static void CategoriseIds()
     {
         IdentifiableIds.Do(IdentifiableRegistry.CategorizeId);
-        // GadgetIds.Do(GadgetRegistry.CategorizeId);
+        GadgetIds.Do(GadgetRegistry.CategorizeId);
     }
 
     // public static string ToHexRGBA(this Color32 color) => $"#{color.r.ToString(InvariantCulture):X2}{color.g.ToString(InvariantCulture):X2}{color.b.ToString(InvariantCulture):X2}{color.a.ToString(InvariantCulture):X2}";

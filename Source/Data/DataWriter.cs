@@ -108,7 +108,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
 
     public void WriteDouble(double value) => Writer.Write(value);
 
-    public void WriteNullableDouble(double? value)
+    public void WriteNullableDouble(Optional<double> value)
     {
         WriteBool(value.HasValue);
 
@@ -120,13 +120,13 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
 
     public void WriteStringToStringDictionary(Dictionary<string, Dictionary<string, string>>? dict) => WriteDictionary(dict, (w, v) => w.WriteString(v), (w, v) => w.WriteStringDictionary(v));
 
-    public void WriteNullableStringToStringDictionary(Dictionary<string, Dictionary<string, string>>? dict)
+    public void WriteNullableStringToStringDictionary(Optional<Dictionary<string, Dictionary<string, string>>> dict)
     {
-        var hasValue = dict != null;
+        var hasValue = dict.HasValue;
         WriteBool(hasValue);
 
         if (hasValue)
-            WriteStringToStringDictionary(dict);
+            WriteStringToStringDictionary(dict.Value);
     }
 
     public void WriteArray<T>(T[]? array, Action<DataWriter, T> elementWriter)
@@ -173,7 +173,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
         }
     }
 
-    public void WriteNullablePackedFloat(float? value)
+    public void WriteNullablePackedFloat(Optional<float> value)
     {
         WriteBool(value.HasValue);
 
@@ -181,7 +181,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
             WritePackedFloat(value.Value);
     }
 
-    public void WriteNullablePackedUInt(uint? value)
+    public void WriteNullablePackedUInt(Optional<uint> value)
     {
         WriteBool(value.HasValue);
 
@@ -189,7 +189,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
             WritePackedUInt(value.Value);
     }
 
-    public void WriteNullablePackedInt(int? value)
+    public void WriteNullablePackedInt(Optional<int> value)
     {
         WriteBool(value.HasValue);
 

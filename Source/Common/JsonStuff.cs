@@ -54,7 +54,7 @@ public abstract class SpawnedActorData : ActorData
 #else
     public string[] Progress;
 
-    public Optional<string> MainAmmoColor;
+    public Optional<Color32> MainAmmoColor;
 #endif
 
     public int ExchangeWeight = 20;
@@ -69,7 +69,7 @@ public abstract class SpawnedActorData : ActorData
         writer.WritePackedUInt((uint)ExchangeWeight);
         writer.WritePackedFloat(BasePrice);
         writer.WritePackedFloat(Saturation);
-        writer.WriteSubstring(MainAmmoColor, 1);
+        writer.WriteString(MainAmmoColor.ToHex());
         writer.WriteStringArray(Progress);
     }
 
@@ -77,7 +77,7 @@ public abstract class SpawnedActorData : ActorData
     {
         base.FindStrings(pooler);
         pooler.PoolStrings(Progress);
-        pooler.PoolSubstring(MainAmmoColor, 1);
+        pooler.PoolString(MainAmmoColor.ToHex());
     }
 #else
     public override void ReadFrom(DataReader reader)

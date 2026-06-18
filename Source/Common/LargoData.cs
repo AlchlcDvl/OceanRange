@@ -30,11 +30,13 @@ public sealed class LargoData : ActorData
 
 #if UNITY
     public string[] DefProps;
+
+    public Optional<float> Jiggle;
 #else
     public DefinitionProps DefProps;
-#endif
 
     public float? Jiggle;
+#endif
 
 #if !UNITY
     [JsonIgnore] public string Slime1;

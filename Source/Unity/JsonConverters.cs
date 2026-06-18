@@ -1,6 +1,7 @@
 #if UNITY
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using Newtonsoft.Json.Serialization;
 
 namespace OceanRange.Unity;
 
@@ -274,37 +275,37 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
     }
 }
 
-// /// <summary>
-// /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
-// /// </summary>
-// /// <typeparam name="TColor">The type of the color being handled (Color/Color32).</typeparam>
-// /// <typeparam name="TComponent">The type of the values that make up <typeparamref name="TColor"/>.</typeparam>
-// public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentConverter<TColor, TComponent>
-//     where TColor : struct // Color or Color32, but I don't know how to limit to only those two types
-//     where TComponent : struct // float or byte, same as above
-// {
-//     private readonly TryParseHtml<TColor> TryParseHtmlColor; // Unity parsing delegate
+/// <summary>
+/// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+/// </summary>
+/// <typeparam name="TColor">The type of the color being handled (Color/Color32).</typeparam>
+/// <typeparam name="TComponent">The type of the values that make up <typeparamref name="TColor"/>.</typeparam>
+public abstract class BaseColorConverter<TColor, TComponent> : MultiComponentConverter<TColor, TComponent>
+    where TColor : struct // Color or Color32, but I don't know how to limit to only those two types
+    where TComponent : struct // float or byte, same as above
+{
+    private readonly TryParseHtml<TColor> TryParseHtmlColor; // Unity parsing delegate
 
-//     /// <summary>
-//     /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
-//     /// </summary>
-//     /// <param name="style">The accepted number style.</param>
-//     /// <param name="tryParse">The number parsing delegate.</param>
-//     /// <param name="defaultValue">The default value for missing values.</param>
-//     /// <param name="htmlParser">The delegate for the unity HTML parsing method.</param>
-//     protected BaseColorConverter(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : base("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
-//     {
-//         var tType = typeof(TColor);
+    /// <summary>
+    /// Base color converter class that handles the usage of the unity method delegate that's passed along with the other converter specific values.
+    /// </summary>
+    /// <param name="style">The accepted number style.</param>
+    /// <param name="tryParse">The number parsing delegate.</param>
+    /// <param name="defaultValue">The default value for missing values.</param>
+    /// <param name="htmlParser">The delegate for the unity HTML parsing method.</param>
+    protected BaseColorConverter(NumberStyles style, TryParseDelegate<TComponent> tryParse, TComponent defaultValue, TryParseHtml<TColor> htmlParser) : base("'r,g,b', 'r,g,b,a' or #hex", style, tryParse, 4, 3, defaultValue)
+    {
+        var tType = typeof(TColor);
 
-//         if (tType != typeof(Color) && tType != typeof(Color32))
-//             throw new InvalidOperationException($"Invalid color type: {tType.Name}. Only UnityEngine.Color or UnityEngine.Color32 are supported.");
+        if (tType != typeof(Color) && tType != typeof(Color32))
+            throw new InvalidOperationException($"Invalid color type: {tType.Name}. Only UnityEngine.Color or UnityEngine.Color32 are supported.");
 
-//         TryParseHtmlColor = htmlParser;
-//     }
+        TryParseHtmlColor = htmlParser;
+    }
 
-//     /// <inheritdoc/>
-//     protected sealed override bool ParseOtherFormat(string valString, out TColor result) => valString.StartsWith('#') ? TryParseHtmlColor(valString, out result) :  base.ParseOtherFormat(valString, out result);
-// }
+    /// <inheritdoc/>
+    protected sealed override bool ParseOtherFormat(string valString, out TColor result) => valString.StartsWith('#') ? TryParseHtmlColor(valString, out result) :  base.ParseOtherFormat(valString, out result);
+}
 
 // /// <summary>
 // /// Color converter.
@@ -318,17 +319,17 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
 //     protected override string ToValueString(Color value) => value.ToColorString();
 // }
 
-// /// <summary>
-// /// Color32 converter.
-// /// </summary>
-// public sealed class Color32Converter() : BaseColorConverter<Color32, byte>(NumberStyles.Integer, byte.TryParse, 255, Helpers.TryHexToColor32)
-// {
-//     /// <inheritdoc/>
-//     protected override Color32 FillFromArray(byte[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
+/// <summary>
+/// Color32 converter.
+/// </summary>
+public sealed class Color32Converter() : BaseColorConverter<Color32, byte>(NumberStyles.Integer, byte.TryParse, 255, UnityUtils.TryParseColor32)
+{
+    /// <inheritdoc/>
+    protected override Color32 FillFromArray(byte[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
 
-//     /// <inheritdoc/>
-//     protected override string ToValueString(Color32 value) => value.ToHexRGBA(); // Using hex code here because it's a simpler representation
-// }
+    /// <inheritdoc/>
+    protected override string ToValueString(Color32 value) => "#" + value.ToHex(); // Using hex code here because it's a simpler representation
+}
 
 // /// <summary>
 // /// Enum converter.
@@ -478,8 +479,7 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
 
 public sealed class OptionalConverter : JsonConverter
 {
-    public override bool CanConvert(Type objectType)
-        => objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(Optional<>);
+    public override bool CanConvert(Type objectType) => typeof(IOptional).IsAssignableFrom(objectType);
 
     public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
@@ -501,5 +501,26 @@ public sealed class OptionalConverter : JsonConverter
 
         return Activator.CreateInstance(objectType, parsedValue);
     }
+}
+
+public static class JsonSettings
+{
+    public static readonly JsonSerializerSettings JsonSerialisationSettings = new JsonSerializerSettings()
+    {
+        NullValueHandling = NullValueHandling.Ignore,
+        Formatting = Formatting.Indented,
+        ContractResolver = new DefaultContractResolver()
+        {
+            NamingStrategy = new CamelCaseNamingStrategy(false, false)
+        },
+        Converters = new List<JsonConverter>()
+        {
+            // new ColorConverter(),
+            new Color32Converter(),
+            new Vector3Converter(),
+            new OptionalConverter(),
+            new OrientationConverter()
+        }
+    };
 }
 #endif

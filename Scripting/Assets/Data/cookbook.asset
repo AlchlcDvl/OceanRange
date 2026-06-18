@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76c7e9981bc2455299f5704b3ae0bbc0, type: 3}
   m_Name: cookbook
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::Cookbook
   ingredients:
     Name:
       HasValue: 0
@@ -30,7 +30,9 @@ MonoBehaviour:
       Progress: []
       MainAmmoColor:
         HasValue: 1
-        Value: '#efca76'
+        Value:
+          serializedVersion: 2
+          rgba: 4285975279
       ExchangeWeight: 20
       BasePrice: 5
       Saturation: 10
@@ -90,7 +92,9 @@ MonoBehaviour:
       Progress: []
       MainAmmoColor:
         HasValue: 1
-        Value: '#833296'
+        Value:
+          serializedVersion: 2
+          rgba: 4288033411
       ExchangeWeight: 20
       BasePrice: 4
       Saturation: 10
@@ -164,7 +168,9 @@ MonoBehaviour:
       Progress: []
       MainAmmoColor:
         HasValue: 1
-        Value: '#AB9E7E'
+        Value:
+          serializedVersion: 2
+          rgba: 4286488235
       ExchangeWeight: 20
       BasePrice: 4
       Saturation: 10
@@ -227,7 +233,9 @@ MonoBehaviour:
       Progress: []
       MainAmmoColor:
         HasValue: 1
-        Value: '#C2B280'
+        Value:
+          serializedVersion: 2
+          rgba: 4286624450
       ExchangeWeight: 20
       BasePrice: 20
       Saturation: 10
@@ -243,7 +251,9 @@ MonoBehaviour:
       Progress: []
       MainAmmoColor:
         HasValue: 1
-        Value: '#040454'
+        Value:
+          serializedVersion: 2
+          rgba: 4283696132
       ExchangeWeight: 20
       BasePrice: 30
       Saturation: 15

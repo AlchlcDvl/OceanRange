@@ -95,7 +95,7 @@ public static class Slimepedia
 
         public override bool Equals(object? obj) => obj is ElementCacheKey other && Equals(other);
 
-        public override string ToString() => sourceMeshName + ignoreLodIndex + jiggleBits + prefabLength;
+        public override string ToString() => string.Join(",", sourceMeshName, ignoreLodIndex, jiggleBits, prefabLength);
 
         public override int GetHashCode() => ToString().GetHashCode();
     }
@@ -471,7 +471,7 @@ public static class Slimepedia
     private static SlimeAppearance GenerateAppearance(SlimeData slimeData, SlimeAppearanceData data, SlimeAppearance baseAppearance, string lower, SlimeAppearanceApplicator applicator)
     {
         var appearance = baseAppearance.Instantiate(); // Cloning our own appearance
-        Main.Console.Log($"Slime {slimeData.Name} cloned {appearance.name} for its appearance");
+        // Main.Console.Log($"Slime {slimeData.Name} cloned {appearance.name} for its appearance");
         appearance.name = $"{slimeData.Name}Normal";
 
         var oldFace = appearance.Face;
@@ -566,7 +566,7 @@ public static class Slimepedia
             structure.DefaultMaterials[0] = GenerateMaterial(modelData.MatData, modelDatas, structure.DefaultMaterials[0]);
 
         var cacheKey = new ElementCacheKey(
-            meshData.Mesh ?? (baseStruct.Element.Prefabs.Length > 0 ? baseStruct.Element.Prefabs[0].name : "Empty"),
+            meshData.Mesh ?? baseStruct.Element.Prefabs.FirstOrDefault()?.name ?? baseStruct.Element.Name ?? baseStruct.Element.name,
             GetFloatBits(meshData.Jiggle ?? 0),
             meshData.IgnoreLodIndex,
             meshData.PrefabLength ?? (meshData.IsBody ? 4 : 2));
@@ -592,7 +592,7 @@ public static class Slimepedia
             for (var i = 0; i < oldPrefabs.Length; i++)
             {
                 var prefab = oldPrefabs[i].CreatePrefab();
-                var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
+                var handler = prefab.gameObject.EnsureComponent<ModelDataHandler>();
                 handler.Jiggle = meshData.Jiggle;
                 elemInner.Prefabs[i] = prefab;
             }
@@ -609,7 +609,7 @@ public static class Slimepedia
         {
             var prefab = SkinnedPrefab.CreatePrefab();
             prefab.IgnoreLODIndex = true;
-            var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
+            var handler = prefab.gameObject.EnsureComponent<ModelDataHandler>();
             handler.Jiggle = meshData.Jiggle;
             var rend = prefab.GetComponent<SkinnedMeshRenderer>();
             rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(meshData.Mesh!);
@@ -631,7 +631,7 @@ public static class Slimepedia
                 if (prefab!.TryGetComponent<SkinnedMeshRenderer>(out var rend))
                 {
                     rend.sharedMesh = isNull ? rend.sharedMesh.Clone() : Inventory.GetMesh(meshData.Mesh + "_LOD0");
-                    var handler = prefab.gameObject.AddComponent<ModelDataHandler>();
+                    var handler = prefab.gameObject.EnsureComponent<ModelDataHandler>();
                     handler.Jiggle = meshData.Jiggle;
                 }
                 else if (!isNull && prefab.TryGetComponent<MeshFilter>(out var filter))
@@ -870,7 +870,6 @@ public static class Slimepedia
                 var mesh = rend.sharedMesh;
                 var handler = appearanceObject.GetComponent<ModelDataHandler>();
                 list.Add((rend, mesh, handler?.Jiggle));
-                handler?.Destroy();
 
                 if (isBody && !sharedMesh)
                     sharedMesh = mesh;
@@ -996,17 +995,17 @@ public static class Slimepedia
     public static void InitGoldfishAppearanceDetails(SlimeAppearance appearance, SlimeAppearanceData _) => appearance.ColorPalette = IdentifiableId.GOLD_SLIME.GetSlimeDefinition().AppearancesDefault[0].ColorPalette;
 
 #if DEBUG
-    [TimeDiagnostic("Slime Postload")]
+    [TimeDiagnostic("Slimes Postload")]
 #endif
     [PostloadMethod]
-    public static void PostLoadSlimes()
+    public static void PostloadSlimes()
     {
         AweTowardsMesmers.InitCalculator();
         MimicBehaviour.Initialise();
 
         foreach (var (id, prefab) in GameContext.Instance.LookupDirector.identifiablePrefabDict)
         {
-            if (Identifiable.IsSlime(id) && !Largopedia.Mesmers.Contains(id)) // Ensuring that only non-mesmer slimes are affected
+            if (Identifiable.IsSlime(id) && !Largopedia.Mesmers.Contains(id) && id != IdentifiableId.TARR_SLIME) // Ensuring that only non-mesmer slimes are affected
                 prefab.AddComponent<AweTowardsMesmers>();
         }
 

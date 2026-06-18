@@ -9,21 +9,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "OceanRange/Data/slimepedia.json", fileName = "slimepedia.asset")]
 public class Slimepedia : ScriptableObject
 {
-    private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
-    {
-        NullValueHandling = NullValueHandling.Ignore,
-        Formatting = Formatting.Indented,
-        ContractResolver = new DefaultContractResolver()
-        {
-            NamingStrategy = new CamelCaseNamingStrategy(false, false)
-        },
-        Converters = new List<JsonConverter>()
-        {
-            new Vector3Converter(),
-            new OptionalConverter(),
-            new OrientationConverter(),
-        }
-    };
     private const string JsonAssetPath = "Assets/Jsons/slimepedia.json";
 
     public SlimeData[] slimes;
@@ -31,7 +16,7 @@ public class Slimepedia : ScriptableObject
     [ContextMenu("Serialize to Json")]
     public void Serialize()
     {
-        var json = JsonConvert.SerializeObject(slimes, JsonSettings);
+        var json = JsonConvert.SerializeObject(slimes, JsonSettings.JsonSerialisationSettings);
         var asset = new TextAsset(json);
         AssetDatabase.CreateAsset(asset, JsonAssetPath);
     }
@@ -40,6 +25,6 @@ public class Slimepedia : ScriptableObject
     public void Deserialize()
     {
         var text = AssetDatabase.LoadAssetAtPath<TextAsset>(JsonAssetPath).text;
-        slimes = JsonConvert.DeserializeObject<SlimeData[]>(text, JsonSettings);
+        slimes = JsonConvert.DeserializeObject<SlimeData[]>(text, JsonSettings.JsonSerialisationSettings);
     }
 }

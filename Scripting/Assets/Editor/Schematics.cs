@@ -6,32 +6,17 @@ using OceanRange.Data;
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "OceanRange/Data/schematics.json", fileName = "schematics.asset")]
-public class Schematics : ScriptableObject
+[CreateAssetMenu(menuName = "OceanRange/Data/blueprints.json", fileName = "blueprints.asset")]
+public class Blueprints : ScriptableObject
 {
-    private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
-    {
-        NullValueHandling = NullValueHandling.Ignore,
-        Formatting = Formatting.Indented,
-        ContractResolver = new DefaultContractResolver()
-        {
-            NamingStrategy = new CamelCaseNamingStrategy(false, false)
-        },
-        Converters = new List<JsonConverter>()
-        {
-            new Vector3Converter(),
-            new OptionalConverter(),
-            new OrientationConverter(),
-        }
-    };
-    private const string JsonAssetPath = "Assets/Jsons/schematics.json";
+    private const string JsonAssetPath = "Assets/Jsons/blueprints.json";
 
-    public OceanRange.Data.Schematics schematics;
+    public Schematics blueprints;
 
     [ContextMenu("Serialize to Json")]
     public void Serialize()
     {
-        var json = JsonConvert.SerializeObject(schematics, JsonSettings);
+        var json = JsonConvert.SerializeObject(blueprints, JsonSettings.JsonSerialisationSettings);
         var asset = new TextAsset(json);
         AssetDatabase.CreateAsset(asset, JsonAssetPath);
     }
@@ -40,6 +25,6 @@ public class Schematics : ScriptableObject
     public void Deserialize()
     {
         var text = AssetDatabase.LoadAssetAtPath<TextAsset>(JsonAssetPath).text;
-        schematics = JsonConvert.DeserializeObject<OceanRange.Data.Schematics>(text, JsonSettings);
+        blueprints = JsonConvert.DeserializeObject<OceanRange.Data.Schematics>(text, JsonSettings.JsonSerialisationSettings);
     }
 }
