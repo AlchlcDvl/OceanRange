@@ -4,6 +4,10 @@ namespace OceanRange.Slimes;
 
 public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
 {
+    public static SlimeAppearanceStructure DefaultBody;
+    public static SlimeAppearanceStructure MimicTail;
+    public static SlimeAppearanceStructure FakeMimicTail;
+
     private SlimeAppearanceApplicator applicator;
     private StealthFixer fixer;
 
@@ -25,8 +29,6 @@ public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
 
     public static void Initialise()
     {
-        var baseMimicTail = Ids.MIMIC_SLIME.GetSlimeDefinition().AppearancesDefault[0].Structures[1];
-
         foreach (var slimeId in Identifiable.SLIME_CLASS)
         {
             if (slimeId == Ids.MIMIC_SLIME || slimeId == IdentifiableId.TARR_SLIME)
@@ -37,9 +39,9 @@ public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
             var clonedAppearance = targetAppearance.Instantiate();
             clonedAppearance.name = "Mimic_" + slimeId.ToString() + "_Appearance";
 
-            var clonedTail = new SlimeAppearanceStructure(baseMimicTail);
+            var clonedTail = new SlimeAppearanceStructure(FakeMimicTail);
 
-            var tailMat = baseMimicTail.DefaultMaterials[0].Clone();
+            var tailMat = FakeMimicTail.DefaultMaterials[0].Clone();
             tailMat.SetColor(Slimepedia.TopColor, targetAppearance.ColorPalette.Top);
             tailMat.SetColor(Slimepedia.MiddleColor, targetAppearance.ColorPalette.Middle);
             tailMat.SetColor(Slimepedia.BottomColor, targetAppearance.ColorPalette.Bottom);
@@ -50,6 +52,9 @@ public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
             var newStructures = new SlimeAppearanceStructure[oldStructures.Length + 1];
             oldStructures.CopyTo(newStructures, 0);
             newStructures[oldStructures.Length] = clonedTail;
+
+            if (slimeId == Ids.ROSI_SLIME)
+                DefaultBody.Element.Prefabs.CopyTo(newStructures[0].Element.Prefabs, 0);
 
             clonedAppearance.Structures = newStructures;
 

@@ -11,6 +11,7 @@ public static class Ids
 {
     public static readonly SlimeExpression Sleeping;
 
+    public static readonly IdentifiableId ROSI_SLIME;
     public static readonly IdentifiableId SAND_SLIME;
     public static readonly IdentifiableId MIMIC_SLIME;
 

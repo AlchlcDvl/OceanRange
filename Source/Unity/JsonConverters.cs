@@ -224,7 +224,7 @@ public sealed class Vector3Converter() : MultiComponentConverter<Vector3, float>
     protected override Vector3 FillFromArray(float[] array) => new(array[0], array[1], array[2]); // 0 = x, 1 = y, 2 = z
 
     /// <inheritdoc/>
-    protected override string ToValueString(Vector3 value) => value.ToVectorString();
+    protected override string ToValueString(Vector3? value) => value.GetValueOrDefault().ToVectorString();
 }
 
 /// <summary>
@@ -245,7 +245,11 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
         return valString.StartsWith('f') ? FloatHandler.Parse(valString) : Vector3Handler.Parse(valString);
     }
 
-    protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()};{value.Scale.ToVectorString()}";
+    protected override string ToValueString(Orientation? value) =>
+    {
+        var val = value.GetValueOrDefault();
+        return $"{val.Position.ToVectorString()};{val.Rotation.ToVectorString()};{val.Scale.ToVectorString()}";
+    }
 
     /// <summary>
     /// Orientation converter using a grouped Vector3 format.
@@ -258,7 +262,11 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
         protected override Orientation FillFromArray(Vector3[] array) => new(array[0], array[1], array[2]); // 0 = position, 1 = rotation, 2 = scale
 
         /// <inheritdoc/>
-        protected override string ToValueString(Orientation value) => $"{value.Position.ToVectorString()};{value.Rotation.ToVectorString()};{value.Scale.ToVectorString()}";
+        protected override string ToValueString(Orientation? value)
+        {
+            var val = value.GetValueOrDefault();
+            return $"{val.Position.ToVectorString()};{val.Rotation.ToVectorString()};{val.Scale.ToVectorString()}";
+        }
     }
 
     /// <summary>
@@ -271,7 +279,11 @@ public sealed class OrientationConverter : OceanJsonConverter<Orientation>
         // 0 = position x, 1 = position y, 2 = position z, 3 = rotation x, 4 = rotation y, 5 = rotation z, 6 = scale x, 7 = scale y, 8 = scale z
 
         /// <inheritdoc/>
-        protected override string ToValueString(Orientation value) => $"f{value.Position.ToVectorString()},{value.Rotation.ToVectorString()},{value.Scale.ToVectorString()}";
+        protected override string ToValueString(Orientation? value)
+        {
+            var val = value.GetValueOrDefault();
+            return $"{val.Position.ToVectorString()},{val.Rotation.ToVectorString()},{val.Scale.ToVectorString()}";
+        }
     }
 }
 
@@ -328,7 +340,7 @@ public sealed class Color32Converter() : BaseColorConverter<Color32, byte>(Numbe
     protected override Color32 FillFromArray(byte[] array) => new(array[0], array[1], array[2], array[3]); // 0 = r, 1 = g, 2 = b, 3 = a
 
     /// <inheritdoc/>
-    protected override string ToValueString(Color32 value) => "#" + value.ToHex(); // Using hex code here because it's a simpler representation
+    protected override string ToValueString(Color32? value) => "#" + value.GetValueOrDefault().ToHex(); // Using hex code here because it's a simpler representation
 }
 
 // /// <summary>

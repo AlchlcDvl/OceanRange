@@ -967,6 +967,8 @@ public static class Slimepedia
         HandleFace(ConstructFace(Sleeping, eyesOrigin, mouthOrigin), data, appearance.Face._expressionToFaceLookup);
 
         data.ChangedFace = true;
+
+        MimicBehaviour.DefaultBody = appearance.Structures[0];
     }
 
     [UsedImplicitly]
@@ -993,6 +995,17 @@ public static class Slimepedia
 
     [UsedImplicitly]
     public static void InitGoldfishAppearanceDetails(SlimeAppearance appearance, SlimeAppearanceData _) => appearance.ColorPalette = IdentifiableId.GOLD_SLIME.GetSlimeDefinition().AppearancesDefault[0].ColorPalette;
+
+    [UsedImplicitly]
+    public static void InitMimicAppearanceDetails(SlimeAppearance appearance, SlimeAppearanceData _)
+    {
+        MimicBehaviour.MimicTail = appearance.Structures[1];
+        MimicBehaviour.FakeMimicTail = appearance.Structures[2];
+
+        var newStructures = new SlimeAppearanceStructure[appearance.Structures.Length - 1];
+        Array.Copy(appearance.Structures, newStructures, newStructures.Length);
+        appearance.Structures = newStructures;
+    }
 
 #if DEBUG
     [TimeDiagnostic("Slimes Postload")]

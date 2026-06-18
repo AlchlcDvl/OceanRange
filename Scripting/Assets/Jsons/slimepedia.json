@@ -639,6 +639,10 @@
               "_BottomColor": "#44928B"
             }
           }
+        },
+        {
+          "meshData": { "mesh": "mimic_tail_fake" },
+          "matData": { "sameAs": 1 }
         }
       ],
       "gordoFeatures": [
