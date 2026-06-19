@@ -14,7 +14,7 @@ public static class Mailbox
     {
         Mail = Inventory.GetJsonArray<MailData>("mailbox");
 
-        MailMap = new(Mail.Length);
+        MailMap = new(Mail.Length, StringComparer.Ordinal);
 
         foreach (var item in Mail)
         {

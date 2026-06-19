@@ -6,9 +6,9 @@ TODO.txt
 packages.lock.json
 Test*/
 *.DotSettings.user
+*.DotSettings
 Ignore/
-.qodo
-Libs/
+*Libs
 Ignore.*
 Dev*/
 UnusedAssets/
@@ -18,3 +18,8 @@ ExternalAnnotations/
 SlimeRancher.props
 cspell.json
 Logs/
+Logs
+Mods
+Source/Generated/
+OceanRange.Generator/
+Test/

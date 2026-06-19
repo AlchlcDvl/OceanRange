@@ -7,6 +7,7 @@ public sealed class AweTowardsMesmers : FindConsumable
     private SlimeFaceAnimator sfAnimator;
     private double nextActivationTime;
     private float endTime;
+    private float nextSearchTime;
 
     private static readonly Dictionary<IdentifiableId, DriveCalculator> SearchIdCache = new(Identifiable.idComparer);
     private static readonly DriveCalculator DriveCalculator = new(SlimeEmotions.Emotion.NONE, 0f, 0f);
@@ -31,7 +32,12 @@ public sealed class AweTowardsMesmers : FindConsumable
         if (!isGrounded || !timeDir.HasReached(nextActivationTime))
             return 0f;
 
-        target = FindNearestConsumable(out _);
+        if (Time.time >= nextSearchTime)
+        {
+            target = FindNearestConsumable(out _);
+            nextSearchTime = Time.time + 1.5f;
+        }
+
         return target ? Randoms.SHARED.GetInRange(0.1f, 1f) : 0f;
     }
 

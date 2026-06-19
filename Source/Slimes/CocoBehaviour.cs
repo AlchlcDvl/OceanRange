@@ -1,16 +1,23 @@
 namespace OceanRange.Slimes;
 
-public sealed class CocoBehaviour : MonoBehaviour
+// Had to recreate DamagePlayerOnTouch because using Rock slimes as a base just no longer allowed Coco slimes to move
+// Az from the future here; attempting to add my own hook did not work, as it would just knockout players instead of damaging them
+public sealed class CocoBehaviour : SRBehaviour, ControllerCollisionListener
 {
-    private DamagePlayerOnTouch damage;
+    private const int DamagePerTouch = 10;
+    private const float RepeatTime = 1f;
 
-    public void Awake() => damage = GetComponent<DamagePlayerOnTouch>();
+    private float nextTime;
 
-    public void TryToDamage(GameObject gameObj)
+    public void Awake() => ResetDamageAmnesty();
+
+    public void ResetDamageAmnesty() => nextTime = Time.time + 0.1f;
+
+    public void OnControllerCollision(GameObject gameObj)
     {
-        if (Time.time >= damage.nextTime && transform.position.y > gameObj.transform.position.y + 1.25f && gameObject.GetInterfaceComponent<Damageable>().Damage(damage.damagePerTouch, gameObject))
+        if (Time.time >= nextTime && transform.position.y > gameObj.transform.position.y + 1.25f && gameObj.GetInterfaceComponent<Damageable>().Damage(DamagePerTouch, gameObject))
             DeathHandler.Kill(gameObj, DeathHandler.Source.SLIME_DAMAGE_PLAYER_ON_TOUCH, gameObject, "CocoBehaviour.TryToDamage");
 
-        damage.nextTime = Time.time + damage.repeatTime;
+        nextTime = Time.time + RepeatTime;
     }
 }

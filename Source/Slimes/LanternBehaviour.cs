@@ -2,20 +2,28 @@ namespace OceanRange.Slimes;
 
 public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener, CaveTrigger.Listener
 {
-    private readonly HashSet<GameObject> Caves = [];
+    public static GameObject FlashbangPrefab;
+
+    private readonly HashSet<GameObject> caves = [];
 
     private TimeDirector timeDir;
     private SlimeAppearanceApplicator applicator;
     private float fleeingUntil;
     private bool waitForPhysicsUpdate;
-    private CanMoveHandler canMove;
+    private bool wasFleeing;
+    private bool wasSleeping;
+
+    public float FlashDuration = 3.5f;
+    public float FadeDuration = 3.5f;
+
+    public CanMoveHandler CanMove;
 
     public bool Fleeing { get; private set; }
 
     public void Awake()
     {
         applicator = GetComponent<SlimeAppearanceApplicator>();
-        canMove = this.EnsureComponent<CanMoveHandler>();
+        CanMove = this.EnsureComponent<CanMoveHandler>();
         timeDir = SceneContext.Instance.TimeDirector;
         waitForPhysicsUpdate = true;
     }
@@ -29,20 +37,31 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
         if (Fleeing)
         {
             Fleeing = Time.fixedTime < fleeingUntil;
-            applicator.SetExpression(SlimeExpression.Alarm);
+
+            if (!wasFleeing)
+            {
+                applicator.SetExpression(SlimeExpression.Alarm);
+                wasFleeing = true;
+            }
+
             return;
         }
 
-        if (Caves.Count > 0)
+        wasFleeing = false;
+        CanMove.CanMove = caves.Count > 0 || timeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
+
+        if (!CanMove.CanMove)
         {
-            canMove.CanMove = true;
-            return;
+            if (!wasSleeping)
+            {
+                applicator.SetExpression(Ids.Sleeping);
+                wasSleeping = true;
+            }
         }
-
-        canMove.CanMove = timeDir.CurrHour().IsInLoopedRange(0f, 24f, 6f, 18f, false);
-
-        if (!canMove.CanMove)
-            applicator.SetExpression(Ids.Sleeping);
+        else
+        {
+            wasSleeping = false;
+        }
     }
 
     public void Update()
@@ -50,22 +69,28 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
         if (waitForPhysicsUpdate)
             return;
 
-        if (Caves.Count > 0)
-            UnityWorkarounds.SafeRemoveAllNulls(Caves);
+        if (caves.Count > 0)
+            UnityWorkarounds.SafeRemoveAllNulls(caves);
     }
 
     public void OnControllerCollision(GameObject gameObj)
     {
-        if (canMove.CanMove)
+        if (CanMove.CanMove || gameObj != SceneContext.Instance.Player)
             return;
 
-        canMove.CanMove = Fleeing = gameObj == SceneContext.Instance.Player;
+        CanMove.CanMove = Fleeing = true;
+        fleeingUntil = Time.fixedTime + 10f;
 
-        if (Fleeing)
-            fleeingUntil = Time.fixedTime + 10f;
+        var flash = Instantiate(FlashbangPrefab);
+        flash.transform.localScale *= 25f;
+        DontDestroyOnLoad(flash);
+
+        var effect = flash.AddComponent<FlashbangEffect>();
+        effect.SetFlashDuration(FlashDuration);
+        effect.SetFadeDuration(FadeDuration);
     }
 
-    public void OnCaveEnter(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => Caves.Add(caveObj);
+    public void OnCaveEnter(GameObject caveObj, bool _1, Ambiance _2) => caves.Add(caveObj);
 
-    public void OnCaveExit(GameObject caveObj, bool _1, AmbianceDirector.Zone _2) => Caves.Remove(caveObj);
+    public void OnCaveExit(GameObject caveObj, bool _1, Ambiance _2) => caves.Remove(caveObj);
 }

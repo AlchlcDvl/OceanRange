@@ -10,19 +10,19 @@ public enum LoadState : byte
 
 public enum ManagerType : byte
 {
-    // Atlas,
+    Atlas,
     FloppyDisk,
     Cookbook,
+    Refinery,
     Slimepedia,
     Largopedia,
     Mailbox,
     Contacts,
-    // Blueprints,
+    Blueprints,
     Translator
 }
 
-[AttributeUsage(AttributeTargets.Class)]
-[MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
+[AttributeUsage(AttributeTargets.Class), MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
 public sealed class ManagerAttribute(ManagerType manager) : Attribute
 {
     public readonly ManagerType Manager = manager;

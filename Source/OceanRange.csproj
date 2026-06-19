@@ -2,11 +2,10 @@
   <PropertyGroup>
     <AssemblyName>OceanRange</AssemblyName>
     <RootNamespace>OceanRange</RootNamespace>
-    <TargetFramework>net4.7.2</TargetFramework>
     <Version>0.3.0</Version>
-    <DebugType>none</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>preview</LangVersion>
+    <nullable>enable</nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Authors>TheRanchExchange</Authors>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
@@ -20,38 +19,47 @@
 
   <PropertyGroup Condition="$(Configuration)==Unity">
     <DefineConstants>UNITY</DefineConstants>
+    <DebugType>embedded</DebugType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration)==Debug">
+    <DebugType>none</DebugType>
+    <TargetFramework>net4.7.2</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration)==Release">
     <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <TargetFramework>net4.7.2</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="../Libs/*.dll">
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
 
   <ItemGroup Condition="$(Configuration)!=Unity">
     <PackageReference Include="Krafs.Publicizer" Version="2.3.0" PrivateAssets="all" ExcludeAssets="runtime" />
-    <PackageReference Include="Roslynator.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
-    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
-    <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.11" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.15.0" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.15.0" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.15.0" PrivateAssets="all" ExcludeAssets="runtime" />
 
     <EmbeddedResource Include="Resources\*" />
     <EmbeddedResource Include="Resources\*\*" />
     <EmbeddedResource Include="Resources\*\*\*" />
 
-    <EmbeddedResource Remove="Resources\Data\atlas.json" />
-
     <Publicize Include="Assembly-CSharp" IncludeCompilerGeneratedMembers="false" />
     <Publicize Include="UnityEngine.CoreModule" />
+
+    <Compile Remove="Unity\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="$(Configuration)==Unity">
     <Compile Remove="**\*.cs" />
 
+    <Compile Include="GlobalUsings.cs" />
+    <Compile Include="Data\DataWriter.cs" />
+    <Compile Include="Data\StringPooler.cs" />
+    <Compile Include="Utils\UnityUtils.cs" />
     <Compile Include="Unity\*.cs" />
+    <Compile Include="Common\*.cs" />
+    <Compile Include="System\*.cs" />
   </ItemGroup>
 
   <Import Project="../SlimeRancher.props" />

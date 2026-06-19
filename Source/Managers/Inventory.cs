@@ -1,10 +1,6 @@
-using System.Reflection;
-using SRML.Utils;
 using System.IO.Compression;
-using System.Text;
-using Newtonsoft.Json.Serialization;
+using System.Reflection;
 using UnityEngine.Rendering;
-using System.Runtime.CompilerServices;
 
 namespace OceanRange.Managers;
 
@@ -13,71 +9,47 @@ namespace OceanRange.Managers;
 /// </summary>
 public static class Inventory
 {
-    // public static AssetBundle Bundle;
+    public static AssetBundle Bundle;
 
     /// <summary>
     /// Assembly data for the mod's dll.
     /// </summary>
     public static readonly Assembly Core = typeof(Main).Assembly;
 
-    /// <summary>
-    /// Common JSON serialisation settings to avoid creating a new JSON settings instance for each JSON file.
-    /// </summary>
-    public static readonly JsonSerializerSettings JsonSettings = new()
-    {
-#if DEBUG
-        // Only add indentation specification if it's in debug mode for asset dumping, because there's no need for such a thing to happen in the release build
-        Formatting = Formatting.Indented,
-#endif
-
-        ContractResolver = new DefaultContractResolver { NamingStrategy = new CamelCaseNamingStrategy(false, false) },
-        // Adding the JSON converters
-        Converters =
-        [
-            new EnumConverter(),
-            new TypeConverter(),
-            new ColorConverter(),
-            // new Color32Converter(), // Unused at the moment, but kept around if needed
-            new Vector3Converter(),
-            new OrientationConverter(),
-        ]
-    };
-
-    private static readonly JsonSerializer OrJsonSerializer = JsonSerializer.Create(JsonSettings);
     private static readonly Func<string, AssetHandle> Create = name => new(name);
 
-    // private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
-    // {
-    //     [RuntimePlatform.OSXPlayer] = "mac",
-    //     [RuntimePlatform.LinuxPlayer] = "lin",
-    //     [RuntimePlatform.WindowsPlayer] = "win",
-    // };
+    private static readonly Dictionary<RuntimePlatform, string> Platforms = new(PlatformComparer.Instance)
+    {
+        [RuntimePlatform.OSXPlayer] = "mac",
+        [RuntimePlatform.LinuxPlayer] = "lin",
+        [RuntimePlatform.WindowsPlayer] = "win",
+    };
 
-    // private static readonly string BundleSuffix = "bundle_" +
-    // (
-    //     Platforms.TryGetValue(Application.platform, out var suffix)
-    //     ? suffix
-    //     : throw new PlatformNotSupportedException(Application.platform.ToString())
-    // );
+    private static readonly string BundleSuffix = "bundle_" +
+    (
+        Platforms.TryGetValue(Application.platform, out var suffix)
+            ? suffix
+            : throw new PlatformNotSupportedException(Application.platform.ToString())
+    );
 
     /// <summary>
     /// Very basic mapping of types to relevant file extensions and how they are loaded.
     /// </summary>
-    public static readonly SoftTypeDictionary<(string[] Extensions, Func<string, UObject> LoadAsset)> AssetTypeExtensions = new()
+    public static readonly Dictionary<Type, (string[] Extensions, Func<string, UObject?> LoadAsset)> AssetTypeExtensions = new()
     {
         // Embedded resources
-        [typeof(Json)] = (["json"], LoadJson),
+        [typeof(Json)] = (["cjson"], LoadJson),
         [typeof(Mesh)] = (["cmesh"], LoadMesh),
         [typeof(Sprite)] = (["png", "jpg"], LoadSprite),
         [typeof(Texture2D)] = (["png", "jpg"], LoadTexture2D),
 
-        // [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
+        [typeof(AssetBundle)] = ([BundleSuffix], LoadBundle), // Simple asset bundle loading
 
         // Bundle resources
-        // [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
-        // [typeof(Material)] = (["mat"], GetBundleAsset<Material>),
-        // [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
-        // [typeof(ScriptableObject)] = (["asset"], GetBundleAsset<ScriptableObject>),
+        [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
+        [typeof(Material)] = (["mat"], GetBundleAsset<Material>),
+        [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
+        [typeof(ScriptableObject)] = (["asset"], null!), // Has its own internal handling
 
         // AudioClip is not currently in use
         // [typeof(AudioClip)] = (["wav"], LoadAudioClip),
@@ -86,7 +58,7 @@ public static class Inventory
     /// <summary>
     /// Handles the mapping of extensions that essentially mean the same thing.
     /// </summary>
-    public static readonly Dictionary<string, string> ExclusiveExtensions = new()
+    public static readonly Dictionary<string, string> ExclusiveExtensions = new(StringComparer.Ordinal)
     {
         ["png"] = "jpg",
         ["jpg"] = "png"
@@ -95,10 +67,13 @@ public static class Inventory
     /// <summary>
     /// Dictionary to hold handles for mod assets.
     /// </summary>
-    private static readonly Dictionary<string, AssetHandle> Assets = [];
+    private static readonly Dictionary<string, AssetHandle> Assets = new(StringComparer.Ordinal);
 
-    private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions)/*.Concat(Platforms.Select(x => "bundle_" + x))*/)];
+    private static readonly string[] Extensions = [.. new HashSet<string>(AssetTypeExtensions.Values.SelectMany(x => x.Extensions).Concat(Platforms.Select(x => "bundle_" + x.Value)), StringComparer.Ordinal)];
 
+    private static string[] StringPool;
+
+#if DEBUG
     /// <summary>
     /// Debug string path for the mod to dump assets.
     /// </summary>
@@ -107,18 +82,26 @@ public static class Inventory
     /// <summary>
     /// Initialises the asset handling by creating relevant handles.
     /// </summary>
-#if DEBUG
     [TimeDiagnostic("Assets Initialis")]
 #endif
     public static void InitialiseAssets()
     {
         Array.ForEach(Core.GetManifestResourceNames(), CreateAssetHandle); // Create handles for embedded resources
 
-        // Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
-        // Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
+        using var stream = Core.GetManifestResourceStream("OceanRange.Resources.Data.string.pool")!;
+        using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
+        using var binary = new BinaryReader(decompressor);
+        using var reader = new DataReader(binary, null);
 
-        if (!Directory.Exists(DumpPath))
-            Directory.CreateDirectory(DumpPath);
+        var count = reader.ReadPackedUInt();
+        StringPool = new string[(int)count];
+        StringPool[0] = string.Empty;
+
+        for (var i = 1; i < count; i++)
+            StringPool[i] = reader.ReadString()!;
+
+        Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
+        Array.ForEach(Bundle.GetAllAssetNames(), CreateAssetHandle); // Create handles for bundles resources
     }
 
     public static void TryReleaseHandles(params string[] handles)
@@ -146,7 +129,7 @@ public static class Inventory
         foreach (var handleName in handles)
         {
             if (Assets.TryRemove(handleName, out var handle))
-                handle.Dispose(); // Releasing the handles
+                handle!.Dispose(); // Releasing the handles
             else
                 throw new FileNotFoundException(handleName);
         }
@@ -160,7 +143,7 @@ public static class Inventory
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted JSON data.</returns>
-    public static T[] GetJsonArray<T>(string path) => GetJson<T[]>(path);
+    public static T[] GetJsonArray<T>(string path) where T : JsonData, new() => ToJsonArray<T>(Get<Json>(path));
 
     /// <summary>
     /// Gets and serialise JSON data from the asset associated with the provided name.
@@ -168,52 +151,58 @@ public static class Inventory
     /// <typeparam name="T">The type to deserialise to.</typeparam>
     /// <param name="path">The name of the asset.</param>
     /// <returns>The read and converted JSON data.</returns>
-    public static T GetJson<T>(string path) => ToJson<T>(TryReadJson(path, out var contents) ? contents : Get<Json>(path).text);
+    public static T? GetJson<T>(string path) where T : JsonData, new() => ToJson<T>(Get<Json>(path));
 
-    public static bool TryGetJson<T>(string name, bool writeJson, out T json)
+    public static bool TryGetTranslation(string name, out Translations? json)
     {
-        var path = Path.Combine(DumpPath, name + ".json");
-
-        if (File.Exists(path))
+        if (!TryGet<Json>(name, out var jsonData))
         {
-            json = ToJson<T>(File.ReadAllText(path));
-            return true;
-        }
-
-        if (!TryGet<Json>(name, out var jsonText))
-        {
-            json = default;
+            json = null;
             return false;
         }
 
-        var raw = jsonText.text;
-        json = ToJson<T>(raw);
-
-        if (writeJson)
-            File.WriteAllText(path, raw);
-
+        json = ToJson<Translations>(jsonData);
         return true;
     }
 
-    private static T ToJson<T>(string jsonText)
+    private static T? ToJson<T>(Json? json) where T : JsonData, new()
     {
-        using var stringReader = new StringReader(jsonText);
-        using var jsonTextReader = new JsonTextReader(stringReader);
-        return OrJsonSerializer.Deserialize<T>(jsonTextReader);
+        if (json == null)
+            return null;
+
+        using var stream = new MemoryStream(json.Data);
+        using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
+        using var binary = new BinaryReader(decompressor);
+        using var reader = new DataReader(binary, StringPool);
+
+        var data = new T();
+        data.ReadFrom(reader);
+        data.OnDeserialise();
+
+        return data;
     }
 
-    private static bool TryReadJson(string fileName, out string contents)
+    private static T[] ToJsonArray<T>(Json json) where T : JsonData, new()
     {
-        var path = Path.Combine(DumpPath, fileName + ".json");
+        using var stream = new MemoryStream(json.Data);
+        using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
+        using var binary = new BinaryReader(decompressor);
+        using var reader = new DataReader(binary, StringPool);
 
-        if (!File.Exists(path))
+        var count = reader.ReadPackedUInt();
+        var array = new T[count];
+
+        for (var i = 0; i < count; i++)
         {
-            contents = null;
-            return false;
+            var data = new T();
+            data.ReadFrom(reader);
+            array[i] = data;
         }
 
-        contents = File.ReadAllText(path);
-        return true;
+        for (var i = 0; i < count; i++)
+            array[i].OnDeserialise();
+
+        return array;
     }
 
     /// <summary>
@@ -222,7 +211,7 @@ public static class Inventory
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Texture2D GetTexture2D(string name) => Get<Texture2D>(name);
 
-    public static bool TryGetTexture2D(string name, out Texture2D asset) => TryGet(name, out asset);
+    public static bool TryGetTexture2D(string name, out Texture2D? asset) => TryGet(name, out asset);
 
     /// <summary>
     /// Gets a Sprite from the assets associated with the provided name.
@@ -243,33 +232,33 @@ public static class Inventory
     /// <inheritdoc cref="Get{T}(string)"/>
     public static Mesh GetMesh(string name) => Get<Mesh>(name);
 
-    public static bool TryGetMesh(string name, out Mesh mesh) => TryGet(name, out mesh);
+    public static bool TryGetMesh(string name, out Mesh? mesh) => TryGet(name, out mesh);
 
     public static IEnumerable<Mesh> GetAllMeshes() => GetAll<Mesh>();
 
-    // /// <summary>
-    // /// Gets a Shader from the assets associated with the provided name.
-    // /// </summary>
-    // /// <inheritdoc cref="Get{T}(string)"/>
-    // public static Shader GetShader(string name) => Get<Shader>(name);
+    /// <summary>
+    /// Gets a Shader from the assets associated with the provided name.
+    /// </summary>
+    /// <inheritdoc cref="Get{T}(string)"/>
+    public static Shader GetShader(string name) => Get<Shader>(name);
 
-    // /// <summary>
-    // /// Gets a ScriptableObject instance associated with the provided type and name.
-    // /// </summary>
-    // /// <typeparam name="T">The type of the data.</typeparam>
-    // /// <inheritdoc cref="Get{T}(string)"/>
-    // public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
-    //
-    // public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
+    /// <summary>
+    /// Gets a ScriptableObject instance associated with the provided type and name.
+    /// </summary>
+    /// <typeparam name="T">The type of the data.</typeparam>
+    /// <inheritdoc cref="Get{T}(string)"/>
+    public static T GetScriptable<T>(string name) where T : ScriptableObject => Get<T>(name.ToLowerInvariant());
+
+    public static GameObject GetPrefab(string name) => Get<GameObject>(name.ToLowerInvariant());
 
     private static IEnumerable<T> GetAll<T>(string[] names) where T : UObject => names.Select(Get<T>);
 
-    public static IEnumerable<T> GetAll<T>() where T : UObject
+    private static IEnumerable<T> GetAll<T>() where T : UObject
     {
         foreach (var handle in Assets.Values)
         {
             if (handle.TryLoad<T>(out var asset))
-                yield return asset;
+                yield return asset!;
         }
     }
 
@@ -280,7 +269,7 @@ public static class Inventory
     /// <param name="name">The name of the asset.</param>
     /// <param name="result">The fetched asset, if any.</param>
     /// <returns>true if an asset was found with the name.</returns>
-    private static bool TryGet<T>(string name, out T result) where T : UObject
+    private static bool TryGet<T>(string name, out T? result) where T : UObject
     {
         try
         {
@@ -325,9 +314,9 @@ public static class Inventory
     /// <returns>The JSON asset loaded from the path.</returns>
     private static Json LoadJson(string path)
     {
-        using var stream = Core.GetManifestResourceStream(path)!;
-        using var reader = new StreamReader(stream, Encoding.UTF8, false);
-        return new(reader.ReadToEnd());
+        var json = ScriptableObject.CreateInstance<Json>();
+        json.Initialise(path.ReadBytes());
+        return json;
     }
 
     /// <summary>
@@ -341,28 +330,24 @@ public static class Inventory
 
         using var stream = Core.GetManifestResourceStream(path)!;
         using var decompressor = new DeflateStream(stream, CompressionMode.Decompress);
-        using var reader = new BinaryReader(decompressor);
+        using var binaryReader = new BinaryReader(decompressor);
+        using var reader = new DataReader(binaryReader, null);
 
         var mesh = new Mesh { indexFormat = (IndexFormat)reader.ReadByte() };
 
-        var bounds = ReadBounds(reader);
+        var bounds = reader.ReadBounds();
 
         mesh.bounds = bounds;
-        mesh.subMeshCount = ReadPackedInt(reader);
+        mesh.subMeshCount = reader.ReadPackedInt();
 
-        var vertexCount = ReadPackedInt(reader);
-        mesh.vertices = ReadArrayContents(reader, vertexCount, r => ReadQuantizedPosition(r, bounds));
-
-        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedNormal), (m, v) => m.normals = v);
-        AssignAttribute(mesh, ReadAttributeData(reader, vertexCount, ReadQuantizedTangent), (m, v) => m.tangents = v);
-
-        ReadAndAssignColorData(reader, mesh, vertexCount);
+        var vertexCount = reader.ReadPackedInt();
+        mesh.vertices = reader.ReadArrayContents(vertexCount, r => r.ReadQuantizedPosition(bounds));
 
         for (var i = 0; i < mesh.subMeshCount; i++)
         {
             var topology = (MeshTopology)reader.ReadByte();
-            var subMeshBounds = ReadBounds(reader);
-            var indices = ReadIndices(reader);
+            var subMeshBounds = reader.ReadBounds();
+            var indices = reader.ReadDeltaEncodedIndices();
 
             mesh.SetIndices(indices, topology, i, false);
 
@@ -380,184 +365,24 @@ public static class Inventory
             var dimension = reader.ReadByte();
 
             if (dimension == 2)
-                ReadUVs(reader, i, vertexCount, uvs2, ReadQuantizedUV2, mesh.SetUVs);
+                ReadUVs(reader, i, vertexCount, uvs2, r => r.ReadQuantizedUV2(), mesh.SetUVs);
             else if (dimension == 3)
-                ReadUVs(reader, i, vertexCount, uvs3, BinaryUtils.ReadVector3, mesh.SetUVs);
+                ReadUVs(reader, i, vertexCount, uvs3, r => r.ReadVector3(), mesh.SetUVs);
             else if (dimension == 4)
-                ReadUVs(reader, i, vertexCount, uvs4, BinaryUtils.ReadVector4, mesh.SetUVs);
+                ReadUVs(reader, i, vertexCount, uvs4, r => r.ReadVector4(), mesh.SetUVs);
         }
+
+        mesh.RecalculateNormals();
+        mesh.RecalculateTangents();
 
         return mesh;
     }
 
-    private static void ReadAndAssignColorData(BinaryReader reader, Mesh mesh, int vertexCount)
+    private static void ReadUVs<T>(DataReader reader, int index, int count, List<T> uvs, Func<DataReader, T> readFunc, Action<int, List<T>> setUVs)
     {
-        var state = reader.ReadByte();
-
-        if (state == 1)
-        {
-            var uniformColor = ReadColor32(reader);
-            var colors = new Color32[vertexCount];
-
-            for (var i = 0; i < vertexCount; i++)
-                colors[i] = uniformColor;
-
-            mesh.colors32 = colors;
-        }
-        else if (state == 2)
-            mesh.colors32 = ReadArrayContents(reader, vertexCount, ReadColor32);
-        // Ignore if anything else
-    }
-
-    private static Bounds ReadBounds(BinaryReader reader) => new()
-    {
-        center = BinaryUtils.ReadVector3(reader),
-        extents = BinaryUtils.ReadVector3(reader)
-    };
-
-    private static Color32 ReadColor32(BinaryReader reader) => new(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-
-    private static T[] ReadAttributeData<T>(BinaryReader reader, int count, Func<BinaryReader, T> readFunc)
-    {
-        if (reader.ReadBoolean())
-            return ReadArrayContents(reader, count, readFunc);
-
-        return null;
-    }
-
-    private static void AssignAttribute<T>(Mesh mesh, T[] data, Action<Mesh, T[]> assignAction)
-    {
-        if (!data.IsNullOrEmpty())
-            assignAction(mesh, data);
-    }
-
-    private static void ReadUVs<T>(BinaryReader reader, int index, int count, List<T> uvs, Func<BinaryReader, T> readFunc, Action<int, List<T>> setUVs)
-    {
-        ReadListContents(reader, uvs, count, readFunc);
+        reader.ReadListContents(uvs, count, readFunc);
         setUVs(index, uvs);
         uvs.Clear();
-    }
-
-    private static T[] ReadArray<T>(BinaryReader reader, Func<BinaryReader, T> readFunc) => ReadArrayContents(reader, ReadPackedInt(reader), readFunc);
-
-    private static T[] ReadArrayContents<T>(BinaryReader reader, int count, Func<BinaryReader, T> readFunc)
-    {
-        var array = new T[count];
-
-        for (var i = 0; i < count; i++)
-            array[i] = readFunc(reader);
-
-        return array;
-    }
-
-    private static void ReadListContents<T>(BinaryReader reader, List<T> list, int count, Func<BinaryReader, T> readFunc)
-    {
-        for (var i = 0; i < count; i++)
-            list.Add(readFunc(reader));
-    }
-
-    private static int ReadPackedInt(BinaryReader reader) => (int)ReadVarInt(reader);
-
-    private static ulong ReadVarInt(BinaryReader reader)
-    {
-        var result = 0ul;
-        var shift = 0;
-
-        while (true)
-        {
-            var b = reader.ReadByte();
-            result |= (ulong)(b & 0x7F) << shift;
-
-            if ((b & 0x80) == 0)
-                break;
-
-            shift += 7;
-        }
-
-        return result;
-    }
-
-    private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
-
-    private static int[] ReadIndices(BinaryReader reader)
-    {
-        var count = ReadPackedInt(reader);
-
-        if (count == 0)
-            return Array.Empty<int>();
-
-        var indices = new int[count];
-        var previousIndex = 0;
-
-        for (var i = 0; i < count; i++)
-        {
-            var zigZagDelta = (uint)ReadVarInt(reader);
-            var delta = ZigZagDecode(zigZagDelta);
-            var currentIndex = previousIndex + delta;
-            indices[i] = currentIndex;
-            previousIndex = currentIndex;
-        }
-
-        return indices;
-    }
-
-    private static Vector3 ReadQuantizedPosition(BinaryReader reader, Bounds bounds)
-    {
-        var nx = Mathf.HalfToFloat(reader.ReadUInt16());
-        var ny = Mathf.HalfToFloat(reader.ReadUInt16());
-        var nz = Mathf.HalfToFloat(reader.ReadUInt16());
-
-        var min = bounds.min;
-        var size = bounds.size;
-
-        return new(
-            min.x + (nx * size.x),
-            min.y + (ny * size.y),
-            min.z + (nz * size.z)
-        );
-    }
-
-    private static Vector3 ReadQuantizedNormal(BinaryReader reader)
-    {
-        var x = reader.ReadSByte() / 127f;
-        var y = reader.ReadSByte() / 127f;
-        return OctDecode(new(x, y));
-    }
-
-    private static Vector4 ReadQuantizedTangent(BinaryReader reader)
-    {
-        var x = reader.ReadSByte() / 127f;
-        var y = reader.ReadSByte() / 127f;
-        var w = reader.ReadByte() > 0 ? 1f : -1f;
-
-        var dir = OctDecode(new(x, y));
-        return new(dir.x, dir.y, dir.z, w);
-    }
-
-    private static Vector2 ReadQuantizedUV2(BinaryReader reader)
-    {
-        var x = Mathf.HalfToFloat(reader.ReadUInt16());
-        var y = Mathf.HalfToFloat(reader.ReadUInt16());
-        return new Vector2(x, y);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static float SignNotZero(float v) => v >= 0f ? 1f : -1f;
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Vector3 OctDecode(Vector2 encoded)
-    {
-        var v = new Vector3(encoded.x, encoded.y, 1f - Mathf.Abs(encoded.x) - Mathf.Abs(encoded.y));
-
-        if (v.z < 0f)
-        {
-            var x = v.x;
-            var y = v.y;
-            v.x = (1f - Mathf.Abs(y)) * SignNotZero(x);
-            v.y = (1f - Mathf.Abs(x)) * SignNotZero(y);
-        }
-
-        return v.normalized;
     }
 
     /// <summary>
@@ -566,7 +391,7 @@ public static class Inventory
     /// <param name="path">The path of the asset.</param>
     /// <param name="forSprite">Flag indicating whether the texture is being made for a sprite, so that the texture's name is preset.</param>
     /// <returns>The texture asset loaded from the path.</returns>
-    private static Texture2D LoadTexture2D(string path, bool forSprite)
+    private static Texture2D? LoadTexture2D(string path, bool forSprite)
     {
         var texture = new Texture2D(2, 2, TextureFormat.RGBA32, true, false);
 
@@ -585,7 +410,7 @@ public static class Inventory
         return texture;
     }
 
-    private static Texture2D LoadTexture2D(string path) => LoadTexture2D(path, false);
+    private static Texture2D? LoadTexture2D(string path) => LoadTexture2D(path, false);
 
     // Texture optimisation stuff
     private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
@@ -595,15 +420,15 @@ public static class Inventory
     /// </summary>
     /// <param name="path">The path of the asset.</param>
     /// <returns>The sprite asset loaded from the path.</returns>
-    private static Sprite LoadSprite(string path)
+    private static Sprite? LoadSprite(string path)
     {
         var tex = LoadTexture2D(path, true);
-        return tex ? Sprite.Create(tex, new(0, 0, tex.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
+        return tex ? Sprite.Create(tex, new(0, 0, tex!.width, tex.height), new(0.5f, 0.5f), 1f, 0, SpriteMeshType.Tight) : null;
     }
 
-    // private static T GetBundleAsset<T>(string path) where T : UObject => Bundle.LoadAsset<T>(path);
+    private static T GetBundleAsset<T>(string path) where T : UObject => Bundle.LoadAsset<T>(path);
 
-    // private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
+    private static AssetBundle LoadBundle(string path) => AssetBundle.LoadFromMemory(path.ReadBytes());
 
     /// <summary>
     /// Reads all the bytes from the provided stream.
@@ -638,7 +463,17 @@ public static class Inventory
     /// Creates an asset handle for the provided asset.
     /// </summary>
     /// <param name="path">The path of the asset.</param>
-    private static void CreateAssetHandle(string path) => Assets.GetOrAdd(path.SanitisePath(), Create).AddPath(path);
+    private static void CreateAssetHandle(string path)
+    {
+        if (path.EndsWith("string.pool", StringComparison.Ordinal) || path.EndsWith("modinfo.json", StringComparison.Ordinal) || (path.Contains("bundle_") && !path.EndsWith(BundleSuffix)))
+            return;
+
+        var fileName = path.SanitisePath();
+#if DEBUG
+        Main.Console.Log($"Creating asset handle for {fileName} at {path}");
+#endif
+        Assets.GetOrAdd(fileName, Create).AddPath(path);
+    }
 
     // /// <summary>
     // /// Creates an asset handle for the provided asset.

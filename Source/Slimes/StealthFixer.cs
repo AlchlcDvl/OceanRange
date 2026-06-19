@@ -1,16 +1,19 @@
 namespace OceanRange.Slimes;
 
 // Had to copy and paste base game code because there's too many entry points to worry about otherwise
+// And also because the original system was designed for one consistent material, rather than multiple unique ones
+// This attempts to (and it works) add support for multiple materials
 public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable, SpawnListener
 {
+    public float CurrentOpacity = 1f;
+
     private Vacuumable vacuumable;
     private SlimeAudio slimeAudio;
     private float initStealthUntil;
-    private float currentOpacity = 1f;
     private float targetOpacity = 1f;
     private float lastOpacity = 1f;
 
-    private readonly StealthFixerController StealthController = new();
+    private readonly StealthFixerController stealthController = new();
 
     public void Awake()
     {
@@ -27,14 +30,14 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
     public override void OnDestroy()
     {
         base.OnDestroy();
-        StealthController.DestroyMats();
+        stealthController.DestroyMats();
     }
 
     public void RegistryUpdate() => UpdateStealthOpacity();
 
     public void DidSpawn()
     {
-        currentOpacity = 0f;
+        CurrentOpacity = 0f;
         initStealthUntil = Time.time + 5f;
     }
 
@@ -46,7 +49,7 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
 
     public void SetOpacity(float opacity)
     {
-        StealthController.SetOpacity(opacity);
+        stealthController.SetOpacity(opacity);
         lastOpacity = opacity;
     }
 
@@ -58,7 +61,7 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
 
     public void UpdateMaterialStealthController()
     {
-        StealthController.UpdateMaterials(gameObject);
+        stealthController.UpdateMaterials(gameObject);
         lastOpacity = 1f;
     }
 
@@ -67,16 +70,17 @@ public sealed class StealthFixer : RegisteredActorBehaviour, RegistryUpdateable,
         if (vacuumable == null)
             return;
 
-        var target = (Time.time < initStealthUntil) ? 0f : targetOpacity;
+        var target = vacuumable.isHeld()
+            ? 1f
+            : (Time.time < initStealthUntil
+                ? 0f
+                : targetOpacity);
 
-        if (vacuumable.isHeld())
-            target = 1f;
+        if (!Mathf.Approximately(CurrentOpacity, target))
+            CurrentOpacity = Mathf.MoveTowards(CurrentOpacity, target, 2f * Time.deltaTime);
 
-        if (!Mathf.Approximately(currentOpacity, target))
-            currentOpacity = Mathf.MoveTowards(currentOpacity, target, 2f * Time.deltaTime);
-
-        if (Mathf.Abs(currentOpacity - lastOpacity) > 0.001f)
-            SetOpacity(currentOpacity);
+        if (Mathf.Abs(CurrentOpacity - lastOpacity) > 0.001f)
+            SetOpacity(CurrentOpacity);
     }
 }
 
@@ -92,17 +96,17 @@ public sealed class StealthFixerController
     private static readonly int Alpha = ShaderUtils.GetOrSet("_Alpha");
     private static readonly Material CloakMaterial = GameContext.Instance.SlimeShaders.cloakMaterial;
 
-    private readonly List<RendererEntry> Entries = [];
+    private readonly List<RendererEntry> entries = [];
 
     public void DestroyMats()
     {
-        foreach (var entry in Entries)
+        foreach (var entry in entries)
         {
             if (entry.Cloak)
                 entry.Cloak.Destroy();
         }
 
-        Entries.Clear();
+        entries.Clear();
     }
 
     public void UpdateMaterials(GameObject gameObject)
@@ -124,7 +128,7 @@ public sealed class StealthFixerController
                 cloakMat.SetColor(Slimepedia.BottomColor, regularMat.GetColor(Slimepedia.BottomColor));
             }
 
-            Entries.Add(new RendererEntry(renderer, regularMat, cloakMat));
+            entries.Add(new RendererEntry(renderer, regularMat, cloakMat));
         }
     }
 
@@ -132,16 +136,16 @@ public sealed class StealthFixerController
     {
         var isOpaque = opacity >= 0.99f;
 
-        for (var i = Entries.Count - 1; i >= 0; i--)
+        for (var i = entries.Count - 1; i >= 0; i--)
         {
-            var entry = Entries[i];
+            var entry = entries[i];
 
             if (!entry.Renderer)
             {
                 if (entry.Cloak)
                     entry.Cloak.Destroy();
 
-                Entries.RemoveAt(i);
+                entries.RemoveAt(i);
                 continue;
             }
 

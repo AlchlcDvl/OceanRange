@@ -8,7 +8,7 @@ public static class SlimeEatProduce
         if (!__instance.HasComponent<RosiBehaviour>() || !CorralRegion.allCorrals.TryFinding(x => x.GetComponent<Collider>().bounds.Contains(__instance.transform.position), out var corral))
             return;
 
-        var bounds = corral.GetComponent<Collider>().bounds;
+        var bounds = corral!.GetComponent<Collider>().bounds;
         count = Mathf.RoundToInt(Mathf.Pow(RosiBehaviour.All.Count(item => bounds.Contains(item.transform.position)), 0.51f));
     }
 }

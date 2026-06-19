@@ -1,0 +1,5449 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f267762709257dc4fb949e5a3167b4da, type: 3}
+  m_Name: slimepedia
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::Slimepedia
+  slimes:
+  - Name:
+      HasValue: 1
+      Value: Rosi
+    Progress: []
+    MainAmmoColor:
+      HasValue: 0
+      Value:
+        serializedVersion: 2
+        rgba: 0
+    ExchangeWeight: 20
+    BasePrice: 7
+    Saturation: 40
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Reef_Intro
+    GordoOrientation:
+      Position: {x: 17.2751, y: 13.3003, z: -36.969}
+      Rotation: {x: 0, y: 30, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    OnomicsType: pearls
+    GordoEatAmount: 25
+    FavToy: OCTO_BUDDY_TOY
+    Zones:
+    - REEF
+    FavFood:
+      HasValue: 0
+      Value: 
+    Diet:
+      HasValue: 0
+      Value: 
+    BaseSlime: PINK_SLIME
+    BasePlort: PINK_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase:
+      HasValue: 0
+      Value: 
+    GordoZone:
+      HasValue: 1
+      Value: REEF
+    GordoRewards:
+    - CRATE_REEF_01
+    - CRATE_REEF_01
+    - CRATE_REEF_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.RosiBehaviour, OceanRange
+    ComponentsToRemove: []
+    NormalAppearance:
+      Name:
+        HasValue: 0
+        Value: 
+      SlimeFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4293977593
+            - key: _MiddleColor
+              value:
+                serializedVersion: 2
+                rgba: 4292003814
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4292447990
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: rosi_body
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: rosi_stalk
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4290211060
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: rosi_frills
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      GordoFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: rosi_body_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: rosi_stalk_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 2
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: rosi_frills_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      PlortFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4290211060
+            - key: _MiddleColor
+              value:
+                serializedVersion: 2
+                rgba: 4292003814
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4293977593
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: rosi_stalk_pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 2
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: rosi_frills_pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      MainAmmoColor:
+        serializedVersion: 2
+        rgba: 4292003814
+      TopMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddleMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      RedEyeColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4288960324
+      GreenEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BlueEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      TopPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddlePaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      PlortAmmoColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      EyesOrigin:
+        HasValue: 0
+        Value: 
+      MouthOrigin:
+        HasValue: 1
+        Value: TABBY_SLIME
+      Jiggle:
+        HasValue: 1
+        Value: 0.75
+    SSAppearance:
+      HasValue: 0
+      Value:
+        Name:
+          HasValue: 0
+          Value: 
+        SlimeFeatures: []
+        GordoFeatures: []
+        PlortFeatures: []
+        MainAmmoColor:
+          serializedVersion: 2
+          rgba: 0
+        TopMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddleMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        RedEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        GreenEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BlueEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        TopPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddlePaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        PlortAmmoColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        EyesOrigin:
+          HasValue: 0
+          Value: 
+        MouthOrigin:
+          HasValue: 0
+          Value: 
+        Jiggle:
+          HasValue: 0
+          Value: 0
+  - Name:
+      HasValue: 1
+      Value: Coco
+    Progress: []
+    MainAmmoColor:
+      HasValue: 0
+      Value:
+        serializedVersion: 2
+        rgba: 0
+    ExchangeWeight: 20
+    BasePrice: 20
+    Saturation: 26
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Reef_RingIsland
+    GordoOrientation:
+      Position: {x: -494.6969, y: -2.37, z: -241.9137}
+      Rotation: {x: 0, y: 200, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    OnomicsType: plorts
+    GordoEatAmount: 25
+    FavToy: BEACH_BALL_TOY
+    Zones:
+    - REEF
+    - MOSS
+    FavFood:
+      HasValue: 1
+      Value: SANDY_HEN
+    Diet:
+      HasValue: 1
+      Value: MEAT
+    BaseSlime: PINK_SLIME
+    BasePlort: PINK_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase:
+      HasValue: 0
+      Value: 
+    GordoZone:
+      HasValue: 1
+      Value: REEF
+    GordoRewards:
+    - CRATE_REEF_01
+    - CRATE_REEF_01
+    - CRATE_REEF_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.CocoBehaviour, OceanRange
+    - DamagePlayerOnTouch, Assembly-CSharp
+    ComponentsToRemove: []
+    NormalAppearance:
+      Name:
+        HasValue: 0
+        Value: 
+      SlimeFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 1
+              Value: 1
+            Pattern:
+              HasValue: 1
+              Value: coco
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4279324020
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4281560982
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4279324020
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: coco_brows
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      GordoFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 1
+              Value: 1
+            Pattern:
+              HasValue: 1
+              Value: coco_gordo
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4279324020
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4281560982
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4279324020
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: coco_brows
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      PlortFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4294966526
+            - key: _MiddleColor
+              value:
+                serializedVersion: 2
+                rgba: 4292729564
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4287537325
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      MainAmmoColor:
+        serializedVersion: 2
+        rgba: 4281560982
+      TopMouthColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4294967295
+      MiddleMouthColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4287137928
+      BottomMouthColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4294966526
+      RedEyeColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4287137928
+      GreenEyeColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4278190080
+      BlueEyeColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4294967295
+      TopPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddlePaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      PlortAmmoColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4292729564
+      EyesOrigin:
+        HasValue: 0
+        Value: 
+      MouthOrigin:
+        HasValue: 0
+        Value: 
+      Jiggle:
+        HasValue: 1
+        Value: 0.1
+    SSAppearance:
+      HasValue: 0
+      Value:
+        Name:
+          HasValue: 0
+          Value: 
+        SlimeFeatures: []
+        GordoFeatures: []
+        PlortFeatures: []
+        MainAmmoColor:
+          serializedVersion: 2
+          rgba: 0
+        TopMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddleMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        RedEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        GreenEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BlueEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        TopPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddlePaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        PlortAmmoColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        EyesOrigin:
+          HasValue: 0
+          Value: 
+        MouthOrigin:
+          HasValue: 0
+          Value: 
+        Jiggle:
+          HasValue: 0
+          Value: 0
+  - Name:
+      HasValue: 1
+      Value: Mine
+    Progress:
+    - UNLOCK_QUARRY
+    - UNLOCK_RUINS
+    MainAmmoColor:
+      HasValue: 0
+      Value:
+        serializedVersion: 2
+        rgba: 0
+    ExchangeWeight: 20
+    BasePrice: 30
+    Saturation: 20
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Quarry_VolcanoTransition
+    GordoOrientation:
+      Position: {x: 506.8365, y: 5.61915, z: 145.7047}
+      Rotation: {x: 0, y: 320, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    OnomicsType: pearls
+    GordoEatAmount: 25
+    FavToy: BOMB_BALL_TOY
+    Zones:
+    - QUARRY
+    - RUINS
+    FavFood:
+      HasValue: 1
+      Value: BLOWTATO_VEGGIE
+    Diet:
+      HasValue: 1
+      Value: VEGGIES
+    BaseSlime: BOOM_SLIME
+    BasePlort: BOOM_PLORT
+    BaseGordo: BOOM_GORDO
+    ComponentBase:
+      HasValue: 0
+      Value: 
+    GordoZone:
+      HasValue: 1
+      Value: QUARRY
+    GordoRewards:
+    - CRATE_QUARRY_01
+    - CRATE_QUARRY_01
+    - CRATE_QUARRY_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.MineBehaviour, OceanRange
+    ComponentsToRemove:
+    - BoomSlimeExplode, Assembly-CSharp
+    - BoomMaterialAnimator, Assembly-CSharp
+    NormalAppearance:
+      Name:
+        HasValue: 0
+        Value: 
+      SlimeFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 1
+              Value: 1
+            Pattern:
+              HasValue: 1
+              Value: mine
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4285505950
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4284503620
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: PINK_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4281281057
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mine_exterior
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      GordoFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4284503620
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mine_exterior_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      PlortFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4284503620
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mine_pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      MainAmmoColor:
+        serializedVersion: 2
+        rgba: 4284503620
+      TopMouthColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4294967295
+      MiddleMouthColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4287137928
+      BottomMouthColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4294967295
+      RedEyeColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4287137928
+      GreenEyeColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4278190080
+      BlueEyeColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4294967295
+      TopPaletteColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4285505950
+      MiddlePaletteColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4284503620
+      BottomPaletteColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4281281057
+      PlortAmmoColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4285505950
+      EyesOrigin:
+        HasValue: 0
+        Value: 
+      MouthOrigin:
+        HasValue: 0
+        Value: 
+      Jiggle:
+        HasValue: 1
+        Value: 0.125
+    SSAppearance:
+      HasValue: 0
+      Value:
+        Name:
+          HasValue: 0
+          Value: 
+        SlimeFeatures: []
+        GordoFeatures: []
+        PlortFeatures: []
+        MainAmmoColor:
+          serializedVersion: 2
+          rgba: 0
+        TopMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddleMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        RedEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        GreenEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BlueEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        TopPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddlePaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        PlortAmmoColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        EyesOrigin:
+          HasValue: 0
+          Value: 
+        MouthOrigin:
+          HasValue: 0
+          Value: 
+        Jiggle:
+          HasValue: 0
+          Value: 0
+  - Name:
+      HasValue: 1
+      Value: Lantern
+    Progress:
+    - UNLOCK_MOSS
+    - UNLOCK_RUINS
+    MainAmmoColor:
+      HasValue: 0
+      Value:
+        serializedVersion: 2
+        rgba: 0
+    ExchangeWeight: 20
+    BasePrice: 25
+    Saturation: 24
+    NightSpawn: 1
+    CanBeRefined: 0
+    SpawnAmount: 1
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Moss_NorthPass
+    GordoOrientation:
+      Position: {x: -166.2659, y: 27.229, z: 657.1914}
+      Rotation: {x: 0, y: 0, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    OnomicsType: pearls
+    GordoEatAmount: 25
+    FavToy: NIGHT_LIGHT_TOY
+    Zones:
+    - MOSS
+    - RUINS
+    FavFood:
+      HasValue: 1
+      Value: RADIANT_HEN
+    Diet:
+      HasValue: 1
+      Value: MEAT
+    BaseSlime: PHOSPHOR_SLIME
+    BasePlort: PHOSPHOR_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase:
+      HasValue: 0
+      Value: 
+    GordoZone:
+      HasValue: 1
+      Value: MOSS
+    GordoRewards:
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.LanternBehaviour, OceanRange
+    - OceanRange.Slimes.CanMoveHandler, OceanRange
+    ComponentsToRemove:
+    - SlimeHover, Assembly-CSharp
+    - DestroyOutsideHoursOfDay, Assembly-CSharp
+    NormalAppearance:
+      Name:
+        HasValue: 0
+        Value: 
+      SlimeFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: PINK_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4286983285
+            - key: _MiddleColor
+              value:
+                serializedVersion: 2
+                rgba: 4289152404
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4291321521
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 1
+              Value: lantern
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4284096079
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4286983285
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: lantern_fins
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: PINK_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4285605475
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: lantern_stalk
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 1
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: PHOSPHOR_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4285193195
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: lantern_lure
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      GordoFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: lantern_fins_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 2
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: lantern_stalk
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 3
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: lantern_lure
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      PlortFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 1
+              Value: 1
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4291321521
+            - key: _MiddleColor
+              value:
+                serializedVersion: 2
+                rgba: 4285193195
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4286983285
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 2
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: lantern_stalk_pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 3
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: lantern_lure_pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      MainAmmoColor:
+        serializedVersion: 2
+        rgba: 4291321521
+      TopMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddleMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      RedEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      GreenEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BlueEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      TopPaletteColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4286983285
+      MiddlePaletteColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4285193195
+      BottomPaletteColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4291321521
+      PlortAmmoColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4286983285
+      EyesOrigin:
+        HasValue: 0
+        Value: 
+      MouthOrigin:
+        HasValue: 0
+        Value: 
+      Jiggle:
+        HasValue: 1
+        Value: 0.25
+    SSAppearance:
+      HasValue: 0
+      Value:
+        Name:
+          HasValue: 0
+          Value: 
+        SlimeFeatures: []
+        GordoFeatures: []
+        PlortFeatures: []
+        MainAmmoColor:
+          serializedVersion: 2
+          rgba: 0
+        TopMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddleMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        RedEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        GreenEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BlueEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        TopPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddlePaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        PlortAmmoColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        EyesOrigin:
+          HasValue: 0
+          Value: 
+        MouthOrigin:
+          HasValue: 0
+          Value: 
+        Jiggle:
+          HasValue: 0
+          Value: 0
+  - Name:
+      HasValue: 1
+      Value: Sand
+    Progress: []
+    MainAmmoColor:
+      HasValue: 0
+      Value:
+        serializedVersion: 2
+        rgba: 0
+    ExchangeWeight: 20
+    BasePrice: 8
+    Saturation: 40
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.15
+    HasGordo: 0
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: 
+    GordoOrientation:
+      Position: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      Scale: {x: 0, y: 0, z: 0}
+    NaturalGordoSpawn: 0
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    OnomicsType: pearls
+    GordoEatAmount: 25
+    FavToy: BEACH_BALL_TOY
+    Zones:
+    - REEF
+    - DESERT
+    FavFood:
+      HasValue: 1
+      Value: SILKY_SAND_CRAFT
+    Diet:
+      HasValue: 1
+      Value: DIRT
+    BaseSlime: PUDDLE_SLIME
+    BasePlort: PINK_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase:
+      HasValue: 0
+      Value: 
+    GordoZone:
+      HasValue: 1
+      Value: RANCH
+    GordoRewards:
+    - SILKY_SAND_CRAFT
+    - SILKY_SAND_CRAFT
+    - SILKY_SAND_CRAFT
+    ComponentsToAdd:
+    - OceanRange.Slimes.SandBehaviour, OceanRange
+    ComponentsToRemove:
+    - GotoWater, Assembly-CSharp
+    - GotoConsumable, Assembly-CSharp
+    - DestroyOnTouching, Assembly-CSharp
+    - SlimeEatWater, Assembly-CSharp
+    NormalAppearance:
+      Name:
+        HasValue: 0
+        Value: 
+      SlimeFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4292009954
+            - key: _MiddleColor
+              value:
+                serializedVersion: 2
+                rgba: 4288267496
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4284525037
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 1
+              Value: 1
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4288267496
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: sand_shells
+            Jiggle:
+              HasValue: 1
+              Value: 0.125
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      GordoFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: puddle_body_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      PlortFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4292009954
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      MainAmmoColor:
+        serializedVersion: 2
+        rgba: 4284525037
+      TopMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddleMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      RedEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      GreenEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BlueEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      TopPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddlePaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      PlortAmmoColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4288267496
+      EyesOrigin:
+        HasValue: 0
+        Value: 
+      MouthOrigin:
+        HasValue: 0
+        Value: 
+      Jiggle:
+        HasValue: 0
+        Value: 0
+    SSAppearance:
+      HasValue: 0
+      Value:
+        Name:
+          HasValue: 0
+          Value: 
+        SlimeFeatures: []
+        GordoFeatures: []
+        PlortFeatures: []
+        MainAmmoColor:
+          serializedVersion: 2
+          rgba: 0
+        TopMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddleMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        RedEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        GreenEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BlueEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        TopPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddlePaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        PlortAmmoColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        EyesOrigin:
+          HasValue: 0
+          Value: 
+        MouthOrigin:
+          HasValue: 0
+          Value: 
+        Jiggle:
+          HasValue: 0
+          Value: 0
+  - Name:
+      HasValue: 1
+      Value: Mesmer
+    Progress: []
+    MainAmmoColor:
+      HasValue: 0
+      Value:
+        serializedVersion: 2
+        rgba: 0
+    ExchangeWeight: 20
+    BasePrice: 20
+    Saturation: 30
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Moss_Forest
+    GordoOrientation:
+      Position: {x: -328.2128, y: 14.33913, z: 462.0742}
+      Rotation: {x: 0, y: 270, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    OnomicsType: plorts
+    GordoEatAmount: 25
+    FavToy: DISCO_BALL_TOY
+    Zones:
+    - MOSS
+    FavFood:
+      HasValue: 1
+      Value: STICKY_FRUIT
+    Diet:
+      HasValue: 1
+      Value: FRUIT
+    BaseSlime: PINK_SLIME
+    BasePlort: TABBY_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase:
+      HasValue: 0
+      Value: 
+    GordoZone:
+      HasValue: 1
+      Value: MOSS
+    GordoRewards:
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    ComponentsToAdd:
+    - StalkConsumable, Assembly-CSharp
+    ComponentsToRemove: []
+    NormalAppearance:
+      Name:
+        HasValue: 0
+        Value: 
+      SlimeFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 1
+              Value: 0.11
+            Pattern:
+              HasValue: 1
+              Value: mesmer
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4288744500
+            - key: _MiddleColor
+              value:
+                serializedVersion: 2
+                rgba: 4291376352
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4283369738
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 1
+              Value: mesmer_pincer
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4288744500
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4283961667
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_pincers
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: PINK_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4288288307
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4283961667
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_tail_base
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: PINK_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4292222594
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4288288307
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_tail_stem_1
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: PINK_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4291376352
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4292222594
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_tail_stem_2
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: PINK_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4286250714
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4291376352
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_tail_tip
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      GordoFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_pincers_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 2
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_tail_base_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 3
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_tail_stem_1_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 4
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_tail_stem_2_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 5
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mesmer_tail_tip_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      PlortFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4283369738
+            - key: _MiddleColor
+              value:
+                serializedVersion: 2
+                rgba: 4283507247
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4282388766
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      MainAmmoColor:
+        serializedVersion: 2
+        rgba: 4283369738
+      TopMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddleMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      RedEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      GreenEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BlueEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      TopPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddlePaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      PlortAmmoColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      EyesOrigin:
+        HasValue: 0
+        Value: 
+      MouthOrigin:
+        HasValue: 0
+        Value: 
+      Jiggle:
+        HasValue: 1
+        Value: 0.25
+    SSAppearance:
+      HasValue: 0
+      Value:
+        Name:
+          HasValue: 0
+          Value: 
+        SlimeFeatures: []
+        GordoFeatures: []
+        PlortFeatures: []
+        MainAmmoColor:
+          serializedVersion: 2
+          rgba: 0
+        TopMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddleMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        RedEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        GreenEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BlueEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        TopPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddlePaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        PlortAmmoColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        EyesOrigin:
+          HasValue: 0
+          Value: 
+        MouthOrigin:
+          HasValue: 0
+          Value: 
+        Jiggle:
+          HasValue: 0
+          Value: 0
+  - Name:
+      HasValue: 1
+      Value: Hermit
+    Progress: []
+    MainAmmoColor:
+      HasValue: 0
+      Value:
+        serializedVersion: 2
+        rgba: 0
+    ExchangeWeight: 20
+    BasePrice: 30
+    Saturation: 25
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 1
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: Reef_CliffCaves
+    GordoOrientation:
+      Position: {x: 101.948, y: -3.4949, z: 40.8476}
+      Rotation: {x: 0, y: 57, z: 0}
+      Scale: {x: 1, y: 1, z: 1}
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    OnomicsType: plorts
+    GordoEatAmount: 25
+    FavToy: BEACH_BALL_TOY
+    Zones:
+    - REEF
+    FavFood:
+      HasValue: 1
+      Value: CORAL_FRUIT
+    Diet:
+      HasValue: 1
+      Value: FRUIT
+    BaseSlime: PINK_SLIME
+    BasePlort: TABBY_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase:
+      HasValue: 0
+      Value: 
+    GordoZone:
+      HasValue: 1
+      Value: REEF
+    GordoRewards:
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    - CRATE_MOSS_01
+    ComponentsToAdd:
+    - OceanRange.Slimes.HermitBehaviour, OceanRange
+    - OceanRange.Slimes.CanMoveHandler, OceanRange
+    ComponentsToRemove: []
+    NormalAppearance:
+      Name:
+        HasValue: 0
+        Value: 
+      SlimeFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 1
+              Value: 0.11
+            Pattern:
+              HasValue: 1
+              Value: hermit
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4287993584
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4283718118
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 1
+              Value: hermit_shell
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4284845302
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4288271862
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: hermit_shell
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4281678517
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: hermit_claws
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      GordoFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: hermit_shell_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 2
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: hermit_claws
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      PlortFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: hermit_shell_plort
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      MainAmmoColor:
+        serializedVersion: 2
+        rgba: 4283520743
+      TopMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddleMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      RedEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      GreenEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BlueEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      TopPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddlePaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      PlortAmmoColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4284388576
+      EyesOrigin:
+        HasValue: 0
+        Value: 
+      MouthOrigin:
+        HasValue: 0
+        Value: 
+      Jiggle:
+        HasValue: 1
+        Value: 0.25
+    SSAppearance:
+      HasValue: 0
+      Value:
+        Name:
+          HasValue: 0
+          Value: 
+        SlimeFeatures: []
+        GordoFeatures: []
+        PlortFeatures: []
+        MainAmmoColor:
+          serializedVersion: 2
+          rgba: 0
+        TopMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddleMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        RedEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        GreenEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BlueEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        TopPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddlePaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        PlortAmmoColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        EyesOrigin:
+          HasValue: 0
+          Value: 
+        MouthOrigin:
+          HasValue: 0
+          Value: 
+        Jiggle:
+          HasValue: 0
+          Value: 0
+  - Name:
+      HasValue: 1
+      Value: Goldfish
+    Progress: []
+    MainAmmoColor:
+      HasValue: 0
+      Value:
+        serializedVersion: 2
+        rgba: 0
+    ExchangeWeight: 20
+    BasePrice: 400
+    Saturation: 50000
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.00125
+    HasGordo: 1
+    Vaccable: 0
+    Exchangeable: 0
+    GordoCell: 
+    GordoOrientation:
+      Position: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      Scale: {x: 0, y: 0, z: 0}
+    NaturalGordoSpawn: 0
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    OnomicsType: pearls
+    GordoEatAmount: 3
+    FavToy: BEACH_BALL_TOY
+    Zones:
+    - REEF
+    - QUARRY
+    - DESERT
+    - MOSS
+    - RUINS
+    - WILDS
+    FavFood:
+      HasValue: 1
+      Value: GINGER_VEGGIE
+    Diet:
+      HasValue: 1
+      Value: GINGER
+    BaseSlime: PINK_SLIME
+    BasePlort: GOLD_PLORT
+    BaseGordo: GOLD_GORDO
+    ComponentBase:
+      HasValue: 1
+      Value: GOLD_SLIME
+    GordoZone:
+      HasValue: 0
+      Value: 
+    GordoRewards:
+    - CRATE_MOSS_01
+    - CRATE_REEF_01
+    - CRATE_RUINS_01
+    - CRATE_QUARRY_01
+    - CRATE_DESERT_01
+    ComponentsToAdd: []
+    ComponentsToRemove: []
+    NormalAppearance:
+      Name:
+        HasValue: 0
+        Value: 
+      SlimeFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: GOLD_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: PUDDLE_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4286040027
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: goldfish_fins
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      GordoFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: goldfish_fins_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      PlortFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: pearl
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      MainAmmoColor:
+        serializedVersion: 2
+        rgba: 4278247423
+      TopMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddleMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      RedEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      GreenEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BlueEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      TopPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddlePaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      PlortAmmoColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      EyesOrigin:
+        HasValue: 0
+        Value: 
+      MouthOrigin:
+        HasValue: 0
+        Value: 
+      Jiggle:
+        HasValue: 1
+        Value: 0.5
+    SSAppearance:
+      HasValue: 0
+      Value:
+        Name:
+          HasValue: 0
+          Value: 
+        SlimeFeatures: []
+        GordoFeatures: []
+        PlortFeatures: []
+        MainAmmoColor:
+          serializedVersion: 2
+          rgba: 0
+        TopMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddleMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        RedEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        GreenEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BlueEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        TopPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddlePaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        PlortAmmoColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        EyesOrigin:
+          HasValue: 0
+          Value: 
+        MouthOrigin:
+          HasValue: 0
+          Value: 
+        Jiggle:
+          HasValue: 0
+          Value: 0
+  - Name:
+      HasValue: 1
+      Value: Mimic
+    Progress: []
+    MainAmmoColor:
+      HasValue: 0
+      Value:
+        serializedVersion: 2
+        rgba: 0
+    ExchangeWeight: 20
+    BasePrice: 20
+    Saturation: 30
+    NightSpawn: 0
+    CanBeRefined: 0
+    SpawnAmount: 0.25
+    HasGordo: 0
+    Vaccable: 1
+    Exchangeable: 1
+    GordoCell: 
+    GordoOrientation:
+      Position: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      Scale: {x: 0, y: 0, z: 0}
+    NaturalGordoSpawn: 1
+    PlortExchangeWeight: 16
+    Jiggle: 1
+    OnomicsType: plorts
+    GordoEatAmount: 25
+    FavToy: DISCO_BALL_TOY
+    Zones:
+    - MOSS
+    FavFood:
+      HasValue: 1
+      Value: HEN
+    Diet:
+      HasValue: 1
+      Value: MEAT
+    BaseSlime: PINK_SLIME
+    BasePlort: TABBY_PLORT
+    BaseGordo: PINK_GORDO
+    ComponentBase:
+      HasValue: 0
+      Value: 
+    GordoZone:
+      HasValue: 0
+      Value: 
+    GordoRewards: []
+    ComponentsToAdd:
+    - StalkConsumable, Assembly-CSharp
+    - OceanRange.Slimes.StealthFixer, OceanRange
+    - OceanRange.Slimes.MimicBehaviour, OceanRange
+    ComponentsToRemove: []
+    NormalAppearance:
+      Name:
+        HasValue: 0
+        Value: 
+      SlimeFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 1
+              Value: 0.11
+            Pattern:
+              HasValue: 1
+              Value: mimic
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4282739772
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4287555748
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mimic_body
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 1
+              Value: mimic_tail
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4289977459
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4287337028
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mimic_tail
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      GordoFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mimic_body_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mimic_tail_gordo
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      PlortFeatures:
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 1
+              Value: mimic_plort
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps:
+            - key: _TopColor
+              value:
+                serializedVersion: 2
+                rgba: 4289977459
+            - key: _BottomColor
+              value:
+                serializedVersion: 2
+                rgba: 4287555748
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      MainAmmoColor:
+        serializedVersion: 2
+        rgba: 4287555748
+      TopMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddleMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomMouthColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      RedEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      GreenEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BlueEyeColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      TopPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      MiddlePaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      BottomPaletteColor:
+        HasValue: 0
+        Value:
+          serializedVersion: 2
+          rgba: 0
+      PlortAmmoColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4282739772
+      EyesOrigin:
+        HasValue: 0
+        Value: 
+      MouthOrigin:
+        HasValue: 1
+        Value: TABBY_SLIME
+      Jiggle:
+        HasValue: 1
+        Value: 0.25
+    SSAppearance:
+      HasValue: 0
+      Value:
+        Name:
+          HasValue: 0
+          Value: 
+        SlimeFeatures: []
+        GordoFeatures: []
+        PlortFeatures: []
+        MainAmmoColor:
+          serializedVersion: 2
+          rgba: 0
+        TopMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddleMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomMouthColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        RedEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        GreenEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BlueEyeColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        TopPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        MiddlePaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        BottomPaletteColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        PlortAmmoColor:
+          HasValue: 0
+          Value:
+            serializedVersion: 2
+            rgba: 0
+        EyesOrigin:
+          HasValue: 0
+          Value: 
+        MouthOrigin:
+          HasValue: 0
+          Value: 
+        Jiggle:
+          HasValue: 0
+          Value: 0

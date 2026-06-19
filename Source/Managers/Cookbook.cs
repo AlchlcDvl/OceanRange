@@ -41,7 +41,7 @@ public static class Cookbook
     {
         StmExists = SRModLoader.IsModPresent("sellthingsmod");
 
-        var food = Inventory.GetJson<Ingredients>("cookbook");
+        var food = Inventory.GetJson<Ingredients>("cookbook")!;
 
         Fruits = food.Fruits;
         Veggies = food.Veggies;
@@ -124,7 +124,7 @@ public static class Cookbook
         {
             var lower = fruitData.ResourceIdSuffix.ToLowerInvariant();
             var array = new[] { fruitData.MainId.GetPrefab() };
-            var lowerName = fruitData.Name.ToLowerInvariant();
+            var lowerName = fruitData.Name!.ToLowerInvariant();
             var trunkExists = Inventory.TryGetMesh(lowerName + "_trunk", out var trunk);
             var leavesExist = Inventory.TryGetMesh(lowerName + "_leaves", out var leaves);
 
@@ -176,7 +176,7 @@ public static class Cookbook
     private static void BaseCreateChimken(ChimkenData chimkenData)
     {
         // Fetch ramps and caching values because reusing them is tedious
-        var lower = chimkenData.Name.ToLowerInvariant();
+        var lower = chimkenData.Name!.ToLowerInvariant();
 
         var ramp = $"{lower}_ramp_";
         var redExists = Inventory.TryGetTexture2D($"{ramp}red", out var red);
@@ -185,8 +185,8 @@ public static class Cookbook
         var blackExists = Inventory.TryGetTexture2D($"{ramp}black", out var black);
 
         // Find and create the prefab for chicks and set values
-        var chickPrefab = CreateChimken(chimkenData.Name, red, redExists, green, greenExists, blue, blueExists, black, blackExists, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
-        var henPrefab = CreateChimken(chimkenData.Name, red, redExists, green, greenExists, blue, blueExists, black, blackExists, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
+        var chickPrefab = CreateChimken(chimkenData.Name, red!, redExists, green!, greenExists, blue!, blueExists, black!, blackExists, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
+        var henPrefab = CreateChimken(chimkenData.Name, red!, redExists, green!, greenExists, blue!, blueExists, black!, blackExists, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
 
         // Set specific data for each prefab
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
@@ -200,10 +200,10 @@ public static class Cookbook
 
         // Register both chicks and hens
         var chickIcon = Inventory.GetSprite($"{lower}_chick");
-        RegisterFood(chickPrefab, chickIcon, chimkenData.MainAmmoColor, chimkenData.ChickId, -1, chimkenData.Progress, StorageType.NON_SLIMES);
+        RegisterFood(chickPrefab, chickIcon, chimkenData.MainAmmoColor!.Value, chimkenData.ChickId, -1, chimkenData.Progress, StorageType.NON_SLIMES);
 
         var henIcon = Inventory.GetSprite($"{lower}_hen");
-        RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor, chimkenData.MainId, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
+        RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor!.Value, chimkenData.MainId, chimkenData.ExchangeWeight, chimkenData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
         FoodGroup.MEAT.RegisterId(chimkenData.MainId);
 
@@ -284,7 +284,7 @@ public static class Cookbook
 
         var meshModel = prefab.FindChildWithPartialName("model_");
 
-        var lower = plantData.Name.ToLowerInvariant();
+        var lower = plantData.Name!.ToLowerInvariant();
 
         var mesh = Inventory.GetMesh(lower + "_" + typeLower);
 
@@ -371,7 +371,7 @@ public static class Cookbook
 
         plantData.InitFoodDetails?.Invoke(prefab);
 
-        RegisterFood(prefab, Inventory.GetSprite(lower), plantData.MainAmmoColor, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
+        RegisterFood(prefab, Inventory.GetSprite(lower), plantData.MainAmmoColor!.Value, plantData.MainId, plantData.ExchangeWeight, plantData.Progress, StorageType.NON_SLIMES, StorageType.FOOD);
 
         var resource = CreateFarmSetup(plantData.BaseResource!.Value, lower, plantData.ResourceIdSuffix, plantData.ResourceId, prefab, mesh, plantData.IsFruit, mat);
         var resourceDlx = CreateFarmSetup(plantData.BaseResourceDlx, lower, plantData.ResourceIdSuffix + "Dlx", plantData.DlxResourceId, prefab, mesh, plantData.IsFruit, mat);
@@ -416,18 +416,18 @@ public static class Cookbook
             partName = partName.EndsWith("_tree", StringComparison.OrdinalIgnoreCase) ? partName.Replace("_tree", string.Empty) : "pogo";
 
             if (Inventory.TryGetMesh(lower + "_trunk", out var trunk))
-                TranslateModel(prefab.FindAllChildren("tree_" + partName), trunk, null);
+                TranslateModel(prefab.FindAllChildren("tree_" + partName), trunk!, null);
 
             if (Inventory.TryGetMesh(lower + "_leaves", out var leaves))
-                TranslateModel(prefab.FindAllChildren("leaves_" + partName), leaves, null);
+                TranslateModel(prefab.FindAllChildren("leaves_" + partName), leaves!, null);
         }
         else if (Inventory.TryGetMesh(lower + "_sprout", out var sprout))
-            TranslateModel(prefab.FindAllChildren("Sprout"), sprout, material);
+            TranslateModel(prefab.FindAllChildren("Sprout"), sprout!, material);
 
         return prefab;
     }
 
-    private static void TranslateModel(IEnumerable<GameObject> gameObjects, Mesh mesh, Material material)
+    private static void TranslateModel(IEnumerable<GameObject> gameObjects, Mesh mesh, Material? material)
     {
         foreach (var gameObj in gameObjects)
         {

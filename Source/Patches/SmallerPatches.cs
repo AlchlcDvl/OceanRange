@@ -5,44 +5,19 @@ namespace OceanRange.Patches;
 [HarmonyPatch(typeof(SlimeDiet), nameof(SlimeDiet.RefreshEatMap))]
 public static class EatMapFix
 {
-    private static readonly Func<IdentifiableId, bool> IsPlort = Identifiable.IsPlort;
-
-    public static void Postfix(SlimeDiet __instance, SlimeDefinitions definitions, SlimeDefinition definition)
+    public static void Postfix(SlimeDiet __instance, SlimeDefinition definition)
     {
-        if (definition.IdentifiableId.ToString().Contains("SAND"))
-        {
-            __instance.EatMap.RemoveAll(x => x.eats == IdentifiableId.SILKY_SAND_CRAFT);
-            __instance.EatMap.Add(new()
-            {
-                eats = IdentifiableId.SILKY_SAND_CRAFT,
-                producesId = definition.Diet.Produces[0],
-                isFavorite = true,
-                favoriteProductionCount = __instance.FavoriteProductionCount,
-                driver = SlimeEmotions.Emotion.NONE,
-                minDrive = 0f,
-                extraDrive = 0f,
-                becomesId = IdentifiableId.NONE
-            });
-        }
-
-        if (definition.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !Largopedia.LargoMaps.TryGetValue(definition.IdentifiableId, out var maps))
+        if (definition.IdentifiableId != Ids.SAND_SLIME)
             return;
 
-        foreach (var (largoId, slimeId) in maps)
+        __instance.EatMap.RemoveAll(x => x.eats == IdentifiableId.SILKY_SAND_CRAFT);
+        __instance.EatMap.Add(new()
         {
-            var slimeDef = definitions.GetSlimeByIdentifiableId(slimeId);
-
-            if (slimeDef.Diet.MajorFoodGroups.Contains(FoodGroup.PLORTS) || !slimeDef.Diet.Produces.TryFinding(IsPlort, out var plortId))
-                continue;
-
-            __instance.EatMap.RemoveAll(x => x.eats == plortId);
-            __instance.EatMap.Add(new()
-            {
-                becomesId = largoId,
-                eats = plortId,
-                minDrive = 1f
-            });
-        }
+            eats = IdentifiableId.SILKY_SAND_CRAFT,
+            producesId = definition.Diet.Produces[0],
+            isFavorite = true,
+            driver = SlimeEmotions.Emotion.NONE
+        });
     }
 }
 
@@ -103,14 +78,14 @@ public static class StalkConsumablePatch
     [HarmonyPatch(nameof(StalkConsumable.SetStealth))]
     public static void Postfix(StalkConsumable __instance, bool isStealthed)
     {
-        if (__instance.TryGetComponent<StealthFixer>(out var fixer))
+        if (__instance.TryGetComponent<StealthFixer>(out var fixer) && !__instance.HasComponent<MimicBehaviour>())
             fixer.SetStealth(isStealthed);
     }
 
     [HarmonyPatch(nameof(StalkConsumable.ProcessCollisionEnter))]
     public static bool Prefix(StalkConsumable __instance, Collision col)
     {
-        if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.HasComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player)
+        if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.HasComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player && !__instance.HasComponent<MimicBehaviour>())
         {
             var vector = col.gameObject.transform.InverseTransformPoint(col.contacts[0].point);
 
@@ -130,7 +105,7 @@ public static class StalkConsumablePatch
 [HarmonyPatch(typeof(SlimeFace), nameof(SlimeFace.OnEnable))]
 public static class FixOnEnableFromRunningEarly
 {
-    public static bool Prefix(SlimeFace __instance) => __instance.ExpressionFaces != null && __instance._expressionToFaceLookup != null;
+    public static bool Prefix(SlimeFace __instance) => __instance is { ExpressionFaces: not null, _expressionToFaceLookup: not null };
 }
 
 [HarmonyPatch(typeof(DLCDirector), nameof(DLCDirector.RegisterPackages))]
@@ -142,9 +117,6 @@ public static class ClearMeshes
     {
         if (Uploaded)
             return;
-
-        foreach (var mesh in Helpers.ClonedMeshes)
-            mesh.UploadMeshData(true);
 
         foreach (var mesh in Inventory.GetAllMeshes())
             mesh.UploadMeshData(true);
@@ -162,7 +134,7 @@ public static class CorrectlyCheckSlimes
         if (Identifiable.IsLargo(slime.IdentifiableId) || Identifiable.IsGordo(slime.IdentifiableId))
             __result = false;
         else
-            __result = slime.Appearances.Count() > 1;
+            __result = slime.AppearancesDynamic.Count > 0;
 
         return false;
     }

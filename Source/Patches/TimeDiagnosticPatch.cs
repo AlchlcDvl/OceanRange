@@ -8,7 +8,7 @@ namespace OceanRange.Patches;
 [HarmonyPatch]
 public static class TimeDiagnosticPatch
 {
-    private static readonly Dictionary<MethodBase, (string Stage, bool StageIsNull, Stopwatch Watch, bool HasJsonParam, bool HasParams)> Watches = [];
+    private static readonly Dictionary<MethodBase, (string? Stage, bool StageIsNull, Stopwatch Watch, bool HasJsonParam, bool HasParams)> Watches = [];
 
     public static IEnumerable<MethodBase> TargetMethods()
     {

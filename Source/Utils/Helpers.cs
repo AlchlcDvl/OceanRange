@@ -12,12 +12,12 @@ namespace OceanRange.Utils;
 
 public static class Helpers
 {
-    // private static readonly Dictionary<string, Color32> HexToColor32s = [];
-    private static readonly Dictionary<string, Color> HexToColors = [];
+    // private static readonly Dictionary<string, Color32> HexToColor32s = new(StringComparer.Ordinal);
+    private static readonly Dictionary<string, Color> HexToColors = new(StringComparer.Ordinal);
 
     extension<T1>(IEnumerable<T1> source1)
     {
-        public bool TryFinding(Func<T1, bool> predicate, out T1 value)
+        public bool TryFinding(Func<T1, bool> predicate, out T1? value)
         {
             foreach (var item in source1)
             {
@@ -34,27 +34,27 @@ public static class Helpers
 
         public IEnumerable<T1> Except(Func<T1, bool> predicate) => source1.Where(x => !predicate(x));
 
-        public IEnumerable<(T1, T2)> Zip<T2>(IEnumerable<T2> source2)
-        {
-            using var e1 = source1.GetEnumerator();
-            using var e2 = source2.GetEnumerator();
+        // public IEnumerable<(T1, T2)> Zip<T2>(IEnumerable<T2> source2)
+        // {
+        //     using var e1 = source1.GetEnumerator();
+        //     using var e2 = source2.GetEnumerator();
 
-            while (true)
-            {
-                var has1 = e1.MoveNext();
-                var has2 = e2.MoveNext();
+        //     while (true)
+        //     {
+        //         var has1 = e1.MoveNext();
+        //         var has2 = e2.MoveNext();
 
-                if (!has1 || !has2)
-                {
-                    if (has1 != has2)
-                        throw new ArgumentException("Sequences have different lengths.");
+        //         if (!has1 || !has2)
+        //         {
+        //             if (has1 != has2)
+        //                 throw new ArgumentException("Sequences have different lengths.");
+        //
+        //             yield break;
+        //         }
 
-                    yield break;
-                }
-
-                yield return (e1.Current, e2.Current);
-            }
-        }
+        //         yield return (e1.Current, e2.Current);
+        //     }
+        // }
     }
 
     private static readonly TryParseHtml<Color> ColorParser = ColorUtility.TryParseHtmlString;
@@ -106,7 +106,7 @@ public static class Helpers
 
         // public bool TryHexToColor32(out Color32 color) => @string.TryHexToColor(HexToColor32s, Color32Parser, out color);
 
-        public bool TryHexToColor(out Color color) => @string.TryHexToColor(HexToColors, ColorParser, out color);
+        private bool TryHexToColor(out Color color) => @string.TryHexToColor(HexToColors, ColorParser, out color);
 
         private bool TryHexToColor<T>(Dictionary<string, T> cache, TryParseHtml<T> parser, out T color) where T : struct
         {
@@ -115,10 +115,12 @@ public static class Helpers
 
             if (parser(@string, out color))
             {
+                // Main.Console.Log($"Successfully parsed {@string} into ({color})");
                 cache[@string] = color;
                 return true;
             }
 
+            // Main.Console.Log($"Failed to parse {@string} as a color.");
             color = default;
             return false;
         }
@@ -229,28 +231,28 @@ public static class Helpers
         {
             var attr = VertexAttribute.TexCoord0 + i;
 
-            if (originalMesh.HasVertexAttribute(attr))
-            {
-                var dimension = originalMesh.GetVertexAttributeDimension(attr);
+            if (!originalMesh.HasVertexAttribute(attr))
+                continue;
 
-                if (dimension == 2)
-                {
-                    originalMesh.GetUVs(i, uvs2);
-                    mesh.SetUVs(i, uvs2);
-                    uvs2.Clear();
-                }
-                else if (dimension == 3)
-                {
-                    originalMesh.GetUVs(i, uvs3);
-                    mesh.SetUVs(i, uvs3);
-                    uvs3.Clear();
-                }
-                else if (dimension == 4)
-                {
-                    originalMesh.GetUVs(i, uvs4);
-                    mesh.SetUVs(i, uvs4);
-                    uvs4.Clear();
-                }
+            var dimension = originalMesh.GetVertexAttributeDimension(attr);
+
+            if (dimension == 2)
+            {
+                originalMesh.GetUVs(i, uvs2);
+                mesh.SetUVs(i, uvs2);
+                uvs2.Clear();
+            }
+            else if (dimension == 3)
+            {
+                originalMesh.GetUVs(i, uvs3);
+                mesh.SetUVs(i, uvs3);
+                uvs3.Clear();
+            }
+            else if (dimension == 4)
+            {
+                originalMesh.GetUVs(i, uvs4);
+                mesh.SetUVs(i, uvs4);
+                uvs4.Clear();
             }
         }
 
@@ -259,13 +261,13 @@ public static class Helpers
     }
 
     private static readonly HashSet<IdentifiableId> IdentifiableIds = new(Identifiable.idComparer);
-    // private static readonly HashSet<GadgetId> GadgetIds = new(Gadget.idComparer);
+    private static readonly HashSet<GadgetId> GadgetIds = new(Gadget.idComparer);
 
     public static T ParseOrAddEnumValue<T>(string name) where T : struct, Enum => Enum.TryParse<T>(name, out var result) ? result : AddEnumValue<T>(name);
 
     public static T AddEnumValue<T>(string name) where T : struct, Enum => (T)AddEnumValue(name, typeof(T));
 
-    public static object ParseOrAddEnumValue(string name, Type enumType) => TryParseEnum(enumType, name, true, out var result) ? result : AddEnumValue(name, enumType);
+    // public static object ParseOrAddEnumValue(string name, Type enumType) => TryParseEnum(enumType, name, true, out var result) ? result! : AddEnumValue(name, enumType);
 
     public static object AddEnumValue(string name, Type enumType) => AddEnumValue(name, enumType, EnumPatcher.GetFirstFreeValue(enumType));
 
@@ -285,15 +287,15 @@ public static class Helpers
                 IdentifiableIds.Add(identifiableId);
                 break;
             }
-            // case GadgetId gadgetId: // TODO: Uncomment once we add gadgets
-            // {
-            //     GadgetIds.Add(gadgetId);
-            //     break;
-            // }
+            case GadgetId gadgetId:
+            {
+                GadgetIds.Add(gadgetId);
+                break;
+            }
         }
 
-        if (EnumMetadata.TryGet(enumType, out var metadata))
-            metadata.AddEnumValue(value, name);
+        // if (EnumMetadata.TryGet(enumType, out var metadata))
+        //     metadata.AddEnumValue(value, name);
 
         return value;
     }
@@ -304,10 +306,8 @@ public static class Helpers
     public static void CategoriseIds()
     {
         IdentifiableIds.Do(IdentifiableRegistry.CategorizeId);
-        // GadgetIds.Do(GadgetRegistry.CategorizeId);
+        GadgetIds.Do(GadgetRegistry.CategorizeId);
     }
-
-    // public static string ToHexRGBA(this Color32 color) => $"#{color.r.ToString(InvariantCulture):X2}{color.g.ToString(InvariantCulture):X2}{color.b.ToString(InvariantCulture):X2}{color.a.ToString(InvariantCulture):X2}";
 
     public static bool IsValidZone(DirectedActorSpawner spawner, Zone[] zones)
     {
@@ -317,21 +317,27 @@ public static class Helpers
 
     private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
-    public static Vector3 ParseVector(string value) => Vector3Converter.Instance.Parse(value);
-
-    public static bool TryParseVector(string value, NumberStyles _1, CultureInfo _2, out Vector3 result)
+#if DEBUG
+    public static Vector3 ParseVector(string value)
     {
-        try
-        {
-            result = ParseVector(value);
-            return true;
-        }
-        catch
-        {
-            result = default;
-            return false;
-        }
+        var values = value.TrueSplit(' ', ',', ';').Select(float.Parse).ToArray();
+        return new(values[0], values[1], values[2]);
     }
+#endif
+
+    // public static bool TryParseVector(string value, NumberStyles _1, CultureInfo _2, out Vector3 result)
+    // {
+    //     try
+    //     {
+    //         result = ParseVector(value);
+    //         return true;
+    //     }
+    //     catch
+    //     {
+    //         result = default;
+    //         return false;
+    //     }
+    // }
 
     public static void CreateRanchExchangeOffer(IdentifiableId id, int weight, ProgressType[] progress)
     {
@@ -343,7 +349,7 @@ public static class Helpers
 
     // public static bool IsAny<T>(this T item, params T[] items) where T : struct => items.Contains(item); // Reference types are never gonna be used, but it's better to be safe than sorry
 
-    public static bool TryParseEnum(Type enumType, string name, bool ignoreCase, out object result)
+    public static bool TryParseEnum(Type enumType, string name, bool ignoreCase, out object? result)
     {
         try
         {
@@ -386,25 +392,16 @@ public static class Helpers
 
         public float Sum() => value.x + value.y + value.z;
 
+#if DEBUG
         public string ToVectorString() => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
+#endif
 
         public Vector3 Multiply(Vector3 scale) => new(value.x * scale.x, value.y * scale.y, value.z * scale.z);
 
         // public Vector3 Abs() => new(Mathf.Abs(value.x), Mathf.Abs(value.y), Mathf.Abs(value.z));
     }
 
-    public static string ToColorString(this Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
-
-    extension(Type type)
-    {
-        public bool IsNullableOf<T>()
-        {
-            var tType = typeof(T);
-            return tType.IsValueType && tType.IsAssignableFrom(Nullable.GetUnderlyingType(type));
-        }
-
-        public bool IsNullableEnum() => Nullable.GetUnderlyingType(type) is { IsEnum: true };
-    }
+    // public static string ToColorString(this Color value) => $"{value.r.ToString(InvariantCulture)},{value.g.ToString(InvariantCulture)},{value.b.ToString(InvariantCulture)},{value.a.ToString(InvariantCulture)}";
 
     public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> pair, out TKey key, out TValue value)
     {
@@ -412,9 +409,9 @@ public static class Helpers
         value = pair.Value;
     }
 
-    extension<TKey, TValue>(Dictionary<TKey, TValue> dict)
+    extension<TKey, TValue>(Dictionary<TKey, TValue> dict) where TKey : notnull
     {
-        public bool TryGetValue(TKey[] keys, out TValue result)
+        public bool TryGetValue(TKey[] keys, out TValue? result)
         {
             foreach (var key in keys)
             {
@@ -450,7 +447,7 @@ public static class Helpers
             }
         }
 
-        public bool TryRemove(TKey key, out TValue value)
+        public bool TryRemove(TKey key, out TValue? value)
         {
             try
             {
@@ -471,6 +468,7 @@ public static class Helpers
             return value;
         }
 
+#if DEBUG
         public TValue GetOrAdd(TKey key, Func<TValue> func)
         {
             if (!dict.TryGetValue(key, out var value))
@@ -478,6 +476,7 @@ public static class Helpers
 
             return value;
         }
+#endif
 
         public TValue GetOrAdd(TKey key, TValue defaultValue)
         {
@@ -562,22 +561,22 @@ public static class Helpers
         public T EnsureComponent<T>() where T : Component => obj.GetComponent<T>() ?? obj.AddComponent<T>();
     }
 
-    extension<T>(MemberInfo info) where T : Attribute
+    extension(MemberInfo info)
     {
-        public bool IsDefined() => info.IsDefined(typeof(T), false);
+        // public bool IsDefined<T>() where T : Attribute => info.IsDefined(typeof(T), false);
 
-        public bool TryGetAttribute(out T attribute, bool inherit = true)
+        public bool TryGetAttribute<T>(out T attribute, bool inherit = true) where T : Attribute
         {
             attribute = info.GetCustomAttribute<T>(inherit);
             return attribute != null;
         }
     }
 
-    public static T[] GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
+    public static T[]? GetEnumValues<T>() where T : struct, Enum => Enum.GetValues(typeof(T)) as T[];
 
     // public static string[] GetEnumNames<T>() where T : struct, Enum => Enum.GetNames(typeof(T));
 
-    public static bool TryGetItem<T>(this T[] array, int index, out T value)
+    public static bool TryGetItem<T>(this T[] array, int index, out T? value)
     {
         if (array.IsNullOrEmpty())
         {
@@ -645,17 +644,17 @@ public static class Helpers
             return mat;
         }
 
-        // public void SetColors(params (int, Color)[] values)
-        // {
-        //     foreach (var (prop, color) in values)
-        //         material.SetColor(prop, color);
-        // }
+        public void SetColors(params (int, Color)[] values)
+        {
+            foreach (var (prop, color) in values)
+                material.SetColor(prop, color);
+        }
 
-        // public void SetColors(Color color, params int[] props)
-        // {
-        //     foreach (var prop in props)
-        //         material.SetColor(prop, color);
-        // }
+        public void SetColors(Color color, params int[] props)
+        {
+            foreach (var prop in props)
+                material.SetColor(prop, color);
+        }
 
         public void SetColor(int nameId, Color? color)
         {
@@ -736,5 +735,15 @@ public static class Helpers
         Physics.BakeMesh(mesh.GetInstanceID(), collider.convex);
         collider.sharedMesh = mesh;
         collider.enabled = true;
+    }
+
+    public static (CellDirector, Region)[] GetCells(this ZoneDirector zone)
+    {
+        var result = new List<(CellDirector, Region)>();
+
+        foreach (var cell in zone.GetComponentsInChildren<CellDirector>())
+            result.Add((cell, cell.GetComponent<Region>()));
+
+        return [.. result];
     }
 }

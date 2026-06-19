@@ -10,7 +10,9 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 {
     private CalmedByWaterSpray calmed;
     private SlimeAppearanceApplicator applicator;
-    private bool hiding;
+    private SlimeFaceAnimator faceAnimator;
+
+    public bool IsHiding { get; private set; }
 
     public CanMoveHandler CanMove;
     public float Affection;
@@ -23,6 +25,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
         base.Awake();
         calmed = GetComponent<CalmedByWaterSpray>();
         applicator = GetComponent<SlimeAppearanceApplicator>();
+        faceAnimator = GetComponent<SlimeFaceAnimator>();
         CanMove = this.EnsureComponent<CanMoveHandler>();
     }
 
@@ -32,7 +35,7 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
     public override float Relevancy(bool _)
     {
-        if (calmed.IsCalmed() || Affection >= 1f || hiding || !CanMove.CanMove)
+        if (Affection >= 1f || IsHiding || !CanMove.CanMove || calmed.IsCalmed())
             return 0f;
 
         var range = Mathf.Lerp(MaxShyRange, MinShyRange, Affection);
@@ -45,25 +48,26 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
 
     public override void Selected()
     {
-        if (!hiding)
+        if (!IsHiding)
             StartCoroutine(CoHideInShell());
     }
 
     private IEnumerator CoHideInShell()
     {
-        hiding = true;
+        IsHiding = true;
         CanMove.CanMove = false;
+
+        applicator.SetExpression(SlimeExpression.Alarm);
 
         var player = SceneContext.Instance.Player.transform;
         var range = Mathf.Lerp(MaxShyRange, MinShyRange, Affection);
 
         while ((player.position - transform.position).sqrMagnitude <= range)
-        {
-            applicator.SetExpression(SlimeExpression.Alarm);
             yield return null;
-        }
 
-        hiding = false;
+        IsHiding = false;
         CanMove.CanMove = true;
+
+        faceAnimator.SetTrigger("triggerMinorWince");
     }
 }

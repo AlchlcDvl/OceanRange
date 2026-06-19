@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 118459ba6612dd3449608e9568fb967c, type: 3}
+  m_Name: atlas
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::Atlas
+  world:
+    Name:
+      HasValue: 0
+      Value: 
+    Regions:
+    - Name:
+        HasValue: 1
+        Value: Underwater
+      MinNodeSize: 250
+      LoosenessVal: 1.2
+      InitialWorldSize: 2000
+      InitialWorldPos: {x: 0, y: 0, z: 0}
+    Zones:
+    - Name:
+        HasValue: 1
+        Value: Swirlpool_Island
+      Region: UNDERWATER
+      Requirements:
+      - key: CorporateLevel
+        value:
+          Name:
+            HasValue: 0
+            Value: 
+          CorporateLevelMin: 15
+          CorporateLevelMax: 2147483647
+          ExchangeProgress: 0
+          PathToGameObject: zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)
+      TeleporterOrientation:
+        Position: {x: -119.7111, y: -0.0307, z: -260.243}
+        Rotation: {x: 0, y: 234.398, z: 0}
+        Scale: {x: 1, y: 1, z: 1}
+      TeleporterLocation: zoneRANCH/cellRanch_Docks/Sector/Upgrades/
+      AssetName: SWIRLPOOL

@@ -1,250 +1,264 @@
-// using RichPresence;
+using RichPresence;
 
-// namespace OceanRange.Managers;
+namespace OceanRange.Managers;
 
-// [Manager(ManagerType.Atlas)]
-// public static class Atlas
-// {
-//     private static ZoneData[] Zones;
-//     private static RegionData[] Regions;
+[Manager(ManagerType.Atlas)]
+public static class Atlas
+{
+    private static ZoneData[] Zones;
+    private static RegionData[] Regions;
 
-//     private static GameObject WaterSourceBase;
-//     private static GameObject TeleporterPrefab;
+    private static GameObject WaterSourceBase;
+    private static GameObject TeleporterPrefab;
 
-// #if DEBUG
-//     [TimeDiagnostic("Atlas Preload")]
-// #endif
-//     public static void PreloadMapData()
-//     {
-//         var world = Inventory.GetJson<World>("atlas");
+    public static Dictionary<Zone, ZoneData> ZoneToDataMap;
 
-//         Regions = world.Regions;
-//         Zones = world.Zones;
+#if DEBUG
+    [TimeDiagnostic("Atlas Preload")]
+#endif
+    [PreloadMethod]
+    public static void PreloadMapData()
+    {
+        var world = Inventory.GetJson<World>("atlas")!;
 
-//         SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
-//     }
+        Regions = world.Regions;
+        Zones = world.Zones;
 
-// #if DEBUG
-//     [TimeDiagnostic("Atlas PreOnSaveLoad")]
-// #endif
-//     [PreloadMethod]
-//     private static void PreOnSaveLoad(SceneContext context)
-//     {
-//         // Load regions before the zones or the game implodes
+        ZoneToDataMap = new Dictionary<Zone, ZoneData>();
 
-//         if (!WaterSourceBase)
-//             WaterSourceBase = GameObject.Find("/zoneREEF/cellReef_Hub/Sector/Resources/waterFountain01");
+        foreach (var zone in Zones)
+        {
+            ZoneToDataMap.Add(zone.Zone, zone);
+        }
 
-//         foreach (var region in Regions)
-//             PreLoadRegion(context, region);
+        SRCallbacks.PreSaveGameLoad += PreOnSaveLoad;
+    }
 
-//         foreach (var zone in Zones)
-//             PreLoadZone(context, zone);
+#if DEBUG
+    [TimeDiagnostic("Atlas PreOnSaveLoad")]
+#endif
+    private static void PreOnSaveLoad(SceneContext context)
+    {
+        // Load regions before the zones or the game implodes
 
-//         context.AmbianceDirector.zoneSettings = [.. context.AmbianceDirector.zoneSettings, .. Zones.Select(x => x.AmbianceSetting)];
-//     }
+        if (!WaterSourceBase)
+            WaterSourceBase = GameObject.Find("/zoneREEF/cellReef_Hub/Sector/Resources/waterFountain01");
 
-//     private static void PreLoadRegion(SceneContext context, RegionData region)
-//     {
-//         context.RegionRegistry.managedWithSets.Add(region.Region, []);
-//         context.RegionRegistry.regionsTrees.Add(region.Region, new(region.InitialWorldSize, region.InitialWorldPos, region.MinNodeSize, region.LoosenessVal));
-//     }
+        foreach (var region in Regions)
+            PreLoadRegion(context, region);
 
-//     private static void PreLoadZone(SceneContext context, ZoneData zoneData)
-//     {
-//         context.AmbianceDirector.zoneDict.Add(zoneData.Ambiance, zoneData.AmbianceSetting);
+        foreach (var zone in Zones)
+            PreLoadZone(context, zone);
 
-//         if (!zoneData.PrefabsPrepped)
-//         {
-//             PrepWaterSources(zoneData.Prefab);
-//             PrepFoodSpawners(zoneData.Prefab);
-//             PrepSpawners(zoneData.Prefab);
-//             PrepMaterials(zoneData.Prefab.GetComponentsInChildren<Renderer>());
+        context.AmbianceDirector.zoneSettings = [.. context.AmbianceDirector.zoneSettings, .. Zones.Select(x => x.AmbianceSetting)];
+    }
 
-//             zoneData.PrefabsPrepped = true;
-//         }
+    private static void PreLoadRegion(SceneContext context, RegionData region)
+    {
+        context.RegionRegistry.managedWithSets.Add(region.Region, []);
+        context.RegionRegistry.regionsTrees.Add(region.Region, new(region.InitialWorldSize, region.InitialWorldPos, region.MinNodeSize, region.LoosenessVal));
+    }
 
-//         var enterPortal = TeleporterPrefab.Instantiate(GameObject.Find(zoneData.TeleporterLocation).transform);
-//         enterPortal.transform.eulerAngles = zoneData.TeleporterOrientation.Rotation;
-//         PrepTeleporter(context, enterPortal.GetComponent<TeleportDestination>(), zoneData.TeleporterOrientation.Position);
-//         PrepMaterials(enterPortal.GetComponent<MeshRenderer>());
+    private static void PreLoadZone(SceneContext context, ZoneData zoneData)
+    {
+        context.AmbianceDirector.zoneDict.Add(zoneData.Ambiance, zoneData.AmbianceSetting);
 
-//         var zoneObject = zoneData.Prefab.Instantiate();
+        if (!zoneData.PrefabsPrepped)
+        {
+            PrepWaterSources(zoneData.Prefab);
+            PrepFoodSpawners(zoneData.Prefab);
+            PrepSpawners(zoneData.Prefab);
+            PrepMaterials(zoneData.Prefab.GetComponentsInChildren<Renderer>());
 
-//         foreach (var tp in zoneObject.GetComponentsInChildren<TeleportDestination>())
-//             PrepTeleporter(context, tp, Vector3.zero);
+            zoneData.PrefabsPrepped = true;
+        }
 
-//         zoneObject.SetActive(true);
+        var enterPortal = TeleporterPrefab.Instantiate(GameObject.Find(zoneData.TeleporterLocation).transform);
+        enterPortal.transform.eulerAngles = zoneData.TeleporterOrientation.Rotation;
+        PrepTeleporter(context, enterPortal.GetComponent<TeleportDestination>(), zoneData.TeleporterOrientation.Position);
+        PrepMaterials(enterPortal.GetComponent<MeshRenderer>());
 
-//         if (zoneData.Requirements == null)
-//             return;
+        var zoneObject = zoneData.Prefab.Instantiate();
 
-//         foreach (var (key, value) in zoneData.Requirements)
-//         {
-//             var obj = GameObject.Find(value.PathToGameObject);
+        foreach (var tp in zoneObject.GetComponentsInChildren<TeleportDestination>())
+            PrepTeleporter(context, tp, Vector3.zero);
 
-//             switch (key)
-//             {
-//                 case RequirementType.CorporateLevel:
-//                     var progress = obj.AddComponent<ActivateOnProgressRange>();
+        zoneObject.SetActive(true);
 
-//                     progress.progressType = ProgressType.CORPORATE_PARTNER;
-//                     progress.maxProgress = value.CorporateLevelMax;
-//                     progress.minProgress = value.CorporateLevelMin;
+        foreach (var (_, region) in zoneObject.GetComponent<ZoneDirector>().GetCells())
+            SceneContext.Instance.RegionRegistry.managedWithSets[zoneData.Region].Add(region.gameObject);
 
-//                     break;
-//                     // TODO: Do other requirements.
-//             }
-//         }
-//     }
+        if (zoneData.Requirements == null)
+            return;
 
-// #if DEBUG
-//     [TimeDiagnostic("Atlas Load")]
-// #endif
-//     [LoadMethod]
-//     public static void LoadMap()
-//     {
-//         TeleporterPrefab = Inventory.GetPrefab("TeleporterDevEntrance");
+        foreach (var (key, value) in zoneData.Requirements)
+        {
+            var obj = GameObject.Find(value.PathToGameObject);
 
-//         Array.ForEach(Zones, LoadZoneData);
-//     }
+            switch (key)
+            {
+                case RequirementType.CorporateLevel:
+                    var progress = obj.AddComponent<ActivateOnProgressRange>();
 
-//     private static void LoadZoneData(ZoneData zoneData)
-//     {
-//         PediaRegistry.RegisterIdEntry(zoneData.PediaId, null);
-//         Director.RICH_PRESENCE_ZONE_LOOKUP.Add(zoneData.Zone, "ranch");
+                    progress.progressType = ProgressType.CORPORATE_PARTNER;
+                    progress.maxProgress = value.CorporateLevelMax;
+                    progress.minProgress = value.CorporateLevelMin;
 
-//         ZoneDirector.zonePediaIdLookup.Add(zoneData.Zone, zoneData.PediaId);
+                    break;
+                // TODO: Do other requirements.
+            }
+        }
+    }
 
-//         zoneData.AmbianceSetting = Inventory.GetScriptable<AmbianceDirectorZoneSetting>(zoneData.AssetName + "Amb");
-//         zoneData.AmbianceSetting.zone = zoneData.Ambiance;
+#if DEBUG
+    [TimeDiagnostic("Atlas Load")]
+#endif
+    [LoadMethod]
+    public static void LoadMap()
+    {
+        TeleporterPrefab = Inventory.GetPrefab("TeleporterDevEntrance");
 
-//         zoneData.Prefab = Inventory.GetPrefab("zone" + zoneData.AssetName);
-//         zoneData.Prefab.SetActive(false);
+        Array.ForEach(Zones, LoadZoneData);
+    }
 
-//         zoneData.Prefab.GetComponent<ZoneDirector>().zone = zoneData.Zone;
+    private static void LoadZoneData(ZoneData zoneData)
+    {
+        PediaRegistry.RegisterIdEntry(zoneData.PediaId, null);
+        Director.RICH_PRESENCE_ZONE_LOOKUP.Add(zoneData.Zone, "ranch");
 
-//         foreach (var cell in zoneData.Prefab.GetComponentsInChildren<CellDirector>())
-//         {
-//             cell.ambianceZone = zoneData.Ambiance;
-//             cell.GetComponent<Region>().bounds.center += cell.transform.position;
-//         }
-//     }
+        ZoneDirector.zonePediaIdLookup.Add(zoneData.Zone, zoneData.PediaId);
 
-//     private static void PrepMaterials(params Renderer[] renderers)
-//     {
-//         foreach (var renderer in renderers)
-//         {
-//             var mat = renderer.material;
-//             var shader = ShaderUtils.FindShader(mat.shader.name);
+        zoneData.AmbianceSetting = Inventory.GetScriptable<AmbianceDirectorZoneSetting>(zoneData.AssetName + "Amb");
+        zoneData.AmbianceSetting.zone = zoneData.Ambiance;
 
-//             if (shader != null)
-//                 mat.shader = shader;
-//         }
-//     }
+        zoneData.Prefab = Inventory.GetPrefab("zone" + zoneData.AssetName);
+        zoneData.Prefab.SetActive(false);
 
-//     private static void PrepSpawner(DirectedSlimeSpawner ss)
-//     {
-//         foreach (var constraint in ss.constraints)
-//         {
-//             for (var i = 0; i < constraint.slimeset.members.Length; i++)
-//             {
-//                 var prefab = constraint.slimeset.members[i];
+        var zone = zoneData.Prefab.GetComponent<ZoneDirector>();
+        zone.zone = zoneData.Zone;
 
-//                 if (!prefab.prefab)
-//                     Main.Console.Log($"Error - Null Object in constraint.slimeset.members[{i}]");
-//                 else
-//                     prefab.prefab = Helpers.ParseEnum<IdentifiableId>(prefab.prefab.name).GetPrefab();
-//             }
-//         }
-//     }
+        foreach (var (cell, region) in zone.GetCells())
+        {
+            cell.ambianceZone = zoneData.Ambiance;
+            region.bounds.center += cell.transform.position;
+            region.setId = zoneData.Region;
+        }
+    }
 
-//     private static void PrepSpawners(GameObject zone) => Array.ForEach(zone.GetComponentsInChildren<DirectedSlimeSpawner>(true), PrepSpawner);
+    private static void PrepMaterials(params Renderer[] renderers)
+    {
+        foreach (var renderer in renderers)
+        {
+            var mat = renderer.material;
+            var shader = ShaderUtils.FindShader(mat.shader.name);
 
-//     /// <summary>
-//     /// Make sure all water sources in your zone have a number at the end!
-//     /// Example: _WaterSource.1707111978
-//     /// The '.' NEEDS to be there.
-//     /// </summary>
-//     /// <param name="zone">The zone.</param>
-//     private static void PrepWaterSources(GameObject zone)
-//     {
-//         foreach (var source in zone.GetComponentsInChildren<LiquidSource>())
-//         {
-//             var split = source.name.TrueSplit('.');
+            if (shader != null)
+                mat.shader = shader;
+        }
+    }
 
-//             if (split.Count != 1)
-//                 Main.Console.Log($"Invalid LiquidSource in zone '{zone.name}' make sure you name your water source correctly! (Invalid ID)");
+    private static void PrepSpawner(DirectedSlimeSpawner ss)
+    {
+        foreach (var constraint in ss.constraints)
+        {
+            for (var i = 0; i < constraint.slimeset.members.Length; i++)
+            {
+                var prefab = constraint.slimeset.members[i];
 
-//             if (source.name.Contains("_WaterSource"))
-//             {
-//                 source.GetComponent<LiquidSource>().Destroy();
+                if (!prefab.prefab)
+                    Main.Console.Log($"Error - Null Object in constraint.slimeset.members[{i}]");
+                else
+                    prefab.prefab = Helpers.ParseEnum<IdentifiableId>(prefab.prefab.name).GetPrefab();
+            }
+        }
+    }
 
-//                 WaterSourceBase.SetActive(false);
+    private static void PrepSpawners(GameObject zone) => Array.ForEach(zone.GetComponentsInChildren<DirectedSlimeSpawner>(true), PrepSpawner);
 
-//                 var srcBase = WaterSourceBase.Instantiate();
-//                 srcBase.transform.SetParent(source.transform, false);
+    /// <summary>
+    /// Make sure all water sources in your zone have a number at the end!
+    /// Example: _WaterSource.1707111978
+    /// The '.' NEEDS to be there.
+    /// </summary>
+    /// <param name="zone">The zone.</param>
+    private static void PrepWaterSources(GameObject zone)
+    {
+        foreach (var source in zone.GetComponentsInChildren<LiquidSource>())
+        {
+            var split = source.name.TrueSplit('.');
 
-//                 var water = srcBase.GetComponentInChildren<LiquidSource>();
-//                 water.director = zone.GetComponent<IdDirector>();
-//                 water.director.persistenceDict.Add(water, water.IdPrefix() + split[1]);
-//                 water.enabled = true;
+            if (split.Count != 1)
+                Main.Console.Log($"Invalid LiquidSource in zone '{zone.name}' make sure you name your water source correctly! (Invalid ID)");
 
-//                 srcBase.transform.localPosition = Vector3.zero;
-//                 srcBase.SetActive(true);
+            if (source.name.Contains("_WaterSource"))
+            {
+                source.GetComponent<LiquidSource>().Destroy();
 
-//                 WaterSourceBase.SetActive(true);
-//             }
-//             // todo: add more source types (else if)
-//             else
-//             {
-//                 Main.Console.Log($"Invalid LiquidSource in zone '{zone.name}' make sure you name your water source correctly! (Unknown Name)");
-//             }
-//         }
-//     }
+                WaterSourceBase.SetActive(false);
 
-//     private static void PrepTeleporter(SceneContext context, TeleportDestination teleporter, Vector3 position)
-//     {
-//         if (teleporter.transform.childCount < 2)
-//         {
-//             Main.Console.LogError($"Failed to register teleport destination {teleporter.name}. (Invalid Teleporter Child Count)");
-//             return;
-//         }
+                var srcBase = WaterSourceBase.Instantiate();
+                srcBase.transform.SetParent(source.transform, false);
 
-//         var region = teleporter.transform.GetChild(1);
+                var water = srcBase.GetComponentInChildren<LiquidSource>();
+                water.director = zone.GetComponent<IdDirector>();
+                water.director.persistenceDict.Add(water, water.IdPrefix() + split[1]);
+                water.enabled = true;
 
-//         if (!region.name.StartsWith('_'))
-//         {
-//             Main.Console.LogError($"Failed to register teleport destination {teleporter.name}. (Invalid Teleporter _Region: {region.name})");
-//             return;
-//         }
+                srcBase.transform.localPosition = Vector3.zero;
+                srcBase.SetActive(true);
 
-//         teleporter.regionSetId = Helpers.ParseEnum<RegionId>(region.name.Replace("_", string.Empty));
-//         context.TeleportNetwork.Register(teleporter);
+                WaterSourceBase.SetActive(true);
+            }
+            // todo: add more source types (else if)
+            else
+            {
+                Main.Console.Log($"Invalid LiquidSource in zone '{zone.name}' make sure you name your water source correctly! (Unknown Name)");
+            }
+        }
+    }
 
-//         if (position != Vector3.zero)
-//             teleporter.transform.position = position;
-//     }
+    private static void PrepTeleporter(SceneContext context, TeleportDestination teleporter, Vector3 position)
+    {
+        if (teleporter.transform.childCount < 2)
+        {
+            Main.Console.LogError($"Failed to register teleport destination {teleporter.name}. (Invalid Teleporter Child Count)");
+            return;
+        }
 
-//     private static void PrepFoodSpawners(GameObject zone)
-//     {
-//         foreach (var spawnResource in zone.GetComponentsInChildren<SpawnResource>())
-//         {
-//             PrepFoodPrefabs(spawnResource.ObjectsToSpawn, "ObjectsToSpawn");
-//             PrepFoodPrefabs(spawnResource.BonusObjectsToSpawn, "BonusObjectsToSpawn");
-//         }
-//     }
+        var region = teleporter.transform.GetChild(1);
 
-//     private static void PrepFoodPrefabs(GameObject[] array, string arrayName)
-//     {
-//         for (var i = 0; i < array.Length; i++)
-//         {
-//             var food = array[i];
+        if (!region.name.StartsWith('_'))
+        {
+            Main.Console.LogError($"Failed to register teleport destination {teleporter.name}. (Invalid Teleporter _Region: {region.name})");
+            return;
+        }
 
-//             if (!food)
-//                 Main.Console.Log($"Error - Null Object in {arrayName}[{i}]");
-//             else
-//                 array[i] = Helpers.ParseEnum<IdentifiableId>(food.name).GetPrefab();
-//         }
-//     }
-// }
+        teleporter.regionSetId = Helpers.ParseEnum<RegionId>(region.name.Replace("_", string.Empty));
+        context.TeleportNetwork.Register(teleporter);
+
+        if (position != Vector3.zero)
+            teleporter.transform.position = position;
+    }
+
+    private static void PrepFoodSpawners(GameObject zone)
+    {
+        foreach (var spawnResource in zone.GetComponentsInChildren<SpawnResource>())
+        {
+            PrepFoodPrefabs(spawnResource.ObjectsToSpawn, "ObjectsToSpawn");
+            PrepFoodPrefabs(spawnResource.BonusObjectsToSpawn, "BonusObjectsToSpawn");
+        }
+    }
+
+    private static void PrepFoodPrefabs(GameObject[] array, string arrayName)
+    {
+        for (var i = 0; i < array.Length; i++)
+        {
+            var food = array[i];
+
+            if (!food)
+                Main.Console.Log($"Error - Null Object in {arrayName}[{i}]");
+            else
+                array[i] = Helpers.ParseEnum<IdentifiableId>(food.name).GetPrefab();
+        }
+    }
+}

@@ -97,10 +97,49 @@ Discord:
 
 ## Fixes
 - Gameplay: Fixed slimes and largos not eating custom foods when SSRML is installed
+- Gameplay: Fixed a bug that prevented the secret style menu from loading properly
+- Gameplay: Fixed largos eating sand pearls and creating too many tarrs as a result
 - Visual: Fixed Sand, Puddle and Fire slimes learning invisibility when thrown
-- Visual: Fixed largos turning invisible when one fo the component slimes has an active secret style
+- Visual: Fixed largos turning invisible when one of the component slimes has an active secret style
 - Visual: Fixed the appearances of a few largos
-- Visual: Fixed slimes disappearing when moving to the end of the screen
+- Visual: Fixed a unity rendering bug that made slimes disappear when they approach the edge of the screen
+- Misc: Fixed a couple of misc bugs that weren't very visible
+
+Nexus:
+Optimisation: Reduced the number of times new objects that are created; hopefully this avoids ram bombing lower end PCs
+Optimisation: Compressed mesh assets further to occupy lesser space and be easier to load
+Gameplay Fix: Fixed slimes and largos not eating custom foods when SSRML is installed
+Gameplay Fix: Fixed a bug that prevented the secret style menu from loading properly
+Gameplay Fix: Fixed largos eating sand pearls and creating too many tarrs as a result
+Visual Fix: Fixed Sand, Puddle and Fire slimes learning invisibility when thrown
+Visual Fix: Fixed largos turning invisible when one of the component slimes has an active secret style
+Visual Fix: Fixed the appearances of a few largos
+Visual Fix: Fixed a unity rendering bug that made slimes disappear when they approach the edge of the screen
+Misc Fix: Fixed a couple of smaller misc bugs that weren't very visible
+
+0.2.3
+Discord:
+
+## Fixes!
+- Critical: Fixed a crashing incompatibility bug with SSRML
+- Gameplay: Fixed an incompatibility that somehow broke storm slimes from Slime Collection 2
+- Visual: Fixed a visual bug that made the mod appear as version 0.3.0 instead of 0.2.2
+
+Nexus:
+Critical Fix: Fixed a crashing incompatibility bug with SSRML
+Gameplay Fix: Fixed an incompatibility that somehow broke storm slimes from Slime Collection 2
+Visual Fix: Fixed a visual bug that made the mod appear as version 0.3.0 instead of 0.2.2 (now it's 0.2.3)
+
+0.2.4
+Discord:
+
+## Fixes!
+- Critical: Fixed incompatibility bugs with several mods, with SSRML being the worst offender
+- Visual: Fixed the visual appearance of slimes to match their artwork
+
+Nexus:
+Critical Fix: Fixed incompatibility bugs with several mods, with SSRML being the worst offender
+Visual: Fixed the visual appearance of slimes to match their artwork
 
 0.3.0
 Discord:
