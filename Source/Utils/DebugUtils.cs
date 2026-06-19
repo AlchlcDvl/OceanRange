@@ -5,9 +5,7 @@ namespace OceanRange.Utils;
 
 public static class DebugUtils
 {
-#nullable enable
     extension<T>(T? message)
-#nullable disable
     {
         public void DoLog() => Main.Console.Log(message?.ToString() ?? "message was null");
 
@@ -18,25 +16,25 @@ public static class DebugUtils
         public void LogIf(bool condition)
         {
             if (condition)
-                message.DoLog();
+                message!.DoLog();
         }
 
         public void LogWarningIf(bool condition)
         {
             if (condition)
-                message.DoLogWarn();
+                message!.DoLogWarn();
         }
 
         public void LogErrorIf(bool condition)
         {
             if (condition)
-                message.DoLogError();
+                message!.DoLogError();
         }
     }
 
     public static GameObject GetClosestCell(Vector3 pos)
     {
-        GameObject closest = null;
+        GameObject closest = null!;
         var distance = float.MaxValue;
 
         foreach (var cell in SceneManager.GetActiveScene()

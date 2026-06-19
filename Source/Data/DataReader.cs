@@ -107,7 +107,7 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
         var array = new T[count];
 
         for (var i = 0; i < count; i++)
-            array[i] = Helpers.ParseEnum<T>(ReadString()!);
+            array[i] = Helpers.ParseOrAddEnumValue<T>(ReadString()!);
 
         return array;
     }

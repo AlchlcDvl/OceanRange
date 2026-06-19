@@ -267,7 +267,7 @@ public static class Helpers
 
     public static T AddEnumValue<T>(string name) where T : struct, Enum => (T)AddEnumValue(name, typeof(T));
 
-    public static object ParseOrAddEnumValue(string name, Type enumType) => TryParseEnum(enumType, name, true, out var result) ? result! : AddEnumValue(name, enumType);
+    // public static object ParseOrAddEnumValue(string name, Type enumType) => TryParseEnum(enumType, name, true, out var result) ? result! : AddEnumValue(name, enumType);
 
     public static object AddEnumValue(string name, Type enumType) => AddEnumValue(name, enumType, EnumPatcher.GetFirstFreeValue(enumType));
 
@@ -309,8 +309,6 @@ public static class Helpers
         GadgetIds.Do(GadgetRegistry.CategorizeId);
     }
 
-    // public static string ToHexRGBA(this Color32 color) => $"#{color.r.ToString(InvariantCulture):X2}{color.g.ToString(InvariantCulture):X2}{color.b.ToString(InvariantCulture):X2}{color.a.ToString(InvariantCulture):X2}";
-
     public static bool IsValidZone(DirectedActorSpawner spawner, Zone[] zones)
     {
         var zoneId = spawner.GetComponentInParent<Region>(true).GetZoneId();
@@ -319,25 +317,27 @@ public static class Helpers
 
     private static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
+#if DEBUG
     public static Vector3 ParseVector(string value)
     {
         var values = value.TrueSplit(' ', ',', ';').Select(float.Parse).ToArray();
         return new(values[0], values[1], values[2]);
     }
+#endif
 
-    public static bool TryParseVector(string value, NumberStyles _1, CultureInfo _2, out Vector3 result)
-    {
-        try
-        {
-            result = ParseVector(value);
-            return true;
-        }
-        catch
-        {
-            result = default;
-            return false;
-        }
-    }
+    // public static bool TryParseVector(string value, NumberStyles _1, CultureInfo _2, out Vector3 result)
+    // {
+    //     try
+    //     {
+    //         result = ParseVector(value);
+    //         return true;
+    //     }
+    //     catch
+    //     {
+    //         result = default;
+    //         return false;
+    //     }
+    // }
 
     public static void CreateRanchExchangeOffer(IdentifiableId id, int weight, ProgressType[] progress)
     {
@@ -392,7 +392,9 @@ public static class Helpers
 
         public float Sum() => value.x + value.y + value.z;
 
+#if DEBUG
         public string ToVectorString() => $"{value.x.ToString(InvariantCulture)},{value.y.ToString(InvariantCulture)},{value.z.ToString(InvariantCulture)}";
+#endif
 
         public Vector3 Multiply(Vector3 scale) => new(value.x * scale.x, value.y * scale.y, value.z * scale.z);
 
@@ -466,6 +468,7 @@ public static class Helpers
             return value;
         }
 
+#if DEBUG
         public TValue GetOrAdd(TKey key, Func<TValue> func)
         {
             if (!dict.TryGetValue(key, out var value))
@@ -473,6 +476,7 @@ public static class Helpers
 
             return value;
         }
+#endif
 
         public TValue GetOrAdd(TKey key, TValue defaultValue)
         {
@@ -559,7 +563,7 @@ public static class Helpers
 
     extension(MemberInfo info)
     {
-        public bool IsDefined<T>() where T : Attribute => info.IsDefined(typeof(T), false);
+        // public bool IsDefined<T>() where T : Attribute => info.IsDefined(typeof(T), false);
 
         public bool TryGetAttribute<T>(out T attribute, bool inherit = true) where T : Attribute
         {
@@ -736,8 +740,10 @@ public static class Helpers
     public static (CellDirector, Region)[] GetCells(this ZoneDirector zone)
     {
         var result = new List<(CellDirector, Region)>();
+
         foreach (var cell in zone.GetComponentsInChildren<CellDirector>())
             result.Add((cell, cell.GetComponent<Region>()));
-        return result.ToArray();
+
+        return [.. result];
     }
 }

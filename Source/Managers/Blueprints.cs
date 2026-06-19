@@ -15,13 +15,33 @@ public static class Blueprints
     private static readonly int Color30 = ShaderUtils.GetOrSet("_Color30");
     private static readonly int Color31 = ShaderUtils.GetOrSet("_Color31");
 
+    public static LampData[] Lamps;
+    public static WarpDepotData[] WarpDepots;
+    public static TeleporterData[] Teleporters;
+    // public static DecorationData[] Decorations;
+
 #if DEBUG
     [TimeDiagnostic("Blueprints Preload")]
 #endif
     [PreloadMethod]
-    public static void PreloadBlueprintData()
+    public static void PreloadBlueprints()
     {
-        // var schematics = Inventory.GetJson<Schematics>("blueprints");
+        var schematics = Inventory.GetJson<Schematics>("blueprints")!;
+        Lamps = schematics.Lamps;
+        WarpDepots = schematics.WarpDepots;
+        Teleporters = schematics.Teleporters;
+        // Decorations = schematics.Decorations;
+    }
+
+#if DEBUG
+    [TimeDiagnostic("Blueprints Load")]
+#endif
+    [LoadMethod]
+    public static void LoadBlueprints()
+    {
+        Array.ForEach(Lamps, CreateGadget);
+        Array.ForEach(WarpDepots, CreateGadget);
+        Array.ForEach(Teleporters, CreateGadget);
     }
 
     private static void CreateGadget(SlimeGadgetData gadgetData)
@@ -39,6 +59,7 @@ public static class Blueprints
         else if (gadgetData is TeleporterData teleporterData)
             CreateTeleporter(teleporterData, prefab);
 
+        GadgetRegistry.RegisterIdentifiableMapping(gadgetData.Id, gadgetData.SlimeId);
         LookupRegistry.RegisterGadget(CopyGadgetDefinition(gadgetDefinition, gadgetData.Id, Inventory.GetSprite($"{gadgetData.Name}_icon"), prefab, [.. gadgetData.CraftCosts]));
     }
 
@@ -65,15 +86,15 @@ public static class Blueprints
     private static void CreateLamp(LampData lampData, GameObject prefab)
     {
         var slimeByIdentifiableId = lampData.SlimeId.GetSlimeDefinition();
-        var defaultMaterials = slimeByIdentifiableId.AppearancesDefault[0].Structures[0].DefaultMaterials;
-        var palette = SlimeAppearance.Palette.FromMaterial(defaultMaterials[0]);
+        var defaultMaterial = slimeByIdentifiableId.AppearancesDefault[0].Structures[0].DefaultMaterials[0];
+        var palette = SlimeAppearance.Palette.FromMaterial(defaultMaterial);
 
         var component = prefab.transform.Find("slimeslime").GetComponent<SkinnedMeshRenderer>();
         var component2 = prefab.transform.Find("glass_inside").GetComponent<MeshRenderer>();
         var material = component2.sharedMaterial.Clone();
         material.name = "SlimeLamp_body_" + lampData.Name;
         material.SetColors((Slimepedia.TopColor, palette.Top), (Slimepedia.MiddleColor, palette.Middle), (Slimepedia.BottomColor, palette.Bottom));
-        component.sharedMaterial = defaultMaterials[0];
+        component.sharedMaterial = defaultMaterial;
         component2.sharedMaterial = material;
     }
 

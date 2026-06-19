@@ -13,6 +13,7 @@ public enum ManagerType : byte
     Atlas,
     FloppyDisk,
     Cookbook,
+    Refinery,
     Slimepedia,
     Largopedia,
     Mailbox,

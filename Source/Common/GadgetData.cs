@@ -91,14 +91,33 @@ public abstract class GadgetData : JsonData
 
     public CraftCost[] CraftCosts;
 
-#if !UNITY
+#if UNITY
+    public override void FindStrings(StringPooler pooler)
+    {
+        base.FindStrings(pooler);
+        Array.ForEach(CraftCosts, x => x.FindStrings(pooler));
+    }
+
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+        writer.WriteArray(CraftCosts, (w, x) => x.WriteTo(w));
+    }
+#else
     protected virtual string Prefix => string.Empty;
 
     [JsonIgnore] public GadgetId Id;
 
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+        CraftCosts = reader.ReadArray(r => { var x = new CraftCost(); x.ReadFrom(r); return x; })!;
+    }
+
     public override void OnDeserialise()
     {
         base.OnDeserialise();
+        Array.ForEach(CraftCosts, x => x.OnDeserialise());
         Id = Helpers.AddEnumValue<GadgetId>(Prefix + (string.IsNullOrEmpty(Prefix) ? string.Empty : "_") + Name!.ToUpperInvariant());
     }
 #endif

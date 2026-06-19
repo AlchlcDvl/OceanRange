@@ -17,7 +17,7 @@ public sealed class Translations : JsonData
     [JsonRequired] public ChickLangData[] Chicks;
     [JsonRequired] public FruitLangData[] Fruits;
     [JsonRequired] public VeggieLangData[] Veggies;
-    // [JsonRequired] public CraftLangData[] Crafts;
+    [JsonRequired] public CraftLangData[] Crafts;
     // [JsonRequired] public EdibleCraftLangData[] EdibleCrafts;
     [JsonRequired] public RancherLangData[] Ranchers;
     [JsonRequired] public PlortLangData[] Plorts;
@@ -25,9 +25,9 @@ public sealed class Translations : JsonData
     [JsonRequired] public GordoLangData[] Gordos;
     // [JsonRequired] public ZoneLangData[] Zones;
     [JsonRequired] public MailLangData[] Mail;
-    // [JsonRequired] public LampLangData[] Lamps;
-    // [JsonRequired] public WarpLangData[] Warps;
-    // [JsonRequired] public TeleporterLangData[] Teleporters;
+    [JsonRequired] public LampLangData[] Lamps;
+    [JsonRequired] public WarpLangData[] Warps;
+    [JsonRequired] public TeleporterLangData[] Teleporters;
 
     [SerializeField] public Dictionary<string, Dictionary<string, string>> AdditionalExotic;
 
@@ -68,9 +68,9 @@ public sealed class Translations : JsonData
         Array.ForEach(Gordos, x => x.FindStrings(pooler));
         // Array.ForEach(Zones, x => x.FindStrings(pooler));
         Array.ForEach(Mail, x => x.FindStrings(pooler));
-        // Array.ForEach(Lamps, x => x.FindStrings(pooler));
-        // Array.ForEach(Warps, x => x.FindStrings(pooler));
-        // Array.ForEach(Teleporters, x => x.FindStrings(pooler));
+        Array.ForEach(Lamps, x => x.FindStrings(pooler));
+        Array.ForEach(Warps, x => x.FindStrings(pooler));
+        Array.ForEach(Teleporters, x => x.FindStrings(pooler));
     }
 
     public override void WriteTo(DataWriter writer)
@@ -92,9 +92,9 @@ public sealed class Translations : JsonData
         writer.WriteArray(Gordos, (w, x) => x.WriteTo(w));
         // writer.WriteArray(Zones, (w, x) => x.WriteTo(w));
         writer.WriteArray(Mail, (w, x) => x.WriteTo(w));
-        // writer.WriteArray(Lamps, (w, x) => x.WriteTo(w));
-        // writer.WriteArray(Warps, (w, x) => x.WriteTo(w));
-        // writer.WriteArray(Teleporters, (w, x) => x.WriteTo(w));
+        writer.WriteArray(Lamps, (w, x) => x.WriteTo(w));
+        writer.WriteArray(Warps, (w, x) => x.WriteTo(w));
+        writer.WriteArray(Teleporters, (w, x) => x.WriteTo(w));
 
         writer.WriteNullableStringToStringDictionary(AdditionalExotic);
     }
@@ -120,9 +120,9 @@ public sealed class Translations : JsonData
         Gordos = reader.ReadArray(r => { var x = new GordoLangData(); x.ReadFrom(r); return x; })!;
         // Zones = reader.ReadArray(r => { var x = new ZoneLangData(); x.ReadFrom(r); return x; })!;
         Mail = reader.ReadArray(r => { var x = new MailLangData(); x.ReadFrom(r); return x; })!;
-        // Lamps = reader.ReadArray(r => { var x = new LampLangData(); x.ReadFrom(r); return x; })!;
-        // Warps = reader.ReadArray(r => { var x = new WarpLangData(); x.ReadFrom(r); return x; })!;
-        // Teleporters = reader.ReadArray(r => { var x = new TeleporterLangData(); x.ReadFrom(r); return x; })!;
+        Lamps = reader.ReadArray(r => { var x = new LampLangData(); x.ReadFrom(r); return x; })!;
+        Warps = reader.ReadArray(r => { var x = new WarpLangData(); x.ReadFrom(r); return x; })!;
+        Teleporters = reader.ReadArray(r => { var x = new TeleporterLangData(); x.ReadFrom(r); return x; })!;
 
         AdditionalExotic = reader.ReadNullableStringToStringDictionary()!;
     }
@@ -136,7 +136,7 @@ public sealed class Translations : JsonData
             .. Veggies, .. Fruits, .. Ranchers,
             .. Gordos, .. Largos, .. Plorts,
             .. Mail,
-            // .. Lamps, .. Warps, .. Teleporters,
+            .. Lamps, .. Warps, .. Teleporters,
             // .. Crafts, .. EdibleCrafts,
             // .. Zones,
         ];
@@ -654,9 +654,9 @@ public abstract class ResourceLangData(string suffix) : ActorLangData(suffix, Pe
 }
 
 #if UNITY
-// public sealed class CraftLangData : ResourceLangData;
+public sealed class CraftLangData : ResourceLangData;
 #else
-// public sealed class CraftLangData() : ResourceLangData("CRAFT");
+public sealed class CraftLangData() : ResourceLangData("CRAFT");
 #endif
 
 #if UNITY
@@ -728,16 +728,39 @@ public sealed class VeggieLangData() : FoodLangData("VEGGIE");
 
 public abstract class GadgetLangData : LangData
 {
-#if !UNITY
+    public string CustomDescription;
+
+#if UNITY
+    public override void FindStrings(StringPooler pooler)
+    {
+        base.FindStrings(pooler);
+        pooler.PoolString(CustomDescription);
+    }
+
+    public override void WriteTo(DataWriter writer)
+    {
+        base.WriteTo(writer);
+        writer.WriteString(CustomDescription);
+    }
+#else
     protected virtual string Prefix => string.Empty;
     protected virtual string DescId => string.Empty;
+
+    public override void ReadFrom(DataReader reader)
+    {
+        base.ReadFrom(reader);
+        CustomDescription = reader.ReadString()!;
+    }
 
     public override sealed void AddTranslations(Dictionary<string, Dictionary<string, string>> translations, Language lang)
     {
         var pedia = translations.GetBundle("pedia");
+
         var part = Prefix + (string.IsNullOrEmpty(Prefix) ? string.Empty : "_") + Name!.ToLowerInvariant();
         pedia.AddTranslation("m.gadget.name." + part, TranslatedName, "pedia");
-        pedia.AddTranslation("m.gadget.desc." + part, "@m.gadget.desc." + DescId, "pedia");
+
+        var descText = string.IsNullOrEmpty(CustomDescription) ? $"@m.gadget.desc.{DescId}" : CustomDescription;
+        pedia.AddTranslation("m.gadget.desc." + part, descText, "pedia");
     }
 #endif
 }
