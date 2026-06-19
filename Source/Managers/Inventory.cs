@@ -393,12 +393,12 @@ public static class Inventory
     /// <returns>The texture asset loaded from the path.</returns>
     private static Texture2D? LoadTexture2D(string path, bool forSprite)
     {
-        var texture = new Texture2D(2, 2, TextureFormat.RGBA32, true, false);
+        var name = path.SanitisePath();
+        var texture = new Texture2D(2, 2, TextureFormat.RGBA32, ShouldGenMips(name), false);
 
         if (!texture.LoadImage(path.ReadBytes(), true))
             return null;
 
-        var name = path.SanitisePath();
         texture.wrapMode = GetWrapMode(name);
 
         if (forSprite)
@@ -413,7 +413,9 @@ public static class Inventory
     private static Texture2D? LoadTexture2D(string path) => LoadTexture2D(path, false);
 
     // Texture optimisation stuff
-    private static TextureWrapMode GetWrapMode(string name) => name.Contains("ramp") || name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
+    private static TextureWrapMode GetWrapMode(string name) => name.Contains("pattern") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
+
+    private static bool ShouldGenMips(string name) => !name.Contains("ramp");
 
     /// <summary>
     /// Loads a sprite from the provided path.
