@@ -17,7 +17,7 @@ public sealed class Translations : JsonData
     [JsonRequired] public ChickLangData[] Chicks;
     [JsonRequired] public FruitLangData[] Fruits;
     [JsonRequired] public VeggieLangData[] Veggies;
-    [JsonRequired] public CraftLangData[] Crafts;
+    // [JsonRequired] public CraftLangData[] Crafts;
     // [JsonRequired] public EdibleCraftLangData[] EdibleCrafts;
     [JsonRequired] public RancherLangData[] Ranchers;
     [JsonRequired] public PlortLangData[] Plorts;
@@ -25,9 +25,9 @@ public sealed class Translations : JsonData
     [JsonRequired] public GordoLangData[] Gordos;
     // [JsonRequired] public ZoneLangData[] Zones;
     [JsonRequired] public MailLangData[] Mail;
-    [JsonRequired] public LampLangData[] Lamps;
-    [JsonRequired] public WarpLangData[] Warps;
-    [JsonRequired] public TeleporterLangData[] Teleporters;
+    // [JsonRequired] public LampLangData[] Lamps;
+    // [JsonRequired] public WarpLangData[] Warps;
+    // [JsonRequired] public TeleporterLangData[] Teleporters;
 
     [SerializeField] public Dictionary<string, Dictionary<string, string>> AdditionalExotic;
 
@@ -120,9 +120,9 @@ public sealed class Translations : JsonData
         Gordos = reader.ReadArray(r => { var x = new GordoLangData(); x.ReadFrom(r); return x; })!;
         // Zones = reader.ReadArray(r => { var x = new ZoneLangData(); x.ReadFrom(r); return x; })!;
         Mail = reader.ReadArray(r => { var x = new MailLangData(); x.ReadFrom(r); return x; })!;
-        Lamps = reader.ReadArray(r => { var x = new LampLangData(); x.ReadFrom(r); return x; })!;
-        Warps = reader.ReadArray(r => { var x = new WarpLangData(); x.ReadFrom(r); return x; })!;
-        Teleporters = reader.ReadArray(r => { var x = new TeleporterLangData(); x.ReadFrom(r); return x; })!;
+        // Lamps = reader.ReadArray(r => { var x = new LampLangData(); x.ReadFrom(r); return x; })!;
+        // Warps = reader.ReadArray(r => { var x = new WarpLangData(); x.ReadFrom(r); return x; })!;
+        // Teleporters = reader.ReadArray(r => { var x = new TeleporterLangData(); x.ReadFrom(r); return x; })!;
 
         AdditionalExotic = reader.ReadNullableStringToStringDictionary()!;
     }
@@ -136,7 +136,7 @@ public sealed class Translations : JsonData
             .. Veggies, .. Fruits, .. Ranchers,
             .. Gordos, .. Largos, .. Plorts,
             .. Mail,
-            .. Lamps, .. Warps, .. Teleporters,
+            // .. Lamps, .. Warps, .. Teleporters,
             // .. Crafts, .. EdibleCrafts,
             // .. Zones,
         ];

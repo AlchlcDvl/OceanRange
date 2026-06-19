@@ -155,6 +155,7 @@ public sealed class ChimkenData : FoodData
     {
         base.FindStrings(pooler);
         pooler.PoolStrings(Zones);
+        pooler.PoolString(CrestColor.ToHex());
     }
 
     public override void WriteTo(DataWriter writer)
@@ -163,6 +164,7 @@ public sealed class ChimkenData : FoodData
         writer.WritePackedFloat(SpawnAmount);
         writer.WritePackedFloat(ChickSpawnAmount);
         writer.WriteStringArray(Zones);
+        writer.WriteString(CrestColor.ToHex());
     }
 #endif
 }

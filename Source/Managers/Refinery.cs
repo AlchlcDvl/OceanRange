@@ -5,20 +5,20 @@ public static class Refinery
 {
     private static ScienceItemData[] ScienceItems;
 
-#if DEBUG
-    [TimeDiagnostic("Refinery Preload")]
-#endif
-    [PreloadMethod]
-    public static void PreloadRefineryData() => ScienceItems = Inventory.GetJsonArray<ScienceItemData>("refinery");
+// #if DEBUG
+//     [TimeDiagnostic("Refinery Preload")]
+// #endif
+//     [PreloadMethod]
+//     public static void PreloadRefineryData() => ScienceItems = Inventory.GetJsonArray<ScienceItemData>("refinery");
 
-#if DEBUG
-    [TimeDiagnostic("Refinery Load")]
-#endif
-    [LoadMethod]
-    public static void LoadAllRefineryItems()
-    {
-        Array.ForEach(ScienceItems, CreateScienceItem);
-    }
+// #if DEBUG
+//     [TimeDiagnostic("Refinery Load")]
+// #endif
+//     [LoadMethod]
+//     public static void LoadAllRefineryItems()
+//     {
+//         Array.ForEach(ScienceItems, CreateScienceItem);
+//     }
 
     private static void CreateScienceItem(ScienceItemData itemData)
     {

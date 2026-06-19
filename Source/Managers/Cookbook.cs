@@ -188,6 +188,17 @@ public static class Cookbook
         var chickPrefab = CreateChimken(chimkenData.Name, red!, redExists, green!, greenExists, blue!, blueExists, black!, blackExists, chimkenData.ChickId, IdentifiableId.CHICK, "Chickadoo", "Chick");
         var henPrefab = CreateChimken(chimkenData.Name, red!, redExists, green!, greenExists, blue!, blueExists, black!, blackExists, chimkenData.MainId, IdentifiableId.HEN, "Hen Hen", "Hen");
 
+        if (Inventory.TryGetTexture2D($"{ramp}crest", out var crest))
+        {
+            var rend = henPrefab.transform.Find("Hen Hen/root/handle_cog/loc_core/bone_spine/bone_skull/crest_hen").GetComponent<MeshRenderer>();
+            var mat = rend.sharedMaterial.Clone();
+            mat.SetTexture(RampRed, crest);
+            mat.SetTexture(RampBlue, crest);
+            mat.SetTexture(RampBlack, crest);
+            mat.SetTexture(RampGreen, crest);
+            rend.sharedMaterial = mat;
+        }
+
         // Set specific data for each prefab
         henPrefab.GetComponent<Reproduce>().childPrefab = chickPrefab;
         chickPrefab.GetComponent<TransformAfterTime>().options[0].targetPrefab = henPrefab;

@@ -33,6 +33,9 @@ internal sealed class Main : ModEntryPoint
         harmonyWatch.Stop();
         ConsoleInstance.Log($"Game Patched in {harmonyWatch.ElapsedMilliseconds}ms!");
         harmonyWatch.Reset();
+
+        if (!Directory.Exists(Inventory.DumpPath))
+            Directory.CreateDirectory(Inventory.DumpPath);
 #endif
 
         ClsExists = SRModLoader.IsModPresent("custom.loading"); // Checks if Custom Loading Screens is present in the mods folder
@@ -93,9 +96,6 @@ internal sealed class Main : ModEntryPoint
 #if DEBUG
         if (Commands.SavedPositions.Count > 0)
         {
-            if (!Directory.Exists(Inventory.DumpPath))
-                Directory.CreateDirectory(Inventory.DumpPath);
-
             var path = Path.Combine(Inventory.DumpPath, "Positions.txt");
             var builder = new StringBuilder();
             const string indent = "  ";

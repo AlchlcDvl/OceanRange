@@ -20,29 +20,29 @@ public static class Blueprints
     public static TeleporterData[] Teleporters;
     // public static DecorationData[] Decorations;
 
-#if DEBUG
-    [TimeDiagnostic("Blueprints Preload")]
-#endif
-    [PreloadMethod]
-    public static void PreloadBlueprints()
-    {
-        var schematics = Inventory.GetJson<Schematics>("blueprints")!;
-        Lamps = schematics.Lamps;
-        WarpDepots = schematics.WarpDepots;
-        Teleporters = schematics.Teleporters;
-        // Decorations = schematics.Decorations;
-    }
+// #if DEBUG
+//     [TimeDiagnostic("Blueprints Preload")]
+// #endif
+//     [PreloadMethod]
+//     public static void PreloadBlueprints()
+//     {
+//         var schematics = Inventory.GetJson<Schematics>("blueprints")!;
+//         Lamps = schematics.Lamps;
+//         WarpDepots = schematics.WarpDepots;
+//         Teleporters = schematics.Teleporters;
+//         Decorations = schematics.Decorations;
+//     }
 
-#if DEBUG
-    [TimeDiagnostic("Blueprints Load")]
-#endif
-    [LoadMethod]
-    public static void LoadBlueprints()
-    {
-        Array.ForEach(Lamps, CreateGadget);
-        Array.ForEach(WarpDepots, CreateGadget);
-        Array.ForEach(Teleporters, CreateGadget);
-    }
+// #if DEBUG
+//     [TimeDiagnostic("Blueprints Load")]
+// #endif
+//     [LoadMethod]
+//     public static void LoadBlueprints()
+//     {
+//         Array.ForEach(Lamps, CreateGadget);
+//         Array.ForEach(WarpDepots, CreateGadget);
+//         Array.ForEach(Teleporters, CreateGadget);
+//     }
 
     private static void CreateGadget(SlimeGadgetData gadgetData)
     {
