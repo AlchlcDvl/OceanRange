@@ -108,16 +108,23 @@
     {
       "name": "Sandy",
       "mainAmmoColor": "#C2B280",
-      "zones": ["REEF", "RUINS", "MOSS"],
-      "basePrice": 20,
+      "zones": ["DESERT"],
+      "basePrice": 40,
       "saturation": 10
     },
     {
       "name": "Radiant",
       "mainAmmoColor": "#040454",
-      "zones": ["RUINS", "QUARRY", "MOSS"],
+      "zones": ["QUARRY"],
       "basePrice": 30,
-      "saturation": 15
+      "saturation": 10
+    },
+    {
+      "name": "Lush",
+      "mainAmmoColor": "#44928B",
+      "zones": ["MOSS"],
+      "basePrice": 30,
+      "saturation": 10
     }
   ],
   "groups": [

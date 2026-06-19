@@ -96,12 +96,12 @@
     {
       "translatedName": "Mimic Slime",
       "name": "Mimic",
-      "risks": "TBU",
-      "slimeology": "TBU",
+      "risks": "The Mimic Slime doesn’t pose any real danger, but its ability to imitate Tarrs can give ranchers quite a scare. Many have rushed across their ranch thinking their slimes were under attack, only to find a Mimic Slime practicing its impressions.\n\nIf you spot that familiar tail sticking out, don’t panic—it’s just a Mimic Slime doing what it does best.",
+      "slimeology": "The Mimic Slime is a cunning slime found throughout the tropical regions of SwirlPool Island. Instead of changing color, it mimics the appearance and sounds of other slimes—from common species all the way to the dreaded Tarr. This deceptive ability helps them lure wild chickens, their favorite food, or scare away potential predators.\n\nHowever, their disguise isn’t perfect. A Mimic Slime’s tail never changes, allowing observant ranchers to identify them before falling for their tricks.",
       "diet": "@m.diet.boom_slime",
-      "favourite": "TBU",
-      "onomics": "TBU",
-      "intro": "TBU"
+      "favourite": "@t.lush_hen_entry",
+      "onomics": "Mimic Slime plorts are highly valued for their ability to alter sensory perceptions. These plorts are used in devices that can imitate the sounds and appearances of other slimes, allowing ranchers to attract or repel specific species as needed.\n\nAdditionally, Mimic plorts are essential in developing advanced technologies that can temporarily alter the shape of objects, giving them both practical and decorative uses around the ranch.",
+      "intro": "The mischievous chameleon!"
     }
   ],
   "hens": [
@@ -122,6 +122,15 @@
       "ranch": "Radiant hens in close proximity to roostros will periodically lay eggs that produce Radiant chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.",
       "type": "@m.resource_type.henhen",
       "intro": "Always out of place!"
+    },
+    {
+      "name": "Lush",
+      "translatedName": "Lush Hen",
+      "about": "A vibrant departure from the standard fowl of the Far, Far Range, the lush hen looks more like a wandering shrub than a proper bird. Their feathers have taken on a thick, verdant quality, allowing them to blend seamlessly into the dense, overgrown foliage and mossy canopies they call home. Unfortunately for these botanical birds, this leafy camouflage is exactly what makes them the favorite snack of the cunning mimic slime. Being masters of deception themselves, mimic slimes seem to appreciate the lush hen's attempt at an earthy disguise, often morphing into decoy fruit or veggie loving slimes to give lure them closer. For a hungry rancher, the lush hen offers a highly unusual culinary convenience: their remarkably crisp meat naturally possesses the refreshing, savory flavor of a freshly tossed chicken salad.",
+      "favouredBy": "@t.lantern_slime_entry",
+      "ranch": "Lush hens in close proximity to roostros will periodically lay eggs that produce Lush chickadoos. However, keeping too many hens or roostros in close proximity makes them anxious and egg production will come to a halt. Savvy ranchers with an understanding of the complex nature of chicken romance always keep their coops from exceeding 12 grown chickens.",
+      "type": "@m.resource_type.henhen",
+      "intro": "Just when one camouflager wasn't enough!"
     }
   ],
   "chicks": [
@@ -140,6 +149,15 @@
       "about": "Radiant chickadoos are baby chickens that will eventually grow into a Radiant hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.",
       "favouredBy": "@m.favored_by.chickadoo",
       "ranch": "Keep Radiant Chickadoos in a safe place and they'll eventually grow into a Radiant Hen or Roostro.",
+      "type": "@m.resource_type.chickadoo",
+      "intro": "Doesn't fit right in yet..."
+    },
+    {
+      "name": "Lush",
+      "translatedName": "Lush Chickadoo",
+      "about": "Lush chickadoos are baby chickens that will eventually grow into a Lush hen or more rarely, a roostro.\n\nChickadoos of all varieties will never be eaten by slimes. Some believe this is because slimes are too kind-hearted to do such a thing. Others believe it's because chickadoos don't yet have enough meat on their bones.",
+      "favouredBy": "@m.favored_by.chickadoo",
+      "ranch": "Keep Lush Chickadoos in a safe place and they'll eventually grow into a Lush Hen or Roostro.",
       "type": "@m.resource_type.chickadoo",
       "intro": "Doesn't fit right in yet..."
     }
