@@ -53,7 +53,6 @@ public static class Refinery
         {
             var targetObj = prefab;
 
-            // Navigate the hierarchy using the integer path array
             foreach (var childIndex in overrideData.ChildPath)
                 targetObj = targetObj.transform.GetChild(childIndex).gameObject;
 
