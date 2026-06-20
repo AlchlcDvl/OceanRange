@@ -14,6 +14,7 @@ public static class Ids
     public static readonly IdentifiableId ROSI_SLIME;
     public static readonly IdentifiableId SAND_SLIME;
     public static readonly IdentifiableId MIMIC_SLIME;
+    public static readonly IdentifiableId MESMER_SLIME;
 
     public static readonly Category OCEAN;
 

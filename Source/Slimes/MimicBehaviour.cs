@@ -5,8 +5,9 @@ namespace OceanRange.Slimes;
 public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
 {
     public static SlimeAppearanceStructure DefaultBody;
-    public static SlimeAppearanceStructure MimicTail;
     public static SlimeAppearanceStructure FakeMimicTail;
+    public static SlimeAppearanceStructure TabbyEars;
+    public static SlimeAppearanceStructure HunterEars;
 
     private SlimeAppearanceApplicator applicator;
     private StealthFixer fixer;
@@ -54,7 +55,28 @@ public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
             newStructures[oldStructures.Length] = clonedTail;
 
             if (slimeId == Ids.ROSI_SLIME)
-                DefaultBody.Element.Prefabs.CopyTo(newStructures[0].Element.Prefabs, 0);
+            {
+                var newStruct = newStructures[0] = new(newStructures[0]);
+                var oldElem = newStruct.Element;
+                var newElem = ScriptableObject.CreateInstance<SlimeAppearanceElement>();
+                newElem.Name = oldElem.Name;
+                newElem.Prefabs = new SlimeAppearanceObject[oldElem.Prefabs.Length];
+                DefaultBody.Element.Prefabs.CopyTo(newElem.Prefabs, 0);
+                newStruct.Element = newElem;
+            }
+            else if (slimeId == Ids.MESMER_SLIME)
+            {
+                oldStructures = newStructures;
+                newStructures = [oldStructures[0], oldStructures[1], clonedTail];
+            }
+            else if (slimeId == IdentifiableId.TABBY_SLIME)
+            {
+                newStructures = [newStructures[0], TabbyEars, clonedTail];
+            }
+            else if (slimeId == IdentifiableId.HUNTER_SLIME)
+            {
+                newStructures = [newStructures[0], HunterEars, clonedTail];
+            }
 
             clonedAppearance.Structures = newStructures;
 

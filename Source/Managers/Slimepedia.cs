@@ -950,6 +950,13 @@ public static class Slimepedia
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition) => GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, definition.IdentifiableId];
 
     [UsedImplicitly]
+    public static void InitRosiAppearanceDetails(SlimeAppearance appearance, SlimeAppearanceData _)
+    {
+        MimicBehaviour.DefaultBody = appearance.Structures[3];
+        appearance.Structures = appearance.Structures.RemoveAt(appearance.Structures.Length - 1);
+    }
+
+    [UsedImplicitly]
     public static void InitLanternAppearanceDetails(SlimeAppearance appearance, SlimeAppearanceData data)
     {
         var prefab = appearance.Structures[3].Element.Prefabs[0];
@@ -967,8 +974,6 @@ public static class Slimepedia
         HandleFace(ConstructFace(Sleeping, eyesOrigin, mouthOrigin), data, appearance.Face._expressionToFaceLookup);
 
         data.ChangedFace = true;
-
-        MimicBehaviour.DefaultBody = appearance.Structures[0];
     }
 
     [UsedImplicitly]
@@ -999,10 +1004,11 @@ public static class Slimepedia
     [UsedImplicitly]
     public static void InitMimicAppearanceDetails(SlimeAppearance appearance, SlimeAppearanceData _)
     {
-        MimicBehaviour.MimicTail = appearance.Structures[1];
         MimicBehaviour.FakeMimicTail = appearance.Structures[2];
+        MimicBehaviour.TabbyEars = appearance.Structures[3];
+        MimicBehaviour.HunterEars = appearance.Structures[4];
 
-        var newStructures = new SlimeAppearanceStructure[appearance.Structures.Length - 1];
+        var newStructures = new SlimeAppearanceStructure[appearance.Structures.Length - 3];
         Array.Copy(appearance.Structures, newStructures, newStructures.Length);
         appearance.Structures = newStructures;
     }

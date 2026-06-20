@@ -24,7 +24,8 @@
         {
           "meshData": { "mesh": "rosi_frills" },
           "matData": { "colorProps": { "_TopColor": "#F46CB7" } }
-        }
+        },
+        {}
       ],
       "mainAmmoColor": "#E6C7D2",
       "plortFeatures": [
@@ -641,8 +642,25 @@
           }
         },
         {
-          "meshData": { "mesh": "mimic_tail_fake" },
+          "meshData": {
+            "mesh": "mimic_tail_fake",
+            "jiggle": 1
+          },
           "matData": { "sameAs": 1 }
+        },
+        {
+          "meshData": {
+            "mesh": "tabby_ears",
+            "jiggle": 1
+          },
+          "matData": { "matOrigin": "TABBY_SLIME" }
+        },
+        {
+          "meshData": {
+            "mesh": "hunter_ears",
+            "jiggle": 1
+          },
+          "matData": { "matOrigin": "HUNTER_SLIME" }
         }
       ],
       "gordoFeatures": [

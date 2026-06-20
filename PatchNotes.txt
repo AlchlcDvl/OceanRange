@@ -144,6 +144,19 @@ Visual: Fixed the visual appearance of slimes to match their artwork
 0.3.0
 Discord:
 ## New!
-- Mimic Slimes*: Mischievous little things that love to give people a scare!
-- Secret Styles*: The modded slimes now come with their own custom secret styles!
+- Mimic Slimes: Mischievous little things that love to give people a scare!
+- Lush Hens: Just when you thought there wasn't enough camouflagers!
 - Lucia Seagull: The good doctor from 7Zee, ready to give you a medical checkup!
+
+Nexus:
+Mimic Slimes: Mischievous little things that love to give people a scare!
+Lush Hens: Just when you thought there wasn't enough camouflagers!
+Lucia Seagull: The good doctor from 7Zee, ready to give you a medical checkup!
+
+0.4.0
+Discord:
+- Secret Styles*: The modded slimes now come with their own custom secret styles!
+
+## New!
+Nexus:
+Secret Styles*: The modded slimes now come with their own custom secret styles!
