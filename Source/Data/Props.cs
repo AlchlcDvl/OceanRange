@@ -7,24 +7,28 @@ public enum LargoAppearanceProps : byte
 {
     None = 0,
 
-    // These should be self-descriptive
-    UseSlime2ForEyes = 1 << 0,
-    UseSlime2ForMouth = 1 << 1,
+    UseSlime2ForEyeColor = 1 << 0,
+    UseSlime2ForEyeShape = 1 << 1,
+
+    UseSlime2ForEyes = UseSlime2ForEyeColor | UseSlime2ForEyeShape,
+
+    UseSlime2ForMouthColor = 1 << 2,
+    UseSlime2ForMouthShape = 1 << 3,
+
+    UseSlime2ForMouth = UseSlime2ForMouthColor | UseSlime2ForMouthShape,
 
     UseSlime2ForFace = UseSlime2ForEyes | UseSlime2ForMouth,
 
-    UseSlime2ForBody = 1 << 2,
-    UseSlime2ForBodyMaterial = 1 << 3,
+    UseSlime2ForBodyShape = 1 << 4,
+    UseSlime2ForBodyMaterial = 1 << 5,
 
-    // Combines the above values so you don't have to write a long array just with the above values
-    UseSlime2AsBodyBase = UseSlime2ForBody | UseSlime2ForBodyMaterial,
+    UseSlime2ForBody = UseSlime2ForBodyShape | UseSlime2ForBodyMaterial,
 
-    UseSlime2AsBase = UseSlime2ForFace | UseSlime2AsBodyBase,
+    UseSlime2AsBase = UseSlime2ForFace | UseSlime2ForBody,
 
-    ExcludeSlime1Structures = 1 << 4,
-    ExcludeSlime2Structures = 1 << 5,
+    ExcludeSlime1Structures = 1 << 6,
+    ExcludeSlime2Structures = 1 << 7,
 
-    // Same as UseSlime2AsBase
     ExcludeStructures = ExcludeSlime1Structures | ExcludeSlime2Structures
 }
 

@@ -126,7 +126,7 @@
     "name": "Coco Saber",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForBody"],
+        "largoProps": ["UseSlime2ForBodyShape"],
         "bodyStruct": { "matData": { "matOrigin": "COCO_SLIME" } }
       }
     ]
@@ -364,7 +364,7 @@
     "name": "Pink Mesmer",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForBody"],
+        "largoProps": ["UseSlime2ForBodyMaterial"],
         "bodyStruct": { "matData": { "colorsOrigin": "PINK_SLIME" } },
         "slime2Structs": [
           { "matData": { "colorsOrigin": "PINK_SLIME" } },

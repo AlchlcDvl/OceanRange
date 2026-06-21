@@ -85,7 +85,7 @@ public static class StalkConsumablePatch
     [HarmonyPatch(nameof(StalkConsumable.ProcessCollisionEnter))]
     public static bool Prefix(StalkConsumable __instance, Collision col)
     {
-        if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.HasComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player && !__instance.HasComponent<MimicBehaviour>())
+        if (Identifiable.BOOP_CLASS.Contains(__instance.identifiable.id) && __instance.pouncing && !__instance.stealth && !__instance.HasComponent<StealthFixer>() && col.gameObject == SceneContext.Instance.Player)
         {
             var vector = col.gameObject.transform.InverseTransformPoint(col.contacts[0].point);
 

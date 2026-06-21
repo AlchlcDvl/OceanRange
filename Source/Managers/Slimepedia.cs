@@ -35,18 +35,20 @@ public static class Slimepedia
     public static readonly int MiddleColor = ShaderUtils.GetOrSet("_MiddleColor");
     public static readonly int BottomColor = ShaderUtils.GetOrSet("_BottomColor");
 
+    public static readonly int EyeRed = ShaderUtils.GetOrSet("_EyeRed");
+    public static readonly int EyeBlue = ShaderUtils.GetOrSet("_EyeBlue");
+    public static readonly int EyeGreen = ShaderUtils.GetOrSet("_EyeGreen");
+
+    public static readonly int MouthTop = ShaderUtils.GetOrSet("_MouthTop");
+    public static readonly int MouthMiddle = ShaderUtils.GetOrSet("_MouthMid");
+    public static readonly int MouthBottom = ShaderUtils.GetOrSet("_MouthBot");
+
     private static readonly int Color = ShaderUtils.GetOrSet("_Color");
     private static readonly int Gloss = ShaderUtils.GetOrSet("_Gloss");
-    private static readonly int EyeRed = ShaderUtils.GetOrSet("_EyeRed");
-    private static readonly int EyeBlue = ShaderUtils.GetOrSet("_EyeBlue");
     // private static readonly int MainTex = ShaderUtils.GetOrSet("_MainTex");
-    private static readonly int EyeGreen = ShaderUtils.GetOrSet("_EyeGreen");
-    private static readonly int MouthTop = ShaderUtils.GetOrSet("_MouthTop");
     private static readonly int EdgeColor = ShaderUtils.GetOrSet("_EdgeColor");
     private static readonly int ColorMask = ShaderUtils.GetOrSet("_ColorMask");
     private static readonly int FaceAtlas = ShaderUtils.GetOrSet("_FaceAtlas");
-    private static readonly int MouthMiddle = ShaderUtils.GetOrSet("_MouthMid");
-    private static readonly int MouthBottom = ShaderUtils.GetOrSet("_MouthBot");
     private static readonly int VertexOffset = ShaderUtils.GetOrSet("_VertexOffset");
     private static readonly int StripeTexture = ShaderUtils.GetOrSet("_StripeTexture");
 

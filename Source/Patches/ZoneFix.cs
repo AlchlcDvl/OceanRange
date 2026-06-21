@@ -3,7 +3,7 @@ namespace OceanRange.Patches;
 [HarmonyPatch(typeof(ZoneDirector), nameof(ZoneDirector.GetRegionSetId))]
 public static class SetModdedRegionId
 {
-    public static bool Prefix(ref RegionId __result, Zone zone)
+    public static bool Prefix(Zone zone, ref RegionId __result)
     {
         var isModded = Atlas.ZoneToDataMap.TryGetValue(zone, out var data);
 
