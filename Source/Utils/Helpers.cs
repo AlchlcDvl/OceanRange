@@ -597,6 +597,27 @@ public static class Helpers
         return false;
     }
 
+    public static bool TryGetItem<T>(this List<T> list, int index, out T? value)
+    {
+        if (list.IsNullOrEmpty())
+        {
+            value = default;
+            return false;
+        }
+
+        if (index < 0)
+            index = list.Count + index;
+
+        if (index >= 0 && index < list.Count)
+        {
+            value = list[index];
+            return true;
+        }
+
+        value = default;
+        return false;
+    }
+
     // private static readonly List<Texture2D> CreatedRamps = [];
 
     // public static Texture2D CreateRamp(string name, Color a, Color b)

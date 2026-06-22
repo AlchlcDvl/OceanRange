@@ -3,7 +3,7 @@ using DG.Tweening;
 
 namespace OceanRange.Slimes;
 
-public sealed class SandBehaviour : SRBehaviour
+public sealed class SandBehaviour : SlimeSubbehaviour
 {
     public static GameObject PlortPrefab;
     public static GameObject ProduceFX;
@@ -12,16 +12,15 @@ public sealed class SandBehaviour : SRBehaviour
     private static readonly Vector3 LocalProduceVel = new(0f, 1f, 0f);
     private const float EatRate = 25f;
 
-    private SlimeEmotions emotions;
     private SlimeEat slimeEat;
     private RegionMember regionMember;
     private float nextChompTime;
     private SlimeAudio slimeAudio;
     private bool eating;
 
-    public void Awake()
+    public override void Awake()
     {
-        emotions = GetComponent<SlimeEmotions>();
+        base.Awake();
         slimeEat = GetComponent<SlimeEat>();
         slimeAudio = GetComponent<SlimeAudio>();
         regionMember = GetComponent<RegionMember>();
@@ -69,4 +68,10 @@ public sealed class SandBehaviour : SRBehaviour
         emotions.Adjust(0, 0f - slimeEat.drivePerEat);
         eating = false;
     }
+
+    public override float Relevancy(bool _) => 0f;
+
+    public override void Action() { }
+
+    public override void Selected() { }
 }

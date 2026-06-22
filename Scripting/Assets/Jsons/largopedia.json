@@ -895,8 +895,7 @@
     "appearances": [
       {
         "slime1Structs": [
-          { "meshData": { "mesh": "hermit_phosphor_anten" } },
-          {}, {}
+          { "meshData": { "mesh": "hermit_phosphor_anten" } }
         ],
         "slime2Structs": [
           {
@@ -925,7 +924,14 @@
               }
             }
           },
-          { "matData": { "colorsOrigin": "MOSAIC_SLIME" } }
+          { "matData": { "colorsOrigin": "MOSAIC_SLIME" } },
+          {
+            "meshData": { "mesh": "mosaic_hermit_claws" },
+            "matData": {
+              "matOrigin": "MOSAIC_SLIME",
+              "matSameAs": 1
+            }
+          }
         ]
       }
     ]
@@ -1004,8 +1010,7 @@
               "matOrigin": "ROCK_SLIME"
             },
             "meshData": { "mesh": "rock_hermit_spine" }
-          },
-          {}
+          }
         ],
         "slime2Structs": [
           {

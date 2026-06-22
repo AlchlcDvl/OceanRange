@@ -315,8 +315,8 @@ public static class Largopedia
 
         var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
 
-        GenerateStructures(appearance1.Structures, appearanceData.Slime1Structs, props, LargoAppearanceProps.ExcludeSlime1Structures, list, slime1Body, modelMap);
-        GenerateStructures(appearance2.Structures, appearanceData.Slime2Structs, props, LargoAppearanceProps.ExcludeSlime2Structures, list, slime2Body, modelMap);
+        GenerateStructures([.. appearance1.Structures.Where(x => x != slime1Body)], appearanceData.Slime1Structs, props, LargoAppearanceProps.ExcludeSlime1Structures, list, slime1Body, modelMap);
+        GenerateStructures([.. appearance2.Structures.Where(x => x != slime2Body)], appearanceData.Slime2Structs, props, LargoAppearanceProps.ExcludeSlime2Structures, list, slime2Body, modelMap);
 
         appearance.Structures = [.. list];
         applicator.GenerateSlimeBones(appearance.Structures, appearanceData.Jiggle!.Value);
@@ -404,21 +404,32 @@ public static class Largopedia
             dict.TryGetValue(key, out var face) ? (isEye ? face.Eyes : face.Mouth) : null!;
     }
 
-    private static void GenerateStructures(SlimeAppearanceStructure[] baseStructs, ModelData[]? modelDatas, LargoAppearanceProps props, LargoAppearanceProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure? body,
+    private static void GenerateStructures(List<SlimeAppearanceStructure> baseStructs, ModelData[]? modelDatas, LargoAppearanceProps props, LargoAppearanceProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure? body,
         Dictionary<int, ModelData> modelMap)
     {
-        var avoid = baseStructs.IndexOfItem(body);
-
         if (!modelDatas.IsNullOrEmpty())
         {
             var j = 0;
+            var max = Mathf.Max(baseStructs.Count, modelDatas!.Length);
 
-            for (var i = 0; i < baseStructs.Length; i++)
+            for (var i = 0; i < max; i++)
             {
-                if (i == avoid)
-                    continue;
+                ModelData modelData;
 
-                var modelData = modelDatas![j];
+                if (modelDatas.TryGetItem(j, out var model))
+                {
+                    modelData = model!;
+                }
+                else
+                {
+                    modelData = new()
+                    {
+                        MatData = new(),
+                        MeshData = new()
+                    };
+                    modelData.OnDeserialise();
+                }
+
                 var meshData = modelData.MeshData;
                 j++;
 
@@ -436,11 +447,8 @@ public static class Largopedia
         }
         else if (!props.HasFlagFast(exclude))
         {
-            for (var i = 0; i < baseStructs.Length; i++)
-            {
-                if (i != avoid)
-                    list.Add(GetOrCreateLargoElement(baseStructs[i]));
-            }
+            foreach (var baseStruct in baseStructs)
+                list.Add(GetOrCreateLargoElement(baseStruct));
         }
     }
 

@@ -285,7 +285,7 @@ public sealed class SlimeAppearanceData : JsonData
     public Optional<Color32> TopMouthColor;
     public Optional<Color32> MiddleMouthColor;
     public Optional<Color32> BottomMouthColor;
-    
+
     public Optional<Color32> RedEyeColor;
     public Optional<Color32> GreenEyeColor;
     public Optional<Color32> BlueEyeColor;
@@ -412,7 +412,7 @@ public sealed class SlimeAppearanceData : JsonData
         EyesOrigin = reader.ReadNullableEnum<IdentifiableId>();
         MouthOrigin = reader.ReadNullableEnum<IdentifiableId>();
 
-        Main.Console.Log($"Read appearance data for {Name}");
+        // Main.Console.Log($"Read appearance data for {Name}");
     }
 
     private static Color? ReadHex(DataReader reader)
@@ -437,8 +437,9 @@ public sealed class SlimeAppearanceData : JsonData
         if (!MiddlePaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.MiddleColor, out var middleColor))
         {
             MiddlePaletteColor = middleColor;
-            Main.Console.Log($"Overwriting middle color - {(Color32)middleColor}");
+            // Main.Console.Log($"Overwriting middle color - {(Color32)middleColor}");
         }
+
         if (!BottomPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.BottomColor, out var bottomColor))
             BottomPaletteColor = bottomColor;
 

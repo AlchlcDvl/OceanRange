@@ -29,7 +29,7 @@ static class ExportMeshes
             {
                 var assetPath = AssetDatabase.GUIDToAssetPath(guid);
 
-                if (!assetPath.Contains("ModelAssets") || (!assetPath.EndsWith(".obj", System.StringComparison.Ordinal) && !assetPath.EndsWith(".fbx", System.StringComparison.Ordinal)))
+                if (!assetPath.Contains("ModelAssets") || !assetPath.EndsWith(".obj", System.StringComparison.Ordinal))
                     continue;
 
                 var mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
