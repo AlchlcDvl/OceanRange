@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace OceanRange.Slimes;
 
-public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
+public sealed class MimicBehaviour : SlimeSubbehaviour, LiquidConsumer
 {
     public static SlimeAppearanceStructure DefaultBody;
     public static SlimeAppearanceStructure FakeMimicTail;
@@ -84,29 +84,20 @@ public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
         }
     }
 
-    public void Awake()
+    public override void Awake()
     {
+        base.Awake();
         applicator = GetComponent<SlimeAppearanceApplicator>();
         fixer = this.EnsureComponent<StealthFixer>();
 
         GetComponent<SlimeHealth>().onDamage = _ => Revert();
     }
 
-    public void Start()
+    public override void Start()
     {
+        base.Start();
         originalAppearance = applicator.Appearance;
         SetNextStateTime();
-    }
-
-    public void Update()
-    {
-        if (transforming || Time.time < nextStateChangeTime)
-            return;
-
-        if (transformed)
-            Revert();
-        else
-            Transform();
     }
 
     private void SetNextStateTime()
@@ -181,4 +172,16 @@ public sealed class MimicBehaviour : SRBehaviour, LiquidConsumer
 
         SetNextStateTime();
     }
+
+    public override float Relevancy(bool isGrounded) => transforming || Time.time < nextStateChangeTime ? 0f : 1f;
+
+    public override void Action()
+    {
+        if (transformed)
+            Revert();
+        else
+            Transform();
+    }
+
+    public override void Selected() { }
 }

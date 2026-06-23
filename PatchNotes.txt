@@ -135,11 +135,11 @@ Discord:
 
 ## Fixes!
 - Critical: Fixed incompatibility bugs with several mods, with SSRML being the worst offender
-- Visual: Fixed the visual appearance of slimes to match their artwork
+- Visual: Fixed the visual appearance of slimes and largos to match their artwork, while also polishing them
 
 Nexus:
 Critical Fix: Fixed incompatibility bugs with several mods, with SSRML being the worst offender
-Visual: Fixed the visual appearance of slimes to match their artwork
+Visual: Fixed the visual appearance of slimes and largos to match their artwork, while also polishing them
 
 0.3.0
 Discord:
@@ -160,3 +160,6 @@ Discord:
 ## New!
 Nexus:
 Secret Styles*: The modded slimes now come with their own custom secret styles!
+
+Notes:
+Coco Saber: Use the saber texture, but with coco colors

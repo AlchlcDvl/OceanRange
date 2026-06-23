@@ -44,13 +44,9 @@ public sealed class HermitBehaviour : SlimeSubbehaviour, ExtendedData.Participan
         return diff.sqrMagnitude <= range ? 1f : 0f;
     }
 
-    public override void Action() { }
+    public override void Selected() { }
 
-    public override void Selected()
-    {
-        if (!IsHiding)
-            StartCoroutine(CoHideInShell());
-    }
+    public override void Action() => StartCoroutine(CoHideInShell());
 
     private IEnumerator CoHideInShell()
     {

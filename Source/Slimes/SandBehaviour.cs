@@ -27,12 +27,6 @@ public sealed class SandBehaviour : SlimeSubbehaviour
         ResetEatClock();
     }
 
-    public void Update()
-    {
-        if (!eating && Time.time >= nextChompTime && emotions.GetCurr(SlimeEmotions.Emotion.HUNGER) > slimeEat.minDriveToEat)
-            StartCoroutine(ProduceAfterDelay(1, 2f));
-    }
-
     private void ResetEatClock() => nextChompTime = Time.time + EatRate;
 
     private IEnumerator ProduceAfterDelay(int count, float delay)
@@ -69,9 +63,9 @@ public sealed class SandBehaviour : SlimeSubbehaviour
         eating = false;
     }
 
-    public override float Relevancy(bool _) => 0f;
+    public override float Relevancy(bool _) => !eating && Time.time >= nextChompTime && emotions.GetCurr(SlimeEmotions.Emotion.HUNGER) > slimeEat.minDriveToEat ? 1f : 0f;
 
-    public override void Action() { }
+    public override void Action() => StartCoroutine(ProduceAfterDelay(1, 2f));
 
     public override void Selected() { }
 }

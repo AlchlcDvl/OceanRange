@@ -126,8 +126,16 @@
     "name": "Coco Saber",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForBodyShape"],
-        "bodyStruct": { "matData": { "matOrigin": "COCO_SLIME" } }
+        "largoProps": ["UseSlime2ForBody"],
+        "bodyStruct": {
+          "matData": {
+            "colorProps": {
+              "_TopColor": "#D9A86B",
+              "_MiddleColor": "#744D11",
+              "_BottomColor": "#966F33"
+            }
+          }
+        }
       }
     ]
   },
@@ -195,6 +203,19 @@
     "appearances": [
       {
         "bodyStruct": { "matData": { "matOrigin": "COCO_SLIME" } },
+        "slime1Structs": [
+          {},
+          {
+            "meshData": { "mesh": "mosaic_coco_brows" },
+            "matData": {
+              "matOrigin": "MOSAIC_SLIME",
+              "matSameAs": 1
+            }
+          }
+        ],
+        "slime2Structs": [
+          {}
+        ],
         "jiggle": 0.1
       }
     ]
@@ -278,7 +299,7 @@
     "name": "Coco Hunter",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForFace"],
+        "largoProps": ["UseSlime2ForEyeShape"],
         "slime2Structs": [
           {
             "matData": {
@@ -364,7 +385,7 @@
     "name": "Pink Mesmer",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForBodyMaterial"],
+        "largoProps": ["UseSlime2ForBodyMaterial", "UseSlime2ForEyeColor"],
         "bodyStruct": { "matData": { "colorsOrigin": "PINK_SLIME" } },
         "slime2Structs": [
           { "matData": { "colorsOrigin": "PINK_SLIME" } },
@@ -384,6 +405,7 @@
     "name": "Quantum Mesmer",
     "appearances": [
       {
+        "largoProps": ["UseSlime2ForEyeColor"],
         "bodyStruct": { "matData": { "matOrigin": "QUANTUM_SLIME", "colorsOrigin": "MESMER_SLIME" } },
         "slime2Structs": [
           {
@@ -439,6 +461,7 @@
     "name": "Honey Mesmer",
     "appearances": [
       {
+        "largoProps": ["UseSlime2ForEyeColor"],
         "bodyStruct": {
           "matData": {
             "colorsOrigin": "MESMER_SLIME",
@@ -490,6 +513,7 @@
     "name": "Phosphor Mesmer",
     "appearances": [
       {
+        "largoProps": ["UseSlime2ForEyeColor"],
         "slime2Structs": [
           {
             "matData": {
@@ -523,6 +547,7 @@
     "name": "Tangle Mesmer",
     "appearances": [
       {
+        "largoProps": ["UseSlime2ForEyeColor"],
         "bodyStruct": { "matData": { "matOrigin": "MESMER_SLIME" } },
         "slime1Structs": [
           {
@@ -542,6 +567,7 @@
     "name": "Boom Mesmer",
     "appearances": [
       {
+        "largoProps": ["UseSlime2ForEyeColor"],
         "bodyStruct": {
           "matData": {
             "colorsOrigin": "MESMER_SLIME",
@@ -593,6 +619,7 @@
     "name": "Rad Mesmer",
     "appearances": [
       {
+        "largoProps": ["UseSlime2ForEyeColor"],
         "bodyStruct": {
           "matData": {
             "colorsOrigin": "MESMER_SLIME",
@@ -662,6 +689,7 @@
     "name": "Rock Mesmer",
     "appearances": [
       {
+        "largoProps": ["UseSlime2ForEyeColor"],
         "bodyStruct": {
           "matData": {
             "colorsOrigin": "ROCK_SLIME",
@@ -703,7 +731,7 @@
     "name": "Tabby Mesmer",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForBodyMaterial"],
+        "largoProps": ["UseSlime2ForBodyMaterial", "UseSlime2ForEyeColor"],
         "slime1Structs": [
           {
             "matData": {
@@ -721,7 +749,7 @@
     "name": "Hunter Mesmer",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForBodyMaterial"],
+        "largoProps": ["UseSlime2ForBodyMaterial", "UseSlime2ForEyeColor"],
         "slime1Structs": [
           {
             "matData": {
@@ -739,6 +767,7 @@
     "name": "Crystal Mesmer",
     "appearances": [
       {
+        "largoProps": ["UseSlime2ForEyeColor"],
         "bodyStruct": {
           "matData": {
             "colorsOrigin": "CRYSTAL_SLIME",
@@ -780,6 +809,7 @@
     "name": "Dervish Mesmer",
     "appearances": [
       {
+        "largoProps": ["UseSlime2ForEyeColor"],
         "bodyStruct": { "matData": { "matOrigin": "MESMER_SLIME" } },
         "slime1Structs": [
           {
@@ -799,8 +829,7 @@
     "appearances": [
       {
         "slime1Structs": [
-          {
-          },
+          {},
           { "meshData": { "skip": true } },
           { "meshData": { "skip": true } },
           { "meshData": { "skip": true } },

@@ -252,6 +252,8 @@ public static class Largopedia
         var appearance = ScriptableObject.CreateInstance<SlimeAppearance>();
         appearance.AnimatorOverride = appearance1.AnimatorOverride ?? appearance2.AnimatorOverride;
         appearance.DependentAppearances = [appearance1, appearance2];
+        appearance.NameXlateKey = appearance1.NameXlateKey ?? appearance2.NameXlateKey;
+        appearance.SaveSet = set;
         appearance.Face = ScriptableObject.CreateInstance<SlimeFace>();
         appearance.Face._expressionToFaceLookup = new(SlimeFace.DefaultSlimeExpressionComparer);
         appearance.name = largoData.Slime1 + largoData.Slime2 +
@@ -271,22 +273,17 @@ public static class Largopedia
         var useMouthShape = props.HasFlagFast(LargoAppearanceProps.UseSlime2ForMouthShape);
         var useMouthColor = props.HasFlagFast(LargoAppearanceProps.UseSlime2ForMouthColor);
 
-        foreach (var key in appearance1.Face._expressionToFaceLookup.Keys.Union(appearance2.Face._expressionToFaceLookup.Keys, SlimeFace.DefaultSlimeExpressionComparer))
+        foreach (var key in slime1Faces.Keys.Union(slime2Faces.Keys, SlimeFace.DefaultSlimeExpressionComparer))
         {
-            var finalEye = GetMixedMaterial(key, slime1Faces, slime2Faces, useEyesFully, useEyeShape, useEyeColor, true);
-            var finalMouth = GetMixedMaterial(key, slime1Faces, slime2Faces, useMouthsFully, useMouthShape, useMouthColor, false);
-
             appearance.Face._expressionToFaceLookup[key] = new()
             {
                 SlimeExpression = key,
-                Eyes = finalEye,
-                Mouth = finalMouth
+                Eyes = GetMixedMaterial(key, slime1Faces, slime2Faces, useEyesFully, useEyeShape, useEyeColor, true),
+                Mouth = GetMixedMaterial(key, slime1Faces, slime2Faces, useMouthsFully, useMouthShape, useMouthColor, false)
             };
         }
 
         appearance.Face.ExpressionFaces = [.. appearance.Face._expressionToFaceLookup.Values];
-        appearance.NameXlateKey = appearance1.NameXlateKey;
-        appearance.SaveSet = set;
 
         var slime1Body = appearance1.Structures.FirstOrDefault(FindBody);
         var slime2Body = appearance2.Structures.FirstOrDefault(FindBody);
@@ -330,7 +327,7 @@ public static class Largopedia
         appearance.TornadoAppearance = appearance1.TornadoAppearance ?? appearance2.TornadoAppearance;
         appearance.VineAppearance = appearance1.VineAppearance ?? appearance2.VineAppearance;
 
-        if (appearance1.QubitAppearance != null || appearance2.QubitAppearance != null)
+        if (appearance1.QubitAppearance || appearance2.QubitAppearance)
         {
             var qubitAppearance = appearance.QubitAppearance = appearance.Instantiate();
             var material = QuantumMat.Clone();
@@ -342,7 +339,9 @@ public static class Largopedia
                 var mat = material.Clone();
 
                 if (modelMap.TryGetValue(i, out var modelData))
+                {
                     Slimepedia.SetMatProperties(modelData.MatData, mat);
+                }
                 else
                 {
                     var og = structure.DefaultMaterials[0];
@@ -362,7 +361,7 @@ public static class Largopedia
         return appearance;
     }
 
-    private static Material GetMixedMaterial(SlimeExpression key, Dictionary<SlimeExpression, SlimeExpressionFace> slime1Faces, Dictionary<SlimeExpression, SlimeExpressionFace> slime2Faces, bool useSlime2Entirely,
+    private static Material? GetMixedMaterial(SlimeExpression key, Dictionary<SlimeExpression, SlimeExpressionFace> slime1Faces, Dictionary<SlimeExpression, SlimeExpressionFace> slime2Faces, bool useSlime2Entirely,
         bool useSlime2Shape, bool useSlime2Color, bool isEye)
     {
         if (useSlime2Entirely)
@@ -378,29 +377,29 @@ public static class Largopedia
                         ?? GetMat(useSlime2Color ? slime1Faces : slime2Faces);
 
         if (!shapeBase || !colorBase)
-            return null!;
+            return null;
 
         if (shapeBase == colorBase)
             return shapeBase;
 
-        var result = shapeBase.Clone();
+        var result = shapeBase!.Clone();
 
         if (isEye)
         {
-            result.SetColor(Slimepedia.EyeRed, colorBase.GetColor(Slimepedia.EyeRed));
+            result.SetColor(Slimepedia.EyeRed, colorBase!.GetColor(Slimepedia.EyeRed));
             result.SetColor(Slimepedia.EyeBlue, colorBase.GetColor(Slimepedia.EyeBlue));
             result.SetColor(Slimepedia.EyeGreen, colorBase.GetColor(Slimepedia.EyeGreen));
         }
         else
         {
-            result.SetColor(Slimepedia.MouthTop, colorBase.GetColor(Slimepedia.MouthTop));
+            result.SetColor(Slimepedia.MouthTop, colorBase!.GetColor(Slimepedia.MouthTop));
             result.SetColor(Slimepedia.MouthMiddle, colorBase.GetColor(Slimepedia.MouthMiddle));
             result.SetColor(Slimepedia.MouthBottom, colorBase.GetColor(Slimepedia.MouthBottom));
         }
 
         return result;
 
-        Material GetMat(Dictionary<SlimeExpression, SlimeExpressionFace> dict) =>
+        Material? GetMat(Dictionary<SlimeExpression, SlimeExpressionFace> dict) =>
             dict.TryGetValue(key, out var face) ? (isEye ? face.Eyes : face.Mouth) : null!;
     }
 

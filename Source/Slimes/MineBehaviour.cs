@@ -105,7 +105,7 @@ public sealed class MineBehaviour : SlimeSubbehaviour, ControllerCollisionListen
     private void Explode()
     {
         if (IsLargo)
-            PhysicsUtil.Explode(gameObject, ExplodeRadius * 2f, ExplodePower * 2f, MinPlayerDamage * 1.2f, MaxPlayerDamage * 1.2f);
+            PhysicsUtil.Explode(gameObject, ExplodeRadius * 1.5f, ExplodePower * 1.5f, MinPlayerDamage * 1.2f, MaxPlayerDamage * 1.2f);
         else
             PhysicsUtil.Explode(gameObject, ExplodeRadius, ExplodePower, MinPlayerDamage, MaxPlayerDamage);
 

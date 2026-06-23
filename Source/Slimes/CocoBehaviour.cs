@@ -15,8 +15,11 @@ public sealed class CocoBehaviour : SRBehaviour, ControllerCollisionListener
 
     public void OnControllerCollision(GameObject gameObj)
     {
-        if (Time.time >= nextTime && transform.position.y > gameObj.transform.position.y + 1.25f && gameObj.GetInterfaceComponent<Damageable>().Damage(DamagePerTouch, gameObject))
+        if (Time.time >= nextTime && gameObj == SceneContext.Instance.Player && transform.position.y >= gameObj.transform.position.y + 1.25f &&
+            gameObj.GetInterfaceComponent<Damageable>().Damage(DamagePerTouch, gameObject))
+        {
             DeathHandler.Kill(gameObj, DeathHandler.Source.SLIME_DAMAGE_PLAYER_ON_TOUCH, gameObject, "CocoBehaviour.TryToDamage");
+        }
 
         nextTime = Time.time + RepeatTime;
     }
