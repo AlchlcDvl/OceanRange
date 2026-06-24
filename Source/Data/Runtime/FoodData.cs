@@ -1,18 +1,8 @@
-// ReSharper disable UnassignedField.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable ConvertToConstant.Global
-
+#if !UNITY
 namespace OceanRange.Data;
 
-[Serializable]
-public sealed class Ingredients : JsonData
+public sealed partial class Ingredients
 {
-    [JsonRequired] public GroupData[] Groups;
-    [JsonRequired] public FruitData[] Fruits;
-    [JsonRequired] public VeggieData[] Veggies;
-    [JsonRequired] public ChimkenData[] Chimkens;
-
-#if !UNITY
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
@@ -30,41 +20,14 @@ public sealed class Ingredients : JsonData
         Array.ForEach(Veggies, x => x.OnDeserialise());
         Array.ForEach(Chimkens, x => x.OnDeserialise());
     }
-#else
-    public override void FindStrings(StringPooler pooler)
-    {
-        base.FindStrings(pooler);
-        Array.ForEach(Groups, x => x.FindStrings(pooler));
-        Array.ForEach(Fruits, x => x.FindStrings(pooler));
-        Array.ForEach(Veggies, x => x.FindStrings(pooler));
-        Array.ForEach(Chimkens, x => x.FindStrings(pooler));
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-        writer.WriteArray(Groups, (w, g) => g.WriteTo(w));
-        writer.WriteArray(Fruits, (w, f) => f.WriteTo(w));
-        writer.WriteArray(Veggies, (w, v) => v.WriteTo(w));
-        writer.WriteArray(Chimkens, (w, c) => c.WriteTo(w));
-    }
-#endif
 }
 
-[Serializable]
-public sealed class GroupData : JsonData
+public sealed partial class GroupData
 {
-    protected override bool SerialiseName => true;
-
-#if !UNITY
     public IdentifiableId[] Foods;
 
     public FoodGroup Group;
-#else
-    [JsonRequired] public string[] Foods;
-#endif
 
-#if !UNITY
     public override void OnDeserialise() => Group = Helpers.ParseOrAddEnumValue<FoodGroup>(Name!.ToUpperInvariant());
 
     public override void ReadFrom(DataReader reader)
@@ -72,26 +35,10 @@ public sealed class GroupData : JsonData
         base.ReadFrom(reader);
         Foods = reader.ReadEnumArray<IdentifiableId>()!;
     }
-#else
-    public override void FindStrings(StringPooler pooler)
-    {
-        base.FindStrings(pooler);
-        pooler.PoolStrings(Foods);
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-        writer.WriteStringArray(Foods);
-    }
-#endif
 }
 
-public abstract class FoodData : SpawnedActorData
+public abstract partial class FoodData
 {
-    protected override bool SerialiseName => true;
-
-#if !UNITY
     protected static readonly Dictionary<string, Action<GameObject>> Methods = new(StringComparer.Ordinal);
 
     static FoodData()
@@ -110,22 +57,12 @@ public abstract class FoodData : SpawnedActorData
         base.OnDeserialise();
         Methods.TryGetValue("Init" + Name + "FoodDetails", out InitFoodDetails);
     }
-#endif
 }
 
-[Serializable]
-public sealed class ChimkenData : FoodData
+public sealed partial class ChimkenData
 {
-#if !UNITY
     public Zone[] Zones;
-#else
-    [JsonRequired] public string[] Zones;
-#endif
 
-    public float SpawnAmount = 1f;
-    public float ChickSpawnAmount = 1f;
-
-#if !UNITY
     public IdentifiableId ChickId;
     public Action<GameObject>? InitHenDetails;
     public Action<GameObject>? InitChickDetails;
@@ -150,28 +87,10 @@ public sealed class ChimkenData : FoodData
         ChickSpawnAmount = reader.ReadPackedFloat();
         Zones = reader.ReadEnumArray<Zone>()!;
     }
-#else
-    public override void FindStrings(StringPooler pooler)
-    {
-        base.FindStrings(pooler);
-        pooler.PoolStrings(Zones);
-        pooler.PoolString(CrestColor.ToHex());
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-        writer.WritePackedFloat(SpawnAmount);
-        writer.WritePackedFloat(ChickSpawnAmount);
-        writer.WriteStringArray(Zones);
-        writer.WriteString(CrestColor.ToHex());
-    }
-#endif
 }
 
-public abstract class PlantData : FoodData
+public abstract partial class PlantData
 {
-#if !UNITY
     public abstract bool IsFruit { get; }
     public abstract string Type { get; }
     public abstract string ResourceIdSuffix { get; }
@@ -181,21 +100,7 @@ public abstract class PlantData : FoodData
 
     public IdentifiableId? BasePlant;
     public SpawnResourceId? BaseResource;
-#else
-    public Optional<string> BasePlant;
-    public Optional<string> BaseResource;
-#endif
 
-    // public bool HasOriginalSpawners = true; // TODO: Implement this in the future
-
-#if UNITY
-    [SerializeField]
-#endif
-    public Dictionary<string, Orientation[]> SpawnLocations;
-
-    public bool AdjustColliders = true;
-
-#if !UNITY
     public SpawnResourceId BaseResourceDlx;
 
     public SpawnResourceId ResourceId;
@@ -230,52 +135,23 @@ public abstract class PlantData : FoodData
         AdjustColliders = reader.ReadBool();
         SpawnLocations = reader.ReadDictionary(r => r.ReadString(), r => r.ReadArray(r2 => r2.ReadOrientation()), StringComparer.Ordinal)!;
     }
-#else
-    public override void FindStrings(StringPooler pooler)
-    {
-        base.FindStrings(pooler);
-
-        pooler.PoolString(BasePlant);
-        pooler.PoolString(BaseResource);
-
-        if (SpawnLocations != null)
-            pooler.PoolStrings(SpawnLocations.Keys);
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-
-        writer.WriteString(BasePlant);
-        writer.WriteString(BaseResource);
-
-        writer.WriteBool(AdjustColliders);
-
-        writer.WriteDictionary(SpawnLocations, (w, v) => w.WriteString(v), (w, v) => w.WriteArray(v, (w2, v2) => w2.WriteOrientation(v2)));
-    }
-#endif
 }
 
-[Serializable]
-public sealed class VeggieData : PlantData
+public sealed partial class VeggieData
 {
-#if !UNITY
     public override bool IsFruit => false;
     public override string Type => "Veggie";
     public override string ResourceIdSuffix => "Patch";
     protected override IdentifiableId DefaultPlant => IdentifiableId.CARROT_VEGGIE;
     protected override SpawnResourceId DefaultResource => SpawnResourceId.CARROT_PATCH;
-#endif
 }
 
-[Serializable]
-public sealed class FruitData : PlantData
+public sealed partial class FruitData
 {
-#if !UNITY
     public override bool IsFruit => true;
     public override string Type => "Fruit";
     public override string ResourceIdSuffix => "Tree";
     protected override IdentifiableId DefaultPlant => IdentifiableId.POGO_FRUIT;
     protected override SpawnResourceId DefaultResource => SpawnResourceId.POGO_TREE;
-#endif
 }
+#endif

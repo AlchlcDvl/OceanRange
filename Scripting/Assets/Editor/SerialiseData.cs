@@ -76,7 +76,7 @@ static class ExportData
             // Convert HashSet to an ordered Dictionary
             var stringDict = new Dictionary<string, uint>(StringComparer.Ordinal);
             var poolIndex = 1u;
-            var sortedStrings = globalStrings.OrderBy(x => x.Length).ThenBy(x => x, StringComparer.Ordinal).ToArray();
+            var sortedStrings = globalStrings.OrderBy(x => x, StringComparer.Ordinal).ToArray();
 
             foreach (var str in sortedStrings)
                 stringDict[str] = poolIndex++;

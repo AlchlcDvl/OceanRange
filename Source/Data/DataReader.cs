@@ -8,6 +8,8 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
 
     public uint ReadPackedUInt() => (uint)ReadVarInt();
 
+    public ulong ReadPackedULong() => ReadVarInt();
+
     public int ReadPackedInt() => ZigZagDecode((uint)ReadVarInt());
 
     private ulong ReadVarInt()
@@ -40,6 +42,8 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
 
     public float ReadPackedFloat() => Mathf.HalfToFloat(reader.ReadUInt16());
 
+    public double ReadDouble() => reader.ReadDouble();
+
     // public float ReadFloat() => reader.ReadSingle();
 
     public bool ReadBool() => reader.ReadBoolean();
@@ -48,9 +52,9 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
 
     private sbyte ReadSByte() => reader.ReadSByte();
 
-    // public Color32 ReadColor32() => new(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+    public Color32 ReadColor32() => new(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
 
-    // public Color ReadColor() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
+    public Color ReadColor() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
 
     public string?[]? ReadStringArray() => ReadArray(r => r.ReadString());
 
@@ -85,7 +89,7 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
             list.Add(readFunc(this));
     }
 
-    // public Vector2 ReadVector2() => new(ReadPackedFloat(), ReadPackedFloat());
+    public Vector2 ReadVector2() => new(ReadPackedFloat(), ReadPackedFloat());
 
     public Vector3 ReadVector3() => new(ReadPackedFloat(), ReadPackedFloat(), ReadPackedFloat());
 
@@ -222,6 +226,52 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
         }
 
         return indices;
+    }
+
+    public float[] ReadXorEncodedFloats(int? expectedCount = null)
+    {
+        var count = ReadPackedUInt();
+
+        if (expectedCount.HasValue && expectedCount.Value != (int)count)
+            throw new InvalidDataException($"Expected {expectedCount.Value} floats, found {count}.");
+
+        if (count == 0)
+            return [];
+
+        var values = new float[count];
+        var previousBits = ReadPackedUInt();
+        values[0] = BitConverter.UInt32BitsToSingle(previousBits);
+
+        for (var i = 1; i < count; i++)
+        {
+            previousBits ^= ReadPackedUInt();
+            values[i] = BitConverter.UInt32BitsToSingle(previousBits);
+        }
+
+        return values;
+    }
+
+    public double[] ReadXorEncodedDoubles(int? expectedCount = null)
+    {
+        var count = ReadPackedUInt();
+
+        if (expectedCount.HasValue && expectedCount.Value != (int)count)
+            throw new InvalidDataException($"Expected {expectedCount.Value} doubles, found {count}.");
+
+        if (count == 0)
+            return [];
+
+        var values = new double[count];
+        var previousBits = ReadPackedULong();
+        values[0] = BitConverter.Int64BitsToDouble(unchecked((long)previousBits));
+
+        for (var i = 1; i < count; i++)
+        {
+            previousBits ^= ReadPackedULong();
+            values[i] = BitConverter.Int64BitsToDouble(unchecked((long)previousBits));
+        }
+
+        return values;
     }
 
     public Vector3 ReadQuantizedPosition(Bounds bounds)

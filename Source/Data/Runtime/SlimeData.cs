@@ -1,18 +1,10 @@
-// ReSharper disable UnassignedField.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable ConvertToConstant.Global
-// ReSharper disable MemberCanBePrivate.Global
-
 #if !UNITY
 using OceanRange.Saves;
-#endif
 
 namespace OceanRange.Data;
 
-[Serializable]
-public sealed class SlimeData : SpawnedActorData
+public sealed partial class SlimeData
 {
-#if !UNITY
     private static readonly Dictionary<string, Action<SlimeAppearance, SlimeAppearanceData>> AppearanceMethods = new(StringComparer.Ordinal);
     private static readonly Dictionary<string, Action<GameObject, SlimeDefinition>> DefinitionMethods = new(StringComparer.Ordinal);
 
@@ -35,50 +27,7 @@ public sealed class SlimeData : SpawnedActorData
     [JsonIgnore] public Action<GameObject, SlimeDefinition>? InitPlortDetails;
     [JsonIgnore] public Action<GameObject, SlimeDefinition>? InitGordoDetails;
     [JsonIgnore] public Action<SlimeAppearance, SlimeAppearanceData>? InitAppearanceDetails;
-#endif
 
-    protected override bool SerialiseName => true;
-
-    public bool NightSpawn;
-    public bool CanBeRefined;
-    public float SpawnAmount = 0.25f;
-    public bool HasGordo = true;
-
-    public bool Vaccable = true;
-    public bool Exchangeable = true;
-    public string GordoCell;
-
-    [JsonProperty("gordoOri")] public Orientation GordoOrientation;
-    [JsonProperty("natGordoSpawn")] public bool NaturalGordoSpawn = true;
-
-    public int PlortExchangeWeight = 16;
-    public float Jiggle = 1f;
-
-    [JsonProperty] public string OnomicsType = "pearls";
-
-    [JsonProperty("gordoEat")] public int GordoEatAmount = 25;
-
-#if UNITY
-    [JsonRequired] public string FavToy;
-    [JsonRequired] public string[] Zones;
-
-    public Optional<string> FavFood;
-    public Optional<string> Diet;
-
-    public string BaseSlime = "PINK_SLIME";
-    public string BasePlort = "PINK_PLORT";
-    public string BaseGordo = "PINK_GORDO";
-
-    public Optional<string> ComponentBase;
-    public Optional<string> GordoZone;
-    public string[] GordoRewards;
-
-    [JsonProperty("toAdd")] public string[] ComponentsToAdd;
-    [JsonProperty("toRemove")] public string[] ComponentsToRemove;
-
-    [JsonRequired] public SlimeAppearanceData NormalAppearance;
-    public Optional<SlimeAppearanceData> SSAppearance;
-#else
     public IdentifiableId FavToy;
     public Zone[] Zones;
 
@@ -98,83 +47,7 @@ public sealed class SlimeData : SpawnedActorData
 
     public SlimeAppearanceData NormalAppearance;
     public SlimeAppearanceData? SSAppearance;
-#endif
 
-#if UNITY
-    public override void FindStrings(StringPooler pooler)
-    {
-        base.FindStrings(pooler);
-
-        pooler.PoolString(FavToy);
-        pooler.PoolStrings(Zones);
-        pooler.PoolString(FavFood);
-        pooler.PoolString(Diet);
-        pooler.PoolString(BaseSlime);
-        pooler.PoolString(BasePlort);
-        pooler.PoolString(BaseGordo);
-        pooler.PoolString(ComponentBase);
-        pooler.PoolString(GordoZone);
-        pooler.PoolStrings(GordoRewards);
-        pooler.PoolString(GordoCell);
-
-        pooler.PoolString(OnomicsType);
-
-        pooler.PoolStrings(ComponentsToAdd);
-        pooler.PoolStrings(ComponentsToRemove);
-
-        NormalAppearance.FindStrings(pooler);
-
-        if (SSAppearance.HasValue)
-            SSAppearance.Value.FindStrings(pooler);
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-
-        writer.WriteString(FavToy);
-        writer.WriteStringArray(Zones);
-        writer.WriteString(FavFood);
-        writer.WriteString(Diet);
-
-        writer.WriteString(BaseSlime);
-        writer.WriteString(BasePlort);
-        writer.WriteString(BaseGordo);
-
-        writer.WriteBool(CanBeRefined);
-
-        writer.WriteString(ComponentBase);
-        writer.WriteString(GordoZone);
-        writer.WritePackedFloat(SpawnAmount);
-        writer.WriteBool(HasGordo);
-        writer.WriteStringArray(GordoRewards);
-
-        writer.WriteBool(Vaccable);
-        writer.WriteBool(Exchangeable);
-        writer.WriteString(GordoCell);
-
-        writer.WriteOrientation(GordoOrientation);
-        writer.WriteBool(NaturalGordoSpawn);
-
-        writer.WritePackedUInt((uint)PlortExchangeWeight);
-        writer.WritePackedFloat(Jiggle);
-
-        writer.WriteString(OnomicsType);
-
-        writer.WriteStringArray(ComponentsToAdd);
-        writer.WriteStringArray(ComponentsToRemove);
-
-        writer.WritePackedUInt((uint)GordoEatAmount);
-
-        NormalAppearance.WriteTo(writer);
-
-        var hasSS = SSAppearance.HasValue;
-        writer.WriteBool(hasSS);
-
-        if (hasSS)
-            SSAppearance.Value.WriteTo(writer);
-    }
-#else
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
@@ -269,38 +142,10 @@ public sealed class SlimeData : SpawnedActorData
         PediaId = data.PediaId;
         data.SsExists = SSAppearance != null;
     }
-#endif
 }
 
-[Serializable]
-public sealed class SlimeAppearanceData : JsonData
+public sealed partial class SlimeAppearanceData
 {
-    [JsonRequired] public ModelData[] SlimeFeatures;
-    [JsonRequired] public ModelData[] GordoFeatures;
-    [JsonRequired] public ModelData[] PlortFeatures;
-
-#if UNITY
-    [JsonRequired] public Color32 MainAmmoColor;
-
-    public Optional<Color32> TopMouthColor;
-    public Optional<Color32> MiddleMouthColor;
-    public Optional<Color32> BottomMouthColor;
-
-    public Optional<Color32> RedEyeColor;
-    public Optional<Color32> GreenEyeColor;
-    public Optional<Color32> BlueEyeColor;
-
-    public Optional<Color32> TopPaletteColor;
-    public Optional<Color32> MiddlePaletteColor;
-    public Optional<Color32> BottomPaletteColor;
-
-    public Optional<Color32> PlortAmmoColor;
-
-    public Optional<string> EyesOrigin;
-    public Optional<string> MouthOrigin;
-
-    public Optional<float> Jiggle;
-#else
     [JsonRequired] public Color MainAmmoColor;
 
     public Color? TopMouthColor;
@@ -326,67 +171,7 @@ public sealed class SlimeAppearanceData : JsonData
     public bool HasMouthColors;
     public bool HasEyeColors;
     public bool ChangedFace;
-#endif
 
-#if UNITY
-    public override void FindStrings(StringPooler pooler)
-    {
-        base.FindStrings(pooler);
-
-        pooler.PoolString(MainAmmoColor.ToHex());
-
-        pooler.PoolString(TopMouthColor.ToHex());
-        pooler.PoolString(MiddleMouthColor.ToHex());
-        pooler.PoolString(BottomMouthColor.ToHex());
-
-        pooler.PoolString(RedEyeColor.ToHex());
-        pooler.PoolString(GreenEyeColor.ToHex());
-        pooler.PoolString(BlueEyeColor.ToHex());
-
-        pooler.PoolString(TopPaletteColor.ToHex());
-        pooler.PoolString(MiddlePaletteColor.ToHex());
-        pooler.PoolString(BottomPaletteColor.ToHex());
-
-        pooler.PoolString(PlortAmmoColor.ToHex());
-
-        pooler.PoolString(EyesOrigin);
-        pooler.PoolString(MouthOrigin);
-
-        Array.ForEach(SlimeFeatures, f => f.FindStrings(pooler));
-        Array.ForEach(GordoFeatures, f => f.FindStrings(pooler));
-        Array.ForEach(PlortFeatures, f => f.FindStrings(pooler));
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-
-        writer.WriteString(MainAmmoColor.ToHex());
-
-        writer.WriteString(TopMouthColor.ToHex());
-        writer.WriteString(MiddleMouthColor.ToHex());
-        writer.WriteString(BottomMouthColor.ToHex());
-
-        writer.WriteString(RedEyeColor.ToHex());
-        writer.WriteString(GreenEyeColor.ToHex());
-        writer.WriteString(BlueEyeColor.ToHex());
-
-        writer.WriteString(TopPaletteColor.ToHex());
-        writer.WriteString(MiddlePaletteColor.ToHex());
-        writer.WriteString(BottomPaletteColor.ToHex());
-
-        writer.WriteString(PlortAmmoColor.ToHex());
-
-        writer.WriteArray(SlimeFeatures, (w, f) => f.WriteTo(w));
-        writer.WriteArray(GordoFeatures, (w, f) => f.WriteTo(w));
-        writer.WriteArray(PlortFeatures, (w, f) => f.WriteTo(w));
-
-        writer.WriteNullablePackedFloat(Jiggle);
-
-        writer.WriteString(EyesOrigin);
-        writer.WriteString(MouthOrigin);
-    }
-#else
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
@@ -411,8 +196,6 @@ public sealed class SlimeAppearanceData : JsonData
 
         EyesOrigin = reader.ReadNullableEnum<IdentifiableId>();
         MouthOrigin = reader.ReadNullableEnum<IdentifiableId>();
-
-        // Main.Console.Log($"Read appearance data for {Name}");
     }
 
     private static Color? ReadHex(DataReader reader)
@@ -435,10 +218,7 @@ public sealed class SlimeAppearanceData : JsonData
             TopPaletteColor = topColor;
 
         if (!MiddlePaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.MiddleColor, out var middleColor))
-        {
             MiddlePaletteColor = middleColor;
-            // Main.Console.Log($"Overwriting middle color - {(Color32)middleColor}");
-        }
 
         if (!BottomPaletteColor.HasValue && matData.ColorProps.TryGetValue(Slimepedia.BottomColor, out var bottomColor))
             BottomPaletteColor = bottomColor;
@@ -460,5 +240,5 @@ public sealed class SlimeAppearanceData : JsonData
         foreach (var feature in GordoFeatures)
             feature.MeshData.Jiggle ??= Jiggle;
     }
-#endif
 }
+#endif

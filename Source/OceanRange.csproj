@@ -59,6 +59,8 @@
     <Compile Include="Utils\UnityUtils.cs" />
     <Compile Include="Unity\*.cs" />
     <Compile Include="Common\*.cs" />
+    <Compile Include="Data\Common\*.cs" />
+    <Compile Include="Data\Unity\*.cs" />
     <Compile Include="System\*.cs" />
   </ItemGroup>
 

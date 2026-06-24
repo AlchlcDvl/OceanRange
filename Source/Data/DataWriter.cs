@@ -30,6 +30,8 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
 
     public void WritePackedUInt(uint value) => WriteVarInt(value);
 
+    public void WritePackedULong(ulong value) => WriteVarInt(value);
+
     public void WritePackedInt(int value) => WriteVarInt(ZigZagEncode(value));
 
     public void WriteString(string? value)
@@ -220,17 +222,59 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
         }
     }
 
+    public void WriteXorEncodedFloats(IReadOnlyList<float> values)
+    {
+        var count = (uint)(values?.Count ?? 0);
+        WritePackedUInt(count);
+
+        if (count == 0)
+            return;
+
+        var previousBits = BitConverter.SingleToUInt32Bits(values[0]);
+        WritePackedUInt(previousBits);
+
+        for (var i = 1; i < count; i++)
+        {
+            var currentBits = BitConverter.SingleToUInt32Bits(values[i]);
+            var xorDelta = currentBits ^ previousBits;
+
+            WritePackedUInt(xorDelta);
+            previousBits = currentBits;
+        }
+    }
+
+    public void WriteXorEncodedDoubles(IReadOnlyList<double> values)
+    {
+        var count = (uint)(values?.Count ?? 0);
+        WritePackedUInt(count);
+
+        if (count == 0)
+            return;
+
+        var previousBits = unchecked((ulong)BitConverter.DoubleToInt64Bits(values[0]));
+        WritePackedULong(previousBits);
+
+        for (var i = 1; i < count; i++)
+        {
+            var currentBits = unchecked((ulong)BitConverter.DoubleToInt64Bits(values[i]));
+            var xorDelta = currentBits ^ previousBits;
+
+            WritePackedULong(xorDelta);
+            previousBits = currentBits;
+        }
+    }
+
     public void WriteQuantizedPosition(Vector3 pos, Bounds bounds)
     {
-        float nx = NormalizeWithinBounds(pos.x, bounds.min.x, bounds.size.x);
-        float ny = NormalizeWithinBounds(pos.y, bounds.min.y, bounds.size.y);
-        float nz = NormalizeWithinBounds(pos.z, bounds.min.z, bounds.size.z);
+        var nx = NormalizeWithinBounds(pos.x, bounds.min.x, bounds.size.x);
+        var ny = NormalizeWithinBounds(pos.y, bounds.min.y, bounds.size.y);
+        var nz = NormalizeWithinBounds(pos.z, bounds.min.z, bounds.size.z);
 
-        uint qx = (uint)(nx * 1023f) & 0x3FF;
-        uint qy = (uint)(ny * 1023f) & 0x3FF;
-        uint qz = (uint)(nz * 1023f) & 0x3FF;
+        var qx = (uint)(nx * 1023f) & 0x3FF;
+        var qy = (uint)(ny * 1023f) & 0x3FF;
+        var qz = (uint)(nz * 1023f) & 0x3FF;
 
-        uint packed = qx | (qy << 10) | (qz << 20);
+        var packed = qx | (qy << 10) | (qz << 20);
         Writer.Write(packed);
     }
 

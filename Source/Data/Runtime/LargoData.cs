@@ -1,13 +1,8 @@
-// ReSharper disable UnassignedField.Global
-// ReSharper disable MemberCanBePrivate.Global
-
+#if !UNITY
 namespace OceanRange.Data;
 
-
-[Serializable]
-public sealed class LargoData : ActorData
+public sealed partial class LargoData
 {
-#if !UNITY
     private static readonly Dictionary<string, Action<GameObject, SlimeDefinition>> DefinitionMethods = new(StringComparer.Ordinal);
     private static readonly Dictionary<string, Action<SlimeAppearance, AppearanceType>> AppearanceMethods = new(StringComparer.Ordinal);
 
@@ -21,24 +16,11 @@ public sealed class LargoData : ActorData
                 DefinitionMethods[method.Name] = Helpers.CompileAction<GameObject, SlimeDefinition>(method);
         }
     }
-#endif
 
-    protected override bool SerialiseName => true;
-
-    // TODO: Awaiting models for indices 1, 2 and 3 - Stick to index 0 for normal appearance for now
-    [JsonRequired] public LargoAppearanceData[] Appearances;
-
-#if UNITY
-    public string[] DefProps;
-
-    public Optional<float> Jiggle;
-#else
     public DefinitionProps DefProps;
 
     public float? Jiggle;
-#endif
 
-#if !UNITY
     [JsonIgnore] public string Slime1;
     [JsonIgnore] public string Slime2;
 
@@ -101,48 +83,17 @@ public sealed class LargoData : ActorData
 
         Array.ForEach(Appearances, a => a.OnDeserialise());
     }
-#else
-    public override void FindStrings(StringPooler pooler)
-    {
-        base.FindStrings(pooler);
-        pooler.PoolStrings(DefProps);
-        Array.ForEach(Appearances, a => a.FindStrings(pooler));
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-
-        writer.WriteArray(Appearances, (w, a) => a.WriteTo(w));
-        writer.WriteStringArray(DefProps);
-        writer.WriteNullablePackedFloat(Jiggle);
-    }
-#endif
 }
 
-[Serializable]
-public sealed class LargoAppearanceData : JsonData
+public sealed partial class LargoAppearanceData
 {
-#if !UNITY
     public LargoAppearanceProps LargoProps;
     public AppearanceType AppProps;
 
     public ModelData? BodyStruct;
 
     public float? Jiggle;
-#else
-    public string[] LargoProps;
-    public string[] AppProps;
 
-    public Optional<ModelData> BodyStruct;
-
-    public Optional<float> Jiggle;
-#endif
-
-    public ModelData[]? Slime1Structs;
-    public ModelData[]? Slime2Structs;
-
-#if !UNITY
     public override void ReadFrom(DataReader reader)
     {
         base.ReadFrom(reader);
@@ -182,40 +133,5 @@ public sealed class LargoAppearanceData : JsonData
                 feature.MeshData.Jiggle ??= Jiggle;
         }
     }
-#else
-    public override void FindStrings(StringPooler pooler)
-    {
-        base.FindStrings(pooler);
-
-        pooler.PoolStrings(LargoProps);
-        pooler.PoolStrings(AppProps);
-
-        if (BodyStruct.HasValue)
-            BodyStruct.Value.FindStrings(pooler);
-
-        if (!Slime1Structs.IsNullOrEmpty())
-            Array.ForEach(Slime1Structs, s => s.FindStrings(pooler));
-
-        if (!Slime2Structs.IsNullOrEmpty())
-            Array.ForEach(Slime2Structs, s => s.FindStrings(pooler));
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-
-        writer.WriteStringArray(LargoProps);
-        writer.WriteStringArray(AppProps);
-
-        writer.WriteBool(BodyStruct.HasValue);
-
-        if (BodyStruct.HasValue)
-            BodyStruct.Value.WriteTo(writer);
-
-        writer.WriteArray(Slime1Structs, (w, s) => s.WriteTo(w));
-        writer.WriteArray(Slime2Structs, (w, s) => s.WriteTo(w));
-
-        writer.WriteNullablePackedFloat(Jiggle);
-    }
-#endif
 }
+#endif

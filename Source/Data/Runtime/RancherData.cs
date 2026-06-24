@@ -1,14 +1,8 @@
-// ReSharper disable UnassignedField.Global
-
+#if !UNITY
 namespace OceanRange.Data;
 
-
-[Serializable]
-public sealed class RancherData : JsonData
+public sealed partial class RancherData
 {
-    protected override bool SerialiseName => true;
-
-#if !UNITY
     [JsonRequired, JsonProperty] public Category[] Rewards;
     [JsonRequired, JsonProperty] public Category[] Requests;
     [JsonRequired, JsonProperty] public Category[] RareRewards;
@@ -73,7 +67,7 @@ public sealed class RancherData : JsonData
             {
                 var id = $"m.offer_{i + 1}.{RancherId}";
 
-                if (OfferIds.Add(id)) // In case the number of offers changes between languages
+                if (OfferIds.Add(id))
                     ExchangeOfferRegistry.RegisterOfferID(id);
             }
         }
@@ -103,37 +97,5 @@ public sealed class RancherData : JsonData
     private static string GetNextLoadingIdBypass(Language lang) => CLS.AddToLoading.GetNextLoadingId(lang);
 
     private static void AddLocalTipTextBypass(string id, Language lang) => CLS.AddToLoading.AddLocalTipText(id, lang);
-#else
-    [JsonRequired] public string[] Rewards;
-    [JsonRequired] public string[] Requests;
-    [JsonRequired] public string[] RareRewards;
-
-    public string[] IndivRewards;
-    public string[] IndivRequests;
-    public string[] IndivRareRewards;
-
-    public override void FindStrings(StringPooler pooler)
-    {
-        base.FindStrings(pooler);
-
-        pooler.PoolStrings(Rewards);
-        pooler.PoolStrings(Requests);
-        pooler.PoolStrings(RareRewards);
-        pooler.PoolStrings(IndivRewards);
-        pooler.PoolStrings(IndivRequests);
-        pooler.PoolStrings(IndivRareRewards);
-    }
-
-    public override void WriteTo(DataWriter writer)
-    {
-        base.WriteTo(writer);
-
-        writer.WriteStringArray(Rewards);
-        writer.WriteStringArray(Requests);
-        writer.WriteStringArray(RareRewards);
-        writer.WriteStringArray(IndivRewards);
-        writer.WriteStringArray(IndivRequests);
-        writer.WriteStringArray(IndivRareRewards);
-    }
-#endif
 }
+#endif
