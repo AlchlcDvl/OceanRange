@@ -93,6 +93,8 @@ static class ExportData
 
                 foreach (var str in sortedStrings)
                     writer.WriteString(str);
+
+                writer.Flush();
             }
 
             // Export instances

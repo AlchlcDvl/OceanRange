@@ -539,7 +539,45 @@
     "name": "Mosaic Mesmer",
     "appearances": [
       {
-        "largoProps": ["UseSlime2ForBodyMaterial"]
+        "largoProps": ["UseSlime2ForBodyMaterial"],
+        "slime1Structs": [
+          {},
+          {
+            "meshData": { "mesh": "mosaic_mesmer_pincers" },
+            "matData": {
+              "matOrigin": "MOSAIC_SLIME",
+              "matSameAs": 1
+            }
+          },
+          {
+            "meshData": { "mesh": "mosaic_mesmer_tail_base" },
+            "matData": {
+              "matOrigin": "MOSAIC_SLIME",
+              "matSameAs": 1
+            }
+          },
+          {
+            "meshData": { "mesh": "mosaic_mesmer_tail_stem_1" },
+            "matData": {
+              "matOrigin": "MOSAIC_SLIME",
+              "matSameAs": 1
+            }
+          },
+          {
+            "meshData": { "mesh": "mosaic_mesmer_tail_stem_2" },
+            "matData": {
+              "matOrigin": "MOSAIC_SLIME",
+              "matSameAs": 1
+            }
+          },
+          {
+            "meshData": { "mesh": "mosaic_mesmer_tail_tip" },
+            "matData": {
+              "matOrigin": "MOSAIC_SLIME",
+              "matSameAs": 1
+            }
+          }
+        ]
       }
     ]
   },
