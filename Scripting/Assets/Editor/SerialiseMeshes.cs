@@ -87,17 +87,11 @@ static class ExportMeshes
             var uvs = new List<Vector2>(vertexCount);
             mesh.GetUVs(0, uvs);
 
-            var uArray = new float[vertexCount];
-            var vArray = new float[vertexCount];
+            for (var i = 0; i < vertexCount; i++)
+                writer.WritePackedFloat(uvs[i].x);
 
             for (var i = 0; i < vertexCount; i++)
-            {
-                uArray[i] = uvs[i].x;
-                vArray[i] = uvs[i].y;
-            }
-
-            writer.WriteXorEncodedFloats(uArray);
-            writer.WriteXorEncodedFloats(vArray);
+                writer.WritePackedFloat(uvs[i].y);
         }
 
         writer.Flush();

@@ -349,13 +349,19 @@ public static class Inventory
 
         if (reader.ReadBool())
         {
-            var uArray = reader.ReadXorEncodedFloats();
-            var vArray = reader.ReadXorEncodedFloats();
-
-            var uvs = new List<Vector2>(vertexCount);
+            var uArray = new float[vertexCount];
+            var vArray = new float[vertexCount];
 
             for (var i = 0; i < vertexCount; i++)
-                uvs.Add(new(uArray[i], vArray[i]));
+                uArray[i] = reader.ReadPackedFloat();
+
+            for (var i = 0; i < vertexCount; i++)
+                vArray[i] = reader.ReadPackedFloat();
+
+            var uvs = new Vector2[vertexCount];
+
+            for (var i = 0; i < vertexCount; i++)
+                uvs[i] = new(uArray[i], vArray[i]);
 
             mesh.SetUVs(0, uvs);
         }
