@@ -333,35 +333,26 @@ public static class Inventory
         using var binaryReader = new BinaryReader(decompressor);
         using var reader = new DataReader(binaryReader, null);
 
-        var mesh = new Mesh { indexFormat = (IndexFormat)reader.ReadByte() };
+        var mesh = new Mesh { indexFormat = IndexFormat.UInt16 };
 
         var bounds = reader.ReadBounds();
 
         mesh.bounds = bounds;
 
         var vertexCount = reader.ReadPackedInt();
-        mesh.vertices = reader.ReadArrayContents(vertexCount, r => r.ReadQuantizedPosition(bounds));
+        mesh.vertices = reader.ReadArray(vertexCount, r => r.ReadQuantizedPosition(bounds));
 
-        var topology = (MeshTopology)reader.ReadByte();
-        var indices = reader.ReadDeltaEncodedInts();
-
-        mesh.SetIndices(indices, topology, 0, false);
+        mesh.SetIndices(reader.ReadDeltaEncodedUShorts(), MeshTopology.Triangles, 0, false);
 
         if (reader.ReadBool())
         {
-            var uArray = new float[vertexCount];
-            var vArray = new float[vertexCount];
-
-            for (var i = 0; i < vertexCount; i++)
-                uArray[i] = reader.ReadPackedFloat();
-
-            for (var i = 0; i < vertexCount; i++)
-                vArray[i] = reader.ReadPackedFloat();
-
             var uvs = new Vector2[vertexCount];
 
             for (var i = 0; i < vertexCount; i++)
-                uvs[i] = new(uArray[i], vArray[i]);
+                uvs[i].x = reader.ReadPackedFloat();
+
+            for (var i = 0; i < vertexCount; i++)
+                uvs[i].y = reader.ReadPackedFloat();
 
             mesh.SetUVs(0, uvs);
         }

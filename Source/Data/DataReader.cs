@@ -12,6 +12,8 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
 
     public int ReadPackedInt() => ZigZagDecode((uint)ReadVarInt());
 
+    public short ReadPackedShort() => ZigZagDecode((ushort)ReadVarInt());
+
     private ulong ReadVarInt()
     {
         var result = 0ul;
@@ -71,7 +73,7 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
         return array;
     }
 
-    public T[] ReadArrayContents<T>(int count, Func<DataReader, T> readFunc)
+    public T[] ReadArray<T>(int count, Func<DataReader, T> readFunc)
     {
         var array = new T[count];
 
@@ -98,6 +100,8 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
     public Orientation ReadOrientation() => new(ReadVector3(), ReadVector3(), ReadVector3());
 
     private static int ZigZagDecode(uint value) => (int)((value >> 1) ^ -(int)(value & 1));
+
+    private static short ZigZagDecode(ushort value) => (short)((value >> 1) ^ -(short)(value & 1));
 
     public T[]? ReadEnumArray<T>(bool returnNullOnZero = false) where T : struct, Enum
     {
@@ -204,6 +208,27 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
 
     private static unsafe T FastCastFromLong<T>(long longValue) where T : unmanaged, Enum
         => *(T*)&longValue;
+
+    public ushort[] ReadDeltaEncodedUShorts()
+    {
+        var count = ReadPackedUInt();
+
+        if (count == 0)
+            return [];
+
+        var indices = new ushort[count];
+        var previousIndex = (ushort)0;
+
+        for (var i = 0; i < count; i++)
+        {
+            var delta = ReadPackedShort();
+            var currentIndex = (ushort)(previousIndex + delta);
+            indices[i] = currentIndex;
+            previousIndex = currentIndex;
+        }
+
+        return indices;
+    }
 
     public int[] ReadDeltaEncodedInts()
     {

@@ -17,6 +17,7 @@ public sealed class SandBehaviour : SlimeSubbehaviour
     private float nextChompTime;
     private SlimeAudio slimeAudio;
     private bool eating;
+    private bool producing;
 
     public override void Awake()
     {
@@ -24,6 +25,11 @@ public sealed class SandBehaviour : SlimeSubbehaviour
         slimeEat = GetComponent<SlimeEat>();
         slimeAudio = GetComponent<SlimeAudio>();
         regionMember = GetComponent<RegionMember>();
+    }
+
+    public override void Start()
+    {
+        base.Start();
         ResetEatClock();
     }
 
@@ -61,11 +67,19 @@ public sealed class SandBehaviour : SlimeSubbehaviour
         ResetEatClock();
         emotions.Adjust(0, 0f - slimeEat.drivePerEat);
         eating = false;
+        producing = false;
     }
 
-    public override float Relevancy(bool _) => !eating && Time.time >= nextChompTime && emotions.GetCurr(SlimeEmotions.Emotion.HUNGER) > slimeEat.minDriveToEat ? 1f : 0f;
+    public override float Relevancy(bool _) => !eating && !producing && Time.time >= nextChompTime && emotions.GetCurr(SlimeEmotions.Emotion.HUNGER) > slimeEat.minDriveToEat ? 1f : 0f;
 
-    public override void Action() => StartCoroutine(ProduceAfterDelay(1, 2f));
+    public override void Action()
+    {
+        if (producing)
+            return;
+
+        StartCoroutine(ProduceAfterDelay(1, 2f));
+        producing = true;
+    }
 
     public override void Selected() { }
 }

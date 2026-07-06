@@ -17,6 +17,8 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
 
     private static uint ZigZagEncode(int value) => (uint)((value << 1) ^ (value >> 31));
 
+    // private static ushort ZigZagEncode(short value) => (ushort)((value << 1) ^ (value >> 15));
+
     private void WriteVarInt(ulong value)
     {
         while (value >= 0x80)

@@ -63,8 +63,6 @@ static class ExportMeshes
 
     static void WriteMesh(DataWriter writer, Mesh mesh)
     {
-        writer.WriteByte((byte)mesh.indexFormat);
-
         var bounds = mesh.bounds;
 
         writer.WriteBounds(bounds);
@@ -76,7 +74,6 @@ static class ExportMeshes
 
         writer.WriteArrayContents(vertices, (w, v) => w.WriteQuantizedPosition(v, bounds));
 
-        writer.WriteByte((byte)mesh.GetTopology(0));
         writer.WriteDeltaEncodedInts(mesh.GetIndices(0));
 
         var exists = mesh.HasVertexAttribute(VertexAttribute.TexCoord0) && mesh.GetVertexAttributeDimension(VertexAttribute.TexCoord0) == 2;
