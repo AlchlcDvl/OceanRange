@@ -767,4 +767,12 @@ public static class Helpers
 
         return [.. result];
     }
+
+    public static unsafe uint ToUIntBits(this float value) => *(uint*)&value;
+
+    public static unsafe float ToFloatBits(this uint value) => *(float*)&value;
+
+    public static unsafe ulong ToULongBits(this double value) => *(ulong*)&value;
+
+    public static unsafe double ToDoubleBits(this ulong value) => *(double*)&value;
 }

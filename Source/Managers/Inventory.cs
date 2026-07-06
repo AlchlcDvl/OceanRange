@@ -338,51 +338,32 @@ public static class Inventory
         var bounds = reader.ReadBounds();
 
         mesh.bounds = bounds;
-        mesh.subMeshCount = reader.ReadPackedInt();
 
         var vertexCount = reader.ReadPackedInt();
         mesh.vertices = reader.ReadArrayContents(vertexCount, r => r.ReadQuantizedPosition(bounds));
 
-        for (var i = 0; i < mesh.subMeshCount; i++)
+        var topology = (MeshTopology)reader.ReadByte();
+        var indices = reader.ReadDeltaEncodedInts();
+
+        mesh.SetIndices(indices, topology, 0, false);
+
+        if (reader.ReadBool())
         {
-            var topology = (MeshTopology)reader.ReadByte();
-            var subMeshBounds = reader.ReadBounds();
-            var indices = reader.ReadDeltaEncodedIndices();
+            var uArray = reader.ReadXorEncodedFloats();
+            var vArray = reader.ReadXorEncodedFloats();
 
-            mesh.SetIndices(indices, topology, i, false);
+            var uvs = new List<Vector2>(vertexCount);
 
-            var descriptor = mesh.GetSubMesh(i);
-            descriptor.bounds = subMeshBounds;
-            mesh.SetSubMesh(i, descriptor);
-        }
+            for (var i = 0; i < vertexCount; i++)
+                uvs.Add(new(uArray[i], vArray[i]));
 
-        var uvs2 = new List<Vector2>(vertexCount);
-        var uvs3 = new List<Vector3>(vertexCount);
-        var uvs4 = new List<Vector4>(vertexCount);
-
-        for (var i = 0; i < 8; i++)
-        {
-            var dimension = reader.ReadByte();
-
-            if (dimension == 2)
-                ReadUVs(reader, i, vertexCount, uvs2, r => r.ReadQuantizedUV2(), mesh.SetUVs);
-            else if (dimension == 3)
-                ReadUVs(reader, i, vertexCount, uvs3, r => r.ReadVector3(), mesh.SetUVs);
-            else if (dimension == 4)
-                ReadUVs(reader, i, vertexCount, uvs4, r => r.ReadVector4(), mesh.SetUVs);
+            mesh.SetUVs(0, uvs);
         }
 
         mesh.RecalculateNormals();
         mesh.RecalculateTangents();
 
         return mesh;
-    }
-
-    private static void ReadUVs<T>(DataReader reader, int index, int count, List<T> uvs, Func<DataReader, T> readFunc, Action<int, List<T>> setUVs)
-    {
-        reader.ReadListContents(uvs, count, readFunc);
-        setUVs(index, uvs);
-        uvs.Clear();
     }
 
     /// <summary>

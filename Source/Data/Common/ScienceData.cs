@@ -8,7 +8,7 @@ public sealed partial class ScienceItemData : SpawnedActorData
 }
 
 [Serializable]
-public sealed class MaterialOverrideData : JsonData
+public sealed partial class MaterialOverrideData : JsonData
 {
     public int[] ChildPath;
     public Dictionary<string, Color> ColorProperties;
@@ -16,11 +16,9 @@ public sealed class MaterialOverrideData : JsonData
 }
 
 [Serializable]
-public sealed class ExtractorDropData : JsonData
+public sealed partial class ExtractorDropData : JsonData
 {
-    public GadgetId ExtractorId;
     public float Chance;
-    public Zone Zone;
     public bool RestrictZone;
     public int SpawnFxIndex;
 }

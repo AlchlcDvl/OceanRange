@@ -3,7 +3,7 @@ namespace OceanRange.Managers;
 [Manager(ManagerType.Refinery)]
 public static class Refinery
 {
-    private static ScienceItemData[] ScienceItems;
+//     private static ScienceItemData[] ScienceItems;
 
 // #if DEBUG
 //     [TimeDiagnostic("Refinery Preload")]
@@ -47,7 +47,8 @@ public static class Refinery
 
     private static void ApplyMaterialOverrides(GameObject prefab, ScienceItemData itemData)
     {
-        if (itemData.MaterialOverrides.IsNullOrEmpty()) return;
+        if (itemData.MaterialOverrides.IsNullOrEmpty())
+            return;
 
         foreach (var overrideData in itemData.MaterialOverrides)
         {

@@ -69,12 +69,12 @@ public static class Slimepedia
         Gordo
     }
 
-    private readonly struct RigCacheKey(string sourceMeshName, RigType type, int jiggleBits)
+    private readonly struct RigCacheKey(string sourceMeshName, RigType type, uint jiggleBits)
         : IEquatable<RigCacheKey>
     {
         private readonly string sourceMeshName = sourceMeshName;
         private readonly RigType type = type;
-        private readonly int jiggleBits = jiggleBits;
+        private readonly uint jiggleBits = jiggleBits;
 
         public bool Equals(RigCacheKey other) => sourceMeshName == other.sourceMeshName && type == other.type && jiggleBits == other.jiggleBits;
 
@@ -85,11 +85,11 @@ public static class Slimepedia
         public override int GetHashCode() => ToString().GetHashCode();
     }
 
-    private readonly struct ElementCacheKey(string sourceMeshName, int jiggleBits, bool ignoreLodIndex, int prefabLength)
+    private readonly struct ElementCacheKey(string sourceMeshName, uint jiggleBits, bool ignoreLodIndex, int prefabLength)
         : IEquatable<ElementCacheKey>
     {
         private readonly string sourceMeshName = sourceMeshName;
-        private readonly int jiggleBits = jiggleBits;
+        private readonly uint jiggleBits = jiggleBits;
         private readonly bool ignoreLodIndex = ignoreLodIndex;
         private readonly int prefabLength = prefabLength;
 
@@ -569,7 +569,7 @@ public static class Slimepedia
 
         var cacheKey = new ElementCacheKey(
             meshData.Mesh ?? baseStruct.Element.Prefabs.FirstOrDefault()?.name ?? baseStruct.Element.Name ?? baseStruct.Element.name,
-            GetFloatBits(meshData.Jiggle ?? 0),
+            (meshData.Jiggle ?? 0f).ToUIntBits(),
             meshData.IgnoreLodIndex,
             meshData.PrefabLength ?? (meshData.IsBody ? 4 : 2));
 
@@ -944,9 +944,7 @@ public static class Slimepedia
         return mesh;
     }
 
-    private static RigCacheKey GetRigCacheKey(RigType rigType, string sourceMesh, float jiggle) => new(sourceMesh, rigType, GetFloatBits(jiggle));
-
-    private static unsafe int GetFloatBits(float value) => *(int*)&value;
+    private static RigCacheKey GetRigCacheKey(RigType rigType, string sourceMesh, float jiggle) => new(sourceMesh, rigType, jiggle.ToUIntBits());
 
     [UsedImplicitly]
     public static void InitRosiGordoDetails(GameObject _, SlimeDefinition definition) => GordoSnarePatch.Pinks = [IdentifiableId.PINK_GORDO, definition.IdentifiableId];

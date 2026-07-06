@@ -42,8 +42,6 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
 
     public float ReadPackedFloat() => Mathf.HalfToFloat(reader.ReadUInt16());
 
-    public double ReadDouble() => reader.ReadDouble();
-
     // public float ReadFloat() => reader.ReadSingle();
 
     public bool ReadBool() => reader.ReadBoolean();
@@ -207,7 +205,7 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
     private static unsafe T FastCastFromLong<T>(long longValue) where T : unmanaged, Enum
         => *(T*)&longValue;
 
-    public int[] ReadDeltaEncodedIndices()
+    public int[] ReadDeltaEncodedInts()
     {
         var count = ReadPackedUInt();
 
@@ -228,47 +226,41 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
         return indices;
     }
 
-    public float[] ReadXorEncodedFloats(int? expectedCount = null)
+    public float[] ReadXorEncodedFloats()
     {
         var count = ReadPackedUInt();
-
-        if (expectedCount.HasValue && expectedCount.Value != (int)count)
-            throw new InvalidDataException($"Expected {expectedCount.Value} floats, found {count}.");
 
         if (count == 0)
             return [];
 
         var values = new float[count];
         var previousBits = ReadPackedUInt();
-        values[0] = BitConverter.UInt32BitsToSingle(previousBits);
+        values[0] = previousBits.ToFloatBits();
 
         for (var i = 1; i < count; i++)
         {
             previousBits ^= ReadPackedUInt();
-            values[i] = BitConverter.UInt32BitsToSingle(previousBits);
+            values[i] = previousBits.ToFloatBits();
         }
 
         return values;
     }
 
-    public double[] ReadXorEncodedDoubles(int? expectedCount = null)
+    public double[] ReadXorEncodedDoubles()
     {
         var count = ReadPackedUInt();
-
-        if (expectedCount.HasValue && expectedCount.Value != (int)count)
-            throw new InvalidDataException($"Expected {expectedCount.Value} doubles, found {count}.");
 
         if (count == 0)
             return [];
 
         var values = new double[count];
         var previousBits = ReadPackedULong();
-        values[0] = BitConverter.Int64BitsToDouble(unchecked((long)previousBits));
+        values[0] = previousBits.ToDoubleBits();
 
         for (var i = 1; i < count; i++)
         {
             previousBits ^= ReadPackedULong();
-            values[i] = BitConverter.Int64BitsToDouble(unchecked((long)previousBits));
+            values[i] = previousBits.ToDoubleBits();
         }
 
         return values;

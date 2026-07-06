@@ -156,5 +156,9 @@ public static class UnityUtils
             }
         }
     }
+
+    public static unsafe uint ToUIntBits(this float value) => *(uint*)&value;
+
+    public static unsafe ulong ToULongBits(this double value) => *(ulong*)&value;
 }
 #endif

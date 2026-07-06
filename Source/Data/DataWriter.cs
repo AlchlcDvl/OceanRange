@@ -201,7 +201,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
 
     public void WriteSubstring(string? value, int startIndex) => WriteString(value?.Substring(startIndex));
 
-    public void WriteDeltaEncodedIndices(int[] indices)
+    public void WriteDeltaEncodedInts(int[] indices)
     {
         if (indices == null || indices.Length == 0)
         {
@@ -222,7 +222,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
         }
     }
 
-    public void WriteXorEncodedFloats(IReadOnlyList<float> values)
+    public void WriteXorEncodedFloats(IReadOnlyList<float>? values)
     {
         var count = (uint)(values?.Count ?? 0);
         WritePackedUInt(count);
@@ -230,12 +230,12 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
         if (count == 0)
             return;
 
-        var previousBits = BitConverter.SingleToUInt32Bits(values[0]);
+        var previousBits = values![0].ToUIntBits();
         WritePackedUInt(previousBits);
 
         for (var i = 1; i < count; i++)
         {
-            var currentBits = BitConverter.SingleToUInt32Bits(values[i]);
+            var currentBits = values[i].ToUIntBits();
             var xorDelta = currentBits ^ previousBits;
 
             WritePackedUInt(xorDelta);
@@ -243,7 +243,7 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
         }
     }
 
-    public void WriteXorEncodedDoubles(IReadOnlyList<double> values)
+    public void WriteXorEncodedDoubles(IReadOnlyList<double>? values)
     {
         var count = (uint)(values?.Count ?? 0);
         WritePackedUInt(count);
@@ -251,12 +251,12 @@ public sealed class DataWriter(BinaryWriter writer, Dictionary<string, uint>? sh
         if (count == 0)
             return;
 
-        var previousBits = unchecked((ulong)BitConverter.DoubleToInt64Bits(values[0]));
+        var previousBits = values![0].ToULongBits();
         WritePackedULong(previousBits);
 
         for (var i = 1; i < count; i++)
         {
-            var currentBits = unchecked((ulong)BitConverter.DoubleToInt64Bits(values[i]));
+            var currentBits = values[i].ToULongBits();
             var xorDelta = currentBits ^ previousBits;
 
             WritePackedULong(xorDelta);

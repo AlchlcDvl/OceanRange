@@ -23,7 +23,7 @@ static class ExportMeshes
             if (!Directory.Exists(exportDirectory))
                 Directory.CreateDirectory(exportDirectory);
             else
-                Directory.EnumerateFiles(exportDirectory, "*.*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
+                Directory.EnumerateFiles(exportDirectory, "*.cmesh", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
 
             foreach (var guid in AssetDatabase.FindAssets("t:Mesh"))
             {
@@ -50,6 +50,7 @@ static class ExportMeshes
                     WriteMesh(writer, optimizedMesh);
 
                 UnityEngine.Object.DestroyImmediate(optimizedMesh);
+                Resources.UnloadAsset(mesh);
             }
         }
         catch (Exception ex)
@@ -67,7 +68,6 @@ static class ExportMeshes
         var bounds = mesh.bounds;
 
         writer.WriteBounds(bounds);
-        writer.WritePackedInt(mesh.subMeshCount);
 
         var vertices = mesh.vertices;
         var vertexCount = vertices.Length;
@@ -76,45 +76,30 @@ static class ExportMeshes
 
         writer.WriteArrayContents(vertices, (w, v) => w.WriteQuantizedPosition(v, bounds));
 
-        for (var i = 0; i < mesh.subMeshCount; i++)
+        writer.WriteByte((byte)mesh.GetTopology(0));
+        writer.WriteDeltaEncodedInts(mesh.GetIndices(0));
+
+        var exists = mesh.HasVertexAttribute(VertexAttribute.TexCoord0) && mesh.GetVertexAttributeDimension(VertexAttribute.TexCoord0) == 2;
+        writer.WriteBool(exists);
+
+        if (exists)
         {
-            var descriptor = mesh.GetSubMesh(i);
-            writer.WriteByte((byte)descriptor.topology);
-            writer.WriteBounds(descriptor.bounds);
-            writer.WriteDeltaEncodedIndices(mesh.GetIndices(i));
-        }
+            var uvs = new List<Vector2>(vertexCount);
+            mesh.GetUVs(0, uvs);
 
-        var uvs2 = new List<Vector2>(vertexCount);
-        var uvs3 = new List<Vector3>(vertexCount);
-        var uvs4 = new List<Vector4>(vertexCount);
+            var uArray = new float[vertexCount];
+            var vArray = new float[vertexCount];
 
-        for (var i = 0; i < 8; i++)
-        {
-            var attr = VertexAttribute.TexCoord0 + i;
-
-            if (mesh.HasVertexAttribute(attr))
+            for (var i = 0; i < vertexCount; i++)
             {
-                var dimension = mesh.GetVertexAttributeDimension(attr);
-                writer.WriteByte((byte)dimension);
-
-                if (dimension == 2)
-                    WriteUVs(writer, i, uvs2, (w, v) => w.WriteQuantizedUV2(v), mesh.GetUVs);
-                else if (dimension == 3)
-                    WriteUVs(writer, i, uvs3, (w, v) => w.WriteVector3(v), mesh.GetUVs);
-                else if (dimension == 4)
-                    WriteUVs(writer, i, uvs4, (w, v) => w.WriteVector4(v), mesh.GetUVs);
+                uArray[i] = uvs[i].x;
+                vArray[i] = uvs[i].y;
             }
-            else
-                writer.WriteByte((byte)0);
+
+            writer.WriteXorEncodedFloats(uArray);
+            writer.WriteXorEncodedFloats(vArray);
         }
 
         writer.Flush();
-    }
-
-    static void WriteUVs<T>(DataWriter writer, int index, List<T> uvs, Action<DataWriter, T> writeAction, Action<int, List<T>> getUVs)
-    {
-        getUVs(index, uvs);
-        writer.WriteListContents(uvs, writeAction);
-        uvs.Clear();
     }
 }
