@@ -417,7 +417,7 @@ public static class Inventory
     /// <returns>A byte array representing the stream.</returns>
     private static byte[] ReadFully(this Stream input)
     {
-        using var ms = new MemoryStream();
+        using var ms = new MemoryStream((int)input.Length);
         input.CopyTo(ms);
         return ms.ToArray();
     }

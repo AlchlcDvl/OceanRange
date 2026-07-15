@@ -2,18 +2,12 @@ namespace OceanRange.Slimes;
 
 public sealed class FlashbangEffect : MonoBehaviour
 {
-    private CanvasGroup canvasGroup;
+    public CanvasGroup canvasGroup;
 
-    private float fadeSpeed = 0.5f;
-    private float flashDuration = 2f;
+    public float fadeSpeed = 0.5f;
+    public float flashDuration = 2f;
 
-    private float timer;
-
-    public void Awake()
-    {
-        canvasGroup = GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 1f;
-    }
+    private float _timer;
 
     public void Update()
     {
@@ -21,9 +15,9 @@ public sealed class FlashbangEffect : MonoBehaviour
             return;
 
         var delta = Time.deltaTime;
-        timer += delta;
+        _timer += delta;
 
-        if (timer < flashDuration)
+        if (_timer < flashDuration)
             return;
 
         canvasGroup.alpha -= fadeSpeed * Time.deltaTime;

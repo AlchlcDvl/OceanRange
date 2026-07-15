@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 1964067742882415851}
   - component: {fileID: 1040795265229733093}
   - component: {fileID: 1625836613412276204}
+  - component: {fileID: 4753387845054323474}
   m_Layer: 5
   m_Name: Flashbang
   m_TagString: Untagged
@@ -186,3 +187,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4753387845054323474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6950708500274000373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2043797132, guid: f3f8df5b0ffe5554e9af79e6cc91a873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 4630966048238296801}
+  fadeSpeed: 0.5
+  flashDuration: 2

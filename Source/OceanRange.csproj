@@ -62,6 +62,7 @@
     <Compile Include="Data\Common\*.cs" />
     <Compile Include="Data\Unity\*.cs" />
     <Compile Include="System\*.cs" />
+    <Compile Include="Slimes\FlashbangEffect.cs" />
   </ItemGroup>
 
   <Import Project="../SlimeRancher.props" />
