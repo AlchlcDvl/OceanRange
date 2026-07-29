@@ -16,15 +16,15 @@ MonoBehaviour:
   - Name:
       HasValue: 1
       Value: Rosi
+    ExchangeWeight: 20
+    BasePrice: 7
+    Saturation: 40
     Progress: []
     MainAmmoColor:
       HasValue: 0
       Value:
         serializedVersion: 2
         rgba: 0
-    ExchangeWeight: 20
-    BasePrice: 7
-    Saturation: 40
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -234,6 +234,57 @@ MonoBehaviour:
             Mesh:
               HasValue: 1
               Value: rosi_frills
+            Jiggle:
+              HasValue: 0
+              Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 0
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 0
+              Value: 
             Jiggle:
               HasValue: 0
               Value: 0
@@ -696,15 +747,15 @@ MonoBehaviour:
   - Name:
       HasValue: 1
       Value: Coco
+    ExchangeWeight: 20
+    BasePrice: 20
+    Saturation: 26
     Progress: []
     MainAmmoColor:
       HasValue: 0
       Value:
         serializedVersion: 2
         rgba: 0
-    ExchangeWeight: 20
-    BasePrice: 20
-    Saturation: 26
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -746,7 +797,6 @@ MonoBehaviour:
     - CRATE_REEF_01
     ComponentsToAdd:
     - OceanRange.Slimes.CocoBehaviour, OceanRange
-    - DamagePlayerOnTouch, Assembly-CSharp
     ComponentsToRemove: []
     NormalAppearance:
       Name:
@@ -1182,6 +1232,9 @@ MonoBehaviour:
   - Name:
       HasValue: 1
       Value: Mine
+    ExchangeWeight: 20
+    BasePrice: 30
+    Saturation: 20
     Progress:
     - UNLOCK_QUARRY
     - UNLOCK_RUINS
@@ -1190,9 +1243,6 @@ MonoBehaviour:
       Value:
         serializedVersion: 2
         rgba: 0
-    ExchangeWeight: 20
-    BasePrice: 30
-    Saturation: 20
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -1706,6 +1756,9 @@ MonoBehaviour:
   - Name:
       HasValue: 1
       Value: Lantern
+    ExchangeWeight: 20
+    BasePrice: 25
+    Saturation: 24
     Progress:
     - UNLOCK_MOSS
     - UNLOCK_RUINS
@@ -1714,9 +1767,6 @@ MonoBehaviour:
       Value:
         serializedVersion: 2
         rgba: 0
-    ExchangeWeight: 20
-    BasePrice: 25
-    Saturation: 24
     NightSpawn: 1
     CanBeRefined: 0
     SpawnAmount: 1
@@ -2557,15 +2607,15 @@ MonoBehaviour:
   - Name:
       HasValue: 1
       Value: Sand
+    ExchangeWeight: 20
+    BasePrice: 8
+    Saturation: 40
     Progress: []
     MainAmmoColor:
       HasValue: 0
       Value:
         serializedVersion: 2
         rgba: 0
-    ExchangeWeight: 20
-    BasePrice: 8
-    Saturation: 40
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.15
@@ -2979,15 +3029,15 @@ MonoBehaviour:
   - Name:
       HasValue: 1
       Value: Mesmer
+    ExchangeWeight: 20
+    BasePrice: 20
+    Saturation: 30
     Progress: []
     MainAmmoColor:
       HasValue: 0
       Value:
         serializedVersion: 2
         rgba: 0
-    ExchangeWeight: 20
-    BasePrice: 20
-    Saturation: 30
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -3782,10 +3832,10 @@ MonoBehaviour:
           serializedVersion: 2
           rgba: 0
       RedEyeColor:
-        HasValue: 0
+        HasValue: 1
         Value:
           serializedVersion: 2
-          rgba: 0
+          rgba: 4287555748
       GreenEyeColor:
         HasValue: 0
         Value:
@@ -3899,15 +3949,15 @@ MonoBehaviour:
   - Name:
       HasValue: 1
       Value: Hermit
+    ExchangeWeight: 20
+    BasePrice: 30
+    Saturation: 25
     Progress: []
     MainAmmoColor:
       HasValue: 0
       Value:
         serializedVersion: 2
         rgba: 0
-    ExchangeWeight: 20
-    BasePrice: 30
-    Saturation: 25
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -4521,15 +4571,15 @@ MonoBehaviour:
   - Name:
       HasValue: 1
       Value: Goldfish
+    ExchangeWeight: 20
+    BasePrice: 400
+    Saturation: 50000
     Progress: []
     MainAmmoColor:
       HasValue: 0
       Value:
         serializedVersion: 2
         rgba: 0
-    ExchangeWeight: 20
-    BasePrice: 400
-    Saturation: 50000
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.00125
@@ -4979,15 +5029,15 @@ MonoBehaviour:
   - Name:
       HasValue: 1
       Value: Mimic
+    ExchangeWeight: 20
+    BasePrice: 20
+    Saturation: 30
     Progress: []
     MainAmmoColor:
       HasValue: 0
       Value:
         serializedVersion: 2
         rgba: 0
-    ExchangeWeight: 20
-    BasePrice: 20
-    Saturation: 30
     NightSpawn: 0
     CanBeRefined: 0
     SpawnAmount: 0.25
@@ -5009,7 +5059,7 @@ MonoBehaviour:
     - MOSS
     FavFood:
       HasValue: 1
-      Value: HEN
+      Value: LUSH_HEN
     Diet:
       HasValue: 1
       Value: MEAT
@@ -5148,6 +5198,159 @@ MonoBehaviour:
             Jiggle:
               HasValue: 0
               Value: 0
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 0
+              Value: 
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 1
+              Value: 1
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: mimic_tail_fake
+            Jiggle:
+              HasValue: 1
+              Value: 1
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: TABBY_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: tabby_ears
+            Jiggle:
+              HasValue: 1
+              Value: 1
+            PrefabLength:
+              HasValue: 0
+              Value: 0
+      - Name:
+          HasValue: 0
+          Value: 
+        MatData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            UseSSMat: 0
+            InvertColorOriginColors: 0
+            MatOrigin:
+              HasValue: 1
+              Value: HUNTER_SLIME
+            ColorsOrigin:
+              HasValue: 0
+              Value: 
+            Gloss:
+              HasValue: 0
+              Value: 0
+            Pattern:
+              HasValue: 0
+              Value: 
+            SameAs:
+              HasValue: 0
+              Value: 0
+            MatSameAs:
+              HasValue: 0
+              Value: 0
+            ColorsSameAs:
+              HasValue: 0
+              Value: 0
+            ColorProps: []
+        MeshData:
+          HasValue: 1
+          Value:
+            Name:
+              HasValue: 0
+              Value: 
+            Skip: 0
+            UseBaseStruct: 0
+            IgnoreLodIndex: 0
+            Mesh:
+              HasValue: 1
+              Value: hunter_ears
+            Jiggle:
+              HasValue: 1
+              Value: 1
             PrefabLength:
               HasValue: 0
               Value: 0

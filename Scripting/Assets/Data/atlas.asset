@@ -28,6 +28,12 @@ MonoBehaviour:
     - Name:
         HasValue: 1
         Value: Swirlpool_Island
+      TeleporterOrientation:
+        Position: {x: -119.7111, y: -0.0307, z: -260.243}
+        Rotation: {x: 0, y: 234.398, z: 0}
+        Scale: {x: 1, y: 1, z: 1}
+      TeleporterLocation: zoneRANCH/cellRanch_Docks/Sector/Upgrades/
+      AssetName: SWIRLPOOL
       Region: UNDERWATER
       Requirements:
       - key: CorporateLevel
@@ -39,9 +45,3 @@ MonoBehaviour:
           CorporateLevelMax: 2147483647
           ExchangeProgress: 0
           PathToGameObject: zoneRANCH/cellRanch_Docks/Sector/Upgrades/teleporterdeventrance(Clone)
-      TeleporterOrientation:
-        Position: {x: -119.7111, y: -0.0307, z: -260.243}
-        Rotation: {x: 0, y: 234.398, z: 0}
-        Scale: {x: 1, y: 1, z: 1}
-      TeleporterLocation: zoneRANCH/cellRanch_Docks/Sector/Upgrades/
-      AssetName: SWIRLPOOL

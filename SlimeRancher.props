@@ -19,10 +19,6 @@
       <Private>false</Private>
       <ExcludeAssets>runtime</ExcludeAssets>
     </Reference>
-    <Reference Include="$(MSBuildThisFileDirectory)/SrLibs/*.dll">
-      <Private>false</Private>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </Reference>
     <Reference Include="$(MSBuildThisFileDirectory)/SrmlLibs/*.dll">
       <Private>false</Private>
       <ExcludeAssets>runtime</ExcludeAssets>

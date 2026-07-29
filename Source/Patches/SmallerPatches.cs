@@ -102,11 +102,11 @@ public static class StalkConsumablePatch
     }
 }
 
-[HarmonyPatch(typeof(SlimeFace), nameof(SlimeFace.OnEnable))]
-public static class FixOnEnableFromRunningEarly
-{
-    public static bool Prefix(SlimeFace __instance) => __instance is { ExpressionFaces: not null, _expressionToFaceLookup: not null };
-}
+// [HarmonyPatch(typeof(SlimeFace), nameof(SlimeFace.OnEnable))]
+// public static class FixOnEnableFromRunningEarly
+// {
+//     public static bool Prefix(SlimeFace __instance) => __instance is { ExpressionFaces: not null, _expressionToFaceLookup: not null };
+// }
 
 [HarmonyPatch(typeof(DLCDirector), nameof(DLCDirector.RegisterPackages))]
 public static class ClearMeshes

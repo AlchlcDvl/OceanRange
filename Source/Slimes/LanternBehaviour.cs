@@ -85,7 +85,7 @@ public sealed class LanternBehaviour : SRBehaviour, ControllerCollisionListener,
         flash.transform.localScale *= 25f;
         DontDestroyOnLoad(flash);
 
-        var effect = flash.AddComponent<FlashbangEffect>();
+        var effect = flash.GetComponent<FlashbangEffect>();
         effect.SetFlashDuration(FlashDuration);
         effect.SetFadeDuration(FadeDuration);
     }

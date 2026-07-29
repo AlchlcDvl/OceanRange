@@ -73,6 +73,8 @@ static class ExportMeshes
         writer.WritePackedInt(vertexCount);
 
         writer.WriteArrayContents(vertices, (w, v) => w.WriteQuantizedPosition(v, bounds));
+        writer.WriteArrayContents(mesh.normals, (w, v) => w.WriteQuantizedNormal(v));
+        writer.WriteArrayContents(mesh.tangents, (w, v) => w.WriteQuantizedTangent(v));
 
         writer.WriteDeltaEncodedInts(mesh.GetIndices(0));
 

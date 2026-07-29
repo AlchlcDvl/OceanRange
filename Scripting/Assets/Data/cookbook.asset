@@ -27,21 +27,15 @@ MonoBehaviour:
     - Name:
         HasValue: 1
         Value: Sticky
+      ExchangeWeight: 20
+      BasePrice: 5
+      Saturation: 10
       Progress: []
       MainAmmoColor:
         HasValue: 1
         Value:
           serializedVersion: 2
           rgba: 4285975279
-      ExchangeWeight: 20
-      BasePrice: 5
-      Saturation: 10
-      BasePlant:
-        HasValue: 1
-        Value: OCAOCA_VEGGIE
-      BaseResource:
-        HasValue: 0
-        Value: 
       SpawnLocations:
       - key: Moss_Forest
         value:
@@ -86,24 +80,24 @@ MonoBehaviour:
           Rotation: {x: 0, y: 220, z: 0}
           Scale: {x: 1, y: 1, z: 1}
       AdjustColliders: 1
+      BasePlant:
+        HasValue: 1
+        Value: OCAOCA_VEGGIE
+      BaseResource:
+        HasValue: 0
+        Value: 
     - Name:
         HasValue: 1
         Value: Coral
+      ExchangeWeight: 20
+      BasePrice: 4
+      Saturation: 10
       Progress: []
       MainAmmoColor:
         HasValue: 1
         Value:
           serializedVersion: 2
           rgba: 4288033411
-      ExchangeWeight: 20
-      BasePrice: 4
-      Saturation: 10
-      BasePlant:
-        HasValue: 0
-        Value: 
-      BaseResource:
-        HasValue: 0
-        Value: 
       SpawnLocations:
       - key: Reef_Roundabout
         value:
@@ -161,25 +155,25 @@ MonoBehaviour:
           Rotation: {x: 0, y: 260, z: 0}
           Scale: {x: 1, y: 1, z: 1}
       AdjustColliders: 0
-    Veggies:
-    - Name:
-        HasValue: 1
-        Value: Blowtato
-      Progress: []
-      MainAmmoColor:
-        HasValue: 1
-        Value:
-          serializedVersion: 2
-          rgba: 4286488235
-      ExchangeWeight: 20
-      BasePrice: 4
-      Saturation: 10
       BasePlant:
         HasValue: 0
         Value: 
       BaseResource:
         HasValue: 0
         Value: 
+    Veggies:
+    - Name:
+        HasValue: 1
+        Value: Blowtato
+      ExchangeWeight: 20
+      BasePrice: 4
+      Saturation: 10
+      Progress: []
+      MainAmmoColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4286488235
       SpawnLocations:
       - key: Quarry_MirrorIsland
         value:
@@ -226,40 +220,58 @@ MonoBehaviour:
           Rotation: {x: 0, y: 18, z: 0}
           Scale: {x: 1, y: 1, z: 1}
       AdjustColliders: 1
+      BasePlant:
+        HasValue: 0
+        Value: 
+      BaseResource:
+        HasValue: 0
+        Value: 
     Chimkens:
     - Name:
         HasValue: 1
         Value: Sandy
+      ExchangeWeight: 20
+      BasePrice: 40
+      Saturation: 10
       Progress: []
       MainAmmoColor:
         HasValue: 1
         Value:
           serializedVersion: 2
           rgba: 4286624450
-      ExchangeWeight: 20
-      BasePrice: 20
-      Saturation: 10
-      Zones:
-      - REEF
-      - RUINS
-      - MOSS
       SpawnAmount: 1
       ChickSpawnAmount: 1
+      Zones:
+      - DESERT
     - Name:
         HasValue: 1
         Value: Radiant
+      ExchangeWeight: 20
+      BasePrice: 30
+      Saturation: 10
       Progress: []
       MainAmmoColor:
         HasValue: 1
         Value:
           serializedVersion: 2
           rgba: 4283696132
-      ExchangeWeight: 20
-      BasePrice: 30
-      Saturation: 15
-      Zones:
-      - RUINS
-      - QUARRY
-      - MOSS
       SpawnAmount: 1
       ChickSpawnAmount: 1
+      Zones:
+      - QUARRY
+    - Name:
+        HasValue: 1
+        Value: Lush
+      ExchangeWeight: 20
+      BasePrice: 30
+      Saturation: 10
+      Progress: []
+      MainAmmoColor:
+        HasValue: 1
+        Value:
+          serializedVersion: 2
+          rgba: 4287337028
+      SpawnAmount: 1
+      ChickSpawnAmount: 1
+      Zones:
+      - MOSS

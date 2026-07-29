@@ -7,7 +7,6 @@ using System;
 using Newtonsoft.Json;
 using OceanRange.Data;
 using OceanRange.Unity;
-using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 
 static class ExportData
@@ -100,31 +99,27 @@ static class ExportData
             // Export instances
             foreach (var export in singleInstances)
             {
-                using (var stream = File.OpenWrite(export.DestPath))
-                using (var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal))
-                using (var binary = new BinaryWriter(compressor))
-                using (var writer = new DataWriter(binary, stringDict))
-                {
-                    export.Data.WriteTo(writer);
-                    writer.Flush();
-                }
+                using var stream = File.OpenWrite(export.DestPath);
+                using var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal);
+                using var binary = new BinaryWriter(compressor);
+                using var writer = new DataWriter(binary, stringDict);
+                export.Data.WriteTo(writer);
+                writer.Flush();
             }
 
             // Export arrays
             foreach (var export in arrayInstances)
             {
-                using (var stream = File.OpenWrite(export.DestPath))
-                using (var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal))
-                using (var binary = new BinaryWriter(compressor))
-                using (var writer = new DataWriter(binary, stringDict))
-                {
-                    writer.WritePackedUInt((uint)export.Data.Length);
+                using var stream = File.OpenWrite(export.DestPath);
+                using var compressor = new DeflateStream(stream, System.IO.Compression.CompressionLevel.Optimal);
+                using var binary = new BinaryWriter(compressor);
+                using var writer = new DataWriter(binary, stringDict);
+                writer.WritePackedUInt((uint)export.Data.Length);
 
-                    foreach (var item in export.Data)
-                        item.WriteTo(writer);
+                foreach (var item in export.Data)
+                    item.WriteTo(writer);
 
-                    writer.Flush();
-                }
+                writer.Flush();
             }
         }
         catch (Exception ex)
@@ -145,15 +140,7 @@ static class ExportData
 
     static void LoadSingleData<T>(string sourcePath, string destPath, string fileName, List<SingleExport> list) where T : JsonData
     {
-        var source = Path.Combine(sourcePath, fileName + ".json");
-
-        if (!File.Exists(source))
-        {
-            Debug.LogWarning($"Skipped {fileName}: JSON file not found at {source}");
-            return;
-        }
-
-        var data = JsonConvert.DeserializeObject<T>(File.ReadAllText(source), JsonSettings.JsonSerialisationSettings);
+        var data = TryReadJson<T>(sourcePath, fileName);
 
         if (data != null)
             list.Add(new SingleExport { DestPath = Path.Combine(destPath, fileName + ".cjson"), Data = data });
@@ -161,17 +148,22 @@ static class ExportData
 
     static void LoadArrayData<T>(string sourcePath, string destPath, string fileName, List<ArrayExport> list) where T : JsonData
     {
+        var data = TryReadJson<T[]>(sourcePath, fileName);
+
+        if (data != null)
+            list.Add(new ArrayExport { DestPath = Path.Combine(destPath, fileName + ".cjson"), Data = data });
+    }
+
+    static T TryReadJson<T>(string sourcePath, string fileName)
+    {
         var source = Path.Combine(sourcePath, fileName + ".json");
 
         if (!File.Exists(source))
         {
             Debug.LogWarning($"Skipped {fileName}: JSON file not found at {source}");
-            return;
+            return default;
         }
 
-        var data = JsonConvert.DeserializeObject<T[]>(File.ReadAllText(source), JsonSettings.JsonSerialisationSettings);
-
-        if (data != null)
-            list.Add(new ArrayExport { DestPath = Path.Combine(destPath, fileName + ".cjson"), Data = data });
+        return JsonConvert.DeserializeObject<T>(File.ReadAllText(source), JsonSettings.JsonSerialisationSettings);
     }
 }
