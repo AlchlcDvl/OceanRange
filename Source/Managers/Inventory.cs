@@ -49,6 +49,7 @@ public static class Inventory
         [typeof(Shader)] = (["shader"], GetBundleAsset<Shader>),
         [typeof(Material)] = (["mat"], GetBundleAsset<Material>),
         [typeof(GameObject)] = (["prefab"], GetBundleAsset<GameObject>),
+
         [typeof(ScriptableObject)] = (["asset"], null!), // Has its own internal handling
 
         // AudioClip is not currently in use
@@ -341,6 +342,8 @@ public static class Inventory
 
         var vertexCount = reader.ReadPackedInt();
         mesh.vertices = reader.ReadArray(vertexCount, r => r.ReadQuantizedPosition(bounds));
+        mesh.normals = reader.ReadArray(vertexCount, r => r.ReadQuantizedNormal());
+        mesh.tangents = reader.ReadArray(vertexCount, r => r.ReadQuantizedTangent());
 
         mesh.SetIndices(reader.ReadDeltaEncodedUShorts(), MeshTopology.Triangles, 0, false);
 

@@ -323,13 +323,10 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
         return new Vector4(dir.x, dir.y, dir.z, w);
     }
 
-    public Vector2 ReadQuantizedUV2()
-    {
-        return new Vector2(
-            reader.ReadUInt16() / 65535f,
-            reader.ReadUInt16() / 65535f
-        );
-    }
+    public Vector2 ReadQuantizedUV2() => new(
+        reader.ReadUInt16() / 65535f,
+        reader.ReadUInt16() / 65535f
+    );
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static float SignNotZero(float v) => v >= 0f ? 1f : -1f;
@@ -337,14 +334,17 @@ public sealed class DataReader(BinaryReader reader, string[]? pool) : IDisposabl
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static Vector3 OctDecode(Vector2 encoded)
     {
-        var v = new Vector3(encoded.x, encoded.y, 1f - Mathf.Abs(encoded.x) - Mathf.Abs(encoded.y));
+        var absX = Mathf.Abs(encoded.x);
+        var absY = Mathf.Abs(encoded.y);
+
+        var v = new Vector3(encoded.x, encoded.y, 1f - absX - absY);
 
         if (v.z < 0f)
         {
             var x = v.x;
             var y = v.y;
-            v.x = (1f - Mathf.Abs(y)) * SignNotZero(x);
-            v.y = (1f - Mathf.Abs(x)) * SignNotZero(y);
+            v.x = (1f - absY) * SignNotZero(x);
+            v.y = (1f - absX) * SignNotZero(y);
         }
 
         return v.normalized;

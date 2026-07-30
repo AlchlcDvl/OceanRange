@@ -29,7 +29,7 @@ static class ExportMeshes
             {
                 var assetPath = AssetDatabase.GUIDToAssetPath(guid);
 
-                if (!assetPath.Contains("ModelAssets") || !assetPath.EndsWith(".obj", System.StringComparison.Ordinal))
+                if (!assetPath.Contains("ModelAssets") || !assetPath.EndsWith(".obj", StringComparison.Ordinal))
                     continue;
 
                 var mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
@@ -39,7 +39,7 @@ static class ExportMeshes
 
                 var optimizedMesh = UnityEngine.Object.Instantiate(mesh);
 
-                UnityEditor.MeshUtility.Optimize(optimizedMesh);
+                MeshUtility.Optimize(optimizedMesh);
 
                 var filePath = Path.Combine(exportDirectory, Path.GetFileNameWithoutExtension(assetPath) + ".cmesh");
 
