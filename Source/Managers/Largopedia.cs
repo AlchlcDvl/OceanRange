@@ -304,7 +304,7 @@ public static class Largopedia
             {
                 DefaultMaterials =
                 {
-                    [0] = (props.HasFlagFast(LargoAppearanceProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body)!.DefaultMaterials[0].Clone()
+                    [0] = (props.HasFlagFast(LargoAppearanceProps.UseSlime2ForBodyMaterial) ? slime2Body : slime1Body).DefaultMaterials[0].Clone()
                 }
             };
             // Main.Console.Log($"Body Color for {appearance1.name}{appearance2.name} is {(Color32)body.DefaultMaterials[0].GetColor(MiddleColor)}");
@@ -312,8 +312,8 @@ public static class Largopedia
 
         var list = new List<SlimeAppearanceStructure>(appearance1.Structures.Length + appearance2.Structures.Length - 1) { body };
 
-        GenerateStructures([.. appearance1.Structures.Where(x => x != slime1Body)], appearanceData.Slime1Structs, props, LargoAppearanceProps.ExcludeSlime1Structures, list, slime1Body, modelMap);
-        GenerateStructures([.. appearance2.Structures.Where(x => x != slime2Body)], appearanceData.Slime2Structs, props, LargoAppearanceProps.ExcludeSlime2Structures, list, slime2Body, modelMap);
+        GenerateStructures([.. appearance1.Structures.Where(x => x != slime1Body)], appearanceData.Slime1Structs, props, LargoAppearanceProps.ExcludeSlime1Structures, list, modelMap);
+        GenerateStructures([.. appearance2.Structures.Where(x => x != slime2Body)], appearanceData.Slime2Structs, props, LargoAppearanceProps.ExcludeSlime2Structures, list, modelMap);
 
         appearance.Structures = [.. list];
         applicator.GenerateSlimeBones(appearance.Structures, appearanceData.Jiggle!.Value);
@@ -403,7 +403,7 @@ public static class Largopedia
             dict.TryGetValue(key, out var face) ? (isEye ? face.Eyes : face.Mouth) : null!;
     }
 
-    private static void GenerateStructures(List<SlimeAppearanceStructure> baseStructs, ModelData[]? modelDatas, LargoAppearanceProps props, LargoAppearanceProps exclude, List<SlimeAppearanceStructure> list, SlimeAppearanceStructure? body,
+    private static void GenerateStructures(List<SlimeAppearanceStructure> baseStructs, ModelData[]? modelDatas, LargoAppearanceProps props, LargoAppearanceProps exclude, List<SlimeAppearanceStructure> list,
         Dictionary<int, ModelData> modelMap)
     {
         if (!modelDatas.IsNullOrEmpty())

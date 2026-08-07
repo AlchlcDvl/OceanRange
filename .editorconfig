@@ -179,3 +179,54 @@ dotnet_diagnostic.IDE0051.severity = none
 
 # CS8618: Non-nullable field is uninitialized
 dotnet_diagnostic.CS8618.severity = none
+
+# S125: Sections of code should not be commented out
+dotnet_diagnostic.S125.severity = none
+
+# S2386: Mutable fields should not be "public static"
+dotnet_diagnostic.S2386.severity = none
+
+# S2223: Non-constant static fields should not be visible
+dotnet_diagnostic.S2223.severity = none
+
+# S2696: Instance members should not write to "static" fields
+dotnet_diagnostic.S2696.severity = none
+
+# S6640: Unsafe code blocks should not be used
+dotnet_diagnostic.S6640.severity = none
+
+# S3267: Loops should be simplified with "LINQ" expressions
+dotnet_diagnostic.S3267.severity = none
+
+# S3011: Reflection should not be used to increase accessibility of classes, methods, or fields
+dotnet_diagnostic.S3011.severity = none
+
+# S3887: Mutable, non-private fields should not be "readonly"
+dotnet_diagnostic.S3887.severity = none
+
+# S1104: Fields should not have public accessibility
+dotnet_diagnostic.S1104.severity = none
+
+# IDE0061: Use block body for local function
+dotnet_diagnostic.IDE0061.severity = none
+
+# RCS1238: Avoid nested ?: operators
+dotnet_diagnostic.RCS1238.severity = none
+
+# S3358: Ternary operators should not be nested
+dotnet_diagnostic.S3358.severity = none
+
+# S1450: Private fields only used as local variables in methods should become local variables
+dotnet_diagnostic.S1450.severity = none
+
+# S927: Parameter names should match base declaration and other partial definitions
+dotnet_diagnostic.S927.severity = none
+
+# S2933: Fields that are only assigned in the constructor should be "readonly"
+dotnet_diagnostic.S2933.severity = none
+
+# S1075: URIs should not be hardcoded
+dotnet_diagnostic.S1075.severity = none
+
+# S6444: Pass a timeout to limit the execution time
+dotnet_diagnostic.S6444.severity = none

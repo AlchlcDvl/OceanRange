@@ -121,7 +121,7 @@ public sealed class AssetHandle(string name) : IDisposable
         if (!asset)
             throw new InvalidOperationException($"The load function for asset '{name}' of type '{tType.Name}' returned null. Path: {path}");
 
-        HasLoaded = assets!.TryAdd(tType, asset);
+        HasLoaded = assets.TryAdd(tType, asset);
 
         // Set name and allow persistence
         asset!.name = name;

@@ -654,7 +654,7 @@ public static class Helpers
 
     // public static T AddComponent<T>(this Component component) where T : Component => component.gameObject.AddComponent<T>();
 
-    public static List<Material> ClonedMats = [];
+    public static readonly List<Material> ClonedMats = [];
 
     extension(Material material)
     {

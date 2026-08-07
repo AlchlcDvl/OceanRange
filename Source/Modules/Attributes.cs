@@ -10,15 +10,15 @@ public enum LoadState : byte
 
 public enum ManagerType : byte
 {
-    Atlas,
+    // Atlas,
     FloppyDisk,
     Cookbook,
-    Refinery,
+    // Refinery,
     Slimepedia,
     Largopedia,
     Mailbox,
     Contacts,
-    Blueprints,
+    // Blueprints,
     Translator
 }
 
@@ -35,10 +35,14 @@ public abstract class ManagerMethodAttribute(int order, LoadState state) : Attri
     public readonly LoadState State = state;
 }
 
+[AttributeUsage(AttributeTargets.Method)]
 public sealed class PreloadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Preload);
 
+[AttributeUsage(AttributeTargets.Method)]
 public sealed class LoadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Load);
 
+[AttributeUsage(AttributeTargets.Method)]
 public sealed class PostloadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Postload);
 
+// [AttributeUsage(AttributeTargets.Method)]
 // public sealed class UnloadMethodAttribute(int order = int.MaxValue) : ManagerMethodAttribute(order, LoadState.Unload);

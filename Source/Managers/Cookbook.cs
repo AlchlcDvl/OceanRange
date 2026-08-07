@@ -214,7 +214,7 @@ public static class Cookbook
         RegisterFood(chickPrefab, chickIcon, chimkenData.MainAmmoColor!.Value, chimkenData.ChickId, StorageType.NON_SLIMES);
 
         var henIcon = Inventory.GetSprite($"{lower}_hen");
-        RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor!.Value, chimkenData.MainId, StorageType.NON_SLIMES, StorageType.FOOD);
+        RegisterFood(henPrefab, henIcon, chimkenData.MainAmmoColor.Value, chimkenData.MainId, StorageType.NON_SLIMES, StorageType.FOOD);
 
         if (chimkenData.ExchangeWeight != -1)
             Helpers.CreateRanchExchangeOffer(chimkenData.MainId, chimkenData.ExchangeWeight, chimkenData.Progress);

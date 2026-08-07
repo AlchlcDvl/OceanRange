@@ -83,7 +83,7 @@ internal sealed class Main : ModEntryPoint
 
         // Unload assets that are no longer needed
         Inventory.Bundle.Unload(false);
-        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "largopedia", "contacts", "atlas", "ocean_range"/*, "blueprints"*/);
+        Inventory.ReleaseHandles("cookbook", "mailbox", "slimepedia", "largopedia", "contacts", "ocean_range"/*, "atlas", "blueprints"*/);
         Inventory.ReleaseUnusedHandles();
     }
 

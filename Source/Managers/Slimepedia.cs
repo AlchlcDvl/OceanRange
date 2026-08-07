@@ -78,9 +78,9 @@ public static class Slimepedia
 
         public bool Equals(RigCacheKey other) => sourceMeshName == other.sourceMeshName && type == other.type && jiggleBits == other.jiggleBits;
 
-        public override string ToString() => sourceMeshName + type + jiggleBits;
-
         public override bool Equals(object? obj) => obj is RigCacheKey other && Equals(other);
+
+        public override string ToString() => sourceMeshName + type + jiggleBits;
 
         public override int GetHashCode() => ToString().GetHashCode();
     }
@@ -880,7 +880,7 @@ public static class Slimepedia
             }
         }
 
-        if (list.IsNullOrEmpty() || !sharedMesh)
+        if (list.IsNullOrEmpty() || sharedMesh == null)
             return;
 
         var rootMatrix = applicator.Bones.First(x => x.Bone == SlimeAppearance.SlimeBone.Root).BoneObject.transform.localToWorldMatrix;
@@ -892,7 +892,7 @@ public static class Slimepedia
             poses[i] = applicator.Bones.First(x => x.Bone == bone).BoneObject.transform.worldToLocalMatrix * rootMatrix;
         }
 
-        var (zero, num) = GetCenteredValues(sharedMesh!.vertices);
+        var (zero, num) = GetCenteredValues(sharedMesh.vertices);
 
         foreach (var (rend, mesh, jiggleFactor) in list)
         {

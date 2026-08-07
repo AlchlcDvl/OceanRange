@@ -15,6 +15,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <Configurations>Debug;Release;Unity</Configurations>
     <PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
+    <NoWarn>CS8620</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration)==Unity">
@@ -36,9 +37,22 @@
 
   <ItemGroup Condition="$(Configuration)!=Unity">
     <PackageReference Include="Krafs.Publicizer" Version="2.3.2" PrivateAssets="all" ExcludeAssets="runtime" />
-    <PackageReference Include="Roslynator.Analyzers" Version="4.15.0" PrivateAssets="all" ExcludeAssets="runtime" />
-    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.15.0" PrivateAssets="all" ExcludeAssets="runtime" />
-    <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.15.0" PrivateAssets="all" ExcludeAssets="runtime" />
+
+    <PackageReference Include="Roslynator.Analyzers" Version="4.15.0" PrivateAssets="all" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.15.0" PrivateAssets="all" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.15.0" PrivateAssets="all" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.31.0.145097" PrivateAssets="all" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
 
     <EmbeddedResource Include="Resources\*" />
     <EmbeddedResource Include="Resources\*\*" />

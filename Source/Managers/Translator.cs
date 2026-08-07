@@ -26,7 +26,7 @@ public static class Translator
     [TimeDiagnostic("Pedia Preload")]
 #endif
     [PreloadMethod]
-    public static void PreloadLangData() => Fallback = TranslationsHolder!.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
+    public static void PreloadLangData() => Fallback = TranslationsHolder.GetOrAdd(Config.FALLBACK_LANGUAGE, GenerateTranslationsFunc);
 
 #if DEBUG
     [TimeDiagnostic("Pedia Load")]
@@ -72,7 +72,7 @@ public static class Translator
 
     public static Dictionary<string, Dictionary<string, string>> GetTranslations(this Language lang)
     {
-        var holder = TranslationsHolder!.GetOrAdd(lang, GenerateTranslationsFunc);
+        var holder = TranslationsHolder.GetOrAdd(lang, GenerateTranslationsFunc);
         holder!.OnLanguageChanged(lang);
         StoreVanillaTranslations(GameContext.Instance.MessageDirector, lang);
         var translations = holder.GetTranslations(lang);
@@ -111,6 +111,60 @@ public static class Translator
     {
         public void AddComplexTranslation(Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback) =>
             bundle[id] = GetTranslationValue(id, text, bundleName, translations, lang, isFallback) ?? $"STRMSS: {id}";
+
+        private static string? GetTranslationValue(string id, string text, string bundleName, Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
+        {
+            var resolvedText = ResolveReference(text, bundleName, translations) ?? ResolveReference(text, bundleName, VanillaFallbackTranslations[lang]);
+
+            if (resolvedText != null)
+                return resolvedText;
+
+            if (isFallback)
+            {
+                Main.Console.LogError($"{bundleName}:{id} was null!");
+                return null;
+            }
+
+            if (FallbackTranslations.TryGetValue(bundleName, out var innerBundle) && innerBundle.TryGetValue(id, out var innerValueToAssign))
+            {
+                resolvedText = ResolveReference(innerValueToAssign, bundleName, FallbackTranslations);
+
+                if (resolvedText != null)
+                    return resolvedText;
+            }
+
+            var fallback = VanillaFallbackTranslations[Config.FALLBACK_LANGUAGE];
+
+            if (fallback.TryGetValue(bundleName, out var vanillaFallbackBundle) && vanillaFallbackBundle.TryGetValue(id, out var vanillaFallbackValue))
+            {
+                resolvedText = ResolveReference(vanillaFallbackValue, bundleName, fallback);
+
+                if (resolvedText != null)
+                    return resolvedText;
+            }
+
+            Main.Console.LogError($"Couldn't find {bundleName}:{id} in fallback!");
+            return null;
+        }
+
+        private static string? ResolveReference(string referenceText, string currentBundleName, Dictionary<string, Dictionary<string, string>> translations)
+        {
+            var refKey = referenceText.Substring(1);
+            var refBundleName = currentBundleName;
+            var refId = refKey;
+            var colonIndex = refKey.IndexOf(':');
+
+            if (colonIndex > 0 && colonIndex < refKey.Length - 1)
+            {
+                refBundleName = refKey.Substring(0, colonIndex);
+                refId = refKey.Substring(colonIndex + 1);
+            }
+
+            if (translations.TryGetValue(refBundleName, out var referencedBundle) && referencedBundle.TryGetValue(refId, out var resolvedText))
+                return resolvedText?.StartsWith('@') == true ? ResolveReference(resolvedText, refBundleName, translations) : resolvedText;
+
+            return null;
+        }
     }
 
     private static List<DeferredTranslation>? CurrentDeferredList;
@@ -132,68 +186,10 @@ public static class Translator
                 throw new ArgumentNullException(nameof(text), $"Translation for {bundleName}:{id} was null!");
 
             if (text.StartsWith('@'))
-                bundle.AddComplexTranslation(id, text, bundleName);
+                CurrentDeferredList!.Add(new(bundle, id, text, bundleName));
             else
-                bundle.AddSimpleTranslation(id, text);
+                bundle[id] = text.IsNullOrWhiteSpace() ? $"STRMSS: {id}" : text;
         }
-
-        private void AddSimpleTranslation(string id, string text) => bundle[id] = text.IsNullOrWhiteSpace() ? $"STRMSS: {id}" : text;
-
-        private void AddComplexTranslation(string id, string text, string bundleName) => CurrentDeferredList!.Add(new(bundle, id, text, bundleName));
-    }
-
-    private static string? GetTranslationValue(string id, string text, string bundleName, Dictionary<string, Dictionary<string, string>> translations, Language lang, bool isFallback)
-    {
-        var resolvedText = ResolveReference(text, bundleName, translations) ?? ResolveReference(text, bundleName, VanillaFallbackTranslations[lang]);
-
-        if (resolvedText != null)
-            return resolvedText;
-
-        if (isFallback)
-        {
-            Main.Console.LogError($"{bundleName}:{id} was null!");
-            return null;
-        }
-
-        if (FallbackTranslations.TryGetValue(bundleName, out var innerBundle) && innerBundle.TryGetValue(id, out var innerValueToAssign))
-        {
-            resolvedText = ResolveReference(innerValueToAssign, bundleName, FallbackTranslations);
-
-            if (resolvedText != null)
-                return resolvedText;
-        }
-
-        var fallback = VanillaFallbackTranslations[Config.FALLBACK_LANGUAGE];
-
-        if (fallback.TryGetValue(bundleName, out var vanillaFallbackBundle) && vanillaFallbackBundle.TryGetValue(id, out var vanillaFallbackValue))
-        {
-            resolvedText = ResolveReference(vanillaFallbackValue, bundleName, fallback);
-
-            if (resolvedText != null)
-                return resolvedText;
-        }
-
-        Main.Console.LogError($"Couldn't find {bundleName}:{id} in fallback!");
-        return null;
-    }
-
-    private static string? ResolveReference(string referenceText, string currentBundleName, Dictionary<string, Dictionary<string, string>> translations)
-    {
-        var refKey = referenceText.Substring(1);
-        var refBundleName = currentBundleName;
-        var refId = refKey;
-        var colonIndex = refKey.IndexOf(':');
-
-        if (colonIndex > 0 && colonIndex < refKey.Length - 1)
-        {
-            refBundleName = refKey.Substring(0, colonIndex);
-            refId = refKey.Substring(colonIndex + 1);
-        }
-
-        if (translations.TryGetValue(refBundleName, out var referencedBundle) && referencedBundle.TryGetValue(refId, out var resolvedText))
-            return resolvedText?.StartsWith('@') == true ? ResolveReference(resolvedText, refBundleName, translations) : resolvedText;
-
-        return null;
     }
 
     // The next set of methods are ripped straight from the game itself, because the original is patched

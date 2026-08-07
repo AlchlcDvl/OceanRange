@@ -434,9 +434,13 @@ public static class Inventory
         /// Helper method to converge all asset paths and names to a shorter string representations, aka their file names.
         /// </summary>
         /// <returns>The lowercase name of the asset after all parts have been filtered out.</returns>
-        private string SanitisePath() => path
-            .ReplaceAll(string.Empty, Extensions) // Removing the file extension first
-            .TrueSplit('/', '\\', '.').Last(); // Split by directories (/ for Windows/Linux/AssetBundle/Urls, \ for Mac, . for Embedded/Memory) and get the last entry which should be the asset name
+        private string SanitisePath()
+        {
+            var parts = path
+                .ReplaceAll(string.Empty, Extensions) // Removing the file extension first
+                .TrueSplit('/', '\\', '.'); // Split by directories (/ for Windows/Linux/AssetBundle/Urls, \ for Mac, . for Embedded/Memory) and get the last entry which should be the asset name
+            return parts[parts.Count - 1];
+        }
     }
 
     /// <summary>
