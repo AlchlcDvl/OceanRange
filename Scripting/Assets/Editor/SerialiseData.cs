@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 static class ExportData
 {
-    static readonly string[] Translations = { "de", "en", "es", "fr", "ru", "tr" };
+    static readonly string[] TranslationIds = { "de", "en", "es", "fr", "ru", "tr" };
 
     struct SingleExport
     {
@@ -38,16 +38,15 @@ static class ExportData
         try
         {
             PrepDir(exportDirectory);
-            PrepDir(exportTranslationsDirectory);
 
             var singleInstances = new List<SingleExport>();
             var arrayInstances = new List<ArrayExport>();
 
             // Load arrays
+            LoadArrayData<MailData>(jsonDirectory, exportDirectory, "mailbox", arrayInstances);
             LoadArrayData<SlimeData>(jsonDirectory, exportDirectory, "slimepedia", arrayInstances);
             LoadArrayData<LargoData>(jsonDirectory, exportDirectory, "largopedia", arrayInstances);
             LoadArrayData<RancherData>(jsonDirectory, exportDirectory, "contacts", arrayInstances);
-            LoadArrayData<MailData>(jsonDirectory, exportDirectory, "mailbox", arrayInstances);
 
             // Load single instances
             LoadSingleData<World>(jsonDirectory, exportDirectory, "atlas", singleInstances);
@@ -56,7 +55,7 @@ static class ExportData
             // LoadSingleData<Schematics>(jsonDirectory, exportDirectory, "blueprints", singleInstances);
 
             // Load translations
-            foreach (var lang in Translations)
+            foreach (var lang in TranslationIds)
                 LoadSingleData<Translations>(translations, exportTranslationsDirectory, lang, singleInstances);
 
             // Pool strings
@@ -140,30 +139,28 @@ static class ExportData
 
     static void LoadSingleData<T>(string sourcePath, string destPath, string fileName, List<SingleExport> list) where T : JsonData
     {
-        var data = TryReadJson<T>(sourcePath, fileName);
-
-        if (data != null)
+        if (TryReadJson<T>(sourcePath, fileName, out var data))
             list.Add(new SingleExport { DestPath = Path.Combine(destPath, fileName + ".cjson"), Data = data });
     }
 
     static void LoadArrayData<T>(string sourcePath, string destPath, string fileName, List<ArrayExport> list) where T : JsonData
     {
-        var data = TryReadJson<T[]>(sourcePath, fileName);
-
-        if (data != null)
+        if (TryReadJson<T[]>(sourcePath, fileName, out var data))
             list.Add(new ArrayExport { DestPath = Path.Combine(destPath, fileName + ".cjson"), Data = data });
     }
 
-    static T TryReadJson<T>(string sourcePath, string fileName)
+    static bool TryReadJson<T>(string sourcePath, string fileName, out T data) where T : class
     {
         var source = Path.Combine(sourcePath, fileName + ".json");
 
         if (!File.Exists(source))
         {
             Debug.LogWarning($"Skipped {fileName}: JSON file not found at {source}");
-            return default;
+            data = null;
+            return false;
         }
 
-        return JsonConvert.DeserializeObject<T>(File.ReadAllText(source), JsonSettings.JsonSerialisationSettings);
+        data = JsonConvert.DeserializeObject<T>(File.ReadAllText(source), JsonSettings.JsonSerialisationSettings);
+        return true;
     }
 }

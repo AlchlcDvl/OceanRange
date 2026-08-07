@@ -1,34 +1,17 @@
 <Project>
-  <!-- This will create new directories if you don't have them made already -->
-
-  <Target Name="Copy" AfterTargets="Build">
+  <Target Name="Copy" AfterTargets="Build"> <!-- This will create new directories if you don't have them made already -->
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Mods/" Condition="$(Configuration)!=Unity" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Bundle/Assets/Plugins" Condition="$(Configuration)==Unity" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildThisFileDirectory)/Scripting/Assets/Plugins" Condition="$(Configuration)==Unity" />
   </Target>
 
-  <ItemGroup>
-    <Reference Include="$(MSBuildThisFileDirectory)/SrLibs/*.dll">
-      <Private>false</Private>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </Reference>
-  </ItemGroup>
-
   <ItemGroup Condition="$(Configuration)!=Unity">
-    <Reference Include="$(MSBuildThisFileDirectory)/Libs/*.dll">
-      <Private>false</Private>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </Reference>
-    <Reference Include="$(MSBuildThisFileDirectory)/SrmlLibs/*.dll">
-      <Private>false</Private>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </Reference>
+    <Reference Include="$(MSBuildThisFileDirectory)/Libs/*.dll" PrivateAssets="all" ExcludeAssets="runtime" />
+    <Reference Include="$(MSBuildThisFileDirectory)/SrLibs/*.dll" PrivateAssets="all" ExcludeAssets="runtime" />
+    <Reference Include="$(MSBuildThisFileDirectory)/SrmlLibs/*.dll" PrivateAssets="all" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup Condition="$(Configuration)==Unity">
-    <Reference Include="$(MSBuildThisFileDirectory)/SrmlLibs/Newtonsoft.Json.dll">
-      <Private>false</Private>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </Reference>
+    <Reference Include="$(MSBuildThisFileDirectory)/SrmlLibs/Newtonsoft.Json.dll" PrivateAssets="all" ExcludeAssets="runtime" />
   </ItemGroup>
 </Project>

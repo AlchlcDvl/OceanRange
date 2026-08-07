@@ -95,10 +95,10 @@ public static class Inventory
         using var reader = new DataReader(binary, null);
 
         var count = reader.ReadPackedUInt();
-        StringPool = new string[(int)count];
+        StringPool = new string[(int)count + 1];
         StringPool[0] = string.Empty;
 
-        for (var i = 1; i < count; i++)
+        for (var i = 1; i <= count; i++)
             StringPool[i] = reader.ReadString()!;
 
         Bundle = Get<AssetBundle>("ocean_range"); // Ensures the bundle is loaded first
@@ -359,9 +359,6 @@ public static class Inventory
 
             mesh.SetUVs(0, uvs);
         }
-
-        mesh.RecalculateNormals();
-        mesh.RecalculateTangents();
 
         return mesh;
     }
